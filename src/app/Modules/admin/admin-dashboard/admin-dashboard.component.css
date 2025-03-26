@@ -1,0 +1,24 @@
+
+
+.dialog-button {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  background: rgba(255, 255, 255, 0.8);
+  border: none;
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 2;
+}
+
+.component-content {
+  overflow: auto;
+  height: 100%;
+  max-height: calc(100% - 40px); /* Adjust based on your header and button height */
+  max-width: 100%; /* Ensure content doesn't overflow horizontally */
+}

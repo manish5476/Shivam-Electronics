@@ -1,0 +1,15 @@
+<main class="flex-1   overflow-y-auto w-full relative">
+  <!-- <div class=" shadow-md rounded-lg font-roboto  sticky top-6 z-10"> -->
+    <div class="sticky top-0 z-10 w-full  shadow-md rounded-lg font-roboto">
+    <div class="card flex justify-center">
+      <p-selectButton [options]="componentNavItems" [(ngModel)]="activeComponent" optionLabel="label" optionValue="component" aria-labelledby="basic" (onChange)="navigateToComponent(activeComponent)"></p-selectButton>
+    </div>
+  </div>
+
+  <div class="mt-1">
+    <ng-container *ngComponentOutlet="activeComponent"></ng-container>
+    <router-outlet></router-outlet> 
+  </div>
+</main>
+
+

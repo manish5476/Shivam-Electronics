@@ -1,0 +1,450 @@
+
+@import 'primeicons/primeicons.css';
+/* @import 'primeflex/primeflex.css'; */
+
+:host ::ng-deep {
+  .p-button.p-button-outlined {
+    border: 1px solid #ffffff;
+    color: #ffffff;
+
+    &:hover {
+      background-color: rgba(255, 255, 255, 0.08);
+      border-color: #ffffff;
+    }
+  }
+
+  /* Gradient Border for Cards */
+  .p-card {
+    border: 2px solid transparent;
+    /* Initially transparent border to make space for gradient */
+    padding: 1px;
+    /* Add a small padding inside to prevent content from being directly under the border */
+    background-clip: padding-box;
+    /* Important to clip background under the border for visual effect */
+    position: relative;
+    /* Needed for pseudo-element to create inner background if needed */
+    overflow: hidden;
+    /* To contain the gradient within the card boundaries */
+    width: 100%;
+    /* ADD THIS LINE */
+  }
+
+  .p-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: -1;
+    /* Place gradient behind the card content */
+    margin: -2px;
+    /* Expand the gradient to cover the area of the 'border' */
+    border-radius: inherit;
+    /* Inherit border-radius from the card */
+    background: repeating-linear-gradient(45deg,
+        #3ab7bf,
+        /* Start color - light blue */
+        #3ab7bf 10px,
+        #2980b9 10px,
+        /* Middle color - slightly darker blue */
+        #2980b9 20px,
+        #1e8449 20px,
+        /* Green for wave feeling */
+        #1e8449 30px);
+    background-size: 200% 200%;
+    /* Make gradient larger than the element */
+    animation: wave-border 4s linear infinite;
+    /* Apply animation for moving waves */
+  }
+}
+
+@keyframes wave-border {
+  0% {
+    background-position: 0 0;
+  }
+
+  50% {
+    background-position: 100% 0;
+  }
+
+  100% {
+    background-position: 0 0;
+  }
+}
+
+
+section {
+  &.dark-mode {
+    background-color: #111827;
+    /* Dark background color */
+    color: #f9fafb;
+    /* Light text color */
+
+    h1,
+    label,
+    p-card,
+    p-table,
+    .stats-label,
+    .stats-value {
+      color: #f9fafb !important;
+    }
+
+    .profile-card,
+    .form-card,
+    .financial-stats {
+      background-color: #1f2937 !important;
+      /* Dark card background */
+      border-color: #4b5563 !important;
+      /* Dark border color */
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    }
+
+    .form-input,
+    .form-dropdown,
+    .guaranteer-info {
+      background-color: #374151 !important;
+      /* Dark input background */
+      color: #f9fafb !important;
+      border-color: #4b5563 !important;
+    }
+
+    .form-input::placeholder,
+    .form-dropdown::placeholder {
+      color: #d1d5db !important;
+      /* Light placeholder text */
+    }
+
+    .upload-button,
+    .save-button,
+    .add-button,
+    .dialog-button-add {
+      background-color: #2563eb !important;
+      /* Primary button color */
+      color: #f9fafb !important;
+
+      &:hover {
+        background-color: #3b82f6 !important;
+        /* Lighter primary hover color */
+      }
+    }
+
+    .dialog-button-cancel {
+      color: #f9fafb !important;
+
+      &:hover {
+        color: #d1d5db !important;
+      }
+    }
+
+
+    .form-table {
+      background-color: #1f2937 !important;
+
+      .p-datatable-thead>tr>th {
+        background-color: #374151 !important;
+        color: #f9fafb !important;
+        border-bottom: 1px solid #4b5563 !important;
+      }
+
+      .p-datatable-tbody>tr {
+        border-bottom: 1px solid #4b5563 !important;
+      }
+
+      .p-datatable-tbody>tr>td {
+        border-bottom: 1px solid #4b5563 !important;
+        color: #d1d5db !important;
+      }
+    }
+
+    .profile-icon {
+      color: #d1d5db !important;
+    }
+
+    .upload-status {
+      color: #4ade80 !important;
+      /* Green text for upload status */
+    }
+
+    :host ::ng-deep .p-card::before {
+      /* Dark mode gradient border */
+      background: repeating-linear-gradient(45deg,
+          #546e7a,
+          /* Darker blue-gray */
+          #546e7a 10px,
+          #37474f 10px,
+          /* Even darker blue-gray */
+          #37474f 20px,
+          #263238 20px,
+          /* Very dark gray */
+          #263238 30px);
+    }
+  }
+}
+
+
+.container {
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+.title-font {
+  font-weight: 600;
+}
+
+.profile-card {
+  background-color: #f9f9f9;
+  border-radius: 0.5rem;
+  border: 1px solid #e5e7eb;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+}
+
+.profile-image-container {
+  width: 8rem;
+  height: 8rem;
+  border-radius: 0.5rem;
+  border: 2px solid #d1d5db;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  margin-bottom: 1rem;
+  background-color: #e5e7eb;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.profile-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.profile-icon {
+  color: #9ca3af;
+  font-size: 3rem;
+}
+
+.upload-button,
+.save-button,
+.add-button,
+.dialog-button-add {
+  background-color: #3b82f6;
+  color: white;
+  font-weight: 500;
+  padding: 0.5rem 1rem;
+  border-radius: 0.375rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-left: auto;
+  margin-right: auto;
+  transition: background-color 0.2s;
+
+  &:hover {
+    background-color: #2563eb;
+  }
+}
+
+.dialog-button-cancel {
+  font-weight: 500;
+  padding: 0.5rem 1rem;
+  border-radius: 0.375rem;
+  transition: color 0.2s;
+  color: #6b7280;
+
+  &:hover {
+    color: #4b5563;
+  }
+}
+
+
+.upload-status {
+  margin-top: 0.5rem;
+  font-size: 0.875rem;
+  color: #16a34a;
+  text-align: center;
+}
+
+.form-group {
+  margin-top: 1rem;
+}
+
+.form-label {
+  display: block;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #4b5563;
+  margin-bottom: 0.25rem;
+}
+
+.form-input,
+.form-dropdown,
+.guaranteer-info {
+  display: block;
+  width: 100%;
+  padding: 0.5rem;
+  border-radius: 0.375rem;
+  border: 1px solid #d1d5db;
+  background-color: #f9faf9;
+  color: #374151;
+  transition: border-color 0.2s;
+
+  &:focus {
+    outline: none;
+    border-color: #9ca3af;
+    box-shadow: 0 0 0 2px rgba(164, 173, 184, 0.2);
+  }
+}
+
+.guaranteer-info {
+  padding: 0.5rem;
+  margin-top: 0.25rem;
+  border: 1px solid #d1d5db;
+  border-radius: 0.375rem;
+  background-color: #f9faf9;
+  color: #374151;
+}
+
+
+.form-card {
+  background-color: #f9f9f9;
+  border-radius: 0.5rem;
+  border: 1px solid #e5e7eb;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+
+  .form-card-content {
+    background-color: transparent !important;
+    color: inherit !important;
+  }
+}
+
+.form-table {
+  margin-top: 1rem;
+  background-color: #f9f9f9;
+  color: #374151;
+  border-radius: 0.5rem;
+  border: 1px solid #e5e7eb;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+
+  .p-datatable-header {
+    padding: 1rem;
+    font-weight: 600;
+    font-size: 1.125rem;
+    color: #374151;
+    background: transparent;
+    border: none;
+  }
+
+  .p-datatable-thead>tr>th {
+    background-color: #e5e7eb;
+    color: #374151;
+    padding: 0.75rem;
+    border-bottom: 2px solid #d1d5db;
+    font-weight: 600;
+  }
+
+  .p-datatable-tbody {
+    background-color: #f9faf9;
+  }
+
+  .p-datatable-tbody>tr {
+    border-bottom: 1px solid #e5e7eb;
+
+    &:last-child {
+      border-bottom: none;
+    }
+  }
+
+  .p-datatable-tbody>tr>td {
+    padding: 0.75rem;
+    border-bottom: 1px solid #e5e7eb;
+  }
+
+  .p-paginator-bottom {
+    background: transparent;
+    border: none;
+    padding: 1rem;
+  }
+}
+
+.text-center {
+  text-align: center;
+}
+
+.actions-column {
+  text-align: center;
+}
+
+.section-title {
+  font-size: 1.875rem;
+  font-weight: 700;
+  color: #d97706;
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+
+.financial-stats {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 1.5rem;
+  border-radius: 0.5rem;
+  border: 1px solid #e5e7eb;
+  text-align: center;
+  background-color: #f9f9f9;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+}
+
+.stats-label {
+  order: 2;
+  font-size: 1rem;
+  font-weight: 500;
+  color: #6b7280;
+}
+
+.stats-value {
+  order: 1;
+  font-size: 2.25rem;
+  font-weight: 700;
+  color: #2563eb;
+}
+
+.save-button {
+  background-color: #16a34a;
+  color: white;
+  font-weight: 600;
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.375rem;
+  transition: background-color 0.2s;
+  width: 100%;
+
+  &:hover {
+    background-color: #15803d;
+  }
+}
+
+.dialog-compact {
+  :host ::ng-deep .p-dialog-header {
+    background-color: #f9f9f9;
+    color: #374151;
+    font-weight: 600;
+    border-bottom: 1px solid #e5e7eb;
+  }
+
+  :host ::ng-deep .p-dialog-content {
+    background-color: #f9f9f9;
+    color: #374151;
+  }
+
+  :host ::ng-deep .p-dialog-footer {
+    background-color: #f9f9f9;
+    border-top: 1px solid #e5e7eb;
+  }
+}
+
+.dialog-checkbox-label {
+  font-size: 0.875rem;
+  color: #4b5563;
+}

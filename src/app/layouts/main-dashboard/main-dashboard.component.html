@@ -1,0 +1,13 @@
+
+<main class="flex-1 overflow-y-auto w-full relative">
+  <div class="sticky top-0 z-10 w-full shadow-md rounded-lg font-roboto">
+    <app-common-layout
+      [navItems]="componentNavItems"
+      [activeItem]="activeComponent"
+      (activeItemChange)="activeComponent = $event"
+    ></app-common-layout>
+  </div>
+  <div class="mt-4">
+    <ng-container *ngComponentOutlet="activeComponent"></ng-container>
+  </div>
+</main>

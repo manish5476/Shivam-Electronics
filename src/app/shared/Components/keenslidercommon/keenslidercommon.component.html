@@ -1,0 +1,29 @@
+<div class="keen-slider" #sliderRef>
+  <div
+    *ngFor="let slide of slidesData; let i = index"
+    class="keen-slider__slide"
+    [ngClass]="'number-slide' + (i + 1)"
+  >
+    <ng-content select="[slide-content]"></ng-content>
+    <div *ngIf="!slidesData[i]?.template" class="slide-content">
+      {{ slide?.content || (i + 1) }}
+    </div>
+    <ng-container *ngIf="slidesData[i]?.template" [ngTemplateOutlet]="slidesData[i].template" [ngTemplateOutletContext]="{$implicit: slide}">
+    </ng-container>
+  </div>
+</div>
+
+<div class="keen-slider thumbnail" #thumbnailRef>
+  <div
+    *ngFor="let slide of slidesData; let i = index"
+    class="keen-slider__slide"
+    [ngClass]="'number-slide' + (i + 1)"
+  >
+  <ng-content select="[thumbnail-content]"></ng-content>
+    <div *ngIf="!slidesData[i]?.thumbnailTemplate" class="thumbnail-content">
+      {{ slide?.thumbnailContent || (i + 1) }}
+    </div>
+    <ng-container *ngIf="slidesData[i]?.thumbnailTemplate" [ngTemplateOutlet]="slidesData[i].thumbnailTemplate" [ngTemplateOutletContext]="{$implicit: slide}">
+    </ng-container>
+  </div>
+</div>

@@ -1,0 +1,108 @@
+<app-common-header [title]="'Customer List'"></app-common-header>
+<div class="container mx-auto mt-4">
+  <app-shared-grid
+    [gridHeight]="'520px'"
+    [gridWidth]="'100%'"
+    [padding]="'0'"
+    [data]="data" 
+    [rowSelectionMode]="rowSelectionMode"
+    [column]="column"
+    (eventFromGrid)="eventFromGrid($event)"
+    >
+  </app-shared-grid>
+</div>
+<!-- <div class="card">
+  <p-toast />
+  <p-toolbar styleClass="mb-6">
+    <ng-template #start>
+      <p-button label="New" icon="pi pi-plus" class="mr-2" (onClick)="openNew()" />
+      <p-button severity="danger" label="Delete" icon="pi pi-trash" outlined (onClick)="deleteSelectedcustomers()"
+        [disabled]="!selectedcustomers || !selectedcustomers.length" />
+    </ng-template>
+    <ng-template>
+      <p-select [options]="this.customersdropdowndata" optionLabel="fullname"></p-select>
+      <p-select [options]="this.customersdropdowndata" optionLabel="email"></p-select>
+    </ng-template>
+    <ng-template #end>
+      <p-fileUpload mode="basic" accept="image/*" [maxFileSize]="1000000" label="Import" chooseLabel="Import" auto
+        customUpload class="mr-2 inline-block" [chooseButtonProps]="{ severity: 'secondary' }" />
+      <p-button label="Export" icon="pi pi-upload" severity="secondary" (onClick)="exportCSV()" />
+    </ng-template>
+  </p-toolbar>
+  <p-table #dt [scrollable]="true" [rowsPerPageOptions]="[10, 25, 50]" [loading]="loading" [paginator]="true"
+    scrollHeight="450px" [value]="customers" [rows]="10" [columns]="cols" [paginator]="true"
+    [globalFilterFields]="['email','fullname','representative.name','status']" [filterDelay]="0"
+    [tableStyle]="{ 'min-width': '85rem' }" [(selection)]="selectedcustomers" [rowHover]="true" dataKey="id"
+    class="custom-row-height" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+    [showCurrentPageReport]="true">
+    <ng-template #caption>
+      <div class="flex items-center justify-between">
+        <h5 class="m-0">Manage customers</h5>
+        <p-iconfield>
+          <p-inputicon styleClass="pi pi-search" />
+          <input pInputText type="text" (input)="filterSearch($event)" placeholder="Search..." />
+        </p-iconfield>
+      </div>
+    </ng-template>
+    <ng-template #header>
+      <tr>
+        <th style="width: 3rem"><p-tableHeaderCheckbox /></th>
+        <th style="min-width: 16rem">fullname</th>
+        <th pSortableColumn="email" style="min-width: 16rem">
+          email <p-sortIcon field="email" />
+        </th>
+        <th>Image</th>
+        <th pSortableColumn="remainingAmount" style="min-width: 8rem">
+          remainingAmount <p-sortIcon field="remainingAmount" />
+        </th>
+        <th pSortableColumn="guaranteerId" style="min-width: 10rem">
+          guaranteerId <p-sortIcon field="guaranteerId" />
+        </th>
+        <th pSortableColumn="status" style="min-width: 12rem">
+          Status <p-sortIcon field="status" />
+        </th>
+        <th style="min-width: 12rem"></th>
+      </tr>
+    </ng-template>
+    <ng-template #body let-customer>
+      <tr>
+        <td style="width: 3rem">
+          <p-tableCheckbox (click)="checkedCustomer(customer)" [value]="customer.id" />
+        </td>
+        <td style="min-width: 16rem">{{ customer.fullname }}</td>
+        <td style="min-width: 16rem">{{ customer.email }}</td>
+        <td>
+          <img [src]="
+              'https://primefaces.org/cdn/primeng/images/demo/avatar/onyamalimba.png'
+            " [alt]="customer.fullname" style="width: 64px" class="rounded" />
+        </td>
+        <td>{{ customer.remainingAmount | currency : "USD" }}</td>
+        <td>{{ customer.guaranteerId }}</td>
+        <td>
+          <p-tag [value]="customer.status" [severity]="getSeverity(customer.status)" />
+        </td>
+        <td>
+          <p-button icon="pi pi-pencil" class="mr-2" [rounded]="true" [outlined]="true"
+            (click)="editcustomer(customer)" />
+          <p-button icon="pi pi-trash" severity="danger" [rounded]="true" [outlined]="true"
+            (click)="deletecustomer(customer)" />
+
+          <p-button icon="pi pi-eye" severity="success" [rounded]="true" [outlined]="true"
+            (click)="vierCustomer(customer)" />
+        </td>
+      </tr>
+    </ng-template>
+    <ng-template #summary>
+      <div class="flex items-center justify-between">
+        In total there are {{ customers ? customers.length : 0 }} customers.
+      </div>
+    </ng-template>
+  </p-table>
+  <p-dialog [(visible)]="customerDialog" [style]="{ width: 'auto' }" header="customer Details" [modal]="true">
+    <ng-template #content>
+    </ng-template>
+
+  </p-dialog>
+
+  <p-confirmDialog [style]="{ width: '450px' }" />
+</div> -->

@@ -1,0 +1,3 @@
+<!-- <app-shared-grid [data]="this.data" [column]="this.column"></app-shared-grid> -->
+
+<app-shared-grid [data]="data" [rowSelectionMode]="rowSelectionMode" [column]="column" (eventFromGrid)="eventFromGrid($event)"></app-shared-grid>

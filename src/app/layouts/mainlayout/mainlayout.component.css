@@ -1,0 +1,57 @@
+.flex-column {
+  align-items: center;
+}
+
+aside:hover {
+  background-color: #e5e7eb;
+}
+
+.dock-window {
+  position: fixed;
+  top: 64px;
+  /* Align dock below header */
+  left: 0;
+  z-index: 10;
+  height: calc(100vh - 64px);
+  /* Full screen height minus the header */
+  overflow-y: auto;
+}
+
+p-dock {
+  position: fixed;
+  top: 64px;
+  left: 0;
+}
+
+html,
+body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  /* Prevents scrolling */
+}
+
+.min-h-screen {
+  height: 100vh;
+}
+
+.overflow-hidden {
+  overflow: hidden !important;
+  /* Ensure no scrollbar appears */
+}
+
+/* Hide scrollbar for Chrome, Safari, and Edge */
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+/* Hide scrollbar for Firefox */
+.hide-scrollbar {
+  scrollbar-width: none;
+}
+
+/* Hide scrollbar for IE and Edge */
+.hide-scrollbar {
+  -ms-overflow-style: none;
+}

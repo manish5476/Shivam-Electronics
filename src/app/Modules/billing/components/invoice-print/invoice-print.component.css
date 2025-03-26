@@ -1,0 +1,21 @@
+  
+  @layer components {
+    .invoice-container {
+      @apply bg-white p-6 rounded-md shadow-md;
+    }
+  
+    .download-button {
+      @apply text-center mt-4;
+    }
+  }
+  
+  @media print {
+    .download-button {
+      @apply hidden;
+    }
+  
+    .invoice-container {
+      @apply shadow-none border-none p-0 m-0 w-full;
+      /* Reset container styles for printing */
+    }
+  }

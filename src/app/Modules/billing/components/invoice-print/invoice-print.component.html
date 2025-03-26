@@ -1,0 +1,374 @@
+<div class="invoice-container">
+  <div class="bg-white p-6 rounded-md shadow-md ">
+    <div class="flex justify-between items-start mb-8">
+      <div class="seller-info">
+        <h2 class="text-2xl font-bold text-gray-800 mb-2">Shivam Electronics</h2>
+        <p class="text-sm text-gray-600">f-8 JB Shoppin Center Jolwa </p>
+        <p class="text-sm text-gray-600"> </p>
+      </div>
+      <div class="invoice-details text-right">
+        <h1 class="text-3xl font-bold text-gray-900 mb-4">INVOICE</h1>
+        <p class="text-gray-700">Invoice No: {{ invoiceData?.invoiceNumber }}</p>
+        <p class="text-gray-700">Date: {{ invoiceData?.invoiceDate | date:'mediumDate' }}</p>
+        <p class="text-gray-700">Due Date: {{ invoiceData?.dueDate | date:'mediumDate' }}</p>
+      </div>
+    </div>
+
+    <div class="mb-8 p-4 border border-gray-200 rounded-md">
+      <h3 class="text-xl font-semibold text-gray-800 mb-4">Buyer Details</h3>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div>
+          <p class="text-gray-700"><strong class="font-semibold">Buyer Name:</strong> {{
+            invoiceData?.buyerDetails?.fullname }}</p>
+          <p class="text-gray-700"><strong class="font-semibold">GSTIN:</strong> {{ invoiceData?.buyerDetails?.gstin ||
+            'N/A' }}</p>
+        </div>
+        <div>
+          <p class="text-gray-700"><strong class="font-semibold">Address:</strong>
+            {{ invoiceData?.buyerDetails?.addresses?.[0]?.street }},
+            {{ invoiceData?.buyerDetails?.addresses?.[0]?.city }},
+            {{ invoiceData?.buyerDetails?.addresses?.[0]?.state }},
+            {{ invoiceData?.buyerDetails?.addresses?.[0]?.country }},
+            {{ invoiceData?.buyerDetails?.addresses?.[0]?.zipCode }}
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="overflow-x-auto">
+      <table class="min-w-full table-auto border-collapse border border-gray-200">
+        <thead class="bg-gray-50">
+          <tr>
+            <th class="border border-gray-200 px-4 py-2 text-left text-xs font-semibold text-gray-700">Sr.</th>
+            <th class="border border-gray-200 px-4 py-2 text-left text-xs font-semibold text-gray-700">Item Description
+            </th>
+            <th class="border border-gray-200 px-4 py-2 text-left text-xs font-semibold text-gray-700">HSN/SAC</th>
+            <th class="border border-gray-200 px-4 py-2 text-left text-xs font-semibold text-gray-700">Qty</th>
+            <th class="border border-gray-200 px-4 py-2 text-left text-xs font-semibold text-gray-700">Rate</th>
+            <th class="border border-gray-200 px-4 py-2 text-left text-xs font-semibold text-gray-700">Discount</th>
+            <th class="border border-gray-200 px-4 py-2 text-left text-xs font-semibold text-gray-700">Taxable Value
+            </th>
+            <th class="border border-gray-200 px-4 py-2 text-left text-xs font-semibold text-gray-700">CGST Rate</th>
+            <th class="border border-gray-200 px-4 py-2 text-left text-xs font-semibold text-gray-700">CGST Amt</th>
+            <th class="border border-gray-200 px-4 py-2 text-left text-xs font-semibold text-gray-700">Amount</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of invoiceData?.items; let i = index">
+            <td class="border border-gray-200 px-4 py-2 text-sm text-gray-700">{{ i + 1 }}</td>
+            <td class="border border-gray-200 px-4 py-2 text-sm text-gray-700">{{invoiceData.itemDetails[i]?.title }}
+            </td>
+            <td class="border border-gray-200 px-4 py-2 text-sm text-gray-700">{{ item.hsnSac || 'N/A' }}</td>
+            <td class="border border-gray-200 px-4 py-2 text-sm text-gray-700">{{ item.quantity }}</td>
+            <td class="border border-gray-200 px-4 py-2 text-sm text-gray-700">{{ item.rate | currency:'INR' }}</td>
+            <td class="border border-gray-200 px-4 py-2 text-sm text-gray-700">{{ item.discount | currency:'INR' }}</td>
+            <td class="border border-gray-200 px-4 py-2 text-sm text-gray-700">{{ item.taxableValue | currency:'INR' }}
+            </td>
+            <td class="border border-gray-200 px-4 py-2 text-sm text-gray-700">{{ item.gstRate }}%</td>
+            <td class="border border-gray-200 px-4 py-2 text-sm text-gray-700">{{ item.gstAmount | currency:'INR' }}
+            </td>
+            <!-- <td class="border border-gray-200 px-4 py-2 text-sm text-gray-700">{{ " " }}</td>
+            <td class="border border-gray-200 px-4 py-2 text-sm text-gray-700">{{ " " }}
+            </td> -->
+            <td class="border border-gray-200 px-4 py-2 text-sm text-gray-700">{{ item.amount | currency:'INR' }}</td>
+          </tr>
+        </tbody>
+        <tfoot class="font-semibold">
+          <tr>
+            <td colspan="11" class="border border-gray-200 text-gray-900 px-4 py-2 text-right">Sub Total</td>
+            <td class="border border-gray-200 text-gray-900 px-4 py-2">{{ invoiceData?.subTotal | currency:'INR' }}</td>
+          </tr>
+          <tr>
+            <td colspan="11" class="border border-gray-200 text-gray-900 px-4 py-2 text-right">Total Discount</td>
+            <td class="border border-gray-200 text-gray-900 px-4 py-2">{{ invoiceData?.totalDiscount | currency:'INR' }}
+            </td>
+          </tr>
+          <tr>
+            <td colspan="11" class="border border-gray-200 text-gray-900 px-4 py-2 text-right">IGST</td>
+            <td class="border border-gray-200 text-gray-900 px-4 py-2">{{ invoiceData?.gst | currency:'INR' }}</td>
+          </tr>
+          <tr>
+            <td colspan="11" class="border border-gray-200 text-gray-900 px-4 py-2 text-right">CESS</td>
+            <td class="border border-gray-200 text-gray-900 px-4 py-2">{{ invoiceData?.cess | currency:'INR' }}</td>
+          </tr>
+          <tr class="font-bold text-xl">
+            <td colspan="11" class="border border-gray-200 text-gray-900 px-4 py-2 text-right">Total Amount</td>
+            <td class="border border-gray-200 text-gray-900 px-4 py-2">{{ invoiceData?.totalAmount | currency:'INR' }}
+            </td>
+          </tr>
+        </tfoot>
+      </table>
+    </div>
+
+    <div class="mt-8">
+      <div class="mb-4">
+        <h4 class="text-lg font-semibold text-gray-800 mb-2">Notes:</h4>
+        <p class="text-gray-700 text-sm">{{ invoiceData?.notes || 'Thank you for your business!' }}</p>
+      </div>
+      <div class="mb-4">
+        <p class="text-gray-700 text-sm">Amount in Words: <span class="font-semibold">Rupees {{
+            convertNumberToWords(invoiceData?.totalAmount) }} Only</span></p>
+      </div>
+      <div class="text-right">
+        <p class="text-gray-800">For Your Company Name</p>
+        <div class="border-b-2 border-gray-800 w-32 inline-block mb-1"></div>
+        <p class="text-gray-700 text-sm">Authorised Signatory</p>
+      </div>
+      <div class="mt-6 pt-4 border-t border-gray-200 text-sm text-gray-600">
+        <h5 class="font-semibold">Payment Details:</h5>
+        <p>UPI: <span class="font-medium"><canvas id="upi-qrcode"></canvas></span></p>
+        <p>Bank Name: <span class="font-medium">YOUR_BANK_NAME</span> | Account No: <span
+            class="font-medium">YOUR_ACCOUNT_NUMBER</span> | IFSC: <span class="font-medium">YOUR_IFSC_CODE</span></p>
+        <p>Terms & Conditions: <span class="font-medium">Please make payments within 15 days of invoice date.</span></p>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="download-button text-center mt-4">
+  <button (click)="downloadPDF()" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+    Download PDF
+  </button>
+</div>
+
+<!-- <div class="invoice-container">
+  Header Section
+<div class="header">
+  <div class="seller-info">
+    <h2 class="company-name">Your Company Name</h2>
+    <p class="company-address">Company Address Line 1, Company Address Line 2</p>
+    <p class="company-gstin">GSTIN: YOUR_GSTIN_HERE</p>
+  </div>
+  <div class="invoice-details">
+    <h2>INVOICE</h2>
+    <p>Invoice No: {{ invoiceData?.invoiceNumber }}</p>
+    <p>Date: {{ invoiceData?.invoiceDate | date:'mediumDate' }}</p>
+    <p>Due Date: {{ invoiceData?.dueDate | date:'mediumDate' }}</p>
+  </div>
+</div>
+
+Buyer Information Section
+<div class="buyer-info">
+  <h3>Buyer Details</h3>
+  <div class="info-grid">
+    <div class="info-item">
+      <p class="label">Buyer Name:</p>
+      <p class="value">{{ invoiceData?.buyerDetails?.fullname }}</p>
+    </div>
+    <div class="info-item">
+      <p class="label">GSTIN:</p>
+      <p class="value">{{ invoiceData?.buyerDetails?.gstin || 'N/A' }}</p>
+    </div>
+    <div class="info-item">
+      <p class="label">Address:</p>
+      <p class="value">
+        {{ invoiceData?.buyerDetails?.addresses?.[0]?.street }},
+        {{ invoiceData?.buyerDetails?.addresses?.[0]?.city }},
+        {{ invoiceData?.buyerDetails?.addresses?.[0]?.state }},
+        {{ invoiceData?.buyerDetails?.addresses?.[0]?.country }},
+        {{ invoiceData?.buyerDetails?.addresses?.[0]?.zipCode }}
+      </p>
+    </div>
+  </div>
+</div>
+
+Items Table Section
+<div class="items-table">
+  <table>
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Item Description</th>
+        <th>HSN/SAC</th>
+        <th>Qty</th>
+        <th>Rate</th>
+        <th>Discount</th>
+        <th>Taxable Value</th>
+        <th>CGST Rate</th>
+        <th>CGST Amt</th>
+        <th>SGST Rate</th>
+        <th>SGST Amt</th>
+        <th>Amount</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let item of invoiceData?.items; let i = index">
+        <td>{{ i + 1 }}</td>
+        <td>{{ item.itemDetails?.title }}</td>
+        <td>{{ item.hsnSac || 'N/A' }}</td>
+        <td>{{ item.quantity }}</td>
+        <td>{{ item.rate | currency:'INR' }}</td>
+        <td>{{ item.discount | currency:'INR' }}</td>
+        <td>{{ item.taxableValue | currency:'INR' }}</td>
+        <td>{{ item.cgstRate }}%</td>
+        <td>{{ item.cgstAmount | currency:'INR' }}</td>
+        <td>{{ item.sgstRate }}%</td>
+        <td>{{ item.sgstAmount | currency:'INR' }}</td>
+        <td>{{ item.amount | currency:'INR' }}</td>
+      </tr>
+    </tbody>
+    <tfoot>
+      <tr>
+        <td colspan="11" class="text-right">Sub Total</td>
+        <td>{{ invoiceData?.subTotal | currency:'INR' }}</td>
+      </tr>
+      <tr>
+        <td colspan="11" class="text-right">Total Discount</td>
+        <td>{{ invoiceData?.totalDiscount | currency:'INR' }}</td>
+      </tr>
+      <tr>
+        <td colspan="11" class="text-right">IGST</td>
+        <td>{{ invoiceData?.igst | currency:'INR' }}</td>
+      </tr>
+      <tr>
+        <td colspan="11" class="text-right">CESS</td>
+        <td>{{ invoiceData?.cess | currency:'INR' }}</td>
+      </tr>
+      <tr class="total">
+        <td colspan="11" class="text-right">Total Amount</td>
+        <td>{{ invoiceData?.totalAmount | currency:'INR' }}</td>
+      </tr>
+    </tfoot>
+  </table>
+</div>
+
+Footer Section
+<div class="footer">
+  <div class="notes">
+    <h3>Notes:</h3>
+    <p>{{ invoiceData?.notes || 'Thank you for your business!' }}</p>
+  </div>
+  <div class="amount-in-words">
+    <p>Amount in Words: <span class="value">Rupees {{ convertNumberToWords(invoiceData?.totalAmount) }} Only</span>
+    </p>
+  </div>
+  <div class="company-signature">
+    <p>For Your Company Name</p>
+    <div class="signature-line"></div>
+    <p class="authorised-signatory">Authorised Signatory</p>
+  </div>
+</div>
+</div>
+
+Download Button
+<div class="download-button">
+  <button (click)="downloadPDF()">Download PDF</button>
+</div> -->
+<!-- <div class="invoice-container">
+  <div class="header">
+    <div class="seller-info">
+      <h2 class="company-name">Your Company Name</h2>
+      <p class="company-address">Company Address Line 1, Company Address Line 2</p>
+      <p class="company-gstin">GSTIN: YOUR_GSTIN_HERE</p>
+    </div>
+    <div class="invoice-details">
+      <h2>INVOICE</h2>
+      <p>Invoice No: {{ invoiceData?.invoiceNumber }}</p>
+      <p>Date: {{ invoiceData?.invoiceDate | date:'mediumDate' }}</p>
+      <p>Due Date: {{ invoiceData?.dueDate | date:'mediumDate' }}</p>
+    </div>
+  </div>
+
+  <div class="buyer-info">
+    <h3>Buyer Details</h3>
+    <div class="info-grid">
+      <div class="info-item">
+        <p class="label">Buyer Name:</p>
+        <p class="value">{{ invoiceData?.buyerDetails?.fullname }}</p>
+      </div>
+      <div class="info-item">
+        <p class="label">GSTIN:</p>
+        <p class="value">BUYER_GSTIN_HERE</p>
+      </div>
+      <div class="info-item">
+        <p class="label">Address:</p>
+        <p class="value">
+          {{ invoiceData?.buyerDetails?.addresses?.[0]?.street }},
+          {{ invoiceData?.buyerDetails?.addresses?.[0]?.city }},
+          {{ invoiceData?.buyerDetails?.addresses?.[0]?.state }},
+          {{ invoiceData?.buyerDetails?.addresses?.[0]?.country }},
+          {{ invoiceData?.buyerDetails?.addresses?.[0]?.zipCode }}
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <div class="items-table">
+    <table>
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Item Description</th>
+          <th>HSN/SAC</th>
+          <th>Qty</th>
+          <th>Rate</th>
+          <th>Discount</th>
+          <th>Taxable Value</th>
+          <th>CGST Rate</th>
+          <th>CGST Amt</th>
+          <th>SGST Rate</th>
+          <th>SGST Amt</th>
+          <th>Amount</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of invoiceData?.items; let i = index">
+          <td>{{ i + 1 }}</td>
+          <td>{{ item.itemDetails?.title }}</td>
+          <td>HSN_CODE</td>
+          <td>{{ item.quantity }}</td>
+          <td>{{ item.rate }}</td>
+          <td>{{ item.discount }}</td>
+          <td>{{ item.taxableValue }}</td>
+          <td>{{ item.cgstRate }}%</td>
+          <td>{{ item.cgstAmount }}</td>
+          <td>{{ item.sgstRate }}%</td>
+          <td>{{ item.sgstAmount }}</td>
+          <td>{{ item.amount }}</td>
+        </tr>
+      </tbody>
+      <tfoot>
+        <tr>
+          <td colspan="11" class="text-right">Sub Total</td>
+          <td class="text-right">{{ invoiceData?.subTotal }}</td>
+        </tr>
+        <tr>
+          <td colspan="11" class="text-right">Total Discount</td>
+          <td class="text-right">{{ invoiceData?.totalDiscount }}</td>
+        </tr>
+        <tr>
+          <td colspan="11" class="text-right">IGST</td>
+          <td class="text-right">{{ invoiceData?.igst }}</td>
+        </tr>
+        <tr>
+          <td colspan="11" class="text-right">CESS</td>
+          <td class="text-right">{{ invoiceData?.cess }}</td>
+        </tr>
+        <tr class="total">
+          <td colspan="11" class="text-right">Total Amount</td>
+          <td class="text-right">{{ invoiceData?.totalAmount }}</td>
+        </tr>
+      </tfoot>
+    </table>
+  </div>
+
+  <div class="footer">
+    <div class="notes">
+      <h3>Notes:</h3>
+      <p>{{ invoiceData?.notes }}</p>
+    </div>
+    <div class="amount-in-words">
+      <p>Amount in Words: <span class="value">Rupees {{ convertNumberToWords(invoiceData?.totalAmount) }} Only</span>
+      </p>
+    </div>
+    <div class="company-signature">
+      <p>For Your Company Name</p>
+      <div class="signature-line"></div>
+      <p class="authorised-signatory">Authorised Signatory</p>
+    </div>
+  </div>
+</div>
+<div class="footer">
+  <div class="download-button">
+    <button (click)="downloadPDF()">Download PDF</button>
+  </div>
+</div> -->

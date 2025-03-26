@@ -1,0 +1,169 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=IBM+Plex+Sans:ital,wght@0,100..700;1,100..700&family=Kanit:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+/* Modern AG Grid Dark Theme Styling */
+
+/* Container styling */
+
+.ag-grid-container {
+  position: relative;
+  width: var(--grid-width, 100%);
+  height: var(--grid-height, calc(100vh - 100px));
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+ padding: 16px 24px;
+  /* Added padding from both sides (16px top/bottom, 24px left/right) */
+  display: flex;
+  flex-direction: column;
+}
+
+.ag-grid-container {
+  --ag-background-color: #1a1a2e;
+  --ag-foreground-color: #e6e6fa;
+  --ag-border-color: #3a3a5c;
+  --ag-secondary-border-color: #4a4a77;
+  --ag-header-background-color: #252542;
+  --ag-odd-row-background-color: rgba(74, 74, 119, 0.1);
+  --ag-header-foreground-color: #d1d1f6;
+  --ag-disabled-foreground-color: rgba(230, 230, 250, 0.5);
+  --ag-alpine-active-color: #7b7bcd;
+  --ag-selected-row-background-color: rgba(123, 123, 205, 0.2);
+  --ag-row-hover-color: rgba(123, 123, 205, 0.1);
+  --ag-column-hover-color: rgba(123, 123, 205, 0.1);
+  --ag-input-focus-border-color: #7b7bcd;
+  --ag-range-selection-border-color: #7b7bcd;
+  --ag-range-selection-background-color: rgba(123, 123, 205, 0.2);
+
+  /* Font settings */
+  --ag-font-family: 'IBM Plex Sans', 'DM Sans', 'Kanit', sans-serif;
+  --ag-font-size: 14px;
+  --ag-cell-horizontal-padding: 16px;
+
+  /* Border radius for modern look */
+  --ag-border-radius: 8px;
+
+  /* Card shadow */
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+  border-radius: var(--ag-border-radius);
+  overflow: hidden;
+}
+
+/* Row styling */
+.ag-row {
+  border-bottom-style: solid;
+  border-bottom-width: 1px;
+  border-bottom-color: rgba(74, 74, 119, 0.15);
+  transition: background-color 0.2s ease;
+}
+
+.ag-row-hover {
+  background-color: var(--ag-row-hover-color) !important;
+}
+
+.ag-row-selected {
+  background-color: var(--ag-selected-row-background-color) !important;
+}
+
+/* Header styling */
+.ag-header {
+  border-bottom: 2px solid var(--ag-border-color);
+}
+
+.ag-header-cell {
+  font-family: 'Kanit', sans-serif;
+  font-weight: 500;
+  padding: 16px var(--ag-cell-horizontal-padding);
+}
+
+.ag-header-cell:hover {
+  background-color: rgba(74, 74, 119, 0.2);
+}
+
+/* Cell styling */
+.ag-cell {
+  font-family: 'DM Sans', sans-serif;
+  line-height: 1.5;
+  padding: 12px var(--ag-cell-horizontal-padding);
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.ag-cell-focus {
+  border: 1px solid var(--ag-alpine-active-color) !important;
+}
+
+/* Column separator */
+.ag-cell-with-dashed-border {
+  border-right: 1px dashed #9696C8;
+}
+
+/* Pagination controls */
+.ag-paging-panel {
+  color: var(--ag-foreground-color);
+  font-family: var(--ag-font-family);
+  background-color: var(--ag-header-background-color);
+  padding: 12px 20px;
+  border-top: 1px solid var(--ag-border-color);
+}
+
+.ag-paging-button {
+  background-color: transparent;
+  border: 1px solid var(--ag-border-color);
+  border-radius: 4px;
+  color: var(--ag-foreground-color);
+  padding: 4px 10px;
+  transition: all 0.2s ease;
+}
+
+.ag-paging-button:hover:not(.ag-disabled) {
+  background-color: var(--ag-alpine-active-color);
+  border-color: var(--ag-alpine-active-color);
+  color: white;
+}
+
+/* Checkboxes */
+.ag-checkbox-input-wrapper {
+  border-radius: 4px;
+  border: 1px solid var(--ag-border-color);
+  background-color: transparent;
+}
+
+.ag-checkbox-input-wrapper.ag-checked {
+  background-color: var(--ag-alpine-active-color);
+  border-color: var(--ag-alpine-active-color);
+}
+
+/* Filter popup */
+.ag-menu {
+  background-color: var(--ag-background-color);
+  border: 1px solid var(--ag-border-color);
+  border-radius: var(--ag-border-radius);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
+}
+
+/* Animation for row changes */
+.ag-row-animation {
+  transition: transform 0.3s, opacity 0.3s;
+}
+
+/* Scrollbars */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(74, 74, 119, 0.1);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(123, 123, 205, 0.5);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(123, 123, 205, 0.7);
+}

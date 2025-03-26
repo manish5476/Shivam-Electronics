@@ -1,0 +1,27 @@
+<!-- <app-common-header>
+  <ng-template>
+    <p-select id="theme" appendTo="body" [options]="baseThemes" optionLabel="id" optionValue="value"
+      class="p-dropdown select-box" [(ngModel)]="baseTheme"></p-select>
+  </ng-template>
+  <ng-template>
+    <p-select id="icons" appendTo="body" [options]="iconSets" optionLabel="id" optionValue="value"
+      class="p-dropdown select-box" [(ngModel)]="iconSet"></p-select>
+  </ng-template>
+  <ng-template>
+    <p-select id="color" appendTo="body" [options]="colorSchemes" optionLabel="id" optionValue="value"
+      class="p-dropdown select-box" [(ngModel)]="colorScheme"></p-select>
+  </ng-template>
+</app-common-header> -->
+
+
+<!-- [rowAnimationEnabled]="true" [enableCellChangeFlash]="true" -->
+<div class="rounded-lg shadow-lg overflow-hidden w-full mb-0 mt-4 ag-grid-container"
+  style="background: var(--background); color: var(--text-color); border-color: var(--border-color)">
+  <div class="relative w-full" [style.width]="gridWidth" [style.padding]="padding" [style.height]="gridHeight">
+    <ag-grid-angular style="height: 100%; width: 100%;" [rowData]="rowData" [columnDefs]="columnDefs" [theme]="theme"
+      [defaultColDef]="defaultColDef" [pagination]="true" [rowSelection]="rowSelection" [rowClassRules]="rowClassrules"
+      (cellValueChanged)="onCellValueChanged($event)" (rowSelected)="onRowSelected($event)"
+      (cellClicked)="onCellClicked($event)" (gridReady)="onGridReady($event)">
+    </ag-grid-angular>
+  </div>
+</div>

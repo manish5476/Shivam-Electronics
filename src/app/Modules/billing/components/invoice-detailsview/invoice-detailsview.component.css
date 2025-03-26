@@ -1,0 +1,6 @@
+.value-view {
+  @apply rounded-md bg-gray-700 bg-opacity-50 px-2 py-1; /* Adjust these Tailwind classes as needed */
+}
+.dark .value-view {
+  @apply bg-gray-700 bg-opacity-50; /* Dark mode value-view styling if needed, here same as light mode for bg */
+}

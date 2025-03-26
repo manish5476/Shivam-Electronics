@@ -1,0 +1,4 @@
+<!-- <app-shared-grid [data]="this.data" [column]="this.column"></app-shared-grid> -->
+<app-common-header [gridWidth]="'100%'"></app-common-header>
+<app-shared-grid [gridHeight]="'520px'" [gridWidth]="" [padding]="" [data]="data" [rowSelectionMode]="rowSelectionMode"
+  [rowClassrules]="rowClassrules" [column]="column" (eventFromGrid)="eventFromGrid($event)"></app-shared-grid>

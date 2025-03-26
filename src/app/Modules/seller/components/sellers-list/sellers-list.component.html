@@ -1,0 +1,16 @@
+<section class="body-font">
+  <div class="container px-5 py-1 mx-auto flex flex-wrap">
+    <div class="flex w-full mb-8 flex-wrap justify-between items-center">
+      <h1 class="sm:text-3xl text-2xl font-medium title-font text-gray-900 lg:mb-0 mb-4">
+        Seller Details</h1>
+    </div>
+    <div class="flex flex-wrap md:-m-2 -m-1 w-full">
+      <div class="flex flex-wrap w-full p-2">
+        <div class="md:p-2 p-1 w-full">
+          <app-shared-grid [data]="data" [rowSelectionMode]="rowSelectionMode" [column]="column"
+            (eventFromGrid)="eventFromGrid($event)"></app-shared-grid>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

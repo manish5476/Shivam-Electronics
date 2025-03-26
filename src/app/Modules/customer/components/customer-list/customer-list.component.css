@@ -1,0 +1,9 @@
+:host ::ng-deep .p-dialog .product-image {
+  width: 150px;
+  margin: 0 auto 2rem auto;
+  display: block;
+}
+
+.custom-row-height .p-datatable-tbody>tr {
+  height: 20px;
+}

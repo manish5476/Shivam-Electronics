@@ -1,0 +1,387 @@
+<!-- <section class="body-font" [ngClass]="{'dark-mode': isDarkMode}">
+  <p-toast></p-toast>
+  <div pFocusTrap class="container px-5 py-1 mx-auto flex flex-wrap">
+    <div class="flex w-full mb-8 flex-wrap justify-between items-center">
+      <h1 class="sm:text-3xl text-2xl font-medium title-font text-gray-900 dark:text-white lg:mb-0 mb-4 text-center">
+        Create Seller</h1>
+      <button pButton pRipple type="button" icon="pi pi-moon" class="p-button-rounded p-button-text"
+        (click)="toggleDarkMode()" [ngClass]="{'p-button-outlined': !isDarkMode}" tooltip="Toggle Dark Mode"
+        tooltipPosition="bottom"></button>
+    </div>
+    <div class="flex flex-wrap md:-m-2 -m-1 w-full">
+      <div class="flex flex-wrap w-full md:w-2/3 p-2 mx-auto">
+        <div class="md:p-2 p-1 w-full">
+          <div class="form-card">
+            <p-card header="Seller Information" styleClass="form-card-content">
+              <form [formGroup]="sellerForm" (ngSubmit)="saveSeller()">
+                <div class="grid grid-cols-2 gap-4">
+                  <div class="form-group">
+                    <label for="name" class="form-label">Name</label>
+                    <input id="name" type="text" pInputText class="form-input" formControlName="name" required />
+                    <small *ngIf="sellerForm.controls['name'].invalid && sellerForm.controls['name'].dirty"
+                      class="p-error block">Name is required</small>
+                  </div>
+                  <div class="form-group">
+                    <label for="shopName" class="form-label">Shop Name</label>
+                    <input id="shopName" type="text" pInputText class="form-input" formControlName="shopName"
+                      required />
+                    <small *ngIf="sellerForm.controls['shopName'].invalid && sellerForm.controls['shopName'].dirty"
+                      class="p-error block">Shop Name is required</small>
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label for="status" class="form-label">Status</label>
+                  <p-select id="status" [options]="statuses" formControlName="status" placeholder="Select Status"
+                    class="w-full md:w-56" required></p-select>
+                  <small *ngIf="sellerForm.controls['status'].invalid && sellerForm.controls['status'].dirty"
+                    class="p-error block">Status is required</small>
+                </div>
+
+                <div class="form-card mt-4">
+                  <p-card header="Address Details" styleClass="form-card-content">
+                    <div formGroupName="address">
+                      <div class="form-group">
+                        <label for="street" class="form-label">Street</label>
+                        <input id="street" type="text" pInputText class="form-input" formControlName="street"
+                          required />
+                        <small
+                          *ngIf="sellerForm.get('address.street')?.invalid && sellerForm.get('address.street')?.dirty"
+                          class="p-error block">Street is required</small>
+                      </div>
+                      <div class="grid grid-cols-2 gap-4">
+                        <div class="form-group">
+                          <label for="city" class="form-label">City</label>
+                          <input id="city" type="text" pInputText class="form-input" formControlName="city" required />
+                          <small
+                            *ngIf="sellerForm.get('address.city')?.invalid && sellerForm.get('address.city')?.dirty"
+                            class="p-error block">City is required</small>
+                        </div>
+                        <div class="form-group">
+                          <label for="state" class="form-label">State</label>
+                          <input id="state" type="text" pInputText class="form-input" formControlName="state"
+                            required />
+                          <small
+                            *ngIf="sellerForm.get('address.state')?.invalid && sellerForm.get('address.state')?.dirty"
+                            class="p-error block">State is required</small>
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <label for="pincode" class="form-label">Pincode</label>
+                        <input id="pincode" type="text" pInputText class="form-input" formControlName="pincode"
+                          required />
+                        <small
+                          *ngIf="sellerForm.get('address.pincode')?.invalid && sellerForm.get('address.pincode')?.dirty"
+                          class="p-error block">Pincode is required and should be 6 digits</small>
+                        <small
+                          *ngIf="sellerForm.get('address.pincode')?.hasError('pattern') && !sellerForm.get('address.pincode')?.hasError('required')"
+                          class="p-error block">Invalid Pincode</small>
+
+                      </div>
+                    </div>
+                  </p-card>
+                </div>
+
+                <div class="form-card mt-4">
+                  <p-card header="Statutory Details" styleClass="form-card-content">
+                    <div class="grid grid-cols-2 gap-4">
+                      <div class="form-group">
+                        <label for="gstin" class="form-label">GSTIN</label>
+                        <input id="gstin" type="text" pInputText class="form-input" formControlName="gstin" required />
+                        <small *ngIf="sellerForm.controls['gstin'].invalid && sellerForm.controls['gstin'].dirty"
+                          class="p-error block">GSTIN is required and should be valid format</small>
+                        <small
+                          *ngIf="sellerForm.controls['gstin'].hasError('pattern') && !sellerForm.controls['gstin'].hasError('required')"
+                          class="p-error block">Invalid GSTIN format</small>
+                      </div>
+                      <div class="form-group">
+                        <label for="pan" class="form-label">PAN</label>
+                        <input id="pan" type="text" pInputText class="form-input" formControlName="pan" required />
+                        <small *ngIf="sellerForm.controls['pan'].invalid && sellerForm.controls['pan'].dirty"
+                          class="p-error block">PAN is required and should be valid format</small>
+                        <small
+                          *ngIf="sellerForm.controls['pan'].hasError('pattern') && !sellerForm.controls['pan'].hasError('required')"
+                          class="p-error block">Invalid PAN format</small>
+                      </div>
+                    </div>
+                  </p-card>
+                </div>
+
+                <div class="form-card mt-4">
+                  <p-card header="Bank Details" styleClass="form-card-content">
+                    <div formGroupName="bankDetails">
+                      <div class="form-group">
+                        <label for="accountHolderName" class="form-label">Account Holder Name</label>
+                        <input id="accountHolderName" type="text" pInputText class="form-input"
+                          formControlName="accountHolderName" required />
+                        <small
+                          *ngIf="sellerForm.get('bankDetails.accountHolderName')?.invalid && sellerForm.get('bankDetails.accountHolderName')?.dirty"
+                          class="p-error block">Account Holder Name is required</small>
+                      </div>
+                      <div class="grid grid-cols-2 gap-4">
+                        <div class="form-group">
+                          <label for="accountNumber" class="form-label">Account Number</label>
+                          <input id="accountNumber" type="text" pInputText class="form-input"
+                            formControlName="accountNumber" required />
+                          <small
+                            *ngIf="sellerForm.get('bankDetails.accountNumber')?.invalid && sellerForm.get('bankDetails.accountNumber')?.dirty"
+                            class="p-error block">Account Number is required and should be valid format</small>
+                          <small
+                            *ngIf="sellerForm.get('bankDetails.accountNumber')?.hasError('pattern') && !sellerForm.get('bankDetails.accountNumber')?.hasError('required')"
+                            class="p-error block">Invalid Account Number</small>
+
+                        </div>
+                        <div class="form-group">
+                          <label for="ifscCode" class="form-label">IFSC Code</label>
+                          <input id="ifscCode" type="text" pInputText class="form-input" formControlName="ifscCode"
+                            required />
+                          <small
+                            *ngIf="sellerForm.get('bankDetails.ifscCode')?.invalid && sellerForm.get('bankDetails.ifscCode')?.dirty"
+                            class="p-error block">IFSC Code is required and should be valid format</small>
+                          <small
+                            *ngIf="sellerForm.get('bankDetails.ifscCode')?.hasError('pattern') && !sellerForm.get('bankDetails.ifscCode')?.hasError('required')"
+                            class="p-error block">Invalid IFSC Code</small>
+                        </div>
+                      </div>
+                      <div class="grid grid-cols-2 gap-4">
+                        <div class="form-group">
+                          <label for="bankName" class="form-label">Bank Name</label>
+                          <input id="bankName" type="text" pInputText class="form-input" formControlName="bankName"
+                            required />
+                          <small
+                            *ngIf="sellerForm.get('bankDetails.bankName')?.invalid && sellerForm.get('bankDetails.bankName')?.dirty"
+                            class="p-error block">Bank Name is required</small>
+                        </div>
+                        <div class="form-group">
+                          <label for="branch" class="form-label">Branch</label>
+                          <input id="branch" type="text" pInputText class="form-input" formControlName="branch"
+                            required />
+                          <small
+                            *ngIf="sellerForm.get('bankDetails.branch')?.invalid && sellerForm.get('bankDetails.branch')?.dirty"
+                            class="p-error block">Branch is required</small>
+                        </div>
+                      </div>
+                    </div>
+                  </p-card>
+                </div>
+                <div class="flex flex-wrap w-full p-2 mt-4">
+                  <div class="md:p-2 p-1 w-full">
+                    <button pButton label="Create Seller" class="save-button" type="submit"></button>
+                  </div>
+                </div>
+              </form>
+            </p-card>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section> -->
+<!-- <section class="body-font" [ngClass]="{'dark-mode': isDarkMode}"> -->
+<!-- <p-toast></p-toast> -->
+<!-- <div pFocusTrap class="container px-5 py-1 mx-auto">
+    <div class="flex w-full mb-8 flex-wrap justify-between items-center">
+      <button pButton pRipple type="button" icon="pi pi-moon" class="p-button-rounded p-button-text"
+        (click)="toggleDarkMode()" [ngClass]="{'p-button-outlined': !isDarkMode}" tooltip="Toggle Dark Mode"
+        tooltipPosition="bottom"></button>
+    </div> -->
+    <div class="flex flex-wrap w-full">
+      <div class="w-full  mx-auto">
+        <p-card header="Create Seller" styleClass="form-card-content" class="w-full">
+          <form [formGroup]="sellerForm" (ngSubmit)="saveSeller()">
+            <div class="flex w-full">
+              <!-- Left: Form Fields -->
+              <div class="flex-1 grid grid-cols-2 gap-4">
+                <div class="form-group">
+                  <label for="name" class="form-label">Name</label>
+                  <input id="name" type="text" pInputText class="form-input w-full" formControlName="name" required />
+                  <small *ngIf="sellerForm.controls['name'].invalid && sellerForm.controls['name'].dirty"
+                    class="p-error block">Name is required</small>
+                </div>
+                <div class="form-group">
+                  <label for="shopName" class="form-label">Shop Name</label>
+                  <input id="shopName" type="text" pInputText class="form-input w-full" formControlName="shopName"
+                    required />
+                  <small *ngIf="sellerForm.controls['shopName'].invalid && sellerForm.controls['shopName'].dirty"
+                    class="p-error block">Shop Name is required</small>
+                </div>
+                <div class="form-group">
+                  <label for="status" class="form-label">Status</label>
+                  <p-select id="status" [options]="statuses" formControlName="status" placeholder="Select Status"
+                    class="w-full" required></p-select>
+                  <small *ngIf="sellerForm.controls['status'].invalid && sellerForm.controls['status'].dirty"
+                    class="p-error block">Status is required</small>
+                </div>
+                <div class="form-group">
+                  <label for="pan" class="form-label">PAN</label>
+                  <input id="pan" type="text" pInputText class="form-input w-full" formControlName="pan" required />
+                  <small *ngIf="sellerForm.controls['pan'].invalid && sellerForm.controls['pan'].dirty"
+                    class="p-error block">PAN is
+                    required and should be valid format</small>
+                </div>
+                <!-- GSTIN and Contact Number in a Single Row -->
+                <div class="form-group">
+                  <label for="gstin" class="form-label">GSTIN</label>
+                  <input id="gstin" type="text" pInputText class="form-input w-full" formControlName="gstin" required />
+                  <small *ngIf="sellerForm.controls['gstin'].invalid && sellerForm.controls['gstin'].dirty"
+                    class="p-error block">GSTIN is required and should be valid format</small>
+                </div>
+                <div class="form-group">
+                  <label for="contactNumber" class="form-label">Contact Number</label>
+                  <input id="contactNumber" type="text" pInputText class="form-input w-full" formControlName="contactNumber"
+                    required />
+                  <small *ngIf="sellerForm.controls['contactNumber'].invalid && sellerForm.controls['contactNumber'].dirty"
+                    class="p-error block">Contact Number is required and should be valid format</small>
+                </div>
+              </div>
+            </div>
+    
+            <!-- Second Row: Address and Bank Details -->
+            <div class="flex w-full mt-4">
+              <!-- Address Details -->
+              <div class="flex-1 mr-2">
+                <h2 class="text-lg font-semibold mb-2">Address Details</h2>
+                <div formGroupName="address">
+                  <div class="form-group">
+                    <label for="street" class="form-label">Street</label>
+                    <input id="street" type="text" pInputText class="form-input w-full" formControlName="street" required />
+                    <small *ngIf="sellerForm.get('address.street')?.invalid && sellerForm.get('address.street')?.dirty"
+                      class="p-error block">Street is required</small>
+                  </div>
+                  <div class="grid grid-cols-3 gap-4">
+                    <div class="form-group">
+                      <label for="city" class="form-label">City</label>
+                      <input id="city" type="text" pInputText class="form-input w-full" formControlName="city" required />
+                      <small *ngIf="sellerForm.get('address.city')?.invalid && sellerForm.get('address.city')?.dirty"
+                        class="p-error block">City is required</small>
+                    </div>
+                    <div class="form-group">
+                      <label for="state" class="form-label">State</label>
+                      <input id="state" type="text" pInputText class="form-input w-full" formControlName="state" required />
+                      <small *ngIf="sellerForm.get('address.state')?.invalid && sellerForm.get('address.state')?.dirty"
+                        class="p-error block">State is required</small>
+                    </div>
+                    <div class="form-group">
+                      <label for="pincode" class="form-label">Pincode</label>
+                      <input id="pincode" type="text" pInputText class="form-input w-full" formControlName="pincode"
+                        required />
+                      <small *ngIf="sellerForm.get('address.pincode')?.invalid && sellerForm.get('address.pincode')?.dirty"
+                        class="p-error block">Pincode is required and should be 6 digits</small>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!-- Bank Details -->
+              <div class="flex-1 ml-2">
+                <h2 class="text-lg font-semibold mb-2">Bank Details</h2>
+                <div formGroupName="bankDetails">
+                  <div class="form-group">
+                    <label for="accountHolderName" class="form-label">Account Holder Name</label>
+                    <input id="accountHolderName" type="text" pInputText class="form-input w-full"
+                      formControlName="accountHolderName" required />
+                    <small
+                      *ngIf="sellerForm.get('bankDetails.accountHolderName')?.invalid && sellerForm.get('bankDetails.accountHolderName')?.dirty"
+                      class="p-error block">Account Holder Name is required</small>
+                  </div>
+                  <div class="grid grid-cols-2 gap-4">
+                    <div class="form-group">
+                      <label for="accountNumber" class="form-label">Account Number</label>
+                      <input id="accountNumber" type="text" pInputText class="form-input w-full"
+                        formControlName="accountNumber" required />
+                      <small
+                        *ngIf="sellerForm.get('bankDetails.accountNumber')?.invalid && sellerForm.get('bankDetails.accountNumber')?.dirty"
+                        class="p-error block">Account Number is required and should be valid format</small>
+                    </div>
+                    <div class="form-group">
+                      <label for="ifscCode" class="form-label">IFSC Code</label>
+                      <input id="ifscCode" type="text" pInputText class="form-input w-full" formControlName="ifscCode"
+                        required />
+                      <small
+                        *ngIf="sellerForm.get('bankDetails.ifscCode')?.invalid && sellerForm.get('bankDetails.ifscCode')?.dirty"
+                        class="p-error block">IFSC Code is required and should be valid format</small>
+                    </div>
+                    <div class="form-group">
+                      <label for="bankName" class="form-label">Bank Name</label>
+                      <input id="bankName" type="text" pInputText class="form-input w-full" formControlName="bankName"
+                        required />
+                      <small
+                        *ngIf="sellerForm.get('bankDetails.bankName')?.invalid && sellerForm.get('bankDetails.bankName')?.dirty"
+                        class="p-error block">Bank Name is required</small>
+                    </div>
+                    <div class="form-group">
+                      <label for="branch" class="form-label">Branch</label>
+                      <input id="branch" type="text" pInputText class="form-input w-full" formControlName="branch"
+                        required />
+                      <small
+                        *ngIf="sellerForm.get('bankDetails.branch')?.invalid && sellerForm.get('bankDetails.branch')?.dirty"
+                        class="p-error block">Branch is required</small>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+    
+            <!-- Save Button -->
+            <div class="mt-4">
+              <button pButton label="Create Seller" class="save-button w-full" type="submit"></button>
+            </div>
+          </form>
+        </p-card>
+      </div>
+    </div>
+    <!-- </div> -->
+    <!-- </section> -->
+    
+    
+    <!-- First Row: Seller Information and Profile Image -->
+    <!-- Left: Form Fields -->
+    <!-- <div class="flex w-full">
+                  <div class="flex-1 grid grid-cols-2 gap-4">
+                    <div class="form-group">
+                      <label for="name" class="form-label">Name</label>
+                      <input id="name" type="text" pInputText class="form-input w-full" formControlName="name" required />
+                      <small *ngIf="sellerForm.controls['name'].invalid && sellerForm.controls['name'].dirty"
+                        class="p-error block">Name is required</small>
+                    </div>
+                    <div class="form-group">
+                      <label for="shopName" class="form-label">Shop Name</label>
+                      <input id="shopName" type="text" pInputText class="form-input w-full" formControlName="shopName"
+                        required />
+                      <small *ngIf="sellerForm.controls['shopName'].invalid && sellerForm.controls['shopName'].dirty"
+                        class="p-error block">Shop Name is required</small>
+                    </div>
+                    <div class="form-group">
+                      <label for="status" class="form-label">Status</label>
+                      <p-select id="status" [options]="statuses" formControlName="status" placeholder="Select Status"
+                        class="w-full" required></p-select>
+                      <small *ngIf="sellerForm.controls['status'].invalid && sellerForm.controls['status'].dirty"
+                        class="p-error block">Status is required</small>
+                    </div>
+                    <div class="form-group">
+                      <label for="pan" class="form-label">PAN</label>
+                      <input id="pan" type="text" pInputText class="form-input w-full" formControlName="pan" required />
+                      <small *ngIf="sellerForm.controls['pan'].invalid && sellerForm.controls['pan'].dirty"
+                        class="p-error block">PAN is required and should be valid format</small>
+                    </div>
+                    <div class="form-group  col-span-2">
+                      <label for="gstin" class="form-label">GSTIN</label>
+                      <input id="gstin" type="text" pInputText class="form-input w-full" formControlName="gstin" required />
+                      <small *ngIf="sellerForm.controls['gstin'].invalid && sellerForm.controls['gstin'].dirty"
+                        class="p-error block">GSTIN is required and should be valid format</small>
+                    </div>
+                    <div class="form-group col-span-2">
+                      <label for="contactNumber" class="form-label">contactNumber</label>
+                      <input id="contactNumber" type="text" pInputText class="form-input w-full"
+                        formControlName="contactNumber" required />
+                      <small
+                        *ngIf="sellerForm.controls['contactNumber'].invalid && sellerForm.controls['contactNumber'].dirty"
+                        class="p-error block">contactNumber is required and should be valid format</small>
+                    </div>
+                  </div>
+                  Right: Profile Image
+                  <div class="w-40 ml-4">
+                    <div class="profile-image-container">
+                      <i class="pi pi-user profile-icon"></i>
+                    </div>
+                  </div>
+                </div> -->

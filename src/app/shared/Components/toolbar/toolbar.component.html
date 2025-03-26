@@ -1,0 +1,28 @@
+<!-- versin 4 -->
+<!-- <div class="card">
+  <div class="toolbar-wrapper">
+    <p-toolbar class="toolbar-scrollable">
+      <ng-template #start>
+        <div class="toolbar-content">
+          <ng-container *ngFor="let item of contentItems">
+            <div class="toolbar-item">
+              <ng-container *ngTemplateOutlet="item"></ng-container>
+            </div>
+          </ng-container>
+        </div>
+      </ng-template>
+    </p-toolbar>
+  </div>
+</div> -->
+<!-- [style.padding]="padding" -->
+<div class="card" [style.width]="gridWidth" style="padding: 0 0px;">
+  <div class="glass-effect">
+    <div class="toolbar-content">
+      <ng-container *ngFor="let item of contentItems">
+        <div class="toolbar-item">
+          <ng-container *ngTemplateOutlet="item"></ng-container>
+        </div>
+      </ng-container>
+    </div>
+  </div>
+</div>

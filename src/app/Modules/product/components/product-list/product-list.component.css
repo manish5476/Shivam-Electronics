@@ -1,0 +1,74 @@
+:host ::ng-deep .p-dialog .product-image {
+  width: 150px;
+  margin: 0 auto 2rem auto;
+  display: block;
+}
+
+/* In your component's CSS file or global styles.css */
+.gradient-border .p-select-list {
+  /* Target the dropdown list */
+  border: 2px solid transparent;
+  /* Set the border */
+  border-image: linear-gradient(to left, #ff9800, #ff5722) 1;
+  border-image-slice: 1;
+  animation: border-gradient-animation 10s linear infinite;
+  /* Add animation */
+}
+
+@keyframes border-gradient-animation {
+  to {
+      border-image-position: 100% 0;
+      /* Move the gradient */
+  }
+}
+
+.gradient-border .p-dropdown-list-item {
+  /* Target the list items */
+  border: 2px solid transparent;
+  /* Set the border */
+  border-image: linear-gradient(to left, #ff9800, #ff5722) 1;
+  border-image-slice: 1;
+}
+
+.gradient-border .p-dropdown-label {
+  /* Target the label */
+  border: 2px solid transparent;
+  /* Set the border */
+  border-image: linear-gradient(to left, #ff9800, #ff5722) 1;
+  border-image-slice: 1;
+}
+
+.custom-toolbar {
+  overflow-x: auto;
+  /* Enable horizontal scrollbar when content overflows horizontally */
+  white-space: nowrap;
+  /* Prevent content from wrapping to the next line */
+  padding: 0.5rem 1rem;
+  /* Adjust padding as needed */
+
+  .p-toolbar-group-start,
+  .p-toolbar-group-end {
+      display: inline-block;
+      /* Keep start and end groups in a horizontal line */
+      white-space: nowrap;
+      /* Prevent buttons within groups from wrapping */
+  }
+
+  /* Optional: Style the scrollbar (browser-specific) - Customize as needed */
+  &::-webkit-scrollbar {
+      height: 8px;
+      /* Adjust scrollbar height */
+  }
+
+  &::-webkit-scrollbar-thumb {
+      background-color: #aaa;
+      /* Scrollbar thumb color */
+      border-radius: 4px;
+  }
+
+  &::-webkit-scrollbar-track {
+      background-color: #eee;
+      /* Scrollbar track color */
+      border-radius: 4px;
+  }
+}
