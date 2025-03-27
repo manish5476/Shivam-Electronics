@@ -10,22 +10,22 @@
 
 // }
 
-import { Component } from '@angular/core';
 import { LoadingService } from '../../../core/services/loading.service'
+import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Observable } from 'rxjs';
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
 @Component({
   selector: 'app-loading',
-  imports:[CommonModule],
-  providers:[LoadingService],
+  standalone: true,
+  imports: [CommonModule,ProgressSpinnerModule],
   templateUrl: './loader.component.html',
-    styleUrl: './loader.component.css'
-  })
+  styleUrls: ['./loader.component.css'],
+})
 export class LoadingComponent {
-  isLoading$: any;
+  isLoading$: Observable<boolean>;
 
-  constructor(private loadingService: LoadingService) {}
-
-  ngOnInit(): void {
+  constructor(private loadingService: LoadingService) {
     this.isLoading$ = this.loadingService.isLoading$;
   }
 }

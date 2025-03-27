@@ -1,4 +1,4 @@
-.loading-overlay {
+/* .loading-overlay {
   position: fixed;
   top: 0;
   left: 0;
@@ -27,4 +27,163 @@
   100% {
     transform: rotate(360deg);
   }
+}
+
+.loading-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5); 
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000; 
+}
+
+.loading-spinner {
+  width: 80px;
+  height: 80px;
+  background-image: url('./../../../../app//assets/loader1.gif');
+  background-size: cover; 
+  background-repeat: no-repeat;
+} */
+/* 
+.loading-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5); 
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000; 
+}
+
+.loading-spinner {
+  width: 80px;
+  height: 80px;
+  background-image: url('./../../../../app//assets/loader1.gif');
+  background-size: cover; 
+  background-repeat: no-repeat;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+} */
+/*  
+.loading-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.loader {
+  display: flex;
+  gap: 10px;
+}
+
+.ball {
+  width: 20px;
+  height: 20px;
+  background-color: #3498db; 
+  border-radius: 50%;
+  animation: bounce 0.6s infinite alternate;
+}
+
+.ball:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.ball:nth-child(3) {
+  animation-delay: 0.4s;
+}
+
+@keyframes bounce {
+  from {
+    transform: translateY(0px);
+  }
+  to {
+    transform: translateY(-30px);
+  }
+} */
+
+.loading-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.8); /* Adjust background transparency as needed */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  color: white; /* Text color */
+  font-family: monospace; /* A monospaced font looks good for typewriter effect */
+  font-size: 2em; /* Adjust font size as needed */
+}
+
+.typewriter-loader {
+  display: flex;
+  align-items: center;
+}
+
+.text {
+  white-space: nowrap;
+  overflow: hidden;
+  border-right: .08em solid white; /* The cursor */
+  animation:
+    typing 3s steps(16, end) infinite, /* Adjust steps based on the length of your text */
+    blink-caret .75s step-end infinite;
+}
+
+/* Adjust the typing speed (3s total for 16 characters) */
+@keyframes typing {
+  from { width: 0 }
+  to { width: 100% }
+}
+
+/* The typewriter cursor effect */
+@keyframes blink-caret {
+  from, to { border-color: transparent }
+  50% { border-color: white; }
+}
+
+.text {
+  white-space: nowrap;
+  overflow: hidden;
+  border-right: .08em solid #ffcc00; /* Changed color to yellow */
+  animation:
+    typing 3s steps(16, end) infinite,
+    blink-caret .75s step-end infinite;
+}
+
+@keyframes blink-caret {
+  from, to { border-color: transparent }
+  50% { border-color: #ffcc00; } /* Update blink color as well */
+}
+
+.cursor {
+  display: inline-block;
+  width: 0.5em; /* Adjust width */
+  height: 1.2em; /* Adjust height to match text height */
+  background-color: white;
+  margin-left: 2px;
+  animation: blink-cursor 0.75s step-end infinite;
 }

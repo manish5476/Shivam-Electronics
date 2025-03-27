@@ -57,9 +57,7 @@ export class CustomerDetailedListComponent {
   ngOnInit(): void {
     this.getCustomerDetail();
     this.autopopulatedata();
-    
   }
-
 
   getInvoice(id: any) {
     this.display = !this.display
