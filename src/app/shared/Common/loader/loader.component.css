@@ -1,189 +1,68 @@
-/* .loading-overlay {
+.loading-overlay {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent black */
   display: flex;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
   z-index: 1000;
-}
-
-.loading-spinner {
-  border: 8px solid #f3f3f3;
-  border-top: 8px solid #3498db;
-  border-radius: 50%;
-  width: 60px;
-  height: 60px;
-  animation: spin 2s linear infinite;
-}
-
-@keyframes spin {
-  0% {
-    transform: rotate(0deg);
-  }
-  100% {
-    transform: rotate(360deg);
-  }
-}
-
-.loading-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.5); 
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 1000; 
-}
-
-.loading-spinner {
-  width: 80px;
-  height: 80px;
-  background-image: url('./../../../../app//assets/loader1.gif');
-  background-size: cover; 
-  background-repeat: no-repeat;
-} */
-/* 
-.loading-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.5); 
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 1000; 
-}
-
-.loading-spinner {
-  width: 80px;
-  height: 80px;
-  background-image: url('./../../../../app//assets/loader1.gif');
-  background-size: cover; 
-  background-repeat: no-repeat;
-}
-
-@keyframes spin {
-  0% {
-    transform: rotate(0deg);
-  }
-  100% {
-    transform: rotate(360deg);
-  }
-} */
-/*  
-.loading-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 1000;
-}
-
-.loader {
-  display: flex;
-  gap: 10px;
-}
-
-.ball {
-  width: 20px;
-  height: 20px;
-  background-color: #3498db; 
-  border-radius: 50%;
-  animation: bounce 0.6s infinite alternate;
-}
-
-.ball:nth-child(2) {
-  animation-delay: 0.2s;
-}
-
-.ball:nth-child(3) {
-  animation-delay: 0.4s;
-}
-
-@keyframes bounce {
-  from {
-    transform: translateY(0px);
-  }
-  to {
-    transform: translateY(-30px);
-  }
-} */
-
-.loading-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.8); /* Adjust background transparency as needed */
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 1000;
-  color: white; /* Text color */
-  font-family: monospace; /* A monospaced font looks good for typewriter effect */
-  font-size: 2em; /* Adjust font size as needed */
+  color: #fff; /* Default text color (will be transparent with the fancy background) */
+  font-family: 'Work Sans', sans-serif; /* Use the font from your body */
+  font-weight: 900; /* Use the font weight from your body */
+  font-size: 8vw; /* Adjust size as needed for loader */
 }
 
 .typewriter-loader {
   display: flex;
   align-items: center;
+  text-align: center; /* Center the text */
+  line-height: 1;
 }
 
-.text {
+.fancy-loader {
   white-space: nowrap;
   overflow: hidden;
   border-right: .08em solid white; /* The cursor */
   animation:
-    typing 3s steps(16, end) infinite, /* Adjust steps based on the length of your text */
+    typing 4s steps(16, end) infinite, /* Adjust duration if needed */
     blink-caret .75s step-end infinite;
+  @supports (background-clip: text) or (-webkit-background-clip: text) {
+    background: rgb(131,58,180);
+    background: linear-gradient(90deg, rgba(131,58,180,1) 0%, rgba(253,29,29,1) 77%, rgba(252,176,69,1) 100%);    /* background-image:
+      url("data:image/svg+xml,%3Csvg width='2250' height='900' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cg%3E%3Cpath fill='%2300A080' d='M0 0h2255v899H0z'/%3E%3Ccircle cx='366' cy='207' r='366' fill='%2300FDCF'/%3E%3Ccircle cx='1777.5' cy='318.5' r='477.5' fill='%2300FDCF'/%3E%3Ccircle cx='1215' cy='737' r='366' fill='%23008060'/%3E%3C/g%3E%3C/svg%3E%0A"); */
+    background-size: 110% auto;
+    background-position: center;
+    color: transparent;
+    -webkit-background-clip: text;
+    background-clip: text;
+  }
 }
 
-/* Adjust the typing speed (3s total for 16 characters) */
 @keyframes typing {
   from { width: 0 }
   to { width: 100% }
 }
 
-/* The typewriter cursor effect */
 @keyframes blink-caret {
   from, to { border-color: transparent }
   50% { border-color: white; }
 }
 
-.text {
-  white-space: nowrap;
-  overflow: hidden;
-  border-right: .08em solid #ffcc00; /* Changed color to yellow */
-  animation:
-    typing 3s steps(16, end) infinite,
-    blink-caret .75s step-end infinite;
-}
-
-@keyframes blink-caret {
-  from, to { border-color: transparent }
-  50% { border-color: #ffcc00; } /* Update blink color as well */
-}
-
 .cursor {
-  display: inline-block;
-  width: 0.5em; /* Adjust width */
-  height: 1.2em; /* Adjust height to match text height */
-  background-color: white;
-  margin-left: 2px;
-  animation: blink-cursor 0.75s step-end infinite;
+  /* You can further style the cursor if needed */
+}
+@keyframes background-pan {
+  from { background-position: 0% center; }
+  to { background-position: -200% center; }
+}
+
+.fancy-loader {
+  /* ... other styles ... */
+  animation:
+    typing 4s steps(16, end) infinite,
+    blink-caret .75s step-end infinite,
+    background-pan 4s linear infinite; /* Add this line */
 }
