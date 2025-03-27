@@ -3,10 +3,20 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
+    "start:dev": "ng serve --configuration=development",
+    "start:qa": "ng serve --configuration=qa",
+    "start:prod": "ng serve --configuration=production",
+    "build:dev": "ng build --configuration=development",
+    "build:qa": "ng build --configuration=qa",
+    "build:prod": "ng build --configuration=production",
+    "watch": "ng build --watch --configuration development",
+    "test": "ng test",
     "start": "ng serve",
     "build": "ng build",
-    "watch": "ng build --watch --configuration development",
-    "test": "ng test"
+    "electron:dev": "ng build --configuration=development --base-href ./ && electron electron-main.js",
+    "electron:qa": "ng build --configuration=qa --base-href ./ && electron electron-main.js",
+    "electron:prod": "ng build --configuration=production --base-href ./ && electron electron-main.js",
+    "dist": "electron-builder"
   },
   "private": true,
   "dependencies": {
@@ -39,8 +49,11 @@
     "@angular-devkit/build-angular": "^19.2.4",
     "@angular/cli": "^19.2.4",
     "@angular/compiler-cli": "^19.2.0",
+    "@electron/remote": "^2.1.2",
     "@types/jasmine": "~5.1.0",
     "@types/qrcode": "^1.5.5",
+    "electron": "^34.4.0",
+    "electron-builder": "^25.1.8",
     "jasmine-core": "~5.6.0",
     "karma": "~6.4.0",
     "karma-chrome-launcher": "~3.2.0",
@@ -48,5 +61,20 @@
     "karma-jasmine": "~5.1.0",
     "karma-jasmine-html-reporter": "~2.1.0",
     "typescript": "~5.7.2"
+  },
+  "build": {
+    "appId": "com.shivam_electronics.app",
+    "productName": "Shivam Electronics",
+    "directories": {
+      "output": "dist/electron"
+    },
+    "win": {
+      "target": "nsis",
+      "icon": "src/assets/icon.ico"
+    },
+    "files": [
+      "dist/shivam-electronics/**/*",
+      "electron-main.js"
+    ]
   }
 }

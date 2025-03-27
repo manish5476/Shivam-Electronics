@@ -1,3 +1,5 @@
+@import "tailwindcss";
+
 .invoice-container {
   width: 210mm;
   /* A4 width */

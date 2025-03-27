@@ -1,5 +1,7 @@
 
 /* keen-slider-common.component.css */
+@import "tailwindcss";
+
 [class^="number-slide"],
 [class*=" number-slide"] {
   background: grey;
