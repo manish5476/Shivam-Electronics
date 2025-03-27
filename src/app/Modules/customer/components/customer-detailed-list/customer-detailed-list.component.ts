@@ -16,6 +16,7 @@ import { Rating } from 'primeng/rating';
 import { CommonModule } from '@angular/common';
 import { ButtonModule } from 'primeng/button';
 import { MessageService } from 'primeng/api';
+import { TabViewModule } from 'primeng/tabview';
 import { CardModule } from 'primeng/card';
 import { CheckboxModule } from 'primeng/checkbox';
 import { ToastModule } from 'primeng/toast';
@@ -28,14 +29,15 @@ import { AccordionModule } from 'primeng/accordion';
 import { InvoicePrintComponent } from "../../../billing/components/invoice-print/invoice-print.component";
 import { PanelModule } from 'primeng/panel';
 import { AvatarModule } from 'primeng/avatar';
+import { LoadingService } from '../../../../core/services/loading.service';
 @Component({
   selector: 'app-customer-detailed-list',
-  imports: [TableModule, CheckboxModule, AvatarModule, AccordionModule, SelectModule, PanelModule, DialogModule, FormsModule, Tag, ToastModule, CardModule, ButtonModule, CommonModule],
+  imports: [TableModule,TabViewModule, CheckboxModule, AvatarModule, AccordionModule, SelectModule, PanelModule, DialogModule, FormsModule, Tag, ToastModule, CardModule, ButtonModule, CommonModule],
   templateUrl: './customer-detailed-list.component.html',
   styleUrl: './customer-detailed-list.component.css'
 })
 export class CustomerDetailedListComponent {
-
+  isLoading: boolean = true; // Add a loading flag
   customer: any;
   customerItems: any[] = [];
   paymentHistory: any[] = [];
@@ -49,12 +51,13 @@ export class CustomerDetailedListComponent {
   dynamicComponent: any;
 
 
-  constructor(private apiService: ApiService, private cdr: ChangeDetectorRef) { }
+  constructor(private apiService: ApiService, private cdr: ChangeDetectorRef,private loadingService:LoadingService) { }
 
 
   ngOnInit(): void {
     this.getCustomerDetail();
     this.autopopulatedata();
+    
   }
 
 
@@ -130,14 +133,29 @@ export class CustomerDetailedListComponent {
   }
 
   getCustomerDetail(): void {
+    this.loadingService.show(); // Hide the loader on success
+    
     this.apiService.getCustomerDataWithId(this.customerId).subscribe((res: any) => {
-      this.customer = res.data;
-      this.customerItems = this.customer.cart?.items || [];
-      this.paymentHistory = this.customer.paymentHistory || [];
-      this.cdr.markForCheck(); // Trigger change detection to update the view
-    },
-      (error) => {
+        this.customer = res.data;
+        this.customerItems = this.customer.cart?.items || [];
+        this.paymentHistory = this.customer.paymentHistory || [];
+        this.cdr.markForCheck();
+        this.loadingService.hide(); // Hide the loader on success
+      }, (error) => {
         console.error('Error fetching customer data:', error);
-      })
-  }
+        this.isLoading = false; // Set loading to false on error
+    });
+}
+
+  // getCustomerDetail(): void {
+  //   this.apiService.getCustomerDataWithId(this.customerId).subscribe((res: any) => {
+  //     this.customer = res.data;
+  //     this.customerItems = this.customer.cart?.items || [];
+  //     this.paymentHistory = this.customer.paymentHistory || [];
+  //     this.cdr.markForCheck(); // Trigger change detection to update the view
+  //   },
+  //     (error) => {
+  //       console.error('Error fetching customer data:', error);
+  //     })
+  // }
 }

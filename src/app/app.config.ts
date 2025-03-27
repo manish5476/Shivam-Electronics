@@ -12,6 +12,7 @@ import { definePreset } from "@primeng/themes";
 import { MessageService } from 'primeng/api';
 import { AuthInterceptor, loggingInterceptor } from './core/Interceptors/auth.interceptor';
 import { ErrorInterceptor } from './core/Interceptors/error.interceptor';
+import { LoadingInterceptor } from './core/Interceptors/loading.interceptor';
 
 const MyPreset = definePreset(Aura, {
     primitive: {
@@ -674,7 +675,7 @@ const MyPreset = definePreset(Aura, {
 export const appConfig: ApplicationConfig = {
     providers: [
         provideHttpClient(
-            withInterceptors([AuthInterceptor, loggingInterceptor, ErrorInterceptor]), // Merged both HTTP configurations
+            withInterceptors([AuthInterceptor, loggingInterceptor, ErrorInterceptor,LoadingInterceptor]), // Merged both HTTP configurations
             withFetch()
         ),
         provideZoneChangeDetection({ eventCoalescing: true }),
