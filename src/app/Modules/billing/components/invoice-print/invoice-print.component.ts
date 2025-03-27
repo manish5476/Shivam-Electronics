@@ -1,7 +1,9 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import jsPDF from 'jspdf';
-import html2canvas from 'html2canvas';
+// import html2canvas from 'html2canvas';
+import html2canvas from 'html2canvas-pro';
+
 import { ApiService } from '../../../../core/services/api.service';
 import * as QRCode from 'qrcode';
 
@@ -66,34 +68,125 @@ export class InvoicePrintComponent implements OnInit, OnChanges {
     })
   }
 
+  // downloadPDF() {
+  //   setTimeout(() => {
+  //     const element = document.querySelector('.invoice-container') as HTMLElement;
+
+  //     if (!element) {
+  //       console.error('Invoice container not found');
+  //       return;
+  //     }
+  //     html2canvas(element, { scale: 2 }).then(canvas => {
+  //       const imgData = canvas.toDataURL('image/png');
+  //       const pdf = new jsPDF({
+  //         orientation: 'portrait',
+  //         unit: 'mm',
+  //         format: 'a4'
+  //       });
+
+  //       const pdfWidth = pdf.internal.pageSize.getWidth();
+  //       const pdfHeight = (canvas.height * pdfWidth) / canvas.width; // Maintain aspect ratio
+
+  //       pdf.addImage(imgData, 'PNG', 0, 10, pdfWidth, pdfHeight);
+  //       pdf.save(`invoice-${this.invoiceData?.invoiceNumber || 'download'}.pdf`);
+  //     }).catch(error => {
+  //       console.error('Error generating PDF:', error);
+  //     });
+
+  //   }, 500); // Small delay to ensure rendering
+  // }
   downloadPDF() {
     setTimeout(() => {
       const element = document.querySelector('.invoice-container') as HTMLElement;
-
+  
       if (!element) {
         console.error('Invoice container not found');
         return;
       }
-      html2canvas(element, { scale: 2 }).then(canvas => {
+  
+      // Use `as unknown as Parameters<typeof html2canvas>[1]` to avoid TypeScript errors
+      const options = { scale: window.devicePixelRatio || 2 } as unknown as Parameters<typeof html2canvas>[1];
+  
+      html2canvas(element, options).then(canvas => {
         const imgData = canvas.toDataURL('image/png');
         const pdf = new jsPDF({
           orientation: 'portrait',
           unit: 'mm',
           format: 'a4'
         });
-
+        this.addAdvertisementPage(pdf)
         const pdfWidth = pdf.internal.pageSize.getWidth();
-        const pdfHeight = (canvas.height * pdfWidth) / canvas.width; // Maintain aspect ratio
-
+        const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
         pdf.addImage(imgData, 'PNG', 0, 10, pdfWidth, pdfHeight);
         pdf.save(`invoice-${this.invoiceData?.invoiceNumber || 'download'}.pdf`);
       }).catch(error => {
         console.error('Error generating PDF:', error);
       });
-
-    }, 500); // Small delay to ensure rendering
+    }, 500);
   }
 
+  addAdvertisementPage(pdf: jsPDF) {
+    const pageWidth = pdf.internal.pageSize.getWidth();
+    const pageHeight = pdf.internal.pageSize.getHeight();
+  
+    // Background Color (Light Gradient)
+    pdf.setFillColor('#e0f7fa'); // Light cyan
+    pdf.rect(0, 0, pageWidth, pageHeight, 'F');
+  
+    // Company Logo (Replace with your actual logo path)
+    try {
+      const logoData = require('../../assets/shivam-electronics-logo.png'); // Adjust path
+      pdf.addImage(logoData, 'PNG', pageWidth / 2 - 50, 30, 100, 100);
+    } catch (error) {
+      console.warn("Logo image not found, using placeholder text.");
+      pdf.setFontSize(36);
+      pdf.setTextColor('#00796b'); // Dark Teal
+      pdf.text("Shivam Electronics", pageWidth / 2, 80, { align: 'center' });
+    }
+  
+    // Main Heading
+    pdf.setFontSize(30);
+    pdf.setTextColor('#004d40'); // Darker Teal
+    pdf.text('Your Trusted Electronics Partner', pageWidth / 2, 150, { align: 'center' });
+  
+    // Slogan/Tagline
+    pdf.setFontSize(18);
+    pdf.setTextColor('#00695c'); // Medium Teal
+    pdf.text('Quality & Reliability You Can Count On', pageWidth / 2, 180, { align: 'center' });
+  
+    // Product Images (Replace with your actual image paths and adjust positions)
+    try {
+      const product1Data = require('../../assets/product1.png'); // Example product image
+      pdf.addImage(product1Data, 'PNG', 20, 220, 100, 100);
+  
+      const product2Data = require('../../assets/product2.png'); // Example product image
+      pdf.addImage(product2Data, 'PNG', pageWidth - 120, 220, 100, 100);
+    } catch (error) {
+      console.warn("Product images not found, using placeholder rectangles.");
+      pdf.setFillColor('#b2dfdb'); // Light Teal
+      pdf.rect(20, 220, 100, 100, 'F');
+      pdf.rect(pageWidth - 120, 220, 100, 100, 'F');
+    }
+  
+    // Contact Information
+    pdf.setFontSize(14);
+    pdf.setTextColor('#004d40');
+    pdf.text('Contact Us:', 20, 350);
+    pdf.text('Phone: YOUR_PHONE_NUMBER', 20, 370);
+    pdf.text('Email: YOUR_EMAIL_ADDRESS', 20, 390);
+  
+    // Website Link (clickable)
+    pdf.setTextColor('#1976d2'); // Blue for link
+    pdf.textWithLink('Visit our website: YOUR_WEBSITE_LINK', pageWidth / 2, 380, { url: 'YOUR_WEBSITE_LINK', align: 'center' });
+  
+    // Footer Message
+    pdf.setFontSize(12);
+    pdf.setTextColor('#00695c');
+    pdf.text('© ' + new Date().getFullYear() + ' Shivam Electronics. All rights reserved.', pageWidth / 2, pageHeight - 20, { align: 'center' });
+  
+    pdf.addPage(); // Add a new page for the invoice
+  }
+  
 
 
   ngAfterViewInit() {
