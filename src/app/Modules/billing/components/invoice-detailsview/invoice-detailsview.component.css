@@ -1,5 +1,4 @@
 @import "tailwindcss";
-@import "tailwindcss";
 
 .value-view {
   @apply rounded-md bg-gray-700  px-2 py-1;
