@@ -12,16 +12,15 @@
 
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { SharedGridComponent } from '../../../../shared/AgGrid/grid/shared-grid/shared-grid.component';
-
-import { ApiService } from '../../../../core/services/api.service';
 import { CellValueChangedEvent } from 'ag-grid-community';
 import { ToolbarComponent } from "../../../../shared/Components/toolbar/toolbar.component";
-
+import { CustomerService } from '../../../../core/services/customer.service';
+import { InvoiceService } from '../../../../core/services/invoice.service';
 @Component({
     selector: 'app-customer-list',
     standalone: true,
     imports: [SharedGridComponent, ToolbarComponent, ToolbarComponent],
-    providers: [ApiService],
+    providers: [CustomerService],
     templateUrl: './customer-list.component.html',
     styleUrl: './customer-list.component.css'
 })
@@ -30,7 +29,7 @@ export class CustomerListComponent implements OnInit {
     column: any = [];
     rowSelectionMode: any = 'singleRow';
 
-    constructor(private cdr: ChangeDetectorRef, private apiService: ApiService) { }
+    constructor(private cdr: ChangeDetectorRef,private InvoiceService:InvoiceService, private CustomerService: CustomerService) { }
 
     ngOnInit(): void {
         this.getColumn();
@@ -90,7 +89,7 @@ export class CustomerListComponent implements OnInit {
     }
 
     getData() {
-        this.apiService.getAllCustomerData().subscribe((res: any) => {
+        this.CustomerService.getAllCustomerData().subscribe((res: any) => {
             this.data = res.data;
             this.cdr.markForCheck();
         });
@@ -106,7 +105,7 @@ export class CustomerListComponent implements OnInit {
 
             if (field) {
                 dataItem[field] = newValue;
-                this.apiService.updateinvoice(dataItem.id, dataItem).subscribe({
+                this.InvoiceService.updateinvoice(dataItem.id, dataItem).subscribe({
                     next: (res: any) => {
                         // console.log('✅ invoice updated successfully:', res);
                     },
@@ -120,10 +119,9 @@ export class CustomerListComponent implements OnInit {
         }
 
     }
-
-
 }
-// import { ApiService } from '../../../../core/services/api.service';
+
+// import { CustomerService } from '../../../../core/services/api.service';
 // import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 // import { ConfirmationService, MessageService } from 'primeng/api';
 // import { TableModule } from 'primeng/table';
@@ -215,7 +213,7 @@ export class CustomerListComponent implements OnInit {
 // @Component({
 //     selector: 'app-customer-list',
 //     imports: [TableModule, Dialog, ButtonModule, SelectModule, ToastModule, ToolbarModule, ConfirmDialog, InputTextModule, TextareaModule, CommonModule, FileUpload, Tag, InputTextModule, FormsModule, IconFieldModule, InputIconModule],
-//     providers: [MessageService, ConfirmationService, ApiService],
+//     providers: [MessageService, ConfirmationService, CustomerService],
 //     templateUrl: './customer-list.component.html',
 //     styleUrl: './customer-list.component.css'
 // })
@@ -237,7 +235,7 @@ export class CustomerListComponent implements OnInit {
 //     customersdropdowndata: any[] = []
 //     constructor(
 //         private router: Router,
-//         private apiService: ApiService,
+//         private CustomerService: CustomerService,
 //         private messageService: AppMessageService,
 //         private confirmationService: ConfirmationService,
 //         private cd: ChangeDetectorRef
@@ -249,7 +247,7 @@ export class CustomerListComponent implements OnInit {
 //     }
 
 //     customerDropDownData() {
-//         this.apiService.getCustomerDropDown().subscribe((res: any) => {
+//         this.CustomerService.getCustomerDropDown().subscribe((res: any) => {
 //             if (res.data) {
 //                 this.customersdropdowndata = res.data
 //             }
@@ -273,7 +271,7 @@ export class CustomerListComponent implements OnInit {
 
 
 //     loadDemoData() {
-//         this.apiService.getAllCustomerData().subscribe((res: any) => {
+//         this.CustomerService.getAllCustomerData().subscribe((res: any) => {
 //             this.customers = res.data;
 //             this.cd.markForCheck();
 //             this.loading = false
@@ -327,7 +325,7 @@ export class CustomerListComponent implements OnInit {
 //             icon: 'pi pi-exclamation-triangle',
 //             accept: () => {
 //                 const ids = this.selectedcustomers ? this.selectedcustomers.map(customer => customer.id) : []; // Extract IDs
-//                 this.apiService.deleteCustomers(ids).subscribe({
+//                 this.CustomerService.deleteCustomers(ids).subscribe({
 //                     next: (res: any) => {
 //                         this.customers = this.customers.filter(customer => !ids.includes(customer.id));
 //                         this.loadDemoData();
@@ -348,7 +346,7 @@ export class CustomerListComponent implements OnInit {
 //             header: 'Confirm',
 //             icon: 'pi pi-exclamation-triangle',
 //             accept: () => {
-//                 this.apiService.deleteCustomerID(customer._id).subscribe({
+//                 this.CustomerService.deleteCustomerID(customer._id).subscribe({
 //                     next: (res: any) => {
 //                         this.loadDemoData();
 //                         this.messageService.handleResponse(res, 'Customer Deleted', `${customer.fullname} successfully deleted.`); // Use handleResponse

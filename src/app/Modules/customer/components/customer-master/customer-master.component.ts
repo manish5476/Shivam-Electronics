@@ -14,7 +14,6 @@ import { ButtonModule } from 'primeng/button';
 import { RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
-import { ApiService } from '../../../../core/services/api.service';
 import { Component, Inject, OnInit, PLATFORM_ID, SimpleChanges, ViewChild } from '@angular/core';
 import { CardModule } from 'primeng/card';
 import { SelectModule } from 'primeng/select';
@@ -29,6 +28,7 @@ import { TagModule } from 'primeng/tag';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { HttpClient } from '@angular/common/http';
 import { FileUpload } from 'primeng/fileupload';
+import { CustomerService } from '../../../../core/services/customer.service';
 import { FocusTrapModule } from 'primeng/focustrap';// import { SupabaseService } from '../../../core/services/supabase.service';
 // import lodash from 'lodash'
 interface Customer {
@@ -77,7 +77,7 @@ interface CustomerDropdownOption {
   templateUrl: './customer-master.component.html',
   styleUrls: ['./customer-master.component.css'],
   imports: [CardModule, RouterModule, FocusTrapModule, FormsModule, CommonModule, TagModule, DialogModule, KeyFilterModule, TableModule, RadioButtonModule, InputTextModule, ButtonModule, SelectModule, FileUploadModule, ImageModule,],
-  providers: [ApiService, IftaLabelModule, ConfirmationService, MessageService],
+  providers: [CustomerService, IftaLabelModule, ConfirmationService, MessageService],
 })
 
 export class CustomerMasterComponent implements OnInit {
@@ -153,7 +153,7 @@ export class CustomerMasterComponent implements OnInit {
   
   constructor(
     // private supabase: SupabaseService,
-    private ApiService: ApiService,
+    private CustomerService: CustomerService,
     private http: HttpClient,
     private messageService: MessageService,
     @Inject(PLATFORM_ID) private platformId: Object
@@ -215,7 +215,7 @@ export class CustomerMasterComponent implements OnInit {
 
   getCustomerID() {
     const customerId = 'your-customer-id';
-    this.ApiService.getCustomerDataWithId(customerId)
+    this.CustomerService.getCustomerDataWithId(customerId)
       .subscribe({
         next: (customer) => {
           this.customer = customer;
@@ -234,7 +234,7 @@ export class CustomerMasterComponent implements OnInit {
       this.uploadStatus = 'Preparing to upload...';
       const formData = new FormData();
       formData.append('image', file); // Append the selected file to FormData
-      // this.ApiService.uploadProfileImage(formData, this.customerId).subscribe(
+      // this.CustomerService.uploadProfileImage(formData, this.customerId).subscribe(
       //   (response: any) => {
       //     this.uploadStatus = 'Image uploaded successfully!';
       //   },
@@ -255,7 +255,7 @@ export class CustomerMasterComponent implements OnInit {
   saveCustomer() {
     if (this.validateCustomer()) {
       this.customer.guaranteerId = this.selectedGuaranter._id
-      this.ApiService.createNewCustomer(this.customer).subscribe(
+      this.CustomerService.createNewCustomer(this.customer).subscribe(
         (response: any) => {
           const customerId = response.data._id;
           this.customerId = customerId;
@@ -360,7 +360,7 @@ import { ButtonModule } from 'primeng/button';
 import { RouterModule } from '@angular/router';
 import { FormsModule, ReactiveFormsModule, FormGroup, FormControl, Validators, FormBuilder, FormArray } from '@angular/forms';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
-import { ApiService } from '../../../../core/services/api.service';
+import { CustomerService } from '../../../../core/services/api.service';
 import { ChangeDetectorRef, Component, Inject, OnInit, PLATFORM_ID, SimpleChanges, ViewChild } from '@angular/core';
 import { CardModule } from 'primeng/card';
 import { SelectModule } from 'primeng/select';
@@ -425,7 +425,7 @@ interface CustomerDropdownOption {
   templateUrl: './customer-master.component.html',
   styleUrls: ['./customer-master.component.css'],
   imports: [ReactiveFormsModule, CardModule, RouterModule, FocusTrapModule, FormsModule, CommonModule, TagModule, DialogModule, KeyFilterModule, TableModule, RadioButtonModule, InputTextModule, ButtonModule, SelectModule, FileUploadModule, ImageModule,],
-  providers: [ApiService, IftaLabelModule, ConfirmationService, MessageService],
+  providers: [CustomerService, IftaLabelModule, ConfirmationService, MessageService],
 })
 
 export class CustomerMasterComponent implements OnInit {
@@ -486,7 +486,7 @@ export class CustomerMasterComponent implements OnInit {
 
 
   constructor(
-    private ApiService: ApiService,
+    private CustomerService: CustomerService,
     private http: HttpClient,
     private messageService: MessageService,
     private fb: FormBuilder, private cdRef: ChangeDetectorRef,
@@ -632,7 +632,7 @@ export class CustomerMasterComponent implements OnInit {
 
   getCustomerID() {
     const customerId = 'your-customer-id';
-    this.ApiService.getCustomerDataWithId(customerId)
+    this.CustomerService.getCustomerDataWithId(customerId)
       .subscribe({
         next: (customer) => {
           this.customer = customer;
@@ -652,7 +652,7 @@ export class CustomerMasterComponent implements OnInit {
       this.uploadStatus = 'Preparing to upload...';
       const formData = new FormData();
       formData.append('image', file); // Append the selected file to FormData
-      // this.ApiService.uploadProfileImage(formData, this.customerId).subscribe(
+      // this.CustomerService.uploadProfileImage(formData, this.customerId).subscribe(
       //  (response: any) => {
       //    this.uploadStatus = 'Image uploaded successfully!';
       //  },
@@ -673,7 +673,7 @@ export class CustomerMasterComponent implements OnInit {
       const formValue = this.customerForm.value;
       formValue.guaranteerId = this.selectedGuaranter._id; // Ensure guaranteerId is included
 
-      this.ApiService.createNewCustomer(formValue).subscribe({
+      this.CustomerService.createNewCustomer(formValue).subscribe({
         next: (response: any) => {
           const customerId = response.data._id;
           this.customerId = customerId;

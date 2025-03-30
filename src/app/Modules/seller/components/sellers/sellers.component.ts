@@ -17,7 +17,7 @@ import { CardModule } from 'primeng/card';
 import { InputTextModule } from 'primeng/inputtext';
 import { SelectModule } from 'primeng/select';
 import { TooltipModule } from 'primeng/tooltip';
-import { ApiService } from '../../../../core/services/api.service';
+import { SellerService } from '../../../../core/services/seller.service';
 // import { SharedGridComponent } from '../../../../shared/AgGrid/grid/shared-grid/shared-grid.component';
 // import { ToolbarComponent } from "../../../../shared/Components/toolbar/toolbar.component";
 import { MessageService } from 'primeng/api';
@@ -46,7 +46,7 @@ interface DropdownOption {
     InputTextModule,
     ButtonModule,
   ],
-  providers: [ApiService, MessageService],
+  providers: [SellerService, MessageService],
 
   templateUrl: './sellers.component.html',
   styleUrl: './sellers.component.css'
@@ -64,7 +64,7 @@ export class SellersComponent implements OnInit {
 
   constructor(
     private formBuilder: FormBuilder,
-    private apiService: ApiService,
+    private SellerService: SellerService,
     private messageService: MessageService,
     @Inject(PLATFORM_ID) private platformId: Object
   ) {
@@ -110,7 +110,7 @@ export class SellersComponent implements OnInit {
 
   saveSeller() {
     if (this.sellerForm.valid) {
-      this.apiService.createNewSeller(this.sellerForm.value).subscribe({
+      this.SellerService.createNewSeller(this.sellerForm.value).subscribe({
         next: (response: any) => {
           this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Seller created successfully' });
           this.sellerForm.reset(); // Reset the form after successful creation

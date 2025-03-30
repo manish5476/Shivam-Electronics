@@ -1,19 +1,7 @@
-// import { Component } from '@angular/core';
-
-// @Component({
-//   selector: 'app-product-detail',
-//   imports: [],
-//   templateUrl: './product-detail.component.html',
-//   styleUrl: './product-detail.component.css'
-// })
-// export class ProductDetailComponent {
-
-// }
 import { ChangeDetectorRef, Component, EventEmitter, Output } from '@angular/core';
 import { SharedGridComponent } from '../../../../shared/AgGrid/grid/shared-grid/shared-grid.component';
-// import { ToolbarComponent } from "../../../../shared/Components/toolbar/toolbar.component";
-import { ApiService } from '../../../../core/services/api.service';
 import { CellValueChangedEvent } from 'ag-grid-community';
+import { ProductService } from '../../../../core/services/product.service';
 @Component({
     selector: 'app-product-detail',
     imports: [SharedGridComponent],
@@ -24,7 +12,7 @@ export class ProductDetailComponent {
     data: any;
     column: any
     rowSelectionMode: any
-    constructor(private cdr: ChangeDetectorRef, private apiService: ApiService) { }
+    constructor(private cdr: ChangeDetectorRef, private ProductService: ProductService) { }
 
     ngOnInit(): void {
         this.getColumn()
@@ -45,7 +33,7 @@ export class ProductDetailComponent {
 
 
                 // Call API to update product
-                this.apiService.updateProduct(dataItem.id, dataItem).subscribe({
+                this.ProductService.updateProduct(dataItem.id, dataItem).subscribe({
                     next: (res: any) => {
                     },
                     error: (err: any) => {
@@ -83,7 +71,7 @@ export class ProductDetailComponent {
     }
 
     getData() {
-        this.apiService.getAllProductData().subscribe((res: any) => {
+        this.ProductService.getAllProductData().subscribe((res: any) => {
             this.data = res.data;
             this.cdr.markForCheck()
         })

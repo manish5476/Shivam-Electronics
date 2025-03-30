@@ -13,7 +13,7 @@
 // import { TableModule } from 'primeng/table';
 // import { CommonModule } from '@angular/common';
 // import { ButtonModule } from 'primeng/button';
-// import { ApiService } from '../../../../../core/services/api.service';
+// import { ProductService } from '../../../../../core/services/api.service';
 // import { FormsModule } from '@angular/forms';
 // import { TagModule } from 'primeng/tag';
 // import { RatingModule } from 'primeng/rating';
@@ -32,11 +32,11 @@
 //     first = 0;
 //     rows = 10;
 
-//     constructor(private apiService: ApiService) {}
+//     constructor(private ProductService: ProductService) {}
 
 //     ngOnInit() { this.getProductData()   }
 //   getProductData() {
-//    this.apiService.getAllProductData().subscribe((res:any)=>{
+//    this.ProductService.getAllProductData().subscribe((res:any)=>{
 //     this.products=res.data.doc;
 //    })
 //   }
@@ -61,8 +61,7 @@
 //   }
 // }
 // import { Product } from '@/domain/product';
-// import { ProductService } from '@/service/productservice';
-import { ApiService } from '../../../../core/services/api.service';
+import { ProductService } from '../../../../core/services/product.service';
 import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { TableModule } from 'primeng/table';
@@ -103,7 +102,7 @@ interface ExportColumn {
     templateUrl: './product-list.component.html',
     styleUrl: './product-list.component.css',
     imports: [TableModule, Dialog, RatingModule, ButtonModule, SelectModule, ToastModule, ToolbarModule, ConfirmDialog, InputTextModule, TextareaModule, CommonModule, FileUpload, Tag, Rating, InputTextModule, FormsModule, IconFieldModule, InputIconModule, ProductMasterComponent],
-    providers: [MessageService, ConfirmationService, ApiService],
+    providers: [MessageService, ConfirmationService, ProductService],
 })
 export class ProductListComponent implements OnInit {
     @ViewChild('dt') dt!: Table;
@@ -119,7 +118,7 @@ export class ProductListComponent implements OnInit {
 
     constructor(
         // private productService: ProductService,
-        private apiService: ApiService,
+        private ProductService: ProductService,
         private message: AppMessageService,
         private messageService: MessageService,
         private confirmationService: ConfirmationService,
@@ -163,28 +162,28 @@ export class ProductListComponent implements OnInit {
             // rate: { lt: '100' } // Filtering: Products with price less than 100 (using $lt operator on backend)
         };
 
-        this.apiService.getAllProductData(filterOptions).subscribe(
+        this.ProductService.getAllProductData(filterOptions).subscribe(
             (res: any) => {
                 if (res && res.data) {
                     this.products = res.data;
                     this.cd.markForCheck();
                 }
             },
-            (error) => {
+            (error: any) => {
                 console.error('API Error:', error);
             }
         );
     }
 
     loadAllData() {
-        this.apiService.getAllProductData().subscribe((res: any) => {
+        this.ProductService.getAllProductData().subscribe((res: any) => {
             if (res && res.data) {
                 this.products = res.data;
                 this.cd.markForCheck();
             } else {
                 console.error('Error loading all product data: Invalid response format', res);
             }
-        }, (error) => {
+        }, (error: any) => {
             console.error('Error loading all product data:', error);
         });
 
@@ -211,7 +210,7 @@ export class ProductListComponent implements OnInit {
             icon: 'pi pi-exclamation-triangle',
             accept: () => {
                 const ids = this.selectedProducts ? this.selectedProducts.map(product => product.id) : []; // Extract IDs
-                this.apiService.deleteProduct(ids).subscribe(
+                this.ProductService.deleteProduct(ids).subscribe(
                     (res: any) => {
                         this.products = this.products.filter(product => !ids.includes(product.id));
                     },
@@ -239,7 +238,7 @@ export class ProductListComponent implements OnInit {
             header: 'Confirm',
             icon: 'pi pi-exclamation-triangle',
             accept: () => {
-                this.apiService.deleteSingleProduct(product).subscribe((res: any) => {
+                this.ProductService.deleteSingleProduct(product).subscribe((res: any) => {
                     this.message.showInfo('delete', res.message)
                 })
             }

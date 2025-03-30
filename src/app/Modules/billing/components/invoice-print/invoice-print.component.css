@@ -1,4 +1,4 @@
-@import "tailwindcss";
+/* @import "tailwindcss";
 
   @layer components {
     .invoice-container {
@@ -17,6 +17,7 @@
   
     .invoice-container {
       @apply shadow-none border-none p-0 m-0 w-full;
-      /* Reset container styles for printing */
     }
-  }
+  } */
+
+  

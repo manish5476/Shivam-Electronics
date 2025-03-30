@@ -1,25 +1,12 @@
-// import { Component } from '@angular/core';
-
-// @Component({
-//   selector: 'app-product-master',
-//   imports: [],
-//   templateUrl: './product-master.component.html',
-//   styleUrl: './product-master.component.css'
-// })
-// export class ProductMasterComponent {
-
-// }
-
 import { Component, Inject, Input, PLATFORM_ID, SimpleChanges } from '@angular/core';
 import { FloatLabelModule } from 'primeng/floatlabel';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { InputTextModule } from 'primeng/inputtext';
-// import { InputTextareaModule } from 'primeng/inputtextarea';
 import { ButtonModule } from 'primeng/button';
 import { TextareaModule } from 'primeng/textarea';
-import { ApiService } from '../../../../core/services/api.service';
+import { ProductService } from '../../../../core/services/product.service';
 import { Select } from 'primeng/select';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import lodash from 'lodash'
@@ -36,7 +23,7 @@ interface Dimensions {
 
 interface Location {
   type: 'Point';
-  coordinates: string; // Changed to string to handle input
+  coordinates: string; 
   address?: string;
   description?: string;
   day?: string;
@@ -136,7 +123,7 @@ export class ProductMasterComponent {
   public productdropdwn: any
   public selectedProductId: any;
 
-  constructor(private apiService: ApiService, private messageService: MessageService, @Inject(PLATFORM_ID) private platformId: Object) { }
+  constructor(private ProductService: ProductService, private messageService: MessageService, @Inject(PLATFORM_ID) private platformId: Object) { }
   ngOnInit() {
     document.body.classList.toggle('dark', this.isDarkMode);
     this.autopopulatedata()
@@ -173,14 +160,14 @@ export class ProductMasterComponent {
   }
 
   Update() {
-    this.apiService.updateProduct(this.selectedProductId, this.product).subscribe((res: any) => {
+    this.ProductService.updateProduct(this.selectedProductId, this.product).subscribe((res: any) => {
       // console.log(res);
     })
   }
 
   autopopulate() {
     if (this.selectedProductId) { // Check if a product ID is selected
-      this.apiService.getProductDataWithId(this.selectedProductId).subscribe(
+      this.ProductService.getProductDataWithId(this.selectedProductId).subscribe(
         (res: any) => {
           this.productdata = res;
           this.product = res.data
@@ -212,7 +199,7 @@ export class ProductMasterComponent {
 
   onSubmit() {
     // console.log(this.product);
-    this.apiService.createNewProduct(this.product).subscribe((res: any) => {
+    this.ProductService.createNewProduct(this.product).subscribe((res: any) => {
       // console.log(res);
     })
   }

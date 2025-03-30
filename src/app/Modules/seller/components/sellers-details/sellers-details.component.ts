@@ -11,7 +11,7 @@
 // }
 // seller-detail.component.ts
 import { ChangeDetectorRef, Component } from '@angular/core';
-import { ApiService } from '../../../../core/services/api.service';
+import { SellerService } from '../../../../core/services/seller.service';
 import { SharedGridComponent } from '../../../../shared/AgGrid/grid/shared-grid/shared-grid.component';
 // import { ToolbarComponent } from "../../../../shared/Components/toolbar/toolbar.component";
 import { CellValueChangedEvent } from 'ag-grid-community';
@@ -29,7 +29,7 @@ export class SellersDetailsComponent {
   rowSelectionMode: any = 'singleRow';
   rowClassrules: any;
 
-  constructor(private cdr: ChangeDetectorRef, private apiService: ApiService) { }
+  constructor(private cdr: ChangeDetectorRef, private SellerService: SellerService) { }
 
   ngOnInit(): void {
     this.getColumn()
@@ -60,7 +60,7 @@ export class SellersDetailsComponent {
 
 
         // Call API to update seller
-        this.apiService.updateSellersdata(dataItem.id, dataItem).subscribe({
+        this.SellerService.updateSellersdata(dataItem.id, dataItem).subscribe({
           next: (res: any) => {
           },
           error: (err: any) => {
@@ -102,7 +102,7 @@ export class SellersDetailsComponent {
   }
 
   getData() {
-    this.apiService.getAllSellersdata().subscribe((res: any) => {
+    this.SellerService.getAllSellersdata().subscribe((res: any) => {
       this.data = res.data;
       this.cdr.markForCheck()
     })

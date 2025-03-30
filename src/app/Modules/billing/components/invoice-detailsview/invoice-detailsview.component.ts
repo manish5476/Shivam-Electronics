@@ -12,7 +12,7 @@
 
 import { Component, Input, OnInit, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ApiService } from '../../../../core/services/api.service';
+import { InvoiceService } from '../../../../core/services/invoice.service';
 // import { SharedGridComponent } from '../../../../shared/AgGrid/grid/shared-grid/shared-grid.component';
 // import { ToolbarComponent } from "../../../../shared/Components/toolbar/toolbar.component";
 @Component({
@@ -29,7 +29,7 @@ export class InvoiceDetailCardComponent implements OnInit {
   invoiceData: any; // To store fetched invoice data
   loading: boolean = true; // Add a loading flag
 
-  constructor(private apiService: ApiService, private cdr: ChangeDetectorRef) { } // Inject ApiService and ChangeDetectorRef
+  constructor(private InvoiceService: InvoiceService, private cdr: ChangeDetectorRef) { } // Inject InvoiceService and ChangeDetectorRef
 
   ngOnInit(): void {
     this.getCustomerdata()
@@ -38,7 +38,7 @@ export class InvoiceDetailCardComponent implements OnInit {
   getCustomerdata() {
     if (this.Id) {
       this.loading = true;
-      this.apiService.getinvoiceDataWithId(this.Id).subscribe({
+      this.InvoiceService.getinvoiceDataWithId(this.Id).subscribe({
         next: (res: any) => {
           this.invoiceData = res.data;
           this.loading = false;

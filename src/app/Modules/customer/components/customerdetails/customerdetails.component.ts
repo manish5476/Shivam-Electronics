@@ -16,11 +16,12 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
-import { ApiService } from '../../../../core/services/api.service'; // Imported class
+import { CustomerService } from '../../../../core/services/customer.service';
 import { SelectModule } from 'primeng/select';
 import { TabViewModule } from 'primeng/tabview';
 import { PrimeIcons } from 'primeng/api';
 // import * as lodash from 'lodash';
+import { ProductService } from '../../../../core/services/product.service';
 import { AppMessageService } from '../../../../core/services/message.service';
 @Component({
   selector: 'app-customerdetails',
@@ -41,9 +42,9 @@ export class CustomerdetailsComponent {
   activeTabIndex: number = 0;
 
   constructor(
-    private route: ActivatedRoute,
+    private ProductService: ProductService,
     private messageService: AppMessageService, // Inject AppMessageService
-    private apiService: ApiService, // Injected class
+    private CustomerService: CustomerService, // Injected class
     private http: HttpClient
   ) { }
 
@@ -54,7 +55,6 @@ export class CustomerdetailsComponent {
   autopopulatedata() {
     const autopopulate: any = JSON.parse(sessionStorage.getItem('autopopulate') || '{}');
     if (autopopulate && Array.isArray(autopopulate.customersdrop)) {
-      // this.customerIDDropdown = lodash.cloneDeep(autopopulate.customersdrop);
     } else {
       this.customerIDDropdown = [];
       this.messageService.showWarn('Warning', 'No valid customer dropdown data found'); // Use AppMessageService
@@ -70,7 +70,7 @@ export class CustomerdetailsComponent {
   }
 
   fetchCustomerData() {
-    this.apiService.getCustomerDataWithId(this.customerId).subscribe({
+    this.CustomerService.getCustomerDataWithId(this.customerId).subscribe({
       next: (response: any) => {
         console.log(response);
         if (response.status === 'success') {
@@ -94,7 +94,7 @@ export class CustomerdetailsComponent {
   fetchProductDetails() {
     const productIds = this.customer.cart.items.map((item: any) => item.productId);
     if (productIds.length > 0) {
-      this.apiService.getProductDataWithId(productIds).subscribe(
+      this.ProductService.getProductDataWithId(productIds).subscribe(
         (response: any) => {
           this.products = response.data;
           console.log('Product Details:', this.products);
@@ -109,7 +109,7 @@ export class CustomerdetailsComponent {
 }
 
 // Define the interface with a different name
-// interface ApiServiceInterface {
+// interface CustomerServiceInterface {
 //   // getCustomerDataWithId(id: string): any;
 //   getProductsByIds(ids: string[]): any;
 // }
@@ -120,7 +120,7 @@ export class CustomerdetailsComponent {
 // import { FormsModule } from '@angular/forms';
 // import { ActivatedRoute } from '@angular/router';
 // import { HttpClient } from '@angular/common/http';
-// import { ApiService } from '../../../../core/services/api.service';
+// import { CustomerService } from '../../../../core/services/api.service';
 // import { SelectModule } from 'primeng/select';
 // import { TabViewModule } from 'primeng/tabview';
 // import { PrimeIcons } from 'primeng/api';
@@ -147,7 +147,7 @@ export class CustomerdetailsComponent {
 //     this.darkMode = !this.darkMode;
 //   }
 
-//   constructor(private route: ActivatedRoute, private apiService: ApiService, private http: HttpClient) { }
+//   constructor(private route: ActivatedRoute, private CustomerService: CustomerService, private http: HttpClient) { }
 //   ngOnInit(): void {
 //     this.autopopulatedata()
 //   }
@@ -198,7 +198,7 @@ export class CustomerdetailsComponent {
 
 
 //   fetchCustomerData() {
-//     this.apiService.getCustomerDataWithId(this.customerId).subscribe(
+//     this.CustomerService.getCustomerDataWithId(this.customerId).subscribe(
 //       (response) => {
 //         this.customer = response.data;
 //         console.log(this.customer)

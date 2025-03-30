@@ -4,7 +4,8 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { SplitterModule } from 'primeng/splitter';
 import { SelectModule } from 'primeng/select';
-import { ApiService } from '../../../../core/services/api.service';
+import { PaymentService } from '../../../../core/services/payment.service';
+import { CustomerService } from '../../../../core/services/customer.service';
 // import lodash from 'lodash';
 @Component({
   selector: 'app-payment',
@@ -40,7 +41,7 @@ export class PaymentComponent {
   messageService: any;
   customer: any;
 
-  constructor(private http: HttpClient, private ApiService: ApiService) { }
+  constructor(private http: HttpClient, private CustomerService:CustomerService, private PaymentService: PaymentService) { }
   ngOnInit(): void {
     this.autopopulatedata()
   }
@@ -63,7 +64,7 @@ export class PaymentComponent {
 
   fetchCustomerData() {
     this.paymentData.customerId = this.customerId
-    this.ApiService.getCustomerDataWithId(this.customerId).subscribe(
+    this.CustomerService.getCustomerDataWithId(this.customerId).subscribe(
       (response: { data: any; }) => {
         this.customer = response.data;
       },
@@ -95,7 +96,7 @@ export class PaymentComponent {
       updatedAt: new Date().toISOString()
     };
 
-    this.ApiService.createNewpayment(formData).subscribe((res: any) => {
+    this.PaymentService.createNewpayment(formData).subscribe((res: any) => {
     })
   }
 }

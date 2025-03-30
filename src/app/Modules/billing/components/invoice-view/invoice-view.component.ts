@@ -15,7 +15,7 @@ import { ChangeDetectorRef, Component, EventEmitter, Output } from '@angular/cor
 
 import { SharedGridComponent } from '../../../../shared/AgGrid/grid/shared-grid/shared-grid.component';
 
-import { ApiService } from  '../../../../core/services/api.service';
+import { InvoiceService } from  '../../../../core/services/invoice.service';
 import { CellValueChangedEvent } from 'ag-grid-community';
 import { DialogboxComponent } from '../../../../shared/AgGrid/AgGridcomponents/dialogbox/dialogbox.component';
 import { InvoiceDetailCardComponent } from '../invoice-detailsview/invoice-detailsview.component';
@@ -33,7 +33,7 @@ export class InvoiceViewComponent {
   column: any
   rowSelectionMode: any
 
-  constructor(private cdr: ChangeDetectorRef, private apiService: ApiService) { }
+  constructor(private cdr: ChangeDetectorRef, private InvoiceService: InvoiceService) { }
 
   ngOnInit(): void {
     this.getColumn()
@@ -55,7 +55,7 @@ export class InvoiceViewComponent {
 
       if (field) {
         dataItem[field] = newValue;
-        this.apiService.updateinvoice(dataItem.id, dataItem).subscribe({
+        this.InvoiceService.updateinvoice(dataItem.id, dataItem).subscribe({
           next: (res: any) => {
             // console.log('✅ invoice updated successfully:', res);
           },
@@ -149,7 +149,7 @@ export class InvoiceViewComponent {
   }
 
   getData() {
-    this.apiService.getAllinvoiceData().subscribe((res: any) => {
+    this.InvoiceService.getAllinvoiceData().subscribe((res: any) => {
       this.data = res.data;
       this.cdr.markForCheck()
     })

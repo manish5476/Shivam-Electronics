@@ -21,7 +21,6 @@ import { CardModule } from 'primeng/card';
 import { CheckboxModule } from 'primeng/checkbox';
 import { ToastModule } from 'primeng/toast';
 import { TableRowCollapseEvent, TableRowExpandEvent } from 'primeng/table';
-import { ApiService } from '../../../../core/services/api.service';
 import { FormsModule } from '@angular/forms';
 import { DialogModule } from 'primeng/dialog';
 import { SelectModule } from 'primeng/select';
@@ -29,6 +28,7 @@ import { AccordionModule } from 'primeng/accordion';
 import { InvoicePrintComponent } from "../../../billing/components/invoice-print/invoice-print.component";
 import { PanelModule } from 'primeng/panel';
 import { AvatarModule } from 'primeng/avatar';
+import { CustomerService } from '../../../../core/services/customer.service';
 import { LoadingService } from '../../../../core/services/loading.service';
 @Component({
   selector: 'app-customer-detailed-list',
@@ -51,11 +51,11 @@ export class CustomerDetailedListComponent {
   dynamicComponent: any;
 
 
-  constructor(private apiService: ApiService, private cdr: ChangeDetectorRef,private loadingService:LoadingService) { }
+  constructor(private CustomerService: CustomerService, private cdr: ChangeDetectorRef,private loadingService:LoadingService) { }
 
 
   ngOnInit(): void {
-    this.getCustomerDetail();
+    // this.getCustomerDetail();
     this.autopopulatedata();
   }
 
@@ -133,7 +133,7 @@ export class CustomerDetailedListComponent {
   getCustomerDetail(): void {
     this.loadingService.show(); // Hide the loader on success
     
-    this.apiService.getCustomerDataWithId(this.customerId).subscribe((res: any) => {
+    this.CustomerService.getCustomerDataWithId(this.customerId).subscribe((res: any) => {
         this.customer = res.data;
         this.customerItems = this.customer.cart?.items || [];
         this.paymentHistory = this.customer.paymentHistory || [];
@@ -146,7 +146,7 @@ export class CustomerDetailedListComponent {
 }
 
   // getCustomerDetail(): void {
-  //   this.apiService.getCustomerDataWithId(this.customerId).subscribe((res: any) => {
+  //   this.CustomerService.getCustomerDataWithId(this.customerId).subscribe((res: any) => {
   //     this.customer = res.data;
   //     this.customerItems = this.customer.cart?.items || [];
   //     this.paymentHistory = this.customer.paymentHistory || [];

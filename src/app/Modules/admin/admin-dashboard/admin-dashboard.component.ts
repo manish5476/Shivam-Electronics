@@ -29,15 +29,6 @@ import { ToolbarComponent } from "../../../shared/Components/toolbar/toolbar.com
 })
 export class AdminDashboardComponent {
   components: { component: Type<any>; label: string }[] = [
-    // { component: ProductDetailComponent, label: 'product-detail' },
-    // { component: CustomerdetailsComponent, label: 'customer' },
-    // { component: CustomerListComponent, label: 'custoemrList' },
-    // { component: CustomerMasterComponent, label: 'custoemrMaster' },
-    // { component: CustomerdetailsComponent, label: 'customerdetails' },
-    // { component: GstInvoiceComponent, label: 'Revenue' },
-    // { component: InvoiceViewComponent, label: 'invoice view' },
-    // { component: AnalyticsComponent, label: 'Analytics' },
-    // { component: NotificationsComponent, label: 'Notifications' },
   ];
   dialogRefs: DynamicDialogRef[] = [];
 
