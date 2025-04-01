@@ -1,15 +1,3 @@
-// import { Component } from '@angular/core';
-
-// @Component({
-//   selector: 'app-customer-list',
-//   imports: [],
-//   templateUrl: './customer-list.component.html',
-//   styleUrl: './customer-list.component.css'
-// })
-// export class CustomerListComponent {
-
-// }
-
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { SharedGridComponent } from '../../../../shared/AgGrid/grid/shared-grid/shared-grid.component';
 import { CellValueChangedEvent } from 'ag-grid-community';

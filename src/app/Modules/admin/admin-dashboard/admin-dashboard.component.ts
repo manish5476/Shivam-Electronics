@@ -27,7 +27,7 @@ import { ToolbarComponent } from "../../../shared/Components/toolbar/toolbar.com
   imports: [ CommonModule, DialogModule, ButtonModule, ToolbarComponent],//ToolbarComponent
   providers: [DialogService],
 })
-export class AdminDashboardComponent {
+export class AdminDashboardsComponent {
   components: { component: Type<any>; label: string }[] = [
   ];
   dialogRefs: DynamicDialogRef[] = [];

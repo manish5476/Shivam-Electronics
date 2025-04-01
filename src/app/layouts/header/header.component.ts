@@ -101,8 +101,8 @@ export class HeaderComponent {
         icon: 'pi pi-users',
         items: [
           { label: 'Admin Dashboard', icon: 'pi pi-user', routerLink: ['/admin/adminDashboard'] },
-          { label: 'users', icon: 'pi pi-user', routerLink: ['/admin/users'] }
-
+          { label: 'users', icon: 'pi pi-user', routerLink: ['/admin/users'] },
+          { label: 'adusers', icon: 'pi pi-user', routerLink: ['/admin/adusers'] }
 
         ]
       },
