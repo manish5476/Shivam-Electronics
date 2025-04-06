@@ -1,8 +1,6 @@
 @import 'primeicons/primeicons.css';
  /* @import 'primeflex/primeflex.css'; */
- @import "tailwindcss";
-
-
+ /* @import "tailwindcss"; */
 section {
   &.dark-mode {
     background-color: #111827;

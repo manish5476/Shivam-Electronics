@@ -1,6 +1,4 @@
-/* @import "tailwindcss";
-
-  @layer components {
+/* /* @import "tailwindcss"; */  @layer components {
     .invoice-container {
       @apply bg-white p-6 rounded-md shadow-md;
     }

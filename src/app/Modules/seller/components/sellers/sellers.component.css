@@ -1,7 +1,5 @@
 @import 'primeicons/primeicons.css';
-@import "tailwindcss";
-
-section {
+/* @import "tailwindcss"; */section {
   &.dark-mode {
     background-color: #111827;
     color: #f9fafb;

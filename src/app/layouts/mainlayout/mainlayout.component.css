@@ -1,6 +1,4 @@
-@import "tailwindcss";
-
-.flex-column {
+/* @import "tailwindcss"; */.flex-column {
   align-items: center;
 }
 

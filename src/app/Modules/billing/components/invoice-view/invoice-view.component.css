@@ -1,6 +1,4 @@
-@import "tailwindcss";
-
-.invoice-container {
+/* @import "tailwindcss"; */.invoice-container {
   width: 210mm;
   /* A4 width */
   min-height: 297mm;

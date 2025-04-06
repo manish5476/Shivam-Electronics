@@ -1,7 +1,5 @@
 /* Scrollbar styles */
-@import "tailwindcss";
-
-.overflow-x-auto::-webkit-scrollbar {
+/* @import "tailwindcss"; */.overflow-x-auto::-webkit-scrollbar {
   height: 8px;
 }
 

@@ -258,9 +258,7 @@ interface ChartOptions {
     </div>
   `,
   styles: [`
-  @import "tailwindcss";
-
-    :host ::ng-deep .p-card {
+  /* @import "tailwindcss"; */    :host ::ng-deep .p-card {
       @apply rounded-lg;
     }
     :host ::ng-deep .p-card-content {

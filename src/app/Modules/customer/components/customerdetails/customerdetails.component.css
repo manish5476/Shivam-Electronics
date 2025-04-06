@@ -1,6 +1,4 @@
-@import "tailwindcss";
-
-.futuristic-product-card {
+/* @import "tailwindcss"; */.futuristic-product-card {
   @apply bg-white dark:bg-gray-800 rounded-xl p-4 shadow-lg hover:shadow-xl transition-all duration-300;
 }
 
