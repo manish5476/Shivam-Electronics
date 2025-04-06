@@ -1,105 +1,126 @@
-// import { Injectable } from '@angular/core';
-// import { HttpClient } from '@angular/common/http';
-// import { Observable } from 'rxjs';
-// import { catchError } from 'rxjs/operators';
-// import { environment } from '../../../environments/environment';
-// import { ErrorhandlingService } from './errorhandling.service';
-
-// @Injectable({ providedIn: 'root' })
-// export class AutopopulateService {
-//   private baseUrl = environment.apiUrl;
-
-//   constructor(private http: HttpClient, private errorhandler: ErrorhandlingService) {}
-
-//   getAutopopulateData(): Observable<any> {
-//     return this.http.get(`${this.baseUrl}/v1/products/autopopulate`).pipe(
-//       catchError((error) => this.errorhandler.handleError('getAutopopulateData', error))
-//     );
-//   }
-// }
-
-// import { Injectable } from '@angular/core';
-// import { HttpClient } from '@angular/common/http';
-// import { BehaviorSubject, Observable, of } from 'rxjs';
-// import { catchError } from 'rxjs/operators';
-// import { environment } from '../../../environments/environment';
-// import { ErrorhandlingService } from './errorhandling.service';
-
-// @Injectable({ providedIn: 'root' })
-// export class AutopopulateService {
-//   private baseUrl = environment.apiUrl;
-//   private autopopulateData$ = new BehaviorSubject<any>(null); // Store data in a BehaviorSubject
-
-//   constructor(private http: HttpClient, private errorhandler: ErrorhandlingService) {
-//     this.refreshAutopopulateData(); // Initial data fetch
-//   }
-
-//   getAutopopulateData(): Observable<any> {
-//     return this.autopopulateData$.asObservable();
-//   }
-
-//   refreshAutopopulateData(): void {
-//     this.http.get(`${this.baseUrl}/v1/products/autopopulate`).pipe(
-//       catchError((error) => {
-//         this.errorhandler.handleError('getAutopopulateData', error);
-//         return of(null); // Return null or a default value on error
-//       })
-//     ).subscribe((res) => {
-//       if (res && res.data) {
-//         this.autopopulateData$.next(res.data);
-//       }
-//     });
-//   }
-// }
-
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { BehaviorSubject, Observable, of } from 'rxjs';
-import { catchError } from 'rxjs/operators';
-import { environment } from '../../../environments/environment';
-import { ErrorhandlingService } from './errorhandling.service';
-
-// Define the interface (or import it)
-interface AutopopulateResponse {
-  data: any; // Replace 'any' with a more specific type if possible!
-}
+import { BehaviorSubject, forkJoin, Observable, of } from 'rxjs';
+import { catchError, map, tap } from 'rxjs/operators';
+import { BaseApiService } from './base-api.service';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Injectable({ providedIn: 'root' })
-export class AutopopulateService {
-  private baseUrl = environment.apiUrl;
-  // Consider typing the BehaviorSubject more specifically if you know the type of 'data'
-  // private autopopulateData$ = new BehaviorSubject<SpecificDataType[] | null>(null);
-  private autopopulateData$ = new BehaviorSubject<any>(null); // Store data in a BehaviorSubject
+export class AutopopulateService extends BaseApiService {
+  private masterCache: { [module: string]: BehaviorSubject<any[]> } = {};
 
-  constructor(private http: HttpClient, private errorhandler: ErrorhandlingService) {
-    this.refreshAutopopulateData(); // Initial data fetch
+  /**
+   * Get cached or fetched module data
+   */
+  getModuleData(module: string): Observable<any[]> {
+    const key = module.toLowerCase();
+    if (!this.masterCache[key]) {
+      this.masterCache[key] = new BehaviorSubject<any[]>([]);
+      this.fetchModuleData(key); // lazy fetch
+    }
+    return this.masterCache[key].asObservable();
   }
 
-  getAutopopulateData(): Observable<any> { // Also consider updating the return type here
-    return this.autopopulateData$.asObservable();
+  /**
+   * Manually refresh specific module
+   */
+  refreshModuleData(module: string): void {
+    const key = module.toLowerCase();
+    if (!this.masterCache[key]) {
+      this.masterCache[key] = new BehaviorSubject<any[]>([]);
+    }
+    this.fetchModuleData(key);
   }
 
-  refreshAutopopulateData(): void {
-    // Use the interface as the generic type for http.get
-    this.http.get<AutopopulateResponse>(`${this.baseUrl}/v1/products/autopopulate`).pipe(
-      catchError((error) => {
-        this.errorhandler.handleError('getAutopopulateData', error);
-        return of(null); // Return null or a default value on error
+  /**
+   * Live search (no caching)
+   */
+  searchModuleData(module: string, query: string): Observable<any[]> {
+    const url = `${this.baseUrl}/v1/master-list/search/${module}?search=${encodeURIComponent(query)}`;
+    return this.http.get<{ data: any[] }>(url).pipe(
+      map(response => response.data || []), // ✅ Extract only the data array
+      catchError((error: HttpErrorResponse) => {
+        this.errorhandler.handleError(`Search ${module}`, error);
+        return of([]); // Keeps return type Observable<any[]>
       })
-    ).subscribe((res) => {
-      // Now TypeScript knows 'res' can be null (from catchError) or AutopopulateResponse
-      // And AutopopulateResponse has a 'data' property.
-      if (res && res.data) { // No more error here!
-        this.autopopulateData$.next(res.data);
-      } else if (res === null) {
-         // Handle the error case if necessary, maybe clear the BehaviorSubject
-         // this.autopopulateData$.next(null); // Or keep the previous value
-      }
-      // Optional: Handle the case where 'res' is received but 'res.data' is missing/falsy
-      // else if (res) {
-      //    console.warn('Autopopulate response received, but missing data property:', res);
-      //    // Decide how to handle this - clear data? Keep old data?
-      // }
-    });
+    );
   }
+  
+
+  /**
+   * Internal fetch method (with caching)
+   */
+  private fetchModuleData(module: string): void {
+    const url = `${this.baseUrl}/v1/master-list/${module}`;
+    this.http.get<{ data: any[] }>(url).pipe(
+      catchError((error: HttpErrorResponse) => {
+        this.errorhandler.handleError(`Fetch ${module} data`, error);
+        return of({ data: [] });
+      }),
+      tap(response => {
+        this.masterCache[module]?.next(response.data || []);
+      })
+    ).subscribe();
+  }
+
+
+// 
+
+
+
+loadAllModulesData(): void {
+  const modules = ['products', 'users', 'customers', 'sellers', 'payments', 'invoices', 'orders'];
+
+  modules.forEach(module => {
+    this.refreshModuleData(module); // triggers fetch for each module
+  });
 }
+// use like 
+// this.autopopulateService.loadAllModulesData();
+
+
+getAllModulesData(): Observable<{ [key: string]: any[] }> {
+  const modules = ['products', 'users', 'customers', 'sellers', 'payments', 'invoices', 'orders'];
+
+  const requests = modules.reduce((acc, module) => {
+    acc[module] = this.http.get<{ data: any[] }>(`${this.baseUrl}/v1/master-list/${module}`).pipe(
+      map(res => res.data || []),
+      catchError(() => of([])) // Prevent one failure from breaking all
+    );
+    return acc;
+  }, {} as { [key: string]: Observable<any[]> });
+
+  return forkJoin(requests); // emits { products: [...], users: [...], ... }
+}
+// use like
+// this.autopopulateService.getAllModulesData().subscribe(result => {
+//   this.allAutopopulateData = result;
+//   this.products = result.products;
+//   this.customers = result.customers;
+// });
+
+
+
+
+
+
+
+}
+
+
+
+// ngOnInit(): void {
+//   this.autoService.getModuleData('products').subscribe((data:any) => {
+//     this.productOptions = data;
+//   });
+
+//   this.autoService.getModuleData('customers').subscribe((data:any) => {
+//     this.customerOptions = data;
+//   });
+// }
+
+// // Refresh after data changes
+// this.autoService.refreshModuleData('products');
+
+// // Search
+// this.autoService.searchModuleData('customers', 'john')
+//   .subscribe(results => this.filteredCustomers = results);

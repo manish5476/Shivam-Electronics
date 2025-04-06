@@ -1,17 +1,4 @@
 
-
-// import { Component } from '@angular/core';
-
-// @Component({
-//   selector: 'app-gst-invoice',
-//   imports: [],
-//   templateUrl: './gst-invoice.component.html',
-//   styleUrl: './gst-invoice.component.css'
-// })
-// export class GstInvoiceComponent {
-
-// }
-
 import { Component, OnInit, SimpleChanges, OnChanges } from '@angular/core';
 import { InputTextModule } from 'primeng/inputtext';
 import { CommonModule } from '@angular/common';
@@ -26,6 +13,7 @@ import { InvoiceService } from '../../../../core/services/invoice.service';
 import { SellerService } from '../../../../core/services/seller.service';
 import { ProductService } from '../../../../core/services/product.service';
 import { CustomerService } from '../../../../core/services/customer.service';
+import { AutopopulateService } from '../../../../core/services/autopopulate.service';
 
 interface InvoiceItem {
   product: string;
@@ -79,7 +67,8 @@ export class GstInvoiceComponent implements OnInit, OnChanges {
   invoiceData: any;
 
 
-  constructor(private invoiceService: InvoiceService,private customerService:CustomerService,private sellerService:SellerService,private productService:ProductService, private fb: FormBuilder) {
+  constructor(private invoiceService: InvoiceService, private autoPopulate: AutopopulateService,
+    private customerService: CustomerService, private sellerService: SellerService, private productService: ProductService, private fb: FormBuilder) {
     this.invoiceForm = this.fb.group({
       invoiceNumber: [''],
       invoiceDate: [new Date()],
@@ -126,23 +115,15 @@ export class GstInvoiceComponent implements OnInit, OnChanges {
   }
 
   autopopulatedata() {
-    const autopopulate: any = JSON.parse(sessionStorage.getItem('autopopulate') || '{}');
-    if (autopopulate && Array.isArray(autopopulate.customersdrop)) {
-      // this.customerIDDropdown = lodash.cloneDeep(autopopulate.customersdrop);
-      // this.buyerdetailsdropdown = lodash.cloneDeep(autopopulate.customersdrop);
-      // this.productdrop = lodash.cloneDeep(autopopulate.productsdrop);
-      // this.sellersDrop = lodash.cloneDeep(autopopulate.sellersdrop);
-    } else {
-      this.customerIDDropdown = [];
-      if (this.messageService) { // Check if messageService is injected before using
-        this.messageService.add({
-          severity: 'info',
-          summary: 'Info',
-          detail: 'No valid customer data found',
-          life: 3000
-        });
-      }
-    }
+    this.autoPopulate.getModuleData('products').subscribe((data:any) => {
+      this.productdrop = data;
+    });
+    this.autoPopulate.getModuleData('sellers').subscribe((data:any) => {
+      this.sellersDrop = data;
+    });
+    this.autoPopulate.getModuleData('customers').subscribe((data:any) => {
+      this.customerIDDropdown = data;
+    });
   }
 
   getCustomerData() {
@@ -165,11 +146,9 @@ export class GstInvoiceComponent implements OnInit, OnChanges {
     const timePart = `${String(now.getHours()).padStart(2, '0')}${String(now.getMinutes()).padStart(2, '0')}${String(now.getSeconds()).padStart(2, '0')}`;
     this.invoiceForm.patchValue({ invoiceNumber: `${customerId.substring(0, 5)}_${datePart}_${timePart}` });
 
-    this.invoiceService.createNewinvoice(this.invoiceForm.getRawValue()).subscribe((res: any) => { // Use getRawValue to get all values including disabled ones
-      console.log(res);
+    this.invoiceService.createNewinvoice(this.invoiceForm.getRawValue()).subscribe((res: any) => {
       if (res) {
         alert('Invoice created successfully!');
-        // Optionally reset the form or navigate to invoice list
       } else {
         alert('Failed to create invoice.');
       }
@@ -497,7 +476,7 @@ export class GstInvoiceComponent implements OnInit, OnDestroy {
         finalize(() => this.isLoading = false) // Ensure loading stops
       )
       .subscribe({
-        next: (res) => {
+        next: (res:any) => {
           // Use handleResponse for standardized messages
           this.appMessageService.handleResponse(res, 'Invoice Created', `Invoice ${invoiceData.invoiceNumber} saved successfully.`);
           this.invoiceForm.reset(); // Reset form after successful save
@@ -562,7 +541,7 @@ export class GstInvoiceComponent implements OnInit, OnDestroy {
          finalize(() => this.isLoading = false)
        )
        .subscribe({
-         next: (res) => {
+         next: (res:any) => {
            if (res && res.data && res.data.state) { // Adjust based on actual response structure
              this.invoiceForm.get('placeOfSupply')?.patchValue(res.data.state);
            } else {
@@ -647,7 +626,7 @@ export class GstInvoiceComponent implements OnInit, OnDestroy {
           finalize(() => this.isLoading = false)
        )
       .subscribe({
-          next: (res) => {
+          next: (res:any) => {
             if (res && res.data) {
               const product = res.data;
               itemFormGroup.patchValue({

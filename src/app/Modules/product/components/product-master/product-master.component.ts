@@ -161,7 +161,7 @@ export class ProductMasterComponent {
 
   Update() {
     this.ProductService.updateProduct(this.selectedProductId, this.product).subscribe((res: any) => {
-      // console.log(res);
+      // console.log(res:any);
     })
   }
 
@@ -200,7 +200,7 @@ export class ProductMasterComponent {
   onSubmit() {
     // console.log(this.product);
     this.ProductService.createNewProduct(this.product).subscribe((res: any) => {
-      // console.log(res);
+      // console.log(res:any);
     })
   }
 }

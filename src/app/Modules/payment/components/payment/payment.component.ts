@@ -6,6 +6,7 @@ import { SplitterModule } from 'primeng/splitter';
 import { SelectModule } from 'primeng/select';
 import { PaymentService } from '../../../../core/services/payment.service';
 import { CustomerService } from '../../../../core/services/customer.service';
+import { AutopopulateService } from '../../../../core/services/autopopulate.service';
 // import lodash from 'lodash';
 @Component({
   selector: 'app-payment',
@@ -41,24 +42,15 @@ export class PaymentComponent {
   messageService: any;
   customer: any;
 
-  constructor(private http: HttpClient, private CustomerService:CustomerService, private PaymentService: PaymentService) { }
+  constructor(private http: HttpClient, private CustomerService: CustomerService, private autoPopulate: AutopopulateService, private PaymentService: PaymentService) { }
   ngOnInit(): void {
     this.autopopulatedata()
   }
 
   autopopulatedata() {
-    const autopopulate: any = JSON.parse(sessionStorage.getItem('autopopulate') || '{}');
-    if (autopopulate && Array.isArray(autopopulate.customersdrop)) {
-      // this.customerIDDropdown = lodash.cloneDeep(autopopulate.customersdrop)
-    } else {
-      this.customerIDDropdown = [];
-      this.messageService.add({
-        severity: 'info',
-        summary: 'Info',
-        detail: 'No valid customer data found',
-        life: 3000
-      });
-    }
+    this.autoPopulate.getModuleData('customers').subscribe((customer: any) => {
+      this.customerIDDropdown = customer.data
+    })
   }
 
 
