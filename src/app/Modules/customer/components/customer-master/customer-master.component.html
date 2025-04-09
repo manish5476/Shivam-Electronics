@@ -1,3 +1,326 @@
+
+<div class="flex flex-wrap md:-m-2 -m-1 w-full">
+  <div class="w-full md:w-1/2 p-2">
+    <div class="bg-gray-200 rounded-lg p-4 flex flex-col h-full border border-gray-700 shadow-lg">
+      <div class="bg-gray-800 p-4 rounded-lg shadow-md border border-gray-700">
+        <div class="mb-4">
+          <div
+            class="w-32 h-32 border-2 border-gray-600 rounded-lg flex items-center justify-center overflow-hidden bg-gray-200 mx-auto">
+            <img *ngIf="customer.profileImg" [src]="customer.profileImg" alt="Profile Image"
+              class="w-full h-full object-cover">
+            <i *ngIf="!customer.profileImg" class="pi pi-user text-gray-500 text-6xl"></i>
+          </div>
+        </div>
+        <div>
+          <div class="card">
+            <p-fileUpload #fileUploader name="profileImage" url="your-upload-api-endpoint" (onUpload)="onUpload($event)"
+              [multiple]="false" accept="image/*" maxFileSize="1000000" mode="advanced" [showUploadButton]="true"
+              [showCancelButton]="true">
+              <ng-template pTemplate="empty">
+                <div class="text-center p-2">Drag and drop here or <button type="button" pButton pRipple label="Choose"
+                    (click)="fileUploader.choose()" class="p-button-sm"></button>.</div>
+              </ng-template>
+              <ng-template pTemplate="content">
+                <ul *ngIf="uploadedFiles.length" class="list-disc pl-5">
+                  <li *ngFor="let file of uploadedFiles">{{ file.name }} - {{ file.size }} bytes</li>
+                </ul>
+              </ng-template>
+            </p-fileUpload>
+          </div>
+        </div>
+        <p *ngIf="uploadStatus" class="mt-2 text-sm text-green-500 text-center">{{ uploadStatus }}</p>
+      </div>
+
+
+      <div class="mt-4 bg-gray-900 p-4 rounded-lg shadow-md border border-gray-700">
+        <div class="mt-4 bg-gray-100 p-4 rounded-lg shadow-md border border-gray-700">
+          <div class="mt-4">
+            <label for="status" class="block text-sm font-medium text-gray-900 mb-1">Status</label>
+            <p-select id="status" placeholder="select Status" [options]="statuses" [(ngModel)]="customer.status"
+              class="w-full border border-gray-600 rounded-md p-2 bg-gray-200 text-gray"></p-select>
+          </div>
+
+          <div class="mt-4 flex flex-col space-y-2">
+            <label for="guaranteer" class="block text-sm font-medium text-gray-900 mb-1">Guaranteer Name</label>
+            <p-select id="guaranteer" (onChange)="selectedGuaranterevent($event)" [options]="customerIDDropdown"
+              optionLabel="fullname"
+              class="w-full border border-gray-600 rounded-md p-2 bg-gray-200 text-gray"></p-select>
+
+            <div class="w-full border border-gray-600 rounded-md p-2 text-gray-900 bg-gray-200 ">
+              {{ selectedGuaranter.fullname }}
+            </div>
+
+            <div *ngIf="selectedGuaranter.phoneNumbers && selectedGuaranter.phoneNumbers.length > 0">
+              <label class="block text-sm font-medium text-gray-900 mb-1">Guarantor Phone Numbers</label>
+              <ul>
+                <li *ngFor="let item of selectedGuaranter.phoneNumbers"
+                  class="w-full border border-gray-600 rounded-md p-2 text-gray-900 bg-gray-200 ">
+                  {{ item.number }}
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+  <div class="flex  flex-wrap w-full md:w-1/2 p-2">
+    <div class="md:p-2 p-1 w-full">
+      Name & Email Card
+      <div class=" bg-gray-800 p-4 rounded-lg shadow-md border border-gray-700">
+        <p-card header="Personal Information" class="bg-gray-200 text-white">
+          <div class="grid grid-cols-2 gap-4">
+            <div>
+              <label for="fullname" class="block text-sm font-medium text-gray-900">Full Name</label>
+              <input id="fullname" type="text"
+                class="p-inputtext w-full bg-gray-200 text-white border border-gray-600 rounded-md p-2"
+                [(ngModel)]="customer.fullname" required />
+            </div>
+            <div>
+              <label for="email" class="block text-sm font-medium text-gray-900">Email</label>
+              <input id="email" type="email"
+                class="p-inputtext w-full bg-gray-200 text-white border border-gray-600 rounded-md p-2"
+                [(ngModel)]="customer.email" required />
+            </div>
+          </div>
+        </p-card>
+      </div>
+
+      Phone Numbers Card
+      <div class="mt-4 bg-gray-800 p-4 rounded-lg shadow-md border border-gray-700">
+        <p-card header="Phone Numbers" class="bg-gray-200 text-white">
+          <p-table [value]="customer.phoneNumbers" showGridlines [tableStyle]="{ 'min-width': '100%' }">
+            <ng-template pTemplate="header">
+              <tr>
+                <th>Number</th>
+                <th>Type</th>
+                <th>Primary</th>
+                <th>Actions</th>
+              </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-phone let-i="rowIndex">
+              <tr>
+                <td>{{ phone.number }}</td>
+                <td>{{ phone.type }}</td>
+                <td>
+                  <p-checkbox [(ngModel)]="phone.primary" binary="true" [disabled]="true"></p-checkbox>
+                </td>
+                <td class="flex gap-2">
+                  <button pButton (click)="editPhone(i)" icon="pi pi-pencil"
+                    class="p-button-rounded p-button-text p-button-sm"></button>
+                  <button pButton icon="pi pi-trash" class="p-button-rounded p-button-text p-button-sm"
+                    (click)="deletePhone(i)"></button>
+                </td>
+              </tr>
+            </ng-template>
+          </p-table>
+          <button pButton label="Add Phone Number" icon="pi pi-plus" (click)="showPhoneDialog()"
+            class="mt-4 p-button-sm bg-blue-600 hover:bg-blue-700"></button>
+        </p-card>
+      </div>
+
+      <div class="mt-4 bg-gray-800 p-4 rounded-lg shadow-md border border-gray-700">
+        <p-card header="Addresses" class="bg-gray-200 text-white">
+          <p-table [value]="customer.addresses" showGridlines [tableStyle]="{ 'min-width': '100%' }">
+            <ng-template pTemplate="header">
+              <tr>
+                <th>Street</th>
+                <th>City</th>
+                <th>State</th>
+                <th>ZIP Code</th>
+                <th>Country</th>
+                <th>Type</th>
+                <th>Default</th>
+                <th>Actions</th>
+              </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-address let-i="rowIndex">
+              <tr>
+                <td>{{ address.street }}</td>
+                <td>{{ address.city }}</td>
+                <td>{{ address.state }}</td>
+                <td>{{ address.zipCode }}</td>
+                <td>{{ address.country }}</td>
+                <td>{{ address.type }}</td>
+                <td>
+                  <p-checkbox [(ngModel)]="address.isDefault" binary="true" [disabled]="true"></p-checkbox>
+                </td>
+                <td class="flex gap-2">
+                  <button pButton (click)="editAddress(i)" icon="pi pi-pencil"
+                    class="p-button-rounded p-button-text p-button-sm"></button>
+                  <button pButton icon="pi pi-trash" class="p-button-rounded p-button-text p-button-sm"
+                    (click)="removeAddress(i)"></button>
+                </td>
+              </tr>
+            </ng-template>
+          </p-table>
+          <button class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 mt-4"
+            (click)="showAddressDialog()">Add
+            Address</button>
+        </p-card>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="false" class="flex flex-wrap w-full md:w-full p-2">
+    <div class="md:p-2 p-1 w-full">
+      <div class="bg-gray-800 p-4 rounded-lg shadow-md border border-gray-700">
+        <div class="mx-auto max-w-screen-xl px-4 py-8 sm:px-6 sm:py-12 lg:px-8 bg-gray-200 rounded-lg">
+          <div class="mx-auto max-w-3xl text-center">
+            <h2 class="text-3xl font-bold text-yellow-500 sm:text-4xl">
+              Financial Status
+            </h2>
+          </div>
+
+          <dl class="mt-6 grid grid-cols-2 gap-4 sm:mt-8 sm:grid-cols-2 lg:grid-cols-4">
+            <div class="flex flex-col rounded-lg border border-gray-600 px-4 py-8 text-center bg-gray-200">
+              <dt class="order-last text-lg font-medium text-gray-400">Remaining Amount</dt>
+              <dd class="text-4xl font-extrabold text-blue-500 md:text-5xl">{{ customer.remainingAmount | currency
+                }}</dd>
+            </div>
+
+            <div class="flex flex-col rounded-lg border border-gray-600 px-4 py-8 text-center bg-gray-200">
+              <dt class="order-last text-lg font-medium text-gray-400">
+                Purchased Amount
+              </dt>
+              <dd class="text-4xl font-extrabold text-blue-500 md:text-5xl">{{ customer.totalPurchasedAmount |
+                currency }}</dd>
+            </div>
+
+            <div class="flex flex-col rounded-lg border border-gray-600 px-4 py-8 text-center bg-gray-200">
+              <dt class="order-last text-lg font-medium text-gray-400">Total BUY</dt>
+              <dd class="text-4xl font-extrabold text-blue-500 md:text-5xl">86</dd>
+            </div>
+
+            <div class="flex flex-col rounded-lg border border-gray-600 px-4 py-8 text-center bg-gray-200">
+              <dt class="order-last text-lg font-medium text-gray-400">Downloads</dt>
+              <dd class="text-4xl font-extrabold text-blue-500 md:text-5xl">86k</dd>
+            </div>
+          </dl>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="flex flex-wrap w-full p-2">
+    <div class="md:p-2 p-1 w-full">
+      <button (click)="saveCustomer()" class="save-button">Save
+        Customer</button>
+    </div>
+  </div>
+</div>
+
+<p-dialog header="Add Phone Number" [(visible)]="phoneDialogVisible"
+  styleClass="p-dialog-compact bg-gray-800 text-white border border-gray-700 rounded-lg p-5 shadow-lg" [modal]="true"
+  [closable]="true" [dismissableMask]="true" [breakpoints]="{'960px': '50vw', '640px': '90vw'}">
+  <div class="p-fluid">
+    <div class="p-field mb-3">
+      <label for="phoneNumber" class="block text-sm font-medium text-gray-300 mb-1">Phone Number</label>
+      <input id="phoneNumber" type="tel" pInputText [(ngModel)]="newPhoneNumber.number" required
+        class="p-inputtext w-full bg-gray-200 text-white border border-gray-600 rounded-md p-2 focus:ring-2 focus:ring-blue-500"
+        placeholder="Enter phone number" />
+    </div>
+
+    <div class="p-field mb-3">
+      <label for="phoneType" class="block text-sm font-medium text-gray-300 mb-1">Phone Type</label>
+      <p-select appendTo="body" id="phoneType" [options]="phoneTypes" [(ngModel)]="newPhoneNumber.type"
+        optionLabel="label" optionValue="value" required
+        class="p-select w-full bg-gray-200 text-white border border-gray-600 rounded-md p-2 focus:ring-2 focus:ring-blue-500">
+      </p-select>
+    </div>
+
+    <div class="p-field flex items-center">
+      <p-checkbox [(ngModel)]="newPhoneNumber.primary" inputId="primaryPhone" binary="true" class="mr-2"></p-checkbox>
+      <label for="primaryPhone" class="text-sm text-gray-300">Set as Primary Number</label>
+    </div>
+
+    <div class="flex justify-end gap-2 mt-4">
+      <p-button label="Cancel" icon="pi pi-times" (click)="phoneDialogVisible = false" class="dialog-button-">
+      </p-button>
+      <p-button icon="pi pi-check" (click)="addPhoneNumber()" class="dialog-button-add">
+      </p-button>
+    </div>
+  </div>
+</p-dialog>
+
+<p-fileUpload hidden #fileUploader url="http://localhost:4000/api/customers/{{customerId}}/profile-image"
+  accept="image/*" maxFileSize="5000000" (onSelect)="handleFileSelect($event)" (onUpload)="handleFileUpload($event)"
+  [auto]="true" [showUploadButton]="false" [showCancelButton]="false">
+</p-fileUpload>
+
+<p-dialog header="Add Address" [(visible)]="addressDialogVisible"
+  styleClass="p-dialog-compact bg-gray-200 text-white border border-gray-700 rounded-lg p-5 shadow-lg" [modal]="true"
+  [closable]="true" [dismissableMask]="true" [breakpoints]="{'960px': '75vw', '640px': '90vw'}">
+  <div class="p-fluid">
+    <div class="p-field mb-3">
+      <label for="street" class="block text-sm font-medium text-gray-300 mb-1">Street</label>
+      <input id="street" type="text" pInputText [(ngModel)]="newAddress.street" required
+        class="p-inputtext w-full bg-gray-200 text-white border border-gray-600 rounded-md p-2" />
+    </div>
+
+    <div class="grid grid-cols-2 gap-4">
+      <div class="p-field">
+        <label for="city" class="block text-sm font-medium text-gray-300 mb-1">City</label>
+        <input id="city" type="text" pInputText [(ngModel)]="newAddress.city" required
+          class="p-inputtext w-full bg-gray-200 text-white border border-gray-600 rounded-md p-2" />
+      </div>
+
+      <div class="p-field">
+        <label for="state" class="block text-sm font-medium text-gray-300 mb-1">State</label>
+        <input id="state" type="text" pInputText [(ngModel)]="newAddress.state" required
+          class="p-inputtext w-full bg-gray-200 text-white border border-gray-600 rounded-md p-2" />
+      </div>
+    </div>
+
+    <div class="grid grid-cols-2 gap-4">
+      <div class="p-field">
+        <label for="zipCode" class="block text-sm font-medium text-gray-300 mb-1">ZIP Code</label>
+        <input id="zipCode" type="text" pInputText [(ngModel)]="newAddress.zipCode" required
+          class="p-inputtext w-full bg-gray-200 text-white border border-gray-600 rounded-md p-2" />
+      </div>
+
+      <div class="p-field">
+        <label for="country" class="block text-sm font-medium text-gray-300 mb-1">Country</label>
+        <input id="country" type="text" pInputText [(ngModel)]="newAddress.country" required
+          class="p-inputtext w-full bg-gray-200 text-white border border-gray-600 rounded-md p-2" />
+      </div>
+    </div>
+
+    <div class="p-field mb-3">
+      <label for="addressType" class="block text-sm font-medium text-gray-300 mb-1">Address Type</label>
+      <p-select id="addressType" appendTo="body" [options]="addressTypes" [(ngModel)]="newAddress.type"
+        optionLabel="label" optionValue="value" required
+        class="p-select w-full bg-gray-200 text-white border border-gray-600 rounded-md p-2"></p-select>
+    </div>
+
+    <div class="p-field flex items-center">
+      <p-checkbox [(ngModel)]="newAddress.isDefault" inputId="defaultAddress" binary="true" class="mr-2"></p-checkbox>
+      <label for="defaultAddress" class="text-sm text-gray-300">Set as Default Address</label>
+    </div>
+
+    <div class="flex justify-end gap-2 mt-4">
+      <p-button label="Cancel" icon="pi pi-times" (click)="addressDialogVisible = false"
+        class="p-button-text text-gray-400 hover:text-white"></p-button>
+      <p-button label="Add Address" icon="pi pi-check" (click)="addAddress()" class="dialog-button-add"></p-button>
+    </div>
+  </div>
+</p-dialog>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- //////////////////////////////////// -->
 <!-- <section class="body-font " [ngClass]="{'dark-mode': isDarkMode}" [formGroup]="customerForm">
   <div pFocusTrap class="container px-5 py-1 mx-auto flex flex-wrap">
     <div class="flex w-full mb-8 flex-wrap justify-between items-center">
@@ -642,333 +965,6 @@
     </p-dialog>
   </div>
 </section> -->
-
-
-
-
-
-<div class="flex flex-wrap md:-m-2 -m-1 w-full">
-  <div class="w-full md:w-1/2 p-2">
-    <div class="bg-gray-200 rounded-lg p-4 flex flex-col h-full border border-gray-700 shadow-lg">
-      <div class="bg-gray-800 p-4 rounded-lg shadow-md border border-gray-700">
-        <div class="mb-4">
-          <div
-            class="w-32 h-32 border-2 border-gray-600 rounded-lg flex items-center justify-center overflow-hidden bg-gray-200 mx-auto">
-            <img *ngIf="customer.profileImg" [src]="customer.profileImg" alt="Profile Image"
-              class="w-full h-full object-cover">
-            <i *ngIf="!customer.profileImg" class="pi pi-user text-gray-500 text-6xl"></i>
-          </div>
-        </div>
-        <div>
-          <div class="card">
-            <p-fileUpload #fileUploader name="profileImage" url="your-upload-api-endpoint" (onUpload)="onUpload($event)"
-              [multiple]="false" accept="image/*" maxFileSize="1000000" mode="advanced" [showUploadButton]="true"
-              [showCancelButton]="true">
-              <ng-template pTemplate="empty">
-                <div class="text-center p-2">Drag and drop here or <button type="button" pButton pRipple label="Choose"
-                    (click)="fileUploader.choose()" class="p-button-sm"></button>.</div>
-              </ng-template>
-              <ng-template pTemplate="content">
-                <ul *ngIf="uploadedFiles.length" class="list-disc pl-5">
-                  <li *ngFor="let file of uploadedFiles">{{ file.name }} - {{ file.size }} bytes</li>
-                </ul>
-              </ng-template>
-            </p-fileUpload>
-          </div>
-        </div>
-        <p *ngIf="uploadStatus" class="mt-2 text-sm text-green-500 text-center">{{ uploadStatus }}</p>
-      </div>
-
-
-      <div class="mt-4 bg-gray-900 p-4 rounded-lg shadow-md border border-gray-700">
-        <div class="mt-4 bg-gray-100 p-4 rounded-lg shadow-md border border-gray-700">
-          <div class="mt-4">
-            <label for="status" class="block text-sm font-medium text-gray-900 mb-1">Status</label>
-            <p-select id="status" placeholder="select Status" [options]="statuses" [(ngModel)]="customer.status"
-              class="w-full border border-gray-600 rounded-md p-2 bg-gray-200 text-gray"></p-select>
-          </div>
-
-          <div class="mt-4 flex flex-col space-y-2">
-            <label for="guaranteer" class="block text-sm font-medium text-gray-900 mb-1">Guaranteer Name</label>
-            <p-select id="guaranteer" (onChange)="selectedGuaranterevent($event)" [options]="customerIDDropdown"
-              optionLabel="fullname"
-              class="w-full border border-gray-600 rounded-md p-2 bg-gray-200 text-gray"></p-select>
-
-            <div class="w-full border border-gray-600 rounded-md p-2 text-gray-900 bg-gray-200 ">
-              {{ selectedGuaranter.fullname }}
-            </div>
-
-            <div *ngIf="selectedGuaranter.phoneNumbers && selectedGuaranter.phoneNumbers.length > 0">
-              <label class="block text-sm font-medium text-gray-900 mb-1">Guarantor Phone Numbers</label>
-              <ul>
-                <li *ngFor="let item of selectedGuaranter.phoneNumbers"
-                  class="w-full border border-gray-600 rounded-md p-2 text-gray-900 bg-gray-200 ">
-                  {{ item.number }}
-                </li>
-              </ul>
-            </div>
-          </div>
-        </div>
-      </div>
-
-    </div>
-  </div>
-  <div class="flex  flex-wrap w-full md:w-1/2 p-2">
-    <div class="md:p-2 p-1 w-full">
-      Name & Email Card
-      <div class=" bg-gray-800 p-4 rounded-lg shadow-md border border-gray-700">
-        <p-card header="Personal Information" class="bg-gray-200 text-white">
-          <div class="grid grid-cols-2 gap-4">
-            <div>
-              <label for="fullname" class="block text-sm font-medium text-gray-900">Full Name</label>
-              <input id="fullname" type="text"
-                class="p-inputtext w-full bg-gray-200 text-white border border-gray-600 rounded-md p-2"
-                [(ngModel)]="customer.fullname" required />
-            </div>
-            <div>
-              <label for="email" class="block text-sm font-medium text-gray-900">Email</label>
-              <input id="email" type="email"
-                class="p-inputtext w-full bg-gray-200 text-white border border-gray-600 rounded-md p-2"
-                [(ngModel)]="customer.email" required />
-            </div>
-          </div>
-        </p-card>
-      </div>
-
-      Phone Numbers Card
-      <div class="mt-4 bg-gray-800 p-4 rounded-lg shadow-md border border-gray-700">
-        <p-card header="Phone Numbers" class="bg-gray-200 text-white">
-          <p-table [value]="customer.phoneNumbers" showGridlines [tableStyle]="{ 'min-width': '100%' }">
-            <ng-template pTemplate="header">
-              <tr>
-                <th>Number</th>
-                <th>Type</th>
-                <th>Primary</th>
-                <th>Actions</th>
-              </tr>
-            </ng-template>
-            <ng-template pTemplate="body" let-phone let-i="rowIndex">
-              <tr>
-                <td>{{ phone.number }}</td>
-                <td>{{ phone.type }}</td>
-                <td>
-                  <p-checkbox [(ngModel)]="phone.primary" binary="true" [disabled]="true"></p-checkbox>
-                </td>
-                <td class="flex gap-2">
-                  <button pButton (click)="editPhone(i)" icon="pi pi-pencil"
-                    class="p-button-rounded p-button-text p-button-sm"></button>
-                  <button pButton icon="pi pi-trash" class="p-button-rounded p-button-text p-button-sm"
-                    (click)="deletePhone(i)"></button>
-                </td>
-              </tr>
-            </ng-template>
-          </p-table>
-          <button pButton label="Add Phone Number" icon="pi pi-plus" (click)="showPhoneDialog()"
-            class="mt-4 p-button-sm bg-blue-600 hover:bg-blue-700"></button>
-        </p-card>
-      </div>
-
-      <div class="mt-4 bg-gray-800 p-4 rounded-lg shadow-md border border-gray-700">
-        <p-card header="Addresses" class="bg-gray-200 text-white">
-          <p-table [value]="customer.addresses" showGridlines [tableStyle]="{ 'min-width': '100%' }">
-            <ng-template pTemplate="header">
-              <tr>
-                <th>Street</th>
-                <th>City</th>
-                <th>State</th>
-                <th>ZIP Code</th>
-                <th>Country</th>
-                <th>Type</th>
-                <th>Default</th>
-                <th>Actions</th>
-              </tr>
-            </ng-template>
-            <ng-template pTemplate="body" let-address let-i="rowIndex">
-              <tr>
-                <td>{{ address.street }}</td>
-                <td>{{ address.city }}</td>
-                <td>{{ address.state }}</td>
-                <td>{{ address.zipCode }}</td>
-                <td>{{ address.country }}</td>
-                <td>{{ address.type }}</td>
-                <td>
-                  <p-checkbox [(ngModel)]="address.isDefault" binary="true" [disabled]="true"></p-checkbox>
-                </td>
-                <td class="flex gap-2">
-                  <button pButton (click)="editAddress(i)" icon="pi pi-pencil"
-                    class="p-button-rounded p-button-text p-button-sm"></button>
-                  <button pButton icon="pi pi-trash" class="p-button-rounded p-button-text p-button-sm"
-                    (click)="removeAddress(i)"></button>
-                </td>
-              </tr>
-            </ng-template>
-          </p-table>
-          <button class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 mt-4"
-            (click)="showAddressDialog()">Add
-            Address</button>
-        </p-card>
-      </div>
-    </div>
-  </div>
-
-  <div *ngIf="false" class="flex flex-wrap w-full md:w-full p-2">
-    <div class="md:p-2 p-1 w-full">
-      <div class="bg-gray-800 p-4 rounded-lg shadow-md border border-gray-700">
-        <div class="mx-auto max-w-screen-xl px-4 py-8 sm:px-6 sm:py-12 lg:px-8 bg-gray-200 rounded-lg">
-          <div class="mx-auto max-w-3xl text-center">
-            <h2 class="text-3xl font-bold text-yellow-500 sm:text-4xl">
-              Financial Status
-            </h2>
-          </div>
-
-          <dl class="mt-6 grid grid-cols-2 gap-4 sm:mt-8 sm:grid-cols-2 lg:grid-cols-4">
-            <div class="flex flex-col rounded-lg border border-gray-600 px-4 py-8 text-center bg-gray-200">
-              <dt class="order-last text-lg font-medium text-gray-400">Remaining Amount</dt>
-              <dd class="text-4xl font-extrabold text-blue-500 md:text-5xl">{{ customer.remainingAmount | currency
-                }}</dd>
-            </div>
-
-            <div class="flex flex-col rounded-lg border border-gray-600 px-4 py-8 text-center bg-gray-200">
-              <dt class="order-last text-lg font-medium text-gray-400">
-                Purchased Amount
-              </dt>
-              <dd class="text-4xl font-extrabold text-blue-500 md:text-5xl">{{ customer.totalPurchasedAmount |
-                currency }}</dd>
-            </div>
-
-            <div class="flex flex-col rounded-lg border border-gray-600 px-4 py-8 text-center bg-gray-200">
-              <dt class="order-last text-lg font-medium text-gray-400">Total BUY</dt>
-              <dd class="text-4xl font-extrabold text-blue-500 md:text-5xl">86</dd>
-            </div>
-
-            <div class="flex flex-col rounded-lg border border-gray-600 px-4 py-8 text-center bg-gray-200">
-              <dt class="order-last text-lg font-medium text-gray-400">Downloads</dt>
-              <dd class="text-4xl font-extrabold text-blue-500 md:text-5xl">86k</dd>
-            </div>
-          </dl>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div class="flex flex-wrap w-full p-2">
-    <div class="md:p-2 p-1 w-full">
-      <button (click)="saveCustomer()" class="save-button">Save
-        Customer</button>
-    </div>
-  </div>
-</div>
-
-<p-dialog header="Add Phone Number" [(visible)]="phoneDialogVisible"
-  styleClass="p-dialog-compact bg-gray-800 text-white border border-gray-700 rounded-lg p-5 shadow-lg" [modal]="true"
-  [closable]="true" [dismissableMask]="true" [breakpoints]="{'960px': '50vw', '640px': '90vw'}">
-  <div class="p-fluid">
-    <div class="p-field mb-3">
-      <label for="phoneNumber" class="block text-sm font-medium text-gray-300 mb-1">Phone Number</label>
-      <input id="phoneNumber" type="tel" pInputText [(ngModel)]="newPhoneNumber.number" required
-        class="p-inputtext w-full bg-gray-200 text-white border border-gray-600 rounded-md p-2 focus:ring-2 focus:ring-blue-500"
-        placeholder="Enter phone number" />
-    </div>
-
-    <div class="p-field mb-3">
-      <label for="phoneType" class="block text-sm font-medium text-gray-300 mb-1">Phone Type</label>
-      <p-select appendTo="body" id="phoneType" [options]="phoneTypes" [(ngModel)]="newPhoneNumber.type"
-        optionLabel="label" optionValue="value" required
-        class="p-select w-full bg-gray-200 text-white border border-gray-600 rounded-md p-2 focus:ring-2 focus:ring-blue-500">
-      </p-select>
-    </div>
-
-    <div class="p-field flex items-center">
-      <p-checkbox [(ngModel)]="newPhoneNumber.primary" inputId="primaryPhone" binary="true" class="mr-2"></p-checkbox>
-      <label for="primaryPhone" class="text-sm text-gray-300">Set as Primary Number</label>
-    </div>
-
-    <div class="flex justify-end gap-2 mt-4">
-      <p-button label="Cancel" icon="pi pi-times" (click)="phoneDialogVisible = false" class="dialog-button-">
-      </p-button>
-      <p-button icon="pi pi-check" (click)="addPhoneNumber()" class="dialog-button-add">
-      </p-button>
-    </div>
-  </div>
-</p-dialog>
-
-<p-fileUpload hidden #fileUploader url="http://localhost:4000/api/customers/{{customerId}}/profile-image"
-  accept="image/*" maxFileSize="5000000" (onSelect)="handleFileSelect($event)" (onUpload)="handleFileUpload($event)"
-  [auto]="true" [showUploadButton]="false" [showCancelButton]="false">
-</p-fileUpload>
-
-<p-dialog header="Add Address" [(visible)]="addressDialogVisible"
-  styleClass="p-dialog-compact bg-gray-200 text-white border border-gray-700 rounded-lg p-5 shadow-lg" [modal]="true"
-  [closable]="true" [dismissableMask]="true" [breakpoints]="{'960px': '75vw', '640px': '90vw'}">
-  <div class="p-fluid">
-    <div class="p-field mb-3">
-      <label for="street" class="block text-sm font-medium text-gray-300 mb-1">Street</label>
-      <input id="street" type="text" pInputText [(ngModel)]="newAddress.street" required
-        class="p-inputtext w-full bg-gray-200 text-white border border-gray-600 rounded-md p-2" />
-    </div>
-
-    <div class="grid grid-cols-2 gap-4">
-      <div class="p-field">
-        <label for="city" class="block text-sm font-medium text-gray-300 mb-1">City</label>
-        <input id="city" type="text" pInputText [(ngModel)]="newAddress.city" required
-          class="p-inputtext w-full bg-gray-200 text-white border border-gray-600 rounded-md p-2" />
-      </div>
-
-      <div class="p-field">
-        <label for="state" class="block text-sm font-medium text-gray-300 mb-1">State</label>
-        <input id="state" type="text" pInputText [(ngModel)]="newAddress.state" required
-          class="p-inputtext w-full bg-gray-200 text-white border border-gray-600 rounded-md p-2" />
-      </div>
-    </div>
-
-    <div class="grid grid-cols-2 gap-4">
-      <div class="p-field">
-        <label for="zipCode" class="block text-sm font-medium text-gray-300 mb-1">ZIP Code</label>
-        <input id="zipCode" type="text" pInputText [(ngModel)]="newAddress.zipCode" required
-          class="p-inputtext w-full bg-gray-200 text-white border border-gray-600 rounded-md p-2" />
-      </div>
-
-      <div class="p-field">
-        <label for="country" class="block text-sm font-medium text-gray-300 mb-1">Country</label>
-        <input id="country" type="text" pInputText [(ngModel)]="newAddress.country" required
-          class="p-inputtext w-full bg-gray-200 text-white border border-gray-600 rounded-md p-2" />
-      </div>
-    </div>
-
-    <div class="p-field mb-3">
-      <label for="addressType" class="block text-sm font-medium text-gray-300 mb-1">Address Type</label>
-      <p-select id="addressType" appendTo="body" [options]="addressTypes" [(ngModel)]="newAddress.type"
-        optionLabel="label" optionValue="value" required
-        class="p-select w-full bg-gray-200 text-white border border-gray-600 rounded-md p-2"></p-select>
-    </div>
-
-    <div class="p-field flex items-center">
-      <p-checkbox [(ngModel)]="newAddress.isDefault" inputId="defaultAddress" binary="true" class="mr-2"></p-checkbox>
-      <label for="defaultAddress" class="text-sm text-gray-300">Set as Default Address</label>
-    </div>
-
-    <div class="flex justify-end gap-2 mt-4">
-      <p-button label="Cancel" icon="pi pi-times" (click)="addressDialogVisible = false"
-        class="p-button-text text-gray-400 hover:text-white"></p-button>
-      <p-button label="Add Address" icon="pi pi-check" (click)="addAddress()" class="dialog-button-add"></p-button>
-    </div>
-  </div>
-</p-dialog>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<!-- //////////////////////////////////// -->
 
 <!-- 
 

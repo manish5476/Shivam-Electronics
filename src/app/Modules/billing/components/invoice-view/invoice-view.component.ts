@@ -1,21 +1,7 @@
-// import { Component } from '@angular/core';
-
-// @Component({
-//   selector: 'app-invoice-view',
-//   imports: [],
-//   templateUrl: './invoice-view.component.html',
-//   styleUrl: './invoice-view.component.css'
-// })
-// export class InvoiceViewComponent {
-
-// }
 
 import { ChangeDetectorRef, Component, EventEmitter, Output } from '@angular/core';
-// import { SharedGridComponent } from '../../../../shared/AgGrid/grid/shared-grid/shared-grid.component';
-
 import { SharedGridComponent } from '../../../../shared/AgGrid/grid/shared-grid/shared-grid.component';
-
-import { InvoiceService } from  '../../../../core/services/invoice.service';
+import { InvoiceService } from '../../../../core/services/invoice.service';
 import { CellValueChangedEvent } from 'ag-grid-community';
 import { DialogboxComponent } from '../../../../shared/AgGrid/AgGridcomponents/dialogbox/dialogbox.component';
 import { InvoiceDetailCardComponent } from '../invoice-detailsview/invoice-detailsview.component';
@@ -86,8 +72,18 @@ export class InvoiceViewComponent {
 
       { field: 'buyerDetails.fullname', headerName: 'Buyer Name', sortable: true, filter: true, resizable: true },
       { field: 'buyerDetails.email', headerName: 'Buyer Email', sortable: true, filter: true, resizable: true },
-      { field: 'buyerDetails.phoneNumbers[0].number', headerName: 'Buyer Contact 1', sortable: true, filter: true, resizable: true },
-      { field: 'buyerDetails.phoneNumbers[1].number', headerName: 'Buyer Contact 2', sortable: true, filter: true, resizable: true },
+      {
+        field: 'buyerDetails.phoneNumbers[0].number', valueGetter: (params: any) => {
+          if (params.data?.buyerDetails?.phoneNumbers?.length > 0) { return params.data.buyerDetails.phoneNumbers[0].number; }
+          return '';
+        }, headerName: 'Buyer Contact 1', sortable: true, filter: true, resizable: true
+      },
+      {
+        field: 'buyerDetails.phoneNumbers[1].number', valueGetter: (params: any) => {
+          if (params.data?.buyerDetails?.phoneNumbers?.length > 0) { return params.data.buyerDetails.phoneNumbers[0].number; }
+          return '';
+        }, headerName: 'Buyer Contact 2', sortable: true, filter: true, resizable: true
+      },
       { field: 'invoiceDate', headerName: 'Invoice Date', sortable: true, filter: true, resizable: true, valueFormatter: (params: any) => new Date(params.value).toLocaleDateString() },
       { field: 'dueDate', headerName: 'Due Date', sortable: true, filter: true, resizable: true, valueFormatter: (params: any) => new Date(params.value).toLocaleDateString() },
       {

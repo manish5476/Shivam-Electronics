@@ -18,8 +18,8 @@ export class SellerService extends BaseApiService {
       .pipe(catchError((error: HttpErrorResponse) => this.errorhandler.handleError('createNewSeller', error)));
   }
 
-  getAllSellersdata(): Observable<any[]> {
-    return this.http.get<any[]>(`${this.baseUrl}/v1/sellers`)
+  getAllSellersdata(filterParams?:any): Observable<any[]> {
+    return this.http.get<any[]>(`${this.baseUrl}/v1/sellers`,{ params: this.createHttpParams(filterParams) })
       .pipe(catchError((error: HttpErrorResponse) => this.errorhandler.handleError('getAllSellersdata', error)));
   }
 

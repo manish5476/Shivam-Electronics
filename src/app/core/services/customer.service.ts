@@ -8,8 +8,8 @@ import { HttpErrorResponse } from '@angular/common/http';
 @Injectable({ providedIn: 'root' })
 export class CustomerService extends BaseApiService {
 
-  getAllCustomerData(): Observable<any[]> {
-    return this.http.get<any[]>(`${this.baseUrl}/v1/customers`)
+  getAllCustomerData(filterParams?:any): Observable<any[]> {
+    return this.http.get<any[]>(`${this.baseUrl}/v1/customers`,{ params: this.createHttpParams(filterParams) })
       .pipe(catchError((error: HttpErrorResponse) => this.errorhandler.handleError('getAllCustomerData', error)));
   }
 

@@ -8,8 +8,8 @@ import { HttpErrorResponse } from '@angular/common/http';
 @Injectable({ providedIn: 'root' })
 export class PaymentService extends BaseApiService {
 
-  getAllpaymentData(): Observable<any[]> {
-    return this.http.get<any[]>(`${this.baseUrl}/v1/payments`)
+  getAllpaymentData(filterParams?:any): Observable<any[]> {
+    return this.http.get<any[]>(`${this.baseUrl}/v1/payments`,{ params: this.createHttpParams(filterParams) })
       .pipe(catchError((error: HttpErrorResponse) => this.errorhandler.handleError('getAllpaymentData', error)));
   }
 
