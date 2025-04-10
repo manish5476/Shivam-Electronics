@@ -1,4 +1,4 @@
-/* /* @import "tailwindcss"; */  @layer components {
+ @layer components {
     .invoice-container {
       @apply bg-white p-6 rounded-md shadow-md;
     }
@@ -16,6 +16,5 @@
     .invoice-container {
       @apply shadow-none border-none p-0 m-0 w-full;
     }
-  } */
-
+  } 
   

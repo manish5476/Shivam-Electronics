@@ -1,14 +1,4 @@
-// import { Component } from '@angular/core';
 
-// @Component({
-//   selector: 'app-customer-detailed-list',
-//   imports: [],
-//   templateUrl: './customer-detailed-list.component.html',
-//   styleUrl: './customer-detailed-list.component.css'
-// })
-// export class CustomerDetailedListComponent {
-
-// }
 import { Component, ChangeDetectorRef, OnInit } from '@angular/core';
 import { TableModule } from 'primeng/table';
 import { Tag } from 'primeng/tag';
@@ -30,6 +20,7 @@ import { PanelModule } from 'primeng/panel';
 import { AvatarModule } from 'primeng/avatar';
 import { CustomerService } from '../../../../core/services/customer.service';
 import { LoadingService } from '../../../../core/services/loading.service';
+import { AutopopulateService } from '../../../../core/services/autopopulate.service';
 @Component({
   selector: 'app-customer-detailed-list',
   imports: [TableModule,TabViewModule, CheckboxModule, AvatarModule, AccordionModule, SelectModule, PanelModule, DialogModule, FormsModule, Tag, ToastModule, CardModule, ButtonModule, CommonModule],
@@ -51,7 +42,10 @@ export class CustomerDetailedListComponent {
   dynamicComponent: any;
 
 
-  constructor(private CustomerService: CustomerService, private cdr: ChangeDetectorRef,private loadingService:LoadingService) { }
+  constructor(private CustomerService: CustomerService, 
+              private autoPopulate: AutopopulateService,
+              private cdr: ChangeDetectorRef,
+              private loadingService:LoadingService) { }
 
 
   ngOnInit(): void {
@@ -116,18 +110,15 @@ export class CustomerDetailedListComponent {
   }
 
   autopopulatedata() {
-    const autopopulate: any = JSON.parse(sessionStorage.getItem('autopopulate') || '{}');
-    if (autopopulate && Array.isArray(autopopulate.customersdrop)) {
-      this.customerIDDropdown = [...autopopulate.customersdrop]
-    } else {
-      this.customerIDDropdown = [];
-      this.messageService.add({
-        severity: 'info',
-        summary: 'Info',
-        detail: 'No valid customer data found',
-        life: 3000
-      });
-    }
+    // this.autoPopulate.getModuleData('products').subscribe((data:any) => {
+    //   this.productdrop = data;
+    // });
+    // this.autoPopulate.getModuleData('sellers').subscribe((data:any) => {
+    //   this.sellersDrop = data;
+    // });
+    this.autoPopulate.getModuleData('customers').subscribe((data:any) => {
+      this.customerIDDropdown = data;
+    });
   }
 
   getCustomerDetail(): void {

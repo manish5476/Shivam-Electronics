@@ -1,5 +1,5 @@
 
-<body class="bg-white-100 text-gray-900 dark:bg-gray-400 dark:text-gray w-6/6 mx-auto p-6 shadow-md rounded-lg font-roboto">
+<body class="bg-white-100 text-gray-900 dark:bg-gray dark:text-gray w-6/6 mx-auto p-6 shadow-md rounded-lg font-roboto">
     <button id="theme-toggle" (click)="toggleDarkMode()" class="bg-white-200 dark:bg-gray-200 text-gray-800 dark:text-gray-200 px-4 py-2 rounded-md mb-4">Toggle Dark Mode</button>
     <div class="card flex justify-center mb-6">
         <p-select styleClass="gradient-border" [options]="productdropdwn" [(ngModel)]="selectedProductId" optionLabel="title" optionValue="_id" class="w-1/2 md:w-56"></p-select>
@@ -113,19 +113,19 @@
                     <label for="dimensions" class="block text-gray-900 dark:text-gray font-bold mb-1">Dimensions</label>
                     <div class="flex space-x-2">
                         <p-floatLabel>
-                            <input pInputText type="number" id="width" [(ngModel)]="product.dimensions.width" name="dimensions.width" class="w-1/4 p-2 border border-gray-500 dark:border-gray-700 rounded text-gray-900 dark:text-gray" required />
+                            <input pInputText type="number" id="width" [(ngModel)]="product.dimensions.width" name="dimensions.width" class="w-3/4 p-2 border border-gray-500 dark:border-gray-700 rounded text-gray-900 dark:text-gray" required />
                             <label for="width" class="text-gray-700 dark:text-gray-300">Width</label>
                         </p-floatLabel>
                         <p-floatLabel>
-                            <input pInputText type="number" id="height" [(ngModel)]="product.dimensions.height" name="dimensions.height" class="w-1/4 p-2 border border-gray-500 dark:border-gray-700 rounded text-gray-900 dark:text-gray" required />
+                            <input pInputText type="number" id="height" [(ngModel)]="product.dimensions.height" name="dimensions.height" class="w-3/4 p-2 border border-gray-500 dark:border-gray-700 rounded text-gray-900 dark:text-gray" required />
                             <label for="height" class="text-gray-700 dark:text-gray-300">Height</label>
                         </p-floatLabel>
                         <p-floatLabel>
-                            <input pInputText type="number" id="depth" [(ngModel)]="product.dimensions.depth" name="dimensions.depth" class="w-1/4 p-2 border border-gray-500 dark:border-gray-700 rounded text-gray-900 dark:text-gray" required />
+                            <input pInputText type="number" id="depth" [(ngModel)]="product.dimensions.depth" name="dimensions.depth" class="w-3/4 p-2 border border-gray-500 dark:border-gray-700 rounded text-gray-900 dark:text-gray" required />
                             <label for="depth" class="text-gray-700 dark:text-gray-300">Depth</label>
                         </p-floatLabel>
                         <p-floatLabel>
-                            <input pInputText type="number" id="weight" [(ngModel)]="product.weight" name="dimensions.depth" class="w-1/4 p-2 border border-gray-500 dark:border-gray-700 rounded text-gray-900 dark:text-gray" required/>
+                            <input pInputText type="number" id="weight" [(ngModel)]="product.weight" name="dimensions.depth" class="w-3/4 p-2 border border-gray-500 dark:border-gray-700 rounded text-gray-900 dark:text-gray" required/>
                             <label for="depth" class="text-gray-700 dark:text-gray-300">Weight</label>
                         </p-floatLabel>
                     </div>
@@ -187,7 +187,7 @@
                         </label>
                         <textarea
                             id="warrantyInformation"
-                            class="mt-2 w-full rounded-lg border-gray-500 dark:border-gray-700 align-top shadow-xs sm:text-sm dark:bg-gray-400 dark:text-gray p-2"
+                            class="mt-2 w-full rounded-lg border-gray-500 dark:border-gray-700 align-top shadow-xs sm:text-sm dark:bg-gray dark:text-gray p-2"
                             rows="4" [(ngModel)]="product.warrantyInformation"
                             placeholder="Enter warranty information..."
                         ></textarea>
@@ -200,7 +200,7 @@
                         </label>
                         <textarea
                             id="shippingInformation" [(ngModel)]="product.shippingInformation"
-                            class="mt-2 w-full rounded-lg border-gray-500 dark:border-gray-700 align-top shadow-xs sm:text-sm dark:bg-gray-400 dark:text-gray p-2"
+                            class="mt-2 w-full rounded-lg border-gray-500 dark:border-gray-700 align-top shadow-xs sm:text-sm dark:bg-gray dark:text-gray p-2"
                             rows="4"
                             placeholder="Enter shipping information..."
                         ></textarea>
@@ -213,7 +213,7 @@
                         </label>
                         <textarea
                             id="returnPolicy"
-                            class="mt-2 w-full rounded-lg border-gray-500 dark:border-gray-700 align-top shadow-xs sm:text-sm dark:bg-gray-400 dark:text-gray p-2"
+                            class="mt-2 w-full rounded-lg border-gray-500 dark:border-gray-700 align-top shadow-xs sm:text-sm dark:bg-gray dark:text-gray p-2"
                             rows="4" [(ngModel)]="product.returnPolicy"
                             placeholder="Enter return policy..."
                         ></textarea>

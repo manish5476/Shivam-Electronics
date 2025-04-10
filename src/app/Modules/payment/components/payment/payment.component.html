@@ -1,90 +1,77 @@
-
 <div class="container mx-auto p-6">
-  <div class="flex flex-col flex-row justify-between items-center mb-4 ">
+  <!-- Top Controls -->
+  <div class="flex flex-col md:flex-row justify-between items-center gap-4 mb-4">
     <p-select [(ngModel)]="customerId" [options]="customerIDDropdown" optionLabel="fullname" optionValue="_id"
       placeholder="Select Customer" class="w-full md:w-64">
     </p-select>
     <button (click)="fetchCustomerData()" class="p-button p-button-primary px-4 py-2">Find</button>
   </div>
-   
+
+  <!-- Grid Container -->
   <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
 
     <!-- Customer Details -->
-    <div class="bg-gray-900 p-6 rounded-lg shadow-md animate-fadeIn">
+    <div class="card">
       <h2 class="text-3xl font-semibold text-white mb-4">Customer Details</h2>
-    
-      <div class="flow-root">
-        <dl class="-my-2 divide-y divide-gray-700 text-base"> <!-- Increased text size -->
-          
-          <div class="grid grid-cols-1 gap-1 py-3 even:bg-gray-800 sm:grid-cols-3 sm:gap-4 transition-transform transform scale-95 hover:scale-100 duration-300">
-            <dt class="font-semibold text-white">Name</dt>
-            <dd class="text-gray-300 sm:col-span-2">{{ customer?.fullname || '-' }}</dd>
-          </div>
-    
-          <div class="grid grid-cols-1 gap-1 py-3 even:bg-gray-800 sm:grid-cols-3 sm:gap-4 transition-transform transform scale-95 hover:scale-100 duration-300">
-            <dt class="font-semibold text-white">Email</dt>
-            <dd class="text-gray-300 sm:col-span-2">{{ customer?.email || '-' }}</dd>
-          </div>
-    
-          <div class="grid grid-cols-1 gap-1 py-3 even:bg-gray-800 sm:grid-cols-3 sm:gap-4 transition-transform transform scale-95 hover:scale-100 duration-300">
-            <dt class="font-semibold text-white">Phone Number</dt>
-            <dd class="text-gray-300 sm:col-span-2">
-              {{ customer?.phoneNumbers[0]?.number || '-' }} ({{ customer?.phoneNumbers[0]?.type || '-' }})
-            </dd>
-          </div>
-    
-          <div class="grid grid-cols-1 gap-1 py-3 even:bg-gray-800 sm:grid-cols-3 sm:gap-4 transition-transform transform scale-95 hover:scale-100 duration-300">
-            <dt class="font-semibold text-white">Status</dt>
-            <dd class="sm:col-span-2 text-lg"
-              [ngClass]="{
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <!-- Repeat each block inside this grid -->
+        <div class="bg-gray-800 rounded-md p-4 transition-transform transform hover:scale-105 duration-300">
+          <dt class="font-semibold text-white">Name</dt>
+          <dd class="text-gray-300">{{ customer?.fullname || '-' }}</dd>
+        </div>
+
+        <div class="bg-gray-800 rounded-md p-4 transition-transform transform hover:scale-105 duration-300">
+          <dt class="font-semibold text-white">Email</dt>
+          <dd class="text-gray-300">{{ customer?.email || '-' }}</dd>
+        </div>
+
+        <div class="bg-gray-800 rounded-md p-4 transition-transform transform hover:scale-105 duration-300">
+          <dt class="font-semibold text-white">Phone Number</dt>
+          <dd class="text-gray-300">{{ customer?.phoneNumbers[0]?.number || '-' }} ({{ customer?.phoneNumbers[0]?.type || '-' }})</dd>
+        </div>
+
+        <div class="bg-gray-800 rounded-md p-4 transition-transform transform hover:scale-105 duration-300">
+          <dt class="font-semibold text-white">Status</dt>
+          <dd [ngClass]="{
                 'text-green-500': customer?.status === 'active',
                 'text-red-500': customer?.status !== 'active'
               }">
-              {{ customer?.status || '-' }}
-            </dd>
-          </div>
-    
-          <div class="grid grid-cols-1 gap-1 py-3 even:bg-gray-800 sm:grid-cols-3 sm:gap-4 transition-transform transform scale-95 hover:scale-100 duration-300">
-            <dt class="font-semibold text-white">Total Purchased Amount</dt>
-            <dd class="text-green-400 font-bold text-lg sm:col-span-2">₹{{ customer?.totalPurchasedAmount || '0' }}</dd>
-          </div>
-    
-          <div class="grid grid-cols-1 gap-1 py-3 even:bg-gray-800 sm:grid-cols-3 sm:gap-4 transition-transform transform scale-95 hover:scale-100 duration-300">
-            <dt class="font-semibold text-white">Remaining Amount</dt>
-            <dd class="text-red-500 font-bold text-lg sm:col-span-2">₹{{ customer?.remainingAmount || '0' }}</dd>
-          </div>
-    
-          <div class="grid grid-cols-1 gap-1 py-3 even:bg-gray-800 sm:grid-cols-3 sm:gap-4 transition-transform transform scale-95 hover:scale-100 duration-300">
-            <dt class="font-semibold text-white">Address</dt>
-            <dd class="text-gray-300 sm:col-span-2">
-              {{ customer?.addresses[0]?.street || '-' }}, 
-              {{ customer?.addresses[0]?.city || '-' }}, 
-              {{ customer?.addresses[0]?.state || '-' }}, 
-              {{ customer?.addresses[0]?.zipCode || '-' }}
-            </dd>
-          </div>
-    
-          <div class="grid grid-cols-1 gap-1 py-3 even:bg-gray-800 sm:grid-cols-3 sm:gap-4 transition-transform transform scale-95 hover:scale-100 duration-300">
-            <dt class="font-semibold text-white">Guarantor ID</dt>
-            <dd class="text-gray-300 sm:col-span-2">{{ customer?.guaranteerId || '-' }}</dd>
-          </div>
-    
-        </dl>
+            {{ customer?.status || '-' }}
+          </dd>
+        </div>
+
+        <div class="bg-gray-800 rounded-md p-4 transition-transform transform hover:scale-105 duration-300">
+          <dt class="font-semibold text-white">Total Purchased Amount</dt>
+          <dd class="text-green-400 font-bold text-lg">₹{{ customer?.totalPurchasedAmount || '0' }}</dd>
+        </div>
+
+        <div class="bg-gray-800 rounded-md p-4 transition-transform transform hover:scale-105 duration-300">
+          <dt class="font-semibold text-white">Remaining Amount</dt>
+          <dd class="text-red-500 font-bold text-lg">₹{{ customer?.remainingAmount || '0' }}</dd>
+        </div>
+
+        <div class="bg-gray-800 rounded-md p-4 transition-transform transform hover:scale-105 duration-300 md:col-span-2">
+          <dt class="font-semibold text-white">Address</dt>
+          <dd class="text-gray-300">
+            {{ customer?.addresses[0]?.street || '-' }},
+            {{ customer?.addresses[0]?.city || '-' }},
+            {{ customer?.addresses[0]?.state || '-' }},
+            {{ customer?.addresses[0]?.zipCode || '-' }}
+          </dd>
+        </div>
+
+        <div class="bg-gray-800 rounded-md p-4 transition-transform transform hover:scale-105 duration-300 md:col-span-2">
+          <dt class="font-semibold text-white">Guarantor ID</dt>
+          <dd class="text-gray-300">{{ customer?.guaranteerId || '-' }}</dd>
+        </div>
       </div>
     </div>
-    
-    <!-- Payment Section -->
-    <div class="bg-gray-900 p-6 rounded-lg shadow-md">
-      <h2 class="text-2xl font-semibold text-white mb-4">Process Payment</h2>
-      <div class="space-y-4">
-        
-        <!-- <div>
-          <label class="text-white font-medium">Customer ID *</label>
-          <input type="text" [(ngModel)]="paymentData.customerId" name="customerId"
-            class="w-full p-2 rounded-md border-gray-600 focus:ring-2 focus:ring-blue-500 bg-gray-800 text-white"
-            placeholder="Enter customer ID" required>
-        </div> -->
 
+    <!-- Payment Section -->
+    <div class="card p-6 rounded-lg shadow-md">
+      <h2 class="text-2xl font-semibold text-white mb-4">Process Payment</h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        
         <div>
           <label class="text-white font-medium">Amount *</label>
           <input type="number" [(ngModel)]="paymentData.amount" name="amount"
@@ -108,21 +95,14 @@
           </select>
         </div>
 
-        <!-- <div>
-          <label class="text-white font-medium">Transaction ID (Optional)</label>
-          <input type="text" [(ngModel)]="paymentData.transactionId" name="transactionId"
-            class="w-full p-2 rounded-md border-gray-600 focus:ring-2 focus:ring-blue-500 bg-gray-800 text-white"
-            placeholder="Transaction ID (if available)">
-        </div> -->
-
-        <div>
+        <div class="md:col-span-2">
           <label class="text-white font-medium">Description</label>
-          <textarea [(ngModel)]="paymentData.description" name="description" rows="1"
+          <textarea [(ngModel)]="paymentData.description" name="description" rows="2"
             class="w-full p-2 rounded-md border-gray-600 focus:ring-2 focus:ring-blue-500 bg-gray-800 text-white"
             placeholder="Payment description (max 200 characters)" maxlength="200"></textarea>
         </div>
 
-        <div>
+        <div class="md:col-span-2">
           <label class="text-white font-medium">Metadata (JSON)</label>
           <textarea [(ngModel)]="paymentData.metadata" name="metadata" rows="3"
             class="w-full p-2 rounded-md border-gray-600 focus:ring-2 focus:ring-blue-500 bg-gray-800 text-white"
@@ -132,10 +112,13 @@
           </p>
         </div>
 
-        <button type="submit" (click)="onSubmit()"
-          class="w-full bg-blue-600 text-white py-3 rounded-md hover:bg-blue-700 transition">
-          Process Payment
-        </button>
+        <div class="md:col-span-2">
+          <button type="submit" (click)="onSubmit()"
+            class="w-full bg-blue-600 text-white py-3 rounded-md hover:bg-blue-700 transition">
+            Process Payment
+          </button>
+        </div>
+
       </div>
     </div>
   </div>

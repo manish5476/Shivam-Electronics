@@ -30,6 +30,7 @@ import { HttpClient } from '@angular/common/http';
 import { FileUpload } from 'primeng/fileupload';
 import { CustomerService } from '../../../../core/services/customer.service';
 import { FocusTrapModule } from 'primeng/focustrap';// import { SupabaseService } from '../../../core/services/supabase.service';
+import { AutopopulateService } from '../../../../core/services/autopopulate.service';
 // import lodash from 'lodash'
 interface Customer {
   fullname: string;
@@ -150,11 +151,12 @@ export class CustomerMasterComponent implements OnInit {
     this.fileUploader.clear();
   }
 
-  
+
   constructor(
     // private supabase: SupabaseService,
     private CustomerService: CustomerService,
     private http: HttpClient,
+    private autoPopulate: AutopopulateService,
     private messageService: MessageService,
     @Inject(PLATFORM_ID) private platformId: Object
   ) {
@@ -173,186 +175,173 @@ export class CustomerMasterComponent implements OnInit {
   }
 
   autopopulatedata() {
-    const autopopulate: any = JSON.parse(sessionStorage.getItem('autopopulate') || '{}');
+    // this.autoPopulate.getModuleData('products').subscribe((data:any) => {
+    //   this.productdrop = data;
+    // });
+    // this.autoPopulate.getModuleData('sellers').subscribe((data:any) => {
+    //   this.sellersDrop = data;
+    // });
+    this.autoPopulate.getModuleData('customers').subscribe((data: any) => {
+      this.customerIDDropdown = data;
+    });
+  }
 
-    if (autopopulate && Array.isArray(autopopulate.customersdrop)) {
-      // this.customerIDDropdown = lodash.cloneDeep(autopopulate.customersdrop)
-    } else {
-      this.customerIDDropdown = [];
-      this.messageService.add({
-        severity: 'info',
-        summary: 'Info',
-        detail: 'No valid customer data found',
-        life: 3000
-      });
-    }
+selectedGuaranterevent(event: any) {
+  this.selectedGuaranter = event.value;
+}
 
-    // Ensure future updates also enforce an array
-    setTimeout(() => {
-      if (!Array.isArray(this.customerIDDropdown)) {
-        console.error('Corrupted Dropdown Data. Resetting...');
-        this.customerIDDropdown = [];
+toggleDarkMode() {
+  this.isDarkMode = !this.isDarkMode;
+  document.body.classList.toggle('dark-mode', this.isDarkMode);
+  if (isPlatformBrowser(this.platformId)) {
+    localStorage.setItem('darkMode', String(this.isDarkMode));
+  }
+}
+
+// onFileSelected(event: any) {
+//   this.selectedFile = event.target.files[0] as File;
+// }
+
+getCustomerID() {
+  const customerId = 'your-customer-id';
+  this.CustomerService.getCustomerDataWithId(customerId)
+    .subscribe({
+      next: (customer) => {
+        this.customer = customer;
+      },
+      error: (err) => {
+        console.error('Error fetching customer:', err);
+        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Failed to load customer data.' });
       }
-    }, 500);
+    });
+}
 
+
+handleFileSelect(event ?: any) {
+  const file = event.files[0];
+  if (file) {
+    this.uploadStatus = 'Preparing to upload...';
+    const formData = new FormData();
+    formData.append('image', file); // Append the selected file to FormData
+    // this.CustomerService.uploadProfileImage(formData, this.customerId).subscribe(
+    //   (response: any) => {
+    //     this.uploadStatus = 'Image uploaded successfully!';
+    //   },
+    //   (error: any) => {
+    //     this.uploadStatus = 'Error uploading image.';
+    //     console.error('Upload Error:', error);
+    //   }
+    // );
+  } else {
   }
+}
 
-  selectedGuaranterevent(event: any) {
-    this.selectedGuaranter = event.value;
-  }
-
-  toggleDarkMode() {
-    this.isDarkMode = !this.isDarkMode;
-    document.body.classList.toggle('dark-mode', this.isDarkMode);
-    if (isPlatformBrowser(this.platformId)) {
-      localStorage.setItem('darkMode', String(this.isDarkMode));
-    }
-  }
-
-  // onFileSelected(event: any) {
-  //   this.selectedFile = event.target.files[0] as File;
-  // }
-
-  getCustomerID() {
-    const customerId = 'your-customer-id';
-    this.CustomerService.getCustomerDataWithId(customerId)
-      .subscribe({
-        next: (customer) => {
-          this.customer = customer;
-        },
-        error: (err) => {
-          console.error('Error fetching customer:', err);
-          this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Failed to load customer data.' });
-        }
-      });
-  }
-
-
-  handleFileSelect(event?: any) {
-    const file = event.files[0];
-    if (file) {
-      this.uploadStatus = 'Preparing to upload...';
-      const formData = new FormData();
-      formData.append('image', file); // Append the selected file to FormData
-      // this.CustomerService.uploadProfileImage(formData, this.customerId).subscribe(
-      //   (response: any) => {
-      //     this.uploadStatus = 'Image uploaded successfully!';
-      //   },
-      //   (error: any) => {
-      //     this.uploadStatus = 'Error uploading image.';
-      //     console.error('Upload Error:', error);
-      //   }
-      // );
-    } else {
-    }
-  }
-
-  handleFileUpload(event: any) {
-  }
+handleFileUpload(event: any) {
+}
 
 
 
-  saveCustomer() {
-    if (this.validateCustomer()) {
-      this.customer.guaranteerId = this.selectedGuaranter._id
-      this.CustomerService.createNewCustomer(this.customer).subscribe(
-        (response: any) => {
-          const customerId = response.data._id;
-          this.customerId = customerId;
-          // this.handleFileSelect();
-        },
-        (error) => {
-          this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Failed to create customer.' });
-        }
-      );
-    } else {
-      this.messageService.add({ severity: 'warn', summary: 'Warning', detail: 'Please correct the errors in the form.' });
-    }
-  }
-
-
-  validateCustomer(): boolean {
-    if (!this.customer.fullname) {
-      this.messageService.add({ severity: 'warn', summary: 'Warning', detail: 'Fullname is required.' });
-      return false;
-    }
-
-    if (!this.customer.email || !this.customer.email.match(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/)) {
-      this.messageService.add({ severity: 'warn', summary: 'Warning', detail: 'Please enter a valid email address.' });
-      return false;
-    }
-
-    return true;
-  }
-
-  showPhoneDialog() {
-    this.editingPhoneIndex = -1; // Reset to add new phone number
-    this.newPhoneNumber = { number: '', type: 'mobile', primary: false }; // Reset newPhoneNumber
-    this.phoneDialogVisible = true;
-  }
-  showAddressDialog() {
-    this.editingAddressIndex = -1; // Reset to add new address
-    this.newAddress = { street: '', city: '', state: '', zipCode: '', country: '', type: 'home', isDefault: false }; // Reset newAddress
-    this.addressDialogVisible = true
-  }
-
-  addPhoneNumber() {
-    if (this.newPhoneNumber.number && this.newPhoneNumber.type) {
-      if (this.editingPhoneIndex > -1) {
-        // Edit existing phone number
-        this.customer.phoneNumbers[this.editingPhoneIndex] = { ...this.newPhoneNumber };
-      } else {
-        // Add new phone number
-        this.customer.phoneNumbers.push({ ...this.newPhoneNumber });
+saveCustomer() {
+  if (this.validateCustomer()) {
+    this.customer.guaranteerId = this.selectedGuaranter._id
+    this.CustomerService.createNewCustomer(this.customer).subscribe(
+      (response: any) => {
+        const customerId = response.data._id;
+        this.customerId = customerId;
+        // this.handleFileSelect();
+      },
+      (error) => {
+        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Failed to create customer.' });
       }
-      this.phoneDialogVisible = false;
-      this.newPhoneNumber = { number: '', type: 'mobile', primary: false }; // Reset for next entry
-      this.editingPhoneIndex = -1; // Reset editing index
+    );
+  } else {
+    this.messageService.add({ severity: 'warn', summary: 'Warning', detail: 'Please correct the errors in the form.' });
+  }
+}
+
+
+validateCustomer(): boolean {
+  if (!this.customer.fullname) {
+    this.messageService.add({ severity: 'warn', summary: 'Warning', detail: 'Fullname is required.' });
+    return false;
+  }
+
+  if (!this.customer.email || !this.customer.email.match(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/)) {
+    this.messageService.add({ severity: 'warn', summary: 'Warning', detail: 'Please enter a valid email address.' });
+    return false;
+  }
+
+  return true;
+}
+
+showPhoneDialog() {
+  this.editingPhoneIndex = -1; // Reset to add new phone number
+  this.newPhoneNumber = { number: '', type: 'mobile', primary: false }; // Reset newPhoneNumber
+  this.phoneDialogVisible = true;
+}
+showAddressDialog() {
+  this.editingAddressIndex = -1; // Reset to add new address
+  this.newAddress = { street: '', city: '', state: '', zipCode: '', country: '', type: 'home', isDefault: false }; // Reset newAddress
+  this.addressDialogVisible = true
+}
+
+addPhoneNumber() {
+  if (this.newPhoneNumber.number && this.newPhoneNumber.type) {
+    if (this.editingPhoneIndex > -1) {
+      // Edit existing phone number
+      this.customer.phoneNumbers[this.editingPhoneIndex] = { ...this.newPhoneNumber };
     } else {
-      this.messageService.add({ severity: 'warn', summary: 'Warning', detail: 'Please enter phone number and type.' });
+      // Add new phone number
+      this.customer.phoneNumbers.push({ ...this.newPhoneNumber });
     }
+    this.phoneDialogVisible = false;
+    this.newPhoneNumber = { number: '', type: 'mobile', primary: false }; // Reset for next entry
+    this.editingPhoneIndex = -1; // Reset editing index
+  } else {
+    this.messageService.add({ severity: 'warn', summary: 'Warning', detail: 'Please enter phone number and type.' });
   }
+}
 
-  deletePhone(index: number) {
-    this.customer.phoneNumbers.splice(index, 1);
-  }
+deletePhone(index: number) {
+  this.customer.phoneNumbers.splice(index, 1);
+}
 
-  addAddress() {
-    if (this.newAddress.street && this.newAddress.city) {
-      if (this.editingAddressIndex > -1) {
-        // Edit existing address
-        this.customer.addresses[this.editingAddressIndex] = { ...this.newAddress };
-      } else {
-        // Add new address
-        this.customer.addresses.push({ ...this.newAddress });
-      }
-      this.addressDialogVisible = false;
-      this.newAddress = { street: '', city: '', state: '', zipCode: '', country: '', type: 'home', isDefault: false }; // Reset for next entry
-      this.editingAddressIndex = -1; // Reset editing index
+addAddress() {
+  if (this.newAddress.street && this.newAddress.city) {
+    if (this.editingAddressIndex > -1) {
+      // Edit existing address
+      this.customer.addresses[this.editingAddressIndex] = { ...this.newAddress };
+    } else {
+      // Add new address
+      this.customer.addresses.push({ ...this.newAddress });
     }
+    this.addressDialogVisible = false;
+    this.newAddress = { street: '', city: '', state: '', zipCode: '', country: '', type: 'home', isDefault: false }; // Reset for next entry
+    this.editingAddressIndex = -1; // Reset editing index
   }
+}
 
 
-  setDefaultAddress(index: number) {
-    this.customer.addresses.forEach((address: { isDefault: boolean; }, i: any) => address.isDefault = i === index);
-  }
+setDefaultAddress(index: number) {
+  this.customer.addresses.forEach((address: { isDefault: boolean; }, i: any) => address.isDefault = i === index);
+}
 
-  editAddress(index: number) {
-    this.editingAddressIndex = index;
-    this.newAddress = { ...this.customer.addresses[index] };
-    this.addressDialogVisible = true;
-  }
+editAddress(index: number) {
+  this.editingAddressIndex = index;
+  this.newAddress = { ...this.customer.addresses[index] };
+  this.addressDialogVisible = true;
+}
 
-  editPhone(index: number) {
-    this.editingPhoneIndex = index;
-    this.newPhoneNumber = { ...this.customer.phoneNumbers[index] };
-    this.phoneDialogVisible = true;
-  }
+editPhone(index: number) {
+  this.editingPhoneIndex = index;
+  this.newPhoneNumber = { ...this.customer.phoneNumbers[index] };
+  this.phoneDialogVisible = true;
+}
 
 
-  removeAddress(index: number) {
-    this.customer.addresses.splice(index, 1);
-  }
+removeAddress(index: number) {
+  this.customer.addresses.splice(index, 1);
+}
 }
 /*
 import { IftaLabelModule } from 'primeng/iftalabel';

@@ -4,7 +4,7 @@
 }
 
 .overflow-x-auto::-webkit-scrollbar-thumb {
-  @apply bg-gray-400 rounded-lg;
+  @apply bg-gray rounded-lg;
 }
 
 .overflow-x-auto::-webkit-scrollbar-track {

@@ -1,4 +1,4 @@
-
+<!-- 
 <div class="flex flex-wrap md:-m-2 -m-1 w-full">
   <div class="w-full md:w-1/2 p-2">
     <div class="bg-gray-200 rounded-lg p-4 flex flex-col h-full border border-gray-700 shadow-lg">
@@ -305,9 +305,363 @@
       <p-button label="Add Address" icon="pi pi-check" (click)="addAddress()" class="dialog-button-add"></p-button>
     </div>
   </div>
+</p-dialog> -->
+
+<div class="flex flex-wrap md:-m-2 -m-1 w-full">
+
+  <div class="w-full md:w-1/2 p-1 md:p-2">
+    <div class="bg-[--color-surface] rounded-lg p-4 border border-[--color-border] shadow-lg mb-4">
+      <div class="mb-4">
+        <div class="w-32 h-32 border-2 border-[--color-border] rounded-lg flex items-center justify-center overflow-hidden bg-[--color-bg-base] mx-auto">
+          @if(customer.profileImg) {
+            <img [src]="customer.profileImg" alt="Profile Image" class="w-full h-full object-cover">
+          } @else {
+            <i class="pi pi-user text-[--color-text-muted] text-6xl"></i>
+          }
+        </div>
+      </div>
+      <div>
+        <p-fileUpload #fileUploader name="profileImage" url="your-upload-api-endpoint" (onUpload)="onUpload($event)"
+                       [multiple]="false" accept="image/*" maxFileSize="1000000" mode="advanced" [showUploadButton]="true"
+                       [showCancelButton]="true" styleClass="bg-[--color-surface] border-[--color-border]">
+           <ng-template pTemplate="empty">
+             <div class="text-center p-2 text-[--color-text-muted]">Drag and drop here or <button type="button" pButton pRipple label="Choose"
+                 (click)="fileUploader.choose()" class="p-button-sm p-button-text !text-[--color-primary] hover:!bg-[--color-primary]/10"></button>.</div>
+           </ng-template>
+           <ng-template pTemplate="content">
+             <ul *ngIf="uploadedFiles.length" class="list-disc pl-5 text-sm text-[--color-text-muted]">
+               <li *ngFor="let file of uploadedFiles">{{ file.name }} - {{ file.size }} bytes</li>
+             </ul>
+           </ng-template>
+         </p-fileUpload>
+      </div>
+      @if(uploadStatus){
+         <p class="mt-2 text-sm text-[--color-success] text-center">{{ uploadStatus }}</p>
+       }
+    </div>
+
+    <div class="bg-[--color-surface] p-4 rounded-lg shadow-lg border border-[--color-border]">
+       <div class="mb-4">
+         <label for="status" class="block text-sm font-medium text-[--color-text-muted] mb-1">Status</label>
+         <p-select id="status" placeholder="Select Status" [options]="statuses" [(ngModel)]="customer.status" required name="status" #status="ngModel"
+                   styleClass="w-full" panelStyleClass="!bg-[--color-surface] !border !border-[--color-border]"
+                   [ngClass]="{'!border-[--color-error]': status.invalid && (status.dirty || status.touched)}"
+                   class="p-inputwrapper-filled w-full text-[--color-text-base] bg-[--color-bg-base] border border-[--color-border] rounded-md focus-within:ring-2 focus-within:ring-[--color-primary] focus-within:border-[--color-primary]">
+                   </p-select>
+          @if (status.invalid && (status.dirty || status.touched)) {
+            <div class="text-[--color-error] text-xs mt-1">
+                @if (status.errors?.['required']) { <span>Status is required.</span> }
+            </div>
+           }
+       </div>
+
+       <div class="flex flex-col space-y-2">
+         <label for="guaranteer" class="block text-sm font-medium text-[--color-text-muted] mb-1">Guarantor Name</label>
+         <p-select id="guaranteer" name="guaranter" placeholder="Select Guarantor" [options]="customerIDDropdown" [(ngModel)]="selectedGuaranter"
+                    (onChange)="selectedGuaranterevent($event)" optionLabel="fullname" [filter]="true" filterBy="fullname"
+                    styleClass="w-full" panelStyleClass="!bg-[--color-surface] !border !border-[--color-border]"
+                    class="p-inputwrapper-filled w-full text-[--color-text-base] bg-[--color-bg-base] border border-[--color-border] rounded-md focus-within:ring-2 focus-within:ring-[--color-primary] focus-within:border-[--color-primary]">
+         </p-select>
+
+         @if(selectedGuaranter?.fullname) {
+            <div class="w-full border border-[--color-border] rounded-md p-2 text-[--color-text-base] bg-[--color-bg-base] mt-2">
+                {{ selectedGuaranter.fullname }}
+            </div>
+
+            @if(selectedGuaranter.phoneNumbers?.length > 0) {
+                <label class="block text-xs font-medium text-[--color-text-muted] mt-2 mb-1">Guarantor Phone Numbers</label>
+                <ul class="space-y-1">
+                   @for (item of selectedGuaranter.phoneNumbers; track $index) {
+                     <li class="w-full border border-[--color-border] rounded-md p-2 text-xs text-[--color-text-base] bg-[--color-bg-base]">
+                       {{ item.number }}
+                     </li>
+                   }
+                </ul>
+             }
+           }
+       </div>
+    </div>
+  </div>
+
+  <div class="w-full md:w-1/2 p-1 md:p-2">
+     <div class="bg-[--color-surface] p-4 rounded-lg shadow-md border border-[--color-border] mb-4">
+        <h3 class="text-lg font-medium text-[--color-text-base] mb-4 border-b border-[--color-border] pb-2">Personal Information</h3>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <label for="fullname" class="block text-sm font-medium text-[--color-text-muted]">Full Name *</label>
+            <input id="fullname" type="text" name="fullnameRight" required minlength="2" #fullnameRight="ngModel"
+                   class="mt-1 w-full px-3 py-2 bg-[--color-bg-base] text-[--color-text-base] border border-[--color-border] rounded-md focus:ring-2 focus:ring-[--color-primary] focus:border-[--color-primary] sm:text-sm"
+                   [class.border-[--color-error]]="fullnameRight.invalid && (fullnameRight.dirty || fullnameRight.touched)"
+                   [(ngModel)]="customer.fullname" />
+            @if (fullnameRight.invalid && (fullnameRight.dirty || fullnameRight.touched)) {
+                <div class="text-[--color-error] text-xs mt-1">
+                    @if (fullnameRight.errors?.['required']) { <span>Name is required.</span> }
+                    @if (fullnameRight.errors?.['minlength']) { <span>Name must be at least 2 characters.</span> }
+                </div>
+             }
+          </div>
+          <div>
+            <label for="email" class="block text-sm font-medium text-[--color-text-muted]">Email *</label>
+            <input id="email" type="email" name="emailRight" required email #emailRight="ngModel"
+                   class="mt-1 w-full px-3 py-2 bg-[--color-bg-base] text-[--color-text-base] border border-[--color-border] rounded-md focus:ring-2 focus:ring-[--color-primary] focus:border-[--color-primary] sm:text-sm"
+                    [class.border-[--color-error]]="emailRight.invalid && (emailRight.dirty || emailRight.touched)"
+                   [(ngModel)]="customer.email" />
+            @if (emailRight.invalid && (emailRight.dirty || emailRight.touched)) {
+                <div class="text-[--color-error] text-xs mt-1">
+                    @if (emailRight.errors?.['required']) { <span>Email is required.</span> }
+                    @if (emailRight.errors?.['email']) { <span>Invalid email format.</span> }
+                </div>
+             }
+          </div>
+        </div>
+     </div>
+
+     <div class="bg-[--color-surface] p-4 rounded-lg shadow-md border border-[--color-border] mb-4">
+       <div class="flex justify-between items-center mb-4 border-b border-[--color-border] pb-2">
+         <h3 class="text-lg font-medium text-[--color-text-base]">Phone Numbers</h3>
+         <button pButton type="button" label="Add Phone" icon="pi pi-plus" (click)="showPhoneDialog()"
+                 class="p-button-sm !bg-[--color-primary] !text-[--color-text-inverted] hover:!bg-[--color-primary-hover]"></button>
+       </div>
+       <p-table [value]="customer.phoneNumbers" showGridlines [tableStyle]="{ 'min-width': '100%' }" styleClass="p-datatable-sm p-datatable-striped"
+                 responsiveLayout="scroll">
+          <ng-template pTemplate="header">
+            <tr class="bg-[--color-surface]"> <th class="!text-[--color-text-base]">Number</th>
+              <th class="!text-[--color-text-base]">Type</th>
+              <th class="!text-[--color-text-base]">Primary</th>
+              <th class="!text-[--color-text-base]">Actions</th>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-phone let-i="rowIndex">
+            <tr class="text-[--color-text-base]"> <td>{{ phone.number }}</td>
+              <td>{{ phone.type | titlecase }}</td>
+              <td class="text-center">
+                <i *ngIf="phone.primary" class="pi pi-check-circle text-[--color-success]"></i>
+                <i *ngIf="!phone.primary" class="pi pi-circle text-[--color-text-muted]"></i>
+              </td>
+              <td class="flex gap-1 justify-center">
+                 <button pButton type="button" (click)="editPhone(i)" icon="pi pi-pencil"
+                         class="p-button-rounded p-button-text p-button-sm !text-[--color-text-muted] hover:!bg-[--color-primary]/10 hover:!text-[--color-primary]"></button>
+                 <button pButton type="button" icon="pi pi-trash"
+                         class="p-button-rounded p-button-text p-button-sm !text-[--color-text-muted] hover:!bg-[--color-error]/10 hover:!text-[--color-error]"
+                         (click)="deletePhone(i)"></button>
+              </td>
+            </tr>
+          </ng-template>
+           <ng-template pTemplate="emptymessage">
+               <tr>
+                   <td colspan="4" class="text-center text-[--color-text-muted] py-4">No phone numbers added.</td>
+               </tr>
+           </ng-template>
+        </p-table>
+     </div>
+
+     <div class="bg-[--color-surface] p-4 rounded-lg shadow-md border border-[--color-border]">
+        <div class="flex justify-between items-center mb-4 border-b border-[--color-border] pb-2">
+          <h3 class="text-lg font-medium text-[--color-text-base]">Addresses</h3>
+           <button pButton type="button" label="Add Address" icon="pi pi-plus" (click)="showAddressDialog()"
+                   class="p-button-sm !bg-[--color-primary] !text-[--color-text-inverted] hover:!bg-[--color-primary-hover]"></button>
+        </div>
+        <p-table [value]="customer.addresses" showGridlines [tableStyle]="{ 'min-width': '100%' }" styleClass="p-datatable-sm p-datatable-striped"
+                 responsiveLayout="scroll">
+           <ng-template pTemplate="header">
+             <tr class="bg-[--color-surface]">
+               <th class="!text-[--color-text-base]">Street</th>
+               <th class="!text-[--color-text-base]">City</th>
+               <th class="!text-[--color-text-base]">State</th>
+               <th class="!text-[--color-text-base]">ZIP</th>
+               <th class="!text-[--color-text-base]">Country</th>
+               <th class="!text-[--color-text-base]">Type</th>
+               <th class="!text-[--color-text-base]">Default</th>
+               <th class="!text-[--color-text-base]">Actions</th>
+             </tr>
+           </ng-template>
+           <ng-template pTemplate="body" let-address let-i="rowIndex">
+             <tr class="text-[--color-text-base]">
+               <td>{{ address.street }}</td>
+               <td>{{ address.city }}</td>
+               <td>{{ address.state }}</td>
+               <td>{{ address.zipCode }}</td>
+               <td>{{ address.country }}</td>
+               <td>{{ address.type | titlecase }}</td>
+               <td class="text-center">
+                 <button type="button"
+                         [disabled]="address.isDefault"
+                         (click)="setDefaultAddress(i)"
+                         [ngClass]="{
+                            'text-[--color-success]': address.isDefault,
+                            'text-[--color-text-muted] hover:text-[--color-primary]': !address.isDefault
+                         }"
+                         class="p-1 disabled:opacity-50 disabled:cursor-not-allowed">
+                     <i class="pi" [ngClass]="address.isDefault ? 'pi-check-circle' : 'pi-circle'"></i>
+                 </button>
+               </td>
+               <td class="flex gap-1 justify-center">
+                 <button pButton type="button" (click)="editAddress(i)" icon="pi pi-pencil"
+                         class="p-button-rounded p-button-text p-button-sm !text-[--color-text-muted] hover:!bg-[--color-primary]/10 hover:!text-[--color-primary]"></button>
+                 <button pButton type="button" icon="pi pi-trash"
+                         class="p-button-rounded p-button-text p-button-sm !text-[--color-text-muted] hover:!bg-[--color-error]/10 hover:!text-[--color-error]"
+                         (click)="removeAddress(i)"></button>
+               </td>
+             </tr>
+           </ng-template>
+           <ng-template pTemplate="emptymessage">
+               <tr>
+                   <td colspan="8" class="text-center text-[--color-text-muted] py-4">No addresses added.</td>
+               </tr>
+           </ng-template>
+         </p-table>
+     </div>
+  </div>
+
+  <div *ngIf="false" class="w-full p-1 md:p-2"> <div class="bg-[--color-surface] p-4 rounded-lg shadow-md border border-[--color-border]">
+       <div class="mx-auto max-w-screen-xl px-4 py-8 sm:px-6 sm:py-12 lg:px-8 rounded-lg">
+         <div class="mx-auto max-w-3xl text-center">
+           <h2 class="text-3xl font-bold text-[--color-secondary] sm:text-4xl">
+             Financial Status
+           </h2>
+         </div>
+         <dl class="mt-6 grid grid-cols-1 gap-4 sm:mt-8 sm:grid-cols-2 lg:grid-cols-4">
+           <div class="flex flex-col rounded-lg border border-[--color-border] px-4 py-8 text-center bg-[--color-bg-base]">
+             <dt class="order-last text-lg font-medium text-[--color-text-muted]">Remaining Amount</dt>
+             <dd class="text-4xl font-extrabold text-[--color-primary] md:text-5xl">{{ customer.remainingAmount | currency:'INR' }}</dd>
+           </div>
+           <div class="flex flex-col rounded-lg border border-[--color-border] px-4 py-8 text-center bg-[--color-bg-base]">
+             <dt class="order-last text-lg font-medium text-[--color-text-muted]">Purchased Amount</dt>
+             <dd class="text-4xl font-extrabold text-[--color-primary] md:text-5xl">{{ customer.totalPurchasedAmount | currency:'INR' }}</dd>
+           </div>
+            </dl>
+       </div>
+     </div>
+   </div>
+
+   <div class="w-full p-1 md:p-2">
+     <div class="flex justify-end mt-6">
+         <button type="button" (click)="saveCustomer()" class="btn-primary">
+           <!-- @if (isSubmitting) {
+              <svg class="animate-spin -ml-1 mr-3 h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+              </svg>
+              <span>Saving...</span>
+           } @else {
+             <span>Save Customer</span>
+           } -->
+         </button>
+     </div>
+   </div>
+
+</div> <p-dialog header="{{ editingPhoneIndex > -1 ? 'Edit' : 'Add' }} Phone Number" [(visible)]="phoneDialogVisible"
+  styleClass="p-dialog-compact !bg-[--color-surface] !text-[--color-text-base] border !border-[--color-border] rounded-lg shadow-lg" [modal]="true"
+  [closable]="true" [dismissableMask]="true" [breakpoints]="{'960px': '50vw', '640px': '90vw'}">
+  <div class="p-fluid p-5"> <div class="mb-3">
+      <label for="phoneNumber" class="block text-sm font-medium text-[--color-text-muted] mb-1">Phone Number *</label>
+      <input id="phoneNumber" type="tel" pInputText [(ngModel)]="newPhoneNumber.number" required name="dialogPhoneNum" #dialogPhoneNum="ngModel"
+             class="w-full !bg-[--color-bg-base] !text-[--color-text-base] !border !border-[--color-border] rounded-md p-2 focus:!ring-2 focus:!ring-[--color-primary]"
+             [class.!border-[--color-error]]="dialogPhoneNum.invalid && dialogPhoneNum.touched"
+             placeholder="Enter phone number" />
+       @if (dialogPhoneNum.invalid && dialogPhoneNum.touched) {
+         <small class="text-[--color-error]">Phone number is required.</small>
+       }
+    </div>
+
+    <div class="mb-3">
+      <label for="phoneType" class="block text-sm font-medium text-[--color-text-muted] mb-1">Phone Type *</label>
+       <p-select appendTo="body" id="phoneType" [options]="phoneTypes" [(ngModel)]="newPhoneNumber.type" required name="dialogPhoneType" #dialogPhoneType="ngModel"
+                 optionLabel="label" optionValue="value"
+                 styleClass="w-full" panelStyleClass="!bg-[--color-surface] !border !border-[--color-border]"
+                 class="p-inputwrapper-filled w-full text-[--color-text-base] bg-[--color-bg-base] border border-[--color-border] rounded-md focus-within:ring-2 focus-within:ring-[--color-primary] focus-within:border-[--color-primary]"
+                 [ngClass]="{'!border-[--color-error]': dialogPhoneType.invalid && dialogPhoneType.touched}">
+       </p-select>
+        @if (dialogPhoneType.invalid && dialogPhoneType.touched) {
+         <small class="text-[--color-error]">Phone type is required.</small>
+       }
+    </div>
+
+    <div class="flex items-center mb-4">
+      <p-checkbox [(ngModel)]="newPhoneNumber.primary" inputId="primaryPhone" binary="true" name="dialogPhonePrimary" class="mr-2"></p-checkbox>
+      <label for="primaryPhone" class="text-sm text-[--color-text-muted]">Set as Primary Number</label>
+    </div>
+
+    <div class="flex justify-end gap-2 mt-4">
+       <button type="button" pButton label="Cancel" icon="pi pi-times" (click)="phoneDialogVisible=false; editingPhoneIndex=-1"
+               class="p-button-text !text-[--color-text-muted] hover:!bg-[--color-border]/20"></button>
+       <button type="button" pButton label="{{ editingPhoneIndex > -1 ? 'Update' : 'Add' }} Phone" icon="pi pi-check" (click)="addPhoneNumber()"
+               class="p-button !bg-[--color-primary] !text-[--color-text-inverted] hover:!bg-[--color-primary-hover]"></button>
+    </div>
+  </div>
 </p-dialog>
 
+<p-dialog header="{{ editingAddressIndex > -1 ? 'Edit' : 'Add' }} Address" [(visible)]="addressDialogVisible"
+  styleClass="p-dialog-compact !bg-[--color-surface] !text-[--color-text-base] border !border-[--color-border] rounded-lg shadow-lg" [modal]="true"
+  [closable]="true" [dismissableMask]="true" [breakpoints]="{'960px': '75vw', '640px': '90vw'}">
+  <div class="p-fluid p-5"> <div class="mb-3">
+        <label for="street" class="block text-sm font-medium text-[--color-text-muted] mb-1">Street *</label>
+        <input id="street" type="text" pInputText [(ngModel)]="newAddress.street" required name="dialogStreet" #dialogStreet="ngModel"
+               class="w-full !bg-[--color-bg-base] !text-[--color-text-base] !border !border-[--color-border] rounded-md p-2 focus:!ring-2 focus:!ring-[--color-primary]"
+               [class.!border-[--color-error]]="dialogStreet.invalid && dialogStreet.touched" />
+         @if (dialogStreet.invalid && dialogStreet.touched) { <small class="text-[--color-error]">Street is required.</small> }
+     </div>
+     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-3">
+        <div>
+            <label for="city" class="block text-sm font-medium text-[--color-text-muted] mb-1">City *</label>
+            <input id="city" type="text" pInputText [(ngModel)]="newAddress.city" required name="dialogCity" #dialogCity="ngModel"
+                   class="w-full !bg-[--color-bg-base] !text-[--color-text-base] !border !border-[--color-border] rounded-md p-2 focus:!ring-2 focus:!ring-[--color-primary]"
+                   [class.!border-[--color-error]]="dialogCity.invalid && dialogCity.touched" />
+            @if (dialogCity.invalid && dialogCity.touched) { <small class="text-[--color-error]">City is required.</small> }
+        </div>
+        <div>
+            <label for="state" class="block text-sm font-medium text-[--color-text-muted] mb-1">State *</label>
+            <input id="state" type="text" pInputText [(ngModel)]="newAddress.state" required name="dialogState" #dialogState="ngModel"
+                    class="w-full !bg-[--color-bg-base] !text-[--color-text-base] !border !border-[--color-border] rounded-md p-2 focus:!ring-2 focus:!ring-[--color-primary]"
+                    [class.!border-[--color-error]]="dialogState.invalid && dialogState.touched" />
+             @if (dialogState.invalid && dialogState.touched) { <small class="text-[--color-error]">State is required.</small> }
+        </div>
+     </div>
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-3">
+        <div>
+            <label for="zipCode" class="block text-sm font-medium text-[--color-text-muted] mb-1">ZIP Code *</label>
+            <input id="zipCode" type="text" pInputText [(ngModel)]="newAddress.zipCode" required name="dialogZip" #dialogZip="ngModel"
+                    class="w-full !bg-[--color-bg-base] !text-[--color-text-base] !border !border-[--color-border] rounded-md p-2 focus:!ring-2 focus:!ring-[--color-primary]"
+                    [class.!border-[--color-error]]="dialogZip.invalid && dialogZip.touched" />
+             @if (dialogZip.invalid && dialogZip.touched) { <small class="text-[--color-error]">ZIP Code is required.</small> }
+        </div>
+        <div>
+            <label for="country" class="block text-sm font-medium text-[--color-text-muted] mb-1">Country *</label>
+            <input id="country" type="text" pInputText [(ngModel)]="newAddress.country" required name="dialogCountry" #dialogCountry="ngModel"
+                    class="w-full !bg-[--color-bg-base] !text-[--color-text-base] !border !border-[--color-border] rounded-md p-2 focus:!ring-2 focus:!ring-[--color-primary]"
+                    [class.!border-[--color-error]]="dialogCountry.invalid && dialogCountry.touched" />
+             @if (dialogCountry.invalid && dialogCountry.touched) { <small class="text-[--color-error]">Country is required.</small> }
+        </div>
+     </div>
+     <div class="mb-3">
+        <label for="addressType" class="block text-sm font-medium text-[--color-text-muted] mb-1">Address Type *</label>
+        <p-select appendTo="body" id="addressType" [options]="addressTypes" [(ngModel)]="newAddress.type" required name="dialogAddrType" #dialogAddrType="ngModel"
+                 optionLabel="label" optionValue="value"
+                 styleClass="w-full" panelStyleClass="!bg-[--color-surface] !border !border-[--color-border]"
+                 class="p-inputwrapper-filled w-full text-[--color-text-base] bg-[--color-bg-base] border border-[--color-border] rounded-md focus-within:ring-2 focus-within:ring-[--color-primary] focus-within:border-[--color-primary]"
+                 [ngClass]="{'!border-[--color-error]': dialogAddrType.invalid && dialogAddrType.touched}">
+       </p-select>
+        @if (dialogAddrType.invalid && dialogAddrType.touched) { <small class="text-[--color-error]">Address type is required.</small> }
+    </div>
 
+    <div class="flex items-center mb-4">
+      <p-checkbox [(ngModel)]="newAddress.isDefault" inputId="defaultAddress" binary="true" name="dialogAddrDefault" class="mr-2"></p-checkbox>
+      <label for="defaultAddress" class="text-sm text-[--color-text-muted]">Set as Default Address</label>
+    </div>
+
+    <div class="flex justify-end gap-2 mt-4">
+       <button type="button" pButton label="Cancel" icon="pi pi-times" (click)="addressDialogVisible=false; editingAddressIndex=-1"
+               class="p-button-text !text-[--color-text-muted] hover:!bg-[--color-border]/20"></button>
+       <button type="button" pButton label="{{ editingAddressIndex > -1 ? 'Update' : 'Add' }} Address" icon="pi pi-check" (click)="addAddress()"
+               class="p-button !bg-[--color-primary] !text-[--color-text-inverted] hover:!bg-[--color-primary-hover]"></button>
+    </div>
+  </div>
+</p-dialog>
+
+<p-fileUpload hidden #fileUploader url="http://localhost:4000/api/customers/{{customerId}}/profile-image"
+  accept="image/*" maxFileSize="5000000" (onSelect)="handleFileSelect($event)" (onUpload)="handleFileUpload($event)"
+  [auto]="true" [showUploadButton]="false" [showCancelButton]="false">
+</p-fileUpload>
 
 
 
