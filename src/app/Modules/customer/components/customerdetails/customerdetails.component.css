@@ -1,23 +1,23 @@
-/* @import "tailwindcss"; */.futuristic-product-card {
-  @apply bg-white dark:bg-gray-800 rounded-xl p-4 shadow-lg hover:shadow-xl transition-all duration-300;
+/* @import "tailwindcss"; */
+.futuristic-product-card {
 }
 
 .ecommerce-product-image {
-  @apply w-full h-48 object-cover;
+  /* @apply w-full object-cover; */
 }
 
 .futuristic-product-details {
-  @apply mt-4;
+  /* @apply mt-4; */
 }
 
 .futuristic-table {
-  @apply text-gray-700 dark:text-gray-300;
+  /* @apply text-gray-700 dark:text-gray-300; */
 }
 
 .futuristic-table-th {
-  @apply px-4 py-2 bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-semibold;
+  /* @apply px-4 py-2 bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-semibold; */
 }
 
 .futuristic-table-td {
-  @apply px-4 py-2 border-b border-gray-200 dark:border-gray-700;
+  /* @apply px-4 py-2 border-b border-gray-200 dark:border-gray-700; */
 }

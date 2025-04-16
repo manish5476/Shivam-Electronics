@@ -1,15 +1,11 @@
 /* Scrollbar styles */
-/* @import "tailwindcss"; */.overflow-x-auto::-webkit-scrollbar {
+/* @import "tailwindcss"; */
+
+.overflow-x-auto::-webkit-scrollbar {
   height: 8px;
 }
 
-.overflow-x-auto::-webkit-scrollbar-thumb {
-  @apply bg-gray rounded-lg;
-}
 
-.overflow-x-auto::-webkit-scrollbar-track {
-  @apply bg-gray-200;
-}
 .overflow-x-auto {
     scrollbar-width: thin;
     scrollbar-color: #a0aec0 #edf2f7;
@@ -17,5 +13,5 @@
 
 /* Optional: Add spacing between buttons */
 :host ::ng-deep .p-button {
-  @apply mr-2;
+  /* @apply mr-2; */
 }

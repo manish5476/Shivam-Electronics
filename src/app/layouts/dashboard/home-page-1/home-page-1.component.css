@@ -1,3 +1,4 @@
+/* @import "tailwindcss"; */
 :host {
   @keyframes slidedown-icon {
     0% {

@@ -1,18 +1,6 @@
-/* @import "tailwindcss";
-@import "primeicons/primeicons.css";
-
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; } */
-/*-------------------------------------------------------------------*/
-/* Imports                                                           */
-/*-------------------------------------------------------------------*/
+@import "tailwindcss";
 
 html, body { height: 100%; }
-/* Import Tailwind v4 styles (ensure this path is correct for your setup) */
-@import "tailwindcss";
 
 /* PrimeIcons import remains the same */
 @import "primeicons/primeicons.css";
@@ -165,9 +153,6 @@ a:hover {
 /*-------------------------------------------------------------------*/
 @layer components {
   /* Example: Define components using arbitrary value syntax with CSS Vars */
-  .card {
-    @apply bg-[--color-surface] rounded-lg shadow-md p-4 md:p-6 border border-[--color-border];
-  }
 
   /* .btn-primary {
     @apply inline-flex items-center justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-[--color-text-inverted] bg-[--color-primary] hover:bg-[--color-primary-hover] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[--color-primary] disabled:opacity-50 disabled:cursor-not-allowed;
