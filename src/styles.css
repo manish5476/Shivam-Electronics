@@ -154,6 +154,7 @@ a:hover {
 @layer components {
   /* Example: Define components using arbitrary value syntax with CSS Vars */
 
+
   /* .btn-primary {
     @apply inline-flex items-center justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-[--color-text-inverted] bg-[--color-primary] hover:bg-[--color-primary-hover] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[--color-primary] disabled:opacity-50 disabled:cursor-not-allowed;
     @apply focus:ring-offset-[--color-bg-base]; 
@@ -190,36 +191,36 @@ a:hover {
 
   /* Unified card wrapper */
   .app-card {
-    @apply bg-[--color-surface] p-4 md:p-6 rounded-xl shadow border border-[--color-border];
+    /* @apply bg-[--color-surface] p-4 md:p-6 rounded-xl shadow border border-[--color-border]; */
   }
 
   /* Common section layout */
   .app-section {
-    @apply bg-[--color-surface] rounded-xl border border-[--color-border] p-6 my-4 shadow-sm;
+    /* @apply bg-[--color-surface] rounded-xl border border-[--color-border] p-6 my-4 shadow-sm; */
   }
 
   /* Common button variations */
   .btn-primary {
-    @apply inline-flex items-center justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-[--color-text-inverted] bg-[--color-primary] hover:bg-[--color-primary-hover] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[--color-primary] disabled:opacity-50 disabled:cursor-not-allowed;
-    @apply focus:ring-offset-[--color-bg-base];
+    /* @apply inline-flex items-center justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-[--color-text-inverted] bg-[--color-primary] hover:bg-[--color-primary-hover] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[--color-primary] disabled:opacity-50 disabled:cursor-not-allowed; */
+    /* @apply focus:ring-offset-[--color-bg-base]; */
   }
 
   .btn-secondary {
-    @apply inline-flex items-center justify-center px-4 py-2 border border-[--color-border] text-sm font-medium rounded-md shadow-sm text-[--color-text-base] bg-[--color-surface] hover:bg-[--color-border]/20 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[--color-primary] disabled:opacity-50 disabled:cursor-not-allowed;
-    @apply focus:ring-offset-[--color-bg-base];
+    /* @apply inline-flex items-center justify-center px-4 py-2 border border-[--color-border] text-sm font-medium rounded-md shadow-sm text-[--color-text-base] bg-[--color-surface] hover:bg-[--color-border]/20 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[--color-primary] disabled:opacity-50 disabled:cursor-not-allowed; */
+    /* @apply focus:ring-offset-[--color-bg-base]; */
   }
 
   /* Uniform heading styles */
   .heading-1 {
-    @apply text-2xl font-semibold text-[--color-text-base] mb-4;
+    /* @apply text-2xl font-semibold text-[--color-text-base] mb-4; */
   }
 
   .heading-2 {
-    @apply text-xl font-semibold text-[--color-text-base] mb-3;
+    /* @apply text-xl font-semibold text-[--color-text-base] mb-3; */
   }
 
   .heading-muted {
-    @apply text-lg font-medium text-[--color-text-muted];
+    /* @apply text-lg font-medium text-[--color-text-muted]; */
   }
 } 
 /* Global Layout & Color Palette */

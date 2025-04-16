@@ -257,29 +257,30 @@ interface ChartOptions {
       </div>
     </div>
   `,
-  styles: [`
-  /* @import "tailwindcss"; */    :host ::ng-deep .p-card {
-      @apply rounded-lg;
-    }
-    :host ::ng-deep .p-card-content {
-      @apply p-4;
-    }
-    :host ::ng-deep .p-datatable {
-      @apply rounded-lg;
-    }
-    :host ::ng-deep .p-datatable-header {
-      @apply bg-white border-b;
-    }
-    :host ::ng-deep .p-datatable-thead > tr > th {
-      @apply bg-gray-50 text-gray-700 font-semibold;
-    }
-    :host ::ng-deep .p-datatable-tbody > tr > td {
-      @apply border-b;
-    }
-    :host ::ng-deep .p-paginator {
-      @apply bg-white border-t;
-    }
-  `]
+  // styles: [`
+  // /* @import "tailwindcss"; */   
+  //  :host ::ng-deep .p-card {
+  //     @apply rounded-lg;
+  //   }
+  //   :host ::ng-deep .p-card-content {
+  //     @apply p-4;
+  //   }
+  //   :host ::ng-deep .p-datatable {
+  //     @apply rounded-lg;
+  //   }
+  //   :host ::ng-deep .p-datatable-header {
+  //     @apply bg-white border-b;
+  //   }
+  //   :host ::ng-deep .p-datatable-thead > tr > th {
+  //     @apply bg-gray-50 text-gray-700 font-semibold;
+  //   }
+  //   :host ::ng-deep .p-datatable-tbody > tr > td {
+  //     @apply border-b;
+  //   }
+  //   :host ::ng-deep .p-paginator {
+  //     @apply bg-white border-t;
+  //   }
+  // `]
 })
 export class AdminDashboardComponent implements OnInit {
   // Chart data
