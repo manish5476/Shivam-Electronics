@@ -19,13 +19,9 @@
             fill="currentColor" />
         </svg>
       </button>
-      <!-- <p-tieredmenu #me nu [model]="menuItems" [popup]="true" /> -->
     </a>
 
     <div class="flex flex-1 items-center justify-end md:justify-between">
-      <nav aria-label="Global" class="hidden md:block">
-      </nav>
-
       <div class="flex items-center gap-4 ml-auto">
         <div class="sm:flex sm:gap-4">
           <a routerLink="/auth/login"
@@ -37,6 +33,9 @@
             Register
           </a>
           <a>
+            <div class="flex justify-between items-center">
+              <input type="color" id="gradientColorPicker" (change)="onColorChange($event)" class="w-10 h-10 rounded-full cursor-pointer">
+            </div>
           </a>
         </div>
       </div>
@@ -44,48 +43,47 @@
   </div>
 </header>
 
-
 <!-- sidebar drawer -->
 <!-- <div class="card flex justify-start"> -->
-  <p-drawer [(visible)]="visibles" [modal]="true">
-    <ng-template #header>
-      <div class="flex items-center gap-2">
-        <p-avatar image="https://primefaces.org/cdn/primeng/images/demo/avatar/amyelsner.png" shape="circle" />
-        <span class="font-bold">User Menu</span>
-      </div>
-    </ng-template>
+<p-drawer [(visible)]="visibles" [modal]="true">
+  <ng-template #header>
+    <div class="flex items-center gap-2">
+      <p-avatar image="https://primefaces.org/cdn/primeng/images/demo/avatar/amyelsner.png" shape="circle" />
+      <span class="font-bold">User Menu</span>
+    </div>
+  </ng-template>
 
-    <!-- Navigation Menu -->
-    <p-panelmenu [model]="menuItemss" styleClass="w-60 md:w-60">
-      <ng-template #item let-item>
-        <ng-container *ngIf="item.routerLink; else externalLink">
-          <a [routerLink]="item.routerLink" class="flex items-center cursor-pointer px-3 py-2">
+  <!-- Navigation Menu -->
+  <p-panelmenu [model]="menuItemss" styleClass="w-60 md:w-60">
+    <ng-template #item let-item>
+      <ng-container *ngIf="item.routerLink; else externalLink">
+        <a [routerLink]="item.routerLink" class="flex items-center cursor-pointer px-3 py-2">
+          <span [class]="item.icon"></span>
+          <span class="ml-2">{{ item.label }}</span>
+        </a>
+      </ng-container>
+      <ng-template #externalLink>
+        <a *ngIf="item.url; else staticText" [href]="item.url" target="_blank"
+          class="flex items-center cursor-pointer px-3 py-2">
+          <span [class]="item.icon"></span>
+          <span class="ml-2">{{ item.label }}</span>
+        </a>
+        <ng-template #staticText>
+          <span class="flex items-center cursor-pointer px-4 py-2">
             <span [class]="item.icon"></span>
             <span class="ml-2">{{ item.label }}</span>
-          </a>
-        </ng-container>
-        <ng-template #externalLink>
-          <a *ngIf="item.url; else staticText" [href]="item.url" target="_blank"
-            class="flex items-center cursor-pointer px-3 py-2">
-            <span [class]="item.icon"></span>
-            <span class="ml-2">{{ item.label }}</span>
-          </a>
-          <ng-template #staticText>
-            <span class="flex items-center cursor-pointer px-4 py-2">
-              <span [class]="item.icon"></span>
-              <span class="ml-2">{{ item.label }}</span>
-              <i *ngIf="item.items" class="pi pi-angle-down ml-auto"></i>
-            </span>
-          </ng-template>
+            <i *ngIf="item.items" class="pi pi-angle-down ml-auto"></i>
+          </span>
         </ng-template>
       </ng-template>
-    </p-panelmenu>
-
-    <ng-template #footer>
-      <div class="flex items-center gap-2" styleClass="w-62 md:w-63">
-        <button pButton label="Settings" icon="pi pi-cog" class="w-full outlined"></button>
-        <button pButton label="Logout" icon="pi pi-sign-out" class="w-full severity-danger text"></button>
-      </div>
     </ng-template>
-  </p-drawer>
+  </p-panelmenu>
+
+  <ng-template #footer>
+    <div class="flex items-center gap-2" styleClass="w-62 md:w-63">
+      <button pButton label="Settings" icon="pi pi-cog" class="w-full outlined"></button>
+      <button pButton label="Logout" icon="pi pi-sign-out" class="w-full severity-danger text"></button>
+    </div>
+  </ng-template>
+</p-drawer>
 <!-- </div> -->

@@ -56,7 +56,9 @@
             </label>
 
             <input type="email" id="Email" name="email" formControlName="email" required
-              class="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-xs dark:border-gray-700 dark:bg-gray-800 dark:text-gray-200" />
+            class="mt-1 block w-2/2 px-3 py-2 bg-gray-700 
+            border border-gray-300 rounded-md shadow-sm focus:outline-none 
+            focus:ring-purple-500 focus:border-purple-500 ng-untouched ng-pristine ng-invalid" />
             <div *ngIf="loginForm.get('email')?.invalid && (loginForm.get('email')?.dirty || loginForm.get('email')?.touched) " class="text-red-500 text-sm">
               <span *ngIf="loginForm.get('email')?.errors?.['required']">Email is required</span>
               <span *ngIf="loginForm.get('email')?.errors?.['email']">Invalid email format</span>
@@ -69,7 +71,9 @@
             </label>
 
             <input type="password" id="Password" name="password" formControlName="password" type="password" required
-              class="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-xs dark:border-gray-700 dark:bg-gray-800 dark:text-gray-200" />
+              class="mt-1 block w-2/2 px-3 py-2 bg-gray-700 
+              border border-gray-300 rounded-md shadow-sm focus:outline-none 
+              focus:ring-purple-500 focus:border-purple-500 ng-untouched ng-pristine ng-invalid" />
             <div *ngIf="
                 loginForm.get('password')?.invalid &&
                 (loginForm.get('password')?.dirty ||
@@ -84,7 +88,9 @@
           <div class="sm:flex sm:items-center sm:justify-between">
             <label for="RememberMe" class="flex gap-2">
               <input type="checkbox" id="RememberMe" name="remember_me"
-                class="shrink-0 rounded-md border-gray-200 bg-white shadow-xs dark:border-gray-700 dark:bg-gray-800 dark:focus:ring-offset-gray-900" />
+              class="mt-1 block w-2/2 px-3 py-2 bg-gray-700 
+              border border-gray-300 rounded-md shadow-sm focus:outline-none 
+              focus:ring-purple-500 focus:border-purple-500 ng-untouched ng-pristine ng-invalid" />
 
               <span class="text-sm text-gray-700 dark:text-gray-200">Remember me</span>
             </label>

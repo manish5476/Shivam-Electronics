@@ -1,8 +1,4 @@
-/* @import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=IBM+Plex+Sans:ital,wght@0,100..700;1,100..700&family=Kanit:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap'); */
-/* @import "tailwindcss"; *//* Modern AG Grid Dark Theme Styling */
-
-/* Container styling */
-
+/* 
 .ag-grid-container {
   position: relative;
   width: var(--grid-width, 100%);
@@ -13,7 +9,6 @@
   border-radius: 12px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
  padding: 16px 24px;
-  /* Added padding from both sides (16px top/bottom, 24px left/right) */
   display: flex;
   flex-direction: column;
 }
@@ -35,21 +30,17 @@
   --ag-range-selection-border-color: #7b7bcd;
   --ag-range-selection-background-color: rgba(123, 123, 205, 0.2);
 
-  /* Font settings */
   --ag-font-family: 'IBM Plex Sans', 'DM Sans', 'Kanit', sans-serif;
   --ag-font-size: 14px;
   --ag-cell-horizontal-padding: 16px;
 
-  /* Border radius for modern look */
   --ag-border-radius: 8px;
 
-  /* Card shadow */
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
   border-radius: var(--ag-border-radius);
   overflow: hidden;
 }
 
-/* Row styling */
 .ag-row {
   border-bottom-style: solid;
   border-bottom-width: 1px;
@@ -65,7 +56,6 @@
   background-color: var(--ag-selected-row-background-color) !important;
 }
 
-/* Header styling */
 .ag-header {
   border-bottom: 2px solid var(--ag-border-color);
 }
@@ -80,7 +70,6 @@
   background-color: rgba(74, 74, 119, 0.2);
 }
 
-/* Cell styling */
 .ag-cell {
   font-family: 'DM Sans', sans-serif;
   line-height: 1.5;
@@ -93,12 +82,10 @@
   border: 1px solid var(--ag-alpine-active-color) !important;
 }
 
-/* Column separator */
 .ag-cell-with-dashed-border {
   border-right: 1px dashed #9696C8;
 }
 
-/* Pagination controls */
 .ag-paging-panel {
   color: var(--ag-foreground-color);
   font-family: var(--ag-font-family);
@@ -122,7 +109,6 @@
   color: white;
 }
 
-/* Checkboxes */
 .ag-checkbox-input-wrapper {
   border-radius: 4px;
   border: 1px solid var(--ag-border-color);
@@ -134,7 +120,6 @@
   border-color: var(--ag-alpine-active-color);
 }
 
-/* Filter popup */
 .ag-menu {
   background-color: var(--ag-background-color);
   border: 1px solid var(--ag-border-color);
@@ -142,12 +127,10 @@
   box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
 }
 
-/* Animation for row changes */
 .ag-row-animation {
   transition: transform 0.3s, opacity 0.3s;
 }
 
-/* Scrollbars */
 ::-webkit-scrollbar {
   width: 8px;
   height: 8px;
@@ -165,4 +148,92 @@
 
 ::-webkit-scrollbar-thumb:hover {
   background: rgba(123, 123, 205, 0.7);
+} */
+/*Checkboxes */
+.ag-grid-container {
+  width: 100%;
+  height: calc(100vh - 100px);
+  padding: 24px;
+  border-radius: 24px;
+
+  /* Glassmorphism backdrop */
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(25px);
+  -webkit-backdrop-filter: blur(25px);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+
+  /* Font + color setup */
+  --ag-background-color: transparent;
+  --ag-foreground-color: #111;
+  --ag-font-family: 'DM Sans', 'Kanit', sans-serif;
+  --ag-font-size: 14px;
+
+  /* Grid styling */
+  --ag-border-color: rgba(255, 255, 255, 0.3);
+  --ag-row-border-color: rgba(255, 255, 255, 0.15);
+  --ag-header-background-color: rgba(255, 255, 255, 0.2);
+  --ag-header-foreground-color: #111;
+  --ag-odd-row-background-color: rgba(255, 255, 255, 0.08);
+  --ag-selected-row-background-color: rgba(0, 0, 0, 0.08);
+  --ag-row-hover-color: rgba(255, 255, 255, 0.1);
+  --ag-column-hover-color: rgba(255, 255, 255, 0.15);
+
+  --ag-border-radius: 16px;
+  --ag-cell-horizontal-padding: 16px;
+}
+
+/* Header */
+.ag-header {
+  background-color: var(--ag-header-background-color);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--ag-border-color);
+  color: var(--ag-header-foreground-color);
+}
+
+.ag-header-cell {
+  font-family: 'Kanit', sans-serif;
+  font-weight: 700;
+  color: #111;
+  text-transform: uppercase;
+  padding: 16px;
+  background: transparent;
+}
+
+/* Cells */
+.ag-cell {
+  color: #111;
+  font-weight: 600;
+  background-color: transparent;
+  backdrop-filter: blur(10px);
+}
+
+/* Row */
+.ag-row {
+  transition: background-color 0.3s ease;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.ag-row-hover {
+  background-color: var(--ag-row-hover-color) !important;
+}
+
+.ag-row-selected {
+  background-color: var(--ag-selected-row-background-color) !important;
+}
+
+/* Scrollbar for smooth glass feel */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.1);
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 8px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 0, 0, 0.4);
 }

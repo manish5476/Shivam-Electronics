@@ -1,3 +1,16 @@
-<app-common-header [gridWidth]="'100%'"></app-common-header>
+<!-- <app-common-header [gridWidth]="'100%'"></app-common-header>
 <app-shared-grid [gridHeight]="'520px'" [gridWidth]="" [padding]="" [data]="data" [rowSelectionMode]="rowSelectionMode"
-  [rowSelectionMode]="rowSelectionMode" [column]="column" (eventFromGrid)="eventFromGrid($event)"></app-shared-grid>
+  [rowSelectionMode]="rowSelectionMode" [column]="column" (eventFromGrid)="eventFromGrid($event)">
+</app-shared-grid> -->
+
+
+<div class="h-[calc(100vh-56px)] flex flex-col overflow-hidden">
+  <!-- Your app-level header -->
+  <app-common-header class="h-14" [gridWidth]="'100%'"></app-common-header>
+
+  <!-- Grid: fill remaining height minus internal grid footer -->
+  <app-shared-grid class="flex-1 overflow-auto" [gridHeight]="'calc(100vh - 56px - 56px - 48px)'" [gridWidth]="'100%'"
+    [padding]="'0'" [data]="data" [rowSelectionMode]="rowSelectionMode" [column]="column"
+    (eventFromGrid)="eventFromGrid($event)">
+  </app-shared-grid>
+</div>
