@@ -1,11 +1,8 @@
 @import "tailwindcss";
-
-html, body { height: 100%; }
-
-/* PrimeIcons import remains the same */
 @import "primeicons/primeicons.css";
 
-
+html, body { height: 100%; }
+/* PrimeIcons import remains the same */
 /*-------------------------------------------------------------------*/
 /* Theme Configuration (Optional @theme for v4 specific features)    */
 /*-------------------------------------------------------------------*/
