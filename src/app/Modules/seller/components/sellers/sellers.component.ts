@@ -1,14 +1,3 @@
-// import { Component } from '@angular/core';
-
-// @Component({
-//   selector: 'app-sellers',
-//   imports: [],
-//   templateUrl: './sellers.component.html',
-//   styleUrl: './sellers.component.css'
-// })
-// export class SellersComponent {
-
-// }
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { Component, Inject, OnInit, PLATFORM_ID } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';

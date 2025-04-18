@@ -12,7 +12,7 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   content: [
-    "./src/**/*.{html,ts}", // Include all Angular files
+    "./src/**/*.{html,ts,css}", // Include all Angular files
   ],
   theme: {
     extend: {},

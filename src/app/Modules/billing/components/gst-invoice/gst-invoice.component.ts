@@ -8,6 +8,8 @@ import { InputNumberModule } from 'primeng/inputnumber';
 import { CalendarModule } from 'primeng/calendar';
 import { CheckboxModule } from 'primeng/checkbox';
 // import lodash from 'lodash';
+import { TableModule } from 'primeng/table';
+
 import { SelectModule } from 'primeng/select';
 import { InvoiceService } from '../../../../core/services/invoice.service';
 import { SellerService } from '../../../../core/services/seller.service';
@@ -48,7 +50,7 @@ interface Invoice {
 @Component({
   selector: 'app-gst-invoice',
   standalone: true,
-  imports: [ReactiveFormsModule, InputTextModule, SelectModule, ButtonModule, CommonModule, FormsModule, InputNumberModule, CalendarModule, CheckboxModule],
+  imports: [ReactiveFormsModule,TableModule, InputTextModule, SelectModule, ButtonModule, CommonModule, FormsModule, InputNumberModule, CalendarModule, CheckboxModule],
   templateUrl: './gst-invoice.component.html',
   styleUrl: './gst-invoice.component.css'
 })
@@ -153,8 +155,6 @@ export class GstInvoiceComponent implements OnInit, OnChanges {
         alert('Failed to create invoice.');
       }
     });
-
-    console.log('Invoice Data to Save:', this.invoiceForm.getRawValue());
   }
 
 
@@ -164,7 +164,7 @@ export class GstInvoiceComponent implements OnInit, OnChanges {
   }
 
   removeItem(index: number): void {
-    this.itemsFormArray.removeAt(index);
+    this.itemsFormArray.length>1   ?this.itemsFormArray.removeAt(index):this.messageService.showInfo('one data require')
     this.calculateInvoiceTotals();
   }
 

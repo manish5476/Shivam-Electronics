@@ -3,7 +3,7 @@ import { ApplicationConfig, provideZoneChangeDetection } from '@angular/core';
 import { provideHttpClient, withFetch, withInterceptors, withInterceptorsFromDi } from '@angular/common/http'; // Import this
 import { provideRouter } from '@angular/router';
 import { routes } from './app.routes';
-import { provideClientHydration } from '@angular/platform-browser';
+import { provideClientHydration, withEventReplay } from '@angular/platform-browser';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { providePrimeNG } from 'primeng/config';
 import { AppMessageService } from './core/services/message.service';
@@ -694,7 +694,7 @@ export const appConfig: ApplicationConfig = {
                   },  
 
             },
-        }),
+        }), provideClientHydration(withEventReplay()),
     ],
 };
 
