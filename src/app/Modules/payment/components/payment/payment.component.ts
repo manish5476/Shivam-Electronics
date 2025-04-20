@@ -215,7 +215,6 @@ export class PaymentComponent {
     };
 
     this.PaymentService.createNewpayment(formData).subscribe((res: any) => {
-      console.log(res);
       this.fetchCustomerData()
     })
   }

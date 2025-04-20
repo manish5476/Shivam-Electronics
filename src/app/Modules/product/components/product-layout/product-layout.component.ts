@@ -18,7 +18,6 @@ import { RouterModule } from '@angular/router';
 import { Routes } from '@angular/router';
 import { SelectButtonModule } from 'primeng/selectbutton';
 import { FormsModule } from '@angular/forms';
-import { AdminUserComponent } from '../../../../adminDashboard/admin-user/admin-user.component';
 @Component({
     selector: 'app-product-layout',
     imports: [CommonModule, RouterModule, SelectButtonModule, FormsModule],
@@ -70,6 +69,5 @@ export class ProductLayoutComponent {
 
 //   onComponentSelected(selectedComponent: any) {
 //     this.activeComponent = selectedComponent;
-//     console.log('Selected Component:', selectedComponent);
 //   }
 // }

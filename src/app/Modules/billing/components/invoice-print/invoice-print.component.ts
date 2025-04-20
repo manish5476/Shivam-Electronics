@@ -31,7 +31,6 @@ export class InvoicePrintComponent implements OnInit, OnChanges {
     } else {
       this.getInvoiceWithId()
     }
-    console.log(this.Id);
   }
 
   constructor(private InvoiceService: InvoiceService) { }

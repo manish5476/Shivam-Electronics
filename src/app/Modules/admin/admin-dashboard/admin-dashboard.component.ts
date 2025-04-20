@@ -152,7 +152,8 @@ export class AdminDashboardsComponent {
 //   componentCounter = this.components.length + 1;
 
 //   onDrop(event: DndDropEvent, targetId: string) {
-//     console.log(`Dropped ${event.data.id} onto ${targetId}`);
+//     
+
 //     const draggedIndex = this.components.findIndex(c => c.id === event.data.id);
 //     const targetIndex = this.components.findIndex(c => c.id === targetId);
 //     if (draggedIndex !== -1 && targetIndex !== -1) {
@@ -162,11 +163,13 @@ export class AdminDashboardsComponent {
 //   }
 
 //   onDragStart(event: DragEvent, id: string) {
-//     console.log(`Drag started for ${id}`, event);
+//     
+
 //   }
 
 //   onDragEnd(event: DragEvent, id: string) {
-//     console.log(`Drag ended for ${id}`, event);
+//     
+
 //   }
 
 //   addComponent(componentType: string) { // Accept componentType argument

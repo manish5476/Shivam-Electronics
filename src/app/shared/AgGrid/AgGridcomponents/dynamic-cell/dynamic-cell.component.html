@@ -1,0 +1,36 @@
+<ng-container *ngIf="isEditing(); else viewMode">
+  <ng-container [ngSwitch]="type">
+
+    <!-- TEXT -->
+    <input *ngSwitchCase="'text'" pInputText class="w-full"
+      [(ngModel)]="value"
+      (ngModelChange)="onValueChange($event)" />
+
+    <!-- NUMBER -->
+    <p-inputNumber *ngSwitchCase="'number'" [(ngModel)]="value" mode="decimal"
+      [minFractionDigits]="2" class="w-full"
+      (onInput)="onValueChange($event.value)">
+    </p-inputNumber>
+
+    <!-- DROPDOWN -->
+    <p-select *ngSwitchCase="'dropdown'" [options]="params.colDef.cellRendererParams.options"
+      [(ngModel)]="value" class="w-full"
+      (onChange)="onValueChange($event.value)">
+    </p-select>
+    
+    <!-- CUSTOM COMPONENT -->
+    <ng-container *ngSwitchCase="'custom'">
+      <ng-container *ngComponentOutlet="params.colDef.cellRendererParams.dynamicComponent; injector: params.colDef.cellRendererParams.injector"></ng-container>
+    </ng-container>
+
+    <!-- DEFAULT -->
+    <input *ngSwitchDefault pInputText class="w-full"
+      [(ngModel)]="value"
+      (ngModelChange)="onValueChange($event)" />
+
+  </ng-container>
+</ng-container>
+
+<ng-template #viewMode>
+  <span>{{ value }}</span>
+</ng-template>

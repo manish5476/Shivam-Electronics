@@ -40,6 +40,8 @@ export class DialogboxComponent implements ICellRendererAngularComp {
   constructor(private cdr: ChangeDetectorRef, private apiService: ApiService) { }
   agInit(params: CustomCellRendererParams): void {
     this.params = params
+
+    console.log(this.params,this.id);
   }
 
   refresh(params: CustomCellRendererParams): boolean {

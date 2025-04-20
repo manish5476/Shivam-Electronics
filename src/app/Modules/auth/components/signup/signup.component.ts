@@ -259,7 +259,6 @@ export class SignupComponent implements OnInit { // Implement OnInit
 //       });
 //     } else {
 //       // Form is invalid, handle accordingly (e.g., display validation errors)
-//       console.log('Form is invalid');
 //       // You can optionally mark controls as touched to show validation errors immediately
 //       Object.values(this.signupForm.controls).forEach(control => {
 //         if (control.invalid) {

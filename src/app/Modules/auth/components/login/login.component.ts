@@ -64,7 +64,7 @@ export class LoginComponent implements OnInit { // Implement OnInit
                 },
             });
         } else {
-            console.log("Form is invalid");
+            this.messageService.showError("err",'form is invalid!')
         }
     }
 

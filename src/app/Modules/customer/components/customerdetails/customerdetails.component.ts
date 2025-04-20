@@ -72,10 +72,8 @@ export class CustomerdetailsComponent {
   fetchCustomerData() {
     this.CustomerService.getCustomerDataWithId(this.customerId).subscribe({
       next: (response: any) => {
-        console.log(response);
         if (response.status === 'success') {
           this.customer = response.data;
-          console.log('Customer Data:', this.customer);
           this.fetchProductDetails();
         } else if (response.status === 'fail') {
           this.messageService.showError('Error', response.message || 'Failed to load customer data.'); // Display error message from response, or generic message
@@ -97,7 +95,6 @@ export class CustomerdetailsComponent {
       this.ProductService.getProductDataWithId(productIds).subscribe(
         (response: any) => {
           this.products = response.data;
-          console.log('Product Details:', this.products);
         },
         (error: any) => {
           console.error('Error fetching product details:', error);
@@ -153,11 +150,9 @@ export class CustomerdetailsComponent {
 //   }
 //   autopopulatedata() {
 //     const autopopulate: any = JSON.parse(sessionStorage.getItem('autopopulate') || '{}');
-//     console.log(autopopulate);
-//     if (autopopulate && Array.isArray(autopopulate.customersdrop)) {
+//     //     if (autopopulate && Array.isArray(autopopulate.customersdrop)) {
 //       this.customerIDDropdown = lodash.cloneDeep(autopopulate.customersdrop)
-//       console.log(this.customerIDDropdown);
-//     } else {
+//       //     } else {
 //       this.customerIDDropdown = [];
 //       this.messageService.add({
 //         severity: 'info',
@@ -201,8 +196,7 @@ export class CustomerdetailsComponent {
 //     this.CustomerService.getCustomerDataWithId(this.customerId).subscribe(
 //       (response) => {
 //         this.customer = response.data;
-//         console.log(this.customer)
-//       },
+//         //       },
 //       (error) => {
 //         console.error('Error fetching customer data:', error);
 //       }

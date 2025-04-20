@@ -49,7 +49,6 @@ export class MainLayoutComponent {
     ngOnInit() {
       this.gradient$ = this.themeService.currentGradient$;
       // this.gradient$.subscribe(newValue => {
-      //   console.log('New gradient value in component:', newValue); // Log emitted value
       // });
     }
 

@@ -133,11 +133,9 @@ export class ProductMasterComponent {
 
   autopopulatedata() {
     const autopopulate: any = JSON.parse(sessionStorage.getItem('autopopulate') || '{}');
-    console.log(autopopulate);
 
     if (autopopulate && Array.isArray(autopopulate.productsdrop)) {
       this.productdropdwn = lodash.cloneDeep(autopopulate.productsdrop)
-      console.log(this.productdropdwn);
     } else {
       this.productdropdwn = [];
       this.messageService.add({
@@ -161,7 +159,6 @@ export class ProductMasterComponent {
 
   Update() {
     this.ProductService.updateProduct(this.selectedProductId, this.product).subscribe((res: any) => {
-      // console.log(res:any);
     })
   }
 
@@ -171,11 +168,9 @@ export class ProductMasterComponent {
         (res: any) => {
           this.productdata = res;
           this.product = res.data
-          //  console.log("populated product", this.product)
         },
         (error) => {
           console.error('Error fetching product data:', error);
-          // Handle the error (e.g., display an error message to the user)
         }
       );
     }
@@ -198,9 +193,7 @@ export class ProductMasterComponent {
   }
 
   onSubmit() {
-    // console.log(this.product);
     this.ProductService.createNewProduct(this.product).subscribe((res: any) => {
-      // console.log(res:any);
     })
   }
 }

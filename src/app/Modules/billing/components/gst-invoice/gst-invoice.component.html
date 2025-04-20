@@ -21,12 +21,12 @@
       </div>
       <div class="form-group">
         <label>Billed By (Your Details)</label>
-        <p-select appendTo="body" [options]="sellersDrop" optionLabel="name" optionValue="_id" formControlName="seller"
+        <p-select appendTo="body" [options]="InvoiceObject.sellersDrop" optionLabel="name" optionValue="_id" formControlName="seller"
           placeholder="Select Seller" class="w-full"></p-select>
       </div>
       <div class="form-group">
         <label>Billed To (Client Details)</label>
-        <p-select appendTo="body" [options]="customerIDDropdown" optionLabel="fullname" optionValue="_id"
+        <p-select appendTo="body" [options]="InvoiceObject.customerIDDropdown" optionLabel="fullname" optionValue="_id"
           formControlName="buyer" placeholder="Select Buyer" class="w-full"></p-select>
       </div>
     </div>
@@ -55,7 +55,7 @@
             class="hover:bg-gray-50 transition-colors duration-150">
             <td class="py-1 px-3 border-b border-border-light">
               <p-select appendTo="body" type="text" formControlName="product" (onChange)="onProductChange($event, i)"
-                [options]="productdrop" (ngModelChange)="onItemValueChange(i)" optionValue="_id" optionLabel="title"
+                [options]="InvoiceObject.productdrop" (ngModelChange)="onItemValueChange(i)" optionValue="_id" optionLabel="title"
                 class="w-full border-gray-300 rounded-md shadow-sm focus:border-primary-light focus:ring focus:ring-primary-light focus:ring-opacity-50 text-sm h-8 bg-white text-gray-900"></p-select>
             </td>
             <td class="py-1 px-3 border-b border-border-light">

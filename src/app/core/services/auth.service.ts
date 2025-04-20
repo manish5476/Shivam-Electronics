@@ -183,34 +183,34 @@ export class AuthService {
     private router: Router,
     @Inject(PLATFORM_ID) private platformId: Object
   ) {
-    console.log('AuthService - Constructor called');
+
     if (isPlatformBrowser(this.platformId)) {
       const storedToken = this.getStoredToken()?.token || null;
       this.userSubject.next(storedToken);
       this.userDataSubject.next(this.getStoredToken()?.user || null);
-      console.log('AuthService - Initial token from storage:', !!storedToken);
-      console.log('AuthService - Initial user data from storage:', !!this.getStoredToken()?.user);
+
+
     } else {
-      console.log('AuthService - Running on server-side');
+
     }
   }
 
   getToken(): string | null {
-    console.log('AuthService - getToken() called, returning:', this.userSubject.value);
+
     return this.userSubject.value;
   }
 
   getUser(): any {
-    console.log('AuthService - getUser() called, returning:', this.userDataSubject.value);
+
     return this.userDataSubject.value;
   }
 
   public setItem(key: string, value: any): void {
     if (isPlatformBrowser(this.platformId)) {
       localStorage.setItem(key, JSON.stringify(value));
-      console.log('AuthService - setItem() called, key:', key, 'value:', value);
+
     } else {
-      console.log('AuthService - setItem() called on server-side, key:', key);
+
     }
   }
 
@@ -219,7 +219,7 @@ export class AuthService {
       try {
         const item = localStorage.getItem(key);
         const parsedItem = item ? JSON.parse(item) : null;
-        console.log('AuthService - getItem() called, key:', key, 'returning:', parsedItem);
+
         return parsedItem as T;
       } catch (error) {
         console.error(`AuthService - Error parsing key: ${key}`, error);
@@ -227,7 +227,7 @@ export class AuthService {
         return null;
       }
     } else {
-      console.log('AuthService - getItem() called on server-side, key:', key);
+
       return null;
     }
   }
@@ -235,9 +235,9 @@ export class AuthService {
   private removeItem(key: string): void {
     if (isPlatformBrowser(this.platformId)) {
       localStorage.removeItem(key);
-      console.log('AuthService - removeItem() called, key:', key);
+
     } else {
-      console.log('AuthService - removeItem() called on server-side, key:', key);
+
     }
   }
 
@@ -246,7 +246,7 @@ export class AuthService {
       token: this.getItem<string>(this.tokenKey),
       user: this.getItem<any>(this.userKey),
     };
-    console.log('AuthService - getStoredToken() called, returning:', stored);
+
     return stored;
   }
 
@@ -256,19 +256,19 @@ export class AuthService {
       this.setItem(this.userKey, response.data.user);
       this.userSubject.next(response.token);
       this.userDataSubject.next(response.data.user);
-      console.log('AuthService - handleTokens() called, token set, user set, subjects updated');
+
     } else {
-      console.log('AuthService - handleTokens() called on server-side');
+
     }
   }
 
   login(data: any): Observable<LoginResponse | null> {
-    console.log('AuthService - login() initiated with data:', data);
+
     return this.http
       .post<LoginResponse>(`${this.baseUrl}/v1/users/login`, data)
       .pipe(
         tap((response) => {
-          console.log('AuthService - login() successful, response:', response);
+
           this.handleTokens(response);
         }),
         catchError((error) => {
@@ -280,12 +280,12 @@ export class AuthService {
   }
 
   signUp(data: any): Observable<LoginResponse | null> {
-    console.log('AuthService - signUp() initiated with data:', data);
+
     return this.http
       .post<LoginResponse>(`${this.baseUrl}/v1/users/signup`, data)
       .pipe(
         tap((response) => {
-          console.log('AuthService - signUp() successful, response:', response);
+
           this.handleTokens(response);
         }),
         catchError((error) => {
@@ -298,7 +298,7 @@ export class AuthService {
   isAuthenticated(): boolean {
     const token = this.userSubject.value;
     const isAuth = !!token && !this.isTokenExpired(token);
-    console.log('AuthService - isAuthenticated() called, current token:', !!token, 'isExpired:', !token ? 'N/A' : this.isTokenExpired(token), 'returning:', isAuth);
+
     return isAuth;
   }
 
@@ -306,7 +306,7 @@ export class AuthService {
     try {
       const payload = JSON.parse(atob(token.split('.')[1]));
       const isExpired = payload.exp * 1000 < Date.now();
-      console.log('AuthService - isTokenExpired() called, expiry:', new Date(payload.exp * 1000), 'now:', new Date(), 'returning:', isExpired);
+
       return isExpired;
     } catch (error) {
       console.error('AuthService - Error decoding or checking token expiration:', error);
@@ -318,13 +318,13 @@ export class AuthService {
     if (isPlatformBrowser(this.platformId)) {
       this.removeItem(this.tokenKey);
       this.removeItem(this.userKey);
-      console.log('AuthService - logout() called, token and user removed from storage');
+
     } else {
-      console.log('AuthService - logout() called on server-side');
+
     }
     this.userSubject.next(null);
     this.userDataSubject.next(null);
-    console.log('AuthService - logout() - subjects updated, navigating to /auth/login');
+
     this.router.navigate(['/auth/login']);
   }
 }
