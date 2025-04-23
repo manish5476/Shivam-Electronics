@@ -1,58 +1,4 @@
-// // import { Component } from '@angular/core';
 
-// // @Component({
-// //   selector: 'app-dynamic-cell',
-// //   imports: [],
-// //   templateUrl: './dynamic-cell.component.html',
-// //   styleUrl: './dynamic-cell.component.css'
-// // })
-// // export class DynamicCellComponent {
-
-// // }
-
-
-
-
-// import { Component, Input } from "@angular/core";
-// import { ICellRendererAngularComp } from "ag-grid-angular";
-// import { ICellRendererParams } from "ag-grid-community";
-// import { InputNumberModule } from 'primeng/inputnumber';
-// import { InputTextModule } from 'primeng/inputtext';
-// import { SelectModule } from 'primeng/select';
-// import { FormsModule } from "@angular/forms";
-// import { CommonModule } from "@angular/common";
-// @Component({
-//   selector: 'app-dynamic-cell',
-//   imports: [InputNumberModule, CommonModule, FormsModule, SelectModule, InputTextModule],
-//   templateUrl: './dynamic-cell.component.html',
-//   styleUrl: './dynamic-cell.component.css'
-// })
-// export class DynamicCellComponent implements ICellRendererAngularComp {
-//   refresh(params: ICellRendererParams<any, any, any>): boolean {
-//     throw new Error("Method not implemented.");
-//   }
-//   @Input() params: any;
-//   @Input() type: string | undefined;  // The column type (text, number, date)
-//   @Input() data: any;     // The row data
-//   @Input() key: string | undefined;   
-//   value: any;
-
-//   agInit(params: any): void {
-//     this.params = params;
-//     this.value = params.value;
-//     this.type = params.colDef.cellRendererParams?.type || 'text';
-//     console.log(this.params, this.value, this.type);
-//   }
-
-//   isEditing(): boolean {
-//     return this.params.context?.componentParent?.isRowEditing(this.params.node);
-//   }
-
-//   onValueChange(newValue: any) {
-//     this.value = newValue;
-//     this.params.data[this.params.colDef.field] = newValue;
-//   }
-// }
 import { Component } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { FormsModule } from "@angular/forms";
@@ -67,6 +13,16 @@ import { InputNumberModule } from 'primeng/inputnumber';
 import { DropdownModule } from 'primeng/dropdown'; // Correct module for p-dropdown
 import { ColorPickerModule } from 'primeng/colorpicker';
 import { TooltipModule } from 'primeng/tooltip';
+import { CascadeSelectModule } from 'primeng/cascadeselect';
+import { AutoCompleteModule } from 'primeng/autocomplete';
+import { CheckboxModule } from 'primeng/checkbox';
+import { DatePickerModule } from 'primeng/datepicker';
+import { InputMaskModule } from 'primeng/inputmask';
+import { KeyFilterModule } from 'primeng/keyfilter';
+import { KnobModule } from 'primeng/knob';
+import { MultiSelectModule } from 'primeng/multiselect';
+
+import { SelectModule } from 'primeng/select';
 /**
  * Interface for the structured data passed to the callback on value change.
  */
@@ -95,10 +51,13 @@ type ValueChangedCallback = (eventData: CellChangedEvent) => void;
         FormsModule,
 
         // PrimeNG Modules
-        InputTextModule,
-        InputNumberModule,
+        DatePickerModule, KeyFilterModule,
+        InputTextModule, MultiSelectModule, SelectModule,
+        InputNumberModule, CheckboxModule,
+        InputMaskModule, KnobModule,
         DropdownModule,
-        ColorPickerModule,TooltipModule,
+        ColorPickerModule,
+        TooltipModule, CascadeSelectModule, AutoCompleteModule,
     ],
     templateUrl: './dynamic-cell.component.html',
     styleUrls: ['./dynamic-cell.component.css'] // Use styleUrls (plural)
@@ -165,7 +124,7 @@ export class DynamicCellComponent implements ICellRendererAngularComp {
      * Central handler for value changes from any PrimeNG input.
      * Updates the grid data and triggers the callback.
      */
-    onValueChange(newValue: any, originalEvent?: any): void {
+    onValueChange(newValue: any, originalEvent?: any, cell?: any): void {
         const oldValue = this.value;
 
         // Prevent unnecessary updates if the value hasn't actually changed
@@ -189,32 +148,13 @@ export class DynamicCellComponent implements ICellRendererAngularComp {
                 data: this.params.data,
                 node: this.params.node,
                 colDef: this.params.colDef,
-                event: originalEvent // Include original event for context
+                event: originalEvent ? originalEvent : newValue,// Include original event for context
             };
             this.valueChangedCallback(eventData);
         }
     }
 
     // --- Specific handlers to correctly extract values from PrimeNG component events ---
-
-    handleTextChange(value: string | null, event?: any): void {
-        this.onValueChange(value, event);
-    }
-
-    handleNumberChange(event: any): void {
-        // p-inputNumber's onInput event provides value in event.value
-        this.onValueChange(event.value, event.originalEvent);
-    }
-
-    handleDropdownChange(event: { originalEvent: Event, value: any }): void {
-        // p-dropdown's onChange event provides value in event.value
-        this.onValueChange(event.value, event.originalEvent);
-    }
-
-    handleColorChange(value: string | null, event?: any): void {
-        // p-colorPicker's ngModelChange passes the value directly
-        this.onValueChange(value, event);
-    }
 
     /**
      * Example utility: Prevents non-numeric keys in number inputs.
@@ -224,13 +164,75 @@ export class DynamicCellComponent implements ICellRendererAngularComp {
         // Prevent 'e', 'E', '+', '-' which are sometimes allowed in type="number"
         // Adjust the keys based on your specific requirements
         if (['e', 'E', '+', '-'].includes(event.key) && !this.inputConfig?.allowScientificNotation) {
-             event.preventDefault();
+            event.preventDefault();
         }
     }
 
-     // Optional: If you need specific keyup logic beyond just value change
+    // Optional: If you need specific keyup logic beyond just value change
     // textBoxKeyUpEvent(field: string, event: KeyboardEvent) {
     //   console.log(`Key up on field ${field}`, event.key);
     //   // Potentially emit a different event or call another callback
     // }
 }
+
+
+
+
+
+// old version-------------------------------------------------------
+//
+// // // import { Component } from '@angular/core';
+
+// // @Component({
+// //   selector: 'app-dynamic-cell',
+// //   imports: [],
+// //   templateUrl: './dynamic-cell.component.html',
+// //   styleUrl: './dynamic-cell.component.css'
+// // })
+// // export class DynamicCellComponent {
+
+// // }
+
+
+
+
+// import { Component, Input } from "@angular/core";
+// import { ICellRendererAngularComp } from "ag-grid-angular";
+// import { ICellRendererParams } from "ag-grid-community";
+// import { InputNumberModule } from 'primeng/inputnumber';
+// import { InputTextModule } from 'primeng/inputtext';
+// import { SelectModule } from 'primeng/select';
+// import { FormsModule } from "@angular/forms";
+// import { CommonModule } from "@angular/common";
+// @Component({
+//   selector: 'app-dynamic-cell',
+//   imports: [InputNumberModule, CommonModule, FormsModule, SelectModule, InputTextModule],
+//   templateUrl: './dynamic-cell.component.html',
+//   styleUrl: './dynamic-cell.component.css'
+// })
+// export class DynamicCellComponent implements ICellRendererAngularComp {
+//   refresh(params: ICellRendererParams<any, any, any>): boolean {
+//     throw new Error("Method not implemented.");
+//   }
+//   @Input() params: any;
+//   @Input() type: string | undefined;  // The column type (text, number, date)
+//   @Input() data: any;     // The row data
+//   @Input() key: string | undefined;
+//   value: any;
+
+//   agInit(params: any): void {
+//     this.params = params;
+//     this.value = params.value;
+//     this.type = params.colDef.cellRendererParams?.type || 'text';
+//     console.log(this.params, this.value, this.type);
+//   }
+
+//   isEditing(): boolean {
+//     return this.params.context?.componentParent?.isRowEditing(this.params.node);
+//   }
+
+//   onValueChange(newValue: any) {
+//     this.value = newValue;
+//     this.params.data[this.params.colDef.field] = newValue;
+//   }
+// }
