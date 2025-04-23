@@ -4,6 +4,7 @@ import { CellValueChangedEvent } from 'ag-grid-community';
 import { ToolbarComponent } from "../../../../shared/Components/toolbar/toolbar.component";
 import { CustomerService } from '../../../../core/services/customer.service';
 import { InvoiceService } from '../../../../core/services/invoice.service';
+import { DynamicCellComponent } from '../../../../shared/AgGrid/AgGridcomponents/dynamic-cell/dynamic-cell.component';
 @Component({
     selector: 'app-customer-list',
     standalone: true,
@@ -88,6 +89,19 @@ export class CustomerListComponent implements OnInit {
                         default: return {};
                     }
                 },
+            },
+            {
+                headerName: 'metadata',
+                field: 'metadata',
+                cellRenderer: DynamicCellComponent,
+                cellRendererParams: {
+                    type: 'colorpicker',
+                    // options: [ // Provide options for the dropdown
+                    //     { label: 'United States', value: 'USA' },
+                    //     { label: 'Canada', value: 'CAN' },
+                    //     { label: 'Mexico', value: 'MEX' }
+                    // ]
+                }
             },
             { field: 'metadata', headerName: 'Metadata', sortable: true, filter: true, resizable: true, valueGetter: (params: any) => JSON.stringify(params.data.metadata) },
             { field: 'createdAt', headerName: 'Created At', sortable: true, filter: true, resizable: true, valueFormatter: (params: any) => new Date(params.value).toLocaleString() },

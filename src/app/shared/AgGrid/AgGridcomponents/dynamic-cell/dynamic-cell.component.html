@@ -1,36 +1,79 @@
-<ng-container *ngIf="isEditing(); else viewMode">
-  <ng-container [ngSwitch]="type">
+<div [ngSwitch]="type" class="dynamic-cell-container w-full h-full flex items-center p-0 m-0">
 
-    <!-- TEXT -->
-    <input *ngSwitchCase="'text'" pInputText class="w-full"
-      [(ngModel)]="value"
-      (ngModelChange)="onValueChange($event)" />
+  <input *ngSwitchCase="'text'"
+         pInputText
+         [id]="params.colDef?.field + '-' + params.node.rowIndex"
+         class="w-full p-inputtext-sm"
+         [(ngModel)]="value"
+         (ngModelChange)="handleTextChange($event)"
+         [placeholder]="inputConfig?.placeholder || ''"
+         [pTooltip]="inputConfig?.tooltip || null"
+         [tooltipPosition]="inputConfig?.tooltipPosition || 'top'" />
 
-    <!-- NUMBER -->
-    <p-inputNumber *ngSwitchCase="'number'" [(ngModel)]="value" mode="decimal"
-      [minFractionDigits]="2" class="w-full"
-      (onInput)="onValueChange($event.value)">
-    </p-inputNumber>
+  <div *ngSwitchCase="'number'" class="w-full">
+      <p-inputNumber
+          class="w-full"
+          [inputId]="params.colDef?.field + '-' + params.node.rowIndex"
+          [(ngModel)]="value"
+          (onInput)="handleNumberChange($event)"
+          [mode]="inputConfig?.mode || 'decimal'"
+          [minFractionDigits]="inputConfig?.minFractionDigits ?? undefined"
+          [maxFractionDigits]="inputConfig?.maxFractionDigits ?? 5"
+          [useGrouping]="inputConfig?.useGrouping ?? true"
+          [placeholder]="inputConfig?.placeholder || ''"
+          [min]="inputConfig?.min ?? undefined"
+          [max]="inputConfig?.max ?? undefined"
+          [step]="inputConfig?.step ?? 1"
+          [prefix]="inputConfig?.prefix || ''"
+          [suffix]="inputConfig?.suffix || ''"
+          (keypress)="preventE($event)"
+          [pTooltip]="inputConfig?.tooltip || null"
+          [tooltipPosition]="inputConfig?.tooltipPosition || 'top'">
+      </p-inputNumber>
+  </div>
 
-    <!-- DROPDOWN -->
-    <p-select *ngSwitchCase="'dropdown'" [options]="params.colDef.cellRendererParams.options"
-      [(ngModel)]="value" class="w-full"
-      (onChange)="onValueChange($event.value)">
-    </p-select>
-    
-    <!-- CUSTOM COMPONENT -->
-    <ng-container *ngSwitchCase="'custom'">
-      <ng-container *ngComponentOutlet="params.colDef.cellRendererParams.dynamicComponent; injector: params.colDef.cellRendererParams.injector"></ng-container>
-    </ng-container>
 
-    <!-- DEFAULT -->
-    <input *ngSwitchDefault pInputText class="w-full"
-      [(ngModel)]="value"
-      (ngModelChange)="onValueChange($event)" />
+  <p-dropdown *ngSwitchCase="'dropdown'"
+              class="w-full p-fluid"
+              [inputId]="params.colDef?.field + '-' + params.node.rowIndex"
+              [options]="options"
+              [(ngModel)]="value"
+              (onChange)="handleDropdownChange($event)"
+              appendTo="body"
+              [placeholder]="inputConfig?.placeholder || 'Select...'"
+              [optionLabel]="inputConfig?.optionLabel || 'label'"
+              [optionValue]="inputConfig?.optionValue || 'value'"
+              [filter]="inputConfig?.filter || false"
+              [showClear]="inputConfig?.showClear || false"
+              [pTooltip]="inputConfig?.tooltip || null"
+              [tooltipPosition]="inputConfig?.tooltipPosition || 'top'">
+  </p-dropdown>
 
-  </ng-container>
-</ng-container>
+  <div *ngSwitchCase="'colorpicker'" class="w-full flex items-center space-x-2">
+      <span *ngIf="inputConfig?.showValue" class="text-xs truncate flex-shrink mr-1" [pTooltip]="value" tooltipPosition="top">
+         {{ value || (inputConfig?.placeholder || 'N/A') }}
+      </span>
+      <p-colorPicker
+             [inputId]="params.colDef?.field + '-' + params.node.rowIndex"
+             appendTo="body"
+             [(ngModel)]="value"
+             (ngModelChange)="handleColorChange($event)"
+             [format]="inputConfig?.format || 'hex'"
+             [inline]="inputConfig?.inline || false"
+             [styleClass]="'p-inputtext-sm'"
+             [pTooltip]="inputConfig?.tooltip || 'Select Color'"
+             [tooltipPosition]="inputConfig?.tooltipPosition || 'top'">
+      </p-colorPicker>
+  </div>
 
-<ng-template #viewMode>
-  <span>{{ value }}</span>
-</ng-template>
+  <input *ngSwitchDefault
+         pInputText
+         [id]="params.colDef?.field + '-' + params.node.rowIndex"
+         class="w-full p-inputtext-sm"
+         [(ngModel)]="value"
+         (ngModelChange)="handleTextChange($event)"
+         [placeholder]="inputConfig?.placeholder || ''"
+         [pTooltip]="inputConfig?.tooltip || null"
+         [tooltipPosition]="inputConfig?.tooltipPosition || 'top'" />
+
+</div>

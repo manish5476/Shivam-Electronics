@@ -7,6 +7,7 @@ import { DialogboxComponent } from '../../../../shared/AgGrid/AgGridcomponents/d
 import { InvoiceDetailCardComponent } from '../invoice-detailsview/invoice-detailsview.component';
 import { InvoicePrintComponent } from '../invoice-print/invoice-print.component';
 import { ToolbarComponent } from "../../../../shared/Components/toolbar/toolbar.component";
+import { DynamicCellComponent } from '../../../../shared/AgGrid/AgGridcomponents/dynamic-cell/dynamic-cell.component';
 
 @Component({
   selector: 'app-invoice-view',
@@ -69,7 +70,19 @@ export class InvoiceViewComponent {
           dynamicComponent: InvoiceDetailCardComponent, id: params.data.id,
         })
       },
-
+      {
+        headerName: 'buyerDetails.fullname',
+        field: 'buyerDetails.fullname',
+        cellRenderer: DynamicCellComponent,
+        cellRendererParams: {
+            type: 'dropdown',
+            options: [ // Provide options for the dropdown
+                { label: 'United States', value: 'USA' },
+                { label: 'Canada', value: 'CAN' },
+                { label: 'Mexico', value: 'MEX' }
+            ]
+        }
+    },
       { field: 'buyerDetails.fullname', headerName: 'Buyer Name', sortable: true, filter: true, resizable: true },
       { field: 'buyerDetails.email', headerName: 'Buyer Email', sortable: true, filter: true, resizable: true },
       {
