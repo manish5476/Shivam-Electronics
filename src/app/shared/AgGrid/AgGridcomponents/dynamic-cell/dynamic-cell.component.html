@@ -131,6 +131,39 @@
         </p-multiselect>
     </div>
 
+ <div *ngSwitchCase="'action'" class="w-full h-full flex items-center justify-center space-x-2">
+         <ng-container *ngIf="isEditing()">
+             <button pButton type="button" icon="pi pi-check"
+                 class="p-button-rounded p-button-success p-button-text p-button-sm"
+                 (click)="onSaveClick()"
+                 title="Save">
+             </button>
+
+             <button pButton type="button" icon="pi pi-times"
+                 class="p-button-rounded p-button-secondary p-button-text p-button-sm"
+                 (click)="onCancelClick()"
+                 title="Cancel">
+             </button>
+         </ng-container>
+
+         <ng-container *ngIf="!isEditing()">
+             <button pButton type="button" icon="pi pi-pencil"
+                 class="p-button-rounded p-button-info p-button-text p-button-sm"
+                 *ngIf="params.data" {{! Only show if row data exists }}
+                 (click)="onEditClick()"
+                 title="Edit">
+             </button>
+
+             <button pButton type="button" icon="pi pi-trash"
+                 class="p-button-rounded p-button-danger p-button-text p-button-sm"
+                  *ngIf="params.data" {{! Only show if row data exists }}
+                 (click)="onDeleteClick()"
+                 title="Delete">
+             </button>
+         </ng-container>
+     </div>
+
+     
     <input *ngSwitchDefault pInputText [id]="params.colDef?.field + '-' + params.node.rowIndex"
         class="w-full p-inputtext-sm" [(ngModel)]="value" (ngModelChange)="onValueChange($event)"
         [placeholder]="inputConfig?.placeholder ?? ''" [disabled]="inputConfig?.disabled ?? false"

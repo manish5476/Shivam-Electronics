@@ -1,11 +1,11 @@
 
-import { Component } from "@angular/core";
+import { Component, EventEmitter, Output } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { FormsModule } from "@angular/forms";
 
 // Ag-Grid Imports
 import { ICellRendererAngularComp } from "ag-grid-angular";
-import { ICellRendererParams } from "ag-grid-community";
+import { ICellRendererParams, IRowNode } from "ag-grid-community";
 
 // PrimeNG Modules
 import { InputTextModule } from 'primeng/inputtext';
@@ -63,6 +63,7 @@ type ValueChangedCallback = (eventData: CellChangedEvent) => void;
     styleUrls: ['./dynamic-cell.component.css'] // Use styleUrls (plural)
 })
 export class DynamicCellComponent implements ICellRendererAngularComp {
+    @Output() actionTriggered = new EventEmitter<{ action: 'edit' | 'save' | 'cancel' | 'delete', rowData: any }>();
 
     // Properties managed by Ag-Grid
     params!: ICellRendererParams; // Definite assignment assertion
@@ -78,6 +79,7 @@ export class DynamicCellComponent implements ICellRendererAngularComp {
 
     // Callback function provided by the parent grid component
     private valueChangedCallback: ValueChangedCallback | undefined;
+    context: any;
 
     /**
      * Ag-Grid initialization method. Called once when the component is created.
@@ -103,6 +105,69 @@ export class DynamicCellComponent implements ICellRendererAngularComp {
      * Ag-Grid refresh method. Called when grid data changes.
      * Return true to handle the refresh internally, false to recreate the component.
      */
+    isEditing(): boolean {
+        // Access the row node from params
+        const rowNode = this.params.node as IRowNode | null | undefined;
+        // Get the row's unique ID (string) from the node
+        const rowId = rowNode?.id;
+
+        // Use the context function provided by SharedGridComponent
+        // The context function will compare this ID to the SharedGridComponent's editingRowId state.
+        return this.context?this.context:false
+        // return this.context?.isRowEditing ? this.context.isRowEditing(rowId) : false;
+    }
+
+    // --- Button Click Handlers (for the 'action' type) ---
+    // These methods emit events to the parent (SharedGridComponent)
+
+    onEditClick(): void {
+        console.log("Action Button Click: Edit", this.params.data);
+        // Emit the edit action event with the current row data
+        if (this.params.data) {
+            this.actionTriggered.emit({ action: 'edit', rowData: this.params.data });
+            this.context=true
+        } else {
+            console.warn("Edit clicked but params.data is missing.");
+        }
+    }
+
+    onSaveClick(): void {
+         console.log("Action Button Click: Save", this.params.data);
+        // Emit the save action event with the current row data from the grid's editor
+        // When save is clicked in edit mode, params.data contains the latest values from the editors.
+        if (this.params.data) {
+            this.actionTriggered.emit({ action: 'save', rowData: this.params.data });
+            this.context=false
+
+        } else {
+            console.warn("Save clicked but params.data is missing.");
+        }
+    }
+
+    onCancelClick(): void {
+        console.log("Action Button Click: Cancel", this.params.data);
+        // Emit the cancel action event with the current row data
+        if (this.params.data) {
+            this.actionTriggered.emit({ action: 'cancel', rowData: this.params.data });
+            this.context=false
+
+        } else {
+            console.warn("Cancel clicked but params.data is missing.");
+        }
+    }
+
+    onDeleteClick(): void {
+        console.log("Action Button Click: Delete", this.params.data);
+        // Emit the delete action event with the row data
+        if (this.params.data) {
+            this.actionTriggered.emit({ action: 'delete', rowData: this.params.data });
+            this.context=true
+        } else {
+            console.warn("Delete clicked but params.data is missing.");
+        }
+    }
+
+    
     refresh(params: ICellRendererParams): boolean {
         // Update params and value
         this.params = params;

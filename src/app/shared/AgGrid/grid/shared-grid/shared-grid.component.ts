@@ -63,7 +63,7 @@ export class SharedGridComponent implements OnInit, OnChanges {
     floatingFilter: true,
     editable: (params) => this.editingRowId === params.data.id
   };
-  
+
   theme = themeQuartz;
 
   rowSelection: any;
@@ -83,7 +83,7 @@ export class SharedGridComponent implements OnInit, OnChanges {
     this.rowSelection = {
       mode: this.rowSelectionMode // Use the input row selection mode
     };
-    this.addActionButtonCol()
+    // this.addActionButtonCol()
   }
 
   addActionButtonCol() {
@@ -108,24 +108,24 @@ export class SharedGridComponent implements OnInit, OnChanges {
       width: 160,
     });
   }
-  
+
 
   editingRowId: number | null = null;
   originalRowData: any = {};
-  
+
   startEditingRow(rowData: any) {
     if (!this.gridApi) return;
     this.editingRowId = rowData.id;
     this.originalRowData = { ...rowData };
     this.gridApi.startEditingCell({ rowIndex: this.getRowIndex(rowData), colKey: 'email' });
   }
-  
+
   saveRow(rowData: any) {
     this.gridApi.stopEditing();
     this.editingRowId = null;
     this.dataChanged.emit({ type: 'save', data: rowData });
   }
-  
+
   cancelEditingRow(rowData: any) {
     const rowIndex = this.getRowIndex(rowData);
     if (rowIndex >= 0) {
@@ -135,19 +135,19 @@ export class SharedGridComponent implements OnInit, OnChanges {
       this.editingRowId = null;
     }
   }
-  
-  
+
+
   deleteRow(rowData: any) {
     this.rowData = this.rowData.filter(row => row.id !== rowData.id);
     this.gridApi.applyTransaction({ remove: [rowData] });
-        this.dataChanged.emit({ type: 'delete', data: rowData });
+    this.dataChanged.emit({ type: 'delete', data: rowData });
   }
-  
+
   getRowIndex(rowData: any): number {
     return this.rowData.findIndex(row => row.id === rowData.id);
   }
 
-  
+
   generateDefaultColumns(data: any[]): ColDef[] {
     if (data && data.length > 0) { // Check if data is valid and has length
       return Object.keys(data[0]).map(key => ({
