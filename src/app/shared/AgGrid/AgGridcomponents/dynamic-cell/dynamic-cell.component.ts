@@ -1,8 +1,9 @@
+
 import { Component, EventEmitter, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { ICellRendererAngularComp } from 'ag-grid-angular';
-import { ICellRendererParams } from 'ag-grid-community';
+import { ICellRendererAngularComp, ICellEditorAngularComp } from 'ag-grid-angular';
+import { ICellRendererParams, ICellEditorParams, IAfterGuiAttachedParams } from 'ag-grid-community';
 import { InputTextModule } from 'primeng/inputtext';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { DropdownModule } from 'primeng/dropdown';
@@ -17,9 +18,8 @@ import { KeyFilterModule } from 'primeng/keyfilter';
 import { KnobModule } from 'primeng/knob';
 import { MultiSelectModule } from 'primeng/multiselect';
 import { SelectModule } from 'primeng/select';
-import { GridContext } from '../../AgGridcomponents/ag-grid-reference/ag-grid-reference.component'; // Import the shared interface
+import { GridContext } from '../ag-grid-reference/ag-grid-reference.component';
 
-// Interface for the cell changed event
 export interface CellChangedEvent {
   oldValue: any;
   newValue: any;
@@ -55,43 +55,141 @@ type ValueChangedCallback = (eventData: CellChangedEvent) => void;
   ],
   template: `
     <div [ngSwitch]="type" class="dynamic-cell-container w-full h-full flex items-center p-0 m-0">
-      <input
-        *ngSwitchCase="'text'"
-        pInputText
-        [id]="params.colDef?.field + '-' + params.node.rowIndex"
-        class="w-full p-inputtext-sm"
-        [(ngModel)]="value"
-        (ngModelChange)="onValueChange($event)"
-        [placeholder]="inputConfig?.placeholder ?? ''"
-        [disabled]="!isEditing()"
-        [readonly]="inputConfig?.readonly ?? false"
-        [pTooltip]="inputConfig?.tooltip ?? null"
-        [tooltipPosition]="inputConfig?.tooltipPosition ?? 'top'"
-      />
+      <input *ngSwitchCase="'text'" pInputText [id]="params.colDef?.field + '-' + params.node.rowIndex"
+             class="w-full p-inputtext-sm" [(ngModel)]="value" (ngModelChange)="onValueChange($event)"
+             [placeholder]="inputConfig?.placeholder ?? ''" [disabled]="!isEditing()"
+             [readonly]="inputConfig?.readonly ?? false" [pTooltip]="inputConfig?.tooltip ?? null"
+             [tooltipPosition]="inputConfig?.tooltipPosition ?? 'top'" [attr.aria-label]="params.colDef?.headerName" />
 
       <div *ngSwitchCase="'number'" class="w-full">
-        <p-inputNumber
-          class="w-full"
-          [id]="params.colDef?.field + '-' + params.node.rowIndex"
-          [(ngModel)]="value"
-          (onInput)="onValueChange($event.value)"
-          [mode]="inputConfig?.mode ?? 'decimal'"
-          [minFractionDigits]="inputConfig?.minFractionDigits ?? null"
-          [maxFractionDigits]="inputConfig?.maxFractionDigits ?? null"
-          [useGrouping]="inputConfig?.useGrouping ?? true"
-          [placeholder]="inputConfig?.placeholder ?? ''"
-          [min]="inputConfig?.min ?? null"
-          [max]="inputConfig?.max ?? null"
-          [step]="inputConfig?.step ?? 1"
-          [prefix]="inputConfig?.prefix ?? ''"
-          [suffix]="inputConfig?.suffix ?? ''"
-          [disabled]="!isEditing()"
-          [readonly]="inputConfig?.readonly ?? false"
-          (keypress)="preventE($event)"
-          [pTooltip]="inputConfig?.tooltip ?? null"
-          [tooltipPosition]="inputConfig?.tooltipPosition ?? 'top'"
-        ></p-inputNumber>
+        <p-inputNumber class="w-full" [id]="params.colDef?.field + '-' + params.node.rowIndex" [(ngModel)]="value"
+                       (onInput)="onValueChange($event.value)" [mode]="inputConfig?.mode ?? 'decimal'"
+                       [minFractionDigits]="inputConfig?.minFractionDigits ?? null"
+                       [maxFractionDigits]="inputConfig?.maxFractionDigits ?? null"
+                       [useGrouping]="inputConfig?.useGrouping ?? true" [placeholder]="inputConfig?.placeholder ?? ''"
+                       [min]="inputConfig?.min ?? null" [max]="inputConfig?.max ?? null" [step]="inputConfig?.step ?? 1"
+                       [prefix]="inputConfig?.prefix ?? ''" [suffix]="inputConfig?.suffix ?? ''" [disabled]="!isEditing()"
+                       [readonly]="inputConfig?.readonly ?? false" (keypress)="preventE($event)"
+                       [pTooltip]="inputConfig?.tooltip ?? null" [tooltipPosition]="inputConfig?.tooltipPosition ?? 'top'"
+                       [attr.aria-label]="params.colDef?.headerName">
+        </p-inputNumber>
       </div>
+
+      <div *ngSwitchCase="'select'" class="w-full">
+        <p-select [inputId]="params.colDef?.field + '-' + params.node.rowIndex" [(ngModel)]="value" [options]="options"
+                  [optionLabel]="inputConfig?.optionLabel ?? null" [optionValue]="inputConfig?.optionValue ?? null"
+                  [placeholder]="inputConfig?.placeholder ?? 'Select'" [checkmark]="inputConfig?.checkmark ?? false"
+                  [showClear]="inputConfig?.showClear ?? false" [editable]="inputConfig?.editable ?? false"
+                  [filter]="inputConfig?.filter ?? false" [styleClass]="inputConfig?.styleClass ?? 'w-full'" appendTo="body"
+                  [disabled]="!isEditing()" [readonly]="inputConfig?.readonly ?? false"
+                  [pTooltip]="inputConfig?.tooltip ?? null" [tooltipPosition]="inputConfig?.tooltipPosition ?? 'top'"
+                  [attr.aria-label]="params.colDef?.headerName">
+        </p-select>
+      </div>
+
+      <div *ngSwitchCase="'colorpicker'" class="w-full flex items-center space-x-2">
+        <span *ngIf="inputConfig?.showValue" class="text-xs truncate flex-shrink mr-1" [pTooltip]="value"
+              tooltipPosition="top">
+        </span>
+        <p-colorPicker [id]="params.colDef?.field + '-' + params.node.rowIndex" appendTo="body" [(ngModel)]="value"
+                       (ngModelChange)="onValueChange($event)" [format]="inputConfig?.format ?? 'hex'"
+                       [inline]="inputConfig?.inline ?? false" [styleClass]="'p-inputtext-sm'" [disabled]="!isEditing()"
+                       [pTooltip]="inputConfig?.tooltip ?? 'Select Color'"
+                       [tooltipPosition]="inputConfig?.tooltipPosition ?? 'top'" [attr.aria-label]="params.colDef?.headerName">
+        </p-colorPicker>
+      </div>
+
+      <p-autoComplete *ngSwitchCase="'autocomplete'" class="w-full"
+                      [id]="params.colDef?.field + '-' + params.node.rowIndex" [(ngModel)]="value"
+                      (completeMethod)="onValueChange($event)" (onSelect)="onValueChange($event)" [suggestions]="options"
+                      [field]="inputConfig?.field ?? null" [dropdown]="inputConfig?.dropdown ?? false"
+                      [forceSelection]="inputConfig?.forceSelection ?? false" [minLength]="inputConfig?.minLength ?? 1"
+                      [placeholder]="inputConfig?.placeholder ?? 'Search...'" appendTo="body" [disabled]="!isEditing()"
+                      [readonly]="inputConfig?.readonly ?? false" [pTooltip]="inputConfig?.tooltip ?? null"
+                      [tooltipPosition]="inputConfig?.tooltipPosition ?? 'top'" [attr.aria-label]="params.colDef?.headerName">
+      </p-autoComplete>
+
+      <p-cascadeSelect *ngSwitchCase="'cascadeselect'" class="w-full"
+                       [id]="params.colDef?.field + '-' + params.node.rowIndex" [(ngModel)]="value" [options]="options"
+                       [optionLabel]="inputConfig?.optionLabel ?? 'cname'" [optionGroupLabel]="inputConfig?.optionGroupLabel ?? 'name'"
+                       [optionGroupChildren]="inputConfig?.optionGroupChildren ?? ['states', 'cities']"
+                       [style]="{ 'minWidth': inputConfig?.minWidth ?? '14rem' }"
+                       [placeholder]="inputConfig?.placeholder ?? 'Select...'" [disabled]="!isEditing()"
+                       [pTooltip]="inputConfig?.tooltip ?? null" [tooltipPosition]="inputConfig?.tooltipPosition ?? 'top'"
+                       [attr.aria-label]="params.colDef?.headerName">
+      </p-cascadeSelect>
+
+      <div *ngSwitchCase="'checkbox'" class="w-full flex justify-content-center items-center">
+        <p-checkbox [(ngModel)]="value" [binary]="inputConfig?.binary ?? true"
+                    [id]="params.colDef?.field + '-' + params.node.rowIndex" [style]="inputConfig?.style ?? null"
+                    [styleClass]="inputConfig?.styleClass ?? null" [disabled]="!isEditing()"
+                    [readonly]="inputConfig?.readonly ?? false" [pTooltip]="inputConfig?.tooltip ?? null"
+                    [tooltipPosition]="inputConfig?.tooltipPosition ?? 'top'" [attr.aria-label]="params.colDef?.headerName">
+        </p-checkbox>
+      </div>
+
+      <p-inputMask *ngSwitchCase="'inputmask'" class="w-full" [id]="params.colDef?.field + '-' + params.node.rowIndex"
+                   [(ngModel)]="value" [mask]="inputConfig?.mask ?? null" [placeholder]="inputConfig?.placeholder ?? ''"
+                   [autoClear]="inputConfig?.autoClear ?? true" [disabled]="!isEditing()"
+                   [readonly]="inputConfig?.readonly ?? false" [pTooltip]="inputConfig?.tooltip ?? null"
+                   [tooltipPosition]="inputConfig?.tooltipPosition ?? 'top'" [attr.aria-label]="params.colDef?.headerName">
+      </p-inputMask>
+
+      <p-datepicker *ngSwitchCase="'datepicker'" class="w-full" [id]="params.colDef?.field + '-' + params.node.rowIndex"
+                    [(ngModel)]="value" [showButtonBar]="inputConfig?.showButtonBar ?? false"
+                    [readonlyInput]="inputConfig?.readonlyInput ?? false" [showTime]="inputConfig?.showTime ?? false"
+                    [hourFormat]="inputConfig?.hourFormat ?? '24'" [timeOnly]="inputConfig?.timeOnly ?? false"
+                    [view]="inputConfig?.view ?? 'date'" [dateFormat]="inputConfig?.dateFormat ?? 'mm/dd/yy'"
+                    [numberOfMonths]="inputConfig?.numberOfMonths ?? 1" [placeholder]="inputConfig?.placeholder ?? 'Select a date'"
+                    appendTo="body" [disabled]="!isEditing()" [pTooltip]="inputConfig?.tooltip ?? null"
+                    [tooltipPosition]="inputConfig?.tooltipPosition ?? 'top'" [attr.aria-label]="params.colDef?.headerName">
+        <ng-template pTemplate="date" let-date>
+          <strong *ngIf="inputConfig?.dateTemplateCondition && inputConfig?.dateTemplateCondition(date)"
+                  style="text-decoration: line-through">
+            {{ date.day }}
+          </strong>
+          <ng-template [ngIf]="!(inputConfig?.dateTemplateCondition && inputConfig?.dateTemplateCondition(date))">
+            {{ date.day }}
+          </ng-template>
+        </ng-template>
+      </p-datepicker>
+
+      <div *ngSwitchCase="'keyfilteredinput'" class="w-full">
+        <input type="text" pInputText class="w-full" [id]="params.colDef?.field + '-' + params.node.rowIndex"
+               [(ngModel)]="value" [placeholder]="inputConfig?.placeholder ?? ''" [disabled]="!isEditing()"
+               [readonly]="inputConfig?.readonly ?? false" [pKeyFilter]="inputConfig?.keyFilter ?? null"
+               [pTooltip]="inputConfig?.tooltip ?? null" [tooltipPosition]="inputConfig?.tooltipPosition ?? 'top'"
+               [attr.aria-label]="params.colDef?.headerName" />
+      </div>
+
+      <div *ngSwitchCase="'knob'" class="w-full flex justify-content-center items-center">
+        <p-knob [id]="params.colDef?.field + '-' + params.node.rowIndex" [(ngModel)]="value"
+                [valueColor]="inputConfig?.valueColor ?? 'var(--primary-color)'"
+                [rangeColor]="inputConfig?.rangeColor ?? 'var(--surface-d)'" [size]="inputConfig?.size ?? 100"
+                [step]="inputConfig?.step ?? 1" [min]="inputConfig?.min ?? 0" [max]="inputConfig?.max ?? 100"
+                [disabled]="!isEditing()" [readonly]="inputConfig?.readonly ?? false"
+                [pTooltip]="inputConfig?.tooltip ?? null" [tooltipPosition]="inputConfig?.tooltipPosition ?? 'top'"
+                [attr.aria-label]="params.colDef?.headerName">
+        </p-knob>
+      </div>
+
+      <div *ngSwitchCase="'multiselect'" class="w-full">
+        <p-multiselect [id]="params.colDef?.field + '-' + params.node.rowIndex" [(ngModel)]="value" [options]="options"
+                       [optionLabel]="inputConfig?.optionLabel ?? null" [optionValue]="inputConfig?.optionValue ?? null"
+                       [placeholder]="inputConfig?.placeholder ?? 'Select'"
+                       [maxSelectedLabels]="inputConfig?.maxSelectedLabels ?? null" [display]="inputConfig?.display ?? 'comma'"
+                       [filter]="inputConfig?.filter ?? false" [styleClass]="inputConfig?.styleClass ?? 'w-full'" appendTo="body"
+                       [disabled]="!isEditing()" [readonly]="inputConfig?.readonly ?? false"
+                       [pTooltip]="inputConfig?.tooltip ?? null" [tooltipPosition]="inputConfig?.tooltipPosition ?? 'top'"
+                       [attr.aria-label]="params.colDef?.headerName">
+        </p-multiselect>
+      </div>
+
+      <input *ngSwitchDefault pInputText [id]="params.colDef?.field + '-' + params.node.rowIndex"
+             class="w-full p-inputtext-sm" [(ngModel)]="value" (ngModelChange)="onValueChange($event)"
+             [placeholder]="inputConfig?.placeholder ?? ''" [disabled]="!isEditing()"
+             [readonly]="inputConfig?.readonly ?? false" [pTooltip]="inputConfig?.tooltip ?? null"
+             [tooltipPosition]="inputConfig?.tooltipPosition ?? 'top'" [attr.aria-label]="params.colDef?.headerName" />
     </div>
   `,
   styles: [`
@@ -103,10 +201,10 @@ type ValueChangedCallback = (eventData: CellChangedEvent) => void;
     }
   `]
 })
-export class DynamicCellComponent implements ICellRendererAngularComp {
+export class DynamicCellComponent implements ICellRendererAngularComp, ICellEditorAngularComp {
   @Output() actionTriggered = new EventEmitter<{ action: 'edit' | 'save' | 'cancel' | 'delete', rowData: any }>();
 
-  params!: ICellRendererParams;
+  params!: ICellRendererParams | ICellEditorParams;
   value: any;
   type: string = 'text';
   options: any[] = [];
@@ -115,41 +213,67 @@ export class DynamicCellComponent implements ICellRendererAngularComp {
   private valueChangedCallback: ValueChangedCallback | undefined;
   private context!: GridContext;
 
-  agInit(params: ICellRendererParams): void {
+  // Cell Renderer Methods
+  agInit(params: ICellRendererParams | ICellEditorParams): void {
+    this.init(params);
+  }
+
+  refresh(params: ICellRendererParams | ICellEditorParams): boolean {
+    if ('valueFormatted' in params) {
+      this.init(params);
+      return true;
+    } else {
+      this.init(params);
+      return false;
+    }
+  }
+
+  // Cell Editor Methods
+  getGui(): HTMLElement {
+    return this.params.eGridCell.querySelector('.dynamic-cell-container') as HTMLElement;
+  }
+
+  afterGuiAttached?(params?: IAfterGuiAttachedParams): void {
+    const input = this.getGui().querySelector('input, p-inputNumber, p-select, p-datepicker') as HTMLElement;
+    if (input) {
+      input.focus();
+    }
+  }
+
+  getValue(): any {
+    return this.value;
+  }
+
+  isPopup(): boolean {
+    return false;
+  }
+
+  private init(params: ICellRendererParams | ICellEditorParams): void {
     this.params = params;
     this.value = params.value;
     this.context = params.context as GridContext;
 
-    const cellParams = params?.colDef?.cellRendererParams || {};
+    const cellParams = params?.colDef?.cellRendererParams || params?.colDef?.cellEditorParams || {};
     this.type = cellParams.type || 'text';
     this.options = cellParams.options || [];
     this.inputConfig = cellParams.inputConfig || {};
     this.label = cellParams.label;
     this.valueChangedCallback = cellParams.valueChangedCallback;
   }
-
+  
   isEditing(): boolean {
-    return this.context?.isRowEditing(this.params.data?._id) ?? false;
-  }
-
-  refresh(params: ICellRendererParams): boolean {
-    this.params = params;
-    this.value = params.value;
-    const cellParams = params.colDef?.cellRendererParams || {};
-    this.type = cellParams.type || 'text';
-    this.options = cellParams.options || [];
-    this.inputConfig = cellParams.inputConfig || {};
-    this.label = cellParams.label;
-    this.valueChangedCallback = cellParams.valueChangedCallback;
-    return true;
+    const isEditing = this.context?.isRowEditing(this.params.data?._id) ?? false;
+    console.log('DynamicCell isEditing:', isEditing, 'Row ID:', this.params.data?._id, 'Context:', this.context);
+    return isEditing;
   }
 
   onValueChange(newValue: any, originalEvent?: any): void {
     const oldValue = this.value;
     if (newValue === oldValue) return;
-
     this.value = newValue;
-    this.params.setValue?.(newValue);
+    if ('setValue' in this.params) {
+      this.params.setValue?.(newValue);
+    }
 
     if (this.valueChangedCallback) {
       const eventData: CellChangedEvent = {
@@ -171,18 +295,15 @@ export class DynamicCellComponent implements ICellRendererAngularComp {
     }
   }
 }
-// import { Component, EventEmitter, Output } from "@angular/core";
-// import { CommonModule } from "@angular/common";
-// import { FormsModule } from "@angular/forms";
 
-// // Ag-Grid Imports
-// import { ICellRendererAngularComp } from "ag-grid-angular";
-// import { ICellRendererParams, IRowNode } from "ag-grid-community";
-
-// // PrimeNG Modules
+// import { Component, EventEmitter, Output } from '@angular/core';
+// import { CommonModule } from '@angular/common';
+// import { FormsModule } from '@angular/forms';
+// import { ICellRendererAngularComp, ICellEditorAngularComp } from 'ag-grid-angular';
+// import { ICellRendererParams, ICellEditorParams, IAfterGuiAttachedParams } from 'ag-grid-community';
 // import { InputTextModule } from 'primeng/inputtext';
 // import { InputNumberModule } from 'primeng/inputnumber';
-// import { DropdownModule } from 'primeng/dropdown'; // Correct module for p-dropdown
+// import { DropdownModule } from 'primeng/dropdown';
 // import { ColorPickerModule } from 'primeng/colorpicker';
 // import { TooltipModule } from 'primeng/tooltip';
 // import { CascadeSelectModule } from 'primeng/cascadeselect';
@@ -193,343 +314,407 @@ export class DynamicCellComponent implements ICellRendererAngularComp {
 // import { KeyFilterModule } from 'primeng/keyfilter';
 // import { KnobModule } from 'primeng/knob';
 // import { MultiSelectModule } from 'primeng/multiselect';
-
 // import { SelectModule } from 'primeng/select';
-// /**
-//  * Interface for the structured data passed to the callback on value change.
-//  */
+// import { GridContext } from '../ag-grid-reference/ag-grid-reference.component'; // Adjust path as needed
+
 // export interface CellChangedEvent {
-//     oldValue: any;
-//     newValue: any;
-//     field: string; // The column field name being changed
-//     data: any;     // The complete row data
-//     node: any;     // The Ag-Grid row node
-//     colDef: any;   // The column definition
-//     event?: any;   // The original browser event, if applicable
+//   oldValue: any;
+//   newValue: any;
+//   field: string;
+//   data: any;
+//   node: any;
+//   colDef: any;
+//   event?: any;
 // }
 
-// /**
-//  * Type definition for the callback function expected in cellRendererParams.
-//  * This function will be called by the cell component when its value changes.
-//  */
 // type ValueChangedCallback = (eventData: CellChangedEvent) => void;
 
 // @Component({
-//     selector: 'app-dynamic-cell',
-//     standalone: true, // Recommended for modern Angular
-//     imports: [
-//         // Angular Modules
-//         CommonModule,
-//         FormsModule,
+//   selector: 'app-dynamic-cell',
+//   standalone: true,
+//   imports: [
+//     CommonModule,
+//     FormsModule,
+//     InputTextModule,
+//     InputNumberModule,
+//     DropdownModule,
+//     ColorPickerModule,
+//     TooltipModule,
+//     CascadeSelectModule,
+//     AutoCompleteModule,
+//     CheckboxModule,
+//     DatePickerModule,
+//     InputMaskModule,
+//     KeyFilterModule,
+//     KnobModule,
+//     MultiSelectModule,
+//     SelectModule,
+//   ],
+//   template: `
+//     <div [ngSwitch]="type" class="dynamic-cell-container w-full h-full flex items-center p-0 m-0">
+//       <input *ngSwitchCase="'text'" pInputText [id]="params.colDef?.field + '-' + params.node.rowIndex"
+//              class="w-full p-inputtext-sm" [(ngModel)]="value" (ngModelChange)="onValueChange($event)"
+//              [placeholder]="inputConfig?.placeholder ?? ''" [disabled]="!isEditing()"
+//              [readonly]="inputConfig?.readonly ?? false" [pTooltip]="inputConfig?.tooltip ?? null"
+//              [tooltipPosition]="inputConfig?.tooltipPosition ?? 'top'" [attr.aria-label]="params.colDef?.headerName" />
 
-//         // PrimeNG Modules
-//         DatePickerModule, KeyFilterModule,
-//         InputTextModule, MultiSelectModule, SelectModule,
-//         InputNumberModule, CheckboxModule,
-//         InputMaskModule, KnobModule,
-//         DropdownModule,
-//         ColorPickerModule,
-//         TooltipModule, CascadeSelectModule, AutoCompleteModule,
-//     ],
-//     templateUrl: './dynamic-cell.component.html',
-//     styleUrls: ['./dynamic-cell.component.css'] // Use styleUrls (plural)
+//       <div *ngSwitchCase="'number'" class="w-full">
+//         <p-inputNumber class="w-full" [id]="params.colDef?.field + '-' + params.node.rowIndex" [(ngModel)]="value"
+//                        (onInput)="onValueChange($event.value)" [mode]="inputConfig?.mode ?? 'decimal'"
+//                        [minFractionDigits]="inputConfig?.minFractionDigits ?? null"
+//                        [maxFractionDigits]="inputConfig?.maxFractionDigits ?? null"
+//                        [useGrouping]="inputConfig?.useGrouping ?? true" [placeholder]="inputConfig?.placeholder ?? ''"
+//                        [min]="inputConfig?.min ?? null" [max]="inputConfig?.max ?? null" [step]="inputConfig?.step ?? 1"
+//                        [prefix]="inputConfig?.prefix ?? ''" [suffix]="inputConfig?.suffix ?? ''" [disabled]="!isEditing()"
+//                        [readonly]="inputConfig?.readonly ?? false" (keypress)="preventE($event)"
+//                        [pTooltip]="inputConfig?.tooltip ?? null" [tooltipPosition]="inputConfig?.tooltipPosition ?? 'top'"
+//                        [attr.aria-label]="params.colDef?.headerName">
+//         </p-inputNumber>
+//       </div>
+
+//       <div *ngSwitchCase="'select'" class="w-full">
+//         <p-select [inputId]="params.colDef?.field + '-' + params.node.rowIndex" [(ngModel)]="value" [options]="options"
+//                   [optionLabel]="inputConfig?.optionLabel ?? null" [optionValue]="inputConfig?.optionValue ?? null"
+//                   [placeholder]="inputConfig?.placeholder ?? 'Select'" [checkmark]="inputConfig?.checkmark ?? false"
+//                   [showClear]="inputConfig?.showClear ?? false" [editable]="inputConfig?.editable ?? false"
+//                   [filter]="inputConfig?.filter ?? false" [styleClass]="inputConfig?.styleClass ?? 'w-full'" appendTo="body"
+//                   [disabled]="!isEditing()" [readonly]="inputConfig?.readonly ?? false"
+//                   [pTooltip]="inputConfig?.tooltip ?? null" [tooltipPosition]="inputConfig?.tooltipPosition ?? 'top'"
+//                   [attr.aria-label]="params.colDef?.headerName">
+//         </p-select>
+//       </div>
+
+//       <div *ngSwitchCase="'colorpicker'" class="w-full flex items-center space-x-2">
+//         <span *ngIf="inputConfig?.showValue" class="text-xs truncate flex-shrink mr-1" [pTooltip]="value"
+//               tooltipPosition="top">
+//         </span>
+//         <p-colorPicker [id]="params.colDef?.field + '-' + params.node.rowIndex" appendTo="body" [(ngModel)]="value"
+//                        (ngModelChange)="onValueChange($event)" [format]="inputConfig?.format ?? 'hex'"
+//                        [inline]="inputConfig?.inline ?? false" [styleClass]="'p-inputtext-sm'" [disabled]="!isEditing()"
+//                        [pTooltip]="inputConfig?.tooltip ?? 'Select Color'"
+//                        [tooltipPosition]="inputConfig?.tooltipPosition ?? 'top'" [attr.aria-label]="params.colDef?.headerName">
+//         </p-colorPicker>
+//       </div>
+
+//       <p-autoComplete *ngSwitchCase="'autocomplete'" class="w-full"
+//                       [id]="params.colDef?.field + '-' + params.node.rowIndex" [(ngModel)]="value"
+//                       (completeMethod)="onValueChange($event)" (onSelect)="onValueChange($event)" [suggestions]="options"
+//                       [field]="inputConfig?.field ?? null" [dropdown]="inputConfig?.dropdown ?? false"
+//                       [forceSelection]="inputConfig?.forceSelection ?? false" [minLength]="inputConfig?.minLength ?? 1"
+//                       [placeholder]="inputConfig?.placeholder ?? 'Search...'" appendTo="body" [disabled]="!isEditing()"
+//                       [readonly]="inputConfig?.readonly ?? false" [pTooltip]="inputConfig?.tooltip ?? null"
+//                       [tooltipPosition]="inputConfig?.tooltipPosition ?? 'top'" [attr.aria-label]="params.colDef?.headerName">
+//       </p-autoComplete>
+
+//       <p-cascadeSelect *ngSwitchCase="'cascadeselect'" class="w-full"
+//                        [id]="params.colDef?.field + '-' + params.node.rowIndex" [(ngModel)]="value" [options]="options"
+//                        [optionLabel]="inputConfig?.optionLabel ?? 'cname'" [optionGroupLabel]="inputConfig?.optionGroupLabel ?? 'name'"
+//                        [optionGroupChildren]="inputConfig?.optionGroupChildren ?? ['states', 'cities']"
+//                        [style]="{ 'minWidth': inputConfig?.minWidth ?? '14rem' }"
+//                        [placeholder]="inputConfig?.placeholder ?? 'Select...'" [disabled]="!isEditing()"
+//                        [pTooltip]="inputConfig?.tooltip ?? null" [tooltipPosition]="inputConfig?.tooltipPosition ?? 'top'"
+//                        [attr.aria-label]="params.colDef?.headerName">
+//       </p-cascadeSelect>
+
+//       <div *ngSwitchCase="'checkbox'" class="w-full flex justify-content-center items-center">
+//         <p-checkbox [(ngModel)]="value" [binary]="inputConfig?.binary ?? true"
+//                     [id]="params.colDef?.field + '-' + params.node.rowIndex" [style]="inputConfig?.style ?? null"
+//                     [styleClass]="inputConfig?.styleClass ?? null" [disabled]="!isEditing()"
+//                     [readonly]="inputConfig?.readonly ?? false" [pTooltip]="inputConfig?.tooltip ?? null"
+//                     [tooltipPosition]="inputConfig?.tooltipPosition ?? 'top'" [attr.aria-label]="params.colDef?.headerName">
+//         </p-checkbox>
+//       </div>
+
+//       <p-inputMask *ngSwitchCase="'inputmask'" class="w-full" [id]="params.colDef?.field + '-' + params.node.rowIndex"
+//                    [(ngModel)]="value" [mask]="inputConfig?.mask ?? null" [placeholder]="inputConfig?.placeholder ?? ''"
+//                    [autoClear]="inputConfig?.autoClear ?? true" [disabled]="!isEditing()"
+//                    [readonly]="inputConfig?.readonly ?? false" [pTooltip]="inputConfig?.tooltip ?? null"
+//                    [tooltipPosition]="inputConfig?.tooltipPosition ?? 'top'" [attr.aria-label]="params.colDef?.headerName">
+//       </p-inputMask>
+
+//       <p-datepicker *ngSwitchCase="'datepicker'" class="w-full" [id]="params.colDef?.field + '-' + params.node.rowIndex"
+//                     [(ngModel)]="value" [showButtonBar]="inputConfig?.showButtonBar ?? false"
+//                     [readonlyInput]="inputConfig?.readonlyInput ?? false" [showTime]="inputConfig?.showTime ?? false"
+//                     [hourFormat]="inputConfig?.hourFormat ?? '24'" [timeOnly]="inputConfig?.timeOnly ?? false"
+//                     [view]="inputConfig?.view ?? 'date'" [dateFormat]="inputConfig?.dateFormat ?? 'mm/dd/yy'"
+//                     [numberOfMonths]="inputConfig?.numberOfMonths ?? 1" [placeholder]="inputConfig?.placeholder ?? 'Select a date'"
+//                     appendTo="body" [disabled]="!isEditing()" [pTooltip]="inputConfig?.tooltip ?? null"
+//                     [tooltipPosition]="inputConfig?.tooltipPosition ?? 'top'" [attr.aria-label]="params.colDef?.headerName">
+//         <ng-template pTemplate="date" let-date>
+//           <strong *ngIf="inputConfig?.dateTemplateCondition && inputConfig?.dateTemplateCondition(date)"
+//                   style="text-decoration: line-through">
+//             {{ date.day }}
+//           </strong>
+//           <ng-template [ngIf]="!(inputConfig?.dateTemplateCondition && inputConfig?.dateTemplateCondition(date))">
+//             {{ date.day }}
+//           </ng-template>
+//         </ng-template>
+//       </p-datepicker>
+
+//       <div *ngSwitchCase="'keyfilteredinput'" class="w-full">
+//         <input type="text" pInputText class="w-full" [id]="params.colDef?.field + '-' + params.node.rowIndex"
+//                [(ngModel)]="value" [placeholder]="inputConfig?.placeholder ?? ''" [disabled]="!isEditing()"
+//                [readonly]="inputConfig?.readonly ?? false" [pKeyFilter]="inputConfig?.keyFilter ?? null"
+//                [pTooltip]="inputConfig?.tooltip ?? null" [tooltipPosition]="inputConfig?.tooltipPosition ?? 'top'"
+//                [attr.aria-label]="params.colDef?.headerName" />
+//       </div>
+
+//       <div *ngSwitchCase="'knob'" class="w-full flex justify-content-center items-center">
+//         <p-knob [id]="params.colDef?.field + '-' + params.node.rowIndex" [(ngModel)]="value"
+//                 [valueColor]="inputConfig?.valueColor ?? 'var(--primary-color)'"
+//                 [rangeColor]="inputConfig?.rangeColor ?? 'var(--surface-d)'" [size]="inputConfig?.size ?? 100"
+//                 [step]="inputConfig?.step ?? 1" [min]="inputConfig?.min ?? 0" [max]="inputConfig?.max ?? 100"
+//                 [disabled]="!isEditing()" [readonly]="inputConfig?.readonly ?? false"
+//                 [pTooltip]="inputConfig?.tooltip ?? null" [tooltipPosition]="inputConfig?.tooltipPosition ?? 'top'"
+//                 [attr.aria-label]="params.colDef?.headerName">
+//         </p-knob>
+//       </div>
+
+//       <div *ngSwitchCase="'multiselect'" class="w-full">
+//         <p-multiselect [id]="params.colDef?.field + '-' + params.node.rowIndex" [(ngModel)]="value" [options]="options"
+//                        [optionLabel]="inputConfig?.optionLabel ?? null" [optionValue]="inputConfig?.optionValue ?? null"
+//                        [placeholder]="inputConfig?.placeholder ?? 'Select'"
+//                        [maxSelectedLabels]="inputConfig?.maxSelectedLabels ?? null" [display]="inputConfig?.display ?? 'comma'"
+//                        [filter]="inputConfig?.filter ?? false" [styleClass]="inputConfig?.styleClass ?? 'w-full'" appendTo="body"
+//                        [disabled]="!isEditing()" [readonly]="inputConfig?.readonly ?? false"
+//                        [pTooltip]="inputConfig?.tooltip ?? null" [tooltipPosition]="inputConfig?.tooltipPosition ?? 'top'"
+//                        [attr.aria-label]="params.colDef?.headerName">
+//         </p-multiselect>
+//       </div>
+
+//       <input *ngSwitchDefault pInputText [id]="params.colDef?.field + '-' + params.node.rowIndex"
+//              class="w-full p-inputtext-sm" [(ngModel)]="value" (ngModelChange)="onValueChange($event)"
+//              [placeholder]="inputConfig?.placeholder ?? ''" [disabled]="!isEditing()"
+//              [readonly]="inputConfig?.readonly ?? false" [pTooltip]="inputConfig?.tooltip ?? null"
+//              [tooltipPosition]="inputConfig?.tooltipPosition ?? 'top'" [attr.aria-label]="params.colDef?.headerName" />
+//     </div>
+//   `,
+//   styles: [`
+//     .dynamic-cell-container {
+//       display: flex;
+//       align-items: center;
+//       justify-content: flex-start;
+//       height: 100%;
+//     }
+//   `]
 // })
-// export class DynamicCellComponent implements ICellRendererAngularComp {
-//     params!: ICellRendererParams;
-//     value: any;
-//     type: string = 'text';
-//     options: any[] = [];
-//     inputConfig: any = {};
-//     label: string | undefined;
-//     private valueChangedCallback: ValueChangedCallback | undefined;
-//     private context!: GridContext; // Reuse the same GridContext interface
-  
-//     agInit(params: ICellRendererParams): void {
-//       this.params = params;
-//       this.value = params.value;
-//       this.context = params.context as GridContext;
-  
-//       const cellParams = params?.colDef?.cellRendererParams || {};
-//       this.type = cellParams.type || 'text';
-//       this.options = cellParams.options || [];
-//       this.inputConfig = cellParams.inputConfig || {};
-//       this.label = cellParams.label;
-//       this.valueChangedCallback = cellParams.valueChangedCallback;
-//     }
-  
-//     isEditing(): boolean {
-//       return this.context?.isRowEditing(this.params.data?._id) ?? false;
-//     }
-  
-//     refresh(params: ICellRendererParams): boolean {
-//       this.params = params;
-//       this.value = params.value;
-//       const cellParams = params.colDef?.cellRendererParams || {};
-//       this.type = cellParams.type || 'text';
-//       this.options = cellParams.options || [];
-//       this.inputConfig = cellParams.inputConfig || {};
-//       this.label = cellParams.label;
-//       this.valueChangedCallback = cellParams.valueChangedCallback;
-//       return true; // Handle refresh internally
-//     }
-  
-//     onValueChange(newValue: any, originalEvent?: any): void {
-//       const oldValue = this.value;
-//       if (newValue === oldValue) return;
-  
-//       this.value = newValue;
-//       this.params.setValue?.(newValue);
-  
-//       if (this.valueChangedCallback) {
-//         const eventData: CellChangedEvent = {
-//           oldValue,
-//           newValue,
-//           field: this.params.colDef?.field!,
-//           data: this.params.data,
-//           node: this.params.node,
-//           colDef: this.params.colDef,
-//           event: originalEvent || newValue,
-//         };
-//         this.valueChangedCallback(eventData);
-//       }
+// export class DynamicCellComponent implements ICellRendererAngularComp, ICellEditorAngularComp {
+//   @Output() actionTriggered = new EventEmitter<{ action: 'edit' | 'save' | 'cancel' | 'delete', rowData: any }>();
+
+//   params!: ICellRendererParams | ICellEditorParams;
+//   value: any;
+//   type: string = 'text';
+//   options: any[] = [];
+//   inputConfig: any = {};
+//   label: string | undefined;
+//   private valueChangedCallback: ValueChangedCallback | undefined;
+//   private context!: GridContext;
+
+//   // Cell Renderer Methods
+//   agInit(params: ICellRendererParams): void {
+//     this.init(params);
+//   }
+
+//   refresh(params: ICellRendererParams): boolean {
+//     this.init(params);
+//     return true;
+//   }
+
+//   // Cell Editor Methods
+//   getGui(): HTMLElement {
+//     return this.params.eGridCell.querySelector('.dynamic-cell-container') as HTMLElement;
+//   }
+
+//   afterGuiAttached?(params?: IAfterGuiAttachedParams): void {
+//     // Focus the first input element
+//     const input = this.getGui().querySelector('input, p-inputNumber, p-select, p-datepicker') as HTMLElement;
+//     if (input) {
+//       input.focus();
 //     }
 //   }
-// // export class DynamicCellComponent implements ICellRendererAngularComp {
-// //     @Output() actionTriggered = new EventEmitter<{ action: 'edit' | 'save' | 'cancel' | 'delete', rowData: any }>();
 
-// //     // Properties managed by Ag-Grid
-// //     params!: ICellRendererParams; // Definite assignment assertion
+//   getValue(): any {
+//     return this.value;
+//   }
 
-// //     // Component State
-// //     value: any; // The current value of the input
+//   isPopup(): boolean {
+//     return false;
+//   }
 
-// //     // Configuration from cellRendererParams
-// //     type: string = 'text';       // Type of PrimeNG component to render
-// //     options: any[] = [];         // Options for dropdown
-// //     inputConfig: any = {};       // Generic config object for PrimeNG props
-// //     label: string | undefined;   // Optional label (e.g., for color picker)
+//   // Shared Initialization
+//   private init(params: ICellRendererParams | ICellEditorParams): void {
+//     this.params = params;
+//     this.value = params.value;
+//     this.context = params.context as GridContext;
+//     console.log('DynamicCell init:', this.params.data?._id, 'Context:', this.context, 'Is Editor:', 'getValue' in params);
 
-// //     // Callback function provided by the parent grid component
-// //     private valueChangedCallback: ValueChangedCallback | undefined;
-// //     context: any;
+//     const cellParams = params?.colDef?.cellRendererParams || params?.colDef?.cellEditorParams || {};
+//     this.type = cellParams.type || 'text';
+//     this.options = cellParams.options || [];
+//     this.inputConfig = cellParams.inputConfig || {};
+//     this.label = cellParams.label;
+//     this.valueChangedCallback = cellParams.valueChangedCallback;
+//   }
 
-// //     /**
-// //      * Ag-Grid initialization method. Called once when the component is created.
-// //      */
-// //     agInit(params: ICellRendererParams): void {
-// //         this.params = params;
-// //         this.value = params.value; // Set initial value from grid data
+//   isEditing(): boolean {
+//     const isEditing = this.context?.isRowEditing(this.params.data?._id) ?? false;
+//     console.log('DynamicCell isEditing:', isEditing, 'Row ID:', this.params.data?._id);
+//     return isEditing;
+//   }
 
-// //         // Safely extract configuration from cellRendererParams
-// //         const cellParams = params?.colDef?.cellRendererParams || {};
-// //         this.type = cellParams.type || 'text';
-// //         this.options = cellParams.options || [];
-// //         this.inputConfig = cellParams.inputConfig || {};
-// //         this.label = cellParams.label; // Optional label
+//   onValueChange(newValue: any, originalEvent?: any): void {
+//     const oldValue = this.value;
+//     if (newValue === oldValue) return;
 
-// //         // Store the callback function if provided
-// //         this.valueChangedCallback = cellParams.valueChangedCallback;
+//     this.value = newValue;
+//     if ('setValue' in this.params) {
+//       this.params.setValue?.(newValue);
+//     }
 
-// //         // console.log("DynamicCell Initialized:", { params: this.params, value: this.value, type: this.type, config: this.inputConfig });
-// //     }
+//     if (this.valueChangedCallback) {
+//       const eventData: CellChangedEvent = {
+//         oldValue,
+//         newValue,
+//         field: this.params.colDef?.field!,
+//         data: this.params.data,
+//         node: this.params.node,
+//         colDef: this.params.colDef,
+//         event: originalEvent || newValue,
+//       };
+//       this.valueChangedCallback(eventData);
+//     }
+//   }
 
-// //     /**
-// //      * Ag-Grid refresh method. Called when grid data changes.
-// //      * Return true to handle the refresh internally, false to recreate the component.
-// //      */
-// //     isEditing(): boolean {
-// //         // Access the row node from params
-// //         const rowNode = this.params.node as IRowNode | null | undefined;
-// //         // Get the row's unique ID (string) from the node
-// //         const rowId = rowNode?.id;
+//   preventE(event: KeyboardEvent): void {
+//     if (['e', 'E', '+', '-'].includes(event.key) && !this.inputConfig?.allowScientificNotation) {
+//       event.preventDefault();
+//     }
+//   }
+// }
 
-// //         // Use the context function provided by SharedGridComponent
-// //         // The context function will compare this ID to the SharedGridComponent's editingRowId state.
-// //         return this.context?this.context:false
-// //         // return this.context?.isRowEditing ? this.context.isRowEditing(rowId) : false;
-// //     }
+// // import { Component, EventEmitter, Output } from '@angular/core';
+// // import { CommonModule } from '@angular/common';
+// // import { FormsModule } from '@angular/forms';
+// // import { ICellRendererAngularComp } from 'ag-grid-angular';
+// // import { ICellRendererParams } from 'ag-grid-community';
+// // import { InputTextModule } from 'primeng/inputtext';
+// // import { InputNumberModule } from 'primeng/inputnumber';
+// // import { DropdownModule } from 'primeng/dropdown';
+// // import { ColorPickerModule } from 'primeng/colorpicker';
+// // import { TooltipModule } from 'primeng/tooltip';
+// // import { CascadeSelectModule } from 'primeng/cascadeselect';
+// // import { AutoCompleteModule } from 'primeng/autocomplete';
+// // import { CheckboxModule } from 'primeng/checkbox';
+// // import { DatePickerModule } from 'primeng/datepicker';
+// // import { InputMaskModule } from 'primeng/inputmask';
+// // import { KeyFilterModule } from 'primeng/keyfilter';
+// // import { KnobModule } from 'primeng/knob';
+// // import { MultiSelectModule } from 'primeng/multiselect';
+// // import { SelectModule } from 'primeng/select';
 
-// //     // --- Button Click Handlers (for the 'action' type) ---
-// //     // These methods emit events to the parent (SharedGridComponent)
-
-// //     onEditClick(): void {
-// //         console.log("Action Button Click: Edit", this.params.data);
-// //         // Emit the edit action event with the current row data
-// //         if (this.params.data) {
-// //             this.actionTriggered.emit({ action: 'edit', rowData: this.params.data });
-// //             this.context=true
-// //         } else {
-// //             console.warn("Edit clicked but params.data is missing.");
-// //         }
-// //     }
-
-// //     onSaveClick(): void {
-// //          console.log("Action Button Click: Save", this.params.data);
-// //         // Emit the save action event with the current row data from the grid's editor
-// //         // When save is clicked in edit mode, params.data contains the latest values from the editors.
-// //         if (this.params.data) {
-// //             this.actionTriggered.emit({ action: 'save', rowData: this.params.data });
-// //             this.context=false
-
-// //         } else {
-// //             console.warn("Save clicked but params.data is missing.");
-// //         }
-// //     }
-
-// //     onCancelClick(): void {
-// //         console.log("Action Button Click: Cancel", this.params.data);
-// //         // Emit the cancel action event with the current row data
-// //         if (this.params.data) {
-// //             this.actionTriggered.emit({ action: 'cancel', rowData: this.params.data });
-// //             this.context=false
-
-// //         } else {
-// //             console.warn("Cancel clicked but params.data is missing.");
-// //         }
-// //     }
-
-// //     onDeleteClick(): void {
-// //         console.log("Action Button Click: Delete", this.params.data);
-// //         // Emit the delete action event with the row data
-// //         if (this.params.data) {
-// //             this.actionTriggered.emit({ action: 'delete', rowData: this.params.data });
-// //             this.context=true
-// //         } else {
-// //             console.warn("Delete clicked but params.data is missing.");
-// //         }
-// //     }
-
-    
-// //     refresh(params: ICellRendererParams): boolean {
-// //         // Update params and value
-// //         this.params = params;
-// //         this.value = params.value;
-
-// //         // Re-read configuration in case it changed (less common, but possible)
-// //         const cellParams = params.colDef?.cellRendererParams || {};
-// //         this.type = cellParams.type || 'text';
-// //         this.options = cellParams.options || [];
-// //         this.inputConfig = cellParams.inputConfig || {};
-// //         this.label = cellParams.label;
-// //         this.valueChangedCallback = cellParams.valueChangedCallback; // Update callback reference
-
-// //         // Returning true tells Ag-Grid we've handled the refresh
-// //         return true;
-// //     }
-
-// //     /**
-// //      * Central handler for value changes from any PrimeNG input.
-// //      * Updates the grid data and triggers the callback.
-// //      */
-// //     onValueChange(newValue: any, originalEvent?: any, cell?: any): void {
-// //         const oldValue = this.value;
-
-// //         // Prevent unnecessary updates if the value hasn't actually changed
-// //         if (newValue === oldValue) {
-// //             return;
-// //         }
-
-// //         this.value = newValue; // Update local component state
-
-// //         // --- Safely update Ag-Grid's data model ---
-// //         // Use optional chaining (?.) because setValue might not exist if not editable
-// //         this.params.setValue?.(newValue);
-// //         // ---------------------------------------------
-
-// //         // If a callback function was provided via params, call it
-// //         if (this.valueChangedCallback) {
-// //             const eventData: CellChangedEvent = {
-// //                 oldValue: oldValue,
-// //                 newValue: newValue,
-// //                 field: this.params.colDef?.field!, // Use non-null assertion if field is guaranteed
-// //                 data: this.params.data,
-// //                 node: this.params.node,
-// //                 colDef: this.params.colDef,
-// //                 event: originalEvent ? originalEvent : newValue,// Include original event for context
-// //             };
-// //             this.valueChangedCallback(eventData);
-// //         }
-// //     }
-
-// //     // --- Specific handlers to correctly extract values from PrimeNG component events ---
-
-// //     /**
-// //      * Example utility: Prevents non-numeric keys in number inputs.
-// //      * (Based on your original code snippet)
-// //      */
-// //     preventE(event: KeyboardEvent): void {
-// //         // Prevent 'e', 'E', '+', '-' which are sometimes allowed in type="number"
-// //         // Adjust the keys based on your specific requirements
-// //         if (['e', 'E', '+', '-'].includes(event.key) && !this.inputConfig?.allowScientificNotation) {
-// //             event.preventDefault();
-// //         }
-// //     }
-
-// //     // Optional: If you need specific keyup logic beyond just value change
-// //     // textBoxKeyUpEvent(field: string, event: KeyboardEvent) {
-// //     //   console.log(`Key up on field ${field}`, event.key);
-// //     //   // Potentially emit a different event or call another callback
-// //     // }
+// // // Interface for the cell changed event
+// // export interface CellChangedEvent {
+// //   oldValue: any;
+// //   newValue: any;
+// //   field: string;
+// //   data: any;
+// //   node: any;
+// //   colDef: any;
+// //   event?: any;
 // // }
 
+// // type ValueChangedCallback = (eventData: CellChangedEvent) => void;
 
-
-
-
-// // old version-------------------------------------------------------
-// //
-// // // // import { Component } from '@angular/core';
-
-// // // @Component({
-// // //   selector: 'app-dynamic-cell',
-// // //   imports: [],
-// // //   templateUrl: './dynamic-cell.component.html',
-// // //   styleUrl: './dynamic-cell.component.css'
-// // // })
-// // // export class DynamicCellComponent {
-
-// // // }
-
-
-
-
-// // import { Component, Input } from "@angular/core";
-// // import { ICellRendererAngularComp } from "ag-grid-angular";
-// // import { ICellRendererParams } from "ag-grid-community";
-// // import { InputNumberModule } from 'primeng/inputnumber';
-// // import { InputTextModule } from 'primeng/inputtext';
-// // import { SelectModule } from 'primeng/select';
-// // import { FormsModule } from "@angular/forms";
-// // import { CommonModule } from "@angular/common";
 // // @Component({
 // //   selector: 'app-dynamic-cell',
-// //   imports: [InputNumberModule, CommonModule, FormsModule, SelectModule, InputTextModule],
-// //   templateUrl: './dynamic-cell.component.html',
-// //   styleUrl: './dynamic-cell.component.css'
+// //   standalone: true,
+// //   imports: [
+// //     CommonModule,
+// //     FormsModule,
+// //     InputTextModule,
+// //     InputNumberModule,
+// //     DropdownModule,
+// //     ColorPickerModule,
+// //     TooltipModule,
+// //     CascadeSelectModule,
+// //     AutoCompleteModule,
+// //     CheckboxModule,
+// //     DatePickerModule,
+// //     InputMaskModule,
+// //     KeyFilterModule,
+// //     KnobModule,
+// //     MultiSelectModule,
+// //     SelectModule,
+// //   ],
+
+// // templateUrl: './dynamic-cell.component.html',
+// // styleUrls: ['./dynamic-cell.component.css'] // Use styleUrls (plural)
 // // })
 // // export class DynamicCellComponent implements ICellRendererAngularComp {
-// //   refresh(params: ICellRendererParams<any, any, any>): boolean {
-// //     throw new Error("Method not implemented.");
-// //   }
-// //   @Input() params: any;
-// //   @Input() type: string | undefined;  // The column type (text, number, date)
-// //   @Input() data: any;     // The row data
-// //   @Input() key: string | undefined;
-// //   value: any;
+// //   @Output() actionTriggered = new EventEmitter<{ action: 'edit' | 'save' | 'cancel' | 'delete', rowData: any }>();
 
-// //   agInit(params: any): void {
+// //   params!: ICellRendererParams;
+// //   value: any;
+// //   type: string = 'text';
+// //   options: any[] = [];
+// //   inputConfig: any = {};
+// //   label: string | undefined;
+// //   private valueChangedCallback: ValueChangedCallback | undefined;
+// //   private context!: GridContext;
+
+// //   agInit(params: ICellRendererParams): void {
 // //     this.params = params;
 // //     this.value = params.value;
-// //     this.type = params.colDef.cellRendererParams?.type || 'text';
-// //     console.log(this.params, this.value, this.type);
+// //     this.context = params.context as GridContext;
+
+// //     const cellParams = params?.colDef?.cellRendererParams || {};
+// //     this.type = cellParams.type || 'text';
+// //     this.options = cellParams.options || [];
+// //     this.inputConfig = cellParams.inputConfig || {};
+// //     this.label = cellParams.label;
+// //     this.valueChangedCallback = cellParams.valueChangedCallback;
 // //   }
 
 // //   isEditing(): boolean {
-// //     return this.params.context?.componentParent?.isRowEditing(this.params.node);
+// //     return this.context?.isRowEditing(this.params.data?._id) ?? false;
 // //   }
 
-// //   onValueChange(newValue: any) {
+// //   refresh(params: ICellRendererParams): boolean {
+// //     this.params = params;
+// //     this.value = params.value;
+// //     const cellParams = params.colDef?.cellRendererParams || {};
+// //     this.type = cellParams.type || 'text';
+// //     this.options = cellParams.options || [];
+// //     this.inputConfig = cellParams.inputConfig || {};
+// //     this.label = cellParams.label;
+// //     this.valueChangedCallback = cellParams.valueChangedCallback;
+// //     return true;
+// //   }
+
+// //   onValueChange(newValue: any, originalEvent?: any): void {
+// //     const oldValue = this.value;
+// //     if (newValue === oldValue) return;
+
 // //     this.value = newValue;
-// //     this.params.data[this.params.colDef.field] = newValue;
+// //     this.params.setValue?.(newValue);
+
+// //     if (this.valueChangedCallback) {
+// //       const eventData: CellChangedEvent = {
+// //         oldValue,
+// //         newValue,
+// //         field: this.params.colDef?.field!,
+// //         data: this.params.data,
+// //         node: this.params.node,
+// //         colDef: this.params.colDef,
+// //         event: originalEvent || newValue,
+// //       };
+// //       this.valueChangedCallback(eventData);
+// //     }
+// //   }
+
+// //   preventE(event: KeyboardEvent): void {
+// //     if (['e', 'E', '+', '-'].includes(event.key) && !this.inputConfig?.allowScientificNotation) {
+// //       event.preventDefault();
+// //     }
 // //   }
 // // }

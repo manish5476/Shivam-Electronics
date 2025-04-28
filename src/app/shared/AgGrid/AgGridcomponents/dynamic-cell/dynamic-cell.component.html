@@ -1,4 +1,4 @@
-<div [ngSwitch]="type" class="dynamic-cell-container w-full h-full flex items-center p-0 m-0">
+<!-- <div [ngSwitch]="type" class="dynamic-cell-container w-full h-full flex items-center p-0 m-0">
     <input
       *ngSwitchCase="'text'"
       pInputText
@@ -36,12 +36,12 @@
         [tooltipPosition]="inputConfig?.tooltipPosition ?? 'top'"
       ></p-inputNumber>
     </div>
-  </div>
-<!-- <div [ngSwitch]="type" class="dynamic-cell-container w-full h-full flex items-center p-0 m-0">
+  </div> -->
+<div [ngSwitch]="type" class="dynamic-cell-container w-full h-full flex items-center p-0 m-0">
 
     <input *ngSwitchCase="'text'" pInputText [id]="params.colDef?.field + '-' + params.node.rowIndex"
         class="w-full p-inputtext-sm" [(ngModel)]="value" (ngModelChange)="onValueChange($event)"
-        [placeholder]="inputConfig?.placeholder ?? ''" [disabled]="inputConfig?.disabled ?? false"
+        [placeholder]="inputConfig?.placeholder ?? ''" [disabled]="!isEditing()"
         [readonly]="inputConfig?.readonly ?? false" [pTooltip]="inputConfig?.tooltip ?? null"
         [tooltipPosition]="inputConfig?.tooltipPosition ?? 'top'" />
 
@@ -52,10 +52,9 @@
             [maxFractionDigits]="inputConfig?.maxFractionDigits ?? null"
             [useGrouping]="inputConfig?.useGrouping ?? true" [placeholder]="inputConfig?.placeholder ?? ''"
             [min]="inputConfig?.min ?? null" [max]="inputConfig?.max ?? null" [step]="inputConfig?.step ?? 1"
-            [prefix]="inputConfig?.prefix ?? ''" [suffix]="inputConfig?.suffix ?? ''"
-            [disabled]="inputConfig?.disabled ?? false" [readonly]="inputConfig?.readonly ?? false"
-            (keypress)="preventE($event)" [pTooltip]="inputConfig?.tooltip ?? null"
-            [tooltipPosition]="inputConfig?.tooltipPosition ?? 'top'">
+            [prefix]="inputConfig?.prefix ?? ''" [suffix]="inputConfig?.suffix ?? ''"  [disabled]="!isEditing()"
+            [readonly]="inputConfig?.readonly ?? false" (keypress)="preventE($event)"
+            [pTooltip]="inputConfig?.tooltip ?? null" [tooltipPosition]="inputConfig?.tooltipPosition ?? 'top'">
         </p-inputNumber>
     </div>
 
@@ -65,7 +64,7 @@
             [placeholder]="inputConfig?.placeholder ?? 'Select'" [checkmark]="inputConfig?.checkmark ?? false"
             [showClear]="inputConfig?.showClear ?? false" [editable]="inputConfig?.editable ?? false"
             [filter]="inputConfig?.filter ?? false" [styleClass]="inputConfig?.styleClass ?? 'w-full'" appendTo="body"
-            [disabled]="inputConfig?.disabled ?? false" [readonly]="inputConfig?.readonly ?? false"
+             [disabled]="!isEditing()" [readonly]="inputConfig?.readonly ?? false"
             [pTooltip]="inputConfig?.tooltip ?? null" [tooltipPosition]="inputConfig?.tooltipPosition ?? 'top'">
 
         </p-select>
@@ -79,8 +78,8 @@
         </span>
         <p-colorPicker [id]="params.colDef?.field + '-' + params.node.rowIndex" appendTo="body" [(ngModel)]="value"
             (ngModelChange)="onValueChange($event)" [format]="inputConfig?.format ?? 'hex'"
-            [inline]="inputConfig?.inline ?? false" [styleClass]="'p-inputtext-sm'"
-            [disabled]="inputConfig?.disabled ?? false" [pTooltip]="inputConfig?.tooltip ?? 'Select Color'"
+            [inline]="inputConfig?.inline ?? false" [styleClass]="'p-inputtext-sm'"  [disabled]="!isEditing()"
+            [pTooltip]="inputConfig?.tooltip ?? 'Select Color'"
             [tooltipPosition]="inputConfig?.tooltipPosition ?? 'top'">
         </p-colorPicker>
     </div>
@@ -90,9 +89,9 @@
         (completeMethod)="onValueChange($event)" (onSelect)="onValueChange($event)" [suggestions]="options"
         [field]="inputConfig?.field ?? null" [dropdown]="inputConfig?.dropdown ?? false"
         [forceSelection]="inputConfig?.forceSelection ?? false" [minLength]="inputConfig?.minLength ?? 1"
-        [placeholder]="inputConfig?.placeholder ?? 'Search...'" appendTo="body"
-        [disabled]="inputConfig?.disabled ?? false" [readonly]="inputConfig?.readonly ?? false"
-        [pTooltip]="inputConfig?.tooltip ?? null" [tooltipPosition]="inputConfig?.tooltipPosition ?? 'top'">
+        [placeholder]="inputConfig?.placeholder ?? 'Search...'" appendTo="body"  [disabled]="!isEditing()"
+        [readonly]="inputConfig?.readonly ?? false" [pTooltip]="inputConfig?.tooltip ?? null"
+        [tooltipPosition]="inputConfig?.tooltipPosition ?? 'top'">
     </p-autoComplete>
 
     <p-cascadeSelect *ngSwitchCase="'cascadeselect'" class="w-full"
@@ -100,7 +99,7 @@
         [optionLabel]="inputConfig?.optionLabel ?? 'cname'" [optionGroupLabel]="inputConfig?.optionGroupLabel ?? 'name'"
         [optionGroupChildren]="inputConfig?.optionGroupChildren ?? ['states', 'cities']"
         [style]="{ 'minWidth': inputConfig?.minWidth ?? '14rem' }"
-        [placeholder]="inputConfig?.placeholder ?? 'Select...'" [disabled]="inputConfig?.disabled ?? false"
+        [placeholder]="inputConfig?.placeholder ?? 'Select...'"  [disabled]="!isEditing()"
         [pTooltip]="inputConfig?.tooltip ?? null" [tooltipPosition]="inputConfig?.tooltipPosition ?? 'top'">
 
     </p-cascadeSelect>
@@ -108,7 +107,7 @@
     <div *ngSwitchCase="'checkbox'" class="w-full flex justify-content-center items-center">
         <p-checkbox [(ngMode l)]="value" [binary]="inputConfig?.binary ?? true"
             [id]="params.colDef?.field + '-' + params.node.rowIndex" [style]="inputConfig?.style ?? null"
-            [styleClass]="inputConfig?.styleClass ?? null" [disabled]="inputConfig?.disabled ?? false"
+            [styleClass]="inputConfig?.styleClass ?? null"  [disabled]="!isEditing()"
             [readonly]="inputConfig?.readonly ?? false" [pTooltip]="inputConfig?.tooltip ?? null"
             [tooltipPosition]="inputConfig?.tooltipPosition ?? 'top'">
         </p-checkbox>
@@ -117,7 +116,7 @@
 
     <p-inputMask *ngSwitchCase="'inputmask'" class="w-full" [id]="params.colDef?.field + '-' + params.node.rowIndex"
         [(ngModel)]="value" [mask]="inputConfig?.mask ?? null" [placeholder]="inputConfig?.placeholder ?? ''"
-        [autoClear]="inputConfig?.autoClear ?? true" [disabled]="inputConfig?.disabled ?? false"
+        [autoClear]="inputConfig?.autoClear ?? true"  [disabled]="!isEditing()"
         [readonly]="inputConfig?.readonly ?? false" [pTooltip]="inputConfig?.tooltip ?? null"
         [tooltipPosition]="inputConfig?.tooltipPosition ?? 'top'">
     </p-inputMask>
@@ -128,7 +127,7 @@
         [hourFormat]="inputConfig?.hourFormat ?? '24'" [timeOnly]="inputConfig?.timeOnly ?? false"
         [view]="inputConfig?.view ?? 'date'" [dateFormat]="inputConfig?.dateFormat ?? 'mm/dd/yy'"
         [numberOfMonths]="inputConfig?.numberOfMonths ?? 1" [placeholder]="inputConfig?.placeholder ?? 'Select a date'"
-        appendTo="body" [disabled]="inputConfig?.disabled ?? false" [pTooltip]="inputConfig?.tooltip ?? null"
+        appendTo="body"  [disabled]="!isEditing()" [pTooltip]="inputConfig?.tooltip ?? null"
         [tooltipPosition]="inputConfig?.tooltipPosition ?? 'top'">
 
         <ng-template #date let-date>
@@ -142,18 +141,17 @@
 
     <div *ngSwitchCase="'keyfilteredinput'" class="w-full">
         <input type="text" pInputText class="w-full" [id]="params.colDef?.field + '-' + params.node.rowIndex"
-            [(ngModel)]="value" [placeholder]="inputConfig?.placeholder ?? ''"
-            [disabled]="inputConfig?.disabled ?? false" [readonly]="inputConfig?.readonly ?? false"
-            [pKeyFilter]="inputConfig?.keyFilter ?? null" [pTooltip]="inputConfig?.tooltip ?? null"
-            [tooltipPosition]="inputConfig?.tooltipPosition ?? 'top'" />
+            [(ngModel)]="value" [placeholder]="inputConfig?.placeholder ?? ''"  [disabled]="!isEditing()"
+            [readonly]="inputConfig?.readonly ?? false" [pKeyFilter]="inputConfig?.keyFilter ?? null"
+            [pTooltip]="inputConfig?.tooltip ?? null" [tooltipPosition]="inputConfig?.tooltipPosition ?? 'top'" />
     </div>
 
     <div *ngSwitchCase="'knob'" class="w-full flex justify-content-center items-center">
         <p-knob [id]="params.colDef?.field + '-' + params.node.rowIndex" [(ngModel)]="value"
             [valueColor]="inputConfig?.valueColor ?? 'var(--primary-color)'"
             [rangeColor]="inputConfig?.rangeColor ?? 'var(--surface-d)'" [size]="inputConfig?.size ?? 100"
-            [step]="inputConfig?.step ?? 1" [min]="inputConfig?.min ?? 0" [max]="inputConfig?.max ?? 100"
-            [disabled]="inputConfig?.disabled ?? false" [readonly]="inputConfig?.readonly ?? false"
+            [step]="inputConfig?.step ?? 1" [min]="inputConfig?.min ?? 0" [max]="inputConfig?.max ?? 100" 
+            [disabled]="!isEditing()" [readonly]="inputConfig?.readonly ?? false"
             [pTooltip]="inputConfig?.tooltip ?? null" [tooltipPosition]="inputConfig?.tooltipPosition ?? 'top'">
         </p-knob>
     </div>
@@ -164,13 +162,13 @@
             [placeholder]="inputConfig?.placeholder ?? 'Select'"
             [maxSelectedLabels]="inputConfig?.maxSelectedLabels ?? null" [display]="inputConfig?.display ?? 'comma'"
             [filter]="inputConfig?.filter ?? false" [styleClass]="inputConfig?.styleClass ?? 'w-full'" appendTo="body"
-            [disabled]="inputConfig?.disabled ?? false" [readonly]="inputConfig?.readonly ?? false"
+             [disabled]="!isEditing()" [readonly]="inputConfig?.readonly ?? false"
             [pTooltip]="inputConfig?.tooltip ?? null" [tooltipPosition]="inputConfig?.tooltipPosition ?? 'top'">
 
         </p-multiselect>
     </div>
 
- <div *ngSwitchCase="'action'" class="w-full h-full flex items-center justify-center space-x-2">
+    <!-- <div *ngSwitchCase="'action'" class="w-full h-full flex items-center justify-center space-x-2">
          <ng-container *ngIf="isEditing()">
              <button pButton type="button" icon="pi pi-check"
                  class="p-button-rounded p-button-success p-button-text p-button-sm"
@@ -200,12 +198,12 @@
                  title="Delete">
              </button>
          </ng-container>
-     </div>
+     </div> -->
 
-     
+
     <input *ngSwitchDefault pInputText [id]="params.colDef?.field + '-' + params.node.rowIndex"
         class="w-full p-inputtext-sm" [(ngModel)]="value" (ngModelChange)="onValueChange($event)"
-        [placeholder]="inputConfig?.placeholder ?? ''" [disabled]="inputConfig?.disabled ?? false"
+        [placeholder]="inputConfig?.placeholder ?? ''"  [disabled]="!isEditing()"
         [readonly]="inputConfig?.readonly ?? false" [pTooltip]="inputConfig?.tooltip ?? null"
         [tooltipPosition]="inputConfig?.tooltipPosition ?? 'top'" />
 
@@ -227,7 +225,7 @@
             [suffix]="inputConfig?.suffix || ''" (keypress)="preventE($event)" [pTooltip]="inputConfig?.tooltip || null"
             [tooltipPosition]="inputConfig?.tooltipPosition || 'top'">
         </p-inputNumber>
-    </div> -->
+    </div>
 
 
 <!-- <div *ngSwitchCase="'select'" class="w-full">
