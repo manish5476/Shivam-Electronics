@@ -5,6 +5,7 @@ import { ToolbarComponent } from "../../../../shared/Components/toolbar/toolbar.
 import { CustomerService } from '../../../../core/services/customer.service';
 import { InvoiceService } from '../../../../core/services/invoice.service';
 import { DynamicCellComponent } from '../../../../shared/AgGrid/AgGridcomponents/dynamic-cell/dynamic-cell.component';
+import { GridContext } from '../../../../shared/AgGrid/AgGridcomponents/ag-grid-reference/ag-grid-reference.component';
 @Component({
     selector: 'app-customer-list',
     standalone: true,
@@ -24,6 +25,15 @@ export class CustomerListComponent implements OnInit {
         this.getColumn();
         this.getData();
     }
+    private getGridContext(): GridContext {
+        return {
+          isRowEditing: (id: string) => false, // Will be overridden by SharedGridComponent
+          startEditingRow: () => {},
+          saveRow: () => {},
+          cancelEditingRow: () => {},
+          deleteRow: () => {},
+        };
+      }
 
     getColumn(): void {
         this.column = [
@@ -41,6 +51,12 @@ export class CustomerListComponent implements OnInit {
                     }
                 },
             },
+            {
+                headerName: 'Number',
+                field: 'phoneNumbers[0].number',
+                cellRenderer: DynamicCellComponent,
+                cellRendererParams: { type: 'number', inputConfig: { min: 0, max: 150 }, context: this.getGridContext() }
+              },
             { field: 'profileImg', headerName: 'Profile Image', sortable: true, filter: true, resizable: true },
             { field: 'email', headerName: 'Email', sortable: true, filter: true, resizable: true },
             { field: 'fullname', headerName: 'Full Name', sortable: true, filter: true, resizable: true },

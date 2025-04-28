@@ -1,4 +1,43 @@
 <div [ngSwitch]="type" class="dynamic-cell-container w-full h-full flex items-center p-0 m-0">
+    <input
+      *ngSwitchCase="'text'"
+      pInputText
+      [id]="params.colDef?.field + '-' + params.node.rowIndex"
+      class="w-full p-inputtext-sm"
+      [(ngModel)]="value"
+      (ngModelChange)="onValueChange($event)"
+      [placeholder]="inputConfig?.placeholder ?? ''"
+      [disabled]="!isEditing()"
+      [readonly]="inputConfig?.readonly ?? false"
+      [pTooltip]="inputConfig?.tooltip ?? null"
+      [tooltipPosition]="inputConfig?.tooltipPosition ?? 'top'"
+    />
+  
+    <div *ngSwitchCase="'number'" class="w-full">
+      <p-inputNumber
+        class="w-full"
+        [id]="params.colDef?.field + '-' + params.node.rowIndex"
+        [(ngModel)]="value"
+        (onInput)="onValueChange($event.value)"
+        [mode]="inputConfig?.mode ?? 'decimal'"
+        [minFractionDigits]="inputConfig?.minFractionDigits ?? null"
+        [maxFractionDigits]="inputConfig?.maxFractionDigits ?? null"
+        [useGrouping]="inputConfig?.useGrouping ?? true"
+        [placeholder]="inputConfig?.placeholder ?? ''"
+        [min]="inputConfig?.min ?? null"
+        [max]="inputConfig?.max ?? null"
+        [step]="inputConfig?.step ?? 1"
+        [prefix]="inputConfig?.prefix ?? ''"
+        [suffix]="inputConfig?.suffix ?? ''"
+        [disabled]="!isEditing()"
+        [readonly]="inputConfig?.readonly ?? false"
+        (keypress)="preventE($event)"
+        [pTooltip]="inputConfig?.tooltip ?? null"
+        [tooltipPosition]="inputConfig?.tooltipPosition ?? 'top'"
+      ></p-inputNumber>
+    </div>
+  </div>
+<!-- <div [ngSwitch]="type" class="dynamic-cell-container w-full h-full flex items-center p-0 m-0">
 
     <input *ngSwitchCase="'text'" pInputText [id]="params.colDef?.field + '-' + params.node.rowIndex"
         class="w-full p-inputtext-sm" [(ngModel)]="value" (ngModelChange)="onValueChange($event)"
@@ -331,4 +370,4 @@
         [placeholder]="inputConfig?.placeholder || ''" [pTooltip]="inputConfig?.tooltip || null"
         [tooltipPosition]="inputConfig?.tooltipPosition || 'top'" />
 
-</div> -->
+</div> --> -->
