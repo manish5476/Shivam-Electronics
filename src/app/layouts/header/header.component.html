@@ -82,7 +82,7 @@
   <ng-template #footer>
     <div class="flex items-center gap-2" styleClass="w-62 md:w-63">
       <button pButton label="Settings" icon="pi pi-cog" class="w-full outlined"></button>
-      <button pButton label="Logout" icon="pi pi-sign-out" class="w-full severity-danger text"></button>
+      <button pButton (click)="logout()" label="Logout" icon="pi pi-sign-out" class="w-full severity-danger text"></button>
     </div>
   </ng-template>
 </p-drawer>

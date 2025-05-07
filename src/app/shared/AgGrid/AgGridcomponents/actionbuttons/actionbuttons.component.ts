@@ -7,8 +7,10 @@ import { CommonModule } from '@angular/common';
 
 // Define the context interface for type safety
 interface GridContext {
+  // stopEditing:  (id: string) => boolean;
   isRowEditing: (id: string) => boolean;
   startEditingRow: (rowData: any) => void;
+  stopEditing : (cancel: boolean) => void;
   saveRow: (rowData: any) => void;
   cancelEditingRow: (rowData: any) => void;
   deleteRow: (rowData: any) => void;
@@ -35,7 +37,8 @@ interface GridContext {
           (click)="onCancelClick()"
           class="text-gray-600 hover:text-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-400"
           title="Cancel"
-          aria-label="Cancel row changes" >
+          aria-label="Cancel row changes"
+        >
           <i class="pi pi-times text-lg"></i>
         </button>
       </ng-container>
@@ -87,13 +90,13 @@ export class ActionbuttonsComponent implements ICellRendererAngularComp {
     this.updateEditingState();
   }
 
-  // Refresh the cell renderer when data or context changes
   refresh(params: ICellRendererParams): boolean {
     this.params = params;
+    this.context = params.context as GridContext; // <-- Add this line
     this.updateEditingState();
-    return true; // Indicate that the component has handled the refresh
+    return true;
   }
-
+  
   // Helper method to determine if the row is in editing mode
   private updateEditingState(): void {
     this.isEditing = this.context?.isRowEditing(this.params.data?._id) ?? false;
@@ -119,12 +122,13 @@ export class ActionbuttonsComponent implements ICellRendererAngularComp {
 
   // Handle Cancel button click
   onCancelClick(): void {
-    if (this.context?.cancelEditingRow && this.params.data) {
-      this.context.cancelEditingRow(this.params.data);
+    if (this.context?.stopEditing) {
+      this.context.stopEditing(true); // cancel = true
     } else {
       console.warn('Cancel action failed: Context or row data missing');
     }
   }
+  
 
   // Handle Delete button click
   onDeleteClick(): void {

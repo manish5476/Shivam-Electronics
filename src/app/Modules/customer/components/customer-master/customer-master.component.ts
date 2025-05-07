@@ -1,14 +1,3 @@
-// import { Component } from '@angular/core';
-
-// @Component({
-//   selector: 'app-customer-master',
-//   imports: [],
-//   templateUrl: './customer-master.component.html',
-//   styleUrl: './customer-master.component.css'
-// })
-// export class CustomerMasterComponent {
-
-// }
 import { IftaLabelModule } from 'primeng/iftalabel';
 import { ButtonModule } from 'primeng/button';
 import { RouterModule } from '@angular/router';
@@ -31,7 +20,7 @@ import { FileUpload } from 'primeng/fileupload';
 import { CustomerService } from '../../../../core/services/customer.service';
 import { FocusTrapModule } from 'primeng/focustrap';// import { SupabaseService } from '../../../core/services/supabase.service';
 import { AutopopulateService } from '../../../../core/services/autopopulate.service';
-// import lodash from 'lodash'
+
 interface Customer {
   fullname: string;
   profileImg: string;
@@ -67,6 +56,7 @@ interface DropdownOption {
   label: string;
   value: any;
 }
+
 interface CustomerDropdownOption {
   fullname: string;
   _id: any;
@@ -89,13 +79,13 @@ export class CustomerMasterComponent implements OnInit {
   addressDialogVisible = false;
   newPhoneNumber: Phone = { number: '', type: 'mobile', primary: false };
   newAddress: Address = { street: '', city: '', state: '', zipCode: '', country: '', type: 'home', isDefault: false };
-  customerId: string = '12345'; // You should dynamically get this from your application (e.g., logged-in user's customer ID)
-  uploadStatus: string = ''; // For showing the status of the upload
+  customerId: string = '12345'; 
+  uploadStatus: string = ''; 
   customerIDDropdown: CustomerDropdownOption[] = [];
   selectedGuaranter: CustomerDropdownOption | any = {};
   isDarkMode: boolean = false;
-  editingPhoneIndex: number = -1; // Track index of phone number being edited
-  editingAddressIndex: number = -1; // Track index of address being edited
+  editingPhoneIndex: number = -1; 
+  editingAddressIndex: number = -1; 
 
   statuses: DropdownOption[] = [
     { label: 'Active', value: 'active' },
@@ -139,11 +129,11 @@ export class CustomerMasterComponent implements OnInit {
   uploadedFiles: any[] = [];
 
 
-  // onUpload(event:UploadEvent) {
-  //     for(let file of event?.files) {
-  //         this.uploadedFiles.push(file);
-  //     }
-  //   }
+  
+  
+  
+  
+  
   onUpload(event: any) {
     for (let file of event.files) {
       this.uploadedFiles.push(file);
@@ -197,10 +187,6 @@ toggleDarkMode() {
     localStorage.setItem('darkMode', String(this.isDarkMode));
   }
 }
-
-// onFileSelected(event: any) {
-//   this.selectedFile = event.target.files[0] as File;
-// }
 
 getCustomerID() {
   const customerId = 'your-customer-id';
@@ -288,10 +274,8 @@ showAddressDialog() {
 addPhoneNumber() {
   if (this.newPhoneNumber.number && this.newPhoneNumber.type) {
     if (this.editingPhoneIndex > -1) {
-      // Edit existing phone number
       this.customer.phoneNumbers[this.editingPhoneIndex] = { ...this.newPhoneNumber };
     } else {
-      // Add new phone number
       this.customer.phoneNumbers.push({ ...this.newPhoneNumber });
     }
     this.phoneDialogVisible = false;

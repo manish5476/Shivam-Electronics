@@ -83,19 +83,19 @@ export class AppMessageService {
     this.showError(summary, errorMessage);
   }
 
-  showInfo(summary: string, detail: string, life: number = 3000) {
+  showInfo(summary: string, detail?: string, life: number = 3000) {
     this.add({ severity: 'info', summary, detail, life });
   }
 
-  showWarn(summary: string, detail: string, life: number = 3000) {
+  showWarn(summary: string, detail?: string, life: number = 3000) {
     this.add({ severity: 'warn', summary, detail, life });
   }
 
-  showError(summary: string, detail: string, life: number = 5000) {
+  showError(summary: string, detail?: string, life: number = 5000) {
     this.add({ severity: 'error', summary, detail, life });
   }
 
-  showSuccessMessage(summary: string, detail: string, life: number = 3000) {
+  showSuccessMessage(summary: string, detail?: string, life: number = 3000) {
     this.add({ severity: 'success', summary, detail, life });
   }
 

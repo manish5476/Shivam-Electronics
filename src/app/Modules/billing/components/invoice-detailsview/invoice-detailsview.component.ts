@@ -5,7 +5,9 @@ import { InvoiceService } from '../../../../core/services/invoice.service';
 import { Card } from 'primeng/card';
 import { Panel } from 'primeng/panel';
 import { Tag } from 'primeng/tag';
-import { TableModule } from 'primeng/table';// import { SharedGridComponent } from '../../../../shared/AgGrid/grid/shared-grid/shared-grid.component';
+import { TableModule } from 'primeng/table';
+// import { SharedGridComponent } from '../../../../shared/AgGrid/grid/shared-grid/shared-grid.component';
+import { AppMessageService } from '../../../../core/services/message.service';
 // import { ToolbarComponent } from "../../../../shared/Components/toolbar/toolbar.component";
 @Component({
   selector: 'app-invoice-detail-card',
@@ -16,16 +18,16 @@ import { TableModule } from 'primeng/table';// import { SharedGridComponent } fr
   changeDetection: ChangeDetectionStrategy.OnPush // Add ChangeDetectionStrategy for better performance
 })
 export class InvoiceDetailCardComponent implements OnInit {
-
   @Input() Id: string | undefined; // Input to receive the invoice ID
   invoiceData: any; // To store fetched invoice data
   loading: boolean = true; // Add a loading flag
 
-  constructor(private InvoiceService: InvoiceService, private cdr: ChangeDetectorRef) { } // Inject InvoiceService and ChangeDetectorRef
+  constructor(private InvoiceService: InvoiceService,private messageService:AppMessageService, private cdr: ChangeDetectorRef) { } 
 
   ngOnInit(): void {
     this.getCustomerdata()
   }
+  
   getStatusSeverity(status: string) {
     switch (status) {
       case 'PENDING':
@@ -49,13 +51,13 @@ export class InvoiceDetailCardComponent implements OnInit {
           this.cdr.detectChanges();
         },
         error: (error: any) => {
-          console.error('Error fetching invoice data:', error);
+          this.messageService.showError('Error fetching invoice data:', error)
           this.loading = false;
           this.cdr.detectChanges();
         }
       });
     } else {
-      console.error('Invoice ID is missing!');
+      this.messageService.showError('Invoice ID is missing!')
       this.loading = false;
     }
   }

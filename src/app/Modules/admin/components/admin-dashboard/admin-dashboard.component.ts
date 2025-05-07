@@ -348,31 +348,6 @@ export class AdminDashboardComponent implements OnInit {
     // this.loadDashboardData();
   }
 
-  // private loadDashboardData(): void {
-  //   // Load dashboard stats
-  //   this.dashboardService.getDashboardStats().subscribe(stats => {
-  //     this.dashboardStats = stats;
-  //   });
-
-  //   // Load product performance
-  //   this.analyticsService.getProductPerformance(this.analyticsService.getCurrentMonthRange())
-  //     .subscribe(response => {
-  //       this.topProducts = response.data
-  //         .sort((a, b) => b.totalRevenue - a.totalRevenue)
-  //         .slice(0, 5);
-        
-  //       this.lowStockProducts = response.data
-  //         .filter(product => product.stockLevel <= product.reorderPoint)
-  //         .slice(0, 5);
-  //     });
-
-  //   // Load recent orders
-  //   this.analyticsService.getSalesPerformance(this.analyticsService.getCurrentMonthRange())
-  //     .subscribe(response => {
-  //       // Assuming the response includes recent orders
-  //       this.recentOrders = response.data.recentOrders || [];
-  //     });
-  // }
 
   getStatusClass(status: string): string {
     switch (status.toLowerCase()) {

@@ -1,5 +1,5 @@
 
-import { ChangeDetectorRef, Component, EventEmitter, Output } from '@angular/core';
+import { ChangeDetectorRef, Component, EventEmitter, inject, Output } from '@angular/core';
 import { SharedGridComponent } from '../../../../shared/AgGrid/grid/shared-grid/shared-grid.component';
 import { InvoiceService } from '../../../../core/services/invoice.service';
 import { CellValueChangedEvent } from 'ag-grid-community';
@@ -8,24 +8,54 @@ import { InvoiceDetailCardComponent } from '../invoice-detailsview/invoice-detai
 import { InvoicePrintComponent } from '../invoice-print/invoice-print.component';
 import { ToolbarComponent } from "../../../../shared/Components/toolbar/toolbar.component";
 import { DynamicCellComponent } from '../../../../shared/AgGrid/AgGridcomponents/dynamic-cell/dynamic-cell.component';
+import { FormBuilder, FormGroup } from '@angular/forms';
+import { ReactiveFormsModule } from '@angular/forms';
+import { SellerService } from '../../../../core/services/seller.service';
+import { ProductService } from '../../../../core/services/product.service';
+import { CustomerService } from '../../../../core/services/customer.service';
+import { AutopopulateService } from '../../../../core/services/autopopulate.service';
+import { AppMessageService } from '../../../../core/services/message.service';
+import { SelectModule } from 'primeng/select';
 
 @Component({
   selector: 'app-invoice-view',
-  imports: [SharedGridComponent, ToolbarComponent, ToolbarComponent],
+  imports: [SharedGridComponent,SelectModule, ReactiveFormsModule,],
   templateUrl: './invoice-view.component.html',
   styleUrl: './invoice-view.component.css'
 })
 export class InvoiceViewComponent {
+  public messageService = inject(AppMessageService)
+  // public invoiceService = inject(InvoiceService)
+  public autoPopulate = inject(AutopopulateService)
+  public customerService = inject(CustomerService)
+  public sellerService = inject(SellerService)
+  public productService = inject(ProductService)
+  filterForm!: FormGroup;
   data: any;
   column: any
   rowSelectionMode: any
-
-  constructor(private cdr: ChangeDetectorRef, private InvoiceService: InvoiceService) { }
+  customerIDDropdown:any
+  constructor(private cdr: ChangeDetectorRef, private fb: FormBuilder, private InvoiceService: InvoiceService) { }
 
   ngOnInit(): void {
+    // Initialize form with empty fields
+    this.filterForm = this.fb.group({
+      invoiceNumber: [''],
+      buyer: [''],
+      buyerEmail: [''],
+      status: [''],
+      createdFrom: [''],
+      createdTo: [''],
+      minRemainingAmount: [''],
+      maxRemainingAmount: ['']
+    });
     this.getColumn()
     this.getData()
     this.rowSelectionMode = 'singleRow'
+
+    this.autoPopulate.getModuleData('customers').subscribe((data:any) => {
+      this.customerIDDropdown = data;
+    });
   }
 
   rowClassrules = {
@@ -75,14 +105,14 @@ export class InvoiceViewComponent {
         field: 'buyerDetails.fullname',
         cellRenderer: DynamicCellComponent,
         cellRendererParams: {
-            type: 'dropdown',
-            options: [ // Provide options for the dropdown
-                { label: 'United States', value: 'USA' },
-                { label: 'Canada', value: 'CAN' },
-                { label: 'Mexico', value: 'MEX' }
-            ]
+          type: 'dropdown',
+          options: [ // Provide options for the dropdown
+            { label: 'United States', value: 'USA' },
+            { label: 'Canada', value: 'CAN' },
+            { label: 'Mexico', value: 'MEX' }
+          ]
         }
-    },
+      },
       { field: 'buyerDetails.fullname', headerName: 'Buyer Name', sortable: true, filter: true, resizable: true },
       { field: 'buyerDetails.email', headerName: 'Buyer Email', sortable: true, filter: true, resizable: true },
       {
@@ -157,8 +187,44 @@ export class InvoiceViewComponent {
     this.cdr.detectChanges();
   }
 
-  getData() {
-    this.InvoiceService.getAllinvoiceData().subscribe((res: any) => {
+  
+
+  applyFilters(): void {
+    const rawFilters = this.filterForm.value;
+
+    // Clean up: remove empty/null/undefined fields
+    const filters: any = {};
+    Object.keys(rawFilters).forEach(key => {
+      const value = rawFilters[key];
+      if (value !== null && value !== '' && value !== undefined) {
+        filters[key] = value;
+      }
+    });
+
+    this.getData(filters);
+  }
+
+
+  resetFilters(): void {
+    // Reset the filter form to default values
+    this.filterForm.reset({
+      invoiceNumber: '',
+      buyerName: '',
+      buyerEmail: '',
+      status: '',
+      createdFrom: '',
+      createdTo: '',
+      minRemainingAmount: '',
+      maxRemainingAmount: ''
+    });
+
+    // Fetch all data after reset
+    this.getData();
+  }
+
+
+  getData(filter?: any) {
+    this.InvoiceService.getAllinvoiceData(filter).subscribe((res: any) => {
       this.data = res.data;
       this.cdr.markForCheck()
     })

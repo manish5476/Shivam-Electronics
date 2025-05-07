@@ -1,4 +1,48 @@
 <!-- <app-shared-grid [data]="this.data" [column]="this.column"></app-shared-grid> -->
-<app-common-header [gridWidth]="'100%'"></app-common-header>
+<form [formGroup]="filterForm" (ngSubmit)="applyFilters()" class="grid grid-cols-4 gap-4 p-4">
+  <div class="flex flex-col">
+    <input formControlName="invoiceNumber" placeholder="Invoice Number" class="input" />
+  </div>
+  <div class="flex flex-col">
+    <p-select
+    formControlName="buyer"
+    [options]="customerIDDropdown"
+    optionLabel="fullname"
+    optionValue="id"
+    placeholder="Select Buyer"
+    class="w-full"
+  />  
+</div>
+  <div class="flex flex-col">
+    <input formControlName="buyerEmail" placeholder="Buyer Email" class="input" />
+  </div>
+  <div class="flex flex-col">
+    <select formControlName="status" class="input">
+      <option value="">All Status</option>
+      <option value="unpaid">Unpaid</option>
+      <option value="paid">Paid</option>
+      <option value="pending">Pending</option>
+      <option value="overdue">Overdue</option>
+    </select>
+  </div>
+  <div class="flex flex-col">
+    <input type="date" formControlName="createdFrom" class="input" />
+  </div>
+  <div class="flex flex-col">
+    <input type="date" formControlName="createdTo" class="input" />
+  </div>
+  <div class="flex flex-col">
+    <input type="number" formControlName="minRemainingAmount" placeholder="Min Remaining" class="input" />
+  </div>
+  <div class="flex flex-col">
+    <input type="number" formControlName="maxRemainingAmount" placeholder="Max Remaining" class="input" />
+  </div>
+  <div class="flex items-center justify-start col-span-4">
+    <button type="submit" class="btn">Apply Filters</button>
+    <button type="button" (click)="resetFilters()" class="btn">Reset Filters</button>
+  </div>
+</form>
+
+
 <app-shared-grid [gridHeight]="'520px'" [data]="data" [rowSelectionMode]="rowSelectionMode"
   [rowClassrules]="rowClassrules" [column]="column" (eventFromGrid)="eventFromGrid($event)"></app-shared-grid>

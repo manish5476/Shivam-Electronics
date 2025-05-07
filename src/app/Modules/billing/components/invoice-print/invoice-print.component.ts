@@ -66,33 +66,7 @@ export class InvoicePrintComponent implements OnInit, OnChanges {
     })
   }
 
-  // downloadPDF() {
-  //   setTimeout(() => {
-  //     const element = document.querySelector('.invoice-container') as HTMLElement;
 
-  //     if (!element) {
-  //       console.error('Invoice container not found');
-  //       return;
-  //     }
-  //     html2canvas(element, { scale: 2 }).then(canvas => {
-  //       const imgData = canvas.toDataURL('image/png');
-  //       const pdf = new jsPDF({
-  //         orientation: 'portrait',
-  //         unit: 'mm',
-  //         format: 'a4'
-  //       });
-
-  //       const pdfWidth = pdf.internal.pageSize.getWidth();
-  //       const pdfHeight = (canvas.height * pdfWidth) / canvas.width; // Maintain aspect ratio
-
-  //       pdf.addImage(imgData, 'PNG', 0, 10, pdfWidth, pdfHeight);
-  //       pdf.save(`invoice-${this.invoiceData?.invoiceNumber || 'download'}.pdf`);
-  //     }).catch(error => {
-  //       console.error('Error generating PDF:', error);
-  //     });
-
-  //   }, 500); // Small delay to ensure rendering
-  // }
   downloadPDF() {
     setTimeout(() => {
       const element = document.querySelector('.invoice-container') as HTMLElement;
@@ -126,8 +100,6 @@ export class InvoicePrintComponent implements OnInit, OnChanges {
   addAdvertisementPage(pdf: jsPDF) {
     const pageWidth = pdf.internal.pageSize.getWidth();
     const pageHeight = pdf.internal.pageSize.getHeight();
-
-    // Background Color (Light Gradient)
     pdf.setFillColor('#e0f7fa'); // Light cyan
     pdf.rect(0, 0, pageWidth, pageHeight, 'F');
     try {
@@ -206,7 +178,33 @@ export class InvoicePrintComponent implements OnInit, OnChanges {
     }, 500);
   }
 }
+  // downloadPDF() {
+  //   setTimeout(() => {
+  //     const element = document.querySelector('.invoice-container') as HTMLElement;
 
+  //     if (!element) {
+  //       console.error('Invoice container not found');
+  //       return;
+  //     }
+  //     html2canvas(element, { scale: 2 }).then(canvas => {
+  //       const imgData = canvas.toDataURL('image/png');
+  //       const pdf = new jsPDF({
+  //         orientation: 'portrait',
+  //         unit: 'mm',
+  //         format: 'a4'
+  //       });
+
+  //       const pdfWidth = pdf.internal.pageSize.getWidth();
+  //       const pdfHeight = (canvas.height * pdfWidth) / canvas.width; // Maintain aspect ratio
+
+  //       pdf.addImage(imgData, 'PNG', 0, 10, pdfWidth, pdfHeight);
+  //       pdf.save(`invoice-${this.invoiceData?.invoiceNumber || 'download'}.pdf`);
+  //     }).catch(error => {
+  //       console.error('Error generating PDF:', error);
+  //     });
+
+  //   }, 500); // Small delay to ensure rendering
+  // }
 
 // downloadPDF() {
 //   const element = document.querySelector('.invoice-container') as HTMLElement;

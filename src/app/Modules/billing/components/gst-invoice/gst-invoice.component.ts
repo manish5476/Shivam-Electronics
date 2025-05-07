@@ -129,18 +129,7 @@ public  InvoiceObject={
     });
   }
 
-  getCustomerData() {
-    this.customerService.getCustomerDataWithId(this.InvoiceObject.buyerselect).subscribe((res: any) => {
-      // console.log(res);
-    });
-  }
-
-  getsellerData() {
-    this.sellerService.getSellerDataWithId(this.InvoiceObject.sellersselec).subscribe((res: any) => {
-      // console.log(res.data);
-    });
-  }
-
+ 
   createInvoice() {
     // Generate Invoice Number
     const customerId = this.invoiceForm.get('buyer')?.value;
@@ -148,12 +137,11 @@ public  InvoiceObject={
     const datePart = `${now.getFullYear()}${String(now.getMonth() + 1).padStart(2, '0')}${String(now.getDate()).padStart(2, '0')}`;
     const timePart = `${String(now.getHours()).padStart(2, '0')}${String(now.getMinutes()).padStart(2, '0')}${String(now.getSeconds()).padStart(2, '0')}`;
     this.invoiceForm.patchValue({ invoiceNumber: `${customerId.substring(0, 5)}_${datePart}_${timePart}` });
-
     this.invoiceService.createNewinvoice(this.invoiceForm.getRawValue()).subscribe((res: any) => {
       if (res) {
-        alert('Invoice created successfully!');
+        this.messageService.showSuccessMessage('Invoice created successfully!')
       } else {
-        alert('Failed to create invoice.');
+        this.messageService.showError('Failed to create invoice.')
       }
     });
   }
@@ -195,7 +183,6 @@ public  InvoiceObject={
     let totalAmount = 0;
     let gst = 0;
     let totalDiscount = this.invoiceForm.get('totalDiscount')?.value || 0;
-
     this.itemsFormArray.controls.forEach((itemFormGroup) => {
       let itemAmount = this.calculateItemAmount(itemFormGroup as FormGroup);
       subTotal += itemFormGroup.get('taxableValue')?.value || 0;
@@ -244,7 +231,7 @@ public  InvoiceObject={
           this.calculateItemAmount(itemFormGroup);
           this.calculateInvoiceTotals();
         } else {
-          console.error('Product data not found for ID:', productId);
+          this.messageService.showError('Product data not found for ID:', productId);
         }
       });
     } else {

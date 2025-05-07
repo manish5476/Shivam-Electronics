@@ -23,6 +23,7 @@ import { StyleClass } from 'primeng/styleclass';
 import { Drawer } from 'primeng/drawer';
 import { ThemeService } from '../../core/services/theme.service';
 import { PanelMenuModule } from 'primeng/panelmenu';
+import { AuthService } from '../../core/services/auth.service';
 @Component({
   selector: 'app-header',
   standalone: true,
@@ -38,6 +39,7 @@ import { PanelMenuModule } from 'primeng/panelmenu';
   styleUrls: ['./header.component.css'],
 })
 export class HeaderComponent {
+
   visibles: boolean = false;
   showPanel() {
     this.visibles = !this.visibles
@@ -53,10 +55,13 @@ export class HeaderComponent {
   @ViewChild('drawerRef') drawerRef!: Drawer;
   menuItemss: ({ label: string; icon: string; routerLink: string[]; items?: undefined; } | { label: string; icon: string; items: { label: string; icon: string; routerLink: string[]; }[]; routerLink?: undefined; })[] | undefined;
 
-  constructor(private themeService: ThemeService) {
+  constructor(private themeService: ThemeService, private authService: AuthService) {
     this.themeLabel = localStorage.getItem('theme') === 'dark' ? 'Light Mode' : 'Dark Mode';
   }
 
+  logout() {
+    this.authService.logout()
+  }
   onColorChange(event: any) {
     const selectedColor = event.target.value;
     this.themeService.updateGradient(selectedColor);
@@ -100,10 +105,7 @@ export class HeaderComponent {
   }
   ngOnInits() {
     this.menuItemss = [
-      {
-        label: 'Dashboard',
-        icon: 'pi pi-home',
-        routerLink: ['/dashboard']
+      { label: 'Dashboard', icon: 'pi pi-home', routerLink: ['/dashboard']
       },
       {
         label: 'Admin',
@@ -224,7 +226,4 @@ export class HeaderComponent {
   //     }
   //   ];
   // }
-
-  
-
 }
