@@ -16,10 +16,11 @@ import { CustomerService } from '../../../../core/services/customer.service';
 import { AutopopulateService } from '../../../../core/services/autopopulate.service';
 import { AppMessageService } from '../../../../core/services/message.service';
 import { SelectModule } from 'primeng/select';
-
+import { IftaLabel } from 'primeng/iftalabel';
+import { FormsModule } from '@angular/forms';
 @Component({
   selector: 'app-invoice-view',
-  imports: [SharedGridComponent,SelectModule, ReactiveFormsModule,],
+  imports: [SharedGridComponent, FormsModule, ToolbarComponent, IftaLabel, SelectModule, ReactiveFormsModule,],
   templateUrl: './invoice-view.component.html',
   styleUrl: './invoice-view.component.css'
 })
@@ -34,29 +35,37 @@ export class InvoiceViewComponent {
   data: any;
   column: any
   rowSelectionMode: any
-  customerIDDropdown:any
+  customerIDDropdown: any
+  invoiceFilter: any = {
+    invoiceNumber: '',
+    buyer: '',
+    buyerEmail: '',
+    status: '',
+    createdFrom: '',
+    createdTo: '',
+    minRemainingAmount: '',
+    maxRemainingAmount: ''
+  };
+
   constructor(private cdr: ChangeDetectorRef, private fb: FormBuilder, private InvoiceService: InvoiceService) { }
 
   ngOnInit(): void {
-    // Initialize form with empty fields
-    this.filterForm = this.fb.group({
-      invoiceNumber: [''],
-      buyer: [''],
-      buyerEmail: [''],
-      status: [''],
-      createdFrom: [''],
-      createdTo: [''],
-      minRemainingAmount: [''],
-      maxRemainingAmount: ['']
-    });
-    this.getColumn()
-    this.getData()
-    this.rowSelectionMode = 'singleRow'
+    this.rowSelectionMode = 'singleRow';
+    this.getColumn();
+    this.getData();
 
-    this.autoPopulate.getModuleData('customers').subscribe((data:any) => {
+    this.autoPopulate.getModuleData('customers').subscribe((data: any) => {
       this.customerIDDropdown = data;
     });
   }
+
+  statusOptions = [
+    { label: 'All Status', value: '' },
+    { label: 'Unpaid', value: 'unpaid' },
+    { label: 'Paid', value: 'paid' },
+    { label: 'Pending', value: 'pending' },
+    { label: 'Overdue', value: 'overdue' }
+  ];
 
   rowClassrules = {
     'red-row': (cell: any) => cell.data.status == 'unpaid'
@@ -103,18 +112,8 @@ export class InvoiceViewComponent {
       {
         headerName: 'buyerDetails.fullname',
         field: 'buyerDetails.fullname',
-        cellRenderer: DynamicCellComponent,
-        cellRendererParams: {
-          type: 'dropdown',
-          options: [ // Provide options for the dropdown
-            { label: 'United States', value: 'USA' },
-            { label: 'Canada', value: 'CAN' },
-            { label: 'Mexico', value: 'MEX' }
-          ]
-        }
+        sortable: true, filter: true, resizable: true
       },
-      { field: 'buyerDetails.fullname', headerName: 'Buyer Name', sortable: true, filter: true, resizable: true },
-      { field: 'buyerDetails.email', headerName: 'Buyer Email', sortable: true, filter: true, resizable: true },
       {
         field: 'buyerDetails.phoneNumbers[0].number', valueGetter: (params: any) => {
           if (params.data?.buyerDetails?.phoneNumbers?.length > 0) { return params.data.buyerDetails.phoneNumbers[0].number; }
@@ -122,10 +121,14 @@ export class InvoiceViewComponent {
         }, headerName: 'Buyer Contact 1', sortable: true, filter: true, resizable: true
       },
       {
-        field: 'buyerDetails.phoneNumbers[1].number', valueGetter: (params: any) => {
-          if (params.data?.buyerDetails?.phoneNumbers?.length > 0) { return params.data.buyerDetails.phoneNumbers[0].number; }
+        field: 'buyerDetails.phoneNumbers[1].number', // Buyer Contact 2
+        valueGetter: (params: any) => {
+          if (params.data?.buyerDetails?.phoneNumbers?.length > 1) {
+            return params.data.buyerDetails.phoneNumbers[1].number;
+          }
           return '';
-        }, headerName: 'Buyer Contact 2', sortable: true, filter: true, resizable: true
+        },
+        headerName: 'Buyer Contact 2', sortable: true, filter: true, resizable: true
       },
       { field: 'invoiceDate', headerName: 'Invoice Date', sortable: true, filter: true, resizable: true, valueFormatter: (params: any) => new Date(params.value).toLocaleDateString() },
       { field: 'dueDate', headerName: 'Due Date', sortable: true, filter: true, resizable: true, valueFormatter: (params: any) => new Date(params.value).toLocaleDateString() },
@@ -187,46 +190,76 @@ export class InvoiceViewComponent {
     this.cdr.detectChanges();
   }
 
-  
 
-  applyFilters(): void {
-    const rawFilters = this.filterForm.value;
 
-    // Clean up: remove empty/null/undefined fields
-    const filters: any = {};
-    Object.keys(rawFilters).forEach(key => {
-      const value = rawFilters[key];
-      if (value !== null && value !== '' && value !== undefined) {
-        filters[key] = value;
+  // applyFilters(): void {
+  //   const rawFilters = this.filterForm.value;
+
+  //   // Clean up: remove empty/null/undefined fields
+  //   const filters: any = {};
+  //   Object.keys(rawFilters).forEach(key => {
+  //     const value = rawFilters[key];
+  //     if (value !== null && value !== '' && value !== undefined) {
+  //       filters[key] = value;
+  //     }
+  //   });
+
+  //   this.getData();
+  // }
+
+  // getData(): void {
+  //   const filterParams: any = {};
+  //   Object.entries(this.invoiceFilter).forEach(([key, value]) => {
+  //     if (value !== null && value !== '' && value !== undefined) {
+  //       filterParams[key] = value;
+  //     }
+  //   });
+
+
+  //   this.InvoiceService.getAllinvoiceData(filterParams).subscribe((res: any) => {
+  //     this.data = res.data;
+  //     this.cdr.markForCheck();
+  //   });
+  // }
+
+  getData(): void {
+    const filterParams: any = {
+      filter: {}
+    };
+
+    const { minRemainingAmount, maxRemainingAmount, ...rest } = this.invoiceFilter;
+
+    for (const [key, value] of Object.entries(rest)) {
+      if (value !== '' && value !== null && value !== undefined) {
+        filterParams[key] = value;
       }
-    });
+    }
 
-    this.getData(filters);
+    if (minRemainingAmount || maxRemainingAmount) {
+      filterParams.filter.totalAmount = {};
+      if (minRemainingAmount) filterParams.filter.totalAmount.gt = minRemainingAmount;
+      if (maxRemainingAmount) filterParams.filter.totalAmount.lt = maxRemainingAmount;
+    }
+
+    this.InvoiceService.getAllinvoiceData(filterParams).subscribe((res: any) => {
+      this.data = res.data;
+      this.cdr.markForCheck();
+    });
   }
 
 
   resetFilters(): void {
-    // Reset the filter form to default values
-    this.filterForm.reset({
+    this.invoiceFilter = {
       invoiceNumber: '',
-      buyerName: '',
+      buyer: '',
       buyerEmail: '',
       status: '',
       createdFrom: '',
       createdTo: '',
       minRemainingAmount: '',
       maxRemainingAmount: ''
-    });
+    };
 
-    // Fetch all data after reset
     this.getData();
-  }
-
-
-  getData(filter?: any) {
-    this.InvoiceService.getAllinvoiceData(filter).subscribe((res: any) => {
-      this.data = res.data;
-      this.cdr.markForCheck()
-    })
   }
 }

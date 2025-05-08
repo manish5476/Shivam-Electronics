@@ -15,14 +15,19 @@
   </div>
 </div> -->
 <!-- [style.padding]="padding" -->
-<div class="card" [style.width]="gridWidth" style="padding: 0 0px;">
-  <div class="glass-effect">
+<div class="toolbar-container" [style.width]="gridWidth">
+  <div class="toolbar-glass">
     <div class="toolbar-content">
       <ng-container *ngFor="let item of contentItems">
         <div class="toolbar-item">
           <ng-container *ngTemplateOutlet="item"></ng-container>
         </div>
       </ng-container>
+      <!-- <div class="toolbar-buttons">
+        <button class="btn" (click)="getData()">Apply</button>
+        <button class="btn reset" (click)="resetFilters()">Reset</button>
+      </div> -->
     </div>
   </div>
 </div>
+

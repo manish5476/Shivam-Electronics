@@ -11,18 +11,30 @@ export abstract class BaseApiService {
   protected errorhandler = inject(ErrorhandlingService);
   protected baseUrl = environment.apiUrl;
 
+  // protected createHttpParams(filterParams?: any): HttpParams {
+  //   let params = new HttpParams();
+  //   if (filterParams) {
+  //     Object.entries(filterParams).forEach(([key, value]) => {
+  //       if (value !== undefined && value !== null) {
+  //         // Ensure value is converted to string for HttpParams
+  //         params = params.set(key, String(value));
+  //       }
+  //     });
+  //   }
+  //   return params;
+  // }
   protected createHttpParams(filterParams?: any): HttpParams {
     let params = new HttpParams();
     if (filterParams) {
       Object.entries(filterParams).forEach(([key, value]) => {
-        if (value !== undefined && value !== null) {
-          // Ensure value is converted to string for HttpParams
+        if (value !== undefined && value !== null && value !== '') {
           params = params.set(key, String(value));
         }
       });
     }
     return params;
   }
+  
 
   // You might not need this specific handleError if ErrorhandlingService covers it
   // protected handleError(operation = 'operation', error: HttpErrorResponse) {

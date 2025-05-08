@@ -2,9 +2,10 @@ import { ChangeDetectorRef, Component, EventEmitter, Output } from '@angular/cor
 import { SharedGridComponent } from '../../../../shared/AgGrid/grid/shared-grid/shared-grid.component';
 import { CellValueChangedEvent } from 'ag-grid-community';
 import { ProductService } from '../../../../core/services/product.service';
+import { ToolbarComponent } from "../../../../shared/Components/toolbar/toolbar.component";
 @Component({
     selector: 'app-product-detail',
-    imports: [SharedGridComponent],
+    imports: [SharedGridComponent, ToolbarComponent],
     templateUrl: './product-detail.component.html',
     styleUrl: './product-detail.component.css'
 })

@@ -1,5 +1,5 @@
 <!-- <app-shared-grid [data]="this.data" [column]="this.column"></app-shared-grid> -->
-<form [formGroup]="filterForm" (ngSubmit)="applyFilters()" class="grid grid-cols-4 gap-4 p-4">
+<!-- <form [formGroup]="filterForm" (ngSubmit)="getData()" class="grid grid-cols-4 gap-4 p-4">
   <div class="flex flex-col">
     <input formControlName="invoiceNumber" placeholder="Invoice Number" class="input" />
   </div>
@@ -41,8 +41,87 @@
     <button type="submit" class="btn">Apply Filters</button>
     <button type="button" (click)="resetFilters()" class="btn">Reset Filters</button>
   </div>
-</form>
+</form> -->
 
+<app-common-header class="h-17" [gridWidth]="'100%'">
+  <!-- Buyer (Customer) -->
+  <ng-template #buyer>
+    <p-select id="buyer" appendTo="body" [options]="customerIDDropdown" [(ngModel)]="invoiceFilter.buyer"
+      (onChange)="getData()" [checkmark]="true" [filter]="true" filterBy="fullname" optionLabel="fullname"
+      optionValue="id" [showClear]="true" placeholder="Select Buyer" class="w-full md:w-56" />
+  </ng-template>
+
+  <!-- Invoice Status -->
+  <ng-template #status>
+    <p-iftalabel>
+      <p-select appendTo="body" id="status" class="w-40px" [options]="statusOptions" optionLabel="label" optionValue="value"
+        [(ngModel)]="invoiceFilter.status" (onChange)="getData()" placeholder="All Status">
+      </p-select>
+
+      <label for="status">Status</label>
+    </p-iftalabel>
+  </ng-template>
+
+  <!-- Invoice Number -->
+  <ng-template #invoiceNumber>
+    <p-iftalabel>
+      <input pInputText id="invoiceNumber" (change)="getData()" [(ngModel)]="invoiceFilter.invoiceNumber" />
+      <label for="invoiceNumber">Invoice Number</label>
+    </p-iftalabel>
+  </ng-template>
+
+
+  <!-- Buyer Email -->
+  <ng-template #buyerEmail>
+    <p-iftalabel>
+      <input pInputText id="buyerEmail" (change)="getData()" [(ngModel)]="invoiceFilter.buyerEmail" />
+      <label for="buyerEmail">Buyer Email</label>
+    </p-iftalabel>
+  </ng-template>
+
+
+  <!-- Created From -->
+  <ng-template #createdFrom>
+    <p-iftalabel>
+      <input pInputText type="date" id="createdFrom" (change)="getData()" [(ngModel)]="invoiceFilter.createdFrom" />
+      <label for="createdFrom">From Date</label>
+    </p-iftalabel>
+  </ng-template>
+
+  <!-- Created To -->
+  <ng-template #createdTo>
+    <p-iftalabel>
+      <input pInputText type="date" id="createdTo" (change)="getData()" [(ngModel)]="invoiceFilter.createdTo" />
+      <label for="createdTo">To Date</label>
+    </p-iftalabel>
+  </ng-template>
+
+  <!-- Min Remaining Amount -->
+  <ng-template #minRemaining>
+    <p-iftalabel>
+      <input pInputText type="number" id="minRemaining" (change)="getData()"
+        [(ngModel)]="invoiceFilter.totalAmount" />
+      <label for="minRemaining">Min Remaining</label>
+    </p-iftalabel>
+  </ng-template>
+
+  <!-- Max Remaining Amount -->
+  <ng-template #maxRemaining>
+    <p-iftalabel>
+      <input pInputText type="number" id="maxRemaining" (change)="getData()"
+        [(ngModel)]="invoiceFilter.totalAmount" />
+      <label for="maxRemaining">Max Remaining</label>
+    </p-iftalabel>
+  </ng-template>
+
+  <!-- Actions -->
+  <ng-template #actions>
+    <div class="flex gap-2 mt-2">
+      <button type="button" (click)="getData()" class="btn">Apply Filters</button>
+      <button type="button" (click)="resetFilters()" class="btn btn-secondary">Reset</button>
+    </div>
+  </ng-template>
+</app-common-header>
 
 <app-shared-grid [gridHeight]="'520px'" [data]="data" [rowSelectionMode]="rowSelectionMode"
   [rowClassrules]="rowClassrules" [column]="column" (eventFromGrid)="eventFromGrid($event)"></app-shared-grid>

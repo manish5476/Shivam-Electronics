@@ -8,9 +8,6 @@ import { HttpErrorResponse } from '@angular/common/http';
 export class AutopopulateService extends BaseApiService {
   private masterCache: { [module: string]: BehaviorSubject<any[]> } = {};
 
-  /**
-   * Get cached or fetched module data
-   */
   getModuleData(module: string): Observable<any[]> {
     const key = module.toLowerCase();
     if (!this.masterCache[key]) {

@@ -157,7 +157,7 @@ export class ProductListComponent implements OnInit {
             limit: 50,       // Pagination: Number of results per page
             sort: 'price,-name',  // Sorting: Sort by price ascending, then name descending
             // fields: 'name,price,category,ratingsAverage', // Field Limiting: Select specific fields
-            category: 'manish', // Filtering: Products in 'Electronics' OR 'Clothing' categories (using $in operator on backend)
+            // category: 'manish', // Filtering: Products in 'Electronics' OR 'Clothing' categories (using $in operator on backend)
             // ratingsAverage: { gte: '4.5' }, // Filtering: Products with ratingsAverage greater than or equal to 4.5 (using $gte operator on backend)
             // rate: { lt: '100' } // Filtering: Products with price less than 100 (using $lt operator on backend)
         };

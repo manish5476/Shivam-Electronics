@@ -25,17 +25,17 @@ export class AppComponent  implements OnInit,OnDestroy{
 
   constructor(private AutopopulateService: AutopopulateService, @Inject(PLATFORM_ID) private platformId: Object ,private loadingService:LoadingService) { }
   ngOnInit(): void {
-    if (isPlatformBrowser(this.platformId)) {
-      this.AutopopulateService.getAllModulesData().subscribe((res:any) => {
-        sessionStorage.setItem('autopopulate', JSON.stringify(res['data']));
-      })
-    }
+    // if (isPlatformBrowser(this.platformId)) {
+    //   this.AutopopulateService.getAllModulesData().subscribe((res:any) => {
+    //     sessionStorage.setItem('autopopulate', JSON.stringify(res['data']));
+    //   })
+    // }
 
-    this.loadingSubscription = this.loadingService.isLoading$.subscribe(
-      (loading) => {
-        this.isLoading = loading;
-      }
-    );
+    // this.loadingSubscription = this.loadingService.isLoading$.subscribe(
+    //   (loading) => {
+    //     this.isLoading = loading;
+    //   }
+    // );
   }
 
   ngOnDestroy(): void {

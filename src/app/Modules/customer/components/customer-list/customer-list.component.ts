@@ -4,12 +4,15 @@ import { CellValueChangedEvent } from 'ag-grid-community';
 import { ToolbarComponent } from "../../../../shared/Components/toolbar/toolbar.component";
 import { CustomerService } from '../../../../core/services/customer.service';
 import { InvoiceService } from '../../../../core/services/invoice.service';
-import { DynamicCellComponent } from '../../../../shared/AgGrid/AgGridcomponents/dynamic-cell/dynamic-cell.component';
+import { SelectModule } from 'primeng/select';import { DynamicCellComponent } from '../../../../shared/AgGrid/AgGridcomponents/dynamic-cell/dynamic-cell.component';
 import { GridContext } from '../../../../shared/AgGrid/AgGridcomponents/ag-grid-reference/ag-grid-reference.component';
+import { IftaLabelModule } from 'primeng/iftalabel';
+import { FormsModule } from '@angular/forms';
+import { AutopopulateService } from '../../../../core/services/autopopulate.service';
 @Component({
     selector: 'app-customer-list',
     standalone: true,
-    imports: [SharedGridComponent, ToolbarComponent, ToolbarComponent],
+    imports: [SharedGridComponent,SelectModule, FormsModule, IftaLabelModule, ToolbarComponent, ToolbarComponent],
     providers: [CustomerService],
     templateUrl: './customer-list.component.html',
     styleUrl: './customer-list.component.css'
@@ -18,22 +21,28 @@ export class CustomerListComponent implements OnInit {
     data: any = [];
     column: any = [];
     rowSelectionMode: any = 'singleRow';
-
-    constructor(private cdr: ChangeDetectorRef,private InvoiceService:InvoiceService, private CustomerService: CustomerService) { }
+    customerFilter: any = {
+        name: '',
+        mobileNumber: '',
+        guaranter: '',
+        page:'',
+        email:'',
+        limit:'',
+        customerIDDropdown: [],
+    }
+    constructor(private cdr: ChangeDetectorRef, private autoPopulate: AutopopulateService, private InvoiceService: InvoiceService, private CustomerService: CustomerService) { }
 
     ngOnInit(): void {
+        this.autopopulatedata()
         this.getColumn();
         this.getData();
     }
-    private getGridContext(): GridContext {
-        return {
-          isRowEditing: (id: string) => false, // Will be overridden by SharedGridComponent
-          startEditingRow: () => {},
-          saveRow: () => {},
-          cancelEditingRow: () => {},
-          deleteRow: () => {},
-        };
-      }
+
+    autopopulatedata() {
+        this.autoPopulate.getModuleData('customers').subscribe((data: any) => {
+            this.customerFilter.customerIDDropdown = data;
+        });
+    }
 
     getColumn(): void {
         this.column = [
@@ -51,12 +60,6 @@ export class CustomerListComponent implements OnInit {
                     }
                 },
             },
-            {
-                headerName: 'Number',
-                field: 'phoneNumbers[0].number',
-                cellRenderer: DynamicCellComponent,
-                cellRendererParams: { type: 'number', inputConfig: { min: 0, max: 150 }, context: this.getGridContext() }
-              },
             { field: 'profileImg', headerName: 'Profile Image', sortable: true, filter: true, resizable: true },
             { field: 'email', headerName: 'Email', sortable: true, filter: true, resizable: true },
             { field: 'fullname', headerName: 'Full Name', sortable: true, filter: true, resizable: true },
@@ -67,27 +70,28 @@ export class CustomerListComponent implements OnInit {
             { field: 'addresses[0].zipCode', headerName: 'Zip Code', sortable: true, filter: true, resizable: true, valueGetter: (params: any) => params.data.addresses?.[0]?.zipCode },
             { field: 'addresses[0].country', headerName: 'Country', sortable: true, filter: true, resizable: true, valueGetter: (params: any) => params.data.addresses?.[0]?.country },
             { field: 'totalPurchasedAmount', headerName: 'Total Purchased Amount', sortable: true, filter: true, resizable: true },
-            { field: 'remainingAmount', headerName: 'Remaining Amount', sortable: true, filter: true, resizable: true, cellStyle: (params: any) => {
-                // console.log(params); // Keep for debugging if needed
-                const remaining = params.data.remainingAmount;
-                if (typeof remaining !== 'number' || isNaN(remaining)) {
-                    return {}; // Return default style if not a valid number
+            {
+                field: 'remainingAmount', headerName: 'Remaining Amount', sortable: true, filter: true, resizable: true, cellStyle: (params: any) => {
+                    // console.log(params); // Keep for debugging if needed
+                    const remaining = params.data.remainingAmount;
+                    if (typeof remaining !== 'number' || isNaN(remaining)) {
+                        return {}; // Return default style if not a valid number
+                    }
+                    if (remaining === 0) {
+                        return { backgroundColor: '#ccffcc', color: '#006400', fontWeight: 'bold' }; // Green
+                    } else if (remaining > 0 && remaining < 3000) {
+                        return { backgroundColor: '#ffe0b3', color: '#d35400', fontWeight: 'bold' }; // Orange (like your 'pending' style)
+                    } else if (remaining < 0) {
+                        return { backgroundColor: '#cce0ff', color: '#00008b', fontWeight: 'bold' }; // Example: Blueish for overpayment
+                    }
+                    else if (remaining > 3000) {
+                        return { backgroundColor: '#FCB045', color: '#d35400', fontWeight: 'bold' }; // Orange (like your 'pending' style)
+                    }
+                    else {
+                        return {};
+                    }
                 }
-                if (remaining === 0) {
-                    return { backgroundColor: '#ccffcc', color: '#006400', fontWeight: 'bold' }; // Green
-                } else if (remaining > 0 && remaining<3000) {
-                    return { backgroundColor: '#ffe0b3', color: '#d35400', fontWeight: 'bold' }; // Orange (like your 'pending' style)
-                } else if (remaining < 0) {
-                    return { backgroundColor: '#cce0ff', color: '#00008b', fontWeight: 'bold' }; // Example: Blueish for overpayment
-                }
-                else if (remaining > 3000) {
-                    return { backgroundColor: '#FCB045', color: '#d35400', fontWeight: 'bold' }; // Orange (like your 'pending' style)
-                }
-                else {
-                    return {};
-                }
-            }
-         },
+            },
             {
                 field: 'paymentHistory',
                 headerName: 'Payment History',
@@ -106,37 +110,26 @@ export class CustomerListComponent implements OnInit {
                     }
                 },
             },
-            {
-                headerName: 'metadata',
-                field: 'metadata',
-                cellRenderer: DynamicCellComponent,
-                cellRendererParams: {
-                    type: 'colorpicker',
-                    // options: [ // Provide options for the dropdown
-                    //     { label: 'United States', value: 'USA' },
-                    //     { label: 'Canada', value: 'CAN' },
-                    //     { label: 'Mexico', value: 'MEX' }
-                    // ]
-                }
-            },
             { field: 'metadata', headerName: 'Metadata', sortable: true, filter: true, resizable: true, valueGetter: (params: any) => JSON.stringify(params.data.metadata) },
             { field: 'createdAt', headerName: 'Created At', sortable: true, filter: true, resizable: true, valueFormatter: (params: any) => new Date(params.value).toLocaleString() },
             { field: 'updatedAt', headerName: 'Updated At', sortable: true, filter: true, resizable: true, valueFormatter: (params: any) => new Date(params.value).toLocaleString() },
             { field: '__v', headerName: 'Version', sortable: true, filter: true, resizable: true },
-            {
-                field: 'cart',
-                headerName: 'Cart Items',
-                sortable: true,
-                filter: true,
-                resizable: true,
-                valueGetter: (params: any) => params.data.cart?.items?.length
-            }
+            { field: 'cart', headerName: 'Cart Items', sortable: true, filter: true, resizable: true, valueGetter: (params: any) => params.data.cart?.items?.length }
         ];
         this.cdr.detectChanges();
     }
 
     getData() {
-        this.CustomerService.getAllCustomerData().subscribe((res: any) => {
+      let filterParams = {
+            _id:this.customerFilter.name,
+            guaranteerId:this.customerFilter.guaranter,
+            page:this.customerFilter.page,
+            email:this.customerFilter.email,
+            mobileNumber:this.customerFilter.phone,
+            limit:this.customerFilter.limit || 20 ,
+        }
+        
+        this.CustomerService.getAllCustomerData(filterParams).subscribe((res: any) => {
             this.data = res.data;
             this.cdr.markForCheck();
         });
@@ -153,11 +146,8 @@ export class CustomerListComponent implements OnInit {
             if (field) {
                 dataItem[field] = newValue;
                 this.InvoiceService.updateinvoice(dataItem.id, dataItem).subscribe({
-                    next: (res: any) => {
-                    },
-                    error: (err: any) => {
-                        console.error('❌ Error updating invoice:', err);
-                    }
+                    next: (res: any) => { },
+                    error: (err: any) => { console.error('❌ Error updating invoice:', err) }
                 });
             } else {
                 console.error('❌ Error: Field is undefined in cellValueChangedEvent.colDef');

@@ -2,11 +2,58 @@
 <app-shared-grid [gridHeight]="'520px'" [gridWidth]="" [padding]="" [data]="data" [rowSelectionMode]="rowSelectionMode"
   [rowSelectionMode]="rowSelectionMode" [column]="column" (eventFromGrid)="eventFromGrid($event)">
 </app-shared-grid> -->
+<!-- <app-common-header [gridWidth]="'100%'"></app-common-header>
+<app-shared-grid [gridHeight]="'520px'" [gridWidth]="" [padding]="" [data]="data" [rowSelectionMode]="rowSelectionMode"
+  [rowSelectionMode]="rowSelectionMode" [column]="column" (eventFromGrid)="eventFromGrid($event)">
+</app-shared-grid> -->
 
 
 <div class="h-[calc(100vh-56px)] flex flex-col overflow-hidden">
   <!-- Your app-level header -->
-  <app-common-header class="h-14" [gridWidth]="'100%'"></app-common-header>
+  <app-common-header class="h-17" [gridWidth]="'100%'">
+    <ng-template #customer>
+      <p-select id="customer" appendTo="body" (onChange)="getData()" [options]="customerFilter.customerIDDropdown"
+        [(ngModel)]="customerFilter.name" [checkmark]="true" [filter]="true" filterBy="fullname" optionLabel="fullname"
+        optionValue="_id" [showClear]="true" placeholder="Select customer name" class="w-full md:w-56" />
+    </ng-template>
+
+    <ng-template #email>
+      <p-iftalabel>
+        <input pInputText id="email" (change)="getData()" [(ngModel)]="customerFilter.email" />
+        <label for="email">email</label>
+      </p-iftalabel>
+      
+    </ng-template> <ng-template #phone>
+      <p-iftalabel>
+        <input pInputText id="phone" (change)="getData()" [(ngModel)]="customerFilter.phone" />
+        <label for="phone">phone</label>
+      </p-iftalabel>
+    </ng-template>
+
+    <ng-template #page>
+      <p-iftalabel>
+        <input pInputText id="page" (change)="getData()" [(ngModel)]="customerFilter.page" />
+        <label for="page">Page</label>
+      </p-iftalabel>
+    </ng-template>
+
+    <ng-template #limit>
+      <p-iftalabel>
+        <input pInputText id="limit" (change)="getData()" [(ngModel)]="customerFilter.limit" />
+        <label for="limit">limit</label>
+      </p-iftalabel>
+    </ng-template>
+    <!-- <ng-template>
+        <p-select appendTo="body" (onChange)="getData()" [options]="customerFilter.customerIDDropdown.phoneNumbers" [(ngModel)]="customerFilter.mobileNumber" [checkmark]="true" optionLabel="number" optionValue="_id" [showClear]="true"
+          placeholder="Select mobile number" class="w-full md:w-56" />
+    </ng-template>
+
+    <ng-template>
+        <p-select appendTo="body"  (onChange)="getData()" [options]="customerFilter.customerIDDropdown" 
+            [(ngModel)]="customerFilter.guaranter" [checkmark]="true" optionLabel="fullname" optionValue="guaranteerId" [showClear]="true"
+          placeholder="seelct guaranteer" class="w-full md:w-56" />
+    </ng-template> -->
+  </app-common-header>
 
   <!-- Grid: fill remaining height minus internal grid footer -->
   <app-shared-grid class="flex-1 overflow-auto" [gridHeight]="'calc(100vh - 56px - 56px - 48px)'" [gridWidth]="'100%'"
