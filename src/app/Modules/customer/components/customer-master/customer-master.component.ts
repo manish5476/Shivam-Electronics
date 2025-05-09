@@ -26,6 +26,7 @@ interface Customer {
   profileImg: string;
   email: string;
   status: string;
+  mobileNumber:number;
   phoneNumbers: Phone[];
   addresses: Address[];
   cart: { items: any[] };
@@ -112,6 +113,7 @@ export class CustomerMasterComponent implements OnInit {
   customer: Customer = {
     fullname: '',
     profileImg: '',
+    mobileNumber:0,
     email: '',
     status: '',
     phoneNumbers: [],
@@ -229,7 +231,8 @@ handleFileUpload(event: any) {
 
 saveCustomer() {
   if (this.validateCustomer()) {
-    this.customer.guaranteerId = this.selectedGuaranter._id
+    this.customer.guaranteerId = this.selectedGuaranter._id;
+    this.customer.mobileNumber = Number(this.customer.phoneNumbers[0].number); // Convert string to number
     this.CustomerService.createNewCustomer(this.customer).subscribe(
       (response: any) => {
         const customerId = response.data._id;

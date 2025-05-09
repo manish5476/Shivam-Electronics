@@ -207,45 +207,41 @@ export class InvoiceViewComponent {
   //   this.getData();
   // }
 
-  // getData(): void {
-  //   const filterParams: any = {};
-  //   Object.entries(this.invoiceFilter).forEach(([key, value]) => {
-  //     if (value !== null && value !== '' && value !== undefined) {
-  //       filterParams[key] = value;
-  //     }
-  //   });
-
-
-  //   this.InvoiceService.getAllinvoiceData(filterParams).subscribe((res: any) => {
-  //     this.data = res.data;
-  //     this.cdr.markForCheck();
-  //   });
-  // }
-
   getData(): void {
-    const filterParams: any = {
-      filter: {}
-    };
-
-    const { minRemainingAmount, maxRemainingAmount, ...rest } = this.invoiceFilter;
-
-    for (const [key, value] of Object.entries(rest)) {
-      if (value !== '' && value !== null && value !== undefined) {
+    const filterParams: any = {};
+    Object.entries(this.invoiceFilter).forEach(([key, value]) => {
+      if (value !== null && value !== '' && value !== undefined) {
         filterParams[key] = value;
       }
-    }
+    });
 
-    if (minRemainingAmount || maxRemainingAmount) {
-      filterParams.filter.totalAmount = {};
-      if (minRemainingAmount) filterParams.filter.totalAmount.gt = minRemainingAmount;
-      if (maxRemainingAmount) filterParams.filter.totalAmount.lt = maxRemainingAmount;
-    }
 
     this.InvoiceService.getAllinvoiceData(filterParams).subscribe((res: any) => {
       this.data = res.data;
       this.cdr.markForCheck();
     });
   }
+
+  // getData(): void {
+  //   // const filterParams: any = {
+  //   //   filter: {}
+  //   // };
+  //   const { minRemainingAmount, maxRemainingAmount, ...rest } = this.invoiceFilter;
+  //   for (const [key, value] of Object.entries(rest)) {
+  //     if (value !== '' && value !== null && value !== undefined) {
+  //       filterParams[key] = value;
+  //     }
+  //   }
+  // if (minRemainingAmount || maxRemainingAmount) {
+  //   filterParams.filter.totalAmount = {};
+  //   if (minRemainingAmount) filterParams.filter.totalAmount.gt = minRemainingAmount;
+  //   if (maxRemainingAmount) filterParams.filter.totalAmount.lt = maxRemainingAmount;
+  // }
+  //   this.InvoiceService.getAllinvoiceData(filterParams).subscribe((res: any) => {
+  //     this.data = res.data;
+  //     this.cdr.markForCheck();
+  //   });
+  // }
 
 
   resetFilters(): void {
