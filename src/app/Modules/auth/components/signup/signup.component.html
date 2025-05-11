@@ -1,4 +1,216 @@
-<section class="bg-gray-900 dark:bg-gray-900">
+<!-- <section class="min-h-screen flex items-center lg:items-start lg:py-20 justify-center animate-fadein animate-duration-300 animate-ease-in max-w-[100rem] mx-auto">
+  <div class="flex w-full h-full justify-center gap-12">
+    <h1 class="text-2xl font-semibold text-surface-950 dark:text-surface-0 text-center lg:text-left">Sign Up</h1>
+
+      <div class="flex flex-col py-20 lg:min-w-[30rem]">
+              <div class="max-w-md mx-auto w-full">
+              <form [formGroup]="signupForm" (ngSubmit)="signUp()" novalidate class=""> <div class="flex flex-col gap-2">
+                       <label for="name" class="text-sm font-medium text-surface-700 dark:text-white/70">Full Name</label>
+                      <input type="text" id="name" formControlName="name" pInputText placeholder="Full Name" required
+                             class="p-inputtext p-component w-full border border-surface-300 dark:border-surface-700 rounded-md py-2 px-3 outline-none focus:border-primary-500 dark:focus:border-primary-500 bg-transparent text-surface-900 dark:text-surface-0">
+                       <div *ngIf="signupForm.get('name')?.invalid && (signupForm.get('name')?.dirty || signupForm.get('name')?.touched)" class="text-red-500 text-sm">
+                           <span *ngIf="signupForm.get('name')?.errors?.['required']">Full Name is required</span>
+                           <span *ngIf="signupForm.get('name')?.errors?.['minlength']">Full Name must be at least 2 characters long</span>
+                       </div>
+                  </div>
+
+                  <div class="flex flex-col gap-2 mt-4">
+                       <label for="email" class="text-sm font-medium text-surface-700 dark:text-white/70">Email</label>
+                      <input type="email" id="email" formControlName="email" pInputText placeholder="Email" required
+                             class="p-inputtext p-component w-full border border-surface-300 dark:border-surface-700 rounded-md py-2 px-3 outline-none focus:border-primary-500 dark:focus:border-primary-500 bg-transparent text-surface-900 dark:text-surface-0">
+                       <div *ngIf="signupForm.get('email')?.invalid && (signupForm.get('email')?.dirty || signupForm.get('email')?.touched)" class="text-red-500 text-sm">
+                           <span *ngIf="signupForm.get('email')?.errors?.['required']">Email is required</span>
+                           <span *ngIf="signupForm.get('email')?.errors?.['email']">Invalid email format</span>
+                       </div>
+                  </div>
+
+                  <div class="flex flex-col gap-2 mt-4">
+                       <label for="password" class="text-sm font-medium text-surface-700 dark:text-white/70">Password</label>
+                      <input type="password" id="password" formControlName="password" pInputText placeholder="Password" required
+                             class="p-inputtext p-component w-full border border-surface-300 dark:border-surface-700 rounded-md py-2 px-3 outline-none focus:border-primary-500 dark:focus:border-primary-500 bg-transparent text-surface-900 dark:text-surface-0">
+                       <div *ngIf="signupForm.get('password')?.invalid && (signupForm.get('password')?.dirty || signupForm.get('password')?.touched)" class="text-red-500 text-sm">
+                           <span *ngIf="signupForm.get('password')?.errors?.['required']">Password is required</span>
+                           <span *ngIf="signupForm.get('password')?.errors?.['minlength']">Password must be at least 8 characters long</span>
+                       </div>
+                  </div>
+
+                  <div class="flex flex-col gap-2 mt-4">
+                       <label for="confirm-password" class="text-sm font-medium text-surface-700 dark:text-white/70">Confirm Password</label>
+                      <input type="password" id="confirm-password" formControlName="passwordConfirm" pInputText placeholder="Confirm Password" required
+                             class="p-inputtext p-component w-full border border-surface-300 dark:border-surface-700 rounded-md py-2 px-3 outline-none focus:border-primary-500 dark:focus:border-primary-500 bg-transparent text-surface-900 dark:text-surface-0">
+                       <div *ngIf="signupForm.get('passwordConfirm')?.invalid && (signupForm.get('passwordConfirm')?.dirty || signupForm.get('passwordConfirm')?.touched)" class="text-red-500 text-sm">
+                           <span *ngIf="signupForm.get('passwordConfirm')?.errors?.['required']">Confirm Password is required</span>
+                       </div>
+                        <div *ngIf="signupForm.errors?.['passwordMismatch'] && (signupForm.get('passwordConfirm')?.dirty || signupForm.get('passwordConfirm')?.touched)" class="text-red-500 text-sm">Passwords do not match.</div>
+                  </div>
+
+                   <div class="flex flex-col gap-2 mt-4">
+                       <label for="role" class="text-sm font-medium text-surface-700 dark:text-white/70">Role</label>
+                      <input type="text" id="role" formControlName="role" pInputText placeholder="e.g., Customer" required
+                             class="p-inputtext p-component w-full border border-surface-300 dark:border-surface-700 rounded-md py-2 px-3 outline-none focus:border-primary-500 dark:focus:border-primary-500 bg-transparent text-surface-900 dark:text-surface-0">
+                       <div *ngIf="signupForm.get('role')?.invalid && (signupForm.get('role')?.dirty || signupForm.get('role')?.touched)" class="text-red-500 text-sm">
+                           <span *ngIf="signupForm.get('role')?.errors?.['required']">Role is required</span>
+                       </div>
+                  </div>
+
+
+                  <button type="submit" class="bg-primary-500 text-white py-2.5 px-4 rounded-md font-semibold hover:bg-primary-emphasis transition-colors w-full mt-8"
+                           [disabled]="signupForm.invalid || isSubmitting"> Sign Up
+                       <span *ngIf="isSubmitting">...</span>
+                   </button>
+              </form>
+
+              <div class="mt-8 text-sm text-center lg:text-left text-surface-500 dark:text-white/64">
+                  Already have an account? <a routerLink="/auth/login" class="text-primary-500 hover:underline">Login</a>
+              </div>
+
+               <div *ngIf="errorMessage" class="text-red-500 text-center text-sm mt-4">
+                   {{ errorMessage }}
+                </div>
+
+          </div>
+
+          <div class="mt-8 text-center lg:text-start block relative text-surface-400 dark:text-surface-500 text-sm">
+               ©2025 PrimeTek </div>
+      </div>
+
+      <div class="hidden lg:flex h-full py-20">
+          <div class="h-full w-full lg:max-w-[32.5rem] xl:max-w-[60.5rem] mx-auto flex items-center justify-center shadow-[0px_1px_2px_0px_rgba(18,18,23,0.05)] rounded-3xl border border-surface overflow-hidden">
+                 <img src="https://images.unsplash.com/photo-1621330396167-b3d451b9b83b?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NzB8fHNtYXJ0cGhvbmV8ZW58MHx8MHx8fDA%3D" alt="Auth Image"
+                      class="w-auto h-full object-contain object-left transition-opacity duration-700 ease-out delay-75">
+           </div>
+      </div>
+
+  </div>
+</section> -->
+<section class="animate-fadein animate-duration-300 animate-ease-in relative  flex items-center justify-center py-12 px-4 lg:px-8">
+  <div class="landing-container mx-auto relative z-10 px-12">
+      <div class="relative  mx-auto">
+
+          <div class="w-full h-full inset-0 bg-white/64 dark:bg-surface-800 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rotate-[4deg] lg:rotate-[7deg] backdrop-blur-[90px] rounded-3xl shadow-blueish dark:shadow-sm"></div>
+          <div class="w-full h-full inset-0 bg-white/64 dark:bg-surface-800 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 -rotate-[4deg] lg:-rotate-[7deg] backdrop-blur-[90px] rounded-3xl shadow-blueish dark:shadow-sm"></div>
+
+          <form [formGroup]="signupForm" (ngSubmit)="signUp()" novalidate class="space-y-4 p-8 relative z-10 bg-white/64 dark:bg-surface-800 backdrop-blur-[90px] rounded-3xl shadow-blueish">
+
+              <div class="py-4">
+                  <div class="flex items-center justify-center">
+                      <div class="w-20 h-20 bg-gray-800 rounded-xl flex items-center justify-center">
+                          <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="0 0 83 90" fill="none"><rect x="5.5" y="1" width="72" height="72" rx="21" fill="#030616"></rect><path d="M41.4478 18.0524C41.4892 18.0213 41.5462 18.0213 41.5876 18.0524L45.9881 21.3479C46.1172 21.4446 46.1433 21.6277 46.0464 21.7566L44.22 24.186C44.1234 24.3145 43.9409 24.3406 43.8122 24.2443L43.106 23.7161L43.1022 40.6408L45.047 41.3479C47.7174 42.3189 50.6283 40.6982 51.2096 37.9169L54.8586 20.4569C54.8775 20.3664 54.9893 20.3328 55.055 20.398L59.8586 25.1639C59.9439 25.2485 59.9686 25.3767 59.9208 25.4869L58.8462 27.9677C58.7821 28.1157 58.61 28.1836 58.4621 28.1192L57.0881 27.5208L53.9052 42.7505C53.3239 45.5316 50.4134 47.1523 47.7432 46.1818L43.1022 44.4951L43.0991 60H39.9252L39.9282 44.4796L35.2489 46.1805C32.5777 47.1515 29.6662 45.5294 29.0862 42.747L25.9118 27.5208L24.0483 28.1377C23.8879 28.1908 23.7161 28.0969 23.6741 27.9333L23.0415 25.466C23.0158 25.3657 23.0451 25.2594 23.1186 25.1865L27.9468 20.3964C28.0125 20.3312 28.1242 20.3648 28.1431 20.4554L31.7833 37.9131C32.3635 40.6958 35.2757 42.3178 37.947 41.346L39.9282 40.6253L39.9321 23.711L39.2216 24.2438C39.0928 24.3403 38.9102 24.3143 38.8134 24.1857L36.9873 21.7567C36.8904 21.6277 36.9165 21.4446 37.0457 21.3479L41.4478 18.0524Z" fill="url(#paint0_linear_2396_7131)"></path>
+                         </svg>
+                      </div>
+                  </div>
+                  <h1 class="text-4xl lg:text-6xl font-semibold text-surface-950 dark:text-surface-0 text-center">Sign Up</h1>
+                  <p class="text-center lg:text-xl text-surface-950 dark:text-white/64 mt-6 max-w-sm mx-auto">Create your account. It's free and only takes a minute.</p>
+              </div>
+
+               <div class="flex flex-col gap-2">
+                  <label for="name" class="font-medium text-surface-500 dark:text-white/64">Full Name</label>
+                  <div class="relative">
+                       <i class="fas fa-user p-inputicon absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500"></i>
+                      <input type="text" id="name"
+                             formControlName="name" required
+                             class="p-inputtext p-component w-full border border-surface-200 dark:border-surface-700 rounded-md py-1.5 pl-10 pr-3 outline-none focus:border-primary-500 dark:focus:border-primary-500 bg-transparent text-surface-900 dark:text-surface-0"
+                             placeholder="John Doe">
+                  </div>
+                  @if (signupForm.get('name')?.invalid && (signupForm.get('name')?.dirty || signupForm.get('name')?.touched)) {
+                  <div class="text-red-500 text-sm">
+                      @if (signupForm.get('name')?.errors?.['required']) { <div> Full Name is required. </div> }
+                       @if (signupForm.get('name')?.errors?.['minlength']) { <div> Full Name must be at least 2 characters long. </div> }
+                  </div>
+                  }
+              </div>
+
+              <div class="flex flex-col gap-2">
+                  <label for="email" class="font-medium text-surface-500 dark:text-white/64">Email Address</label>
+                  <div class="relative">
+                       <i class="fas fa-envelope p-inputicon absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500"></i>
+                      <input type="email" id="email"
+                             formControlName="email" required
+                             class="p-inputtext p-component w-full border border-surface-200 dark:border-surface-700 rounded-md py-1.5 pl-10 pr-3 outline-none focus:border-primary-500 dark:focus:border-primary-500 bg-transparent text-surface-900 dark:text-surface-0"
+                             placeholder="john@example.com">
+                  </div>
+                   @if (signupForm.get('email')?.invalid && (signupForm.get('email')?.dirty || signupForm.get('email')?.touched)) {
+                   <div class="text-red-500 text-sm">
+                       @if (signupForm.get('email')?.errors?.['required']) { <div> Email is required. </div> }
+                       @if (signupForm.get('email')?.errors?.['email']) { <div> Email must be a valid email address. </div> }
+                   </div>
+                   }
+              </div>
+
+              <div class="flex flex-col gap-2">
+                  <label for="password" class="font-medium text-surface-500 dark:text-white/64">Password</label>
+                  <div class="relative">
+                       <i class="fas fa-lock p-inputicon absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500"></i>
+                      <input type="password" id="password"
+                             formControlName="password" required
+                             class="p-inputtext p-component w-full border border-surface-200 dark:border-surface-700 rounded-md py-1.5 pl-10 pr-3 outline-none focus:border-primary-500 dark:focus:border-primary-500 bg-transparent text-surface-900 dark:text-surface-0">
+                       </div>
+                  @if (signupForm.get('password')?.invalid && (signupForm.get('password')?.dirty || signupForm.get('password')?.touched)) {
+                  <div class="text-red-500 text-sm">
+                      @if (signupForm.get('password')?.errors?.['required']) { <div> Password is required. </div> }
+                      @if (signupForm.get('password')?.errors?.['minlength']) { <div> Password must be at least 8 characters long. </div> }
+                  </div>
+                  }
+              </div>
+
+              <div class="flex flex-col gap-2">
+                  <label for="confirm-password" class="font-medium text-surface-500 dark:text-white/64">Confirm Password</label>
+                  <div class="relative">
+                      <i class="fas fa-lock p-inputicon absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500"></i>
+                      <input type="password" id="confirm-password"
+                             formControlName="passwordConfirm" required
+                             class="p-inputtext p-component w-full border border-surface-200 dark:border-surface-700 rounded-md py-1.5 pl-10 pr-3 outline-none focus:border-primary-500 dark:focus:border-primary-500 bg-transparent text-surface-900 dark:text-surface-0">
+                  </div>
+                  @if (signupForm.get('passwordConfirm')?.invalid && (signupForm.get('passwordConfirm')?.dirty || signupForm.get('passwordConfirm')?.touched)) {
+                   <div class="text-red-500 text-sm">
+                       @if (signupForm.get('passwordConfirm')?.errors?.['required']) { <div> Confirm Password is required. </div> }
+                   </div>
+                  }
+                  @if (signupForm.errors?.['passwordMismatch'] && (signupForm.get('passwordConfirm')?.dirty || signupForm.get('passwordConfirm')?.touched)) {
+                      <div class="text-red-500 text-sm">Passwords do not match.</div>
+                   }
+              </div>
+
+               <div class="flex flex-col gap-2">
+                  <label for="role" class="font-medium text-surface-500 dark:text-white/64">Role</label>
+                   <div class="relative">
+                        <i class="fas fa-user-tag p-inputicon absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500"></i> <input type="text" id="role"
+                              formControlName="role" required
+                              class="p-inputtext p-component w-full border border-surface-200 dark:border-surface-700 rounded-md py-1.5 pl-10 pr-3 outline-none focus:border-primary-500 dark:focus:border-primary-500 bg-transparent text-surface-900 dark:text-surface-0"
+                              placeholder="Customer">
+                   </div>
+                   @if (signupForm.get('role')?.invalid && (signupForm.get('role')?.dirty || signupForm.get('role')?.touched)) {
+                   <div class="text-red-500 text-sm">
+                       @if (signupForm.get('role')?.errors?.['required']) { <div> Role is required. </div> }
+                   </div>
+                   }
+               </div>
+
+
+              <button type="submit"
+                       class="p-button p-component w-full mt-6 bg-primary-500 text-white py-3 rounded-full font-semibold hover:bg-primary-emphasis transition-colors"
+                       [disabled]="signupForm.invalid || isSubmitting"> <span *ngIf="!isSubmitting">Sign Up</span>
+                    <span *ngIf="isSubmitting">Signing Up...</span> </button>
+
+               <div class="flex items-center justify-center gap-2 text-sm">
+                  <span class="text-surface-500 dark:text-white/64">Already have an account?</span>
+                  <a routerLink="/auth/login" class="text-primary-500 font-semibold">Login</a>
+              </div>
+
+              <div *ngIf="errorMessage" class="text-red-500 text-center text-sm mt-4">
+                  {{ errorMessage }}
+               </div>
+
+               <div *ngIf="isSubmitting" class="text-center text-primary-500 text-sm">
+                   Processing...
+                </div>
+
+          </form>
+      </div>
+  </div>
+</section>
+
+<!-- <section class="bg-gray-900 dark:bg-gray-900">
   <div class="lg:grid lg:min-h-screen lg:grid-cols-12">
     <section class="relative flex h-32 items-end bg-gray-900 lg:col-span-5 lg:h-full xl:col-span-6">
       <img alt="Laptop and coffee"
@@ -25,10 +237,6 @@
       </div>
     </section>
 
-    <!-- <main class="flex items-center justify-center px-2 py-2 sm:px-12 lg:col-span-7  xl:col-span-6"> -->
-    <!-- <div class="max-w-xl lg:max-w-3xl"> -->
-    <!-- <main class="flex items-center justify-center px-2 py-2 sm:px-12 lg:col-span-12 xl:col-span-12"> -->
-    <!-- <div> -->
     <main class="flex items-center justify-center px-2 py-2 sm:px-12 lg:col-span-7 xl:col-span-6">
       <div class="w-full">
         <div class="relative -mt-16 block lg:hidden">
@@ -149,7 +357,7 @@
   </div>
 </section>
 
-
+ -->
 
 
 

@@ -51,6 +51,7 @@ export class HeaderComponent {
   visible = false;
   position = 'topright';
   themeLabel = 'Dark Mode';
+  isMobileMenuOpen = false; // State for the mobile menu visibility
 
   @ViewChild('drawerRef') drawerRef!: Drawer;
   menuItemss: ({ label: string; icon: string; routerLink: string[]; items?: undefined; } | { label: string; icon: string; items: { label: string; icon: string; routerLink: string[]; }[]; routerLink?: undefined; })[] | undefined;
@@ -75,6 +76,11 @@ export class HeaderComponent {
     this.themeService.toggleTheme();
     this.themeLabel = this.themeLabel === 'Dark Mode' ? 'Light Mode' : 'Dark Mode';
   }
+    // This method replaces the combined openUserDropDown/showPanel logic
+    toggleMobileMenu(): void {
+      this.isMobileMenuOpen = !this.isMobileMenuOpen;
+      console.log('Mobile menu toggled:', this.isMobileMenuOpen);
+    }
 
   toggleNotificationDropdown() {
     this.shownotificationdropdown = !this.shownotificationdropdown;

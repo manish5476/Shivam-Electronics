@@ -23,6 +23,7 @@ export const routes: Routes = [
       { path: 'sellers', loadChildren: () => import('./Modules/seller/seller.routes').then(m => m.SELLER_ROUTES) },
       { path: 'invoices', loadChildren: () => import('./Modules/billing/billing.routes').then(m => m.BILLING_ROUTES) },
       { path: 'products', loadChildren: () => import('./Modules/product/product.routes').then(m => m.PRODUCT_ROUTES) },
+      { path: 'personalInfo', loadChildren: () => import('./Modules/PersonalInfo/personalinfo.routes').then(m => m.PERSONAL_INFO) },
       // 404 Page inside MainLayout
       { path: '**', component: NotFoundComponent },
     ],

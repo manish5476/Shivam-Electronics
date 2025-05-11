@@ -1,11 +1,11 @@
-<header class="bg-gray-900 dark:bg-gray-900">
+<!-- <header class="bg-gray-900 dark:bg-gray-900">
   <div class="flex h-14 max-w-screen items-center gap-4 px-2 sm:px-4 lg:px-6">
     <p-button (click)="toggleTheme()" icon="pi pi-moon" />
     <a class="text-teal-600 dark:text-teal-300 font-bold text-lg">
       <span class="sr-only">Home</span>
       Shivam Electronics
     </a>
-    <!-- menu.toggle($event), -->
+    menu.toggle($event),
     <a class="block text-teal-600 dark:text-teal-300">
       <span class="sr-only">Home</span>
       <button (click)="[showPanel()]" type="button"
@@ -24,8 +24,12 @@
     <div class="flex flex-1 items-center justify-end md:justify-between">
       <div class="flex items-center gap-4 ml-auto">
         <div class="sm:flex sm:gap-4">
+          
+          <a routerLink="/personalInfo/aboutus"
+          class="block rounded-md bg-white-600 px-5 py-2.5 text-sm font-medium text-white transition hover:bg-white-700 dark:hover:bg-white-500">aboutUS
+        </a>
           <a routerLink="/auth/login"
-            class="block rounded-md bg-teal-600 px-5 py-2.5 text-sm font-medium text-white transition hover:bg-teal-700 dark:hover:bg-teal-500">
+            class="block rounded-md bg-white-600 px-5 py-2.5 text-sm font-medium text-white transition hover:bg-white-700 dark:hover:bg-white-500">
             Login
           </a>
           <a routerLink="/auth/signup"
@@ -41,8 +45,87 @@
       </div>
     </div>
   </div>
-</header>
+</header> -->
+<header class="bg-gray-900 dark:bg-gray-900">
+  <div class="flex h-14 max-w-screen items-center gap-4 px-2 sm:px-4 lg:px-6">
 
+    <button type="button"
+      class="flex items-center justify-center rounded-md text-white dark:text-gray-900 w-8 h-8 bg-gray-700 dark:bg-white transition-colors hover:bg-gray-600 dark:hover:bg-gray-200"
+      (click)="[showPanel()]">
+      <i class="fas fa-moon"></i>
+    </button>
+
+    <a href="/" class="text-teal-600 dark:text-teal-300 font-bold text-lg">
+      <span class="sr-only">Home</span>
+      Shivam Electronics
+    </a>
+
+    <button type="button"
+      class="flex text-sm bg-gray-800 rounded-full focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600 md:hidden"
+      (click)="toggleMobileMenu()" aria-expanded="false" data-dropdown-toggle="dropdown">
+      <span class="sr-only">Open user menu</span>
+      <i class="fas fa-bars text-white dark:text-gray-300 text-xl w-8 h-8 flex items-center justify-center"></i>
+    </button>
+
+
+    <div class="flex flex-1 items-center justify-end md:justify-between">
+      <div class="flex items-center gap-4 ml-auto">
+        <div class="sm:flex sm:gap-4 hidden md:flex">
+           <!-- <a routerLink="/personalInfo/aboutus"
+            class="block rounded-md bg-white-600 px-5 py-2.5 text-sm font-medium text-white transition hover:bg-white-700 dark:hover:bg-white-500">aboutUS
+          </a>
+          <a routerLink="/pricing"
+            class="block rounded-md bg-white-600 px-5 py-2.5 text-sm font-medium text-white transition hover:bg-white-700 dark:hover:bg-white-500">Pricing
+          </a> -->
+          <a routerLink="/personalInfo/aboutus"
+            class="block rounded-md bg-white-600 px-5 py-2.5 text-sm font-medium text-white transition hover:bg-white-700 dark:hover:bg-white-500">Contact
+          </a>
+
+          <a routerLink="/auth/login"
+            class="block rounded-md bg-white-600 px-5 py-2.5 text-sm font-medium text-white transition hover:bg-white-700 dark:hover:bg-white-500">
+            Login
+          </a>
+          <a routerLink="/auth/signup"
+            class="hidden rounded-md bg-gray-100 px-5 py-2.5 text-sm font-medium text-teal-600 transition hover:text-teal-600/75 sm:block dark:bg-gray-800 dark:text-white dark:hover:text-white/75">
+            Register
+          </a>
+
+          <a>
+            <div class="flex justify-between items-center">
+              <input type="color" id="gradientColorPicker" (change)="onColorChange($event)"
+                class="w-10 h-10 rounded-full cursor-pointer">
+            </div>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <div class="md:hidden block transition-all duration-300 ease-out overflow-hidden"
+      [ngClass]="{'opacity-100': isMobileMenuOpen, 'opacity-0': !isMobileMenuOpen}"
+      [style.maxHeight]="isMobileMenuOpen ? '500px' : '0px'">
+      <div class="flex flex-col gap-8 transition-all p-4">
+        <ul class="flex flex-col gap-2">
+          <li class="ng-star-inserted"><a
+              class="button py-2 bg-transparent shadow-none hover:bg-white dark:hover:bg-white/10 hover:shadow-sm border border-transparent hover:border-surface dark:hover:border-white/10"
+              routerLink="/personalInfo/aboutus" (click)="toggleMobileMenu()"> About </a></li>
+          <li class="ng-star-inserted"><a
+              class="button py-2 bg-transparent shadow-none hover:bg-white dark:hover:bg-white/10 hover:shadow-sm border border-transparent hover:border-surface dark:hover:border-white/10"
+              routerLink="/pricing" (click)="toggleMobileMenu()"> Pricing </a></li>
+          <li class="ng-star-inserted"><a
+              class="button py-2 bg-transparent shadow-none hover:bg-white dark:hover:bg-white/10 hover:shadow-sm border border-transparent hover:border-surface dark:hover:border-white/10"
+              routerLink="/contact" (click)="toggleMobileMenu()"> Contact </a></li>
+        </ul>
+        <div class="flex flex-col items-center gap-4">
+          <a routerlink="/auth/login" class="button py-2 w-full border dark:border-white/10 text-center"
+            (click)="toggleMobileMenu()"> Login </a>
+          <a routerlink="/auth/signup" class="button-primary w-full py-2 text-center" (click)="toggleMobileMenu()">
+            Register </a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</header>
 <!-- sidebar drawer -->
 <!-- <div class="card flex justify-start"> -->
 <p-drawer [(visible)]="visibles" [modal]="true">
@@ -82,7 +165,8 @@
   <ng-template #footer>
     <div class="flex items-center gap-2" styleClass="w-62 md:w-63">
       <button pButton label="Settings" icon="pi pi-cog" class="w-full outlined"></button>
-      <button pButton (click)="logout()" label="Logout" icon="pi pi-sign-out" class="w-full severity-danger text"></button>
+      <button pButton (click)="logout()" label="Logout" icon="pi pi-sign-out"
+        class="w-full severity-danger text"></button>
     </div>
   </ng-template>
 </p-drawer>

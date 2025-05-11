@@ -1,0 +1,21 @@
+
+/* Define custom colors if needed */
+:root {
+    --primary-950: #111827;
+    --primary: #3b82f6;
+    --teal-600: #0d9488;
+    --teal-300: #4fd1c5;
+    --surface-950: #111827;
+    --surface-0: #ffffff;
+    --surface-200: #e5e7eb;
+
+}
+
+/* Example: Basic button styles if not defined by Tailwind or custom components */
+.button {
+    /* @apply rounded-md px-5 py-2.5 text-sm font-medium transition-colors duration-150 ease-in-out; */
+}
+.button-primary {
+     /* @apply bg-teal-600 text-white hover:bg-teal-700;
+     @apply dark:bg-teal-300 dark:text-gray-900 dark:hover:bg-teal-400; */
+}

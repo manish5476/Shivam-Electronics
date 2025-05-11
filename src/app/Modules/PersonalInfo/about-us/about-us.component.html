@@ -1,0 +1,40 @@
+<div>
+  <h1 class="text-4xl lg:text-6xl font-semibold text-surface-950 dark:text-surface-0 text-center mx-auto">
+      Everything you ever<br class="lg:block hidden">wanted to know about us
+  </h1>
+  <p class="lg:text-xl text-surface-500 dark:text-white/64 text-center mt-6 max-w-4xl mx-auto">
+      We are a team of passionate creators, designers, and developers dedicated to building meaningful and impactful experiences. Our mission is to combine innovation with functionality, ensuring that every project we work on exceeds expectations.
+  </p>
+
+  <img src="https://images.unsplash.com/photo-1744578413523-33596836891b?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxmZWF0dXJlZC1waG90b3MtZmVlZHw1fHx8ZW58MHx8fHx8" alt="About Us Image"
+       class="mx-auto w-3/4 !max-w-[900px] aspect-video object-cover rounded-2xl my-14 transition-opacity duration-700 ease-out delay-75">
+
+  <p class="lg:text-xl text-surface-500 dark:text-white/64 text-center mt-6 max-w-4xl mx-auto">
+      Driven by our commitment to excellence, we take pride in crafting user-centric solutions that make a difference. Whether it’s product design, software development, or branding, we approach every challenge with creativity and a problem-solving mindset. Our journey is defined by growth, teamwork, and the pursuit of perfection.
+  </p>
+
+  <div class="flex flex-col gap-28 mt-28">
+      <div *ngFor="let member of teamMembers; let i = index"
+           class="flex flex-col items-center justify-center gap-16"
+           [class]="getFlexDirection(i)"> <div class="w-[20rem] h-[28rem] relative rounded-3xl">
+              <div class="absolute inset-0 z-[1] rounded-[inherit] bg-white/48 dark:bg-white/32 backdrop-blur-2xl -rotate-6 transform-origin-bottom-left scale-90"></div>
+              <div class="absolute inset-0 z-[2] rounded-[inherit] bg-white/48 dark:bg-white/32 backdrop-blur-2xl -rotate-3 transform-origin-bottom-left scale-95"></div>
+              <img [src]="member.imageUrl" [alt]="member.name"
+                   class="relative z-20 rounded-[inherit] w-full h-full object-cover shadow-[0px_10px_10px_-8px_rgba(18,18,23,0.02),0px_2px_2px_-1.5px_rgba(18,18,23,0.02),0px_1px_1px_-0.5px_rgba(18,18,23,0.02),0px_0px_0px_1px_rgba(18,18,23,0.02)] opacity-100 transition-opacity duration-700 ease-out delay-75">
+          </div>
+
+          <div class="max-w-[24rem] lg:max-w-[28rem]">
+              <h2 class="text-4xl lg:text-6xl text-surface-950 dark:text-surface-0 font-semibold">{{ member.name }}</h2>
+              <p class="lg:text-xl text-surface-500 dark:text-white/64 mt-6">{{ member.description }}</p>
+              <ul class="flex items-center gap-2 mt-8">
+                  <li *ngFor="let social of member.socialLinks">
+                      <a [href]="social.url" target="_blank"
+                         class="h-8 w-14 flex items-center justify-center rounded-full bg-white/64 dark:bg-white/12 hover:bg-white dark:hover:bg-surface-950 transition-all">
+                          <i [class]="social.icon + ' text-surface-950 dark:text-surface-0'"></i>
+                      </a>
+                  </li>
+              </ul>
+          </div>
+      </div>
+  </div>
+</div>

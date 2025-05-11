@@ -15,6 +15,7 @@ import { ProductService } from '../../../../core/services/product.service';
 import { CustomerService } from '../../../../core/services/customer.service';
 import { AutopopulateService } from '../../../../core/services/autopopulate.service';
 import { AppMessageService } from '../../../../core/services/message.service';
+import { DividerModule } from 'primeng/divider';
 interface InvoiceItem {
   product: string;
   quantity: number;
@@ -31,6 +32,8 @@ interface Invoice {
   invoiceDate: Date;
   dueDate?: Date;
   seller: string;
+  fullname: string;
+  address: string;
   buyer: string;
   items: InvoiceItem[];
   subTotal: number;
@@ -48,30 +51,30 @@ interface Invoice {
 @Component({
   selector: 'app-gst-invoice',
   standalone: true,
-  imports: [ReactiveFormsModule,TableModule, InputTextModule, SelectModule, ButtonModule, CommonModule, FormsModule, InputNumberModule, CalendarModule, CheckboxModule],
+  imports: [ReactiveFormsModule, TableModule, DividerModule, InputTextModule, SelectModule, ButtonModule, CommonModule, FormsModule, InputNumberModule, CalendarModule, CheckboxModule],
   templateUrl: './gst-invoice.component.html',
   styleUrl: './gst-invoice.component.css'
 })
 export class GstInvoiceComponent implements OnInit, OnChanges {
-public  messageService =inject(AppMessageService)
-public invoiceService=inject(InvoiceService)
-public autoPopulate=inject(AutopopulateService)
-public customerService=inject(CustomerService)
-public sellerService=inject(SellerService)
-public productService=inject(ProductService)
-public invoiceForm: FormGroup;
+  public messageService = inject(AppMessageService)
+  public invoiceService = inject(InvoiceService)
+  public autoPopulate = inject(AutopopulateService)
+  public customerService = inject(CustomerService)
+  public sellerService = inject(SellerService)
+  public productService = inject(ProductService)
+  public invoiceForm: FormGroup;
 
-public  InvoiceObject={
-  customerIDDropdown: [],
-  buyerdetailsdropdown: '',
-  productdrop: [],
-  sellersDrop: [],
-  sellersselec: '',
-  buyerselect: '',
-  selectedproduct: '',
-  invoiceData: '',
-}
-  constructor( private fb: FormBuilder) {
+  public InvoiceObject = {
+    customerIDDropdown: [],
+    buyerdetailsdropdown: '',
+    productdrop: [],
+    sellersDrop: [],
+    sellersselec: '',
+    buyerselect: '',
+    selectedproduct: '',
+    invoiceData: '',
+  }
+  constructor(private fb: FormBuilder) {
     this.invoiceForm = this.fb.group({
       invoiceNumber: [''],
       invoiceDate: [new Date()],
@@ -118,18 +121,18 @@ public  InvoiceObject={
   }
 
   autopopulatedata() {
-    this.autoPopulate.getModuleData('products').subscribe((data:any) => {
+    this.autoPopulate.getModuleData('products').subscribe((data: any) => {
       this.InvoiceObject.productdrop = data;
     });
-    this.autoPopulate.getModuleData('sellers').subscribe((data:any) => {
+    this.autoPopulate.getModuleData('sellers').subscribe((data: any) => {
       this.InvoiceObject.sellersDrop = data;
     });
-    this.autoPopulate.getModuleData('customers').subscribe((data:any) => {
+    this.autoPopulate.getModuleData('customers').subscribe((data: any) => {
       this.InvoiceObject.customerIDDropdown = data;
     });
   }
 
- 
+
   createInvoice() {
     // Generate Invoice Number
     const customerId = this.invoiceForm.get('buyer')?.value;
@@ -153,7 +156,7 @@ public  InvoiceObject={
   }
 
   removeItem(index: number): void {
-    this.itemsFormArray.length>1   ?this.itemsFormArray.removeAt(index):this.messageService.showInfo('info','one data require')
+    this.itemsFormArray.length > 1 ? this.itemsFormArray.removeAt(index) : this.messageService.showInfo('info', 'one data require')
     this.calculateInvoiceTotals();
   }
 

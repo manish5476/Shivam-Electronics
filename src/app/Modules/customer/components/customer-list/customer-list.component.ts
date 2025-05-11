@@ -127,6 +127,7 @@ export class CustomerListComponent implements OnInit {
             email:this.customerFilter.email,
             mobileNumber:this.customerFilter.phone,
             limit:this.customerFilter.limit || 20 ,
+            // fields:'mobileNumber fullName'
         }
         
         this.CustomerService.getAllCustomerData(filterParams).subscribe((res: any) => {

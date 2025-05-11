@@ -1,5 +1,6 @@
-/* @import "tailwindcss"; *//* theme.css */
-/* ... other styles ... */
+
+/* 
+
 
 .max-w-full {
   max-width: 100%;
@@ -68,11 +69,11 @@
 }
 
 .h-8 {
-  height: 2rem; /* Reduced height for input/select */
+  height: 2rem; 
 }
 
 .border-gray-300 {
-  border-color: #d1d5db; /* Tailwind gray-300 equivalent */
+  border-color: #d1d5db; 
 }
 
 .rounded-md {
@@ -89,7 +90,7 @@
 }
 
 .focus-ring {
-  box-shadow: 0 0 0 0.2rem rgba(var(--primary-color-rgb), 0.25); /* Using RGB for opacity */
+  box-shadow: 0 0 0 0.2rem rgba(var(--primary-color-rgb), 0.25); 
 }
 
 .focus-ring-opacity-50 {
@@ -97,15 +98,15 @@
 }
 
 .bg-gray-100 {
-  background-color: #f3f4f6; /* Tailwind gray-100 equivalent */
+  background-color: #f3f4f6; 
 }
 
 .text-gray-900 {
-  color: #1e293b; /* Tailwind gray-900 equivalent */
+  color: #1e293b; 
 }
 
 .hover\:bg-gray-50:hover {
-  background-color: #f9fafb; /* Tailwind gray-50 equivalent on hover */
+  background-color: #f9fafb; 
 }
 
 .transition-colors {
@@ -139,6 +140,6 @@
 }
 
 .fixed-height-container {
-  height: 200px; /* Adjust as needed */
-  overflow-y: auto; /* Optional */
-}
+  height: 200px; 
+  overflow-y: auto; 
+} */
