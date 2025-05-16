@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import { AgGridAngular } from 'ag-grid-angular';
-import { ColDef, GridApi, GridReadyEvent, CellValueChangedEvent,themeQuartz, RowSelectedEvent, CellClickedEvent } from 'ag-grid-community';
+import { ColDef, GridApi, GridReadyEvent, CellValueChangedEvent, themeQuartz, RowSelectedEvent, CellClickedEvent } from 'ag-grid-community';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { SelectModule } from 'primeng/select';
@@ -46,16 +46,42 @@ export class SharedGridComponent implements OnInit, OnChanges {
     floatingFilter: true,
     editable: (params) => this.editingRowId === params.data._id
   };
-  // defaultColDef: ColDef = {
-  //   sortable: true,
-  //   filter: true,
-  //   resizable: true,
-  //   floatingFilter: true,
-  //   editable: (params) => this.editingRowId === params.data._id
-  // };
 
   rowSelection: any = { mode: 'single' };
-  theme = themeQuartz;
+  // theme = themeQuartz;
+  theme = themeQuartz.withParams({
+    backgroundColor: '#EFEEEA', // Light background for grid rows
+    foregroundColor: '#06202B', // Text color
+    headerTextColor: '#FE5D26', // Header text color
+    headerBackgroundColor: '#183B4E', // Header background color
+    oddRowBackgroundColor: '#C7C8CC', // Subtle background for odd rows
+    headerColumnResizeHandleColor: 'rgb(126, 46, 132)', // Color for resize handle
+    borderColor: '#CCCCCC',         // Medium grey for borders
+    // fontFamily: 'Arial, sans-serif', // Example font family
+    // fontSize: '13px',
+    fontFamily: 'Inter, sans-serif', // Or your preferred font stack
+    fontSize: '14px',             // Adjust size as needed
+    // For headers:
+    headerFontFamily: 'Inter, sans-serif', // Often the same as fontFamily
+    headerFontWeight: 'bold',
+   rangeSelectionBorderColor: 'rgb(193, 0, 97)',
+    rangeSelectionBorderStyle: 'dashed',
+    // background color of selection - you can use a semi-transparent color
+    // and it wil overlay on top of the existing cells
+    rangeSelectionBackgroundColor: 'rgb(255, 0, 128, 0.1)',
+    // color used to indicate that data has been copied form the cell range
+    rangeSelectionHighlightColor: 'rgb(60, 188, 0, 0.3)',
+
+      inputBorder: { color: 'orange', style: 'dotted', width: 3 },
+    inputBackgroundColor: 'rgb(255, 209, 123)', // light orange
+    inputPlaceholderTextColor: 'rgb(155, 101, 1)', // darker orange
+    inputIconColor: 'purple', // light orange
+    
+    selectedRowBackgroundColor: '#73A9AD',
+    // Add other parameters as needed for further customization
+    // rowHoverColor: '...',
+    // selectedRowBackgroundColor: '...',
+  });
 
   getRowId = (params: { data: any }) => params.data._id;
 
@@ -116,14 +142,14 @@ export class SharedGridComponent implements OnInit, OnChanges {
     this.gridApi.refreshCells({ force: true }); // Refresh to update editable state
     this.gridApi.startEditingCell({ rowIndex: this.getRowIndex(rowData), colKey: this.columnDefs[0].field || 'email' });
   }
-  
+
   saveRow(rowData: any) {
     this.gridApi.stopEditing();
     this.editingRowId = null;
     this.gridApi.refreshCells({ force: true });
     this.dataChanged.emit({ type: 'save', data: rowData });
   }
-  
+
   cancelEditingRow(rowData: any) {
     const rowIndex = this.getRowIndex(rowData);
     if (rowIndex >= 0) {
@@ -134,7 +160,7 @@ export class SharedGridComponent implements OnInit, OnChanges {
       this.gridApi.refreshCells({ force: true });
     }
   }
-  
+
   deleteRow(rowData: any) {
     this.rowData = this.rowData.filter(row => row._id !== rowData._id);
     this.gridApi.applyTransaction({ remove: [rowData] });
