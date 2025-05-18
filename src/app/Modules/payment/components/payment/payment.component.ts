@@ -14,7 +14,7 @@ import { Card } from 'primeng/card';
 @Component({
   selector: 'app-payment',
   standalone: true,
-  imports: [FormsModule,Card, SelectModule, SplitterModule, CommonModule],
+  imports: [FormsModule, SelectModule, SplitterModule, CommonModule],
   templateUrl: './payment.component.html',
   styleUrl: './payment.component.css'
 })

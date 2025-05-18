@@ -1,204 +1,331 @@
-// import { Component } from '@angular/core';
+// import { Component, Type } from '@angular/core';
+// import { CdkDrag } from '@angular/cdk/drag-drop';
+// import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
+// import { CommonModule } from '@angular/common';
+// import { DialogModule } from 'primeng/dialog';
+// import { ButtonModule } from 'primeng/button';
+// import { ToolbarComponent } from "../../../shared/Components/toolbar/toolbar.component";
+
 
 // @Component({
 //   selector: 'app-admin-dashboard',
-//   imports: [],
+//   standalone: true,
+//   imports: [ CommonModule, DialogModule, ButtonModule, ToolbarComponent],//ToolbarComponent
 //   templateUrl: './admin-dashboard.component.html',
-//   styleUrl: './admin-dashboard.component.css'
+//   styleUrls: ['./admin-dashboard.component.css'],
+//   providers: [DialogService],
 // })
-// export class AdminDashboardComponent {
+// export class AdminDashboardsComponent {
+//   components: { component: Type<any>; label: string }[] = [
+//   ];
+//   dialogRefs: DynamicDialogRef[] = [];
 
+//   constructor(private dialogService: DialogService) {}
+
+//   openDialog(component: Type<any>, event: MouseEvent) {
+//     event.stopPropagation(); // Prevent drag from triggering when button is clicked
+//     const ref = this.dialogService.open(component, {
+//       header: component.name,
+//       width: '90%',
+//       height:'80%',
+//       closable:true,
+//       draggable: true,
+//       contentStyle: { overflow: 'auto' },
+//     });
+//     this.dialogRefs.push(ref);
+
+//     ref.onClose.subscribe(() => {
+//       this.dialogRefs = this.dialogRefs.filter((r) => r !== ref);
+//     });
+//   }
 // }
-
-import { Component, Type } from '@angular/core';
-import { CdkDrag } from '@angular/cdk/drag-drop';
-import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Observable, Subject } from 'rxjs';
+import { takeUntil, catchError } from 'rxjs/operators';
+import {
+  DashboardService,
+  ConsolidatedSummaryData,
+  SalesTrendData,
+  ProductInsightData,
+  CustomerInsightData,
+  ReviewData,
+  PaymentMethodData,
+  InventoryValueData,
+  ApiResponse // Import ApiResponse
+} from '../../../core/services/dashboard.service'; // Adjust path as needed
+import { HttpErrorResponse } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
-import { DialogModule } from 'primeng/dialog';
-import { ButtonModule } from 'primeng/button';
-import { ToolbarComponent } from "../../../shared/Components/toolbar/toolbar.component";
+import { FormsModule } from '@angular/forms';
+
+// For charts, you might install and import a library like ng2-charts
+// import { ChartConfiguration, ChartType } from 'chart.js';
+// import DataLabelsPlugin from 'chartjs-plugin-datalabels';
 
 
 @Component({
   selector: 'app-admin-dashboard',
   standalone: true,
+  imports: [CommonModule,FormsModule],
   templateUrl: './admin-dashboard.component.html',
-  styleUrls: ['./admin-dashboard.component.css'],
-  imports: [ CommonModule, DialogModule, ButtonModule, ToolbarComponent],//ToolbarComponent
-  providers: [DialogService],
+  styleUrls: ['./admin-dashboard.component.css']
 })
-export class AdminDashboardsComponent {
-  components: { component: Type<any>; label: string }[] = [
-  ];
-  dialogRefs: DynamicDialogRef[] = [];
+export class DashboardComponent implements OnInit, OnDestroy {
+  private ngUnsubscribe = new Subject<void>();
 
-  constructor(private dialogService: DialogService) {}
+  // Data properties
+  dashboardSummary: ConsolidatedSummaryData | null = null;
+  salesTrends: SalesTrendData[] = [];
+  topSellingProducts: ProductInsightData[] = [];
+  lowStockProducts: ProductInsightData[] = [];
+  outOfStockProducts: ProductInsightData[] = [];
+  customersWithDues: CustomerInsightData[] = [];
+  topCustomers: CustomerInsightData[] = [];
+  newCustomersCountData: number | null = null;
+  totalPaymentsReceivedData: number | null = null;
+  paymentsByMethod: PaymentMethodData[] = [];
+  failedPaymentsCountData: number | null = null;
+  overallAverageRatingData: { overallAverage: number, totalReviewsConsidered: number } | null = null;
+  recentReviews: ReviewData[] = [];
+  totalInventoryValueData: InventoryValueData | null = null;
 
-  openDialog(component: Type<any>, event: MouseEvent) {
-    event.stopPropagation(); // Prevent drag from triggering when button is clicked
-    const ref = this.dialogService.open(component, {
-      header: component.name,
-      width: '90%',
-      height:'80%',
-      closable:true,
-      draggable: true,
-      contentStyle: { overflow: 'auto' },
-    });
-    this.dialogRefs.push(ref);
 
-    ref.onClose.subscribe(() => {
-      this.dialogRefs = this.dialogRefs.filter((r) => r !== ref);
-    });
+  // Loading and error states
+  isLoadingSummary = false;
+  isLoadingSalesTrends = false;
+  // ... add more loading states for other sections
+
+  errorMessage: string | null = null;
+
+  // Filters
+  selectedPeriod: string = 'month'; // Default period
+  customStartDate: string = ''; // YYYY-MM-DD format from date input
+  customEndDate: string = '';   // YYYY-MM-DD format from date input
+
+  // Example Chart Configuration (if using ng2-charts)
+  // public salesTrendsChartType: ChartType = 'line';
+  // public salesTrendsChartData: ChartConfiguration['data'] = {
+  //   labels: [],
+  //   datasets: [
+  //     { data: [], label: 'Daily Revenue', yAxisID: 'yRevenue' },
+  //     { data: [], label: 'Daily Sales Count', yAxisID: 'ySalesCount' }
+  //   ]
+  // };
+  // public salesTrendsChartOptions: ChartConfiguration['options'] = {
+  //   responsive: true,
+  //   maintainAspectRatio: false,
+  //   scales: {
+  //     x: {},
+  //     yRevenue: { position: 'left', grid: { drawOnChartArea: false } },
+  //     ySalesCount: { position: 'right', grid: { drawOnChartArea: true } }
+  //   },
+  //   plugins: {
+  //    // datalabels: { anchor: 'end', align: 'end' }, // Example for chartjs-plugin-datalabels
+  //     legend: { display: true }
+  //   }
+  // };
+
+
+  constructor(private dashboardService: DashboardService) { }
+
+  ngOnInit(): void {
+    this.loadAllDashboardData();
+  }
+
+  loadAllDashboardData(): void {
+    this.errorMessage = null; // Clear previous errors
+    const dateParams = this.getDateParams();
+
+    this.fetchDashboardSummary(dateParams);
+    this.fetchSalesTrends({ days: 30 }); // Default to 30 days, or use dateParams for period-based
+    this.fetchTopSellingProducts({ ...dateParams, limit: 5, sortBy: 'revenue' });
+    this.fetchLowStockProducts({ threshold: 10, limit: 5 });
+    this.fetchOutOfStockProducts({ limit: 5 });
+    this.fetchCustomersWithDues({ limit: 5 });
+    this.fetchTopCustomersByPurchase({ ...dateParams, limit: 5 });
+    this.fetchNewCustomersCount(dateParams);
+    this.fetchTotalPaymentsReceived(dateParams);
+    this.fetchPaymentsByMethod(dateParams);
+    this.fetchFailedPaymentsCount(dateParams);
+    this.fetchOverallAverageRating();
+    this.fetchRecentReviews({ limit: 5 });
+    this.fetchTotalInventoryValue();
+  }
+
+  private getDateParams(): { period?: string, startDate?: string, endDate?: string } {
+    if (this.customStartDate && this.customEndDate) {
+      return { startDate: this.customStartDate, endDate: this.customEndDate };
+    }
+    return { period: this.selectedPeriod };
+  }
+
+  // --- Fetch Methods ---
+  fetchDashboardSummary(params: any): void {
+    this.isLoadingSummary = true;
+    this.dashboardService.getDashboardSummary(params)
+      .pipe(takeUntil(this.ngUnsubscribe), catchError(this.handleError<ApiResponse<ConsolidatedSummaryData>>()))
+      .subscribe(response => {
+        // if (response) {
+         if (response) {
+          this.dashboardSummary = response.data;
+        }
+        this.isLoadingSummary = false;
+      });
+  }
+
+  fetchSalesTrends(params: { days?: number }): void {
+    this.isLoadingSalesTrends = true;
+    this.dashboardService.getSalesTrends(params)
+      .pipe(takeUntil(this.ngUnsubscribe), catchError(this.handleError<ApiResponse<SalesTrendData[]>>()))
+      .subscribe(response => {
+        // if (response) {
+         if (response) {
+          this.salesTrends = response.data;
+          // this.updateSalesTrendsChart();
+        }
+        this.isLoadingSalesTrends = false;
+      });
+  }
+
+  // updateSalesTrendsChart(): void {
+  //   if (!this.salesTrendsChartData.labels || !this.salesTrendsChartData.datasets) return;
+  //   this.salesTrendsChartData.labels = this.salesTrends.map(t => t._id);
+  //   this.salesTrendsChartData.datasets[0].data = this.salesTrends.map(t => t.dailyRevenue);
+  //   this.salesTrendsChartData.datasets[1].data = this.salesTrends.map(t => t.dailySalesCount);
+  //   // If using ng2-charts, you might need to trigger an update if the chart object itself doesn't change
+  //   // this.salesTrendsChartData = { ...this.salesTrendsChartData };
+  // }
+
+  fetchTopSellingProducts(params: any): void {
+    this.dashboardService.getTopSellingProducts(params)
+      .pipe(takeUntil(this.ngUnsubscribe), catchError(this.handleError<ApiResponse<ProductInsightData[]>>()))
+      .subscribe(response => {
+        if (response) this.topSellingProducts = response.data;
+      });
+  }
+
+  fetchLowStockProducts(params: any): void {
+    this.dashboardService.getLowStockProducts(params)
+      .pipe(takeUntil(this.ngUnsubscribe), catchError(this.handleError<ApiResponse<ProductInsightData[]>>()))
+      .subscribe(response => {
+        if (response) this.lowStockProducts = response.data;
+      });
+  }
+  fetchOutOfStockProducts(params: any): void {
+    this.dashboardService.getOutOfStockProducts(params)
+      .pipe(takeUntil(this.ngUnsubscribe), catchError(this.handleError<ApiResponse<ProductInsightData[]>>()))
+      .subscribe(response => {
+        if (response) this.outOfStockProducts = response.data;
+      });
+  }
+
+  fetchCustomersWithDues(params: any): void {
+    this.dashboardService.getCustomersWithOutstandingPayments(params)
+      .pipe(takeUntil(this.ngUnsubscribe), catchError(this.handleError<ApiResponse<CustomerInsightData[]>>()))
+      .subscribe(response => {
+        if (response) this.customersWithDues = response.data;
+      });
+  }
+
+  fetchTopCustomersByPurchase(params: any): void {
+    this.dashboardService.getTopCustomersByPurchase(params)
+      .pipe(takeUntil(this.ngUnsubscribe), catchError(this.handleError<ApiResponse<CustomerInsightData[]>>()))
+      .subscribe(response => {
+        if (response) this.topCustomers = response.data;
+      });
+  }
+
+  fetchNewCustomersCount(params: any): void {
+    this.dashboardService.getNewCustomersCount(params)
+      .pipe(takeUntil(this.ngUnsubscribe), catchError(this.handleError<ApiResponse<{ newCustomersCount: number }>>()))
+      .subscribe(response => {
+        if (response) this.newCustomersCountData = response.data.newCustomersCount;
+      });
+  }
+
+  fetchTotalPaymentsReceived(params: any): void {
+    this.dashboardService.getTotalPaymentsReceived(params)
+      .pipe(takeUntil(this.ngUnsubscribe), catchError(this.handleError<ApiResponse<{ totalPaymentsReceived: number }>>()))
+      .subscribe(response => {
+        if (response) this.totalPaymentsReceivedData = response.data.totalPaymentsReceived;
+      });
+  }
+
+  fetchPaymentsByMethod(params: any): void {
+    this.dashboardService.getPaymentsByMethod(params)
+      .pipe(takeUntil(this.ngUnsubscribe), catchError(this.handleError<ApiResponse<PaymentMethodData[]>>()))
+      .subscribe(response => {
+        if (response) this.paymentsByMethod = response.data;
+      });
+  }
+
+  fetchFailedPaymentsCount(params: any): void {
+    this.dashboardService.getFailedPaymentsCount(params)
+      .pipe(takeUntil(this.ngUnsubscribe), catchError(this.handleError<ApiResponse<{ failedPaymentsCount: number }>>()))
+      .subscribe(response => {
+        if (response) this.failedPaymentsCountData = response.data.failedPaymentsCount;
+      });
+  }
+
+  fetchOverallAverageRating(): void {
+    this.dashboardService.getOverallAverageRating()
+      .pipe(takeUntil(this.ngUnsubscribe), catchError(this.handleError<ApiResponse<{ overallAverage: number, totalReviewsConsidered: number }>>()))
+      .subscribe(response => {
+        if (response) this.overallAverageRatingData = response.data;
+      });
+  }
+
+  fetchRecentReviews(params: any): void {
+    this.dashboardService.getRecentReviews(params)
+      .pipe(takeUntil(this.ngUnsubscribe), catchError(this.handleError<ApiResponse<ReviewData[]>>()))
+      .subscribe(response => {
+        if (response) this.recentReviews = response.data;
+      });
+  }
+
+  fetchTotalInventoryValue(): void {
+    this.dashboardService.getTotalInventoryValue()
+      .pipe(takeUntil(this.ngUnsubscribe), catchError(this.handleError<ApiResponse<InventoryValueData>>()))
+      .subscribe(response => {
+        if (response) this.totalInventoryValueData = response.data;
+      });
+  }
+
+
+  // --- Event Handlers ---
+  onPeriodChange(newPeriod: string): void {
+    this.selectedPeriod = newPeriod;
+    this.customStartDate = ''; // Clear custom dates if predefined period is selected
+    this.customEndDate = '';
+    this.loadAllDashboardData();
+  }
+
+  applyCustomDateRange(): void {
+    if (this.customStartDate && this.customEndDate) {
+      // Basic validation: endDate should not be before startDate
+      if (new Date(this.customEndDate) < new Date(this.customStartDate)) {
+        this.errorMessage = "End date cannot be before start date.";
+        return;
+      }
+      this.selectedPeriod = 'custom'; // Indicate custom range is active
+      this.loadAllDashboardData();
+    } else {
+      this.errorMessage = "Please select both start and end dates for a custom range.";
+    }
+  }
+
+  // --- Utility ---
+  private handleError<T>() {
+    return (error: HttpErrorResponse): Observable<T | undefined> => {
+      console.error('API Error:', error);
+      this.errorMessage = `Error fetching data: ${error.error?.message || error.message || 'Server error'}`;
+      // Optionally, return an empty/default observable of the expected type, or rethrow
+      // return of(undefined as T); // This will make the subscriber complete without emitting data
+      throw error; // Or rethrow to be handled by a global error handler if you have one
+    };
+  }
+
+  ngOnDestroy(): void {
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
   }
 }
-
-
-
-// import { Component } from '@angular/core';
-// import { CommonModule } from '@angular/common';
-// import { DndModule, DndDropEvent } from 'ngx-drag-drop';
-// import { animate, style, transition, trigger } from '@angular/animations';
-// import { UserStatsComponent } from './user-stats/user-stats.component';
-// import { CustomerListComponent } from './customer-list/customer-list.component';
-// import { ProductOverviewComponent } from './product-overview/product-overview.component';
-// import { SalesChartComponent } from './sales-chart/sales-chart.component';
-// import { OrderStatsComponent } from './order-stats/order-stats.component';
-// import { InventoryComponent } from './inventory/inventory.component';
-// import { RevenueComponent } from './revenue/revenue.component';
-// import { TasksComponent } from './tasks/tasks.component';
-// import { AnalyticsComponent } from './analytics/analytics.component';
-// import { NotificationsComponent } from './notifications/notifications.component';
-
-// // Dummy Data Interfaces
-// interface User { id: number; name: string; email: string; role: string; }
-// interface Customer { id: number; name: string; email: string; orders: number; }
-// interface Product { id: number; name: string; price: number; stock: number; }
-// interface Sale { id: number; date: string; amount: number; status: string; }
-
-// const dummyData = {
-//   users: [
-//     { id: 1, name: 'Admin X', email: 'admin@x.com', role: 'admin' },
-//     { id: 2, name: 'Staff Y', email: 'staff@y.com', role: 'staff' },
-//   ],
-//   customers: [
-//     { id: 1, name: 'John Doe', email: 'john@example.com', orders: 5 },
-//     { id: 2, name: 'Jane Smith', email: 'jane@example.com', orders: 3 },
-//   ],
-//   products: [
-//     { id: 1, name: 'Quantum Widget', price: 99.99, stock: 50 },
-//     { id: 2, name: 'Gizmo Flux', price: 149.99, stock: 20 },
-//   ],
-//   sales: [
-//     { id: 1, date: '2025-02-01', amount: 499.95, status: 'completed' },
-//     { id: 2, date: '2025-02-02', amount: 299.97, status: 'pending' },
-//   ],
-// };
-
-// interface DashboardComponent {
-//   id: string;
-//   type: string; // Add type property
-//   data: any;
-//   effectAllowed: 'move';
-// }
-
-// @Component({
-//   selector: 'app-admin-dashboard',
-//   standalone: true,
-//   imports: [
-//     CommonModule,
-//     DndModule,
-//     UserStatsComponent,
-//     CustomerListComponent,
-//     ProductOverviewComponent,
-//     SalesChartComponent,
-//     OrderStatsComponent,
-//     InventoryComponent,
-//     RevenueComponent,
-//     TasksComponent,
-//     AnalyticsComponent,
-//     NotificationsComponent,
-//   ],
-//   templateUrl: './admin-dashboard.component.html',
-//   styleUrls: ['./admin-dashboard.component.css'],
-//   animations: [
-//     trigger('fadeIn', [
-//       transition(':enter', [
-//         style({ opacity: 0, transform: 'scale(0.9)' }),
-//         animate('300ms ease-out', style({ opacity: 1, transform: 'scale(1)' })),
-//       ]),
-//     ]),
-//     trigger('slideIn', [
-//       transition(':enter', [
-//         style({ opacity: 0, transform: 'translateY(20px)' }),
-//         animate('300ms ease-out', style({ opacity: 1, transform: 'translateY(0)' })),
-//       ]),
-//     ]),
-//   ],
-// })
-// export class AdminDashboardComponent {
-//   components: DashboardComponent[] = [
-//     { id: 'user-stats-1', type: 'user-stats', data: dummyData.users, effectAllowed: 'move' as const }, // Added type
-//     { id: 'customer-list-1', type: 'customer-list', data: dummyData.customers, effectAllowed: 'move' as const }, // Added type
-//     { id: 'product-overview-1', type: 'product-overview', data: dummyData.products, effectAllowed: 'move' as const }, // Added type
-//     { id: 'sales-chart-1', type: 'sales-chart', data: dummyData.sales, effectAllowed: 'move' as const }, // Added type
-//     { id: 'order-stats-1', type: 'order-stats', data: [], effectAllowed: 'move' as const }, // Added type
-//     { id: 'inventory-1', type: 'inventory', data: [], effectAllowed: 'move' as const }, // Added type
-//     { id: 'revenue-1', type: 'revenue', data: [], effectAllowed: 'move' as const }, // Added type
-//     { id: 'tasks-1', type: 'tasks', data: [], effectAllowed: 'move' as const }, // Added type
-//     { id: 'analytics-1', type: 'analytics', data: [], effectAllowed: 'move' as const }, // Added type
-//     { id: 'notifications-1', type: 'notifications', data: [], effectAllowed: 'move' as const }, // Added type
-//   ];
-
-//   componentCounter = this.components.length + 1;
-
-//   onDrop(event: DndDropEvent, targetId: string) {
-//     
-
-//     const draggedIndex = this.components.findIndex(c => c.id === event.data.id);
-//     const targetIndex = this.components.findIndex(c => c.id === targetId);
-//     if (draggedIndex !== -1 && targetIndex !== -1) {
-//       const [draggedItem] = this.components.splice(draggedIndex, 1);
-//       this.components.splice(targetIndex, 0, draggedItem);
-//     }
-//   }
-
-//   onDragStart(event: DragEvent, id: string) {
-//     
-
-//   }
-
-//   onDragEnd(event: DragEvent, id: string) {
-//     
-
-//   }
-
-//   addComponent(componentType: string) { // Accept componentType argument
-//     const newComponentId = `${componentType}-${this.componentCounter++}`;
-//     let newData;
-
-//     switch (componentType) {
-//       case 'user-stats':
-//         newData = dummyData.users;
-//         break;
-//       case 'customer-list':
-//         newData = dummyData.customers;
-//         break;
-//       case 'product-overview':
-//         newData = dummyData.products;
-//         break;
-//       case 'sales-chart':
-//         newData = dummyData.sales;
-//         break;
-//       default:
-//         newData = []; // Default data if needed
-//         break;
-//     }
-
-//     this.components.push({
-//       id: newComponentId,
-//       type: componentType, // Set the type
-//       data: Date.now(),
-//       effectAllowed: 'move' as const
-//     });
-//   }
-// }
