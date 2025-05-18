@@ -10,6 +10,8 @@ import { TabViewModule } from 'primeng/tabview';
 import { CardModule } from 'primeng/card';
 import { CheckboxModule } from 'primeng/checkbox';
 import { ToastModule } from 'primeng/toast';
+import { FieldsetModule } from 'primeng/fieldset';
+
 import { TableRowCollapseEvent, TableRowExpandEvent } from 'primeng/table';
 import { FormsModule } from '@angular/forms';
 import { DialogModule } from 'primeng/dialog';
@@ -21,9 +23,10 @@ import { AvatarModule } from 'primeng/avatar';
 import { CustomerService } from '../../../../core/services/customer.service';
 import { LoadingService } from '../../../../core/services/loading.service';
 import { AutopopulateService } from '../../../../core/services/autopopulate.service';
+// import { Tooltip } from 'primeng/tooltip';
 @Component({
   selector: 'app-customer-detailed-list',
-  imports: [TableModule,TabViewModule, CheckboxModule, AvatarModule, AccordionModule, SelectModule, PanelModule, DialogModule, FormsModule, Tag, ToastModule, CardModule, ButtonModule, CommonModule],
+  imports: [TableModule,TabViewModule, CheckboxModule,FieldsetModule, AvatarModule, AccordionModule, SelectModule, PanelModule, DialogModule, FormsModule, Tag, ToastModule, CardModule, ButtonModule, CommonModule],
   templateUrl: './customer-detailed-list.component.html',
   styleUrl: './customer-detailed-list.component.css'
 })

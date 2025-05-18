@@ -1,10 +1,9 @@
-
+<!-- 
 <div class="flex flex-wrap w-80%">
   <div class="w-full  mx-auto">
     <div header="Create Seller" styleClass="form-card-content" class="w-full">
       <form [formGroup]="sellerForm" (ngSubmit)="saveSeller()">
         <div class="flex w-full">
-          <!-- Left: Form Fields -->
           <div class="flex-1 grid grid-cols-2 gap-4">
             <div class="form-group">
               <label for="name" class="form-label text-bold">Name</label>
@@ -33,7 +32,6 @@
                 class="p-error block">PAN is
                 required and should be valid format</small>
             </div>
-            <!-- GSTIN and Contact Number in a Single Row -->
             <div class="form-group">
               <label for="gstin" class="form-label text-bold">GSTIN</label>
               <input id="gstin" type="text" pInputText class="form-input w-full" formControlName="gstin" required />
@@ -50,9 +48,7 @@
           </div>
         </div>
 
-        <!-- Second Row: Address and Bank Details -->
         <div class="flex w-full mt-4">
-          <!-- Address Details -->
           <div class="flex-1 mr-2">
             <h2 class="text-lg font-bold mb-2">Address Details</h2>
             <div formGroupName="address">
@@ -85,7 +81,6 @@
               </div>
             </div>
           </div>
-          <!-- Bank Details -->
           <div class="flex-1 ml-2">
             <h2 class="text-lg font-bold mb-2">Bank Details</h2>
             <div formGroupName="bankDetails">
@@ -135,11 +130,142 @@
           </div>
         </div>
 
-        <!-- Save Button -->
         <div class="mt-4">
           <button pButton label="Create Seller" class="save-button w-full" type="submit"></button>
         </div>
       </form>
     </div>
   </div>
-</div>
+</div> -->
+          <!-- Bank Details -->
+    <div class="flex flex-wrap md:-m-2 -m-1 w-full">
+      <div class="w-full p-1 md:p-2">
+        <div class="bg-gray-300 rounded-lg p-6 shadow-lg border border-gray-200">
+          <h2 class="text-2xl font-bold text-gray-800 mb-6 border-b border-gray-200 pb-3">Create Seller</h2>
+          <form [formGroup]="sellerForm" (ngSubmit)="saveSeller()">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-2 mb-6">
+              <div class="form-group">
+                <label for="name" class="block text-sm font-medium text-gray-700 mb-1">Name <span class="text-red-500">*</span></label>
+                <input id="name" type="text" pInputText class="p-inputtext p-component w-full border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm" formControlName="name" required />
+                <small *ngIf="sellerForm.controls['name'].invalid && sellerForm.controls['name'].dirty"
+                       class="text-red-500 text-xs mt-1 block">Name is required</small>
+              </div>
+              <div class="form-group">
+                <label for="shopName" class="block text-sm font-medium text-gray-700 mb-1">Shop Name <span class="text-red-500">*</span></label>
+                <input id="shopName" type="text" pInputText class="p-inputtext p-component w-full border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm" formControlName="shopName" required />
+                <small *ngIf="sellerForm.controls['shopName'].invalid && sellerForm.controls['shopName'].dirty"
+                       class="text-red-500 text-xs mt-1 block">Shop Name is required</small>
+              </div>
+              <div class="form-group">
+                <label for="status" class="block text-sm font-medium text-gray-700 mb-1">Status <span class="text-red-500">*</span></label>
+                <p-select id="status" [options]="statuses" formControlName="status" placeholder="Select Status"
+                            styleClass="w-full" [required]="true"
+                            class="p-inputwrapper-filled w-full text-gray-800 bg-gray-50 border border-gray-300 rounded-md focus-within:ring-2 focus-within:ring-blue-500 focus-within:border-blue-500">
+                </p-select>
+                <small *ngIf="sellerForm.controls['status'].invalid && sellerForm.controls['status'].dirty"
+                       class="text-red-500 text-xs mt-1 block">Status is required</small>
+              </div>
+               <div class="form-group">
+                <label for="contactNumber" class="block text-sm font-medium text-gray-700 mb-1">Contact Number <span class="text-red-500">*</span></label>
+                <input id="contactNumber" type="text" pInputText class="p-inputtext p-component w-full border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm" formControlName="contactNumber" required />
+                <small *ngIf="sellerForm.controls['contactNumber'].invalid && sellerForm.controls['contactNumber'].dirty"
+                       class="text-red-500 text-xs mt-1 block">Contact Number is required and should be valid format</small>
+              </div>
+            </div>
+
+            <div class="bg-gray-50 p-5 rounded-lg border border-gray-200 mb-6" formGroupName="address">
+              <h3 class="text-lg font-semibold text-gray-800 mb-4 border-b border-gray-200 pb-2">Address Details</h3>
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
+                 <div class="form-group">
+                  <label for="street" class="block text-sm font-medium text-gray-700 mb-1">Street <span class="text-red-500">*</span></label>
+                  <input id="street" type="text" pInputText class="p-inputtext p-component w-full border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm" formControlName="street" required />
+                  <small *ngIf="sellerForm.get('address.street')?.invalid && sellerForm.get('address.street')?.dirty"
+                         class="text-red-500 text-xs mt-1 block">Street is required</small>
+                </div>
+                <div class="form-group">
+                  <label for="city" class="block text-sm font-medium text-gray-700 mb-1">City <span class="text-red-500">*</span></label>
+                  <input id="city" type="text" pInputText class="p-inputtext p-component w-full border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm" formControlName="city" required />
+                  <small *ngIf="sellerForm.get('address.city')?.invalid && sellerForm.get('address.city')?.dirty"
+                         class="text-red-500 text-xs mt-1 block">City is required</small>
+                </div>
+                <div class="form-group">
+                  <label for="state" class="block text-sm font-medium text-gray-700 mb-1">State <span class="text-red-500">*</span></label>
+                  <input id="state" type="text" pInputText class="p-inputtext p-component w-full border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm" formControlName="state" required />
+                  <small *ngIf="sellerForm.get('address.state')?.invalid && sellerForm.get('address.state')?.dirty"
+                         class="text-red-500 text-xs mt-1 block">State is required</small>
+                </div>
+                <div class="form-group">
+                  <label for="pincode" class="block text-sm font-medium text-gray-700 mb-1">Pincode <span class="text-red-500">*</span></label>
+                  <input id="pincode" type="text" pInputText class="p-inputtext p-component w-full border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm" formControlName="pincode" required />
+                  <small *ngIf="sellerForm.get('address.pincode')?.invalid && sellerForm.get('address.pincode')?.dirty"
+                         class="text-red-500 text-xs mt-1 block">Pincode is required and should be 6 digits</small>
+                </div>
+              </div>
+            </div>
+
+            <div class="bg-gray-50 p-5 rounded-lg border border-gray-200 mb-6">
+               <h3 class="text-lg font-semibold text-gray-800 mb-4 border-b border-gray-200 pb-2">Financial Information</h3>
+               <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
+                 <div class="form-group">
+                  <label for="pan" class="block text-sm font-medium text-gray-700 mb-1">PAN <span class="text-red-500">*</span></label>
+                  <input id="pan" type="text" pInputText class="p-inputtext p-component w-full border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm" formControlName="pan" required />
+                  <small *ngIf="sellerForm.controls['pan'].invalid && sellerForm.controls['pan'].dirty"
+                         class="text-red-500 text-xs mt-1 block">PAN is required and should be valid format</small>
+                </div>
+                <div class="form-group">
+                  <label for="gstin" class="block text-sm font-medium text-gray-700 mb-1">GSTIN <span class="text-red-500">*</span></label>
+                  <input id="gstin" type="text" pInputText class="p-inputtext p-component w-full border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm" formControlName="gstin" required />
+                  <small *ngIf="sellerForm.controls['gstin'].invalid && sellerForm.controls['gstin'].dirty"
+                         class="text-red-500 text-xs mt-1 block">GSTIN is required and should be valid format</small>
+                </div>
+               </div>
+            </div>
+
+
+            <div class="bg-gray-50 p-5 rounded-lg border border-gray-200 mb-6" formGroupName="bankDetails">
+              <h3 class="text-lg font-semibold text-gray-800 mb-4 border-b border-gray-200 pb-2">Bank Details</h3>
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
+                <div class="form-group">
+                  <label for="accountHolderName" class="block text-sm font-medium text-gray-700 mb-1">Account Holder Name <span class="text-red-500">*</span></label>
+                  <input id="accountHolderName" type="text" pInputText class="p-inputtext p-component w-full border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                         formControlName="accountHolderName" required />
+                  <small *ngIf="sellerForm.get('bankDetails.accountHolderName')?.invalid && sellerForm.get('bankDetails.accountHolderName')?.dirty"
+                         class="text-red-500 text-xs mt-1 block">Account Holder Name is required</small>
+                </div>
+                <div class="form-group">
+                  <label for="accountNumber" class="block text-sm font-medium text-gray-700 mb-1">Account Number <span class="text-red-500">*</span></label>
+                  <input id="accountNumber" type="text" pInputText class="p-inputtext p-component w-full border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                         formControlName="accountNumber" required />
+                  <small *ngIf="sellerForm.get('bankDetails.accountNumber')?.invalid && sellerForm.get('bankDetails.accountNumber')?.dirty"
+                         class="text-red-500 text-xs mt-1 block">Account Number is required and should be valid format</small>
+                </div>
+                <div class="form-group">
+                  <label for="ifscCode" class="block text-sm font-medium text-gray-700 mb-1">IFSC Code <span class="text-red-500">*</span></label>
+                  <input id="ifscCode" type="text" pInputText class="p-inputtext p-component w-full border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm" formControlName="ifscCode" required />
+                  <small *ngIf="sellerForm.get('bankDetails.ifscCode')?.invalid && sellerForm.get('bankDetails.ifscCode')?.dirty"
+                         class="text-red-500 text-xs mt-1 block">IFSC Code is required and should be valid format</small>
+                </div>
+                <div class="form-group">
+                  <label for="bankName" class="block text-sm font-medium text-gray-700 mb-1">Bank Name <span class="text-red-500">*</span></label>
+                  <input id="bankName" type="text" pInputText class="p-inputtext p-component w-full border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm" formControlName="bankName" required />
+                  <small *ngIf="sellerForm.get('bankDetails.bankName')?.invalid && sellerForm.get('bankDetails.bankName')?.dirty"
+                         class="text-red-500 text-xs mt-1 block">Bank Name is required</small>
+                </div>
+                 <div class="form-group">
+                  <label for="branch" class="block text-sm font-medium text-gray-700 mb-1">Branch <span class="text-red-500">*</span></label>
+                  <input id="branch" type="text" pInputText class="p-inputtext p-component w-full border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm" formControlName="branch" required />
+                  <small *ngIf="sellerForm.get('bankDetails.branch')?.invalid && sellerForm.get('bankDetails.branch')?.dirty"
+                         class="text-red-500 text-xs mt-1 block">Branch is required</small>
+                </div>
+              </div>
+            </div>
+
+            <div class="mt-6 flex justify-end">
+              <button pButton label="Create Seller" type="submit"
+                      class="p-button p-component bg-green-600 text-white hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500">
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+       <p-toast></p-toast> </div>

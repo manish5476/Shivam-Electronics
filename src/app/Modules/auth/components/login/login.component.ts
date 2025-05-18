@@ -29,7 +29,7 @@ export class LoginComponent implements OnInit {
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(6)]],
       // Add a form control for the 'Remember me' checkbox if you want to track it
-      rememberMe: [false] // Default value is false
+      // rememberMe: [false] // Default value is false
     });
   }
 

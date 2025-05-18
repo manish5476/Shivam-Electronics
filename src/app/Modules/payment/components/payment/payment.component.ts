@@ -1,119 +1,4 @@
-// import { Component, OnInit } from '@angular/core';
-// import { HttpClient } from '@angular/common/http';
-// import { CommonModule } from '@angular/common';
-// import { FormsModule } from '@angular/forms';
-// import { SplitterModule } from 'primeng/splitter';
-// import { SelectModule } from 'primeng/select';
-// import { PaymentService } from '../../../../core/services/payment.service';
-// import { CustomerService } from '../../../../core/services/customer.service';
-// import { AutopopulateService } from '../../../../core/services/autopopulate.service';
 
-// @Component({
-//   selector: 'app-payment',
-//   standalone: true,
-//   imports: [FormsModule, SelectModule, SplitterModule, CommonModule],
-//   templateUrl: './payment.component.html',
-//   styleUrl: './payment.component.css'
-// })
-// export class PaymentComponent implements OnInit {
-//   // Dropdown to switch views (if needed later)
-//   selectedOption: string = '';
-//   dropdownOptions = [
-//     { label: 'View Users', value: 'view_users' },
-//     { label: 'View Payments', value: 'view_payments' },
-//     { label: 'Settings', value: 'settings' }
-//   ];
-
-//   // Customer dropdown
-//   customerId: any = null;
-//   customerIDDropdown: any[] = [];
-
-//   // Customer fetched after selection
-//   customer: any = null;
-
-//   // Payment form values
-//   paymentData = {
-//     amount: 0,
-//     paymentMethod: 'credit_card',
-//     status: 'pending',
-//     transactionId: '',
-//     createdAt: new Date().toISOString(),
-//     updatedAt: new Date().toISOString(),
-//     customerId: null,
-//     metadata: '{}',
-//     description: '',
-//     customerName: '',
-//     phoneNumbers: ''
-//   };
-
-//   paymentMethods = ['credit_card', 'debit_card', 'upi', 'crypto', 'bank_transfer'];
-//   statuses = ['pending', 'completed', 'failed', 'refunded'];
-
-//   constructor(
-//     private http: HttpClient,
-//     private CustomerService: CustomerService,
-//     private autoPopulate: AutopopulateService,
-//     private PaymentService: PaymentService
-//   ) {}
-
-//   ngOnInit(): void {
-//     this.autopopulateCustomers();
-//   }
-
-//   autopopulateCustomers() {
-//     this.autoPopulate.getModuleData('customers').subscribe((response: any) => {
-//       this.customerIDDropdown = response.data;
-//     });
-//   }
-
-//   onCustomerChange() {
-//     if (!this.customerId) return;
-
-//     this.paymentData.customerId = this.customerId;
-//     this.CustomerService.getCustomerDataWithId(this.customerId).subscribe({
-//       next: (response: any) => {
-//         this.customer = response.data;
-//         this.paymentData.customerName = response.data.fullname;
-//         this.paymentData.phoneNumbers = response.data.phoneNumbers?.[0]?.number || '';
-//       },
-//       error: (error: any) => {
-//         console.error('Error fetching customer data:', error);
-//       }
-//     });
-//   }
-
-//   isValidJson(input: string): boolean {
-//     try {
-//       JSON.parse(input);
-//       return true;
-//     } catch {
-//       return false;
-//     }
-//   }
-
-//   onSubmit() {
-//     if (!this.paymentData.customerId || this.paymentData.amount <= 0) {
-//       alert('Please fill all required fields correctly.');
-//       return;
-//     }
-
-//     const formData = {
-//       ...this.paymentData,
-//       amount: parseFloat(String(this.paymentData.amount)),
-//       updatedAt: new Date().toISOString()
-//     };
-
-//     this.PaymentService.createNewpayment(formData).subscribe({
-//       next: (res) => {
-//         alert('Payment submitted successfully!');
-//       },
-//       error: (err) => {
-//         console.error('Payment failed:', err);
-//         alert('Payment failed!');
-//       }
-//     });
-//   }
-// }
 
 import { Component } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
@@ -124,11 +9,12 @@ import { SelectModule } from 'primeng/select';
 import { PaymentService } from '../../../../core/services/payment.service';
 import { CustomerService } from '../../../../core/services/customer.service';
 import { AutopopulateService } from '../../../../core/services/autopopulate.service';
+import { Card } from 'primeng/card';
 // import lodash from 'lodash';
 @Component({
   selector: 'app-payment',
   standalone: true,
-  imports: [FormsModule, SelectModule, SplitterModule, CommonModule],
+  imports: [FormsModule,Card, SelectModule, SplitterModule, CommonModule],
   templateUrl: './payment.component.html',
   styleUrl: './payment.component.css'
 })
@@ -150,8 +36,8 @@ export class PaymentComponent {
     customerId: this.customerId,
     metadata: '{}',
     description: '',
-    customerName: "",
-    phoneNumbers: ''
+    customerName: '',
+    phoneNumbers: '',
   };
   paymentMethods = ['credit_card', 'debit_card', 'upi', 'crypto', 'bank_transfer'];
   statuses = ['pending', 'completed', 'failed', 'refunded'];
@@ -202,6 +88,8 @@ export class PaymentComponent {
   }
 
   onSubmit() {
+    this.paymentData.customerName=this.customer.fullname?this.customer?.fullname:null
+    this.paymentData.phoneNumbers=this.customer?.phoneNumbers[0]?.number?this.customer?.phoneNumbers[0]?.number:null
     if (!this.paymentData.customerId || this.paymentData.amount <= 0) {
       alert('Please fill all required fields correctly.');
       return;
@@ -219,3 +107,5 @@ export class PaymentComponent {
     })
   }
 }
+
+

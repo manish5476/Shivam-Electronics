@@ -156,9 +156,12 @@ export class HeaderComponent {
         icon: 'pi pi-credit-card',
         items: [
           { label: 'Payment', icon: 'pi pi-money-bill', routerLink: ['/payment/payment'] },
-          { label: 'GST Invoice', icon: 'pi pi-file', routerLink: ['/payment/invoice'] }
+          { label: 'View Payment', icon: 'pi pi-file', routerLink: ['/payment/paymentView'] }, 
+          { label: 'Payment List', icon: 'pi pi-file', routerLink: ['/payment/paymentList'] }
         ]
       },
+      
+
       {
         label: 'Products',
         icon: 'pi pi-box',

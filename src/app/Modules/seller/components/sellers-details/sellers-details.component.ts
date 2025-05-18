@@ -1,25 +1,13 @@
-// import { Component } from '@angular/core';
-
-// @Component({
-//   selector: 'app-sellers-details',
-//   imports: [],
-//   templateUrl: './sellers-details.component.html',
-//   styleUrl: './sellers-details.component.css'
-// })
-// export class SellersDetailsComponent {
-
-// }
-// seller-detail.component.ts
 import { ChangeDetectorRef, Component } from '@angular/core';
 import { SellerService } from '../../../../core/services/seller.service';
 import { SharedGridComponent } from '../../../../shared/AgGrid/grid/shared-grid/shared-grid.component';
-// import { ToolbarComponent } from "../../../../shared/Components/toolbar/toolbar.component";
 import { CellValueChangedEvent } from 'ag-grid-community';
 import { CommonModule } from '@angular/common';
+import { ToolbarComponent } from "../../../../shared/Components/toolbar/toolbar.component";
 
 @Component({
   selector: 'app-sellers-details',
-  imports: [SharedGridComponent, CommonModule],
+  imports: [SharedGridComponent, CommonModule, ToolbarComponent],
   templateUrl: './sellers-details.component.html',
   styleUrl: './sellers-details.component.css'
 })
@@ -34,7 +22,7 @@ export class SellersDetailsComponent {
   ngOnInit(): void {
     this.getColumn()
     this.getData()
-    this.rowClassrules = this.getRowClassRules(); // Initialize row class rules
+    this.rowClassrules = this.getRowClassRules();
   }
 
   eventFromGrid(event: any) {
