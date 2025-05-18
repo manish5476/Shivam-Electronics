@@ -6,5 +6,5 @@ import { AdminDashboardComponent } from './components/admin-dashboard/admin-dash
 export const ADMIN_ROUTES: Routes = [
   { path: 'adminDashboard', component: AdminDashboardComponent },
   { path: 'users', component: AdminUserComponent },
-  { path: 'adusers', component: DashboardComponent },
+  { path: 'dashboard', component: DashboardComponent },
 ];

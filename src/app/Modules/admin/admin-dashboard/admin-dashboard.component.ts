@@ -88,19 +88,16 @@ export class DashboardComponent implements OnInit, OnDestroy {
   recentReviews: ReviewData[] = [];
   totalInventoryValueData: InventoryValueData | null = null;
 
-
-  // Loading and error states
   isLoadingSummary = false;
   isLoadingSalesTrends = false;
-  // ... add more loading states for other sections
-
   errorMessage: string | null = null;
 
   // Filters
   selectedPeriod: string = 'month'; // Default period
   customStartDate: string = ''; // YYYY-MM-DD format from date input
   customEndDate: string = '';   // YYYY-MM-DD format from date input
-
+  getTotalRevenue: any
+  SalesCount:any
   // Example Chart Configuration (if using ng2-charts)
   // public salesTrendsChartType: ChartType = 'line';
   // public salesTrendsChartData: ChartConfiguration['data'] = {
@@ -134,7 +131,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
   loadAllDashboardData(): void {
     this.errorMessage = null; // Clear previous errors
     const dateParams = this.getDateParams();
-
+    this.fetchTotalRevenue()
     this.fetchDashboardSummary(dateParams);
     this.fetchSalesTrends({ days: 30 }); // Default to 30 days, or use dateParams for period-based
     this.fetchTopSellingProducts({ ...dateParams, limit: 5, sortBy: 'revenue' });
@@ -166,7 +163,21 @@ export class DashboardComponent implements OnInit, OnDestroy {
       .subscribe(response => {
         // if (response) {
          if (response) {
+          console.log(response.data);
           this.dashboardSummary = response.data;
+        }
+        this.isLoadingSummary = false;
+      });
+  }
+
+    fetchTotalRevenue(params?: any): void {
+    this.isLoadingSummary = true;
+    this.dashboardService.getTotalRevenue(params)
+      .pipe(takeUntil(this.ngUnsubscribe), catchError(this.handleError()))
+      .subscribe((response:any) => {
+         if (response) {
+          console.log(response);
+          this.getTotalRevenue = response.data.totalRevenue;
         }
         this.isLoadingSummary = false;
       });
@@ -202,6 +213,15 @@ export class DashboardComponent implements OnInit, OnDestroy {
         if (response) this.topSellingProducts = response.data;
       });
   }
+
+   fetchgetSalesCount(params: any): void {
+    this.dashboardService.getSalesCount(params)
+      .pipe(takeUntil(this.ngUnsubscribe), catchError(this.handleError<ApiResponse<ProductInsightData[]>>()))
+      .subscribe(response => {
+        if (response) this.SalesCount = response.data;
+      });
+  }
+
 
   fetchLowStockProducts(params: any): void {
     this.dashboardService.getLowStockProducts(params)

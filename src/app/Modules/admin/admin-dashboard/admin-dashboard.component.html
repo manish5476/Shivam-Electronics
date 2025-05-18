@@ -1,3 +1,310 @@
+<div class="flex min-h-screen w-full">
+  <div class="flex-1 p-4 md:p-6">
+
+    <header class="flex justify-between items-center mb-6">
+      <div class="flex items-center space-x-2">
+        <svg class="w-6 h-6 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+          xmlns="http://www.w3.org/2000/svg">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+        </svg> <span class="text-xl font-semibold text-gray-800">Shivam Electronics</span>
+      </div>
+
+      <nav class="space-x-6 text-gray-600 hidden md:flex">
+        <a href="" class="hover:text-gray-800"></a>
+        <a href="" class="hover:text-gray-800">Coming.....</a>
+        <a href="" class="hover:text-gray-800">Coming.....</a>
+      </nav>
+
+      <div class="flex items-center space-x-4">
+        <i class="fa fa-search text-gray-600 cursor-pointer"></i>
+        <i class="fa fa-bell text-gray-600 cursor-pointer"></i>
+        <i class="fa fa-cog text-gray-600 cursor-pointer"></i>
+        <img class="w-8 h-8 rounded-full" src="https://via.placeholder.com/32" alt="Profile Picture">
+      </div>
+    </header>
+
+    <h2 class="text-2xl md:text-3xl font-bold text-gray-800 mb-6">Admin Dashboard</h2>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+      <div class="soft-card p-4 flex items-center space-x-3">
+        <div class="bg-blue-100 text-blue-600 p-3 rounded-full"><i class="pi pi-indian-rupee"></i></div>
+        <div>
+          <div class="text-xl font-bold text-gray-800">{{getTotalRevenue || '0'}}</div>
+          <div class="text-gray-600 text-sm">Total Earning</div>
+        </div>
+      </div>
+      <div class="soft-card p-4 flex items-center space-x-3">
+        <div class="bg-yellow-100 text-yellow-600 p-3 rounded-full"><i class="fa fa-users"></i></div>
+        <div>
+          <div class="text-xl font-bold text-gray-800">{{newCustomersCountData}}</div>
+          <div class="text-gray-600 text-sm">New Customers</div>
+        </div>
+      </div>
+      <div class="soft-card p-4 flex items-center space-x-3">
+        <div class="bg-green-100 text-green-600 p-3 rounded-full"><i class="fa fa-chart-line"></i></div>
+        <div>
+          <div class="text-xl font-bold text-gray-800">{{SalesCount}}</div>
+          <div class="text-gray-600 text-sm">Sales Count</div>
+        </div>
+      </div>
+      <div class="soft-card p-4 flex items-center space-x-3">
+        <div class="bg-red-100 text-red-600 p-3 rounded-full"><i class="fa fa-box-open"></i></div>
+        <div>
+          <div class="text-xl font-bold text-gray-800">{{outOfStockProducts.length}}</div>
+          <div class="text-gray-600 text-sm">outOfStockProducts</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-4 mb-8">
+
+      <div class="lg:col-span-2 flex flex-col gap-4">
+
+        <div class="soft-card p-6">
+          <h3 class="text-lg font-semibold text-gray-800 mb-4">Interaction History</h3>
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+            <div class="soft-card gradient-blue p-4 rounded-lg">
+              <div class="flex items-center justify-between mb-2">
+                <i class="fa fa-box text-2xl opacity-75"></i> <i class="fa fa-ellipsis-h text-xl opacity-75"></i>
+              </div>
+              <div class="text-2xl font-bold mb-1">$11,250</div>
+              <div class="text-sm opacity-90">Royal Package Opportunity</div>
+              <div class="flex items-center mt-3 space-x-2 opacity-80 text-xs">
+                <i class="fa fa-user-circle"></i> <span>David J.</span>
+              </div>
+            </div>
+            <div class="soft-card gradient-teal p-4 rounded-lg">
+              <div class="flex items-center justify-between mb-2">
+                <i class="fa fa-briefcase text-2xl opacity-75"></i> <i class="fa fa-ellipsis-h text-xl opacity-75"></i>
+              </div>
+              <div class="text-2xl font-bold mb-1">21,300$</div>
+              <div class="text-sm opacity-90">Front Deal Business Services</div>
+              <div class="flex items-center mt-3 space-x-2 opacity-80 text-xs">
+                <i class="fa fa-user-circle"></i> <span>Emily C.</span>
+              </div>
+            </div>
+            <div class="soft-card gradient-black p-4 rounded-lg">
+              <div class="flex items-center justify-between mb-2">
+                <i class="fa fa-check-circle text-2xl opacity-75"></i> <i class="fa fa-ellipsis-h text-xl opacity-75"></i>
+              </div>
+              <div class="text-2xl font-bold mb-1">2,100$</div>
+              <div class="text-sm opacity-90">Absolute Success Deal CRM Service</div>
+              <div class="flex items-center mt-3 space-x-2 opacity-80 text-xs">
+                <i class="fa fa-user-circle"></i> <span>OVA'S</span>
+              </div>
+            </div>
+            <div class="soft-card gradient-yellow p-4 rounded-lg">
+              <div class="flex items-center justify-between mb-2 text-gray-800">
+                <i class="fa fa-dollar-sign text-2xl opacity-75"></i> <i class="fa fa-ellipsis-h text-xl opacity-75"></i>
+              </div>
+              <div class="text-2xl font-bold mb-1 text-gray-800">4,160$</div>
+              <div class="text-sm opacity-90 text-gray-800">Royal Package Opportunity</div>
+              <div class="flex items-center mt-3 space-x-2 opacity-80 text-xs text-gray-800">
+                <i class="fa fa-user-circle"></i> <span>Jim P.</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="soft-card p-6">
+          <h3 class="text-lg font-semibold text-gray-800 mb-4">MAin Grid oF C ustomers</h3>
+          <div class="grid grid-cols-7 gap-2 text-center text-gray-600 text-sm">
+            <div class="col-span-7 h-32 bg-gray-100 rounded-md flex items-center justify-center">
+                Placeholder for Main Grid Content
+            </div>
+          </div>
+        </div>
+
+        <div class="flex flex-col md:flex-row gap-4 mb-6">
+          <div class="soft-card p-6 flex-1">
+            <div class="flex items-center justify-between mb-4">
+              <h3 class="text-lg font-semibold text-gray-800">Detailed Information 1</h3>
+              <div class="flex items-center space-x-2 text-gray-600">
+                <i class="fa fa-expand-alt cursor-pointer"></i> <i class="fa fa-ellipsis-h cursor-pointer"></i>
+              </div>
+            </div>
+            <div class="flex items-center space-x-4 mb-6">
+              <img class="w-14 h-14 rounded-lg object-cover" src="https://via.placeholder.com/56" alt="Customer Image">
+              <div>
+                <div class="text-lg font-bold text-gray-800">Contact Person A</div>
+                <div class="text-gray-600 text-sm">Role/Title, Company</div>
+              </div>
+            </div>
+            <div class="space-y-3 text-gray-700 text-sm">
+              <div class="flex items-center space-x-3">
+                <i class="fa fa-envelope text-blue-500"></i> <span>email.aexample.com</span>
+              </div>
+              <div class="flex items-center space-x-3">
+                <i class="fa fa-phone text-blue-500"></i> <span>+1 (555) 123-4567</span>
+              </div>
+              <div class="flex items-center space-x-3">
+                <i class="fa fa-calendar-alt text-blue-500"></i> <span>Last Contact: 05/10/2024</span>
+              </div>
+            </div>
+            <div class="flex items-center space-x-4 mt-6 text-gray-600">
+              <i class="fa fa-briefcase text-lg cursor-pointer"></i> <i class="fa fa-users text-lg cursor-pointer"></i> <i class="fa fa-chart-pie text-lg cursor-pointer"></i> <i class="fa fa-file-alt text-lg cursor-pointer"></i>
+            </div>
+          </div>
+
+          <div class="soft-card p-6 flex-1">
+            <div class="flex items-center justify-between mb-4">
+              <h3 class="text-lg font-semibold text-gray-800">Detailed Information 2</h3>
+              <div class="flex items-center space-x-2 text-gray-600">
+                <i class="fa fa-expand-alt cursor-pointer"></i> <i class="fa fa-ellipsis-h cursor-pointer"></i>
+              </div>
+            </div>
+            <div class="flex items-center space-x-4 mb-6">
+              <img class="w-14 h-14 rounded-lg object-cover" src="https://via.placeholder.com/56" alt="Customer Image">
+              <div>
+                <div class="text-lg font-bold text-gray-800">Contact Person B</div>
+                <div class="text-gray-600 text-sm">Role/Title, Company</div>
+              </div>
+            </div>
+            <div class="space-y-3 text-gray-700 text-sm">
+              <div class="flex items-center space-x-3">
+                <i class="fa fa-envelope text-blue-500"></i> <span>email.bexample.com</span>
+              </div>
+              <div class="flex items-center space-x-3">
+                <i class="fa fa-phone text-blue-500"></i> <span>+1 (555) 987-6543</span>
+              </div>
+              <div class="flex items-center space-x-3">
+                <i class="fa fa-calendar-alt text-blue-500"></i> <span>Last Contact: 05/12/2024</span>
+              </div>
+            </div>
+            <div class="flex items-center space-x-4 mt-6 text-gray-600">
+              <i class="fa fa-briefcase text-lg cursor-pointer"></i> <i class="fa fa-users text-lg cursor-pointer"></i> <i class="fa fa-chart-pie text-lg cursor-pointer"></i> <i class="fa fa-file-alt text-lg cursor-pointer"></i>
+            </div>
+          </div>
+        </div>
+
+        <div class="soft-card p-6">
+            <h3 class="text-lg font-semibold text-gray-800 mb-4">Grid Area (2x2)</h3>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div class="bg-gray-100 rounded-md p-4 h-32 flex items-center justify-center text-gray-700">
+                    Grid Item 1
+                </div>
+                <div class="bg-gray-100 rounded-md p-4 h-32 flex items-center justify-center text-gray-700">
+                    Grid Item 2
+                </div>
+                <div class="bg-gray-100 rounded-md p-4 h-32 flex items-center justify-center text-gray-700">
+                    Grid Item 3
+                </div>
+                <div class="bg-gray-100 rounded-md p-4 h-32 flex items-center justify-center text-gray-700">
+                    Grid Item 4
+                </div>
+                 <div class="bg-gray-100 rounded-md p-4 h-32 flex items-center justify-center text-gray-700">
+                    Grid Item 3
+                </div>
+                <div class="bg-gray-100 rounded-md p-4 h-32 flex items-center justify-center text-gray-700">
+                    Grid Item 4
+                </div>
+            </div>
+        </div>
+
+      </div>
+
+      <div class="flex flex-col gap-4">
+        <div class="soft-card p-6">
+          <h3 class="text-lg font-semibold text-gray-800 mb-4">Stage Funnel</h3>
+          <div class="flex flex-col space-y-2">
+            <div class="stage-funnel-item">
+              <div class="value">$350,500</div>
+              <div class="label">Qualification</div>
+            </div>
+            <div class="stage-funnel-item active">
+              <div class="value">92,350$</div>
+              <div class="label">Needs Analysis</div>
+            </div>
+            <div class="stage-funnel-item">
+              <div class="value">67,120$</div>
+              <div class="label">Value Proposition</div>
+            </div>
+            <div class="stage-funnel-item">
+              <div class="value">28,980$</div>
+              <div class="label">Decision Makers</div>
+            </div>
+            <div class="stage-funnel-item">
+              <div class="value">15,600$</div>
+              <div class="label">Perception Analysis</div>
+            </div>
+            <div class="stage-funnel-item">
+              <div class="value">8,400$</div>
+              <div class="label">Proposal/Price Quote</div>
+            </div>
+            <div class="stage-funnel-item">
+              <div class="value">3,200$</div>
+              <div class="label">Negotiation/Review</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="soft-card p-6">
+          <div class="flex items-center justify-between mb-4">
+            <h3 class="text-lg font-semibold text-gray-800">Detailed Information</h3>
+            <div class="flex items-center space-x-2 text-gray-600">
+              <i class="fa fa-expand-alt cursor-pointer"></i> <i class="fa fa-ellipsis-h cursor-pointer"></i>
+            </div>
+          </div>
+          <div class="flex items-center space-x-4 mb-6">
+            <img class="w-16 h-16 rounded-lg object-cover" src="https://via.placeholder.com/64" alt="Customer Image">
+            <div>
+              <div class="text-xl font-bold text-gray-800">Eva Robinson</div>
+              <div class="text-gray-600 text-sm">CEO, Inc., Alabama Machinery & Supply</div>
+            </div>
+          </div>
+          <div class="space-y-4 text-gray-700 text-sm">
+            <div class="flex items-center space-x-3">
+              <i class="fa fa-envelope text-blue-500"></i> <span>Evaalabamamachinery.com</span>
+            </div>
+            <div class="flex items-center space-x-3">
+              <i class="fa fa-phone text-blue-500"></i> <span>+91 120 222 313</span>
+            </div>
+            <div class="flex items-center space-x-3">
+              <i class="fa fa-calendar-alt text-blue-500"></i> <span>06/15/2023 at 7:16 pm</span>
+            </div>
+          </div>
+          <div class="flex items-center space-x-4 mt-6 text-gray-600">
+            <i class="fa fa-briefcase text-lg cursor-pointer"></i> <i class="fa fa-users text-lg cursor-pointer"></i> <i class="fa fa-chart-pie text-lg cursor-pointer"></i> <i class="fa fa-file-alt text-lg cursor-pointer"></i>
+          </div>
+        </div>
+
+        <div class="soft-card p-6">
+          <div class="flex items-center justify-between mb-4">
+            <h3 class="text-lg font-semibold text-gray-800">Detailed Information</h3>
+            <div class="flex items-center space-x-2 text-gray-600">
+              <i class="fa fa-expand-alt cursor-pointer"></i> <i class="fa fa-ellipsis-h cursor-pointer"></i>
+            </div>
+          </div>
+          <div class="flex items-center space-x-4 mb-6">
+            <img class="w-16 h-16 rounded-lg object-cover" src="https://via.placeholder.com/64" alt="Customer Image">
+            <div>
+              <div class="text-xl font-bold text-gray-800">Eva Robinson</div>
+              <div class="text-gray-600 text-sm">CEO, Inc., Alabama Machinery & Supply</div>
+            </div>
+          </div>
+          <div class="space-y-4 text-gray-700 text-sm">
+            <div class="flex items-center space-x-3">
+              <i class="fa fa-envelope text-blue-500"></i> <span>Evaalabamamachinery.com</span>
+            </div>
+            <div class="flex items-center space-x-3">
+              <i class="fa fa-phone text-blue-500"></i> <span>+91 120 222 313</span>
+            </div>
+            <div class="flex items-center space-x-3">
+              <i class="fa fa-calendar-alt text-blue-500"></i> <span>06/15/2023 at 7:16 pm</span>
+            </div>
+          </div>
+          <div class="flex items-center space-x-4 mt-6 text-gray-600">
+            <i class="fa fa-briefcase text-lg cursor-pointer"></i> <i class="fa fa-users text-lg cursor-pointer"></i> <i class="fa fa-chart-pie text-lg cursor-pointer"></i> <i class="fa fa-file-alt text-lg cursor-pointer"></i>
+          </div>
+        </div>
+      </div>
+
+    </div>
+      </div>
+</div>
+
+
+
 <div class="dashboard-container">
     <h1>Admin Dashboard</h1>
 
@@ -11,7 +318,8 @@
             <div class="row g-3 align-items-end">
                 <div class="col-md-3">
                     <label for="periodSelect" class="form-label">Predefined Period:</label>
-                    <select id="periodSelect" class="form-select" [(ngModel)]="selectedPeriod" (ngModelChange)="onPeriodChange($event)">
+                    <select id="periodSelect" class="form-select" [(ngModel)]="selectedPeriod"
+                        (ngModelChange)="onPeriodChange($event)">
                         <option value="today">Today</option>
                         <option value="yesterday">Yesterday</option>
                         <option value="week">This Week</option>
@@ -29,7 +337,8 @@
                     <input type="date" id="customEndDate" class="form-control" [(ngModel)]="customEndDate">
                 </div>
                 <div class="col-md-3">
-                    <button class="btn btn-primary w-100" (click)="applyCustomDateRange()">Apply Custom Range & Reload</button>
+                    <button class="btn btn-primary w-100" (click)="applyCustomDateRange()">Apply Custom Range &
+                        Reload</button>
                 </div>
             </div>
         </div>
@@ -47,7 +356,8 @@
                             <h4>Sales</h4>
                             <p>Total Revenue: {{ dashboardSummary.sales.totalRevenue | currency:'INR':'symbol' }}</p>
                             <p>Number of Sales: {{ dashboardSummary.sales.numberOfSales }}</p>
-                            <p>Avg. Order Value: {{ dashboardSummary.sales.averageOrderValue | currency:'INR':'symbol' }}</p>
+                            <p>Avg. Order Value: {{ dashboardSummary.sales.averageOrderValue | currency:'INR':'symbol'
+                                }}</p>
                         </div>
                         <div class="col-md-4 summary-stat">
                             <h4>Customers</h4>
@@ -56,24 +366,28 @@
                         </div>
                         <div class="col-md-4 summary-stat">
                             <h4>Payments</h4>
-                            <p>Total Received: {{ dashboardSummary.payments.totalReceived | currency:'INR':'symbol' }}</p>
+                            <p>Total Received: {{ dashboardSummary.payments.totalReceived | currency:'INR':'symbol' }}
+                            </p>
                         </div>
                     </div>
                     <hr>
                     <h5>Top Selling Products ({{dashboardSummary.products.topSelling.length}})</h5>
                     <ul class="list-group list-group-flush small">
                         <li *ngFor="let product of dashboardSummary.products.topSelling" class="list-group-item">
-                            {{product.title}}: {{product.totalRevenue | currency:'INR'}} ({{product.totalQuantitySold}} units)
+                            {{product.title}}: {{product.totalRevenue | currency:'INR'}} ({{product.totalQuantitySold}}
+                            units)
                         </li>
-                        <li *ngIf="dashboardSummary.products.topSelling.length === 0" class="list-group-item">No top selling products found for this period.</li>
+                        <li *ngIf="dashboardSummary.products.topSelling.length === 0" class="list-group-item">No top
+                            selling products found for this period.</li>
                     </ul>
-                     <hr>
+                    <hr>
                     <h5>Low Stock Alerts ({{dashboardSummary.products.lowStock.length}})</h5>
-                     <ul class="list-group list-group-flush small">
+                    <ul class="list-group list-group-flush small">
                         <li *ngFor="let product of dashboardSummary.products.lowStock" class="list-group-item">
                             {{product.title}} (SKU: {{product.sku}}): {{product.stock}} left
                         </li>
-                         <li *ngIf="dashboardSummary.products.lowStock.length === 0" class="list-group-item">No low stock products.</li>
+                        <li *ngIf="dashboardSummary.products.lowStock.length === 0" class="list-group-item">No low stock
+                            products.</li>
                     </ul>
                 </div>
                 <div *ngIf="!dashboardSummary && !isLoadingSummary" class="card-body">
@@ -87,14 +401,17 @@
     <div class="row">
         <div class="col-lg-6 mb-4">
             <div class="card">
-                <div class="card-header">Sales Trends (Last {{ salesTrends.length }} Days) <span *ngIf="isLoadingSalesTrends">(Loading...)</span></div>
+                <div class="card-header">Sales Trends (Last {{ salesTrends.length }} Days) <span
+                        *ngIf="isLoadingSalesTrends">(Loading...)</span></div>
                 <div class="card-body">
                     <ul *ngIf="salesTrends.length > 0; else noSalesTrends">
                         <li *ngFor="let trend of salesTrends">
                             {{trend._id}}: {{trend.dailyRevenue | currency:'INR'}} ({{trend.dailySalesCount}} sales)
                         </li>
                     </ul>
-                    <ng-template #noSalesTrends><p>No sales trend data available.</p></ng-template>
+                    <ng-template #noSalesTrends>
+                        <p>No sales trend data available.</p>
+                    </ng-template>
                 </div>
             </div>
         </div>
@@ -105,10 +422,13 @@
                 <div class="card-body">
                     <ul *ngIf="paymentsByMethod.length > 0; else noPaymentsMethod">
                         <li *ngFor="let method of paymentsByMethod">
-                            {{method._id | titlecase}}: {{method.totalAmount | currency:'INR'}} ({{method.count}} transactions)
+                            {{method._id | titlecase}}: {{method.totalAmount | currency:'INR'}} ({{method.count}}
+                            transactions)
                         </li>
                     </ul>
-                     <ng-template #noPaymentsMethod><p>No payment method data available.</p></ng-template>
+                    <ng-template #noPaymentsMethod>
+                        <p>No payment method data available.</p>
+                    </ng-template>
                 </div>
             </div>
         </div>
@@ -119,14 +439,16 @@
             <div class="card">
                 <div class="card-header">Recent Reviews (Top {{recentReviews.length}})</div>
                 <div class="card-body">
-                     <ul *ngIf="recentReviews.length > 0; else noRecentReviews" class="list-unstyled">
+                    <ul *ngIf="recentReviews.length > 0; else noRecentReviews" class="list-unstyled">
                         <li *ngFor="let review of recentReviews" class="mb-2 review-item">
                             <strong>{{review.product.title}}</strong> ({{review.rating}}/5) by {{review.user.fullname}}
                             <p class="small text-muted">"{{review.userreview | slice:0:100}}..."</p>
                             <span class="badge bg-secondary">{{review.createdAt | date:'short'}}</span>
                         </li>
                     </ul>
-                    <ng-template #noRecentReviews><p>No recent reviews.</p></ng-template>
+                    <ng-template #noRecentReviews>
+                        <p>No recent reviews.</p>
+                    </ng-template>
                 </div>
             </div>
         </div>
@@ -137,13 +459,16 @@
                 <div class="card-body">
                     <ul *ngIf="customersWithDues.length > 0; else noCustomersWithDues">
                         <li *ngFor="let customer of customersWithDues">
-                            {{customer.fullname}} ({{customer.email}}) - Due: {{customer.remainingAmount | currency:'INR'}}
+                            {{customer.fullname}} ({{customer.email}}) - Due: {{customer.remainingAmount |
+                            currency:'INR'}}
                         </li>
                     </ul>
-                    <ng-template #noCustomersWithDues><p>No customers with outstanding payments.</p></ng-template>
+                    <ng-template #noCustomersWithDues>
+                        <p>No customers with outstanding payments.</p>
+                    </ng-template>
                 </div>
             </div>
         </div>
     </div>
 
-     </div>
+</div>
