@@ -57,9 +57,12 @@
   </div>
 
   <div class="ag-grid-main-area">
-    <app-shared-grid class="flex-1 overflow-auto" [gridHeight]="'calc(100vh - 56px - 56px - 48px)'" [gridWidth]="'100%'"
+    <app-shared-grid [data]="data" [rowSelectionMode]="rowSelectionMode" [column]="column"
+        (eventFromGrid)="eventFromGrid($event)">
+      </app-shared-grid>
+    <!-- <app-shared-grid class="flex-1 overflow-auto" [gridHeight]="'calc(100vh - 56px - 56px - 48px)'" [gridWidth]="'100%'"
       [padding]="'0'" [data]="data" [rowSelectionMode]="rowSelectionMode" [column]="column"
       (eventFromGrid)="eventFromGrid($event)">
-    </app-shared-grid>
+    </app-shared-grid> -->
   </div>
 </div></div>

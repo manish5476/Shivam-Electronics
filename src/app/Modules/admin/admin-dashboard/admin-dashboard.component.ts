@@ -1,44 +1,4 @@
-// import { Component, Type } from '@angular/core';
-// import { CdkDrag } from '@angular/cdk/drag-drop';
-// import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
-// import { CommonModule } from '@angular/common';
-// import { DialogModule } from 'primeng/dialog';
-// import { ButtonModule } from 'primeng/button';
-// import { ToolbarComponent } from "../../../shared/Components/toolbar/toolbar.component";
 
-
-// @Component({
-//   selector: 'app-admin-dashboard',
-//   standalone: true,
-//   imports: [ CommonModule, DialogModule, ButtonModule, ToolbarComponent],//ToolbarComponent
-//   templateUrl: './admin-dashboard.component.html',
-//   styleUrls: ['./admin-dashboard.component.css'],
-//   providers: [DialogService],
-// })
-// export class AdminDashboardsComponent {
-//   components: { component: Type<any>; label: string }[] = [
-//   ];
-//   dialogRefs: DynamicDialogRef[] = [];
-
-//   constructor(private dialogService: DialogService) {}
-
-//   openDialog(component: Type<any>, event: MouseEvent) {
-//     event.stopPropagation(); // Prevent drag from triggering when button is clicked
-//     const ref = this.dialogService.open(component, {
-//       header: component.name,
-//       width: '90%',
-//       height:'80%',
-//       closable:true,
-//       draggable: true,
-//       contentStyle: { overflow: 'auto' },
-//     });
-//     this.dialogRefs.push(ref);
-
-//     ref.onClose.subscribe(() => {
-//       this.dialogRefs = this.dialogRefs.filter((r) => r !== ref);
-//     });
-//   }
-// }
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import { takeUntil, catchError } from 'rxjs/operators';
@@ -56,7 +16,12 @@ import {
 import { HttpErrorResponse } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-
+import { DialogModule } from 'primeng/dialog';
+import { CustomerListComponent } from "../../customer/components/customer-list/customer-list.component";
+import { ProductListComponent } from "../../product/components/product-list/product-list.component";
+import { InvoiceViewComponent } from "../../billing/components/invoice-view/invoice-view.component";
+import { PaymentListComponent } from "../../payment/components/payment-list/payment-list.component";
+import { ProductDetailComponent } from "../../product/components/product-detail/product-detail.component";
 // For charts, you might install and import a library like ng2-charts
 // import { ChartConfiguration, ChartType } from 'chart.js';
 // import DataLabelsPlugin from 'chartjs-plugin-datalabels';
@@ -65,7 +30,7 @@ import { FormsModule } from '@angular/forms';
 @Component({
   selector: 'app-admin-dashboard',
   standalone: true,
-  imports: [CommonModule,FormsModule],
+  imports: [CommonModule, DialogModule, FormsModule, CustomerListComponent, InvoiceViewComponent, PaymentListComponent, ProductDetailComponent],
   templateUrl: './admin-dashboard.component.html',
   styleUrls: ['./admin-dashboard.component.css']
 })
@@ -73,7 +38,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
   private ngUnsubscribe = new Subject<void>();
 
   // Data properties
-  dashboardSummary: ConsolidatedSummaryData | null = null;
+  dashboardSummary: any;
+  // dashboardSummary: ConsolidatedSummaryData | {} = {};
   salesTrends: SalesTrendData[] = [];
   topSellingProducts: ProductInsightData[] = [];
   lowStockProducts: ProductInsightData[] = [];
@@ -93,11 +59,15 @@ export class DashboardComponent implements OnInit, OnDestroy {
   errorMessage: string | null = null;
 
   // Filters
-  selectedPeriod: string = 'month'; // Default period
+  selectedPeriod: string = ''; // Default period
   customStartDate: string = ''; // YYYY-MM-DD format from date input
   customEndDate: string = '';   // YYYY-MM-DD format from date input
   getTotalRevenue: any
-  SalesCount:any
+  SalesCount: any
+  showcustomerGrid: boolean = false
+  showproductGrid: boolean = false
+  showInvoiceGrid: boolean = false
+  showPaymentGrid: boolean = false
   // Example Chart Configuration (if using ng2-charts)
   // public salesTrendsChartType: ChartType = 'line';
   // public salesTrendsChartData: ChartConfiguration['data'] = {
@@ -120,12 +90,23 @@ export class DashboardComponent implements OnInit, OnDestroy {
   //     legend: { display: true }
   //   }
   // };
-
-
   constructor(private dashboardService: DashboardService) { }
 
   ngOnInit(): void {
     this.loadAllDashboardData();
+  }
+
+  formatCurrency(value: number | undefined | null): string {
+    if (value === undefined || value === null) {
+      return 'N/A';
+    }
+    // Using toLocaleString for currency formatting
+    return `₹${value.toLocaleString('en-IN')}`; // 'en-IN' for Indian Rupees format
+  }
+
+  // Helper function to check if products array is valid and not empty
+  hasProducts(): boolean {
+    return this.dashboardSummary?.products?.lowStock !== null && Array.isArray(this.dashboardSummary?.products?.lowStock) && this.dashboardSummary?.products?.lowStock.length > 0;
   }
 
   loadAllDashboardData(): void {
@@ -156,13 +137,13 @@ export class DashboardComponent implements OnInit, OnDestroy {
   }
 
   // --- Fetch Methods ---
-  fetchDashboardSummary(params: any): void {
+  fetchDashboardSummary(params?: any): void {
     this.isLoadingSummary = true;
     this.dashboardService.getDashboardSummary(params)
       .pipe(takeUntil(this.ngUnsubscribe), catchError(this.handleError<ApiResponse<ConsolidatedSummaryData>>()))
       .subscribe(response => {
         // if (response) {
-         if (response) {
+        if (response) {
           console.log(response.data);
           this.dashboardSummary = response.data;
         }
@@ -170,12 +151,12 @@ export class DashboardComponent implements OnInit, OnDestroy {
       });
   }
 
-    fetchTotalRevenue(params?: any): void {
+  fetchTotalRevenue(params?: any): void {
     this.isLoadingSummary = true;
     this.dashboardService.getTotalRevenue(params)
       .pipe(takeUntil(this.ngUnsubscribe), catchError(this.handleError()))
-      .subscribe((response:any) => {
-         if (response) {
+      .subscribe((response: any) => {
+        if (response) {
           console.log(response);
           this.getTotalRevenue = response.data.totalRevenue;
         }
@@ -189,7 +170,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.ngUnsubscribe), catchError(this.handleError<ApiResponse<SalesTrendData[]>>()))
       .subscribe(response => {
         // if (response) {
-         if (response) {
+        if (response) {
           this.salesTrends = response.data;
           // this.updateSalesTrendsChart();
         }
@@ -214,7 +195,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
       });
   }
 
-   fetchgetSalesCount(params: any): void {
+  fetchgetSalesCount(params: any): void {
     this.dashboardService.getSalesCount(params)
       .pipe(takeUntil(this.ngUnsubscribe), catchError(this.handleError<ApiResponse<ProductInsightData[]>>()))
       .subscribe(response => {
