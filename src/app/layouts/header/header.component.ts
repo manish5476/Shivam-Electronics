@@ -140,7 +140,7 @@ export class HeaderComponent {
         items: [
           { label: 'Product List', icon: 'pi pi-list', routerLink: ['/products/list'] },
           { label: 'Product Master', icon: 'pi pi-cog', routerLink: ['/products/master'] },
-          { label: 'Product Details', icon: 'pi pi-info-circle', routerLink: ['/products/detail/:id'] }
+          // { label: 'Product Details', icon: 'pi pi-info-circle', routerLink: ['/products/detail/:id'] }
         ]
       },
       {
