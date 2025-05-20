@@ -396,12 +396,12 @@
             </ng-template>
           </div>
         </div> -->
-        <div class="soft-card p-6 overflow-y-auto scrollbar-none" style="height: 459px;">
+        <div class="soft-card p-6 overflow-y-auto no-scrollbar" style="height: 459px;">
           <h3 class="text-lg font-semibold text-gray-800 mb-4">Product List</h3>
-          <div class="grid grid-cols-1 sm:grid-cols-1 lg:grid-cols-1  gap-6">
+          <div class="grid grid-cols-1 sm:grid-cols-1 lg:grid-cols-1 gap-6">
             <ng-container *ngIf="hasProducts(); else noProductsMessage">
-              <div *ngFor="let product of dashboardSummary?.products?.lowStock"
-                class="relative bg-white rounded-2xl border border-gray-200 shadow-sm p-6 transition-transform duration-200 hover:shadow-lg hover:-translate-y-1 overflow-hidden w-full max-w-md mx-auto">
+              <div  *ngFor="let product of dashboardSummary?.products?.lowStock"
+                class="relative bg-slate-400 rounded-2xl border border-gray-200 shadow-sm p-6 transition-transform duration-200 hover:shadow-lg hover:-translate-y-1 overflow-hidden w-full max-w-md mx-auto">
 
                 <!-- Gradient bar at the bottom -->
                 <span
