@@ -166,6 +166,7 @@ export class CustomerMasterComponent implements OnInit {
     this.autopopulatedata();
   }
 
+
   autopopulatedata() {
     // this.autoPopulate.getModuleData('products').subscribe((data:any) => {
     //   this.productdrop = data;
@@ -205,21 +206,22 @@ getCustomerID() {
 }
 
 
-handleFileSelect(event ?: any) {
+handleFileSelect(event?: any) {
+  
   const file = event.files[0];
   if (file) {
     this.uploadStatus = 'Preparing to upload...';
     const formData = new FormData();
     formData.append('image', file); // Append the selected file to FormData
-    // this.CustomerService.uploadProfileImage(formData, this.customerId).subscribe(
-    //   (response: any) => {
-    //     this.uploadStatus = 'Image uploaded successfully!';
-    //   },
-    //   (error: any) => {
-    //     this.uploadStatus = 'Error uploading image.';
-    //     console.error('Upload Error:', error);
-    //   }
-    // );
+    this.CustomerService.uploadProfileImage(formData, this.customerId).subscribe(
+      (response: any) => {
+        this.uploadStatus = 'Image uploaded successfully!';
+      },
+      (error: any) => {
+        this.uploadStatus = 'Error uploading image.';
+        console.error('Upload Error:', error);
+      }
+    );
   } else {
   }
 }

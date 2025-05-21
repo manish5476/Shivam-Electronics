@@ -12,7 +12,7 @@
         </div>
       </div>
       <div>
-        <p-fileUpload #fileUploader name="profileImage" url="your-upload-api-endpoint" (onUpload)="onUpload($event)"
+        <p-fileUpload #fileUploader name="profileImage" url="http://localhost:4004/api/v1/image/postImages" (onUpload)="handleFileSelect($event)"
                        [multiple]="false" accept="image/*" maxFileSize="1000000" mode="advanced" [showUploadButton]="true"
                        [showCancelButton]="true" styleClass="bg-[white] border-[--color-border]">
            <ng-template pTemplate="empty">
@@ -230,20 +230,13 @@
    <div class="w-full p-1 md:p-2">
      <div class="flex justify-end mt-6">
          <button type="button" (click)="saveCustomer()" class="btn-primary">
-           <!-- @if (isSubmitting) {
-              <svg class="animate-spin -ml-1 mr-3 h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-              </svg>
-              <span>Saving...</span>
-           } @else {
-             <span>Save Customer</span>
-           } -->
+          save
          </button>
      </div>
    </div>
 
-</div> <p-dialog header="{{ editingPhoneIndex > -1 ? 'Edit' : 'Add' }} Phone Number" [(visible)]="phoneDialogVisible"
+</div> 
+<p-dialog header="{{ editingPhoneIndex > -1 ? 'Edit' : 'Add' }} Phone Number" [(visible)]="phoneDialogVisible"
   styleClass="p-dialog-compact !bg-[white] !text-[--color-text-base] border !border-[--color-border] rounded-lg shadow-lg" [modal]="true"
   [closable]="true" [dismissableMask]="true" [breakpoints]="{'960px': '50vw', '640px': '90vw'}">
   <div class="p-fluid p-5"> <div class="mb-3">
@@ -338,7 +331,7 @@
     </div>
 
     <div class="flex items-center mb-4">
-      <p-checkbox [(ngModel)]="newAddress.isDefault" inputId="defaultAddress" binary="true" name="dialogAddrDefault" class="mr-2"></p-checkbox>
+      <p-checkbox [(ngModel)]="newAddress.isDefault" inputId="defaultAddress" binary="true"  class="mr-2"></p-checkbox>
       <label for="defaultAddress" class="text-sm text-[--color-text-muted]">Set as Default Address</label>
     </div>
 

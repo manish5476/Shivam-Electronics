@@ -13,9 +13,11 @@ export class CustomerService extends BaseApiService {
       .pipe(catchError((error: HttpErrorResponse) => this.errorhandler.handleError('getAllCustomerData', error)));
   }
 
+  
+
   uploadProfileImage(formData: FormData, customerId: string): Observable<any> {
     // FIXME: Review this URL. Should it use this.baseUrl?
-    const apiUrl = `http://localhost:4000/api/customers/${customerId}/profile-image`;
+    const apiUrl =`${this.baseUrl}/v1/image/postImages`;
     return this.http.post(apiUrl, formData).pipe(
       catchError((error: any) => {
         console.error('Upload Error:', error);
