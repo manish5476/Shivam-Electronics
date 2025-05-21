@@ -22,21 +22,66 @@ import { ProductListComponent } from "../../product/components/product-list/prod
 import { InvoiceViewComponent } from "../../billing/components/invoice-view/invoice-view.component";
 import { PaymentListComponent } from "../../payment/components/payment-list/payment-list.component";
 import { ProductDetailComponent } from "../../product/components/product-detail/product-detail.component";
+import { CarouselModule } from 'primeng/carousel';
+import { Tag } from 'primeng/tag';
+import { Button } from 'primeng/button';
 // For charts, you might install and import a library like ng2-charts
 // import { ChartConfiguration, ChartType } from 'chart.js';
 // import DataLabelsPlugin from 'chartjs-plugin-datalabels';
 
 
+interface Invoice {
+  _id: string;
+  invoiceNumber: string;
+  invoiceDate: string;
+  totalAmount: number;
+  status: string;
+  sellerDetails: any;
+  buyerDetails: any;
+  itemDetails: any[];
+  id: string;
+}
+
+interface Product {
+  _id: string;
+  title: string;
+  description: string;
+  thumbnail: string;
+  price: number;
+  finalPrice: number | null;
+  id: string;
+}
+
+interface CartItem {
+  productId: Product;
+  invoiceIds: Invoice[];
+}
+
+interface CustomerData {
+  cart: {
+    items: CartItem[];
+  };
+  _id: string;
+  email: string;
+  fullname: string;
+  mobileNumber: string;
+  remainingAmount: number;
+  paymentHistory: any[];
+  avatarUrl?: string; // Optional: Add a URL for customer avatar
+}
+
 @Component({
   selector: 'app-admin-dashboard',
   standalone: true,
-  imports: [CommonModule, DialogModule, FormsModule, CustomerListComponent, InvoiceViewComponent, PaymentListComponent, ProductDetailComponent],
+  imports: [CommonModule,CarouselModule, DialogModule, FormsModule, CustomerListComponent, InvoiceViewComponent, PaymentListComponent, ProductDetailComponent],
   templateUrl: './admin-dashboard.component.html',
   styleUrls: ['./admin-dashboard.component.css']
 })
 export class DashboardComponent implements OnInit, OnDestroy {
   private ngUnsubscribe = new Subject<void>();
 
+
+  
   // Data properties
   dashboardSummary: any;
   // dashboardSummary: ConsolidatedSummaryData | {} = {};
@@ -104,6 +149,24 @@ export class DashboardComponent implements OnInit, OnDestroy {
     return `₹${value.toLocaleString('en-IN')}`; // 'en-IN' for Indian Rupees format
   }
 
+responsiveOptions = [
+  {
+    breakpoint: '1024px',
+    numVisible: 1,
+    numScroll: 1
+  },
+  {
+    breakpoint: '768px',
+    numVisible: 1,
+    numScroll: 1
+  },
+  {
+    breakpoint: '560px',
+    numVisible: 1,
+    numScroll: 1
+  }
+];
+
   // Helper function to check if products array is valid and not empty
   hasProducts(): boolean {
     return this.dashboardSummary?.products?.lowStock !== null && Array.isArray(this.dashboardSummary?.products?.lowStock) && this.dashboardSummary?.products?.lowStock.length > 0;
@@ -127,6 +190,18 @@ export class DashboardComponent implements OnInit, OnDestroy {
     this.fetchOverallAverageRating();
     this.fetchRecentReviews({ limit: 5 });
     this.fetchTotalInventoryValue();
+  }
+
+   getUniqueInvoices(cartItems: any[]): Invoice[] {
+    const uniqueInvoiceMap = new Map<string, Invoice>();
+    cartItems.forEach(item => {
+      item.invoiceIds.forEach((invoice:any) => {
+        if (invoice.status === 'unpaid') { // Only show unpaid invoices
+          uniqueInvoiceMap.set(invoice._id, invoice);
+        }
+      });
+    });
+    return Array.from(uniqueInvoiceMap.values());
   }
 
   private getDateParams(): { period?: string, startDate?: string, endDate?: string } {
@@ -325,8 +400,21 @@ export class DashboardComponent implements OnInit, OnDestroy {
     };
   }
 
+getSeverity(status: string): string {
+  switch (status) {
+    case 'INSTOCK':
+      return 'success';
+    case 'LOWSTOCK':
+      return 'warning';
+    case 'OUTOFSTOCK':
+      return 'danger';
+    default:
+      return '';
+  }
+}
+
   ngOnDestroy(): void {
     this.ngUnsubscribe.next();
     this.ngUnsubscribe.complete();
   }
-}
+}  
