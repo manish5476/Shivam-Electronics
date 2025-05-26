@@ -17,6 +17,8 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { DialogModule } from 'primeng/dialog';
+import { IconFieldModule } from 'primeng/iconfield';
+import { InputIconModule } from 'primeng/inputicon';
 
 import { CarouselModule } from 'primeng/carousel';
 import { TableModule, TableRowCollapseEvent, TableRowExpandEvent, } from 'primeng/table';
@@ -29,7 +31,7 @@ import { MessageService, } from 'primeng/api';
 import { CommonMethodService } from '../../../../core/Utils/common-method.service';
 @Component({
   selector: 'app-dashboard-top-customer-view',
-  imports: [CommonModule, CarouselModule, DialogModule, FormsModule, TableModule, ButtonModule, InputTextModule, TagModule, ToastModule],
+  imports: [CommonModule, IconFieldModule, InputIconModule, CarouselModule, DialogModule, FormsModule, TableModule, ButtonModule, InputTextModule, TagModule, ToastModule],
   templateUrl: './dashboard-top-customer-view.component.html',
   styleUrl: './dashboard-top-customer-view.component.css'
 })
@@ -42,6 +44,7 @@ export class DashboardTopCustomerViewComponent {
   expandedProductRows: { [key: string]: boolean } = {}; // For nested product rows
   getDateParam: any
   topCustomers: any
+  scale: any;
   // 
 
   constructor(private dashboardService: DashboardService, public CommonMethodService: CommonMethodService, private messageService: MessageService) { }
