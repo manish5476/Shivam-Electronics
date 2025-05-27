@@ -1,926 +1,399 @@
-/*  
-            background: linear-gradient(to bottom right, #e0f2f7, #f0f4f8); 
-            min-height: 100vh;
-            padding: 20px; 
-        }
+/* Dashboard container and grid styles remain as previously discussed,
+   ensuring overall layout is sound. */
+.dashboard-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
 
-        .soft-card {
-            background-color: rgba(255, 255, 255, 0.7); 
-            backdrop-filter: blur(10px); 
-            border: 1px solid rgba(255, 255, 255, 0.2); 
-            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.1); 
-            border-radius: 10px;
-        }
-
-        .gradient-blue {
-            background: linear-gradient(to bottom right, #60a5fa, #3b82f6); 
-            color: white;
-        }
-         .gradient-teal {
-            background: linear-gradient(to bottom right, #2dd4bf, #0d9488); 
-            color: white;
-        }
-         .gradient-black {
-            background: linear-gradient(to bottom right, #4b5563, #1f2937); 
-            color: white;
-        }
-         .gradient-yellow {
-            background: linear-gradient(to bottom right, #fcd34d, #fbbf24); 
-            color: white;
-        }
-
-        .left-nav-icon {
-             width: 45px; 
-             height: 45px;
-             display: flex;
-             align-items: center;
-             justify-content: center;
-             border-radius: 10px;
-             margin-bottom: 10px;
-             cursor: pointer;
-             background-color: rgba(255, 255, 255, 0.3); 
-             backdrop-filter: blur(5px);
-             box-shadow: 0 4px 10px 0 rgba(0, 0, 0, 0.05);
-             transition: all 0.2s ease-in-out;
-        }
-        .left-nav-icon:hover {
-             background-color: rgba(255, 255, 255, 0.5);
-        }
-         .left-nav-icon.active {
-             background-color: rgba(255, 255, 255, 0.8);
-             box-shadow: 0 4px 15px 0 rgba(0, 0, 0, 0.1);
-             color: #3b82f6; 
-         }
-
-         .calendar-day {
-             width: 30px;
-             height: 30px;
-             display: flex;
-             align-items: center;
-             justify-content: center;
-             border-radius: 5px;
-         }
-         .calendar-day.highlighted {
-             background-color: #3b82f6;
-             color: white;
-             font-weight: bold;
-         }
-         .calendar-day.today {
-             border: 2px solid #3b82f6;
-         }
-
-          .stage-funnel-item {
-             background-color: rgba(255, 255, 255, 0.5); 
-             backdrop-filter: blur(5px);
-             border-radius: 8px;
-             padding: 12px;
-             margin-bottom: 8px;
-             border: 1px solid rgba(255, 255, 255, 0.1);
-             box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.03);
-          }
-           .stage-funnel-item.active {
-                background-color: #3b82f6;
-                color: white;
-                 border: 1px solid rgba(255, 255, 255, 0.3);
-                 box-shadow: 0 4px 10px 0 rgba(0, 0, 0, 0.1);
-           }
-            .stage-funnel-item .value {
-                 font-size: 1.2rem;
-                 font-weight: bold;
-            }
-             .stage-funnel-item .label {
-                 font-size: 0.8rem;
-                 opacity: 0.8;
-             }
+.grid {
+  display: grid;
+  gap: 1rem;
+}
 
 .soft-card {
-  background-color: #ffffff; 
-  border-radius: 0.75rem; 
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); 
-  border: 1px solid #e5e7eb; 
-} 
-
-
-body {
-            background: linear-gradient(to bottom right, #e0f2f7, #f0f4f8); 
-            min-height: 100vh;
-            padding: 20px; 
-        }
-
-        .soft-card {
-            background-color: rgba(255, 255, 255, 0.7); 
-            backdrop-filter: blur(10px); 
-            border: 1px solid rgba(255, 255, 255, 0.2); 
-            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.1); 
-            border-radius: 10px;
-        }
-
-        .gradient-blue {
-            background: linear-gradient(to bottom right, #60a5fa, #3b82f6); 
-            color: white;
-        }
-         .gradient-teal {
-            background: linear-gradient(to bottom right, #2dd4bf, #0d9488); 
-            color: white;
-        }
-         .gradient-black {
-            background: linear-gradient(to bottom right, #4b5563, #1f2937); 
-            color: white;
-        }
-         .gradient-yellow {
-            background: linear-gradient(to bottom right, #fcd34d, #fbbf24); 
-            color: white;
-        }
-
-        .left-nav-icon {
-             width: 45px; 
-             height: 45px;
-             display: flex;
-             align-items: center;
-             justify-content: center;
-             border-radius: 10px;
-             margin-bottom: 10px;
-             cursor: pointer;
-             background-color: rgba(255, 255, 255, 0.3); 
-             backdrop-filter: blur(5px);
-             box-shadow: 0 4px 10px 0 rgba(0, 0, 0, 0.05);
-             transition: all 0.2s ease-in-out;
-        }
-        .left-nav-icon:hover {
-             background-color: rgba(255, 255, 255, 0.5);
-        }
-         .left-nav-icon.active {
-             background-color: rgba(255, 255, 255, 0.8);
-             box-shadow: 0 4px 15px 0 rgba(0, 0, 0, 0.1);
-             color: #3b82f6; 
-         }
-
-         .calendar-day {
-             width: 30px;
-             height: 30px;
-             display: flex;
-             align-items: center;
-             justify-content: center;
-             border-radius: 5px;
-         }
-         .calendar-day.highlighted {
-             background-color: #3b82f6;
-             color: white;
-             font-weight: bold;
-         }
-         .calendar-day.today {
-             border: 2px solid #3b82f6;
-         }
-
-          .stage-funnel-item {
-             background-color: rgba(255, 255, 255, 0.5); 
-             backdrop-filter: blur(5px);
-             border-radius: 8px;
-             padding: 12px;
-             margin-bottom: 8px;
-             border: 1px solid rgba(255, 255, 255, 0.1);
-             box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.03);
-          }
-           .stage-funnel-item.active {
-                background-color: #3b82f6;
-                color: white;
-                 border: 1px solid rgba(255, 255, 255, 0.3);
-                 box-shadow: 0 4px 10px 0 rgba(0, 0, 0, 0.1);
-           }
-            .stage-funnel-item .value {
-                 font-size: 1.2rem;
-                 font-weight: bold;
-            }
-             .stage-funnel-item .label {
-                 font-size: 0.8rem;
-                 opacity: 0.8;
-             }
-
-
-.soft-card {
-  background-color: #ffffff; 
-  border-radius: 0.75rem; 
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); 
-  border: 1px solid #e5e7eb; 
-} */
-
-body {
-            background: linear-gradient(to bottom right, #e0f2f7, #f0f4f8); /* Light gradient background */
-            min-height: 100vh;
-            padding: 20px; /* Add some padding around the content */
-        }
-
-        .soft-card {
-            background-color: rgba(255, 255, 255, 0.7); /* Semi-transparent white background */
-            backdrop-filter: blur(10px); /* Apply blur effect */
-            border: 1px solid rgba(255, 255, 255, 0.2); /* Light border */
-            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.1); /* Soft shadow */
-            border-radius: 10px;
-        }
-
-        .gradient-blue {
-            background: linear-gradient(to bottom right, #60a5fa, #3b82f6); /* Blue gradient */
-            color: white;
-        }
-         .gradient-teal {
-            background: linear-gradient(to bottom right, #2dd4bf, #0d9488); /* Teal gradient */
-            color: white;
-        }
-         .gradient-black {
-            background: linear-gradient(to bottom right, #4b5563, #1f2937); /* Dark gradient */
-            color: white;
-        }
-         .gradient-yellow {
-            background: linear-gradient(to bottom right, #fcd34d, #fbbf24); /* Yellow gradient */
-            color: white;
-        }
-
-        .left-nav-icon {
-             width: 45px; /* Slightly larger icons */
-             height: 45px;
-             display: flex;
-             align-items: center;
-             justify-content: center;
-             border-radius: 10px;
-             margin-bottom: 10px;
-             cursor: pointer;
-             background-color: rgba(255, 255, 255, 0.3); /* Semi-transparent background */
-             backdrop-filter: blur(5px);
-             box-shadow: 0 4px 10px 0 rgba(0, 0, 0, 0.05);
-             transition: all 0.2s ease-in-out;
-        }
-        .left-nav-icon:hover {
-             background-color: rgba(255, 255, 255, 0.5);
-        }
-         .left-nav-icon.active {
-             background-color: rgba(255, 255, 255, 0.8);
-             box-shadow: 0 4px 15px 0 rgba(0, 0, 0, 0.1);
-             color: #3b82f6; /* Highlight color */
-         }
-
-         .calendar-day {
-             width: 30px;
-             height: 30px;
-             display: flex;
-             align-items: center;
-             justify-content: center;
-             border-radius: 5px;
-         }
-         .calendar-day.highlighted {
-             background-color: #3b82f6;
-             color: white;
-             font-weight: bold;
-         }
-         .calendar-day.today {
-             border: 2px solid #3b82f6;
-         }
-
-          .stage-funnel-item {
-             background-color: rgba(255, 255, 255, 0.5); /* Semi-transparent */
-             backdrop-filter: blur(5px);
-             border-radius: 8px;
-             padding: 12px;
-             margin-bottom: 8px;
-             border: 1px solid rgba(255, 255, 255, 0.1);
-             box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.03);
-          }
-           .stage-funnel-item.active {
-                background-color: #3b82f6;
-                color: white;
-                 border: 1px solid rgba(255, 255, 255, 0.3);
-                 box-shadow: 0 4px 10px 0 rgba(0, 0, 0, 0.1);
-           }
-            .stage-funnel-item .value {
-                 font-size: 1.2rem;
-                 font-weight: bold;
-            }
-             .stage-funnel-item .label {
-                 font-size: 0.8rem;
-                 opacity: 0.8;
-             }
-
-/* Custom soft-card style - ensure this is present */
-.soft-card {
-  background-color: #ffffff; /* White background */
-  border-radius: 0.75rem; /* Rounded corners */
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Soft shadow */
-  border: 1px solid #e5e7eb; /* Light border */
-}
-
-/* Basic Tailwind form element styles (you might need @tailwindcss/forms plugin for more comprehensive styles) */
-.form-label {
-  display: block;
-  font-size: 0.875rem; /* text-sm */
-  font-weight: 500; /* font-medium */
-  color: #374151; /* gray-700 */
-  margin-bottom: 0.25rem; /* mb-1 */
-}
-
-.form-select,
-.form-input {
-  display: block;
-  width: 100%;
-  border-radius: 0.375rem; /* rounded-md */
-  border: 1px solid #d1d5db; /* border-gray-300 */
-  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05); /* shadow-sm */
-  padding: 0.5rem 0.75rem; /* py-2 px-3 */
-  font-size: 1rem; /* text-base */
-  color: #374151; /* gray-700 */
-}
-
-.form-select:focus,
-.form-input:focus {
-  border-color: #60a5fa; /* blue-400 */
-  ring: 3px;
-  ring-color: #93c5fd; /* blue-300 */
-  ring-opacity: 0.5;
-  outline: none;
-}
-
-
-@layer utilities {
-  .no-scrollbar::-webkit-scrollbar {
-    display: none;
-  }
-  .no-scrollbar {
-    -ms-overflow-style: none;
-    scrollbar-width: none;
-  }
-}
-
-/* Custom soft-card style - ensure this is present */
-.soft-card {
-  background-color: #ffffff;
   border-radius: 0.75rem;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  border: 1px solid #e5e7eb;
+  background-color: #ffffff;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+  padding: 1.5rem;
+}
+
+.soft-card.p-4 {
   padding: 1rem;
-}
-
-/* Basic Tailwind form element styles */
-.form-label {
-  display: block;
-  font-size: 0.875rem;
-  font-weight: 500;
-  color: #374151;
-  margin-bottom: 0.25rem;
-}
-
-.form-select,
-.form-input {
-  display: block;
-  width: 100%;
-  border-radius: 0.375rem;
-  border: 1px solid #d1d5db;
-  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-  padding: 0.5rem 0.75rem;
-  font-size: 1rem;
-  color: #374151;
-}
-
-.form-select:focus,
-.form-input:focus {
-  border-color: #60a5fa;
-  outline: 2px solid #93c5fd;
-  outline-offset: 1px;
-}
-
-
-@layer utilities {
-  .no-scrollbar::-webkit-scrollbar {
-    display: none;
-  }
-  .no-scrollbar {
-    -ms-overflow-style: none;
-    scrollbar-width: none;
-  }
-}
-
-/* Base Styles */
-body {
-  background: linear-gradient(135deg, #f0f4f8, #e8edf2);
-  font-family: 'Inter', sans-serif;
-  color: #334155;
 }
 
 .carousel-container {
   width: 100%;
-  max-width: 1000px;
-  margin: 2rem auto;
+  overflow: hidden;
 }
 
-/* Styling for the items within the PrimeNG carousel */
-:host ::ng-deep .p-carousel .p-carousel-item,
-.p-carousel .p-carousel-item { /* For global CSS */
-  padding: 0 0.75rem;
-  box-sizing: border-box;
-}
+/* --- PrimeNG Carousel Internal Content Adjustments --- */
 
-/* --- Main Customer Profile Card --- */
-.profile-card {
-  position: relative;
-  background: linear-gradient(145deg, #ffffff, #f8fafd);
-  border-radius: 20px;
-  padding: 1.75rem; /* Reduced from 2rem */
-  margin: 0;
+/* Ensures the PrimeNG carousel content area fills its container */
+:host ::ng-deep .p-carousel .p-carousel-content {
   width: 100%;
-  box-sizing: border-box;
-  height: 600px; /* << TARGET HEIGHT >> */
+  height: 100%;
+  /* Important: Make content fill available height */
   display: flex;
-  flex-direction: column;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.07), /* Adjusted shadow for new size */
-    0 0 6px rgba(96, 165, 250, 0.03);
-  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-  overflow: hidden; /* Important to contain content within 600px */
-  border: 1px solid #e2e8f0;
+  align-items: stretch;
+  /* Stretch items to fill the height */
 }
 
-.profile-card:hover {
-  transform: translateY(-6px); /* Slightly less transform for compact card */
-  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.1),
-    0 0 12px rgba(96, 165, 250, 0.07);
-}
-
-.card-content {
-  position: relative;
-  z-index: 2;
-  display: flex;
-  flex-direction: column;
-  flex-grow: 1;
-  overflow-y: auto; /* Allow content to scroll if it still overflows due to dynamic data */
-  padding-right: 5px; /* Space for scrollbar if it appears, adjust if using custom scrollbar */
-}
-
-
-/* --- Header Section Layout --- */
-.header-section {
-  display: flex;
-  width: 100%;
-  margin-bottom: 1.25rem; /* Reduced from 1.8rem */
-  align-items: flex-start;
-  flex-shrink: 0; /* Prevent header from shrinking too much */
-}
-
-.image-and-info-wrapper {
-  display: flex;
-  align-items: center;
-  gap: 1.25rem; /* Reduced from 1.5rem */
-  flex-grow: 1;
-}
-
-.image-wrapper {
+/* Ensure each carousel item takes its full calculated width and height */
+:host ::ng-deep .p-carousel .p-carousel-items-content .p-carousel-item {
+  width: 100% !important;
+  /* Force full width for single item display */
   flex-shrink: 0;
-  width: 70px; /* Reduced from 80px */
-  height: 70px; /* Reduced from 80px */
-  border-radius: 12px; /* Adjusted */
-  overflow: hidden;
-  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
-  border: 2px solid #e0e7ee;
-  transition: transform 0.2s ease-out;
-}
-
-.image-wrapper:hover {
-  transform: scale(1.05);
-}
-
-.rounded-square-image {
-  width: 100%;
   height: 100%;
-  object-fit: cover;
+  /* Important: Make item fill available height */
+  display: flex;
+  /* Use flexbox for inner alignment if needed */
+  justify-content: center;
+  /* Center content horizontally */
+  align-items: center;
+  /* Center content vertically */
 }
 
-.customer-info-header {
-  text-align: left;
+/* The actual customer article within the main carousel */
+article {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  /* The article must fill its parent carousel item */
+  width: 100%;
+  /* Ensure article takes full width of the item */
+  max-width: 100%;
+  /* Override the max-width-xl from Tailwind on article if it's too restrictive for the carousel item */
+  box-sizing: border-box;
+  /* Include padding and border in the element's total width and height */
+}
+
+/* Adjustments for the outstanding invoices carousel within the article */
+article .p-carousel {
+  width: 100%;
+  /* Ensure inner carousel takes full width */
+}
+
+:host ::ng-deep article .p-carousel .p-carousel-content {
+  height: auto;
+  /* Allow inner carousel content to determine its height */
+}
+
+:host ::ng-deep article .p-carousel .p-carousel-item {
+  width: 100% !important;
+  height: auto;
+  /* Allow inner carousel items to determine their height */
+  padding: 0 0.5rem;
+  /* Add some horizontal padding for spacing between inner carousel items if they were showing multiple */
+  box-sizing: border-box;
+}
+
+/* If the "grid grid-cols-2 gap-2" within the article is causing issues,
+     you might need to adjust its behavior slightly */
+article .grid.grid-cols-2.gap-2 {
+  flex-wrap: wrap;
+  /* Allows items to wrap if space is constrained */
+}
+
+/* Adjust positioning for carousel indicators */
+:host ::ng-deep .p-carousel-indicators {
+  margin-top: 1rem;
+  justify-content: center;
+  /* Center the indicators */
+}
+
+/* Product list scrollbar utility */
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+/* ... (previous CSS remains the same for dashboard-container, soft-card, and carousel) ... */
+
+/* Adjustments for the Product List section */
+.soft-card.p-6.overflow-y-auto.no-scrollbar {
+  height: 459px;
+  /* Keep fixed height for the soft-card itself */
+  /* Remove overflow-y-auto from here as we're making the inner grid scroll horizontally */
+  overflow: hidden;
+  /* Hide overflow of the soft-card itself */
+}
+
+.soft-card h3.text-lg.font-semibold.text-gray-800.mb-4 {
+  /* Ensure the heading doesn't participate in scrolling */
+  flex-shrink: 0;
+}
+
+.soft-card>div.grid {
+  /* This is the key change for horizontal scrolling */
+  display: flex;
+  /* Change grid to flex to allow horizontal arrangement */
+  flex-wrap: nowrap;
+  /* Prevent wrapping, forcing items onto a single line */
+  overflow-x: auto;
+  /* Enable horizontal scrolling */
+  gap: 1.5rem;
+  /* Equivalent to gap-6, provides space between product cards */
+  padding-bottom: 1rem;
+  /* Add some padding at the bottom for scrollbar visibility */
+}
+
+/* Optional: Make the individual product cards flexible within the scrollable container */
+.soft-card>div.grid>div.relative {
+  flex-shrink: 0;
+  /* Prevent product cards from shrinking */
+  width: 250px;
+  /* Give each product card a fixed width or min-width */
+  max-width: 300px;
+  /* Adjust max-width as needed */
+  /* Remove mx-auto from the product card, as it's for centering, not for a scrollable flex item */
+  margin-left: 0.5rem;
+  /* Add some margin to the left for separation if desired */
+  margin-right: 0.5rem;
+  /* Add some margin to the right for separation if desired */
+}
+
+/* Re-apply no-scrollbar if you want to hide the horizontal scrollbar too */
+.soft-card>div.grid::-webkit-scrollbar {
+  display: none;
+  /* For Webkit browsers */
+}
+
+.soft-card>div.grid {
+  -ms-overflow-style: none;
+  /* For IE and Edge */
+  scrollbar-width: none;
+  /* For Firefox */
+}
+
+/* ... (previous CSS for dashboard-container, soft-card, and carousel remains the same) ... */
+
+/* Adjustments for the Product List section */
+.soft-card.p-6.overflow-y-auto.no-scrollbar {
+  height: 459px;
+  /* Keep fixed height for the soft-card itself */
+  /* Remove overflow-y-auto from here as we're making the inner grid scroll horizontally */
+  overflow: hidden;
+  background-color: #F2F2F2;
+  /* Hide overflow of the soft-card itself */
+  display: flex;
+  /* Make this parent soft-card a flex container */
+  flex-direction: column;
+  /* Stack children vertically */
+}
+
+.soft-card h3.text-lg.font-semibold.text-gray-800.mb-4 {
+  /* Ensure the heading doesn't participate in scrolling */
+  flex-shrink: 0;
+  /* Prevents shrinking */
+  padding-bottom: 1rem;
+  /* Add some space below the heading */
+}
+
+.soft-card>div.grid {
+  /* This is the key change for horizontal scrolling */
+  display: flex;
+  /* Change grid to flex to allow horizontal arrangement */
+  flex-wrap: nowrap;
+  /* Prevent wrapping, forcing items onto a single line */
+  overflow-x: auto;
+  /* Enable horizontal scrolling */
+  gap: 2rem;
+  /* Increased gap between product cards (equivalent to gap-8 or more) */
+  padding-bottom: 1rem;
+  /* Add some padding at the bottom for scrollbar visibility */
   flex-grow: 1;
+  /* Allow the product grid to grow and take available space */
 }
 
-.customer-info-header .name {
-  font-size: 1.5rem; /* Reduced from 1.75rem */
-  font-weight: 700;
-  margin-bottom: 0.25rem; /* Reduced from 0.4rem */
-  color: #1e293b;
-  line-height: 1.2;
-}
+/* Specific styling for individual product cards within the scrollable product list */
+.soft-card>div.grid>div.relative {
+  flex-shrink: 0;
+  /* Prevent product cards from shrinking */
+  width: 320px;
+  /* **Increased fixed width for each product card** */
+  max-width: 350px;
+  /* **Optional: Set a maximum width if you want a cap** */
+  min-width: 280px;
+  /* **Optional: Ensure a minimum width to prevent them from becoming too small** */
+  /* Remove mx-auto from the product card, as it's for centering, not for a scrollable flex item */
+  /* If you want margin, use padding on the parent grid or specific margins here */
+  /* margin-left: 1rem; */
+  /* Example: if you need additional left margin */
+  /* margin-right: 1rem; */
+  /* Example: if you need additional right margin */
 
-.customer-info-header .contact-detail {
-  font-size: 0.8rem; /* Reduced from 0.9rem */
-  color: #64748b;
-  margin-bottom: 0.15rem; /* Reduced */
+  /* Ensure content within the card flows nicely with the new width */
+  padding: 1.5rem;
+  /* Ensure consistent padding inside the card */
   display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  gap: 0.4rem; /* Reduced */
-}
-
-.customer-info-header .contact-detail i {
-  font-size: 0.75rem; /* Reduced */
-  color: #3b82f6;
-}
-
-/* --- Stats Section --- */
-.stats-section {
-  display: flex;
-  justify-content: space-around;
-  width: 100%;
-  padding: 1rem 0; /* Reduced from 1.2rem */
-  border-top: 1px solid #e2e8f0;
-  border-bottom: 1px solid #e2e8f0;
-  margin-bottom: 1.25rem; /* Reduced from 1.8rem */
-  flex-shrink: 0; /* Prevent stats from shrinking too much */
-}
-
-.stat-item {
-  display: flex;
+  /* Make the card itself a flex container */
   flex-direction: column;
-  gap: 0.3rem; /* Reduced from 0.5rem */
-  text-align: center;
-}
-
-.stat-value {
-  font-size: 1.3rem; /* Reduced from 1.5rem */
-  font-weight: 700;
-  background: linear-gradient(to right, #60a5fa, #3b82f6);
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
-}
-
-.stat-label {
-  font-size: 0.75rem; /* Reduced from 0.85rem */
-  color: #64748b;
-}
-
-/* --- Mini Carousel for Invoices --- */
-.invoice-carousel-container {
-  width: 100%;
-  margin-bottom: 1.25rem; /* Reduced from 2rem */
-  background: #f8fafc;
-  padding: 1rem; /* Reduced from 1.2rem */
-  border-radius: 10px; /* Adjusted */
-  box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.04);
-  border: 1px solid #e2e8f0;
-  /* flex-grow: 1; */ /* Allow this section to take available space if needed, but fixed height is tricky */
-  /* Consider a max-height for this container if it can have many invoices */
-  /* max-height: 200px; */ /* Example: if invoices become scrollable within this container */
-  /* overflow-y: auto; */ /* If max-height is set */
-}
-
-.invoice-carousel-container h3 {
-  font-size: 1.1rem; /* Reduced from 1.25rem */
-  color: #1e293b;
-  margin-bottom: 0.8rem; /* Reduced from 1.2rem */
-  text-align: center;
-  background: linear-gradient(to right, #60a5fa, #3b82f6);
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
-  font-weight: 600;
-}
-
-.invoice-card {
-  padding: 0.8rem 1rem; /* Reduced from 1rem 1.2rem */
-  background: #ffffff;
-  border-radius: 8px; /* Adjusted */
-  margin: 0 0.4rem; /* Reduced */
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.07);
-  display: flex;
-  flex-direction: column;
+  /* Stack contents vertically */
   justify-content: space-between;
-  min-height: 155px; /* Reduced from 190px -> key saving */
-  color: #475569;
-  border: 1px solid #e2e8f0;
+  /* Distribute space vertically */
+  align-items: flex-start;
+  /* Align content to the start */
+  /* Remove bg-slate-400 if it was just for testing; use bg-white or similar for clean look */
+  background-color: #ffffff;
+  /* Typically white for soft-card */
 }
 
-.invoice-detail p {
-  margin-bottom: 0.35rem; /* Reduced from 0.5rem */
-  font-size: 0.8rem; /* Reduced from 0.9rem */
-  color: #475569;
-  text-align: left;
-}
-
-.invoice-detail p strong {
-  color: #1e293b;
-}
-
-.invoice-actions {
-  display: flex;
-  justify-content: space-around;
-  gap: 0.6rem; /* Reduced from 0.8rem */
-  margin-top: 0.8rem; /* Reduced from 1rem */
-}
-
-.invoice-actions button {
-  flex: 1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.4rem; /* Reduced */
-  padding: 0.4rem 0.6rem; /* Reduced */
-  border-radius: 5px; /* Adjusted */
-  font-size: 0.75rem; /* Reduced */
-  font-weight: 500;
-  transition: all 0.2s ease-out;
-}
-
-.invoice-actions .p-button-text {
-  background: #f0f4f8;
-  color: #3b82f6;
-  border: 1px solid #d1e0f0;
-}
-
-.invoice-actions .p-button-text:hover {
-  background: #e2e8f0;
-  color: #2563eb;
-}
-
-.invoice-actions .p-button-success {
-  background: linear-gradient(45deg, #10b981, #059669);
-  color: white;
-  border: none;
-}
-
-.invoice-actions .p-button-success:hover {
-  background: linear-gradient(45deg, #059669, #10b981);
-  transform: translateY(-1px); /* Reduced transform */
-  box-shadow: 0 2px 6px rgba(5, 150, 105, 0.15); /* Adjusted shadow */
-}
-
-.no-invoices-message {
-  color: #94a3b8;
-  text-align: center;
-  padding: 1rem; /* Reduced */
-  font-style: italic;
-  font-size: 0.9rem; /* Adjusted */
-}
-
-/* --- Global Actions for the customer card --- */
-.global-actions {
-  display: flex;
-  gap: 0.8rem; /* Reduced from 1rem */
+/* Styling for elements inside the product card to accommodate increased width */
+.soft-card>div.grid>div.relative .flex.items-center.gap-4.mb-4 {
   width: 100%;
-  margin-top: auto; /* Sticks to bottom */
-  padding-top: 1rem; /* Reduced from 1.5rem */
-  border-top: 1px solid #e2e8f0;
-  flex-shrink: 0; /* Prevent actions from shrinking too much */
+  /* Ensure the image and text section takes full width */
 }
 
-.action-btn {
-  flex: 1;
-  position: relative;
-  padding: 0.7rem; /* Reduced from 0.8rem */
-  border: none;
-  border-radius: 8px; /* Adjusted */
-  font-size: 0.9rem; /* Reduced from 0.95rem */
-  font-weight: 600;
-  cursor: pointer;
+.soft-card>div.grid>div.relative .flex.flex-col {
+  flex-grow: 1;
+  /* Allow the text content to grow and take available space */
+}
+
+.soft-card>div.grid>div.relative h2 {
+  white-space: normal;
+  /* Allow title to wrap */
+  line-height: 1.3;
+  /* Adjust line height for better readability */
+}
+
+.soft-card>div.grid>div.relative .grid.grid-cols-2.gap-4.text-sm.mt-4 {
+  width: 100%;
+  /* Ensure price and stock section takes full width */
+  margin-top: auto;
+  /* Push this section to the bottom if content above is shorter */
+}
+
+
+/* Re-apply no-scrollbar if you want to hide the horizontal scrollbar too */
+.soft-card>div.grid::-webkit-scrollbar {
+  display: none;
+  /* For Webkit browsers */
+}
+
+.soft-card>div.grid {
+  -ms-overflow-style: none;
+  /* For IE and Edge */
+  scrollbar-width: none;
+  /* For Firefox */
+}
+
+/* ... (rest of your CSS like .h-16, .w-16, p-dialog styles remain unchanged) ... */
+/* ... (previous CSS for dashboard-container, soft-card, and carousel remains the same) ... */
+
+/* Adjustments for the Product List section */
+.soft-card.p-6.overflow-y-auto.no-scrollbar {
+  height: 459px;
+  /* Keep fixed height for the soft-card itself */
+  /* Remove overflow-y-auto from here as we're making the inner grid scroll horizontally */
   overflow: hidden;
-  transition: all 0.3s ease-out;
+  /* Hide overflow of the soft-card itself */
   display: flex;
-  align-items: center;
-  justify-content: center;
+  /* Make this parent soft-card a flex container */
+  flex-direction: column;
+  /* Stack children vertically */
 }
 
-.action-btn span {
-  position: relative;
-  z-index: 1;
+.soft-card h3.text-lg.font-semibold.text-gray-800.mb-4 {
+  /* Ensure the heading doesn't participate in scrolling */
+  flex-shrink: 0;
+  /* Prevents shrinking */
+  padding-bottom: 1rem;
+  /* Add some space below the heading */
 }
 
-.btn-effect {
-  position: absolute;
-  inset: 0;
-  transition: opacity 0.3s ease;
+.soft-card>div.grid {
+  /* This is the key change for horizontal scrolling */
+  display: flex;
+  /* Change grid to flex to allow horizontal arrangement */
+  flex-wrap: nowrap;
+  /* Prevent wrapping, forcing items onto a single line */
+  overflow-x: auto;
+  /* Enable horizontal scrolling */
+  gap: 2rem;
+  /* Increased gap between product cards (equivalent to gap-8 or more) */
+  padding-bottom: 1rem;
+  /* Add some padding at the bottom for scrollbar visibility */
+  flex-grow: 1;
+  /* Allow the product grid to grow and take available space */
 }
 
-.primary {
-  background: linear-gradient(45deg, #60a5fa, #3b82f6);
-  color: white;
-  border: 1px solid #3b82f6;
+/* Specific styling for individual product cards within the scrollable product list */
+.soft-card>div.grid>div.relative {
+  flex-shrink: 0;
+  /* Prevent product cards from shrinking */
+  width: 320px;
+  /* **Increased fixed width for each product card** */
+  max-width: 350px;
+  /* **Optional: Set a maximum width if you want a cap** */
+  min-width: 280px;
+  /* **Optional: Ensure a minimum width to prevent them from becoming too small** */
+  /* Remove mx-auto from the product card, as it's for centering, not for a scrollable flex item */
+  /* If you want margin, use padding on the parent grid or specific margins here */
+  /* margin-left: 1rem; */
+  /* Example: if you need additional left margin */
+  /* margin-right: 1rem; */
+  /* Example: if you need additional right margin */
+
+  /* Ensure content within the card flows nicely with the new width */
+  padding: 1.5rem;
+  /* Ensure consistent padding inside the card */
+  display: flex;
+  /* Make the card itself a flex container */
+  flex-direction: column;
+  /* Stack contents vertically */
+  justify-content: space-between;
+  /* Distribute space vertically */
+  align-items: flex-start;
+  /* Align content to the start */
+  /* Remove bg-slate-400 if it was just for testing; use bg-white or similar for clean look */
+  background-color: #ffffff;
+  /* Typically white for soft-card */
 }
 
-.primary .btn-effect {
-  background: rgba(255, 255, 255, 0.2);
-  opacity: 0;
-}
-
-.primary:hover .btn-effect {
-  opacity: 1;
-}
-.primary:hover {
-  transform: translateY(-2px); /* Reduced transform */
-  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.25); /* Adjusted shadow */
-}
-
-.secondary {
-  background: #f0f4f8;
-  color: #3b82f6;
-  border: 1px solid #d1e0f0;
-}
-
-.secondary .btn-effect {
-  background: rgba(59, 130, 246, 0.1);
-  opacity: 0;
-}
-
-.secondary:hover .btn-effect {
-  opacity: 1;
-}
-.secondary:hover {
-  color: #2563eb;
-  transform: translateY(-2px); /* Reduced transform */
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04); /* Adjusted shadow */
-}
-
-/* Card Effects - adjusted for light theme */
-.card-shine {
-  position: absolute;
-  top: 0;
-  left: -100%;
+/* Styling for elements inside the product card to accommodate increased width */
+.soft-card>div.grid>div.relative .flex.items-center.gap-4.mb-4 {
   width: 100%;
-  height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent); /* Slightly softer shine */
-  animation: shine 8s infinite cubic-bezier(0.4, 0, 0.6, 1);
+  /* Ensure the image and text section takes full width */
 }
 
-@keyframes shine {
-  to {
-    left: 200%;
-  }
+.soft-card>div.grid>div.relative .flex.flex-col {
+  flex-grow: 1;
+  /* Allow the text content to grow and take available space */
 }
 
-.card-border {
-  position: absolute;
-  inset: 0;
-  border: 2px solid transparent;
-  border-radius: 20px; /* Matches main card border-radius */
-  background: linear-gradient(45deg, #60a5fa, #3b82f6) border-box;
-  -webkit-mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
-  mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
-  -webkit-mask-composite: destination-out;
-  mask-composite: exclude;
-  opacity: 0;
-  transition: opacity 0.3s ease-out;
-  pointer-events: none;
+.soft-card>div.grid>div.relative h2 {
+  white-space: normal;
+  /* Allow title to wrap */
+  line-height: 1.3;
+  /* Adjust line height for better readability */
 }
 
-.profile-card:hover .card-border {
-  opacity: 1;
+.soft-card>div.grid>div.relative .grid.grid-cols-2.gap-4.text-sm.mt-4 {
+  width: 100%;
+  /* Ensure price and stock section takes full width */
+  margin-top: auto;
+  /* Push this section to the bottom if content above is shorter */
 }
 
 
-.card-glow {
-  position: absolute;
-  inset: -4px; /* Adjusted */
-  background: linear-gradient(45deg, #60a5fa, #3b82f6);
-  border-radius: 24px; /* Adjusted */
-  opacity: 0;
-  filter: blur(18px); /* Adjusted blur */
-  transition: opacity 0.3s ease-out;
-  z-index: -1;
-  pointer-events: none;
+/* Re-apply no-scrollbar if you want to hide the horizontal scrollbar too */
+.soft-card>div.grid::-webkit-scrollbar {
+  display: none;
+  /* For Webkit browsers */
 }
 
-.profile-card:hover .card-glow {
-  opacity: 0.12; /* Adjusted */
+.soft-card>div.grid {
+  -ms-overflow-style: none;
+  /* For IE and Edge */
+  scrollbar-width: none;
+  /* For Firefox */
 }
 
-/* Responsive Design for Carousel */
-@media (min-width: 769px) and (max-width: 1024px) {
-  :host ::ng-deep .p-carousel .p-carousel-item,
-  .p-carousel .p-carousel-item {
-    padding: 0 0.5rem;
-  }
-}
+/* ... (rest of your CSS like .h-16, .w-16, p-dialog styles remain unchanged) ... */
 
-
-
-/* For the main table header */
-.main-table-header th {
-  background-color: #3B82F6 !important; /* Use !important if PrimeNG styles override */
-  color: white !important;
-  padding: 0.75rem 1rem !important;
-}
-/* Preserve specific widths */
-.main-table-header th.expander-column {
-  width: 5rem;
-}
-.main-table-header th.actions-column {
-  width: 4rem; /* Adjusted to match your 4rem style */
-}
-
-/* For the nested products table header */
-.products-table-header th {
-  background-color: #60A5FA !important;
-  color: white !important;
-  padding: 0.5rem 0.75rem !important;
-}
-.products-table-header th.expander-column-sm {
-  width: 3rem;
-}
-
-
-/* For the nested invoices table header */
-.invoices-table-header th {
-  background-color: #93C5FD !important;
-  color: #1E3A8A !important; /* Dark blue text for light blue background */
-  padding: 0.5rem 0.75rem !important;
-}
-
-@media (max-width: 768px) {
-  :host ::ng-deep .p-carousel .p-carousel-item,
-  .p-carousel .p-carousel-item {
-    padding: 0 0.25rem;
-  }
-
-  .profile-card {
-    height: auto; /* Mobile should be auto height */
-    min-height: auto;
-    padding: 1.25rem; /* Further compact for mobile */
-  }
-
-  .header-section {
-    justify-content: center;
-    margin-bottom: 1rem; /* Mobile spacing */
-  }
-  .image-and-info-wrapper {
-    flex-direction: column;
-    gap: 0.75rem; /* Mobile spacing */
-  }
-  .customer-info-header .name {
-    font-size: 1.3rem; /* Mobile font */
-  }
-  .customer-info-header .contact-detail {
-    font-size: 0.75rem; /* Mobile font */
-  }
-
-
-  .stats-section {
-    flex-direction: column;
-    gap: 0.75rem; /* Mobile spacing */
-    margin-bottom: 1rem; /* Mobile spacing */
-    padding: 0.75rem 0; /* Mobile spacing */
-  }
-  .stat-value {
-    font-size: 1.2rem; /* Mobile font */
-  }
-  .stat-label {
-    font-size: 0.7rem; /* Mobile font */
-  }
-
-  .invoice-carousel-container {
-    padding: 0.75rem; /* Mobile spacing */
-    margin-bottom: 1rem; /* Mobile spacing */
-  }
-  .invoice-carousel-container h3 {
-    font-size: 1rem; /* Mobile font */
-    margin-bottom: 0.75rem; /* Mobile spacing */
-  }
-  .invoice-card {
-    min-height: auto; /* Mobile should be auto */
-    padding: 0.7rem; /* Mobile spacing */
-  }
-  .invoice-detail p {
-    font-size: 0.75rem; /* Mobile font */
-  }
-
-
-  .global-actions {
-    flex-direction: column;
-    gap: 0.6rem; /* Mobile spacing */
-    padding-top: 0.75rem; /* Mobile spacing */
-  }
-  .action-btn {
-    padding: 0.6rem; /* Mobile spacing */
-    font-size: 0.85rem; /* Mobile font */
-  }
-}
-
-/* Even smaller screens, if needed */
-@media (max-width: 480px) { /* Was 560px, adjusted for more granularity */
-  .profile-card {
-    padding: 1rem;
-  }
-  .image-wrapper {
-    width: 60px;
-    height: 60px;
-  }
-  .customer-info-header .name {
-    font-size: 1.2rem;
-  }
-  .stat-value {
-    font-size: 1.1rem;
-  }
-  .invoice-card {
-    padding: 0.6rem;
-  }
-  .invoice-detail p {
-    font-size: 0.7rem;
-  }
-  .invoice-actions button {
-    font-size: 0.7rem;
-    padding: 0.4rem 0.5rem;
-  }
-  .action-btn {
-    font-size: 0.8rem;
-  }
-}
-
+/* ... (rest of your CSS like .h-16, .w-16, p-dialog styles remain unchanged) ... */

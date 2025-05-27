@@ -35,7 +35,9 @@ import { InputTextModule, } from 'primeng/inputtext'; // For search input
 import { TagModule } from 'primeng/tag';
 import { ToastModule, } from 'primeng/toast'; // For toast messages
 import { MessageService, } from 'primeng/api';
-import { DashboardTopCustomerViewComponent } from "../components/dashboard-top-customer-view/dashboard-top-customer-view.component"; // For toast messages
+import { DashboardTopCustomerViewComponent } from "../components/dashboard-top-customer-view/dashboard-top-customer-view.component";
+import { MainDashboardComponent } from "../../../layouts/main-dashboard/main-dashboard.component";
+import { DashboardSummaryComponent } from "../components/dashboard-summary/dashboard-summary.component"; // For toast messages
 type Severity = "success" | "secondary" | "info" | "warn" | "danger" | "contrast" | undefined;
 interface Invoice {
   _id: string;
@@ -80,8 +82,7 @@ interface CustomerData {
 @Component({
   selector: 'app-admin-dashboard',
   standalone: true,
-  imports: [CommonModule, CarouselModule, DialogModule, FormsModule, CustomerListComponent,
-    InvoiceViewComponent, PaymentListComponent, ProductDetailComponent, InvoicePrintComponent, TableModule, ButtonModule, InputTextModule, TagModule, ToastModule,  DashboardTopCustomerViewComponent],
+  imports: [CommonModule, CarouselModule, DialogModule, FormsModule, TableModule, ButtonModule, InputTextModule, TagModule, ToastModule, DashboardTopCustomerViewComponent, DashboardSummaryComponent,],
   templateUrl: './admin-dashboard.component.html',
   styleUrls: ['./admin-dashboard.component.css']
 })
@@ -91,7 +92,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
   filteredCustomers: any[] = [];
   expandedRows: { [key: string]: boolean } = {};
   expandedProductRows: { [key: string]: boolean } = {}; // For nested product rows
-getDateParam:any
+  getDateParam: any
   // 
   // Data properties
   dashboardSummary: any;
@@ -123,6 +124,7 @@ getDateParam:any
   showproductGrid: boolean = false
   showInvoiceGrid: boolean = false
   showPaymentGrid: boolean = false
+  showpdf: any;
 
   // Example Chart Configuration (if using ng2-charts)
   // public salesTrendsChartType: ChartType = 'line';
@@ -180,9 +182,9 @@ getDateParam:any
   loadAllDashboardData(): void {
     this.errorMessage = null; // Clear previous errors
     const dateParams = this.getDateParams();
-this.getDateParam =dateParams
+    this.getDateParam = dateParams
     this.fetchTotalRevenue()
-    this.fetchDashboardSummary(dateParams);
+    // this.fetchDashboardSummary(dateParams);
     this.fetchSalesTrends({ days: 30 }); // Default to 30 days, or use dateParams for period-based
     this.fetchTopSellingProducts({ ...dateParams, limit: 5, sortBy: 'revenue' });
     this.fetchLowStockProducts({ threshold: 10, limit: 5 });
@@ -292,7 +294,7 @@ this.getDateParam =dateParams
         if (response) this.lowStockProducts = response.data;
       });
   }
-  
+
   fetchOutOfStockProducts(params: any): void {
     this.dashboardService.getOutOfStockProducts(params)
       .pipe(takeUntil(this.ngUnsubscribe), catchError(this.CommonMethodService.handleError<ApiResponse<ProductInsightData[]>>()))

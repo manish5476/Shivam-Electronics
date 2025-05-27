@@ -1,31 +1,19 @@
-<div class="flex bg-gray-400 rounded-md min-h-screen w-full">
+<div class="dashboard-main-container">
   <div class="flex-1 p-4 pt-1 md:p-6">
     <header class="flex justify-between items-center mb-6">
       <div class="flex items-center space-x-2">
         <svg class="w-6 h-6 text-gray-50" fill="none" stroke="currentColor" viewBox="0 0 24 24"
           xmlns="http://www.w3.org/2000/svg">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
-        </svg> <span class="text-xl font-bold text-gray-50">Shivam Electronics</span>
+        </svg>
+        <span class="text-xl font-bold text-gray-50">Shivam Electronics</span>
       </div>
-      <!-- <nav class="space-x-6 text-gray-600 hidden md:flex">
-        <a href="" class="hover:text-gray-800"></a>
-        <a href="" class="hover:text-gray-800">Coming.....</a>
-        <a href="" class="hover:text-gray-800">Coming.....</a>
-      </nav> -->
-
-      <!-- <div class="flex items-center space-x-4">
-        <i class="fa fa-search text-gray-600 cursor-pointer"></i>
-        <i class="fa fa-bell text-gray-600 cursor-pointer"></i>
-        <i class="fa fa-cog text-gray-600 cursor-pointer"></i>
-        <img class="w-8 h-8 rounded-full" src="https://via.placeholder.com/32" alt="Profile Picture">
-      </div> -->
     </header>
 
-    <div class="soft-card p-4  mb-6">
-      <!-- <h5 class="text-lg font-semibold text-gray-800 mb-4">Filters</h5> -->
+    <div class="soft-card p-4 mb-6">
       <div class="flex flex-wrap items-end -mx-2">
-        <div class="w-full md:w-1/4 px-2 mb-4 md:mb-0"> <label for="periodSelect"
-            class="block text-sm font-medium text-gray-700 mb-1">Predefined Period:</label>
+        <div class="w-full md:w-1/4 px-2 mb-4 md:mb-0">
+          <label for="periodSelect" class="block text-sm font-medium text-gray-700 mb-1">Predefined Period:</label>
           <select id="periodSelect"
             class="form-select block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50"
             [(ngModel)]="selectedPeriod" (ngModelChange)="onPeriodChange($event)">
@@ -37,19 +25,20 @@
             <option value="year">This Year</option>
           </select>
         </div>
-        <div class="w-full md:w-1/4 px-2 mb-4 md:mb-0"> <label for="customStartDate"
-            class="block text-sm font-medium text-gray-700 mb-1">Start Date:</label>
+        <div class="w-full md:w-1/4 px-2 mb-4 md:mb-0">
+          <label for="customStartDate" class="block text-sm font-medium text-gray-700 mb-1">Start Date:</label>
           <input type="date" id="customStartDate"
             class="form-input block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50"
             [(ngModel)]="customStartDate">
         </div>
-        <div class="w-full md:w-1/4 px-2 mb-4 md:mb-0"> <label for="customEndDate"
-            class="block text-sm font-medium text-gray-700 mb-1">End Date:</label>
+        <div class="w-full md:w-1/4 px-2 mb-4 md:mb-0">
+          <label for="customEndDate" class="block text-sm font-medium text-gray-700 mb-1">End Date:</label>
           <input type="date" id="customEndDate"
             class="form-input block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50"
             [(ngModel)]="customEndDate">
         </div>
-        <div class="w-full md:w-1/4 px-2"> <button
+        <div class="w-full md:w-1/4 px-2">
+          <button
             class="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
             (click)="applyCustomDateRange()">
             Apply Custom Range & Reload
@@ -58,30 +47,7 @@
       </div>
     </div>
 
-    <!-- <h2 class="text-2xl md:text-3xl font-bold text-gray-800 mb-6">Admin Dashboard</h2> -->
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-      <!-- <div class="soft-card p-4 flex items-center space-x-3">
-        <div class="bg-blue-100 text-blue-600 p-3 rounded-full"><i class="pi pi-indian-rupee"></i></div>
-        <div>
-          <div class="text-xl font-bold text-gray-800">{{getTotalRevenue || dashboardSummary?.sales?.totalRevenue}}
-          </div>
-          <div class="text-gray-600 text-sm">Total Earning</div>
-        </div>
-      </div>
-      <div class="soft-card p-4 flex items-center space-x-3">
-        <div class="bg-purple-100 text-purple-600 p-3 rounded-full"><i class="pi pi-chart-line"></i></div>
-        <div>
-          <div class="text-xl font-bold text-gray-800">{{dashboardSummary?.sales?.numberOfSales || 0 }}</div>
-          <div class="text-gray-600 text-sm">Number of Sales</div>
-        </div>
-      </div>
-      <div class="soft-card p-4 flex items-center space-x-3">
-        <div class="bg-indigo-100 text-indigo-600 p-3 rounded-full"><i class="pi pi-envelope"></i></div>
-        <div>
-          <div class="text-xl font-bold text-gray-800">{{ dashboardSummary?.sales?.averageOrderValue || 0 }}</div>
-          <div class="text-gray-600 text-sm">average Sale</div>
-        </div>
-      </div> -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 gap-4 mb-8">
       <div class="soft-card p-4 flex items-center space-x-3">
         <div class="bg-yellow-100 text-yellow-600 p-3 rounded-full"><i class="pi pi-user-plus"></i></div>
         <div>
@@ -99,38 +65,79 @@
       <div class="soft-card p-4 flex items-center space-x-3">
         <div class="bg-red-100 text-red-600 p-3 rounded-full"><i class="pi pi-cart-arrow-down"></i></div>
         <div>
-          <div class="text-xl font-bold text-gray-800"><a [ngModel]="this.salesTrends[0]?.dailyRevenue"></a></div>
-          <div class="text-gray-600 text-sm">Daily Revenue </div>
-        </div>
-      </div>
-
-      <!-- <div class="soft-card p-4 flex items-center space-x-3">
-        <div class="bg-pink-100 text-pink-600 p-3 rounded-full"><i class="pi pi-star"></i></div>
-        <div>
-          <div class="text-xl font-bold text-gray-800">{{ dashboardSummary?.payments?.totalReceived || 0}}</div>
-          <div class="text-gray-600 text-sm">Payment received</div>
-        </div>
-      </div> -->
-
-      <!-- inventory -->
-      <div class="soft-card p-4 flex items-center space-x-3">
-        <div class="bg-teal-100 text-teal-600 p-3 rounded-full"><i class="pi pi-clock"></i></div>
-        <div>
-          <div class="text-xl font-bold text-gray-800">{{ this.totalInventoryValueData?.totalValue || 0 }}</div>
-          <div class="text-gray-600 text-sm">Inventory total Value</div>
+          <div class="text-xl font-bold text-gray-800">
+            {{ this.salesTrends[0]?.dailyRevenue | number:'1.2-2' }}
+          </div>
+          <div class="text-gray-600 text-sm">Daily Revenue</div>
         </div>
       </div>
       <div class="soft-card p-4 flex items-center space-x-3">
-        <div class="bg-teal-100 text-teal-600 p-3 rounded-full"><i class="pi pi-clock"></i></div>
+        <div class="bg-teal-100 text-teal-600 p-3 rounded-full"><i class="pi pi-box"></i></div>
+        <div>
+          <div class="text-xl font-bold text-gray-800">{{ this.totalInventoryValueData?.totalValue | number:'1.2-2' }}
+          </div>
+          <div class="text-gray-600 text-sm">Inventory Total Value</div>
+        </div>
+      </div>
+      <div class="soft-card p-4 flex items-center space-x-3">
+        <div class="bg-teal-100 text-teal-600 p-3 rounded-full"><i class="pi pi-box"></i></div>
         <div>
           <div class="text-xl font-bold text-gray-800">{{ this.totalInventoryValueData?.totalItemsInStock || 0 }}</div>
-          <div class="text-gray-600 text-sm">Inventory total Stocks Available</div>
+          <div class="text-gray-600 text-sm">Inventory Total Stocks Available</div>
         </div>
       </div>
-
     </div>
 
-    <!-- /////////////////////////////////////////////////////////////////////////////////////////////// -->
+    <!-- <div class="soft-card p-6 mb-8">
+      <h3 class="text-lg font-semibold text-gray-800 mb-4">Quick Views</h3>
+      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
+        <div class="bg-gray-100 rounded-md p-2 h-28 flex items-center justify-center text-gray-700">
+          <div (click)="showcustomerGrid=true" class="soft-card p-3 rounded-lg cursor-pointer
+              hover:bg-gray-50 transition w-full h-full flex flex-col items-center justify-center
+              gradient-border-card">
+            <i class="pi pi-users text-2xl text-blue-600 mb-1"></i>
+            <span class="text-sm font-semibold text-gray-800">View Customers</span>
+          </div>
+        </div>
+
+        <div class="bg-gray-100 rounded-md p-2 h-28 flex items-center justify-center text-gray-700">
+          <div (click)="showproductGrid=true" class="soft-card p-3 rounded-lg cursor-pointer
+              hover:bg-gray-50 transition w-full h-full flex flex-col items-center justify-center
+              gradient-border-card">
+            <i class="pi pi-mobile text-2xl text-green-600 mb-1"></i>
+            <span class="text-sm font-semibold text-gray-800">View Products</span>
+          </div>
+        </div>
+
+        <div class="bg-gray-100 rounded-md p-2 h-28 flex items-center justify-center text-gray-700">
+          <div (click)="showInvoiceGrid=true" class="soft-card p-3 rounded-lg cursor-pointer
+              hover:bg-gray-50 transition w-full h-full flex flex-col items-center justify-center
+              gradient-border-card">
+            <i class="pi pi-pen-to-square text-2xl text-yellow-600 mb-1"></i>
+            <span class="text-sm font-semibold text-gray-800">View Invoices</span>
+          </div>
+        </div>
+
+        <div class="bg-gray-100 rounded-md p-2 h-28 flex items-center justify-center text-gray-700">
+          <div (click)="showPaymentGrid=true" class="soft-card p-3 rounded-lg cursor-pointer
+              hover:bg-gray-50 transition w-full h-full flex flex-col items-center justify-center
+              gradient-border-card">
+            <i class="pi pi-money-bill text-2xl text-red-600 mb-1"></i>
+            <span class="text-sm font-semibold text-gray-800">View Payments</span>
+          </div>
+        </div>
+      </div>
+    </div> -->
+
+    <div class="grid gap-4 mb-8">
+      <div class="soft-card p-6">
+        <app-dashboard-summary [params]="getDateParam"></app-dashboard-summary>
+      </div>
+      <div class="soft-card p-6">
+        <app-dashboard-top-customer-view [params]="getDateParam"></app-dashboard-top-customer-view>
+      </div>
+    </div>
+
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-4 mb-8">
       <div class="lg:col-span-2 flex flex-col gap-4">
         <div class="soft-card p-6">
@@ -180,92 +187,44 @@
             </div>
           </div>
         </div>
+      </div>
 
-        <!-- //////////////////////////////// grid section -->
-        <div class="soft-card p-6 ">
-          <h3 class="text-lg font-semibold text-gray-800 mb-4">Quick Views</h3>
-          <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
-            <div class="bg-gray-100 rounded-md p-2 h-28 flex items-center justify-center text-gray-700">
-              <div (click)="showcustomerGrid=true" class="soft-card p-3 rounded-lg cursor-pointer
-               hover:bg-gray-50 transition w-full h-full flex flex-col items-center justify-center
-               gradient-border-card"> <i class="pi pi-users text-2xl text-blue-600 mb-1"></i>
-                <span class="text-sm font-semibold text-gray-800">View Customers</span>
-              </div>
-            </div>
-
-            <div class="bg-gray-100 rounded-md p-2 h-28 flex items-center justify-center text-gray-700">
-              <div (click)="showproductGrid=true" class="soft-card p-3 rounded-lg cursor-pointer
-            hover:bg-gray-50 transition w-full h-full flex flex-col items-center justify-center
-            gradient-border-card"> <i class="pi pi-mobile text-2xl text-green-600 mb-1"></i>
-                <span class="text-sm font-semibold text-gray-800">View Products</span>
-              </div>
-            </div>
-
-            <div class="bg-gray-100 rounded-md p-2 h-28 flex items-center justify-center text-gray-700">
-              <div (click)="showInvoiceGrid=true" class="soft-card p-3 rounded-lg cursor-pointer
-               hover:bg-gray-50 transition w-full h-full flex flex-col items-center justify-center
-               gradient-border-card"> <i class="pi pi-pen-to-square text-2xl text-yellow-600 mb-1"></i>
-                <span class="text-sm font-semibold text-gray-800">View Invoices</span>
-              </div>
-            </div>
-
-            <div class="bg-gray-100 rounded-md p-2 h-28 flex items-center justify-center text-gray-700">
-              <div (click)="showPaymentGrid=true" class="soft-card p-3 rounded-lg cursor-pointer
-               hover:bg-gray-50 transition w-full h-full flex flex-col items-center justify-center
-               gradient-border-card"> <i class="pi pi-money-bill text-2xl text-red-600 mb-1"></i>
-                <span class="text-sm font-semibold text-gray-800">View Payments</span>
-              </div>
+      <div class="soft-card p-6">
+        <h3 class="text-lg font-semibold text-gray-800 mb-4">Quick Links</h3>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div class="bg-gray-100 rounded-md p-4 h-32 flex items-center justify-center text-gray-700">
+            <div
+              class="soft-card p-4 rounded-lg cursor-pointer hover:bg-gray-150 transition w-full h-full flex flex-col items-center justify-center"
+              (click)="showcustomerGrid=true">
+              <i class="pi pi-users text-2xl text-blue-600 mb-2"></i>
+              <span class="text-sm font-semibold text-gray-800">View Customers</span>
             </div>
           </div>
-        </div>
-        <!-- /////////////////////////// -->
-        <!-- main large section -->
-        <div class="soft-card p-6">
-          <!-- dashord summay api call here  -->
-        </div>
-        <!-- ////////////////////////////////////////////// -->
-        <div class="soft-card p-6">
-          <app-dashboard-top-customer-view [params]="getDateParam"></app-dashboard-top-customer-view>
-        </div>
-        <!-- ////////////////////////////// -->
 
-        <div class="soft-card p-6">
-          <h3 class="text-lg font-semibold text-gray-800 mb-4">Grid Area (2x2)</h3>
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-            <div class="bg-gray-100 rounded-md p-4 h-32 flex items-center justify-center text-gray-700">
-              <div
-                class="soft-card p-4 rounded-lg cursor-pointer  hover:bg-gray-150 transition w-full h-full flex flex-col items-center justify-center"
-                (click)="showcustomerGrid=true">
-                <i class="pi pi-users text-2xl text-blue-600 mb-2"></i> <span
-                  class="text-sm font-semibold text-gray-800">View Customers</span>
-              </div>
+          <div class="bg-gray-100 rounded-md p-4 h-32 flex items-center justify-center text-gray-700">
+            <div
+              class="soft-card p-4 rounded-lg cursor-pointer hover:bg-gray-150 transition w-full h-full flex flex-col items-center justify-center"
+              (click)="showproductGrid=true">
+              <i class="pi pi-mobile text-2xl text-blue-600 mb-2"></i>
+              <span class="text-sm font-semibold text-gray-800">View Products</span>
             </div>
+          </div>
 
-            <div class="bg-gray-100 rounded-md p-4 h-32 flex items-center justify-center text-gray-700">
-              <div
-                class="soft-card p-4 rounded-lg cursor-pointer  hover:bg-gray-150 transition w-full h-full flex flex-col items-center justify-center"
-                (click)="showproductGrid=true">
-                <i class="pi pi-mobile text-2xl text-blue-600 mb-2"></i> <span
-                  class="text-sm font-semibold text-gray-800">View Products</span>
-              </div>
+          <div class="bg-gray-100 rounded-md p-4 h-32 flex items-center justify-center text-gray-700">
+            <div
+              class="soft-card p-4 rounded-lg cursor-pointer hover:bg-gray-150 transition w-full h-full flex flex-col items-center justify-center"
+              (click)="showInvoiceGrid=true">
+              <i class="pi pi-pen-to-square text-2xl text-blue-600 mb-2"></i>
+              <span class="text-sm font-semibold text-gray-800">View Invoices</span>
             </div>
+          </div>
 
-            <div class="bg-gray-100 rounded-md p-4 h-32 flex items-center justify-center text-gray-700">
-              <div
-                class="soft-card p-4 rounded-lg cursor-pointer  hover:bg-gray-150 transition w-full h-full flex flex-col items-center justify-center"
-                (click)="showInvoiceGrid=true">
-                <i class="pi pi-pen-to-square text-2xl text-blue-600 mb-2"></i> <span
-                  class="text-sm font-semibold text-gray-800">View Invoices</span>
-              </div>
-            </div>
-
-            <div class="bg-gray-100 rounded-md p-4 h-32 flex items-center justify-center text-gray-700">
-              <div
-                class="soft-card p-4 rounded-lg cursor-pointer   hover:bg-gray-150 transition w-full h-full flex flex-col items-center justify-center"
-                (click)="showPaymentGrid=true">
-                <i class="pi pi-money-bill text-2xl text-blue-600 mb-2"></i> <span
-                  class="text-sm font-semibold text-gray-800">View Payment</span>
-              </div>
+          <div class="bg-gray-100 rounded-md p-4 h-32 flex items-center justify-center text-gray-700">
+            <div
+              class="soft-card p-4 rounded-lg cursor-pointer hover:bg-gray-150 transition w-full h-full flex flex-col items-center justify-center"
+              (click)="showPaymentGrid=true">
+              <i class="pi pi-money-bill text-2xl text-blue-600 mb-2"></i>
+              <span class="text-sm font-semibold text-gray-800">View Payment</span>
             </div>
           </div>
         </div>
@@ -274,36 +233,10 @@
   </div>
 </div>
 
-
-<!-- customer List Component -->
-<p-dialog header="Customers Data" class="bg-gray-400" [modal]="true" [(visible)]="showcustomerGrid"
-  [style]="{ width: '95rem',height:'80rem' }" [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }"
-  [maximizable]="true">
-  <app-customer-list></app-customer-list>
-</p-dialog>
-
-<!-- customer List Component -->
-<p-dialog header="Product Data" [modal]="true" [(visible)]="showproductGrid" [style]="{ width: '95rem' }"
+<!-- <p-dialog header="Invoice Data" [modal]="true" [(visible)]="showpdf" [style]="{ width: '95rem',height:'80rem' }"
   [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }" [maximizable]="true">
-  <app-product-detail></app-product-detail>
-</p-dialog>
-
-<!-- customer List Component -->
-<p-dialog header="Invoice Data" [modal]="true" [(visible)]="showInvoiceGrid" [style]="{ width: '95rem' }"
-  [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }" [maximizable]="true">
-  <app-invoice-view> </app-invoice-view>
-</p-dialog>
-
-<!-- customer List Component -->
-<p-dialog header="Payment Data" [modal]="true" [(visible)]="showPaymentGrid" [style]="{ width: '95rem' }"
-  [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }" [maximizable]="true">
-  <app-payment-list></app-payment-list>
-</p-dialog>
-
-<!-- showpdfdialog -->
-
-
-
+  <app-invoice-print [Id]="invoiceId"></app-invoice-print>
+</p-dialog> -->
 
 
 

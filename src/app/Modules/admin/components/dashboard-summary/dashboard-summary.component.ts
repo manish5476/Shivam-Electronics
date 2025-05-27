@@ -28,10 +28,13 @@ import { MessageService, } from 'primeng/api';
 // import { InvoicePrintComponent } from '../../../billing/components/invoice-print/invoice-print.component';
 import { CommonMethodService } from '../../../../core/Utils/common-method.service';
 import { InvoicePrintComponent } from "../../../billing/components/invoice-print/invoice-print.component";
+import { CustomerListComponent } from "../../../customer/components/customer-list/customer-list.component";
+import { ProductDetailComponent } from "../../../product/components/product-detail/product-detail.component";
+import { PaymentListComponent } from "../../../payment/components/payment-list/payment-list.component";
 
 @Component({
   selector: 'app-dashboard-summary',
-  imports: [CommonModule, CarouselModule, DialogModule, FormsModule, TableModule, ButtonModule, InputTextModule, TagModule, ToastModule, InvoicePrintComponent],
+  imports: [CommonModule, CarouselModule, DialogModule, FormsModule, TableModule, ButtonModule, InputTextModule, TagModule, ToastModule, InvoicePrintComponent, CustomerListComponent, ProductDetailComponent, PaymentListComponent],
   templateUrl: './dashboard-summary.component.html',
   styleUrl: './dashboard-summary.component.css'
 })
@@ -42,16 +45,17 @@ export class DashboardSummaryComponent {
   isLoadingSummary: boolean = false;
   invoiceId: any;
   showpdf: boolean = false;
+  showcustomerGrid: boolean = false;
+  showproductGrid: boolean = false;
+  showInvoiceGrid: boolean = false;
+  showPaymentGrid: boolean = false;
 
 
   constructor(private dashboardService: DashboardService, public CommonMethodService: CommonMethodService, private messageService: MessageService) { }
 
   ngOnChanges(changes: SimpleChanges): void {
-    //Called before any other lifecycle hook. Use it to inject dependencies, but avoid any serious work here.
-    //Add '${implements OnChanges}' to the class.
-    if (changes && changes['currenValue']) {
-      this.fetchDashboardSummary(this.params)
-    }
+    console.log(this.params);
+    this.fetchDashboardSummary(this.params)
   }
 
   hasProducts(): boolean {
@@ -59,14 +63,14 @@ export class DashboardSummaryComponent {
   }
 
 
-  fetchDashboardSummary(params?: any): void {
+  fetchDashboardSummary(params: any): void {
     this.isLoadingSummary = true;
     this.dashboardService.getDashboardSummary(params)
       .pipe(takeUntil(this.ngUnsubscribe), catchError(this.CommonMethodService.handleError<ApiResponse<ConsolidatedSummaryData>>()))
       .subscribe(response => {
         // if (response) {
         if (response) {
-          console.log(response.data);
+          console.log(response.data, "mmmmmmmmmmmm");
           this.dashboardSummary = response.data;
         }
         this.isLoadingSummary = false;
@@ -90,7 +94,6 @@ export class DashboardSummaryComponent {
     this.invoiceId = id
     this.showpdf = true
   }
-
 
   ngOnDestroy(): void {
     this.ngUnsubscribe.next();
