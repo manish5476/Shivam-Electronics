@@ -54,7 +54,6 @@ export class DashboardSummaryComponent {
   constructor(private dashboardService: DashboardService, public CommonMethodService: CommonMethodService, private messageService: MessageService) { }
 
   ngOnChanges(changes: SimpleChanges): void {
-    console.log(this.params);
     this.fetchDashboardSummary(this.params)
   }
 
@@ -70,7 +69,6 @@ export class DashboardSummaryComponent {
       .subscribe(response => {
         // if (response) {
         if (response) {
-          console.log(response.data, "mmmmmmmmmmmm");
           this.dashboardSummary = response.data;
         }
         this.isLoadingSummary = false;

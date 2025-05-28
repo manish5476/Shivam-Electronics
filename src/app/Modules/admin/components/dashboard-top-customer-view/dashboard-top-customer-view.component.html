@@ -78,28 +78,34 @@
             style="width: 3rem; background-color: #93C5FD; color: #1E40AF; padding: 0.5rem 0.75rem; font-size: 0.875rem;">
           </th>
           <th pSortableColumn="productId.title"
-            style="background-color: #93C5FD; color: #1E40AF; padding: 0.5rem 0.75rem; font-size: 0.875rem;">
-            Product Name <p-sortIcon field="productId.title" /></th>
+            style="background-color: #93C5FD; color: #1E40AF; padding: 0.5rem 0.75rem; font-size: 0.875rem;"> Product
+            Name <p-sortIcon field="productId.title" /></th>
           <th pSortableColumn="productId.price"
-            style="background-color: #93C5FD; color: #1E40AF; padding: 0.5rem 0.75rem; font-size: 0.875rem;">
-            Price <p-sortIcon field="productId.price" /></th>
-          <th style="background-color: #93C5FD; color: #1E40AF; padding: 0.5rem 0.75rem; font-size: 0.875rem;">
-            Thumbnail</th>
+            style="background-color: #93C5FD; color: #1E40AF; padding: 0.5rem 0.75rem; font-size: 0.875rem;">Price
+            <p-sortIcon field="productId.price" />
+          </th>
+          <th style="background-color: #93C5FD; color: #1E40AF; padding: 0.5rem 0.75rem; font-size: 0.875rem;">Thumbnail
+          </th>
           <th pSortableColumn="invoiceIds.length"
-            style="background-color: #93C5FD; color: #1E40AF; padding: 0.5rem 0.75rem; font-size: 0.875rem;">
-            Invoices Count <p-sortIcon field="invoiceIds.length" /> </th>
+            style="background-color: #93C5FD; color: #1E40AF; padding: 0.5rem 0.75rem; font-size: 0.875rem;"> Invoices
+            Count <p-sortIcon field="invoiceIds.length" /> </th>
+          <th style="background-color: #93C5FD; color: #1E40AF; padding: 0.5rem 0.75rem; font-size: 0.875rem;">View</th>
+
         </tr>
       </ng-template>
       <ng-template pTemplate="body" let-cartItem let-expandedProduct="expanded">
         <tr class="text-sm">
-          <td> <p-button type="button" pRipple [pRowToggler]="cartItem" [text]="true" [rounded]="true" [plain]="true"
-              [icon]="expandedProduct ? 'pi pi-chevron-down' : 'pi pi-chevron-right'" class="scaleclass" />
+          <td> <p-button type="button" pRipple [pRowToggler]="cartItem" [text]="true" [rounded]="true" [plain]="true" [icon]="expandedProduct ? 'pi pi-chevron-down' : 'pi pi-chevron-right'" class="scaleclass" />
           </td>
           <td>{{ cartItem.productId.title }}</td>
           <td>{{ cartItem.productId.price | currency : 'INR' : 'symbol' : '1.2-2' }}</td>
           <td> <img [src]="cartItem.productId.thumbnail" [alt]="cartItem.productId.title" width="40"
               class="shadow-sm rounded" /> </td>
           <td>{{ cartItem.invoiceIds.length }}</td>
+          <td> <button class="p-button p-button-sm p-button-secondary text-sm">
+              <i class="pi pi-file-pdf mr-1" (click)="showInvoicePdf(cartItem.invoiceIds[0]._id)"></i> PDF
+            </button></td>
+
         </tr>
       </ng-template>
       <ng-template pTemplate="emptymessage">
@@ -218,3 +224,8 @@
   </p-table>
   </div>
 </main>
+
+<p-dialog header="Invoice Data" [modal]="true" [(visible)]="showpdf" [style]="{ width: '95rem',height:'80rem' }"
+  [maximizable]="true">
+  <app-invoice-print [Id]="invoiceId"></app-invoice-print>
+</p-dialog>

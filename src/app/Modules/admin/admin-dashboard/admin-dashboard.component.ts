@@ -156,24 +156,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
   }
 
 
-  responsiveOptions = [
-    {
-      breakpoint: '1024px',
-      numVisible: 1,
-      numScroll: 1
-    },
-    {
-      breakpoint: '768px',
-      numVisible: 1,
-      numScroll: 1
-    },
-    {
-      breakpoint: '560px',
-      numVisible: 1,
-      numScroll: 1
-    }
-  ];
-
   // Helper function to check if products array is valid and not empty
   hasProducts(): boolean {
     return this.dashboardSummary?.products?.lowStock !== null && Array.isArray(this.dashboardSummary?.products?.lowStock) && this.dashboardSummary?.products?.lowStock.length > 0;
@@ -189,14 +171,14 @@ export class DashboardComponent implements OnInit, OnDestroy {
     this.fetchTopSellingProducts({ ...dateParams, limit: 5, sortBy: 'revenue' });
     this.fetchLowStockProducts({ threshold: 10, limit: 5 });
     this.fetchOutOfStockProducts({ limit: 5 });
-    this.fetchCustomersWithDues({ limit: 5 });
-    this.fetchTopCustomersByPurchase({ ...dateParams, limit: 5 });
+    // this.fetchCustomersWithDues({ limit: 5 });
+    // this.fetchTopCustomersByPurchase({ ...dateParams, limit: 5 });
     this.fetchNewCustomersCount(dateParams);
     this.fetchTotalPaymentsReceived(dateParams);
-    this.fetchPaymentsByMethod(dateParams);
-    this.fetchFailedPaymentsCount(dateParams);
-    this.fetchOverallAverageRating();
-    this.fetchRecentReviews({ limit: 5 });
+    // this.fetchPaymentsByMethod(dateParams);
+    // this.fetchFailedPaymentsCount(dateParams);
+    // this.fetchOverallAverageRating();
+    // this.fetchRecentReviews({ limit: 5 });
     this.fetchTotalInventoryValue();
   }
 
@@ -227,7 +209,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
       .subscribe(response => {
         // if (response) {
         if (response) {
-          console.log(response.data);
           this.dashboardSummary = response.data;
         }
         this.isLoadingSummary = false;
@@ -240,7 +221,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.ngUnsubscribe), catchError(this.CommonMethodService.handleError()))
       .subscribe((response: any) => {
         if (response) {
-          console.log(response);
           this.getTotalRevenue = response.data.totalRevenue;
         }
         this.isLoadingSummary = false;
@@ -427,7 +407,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
   }
 
   viewCustomerDetails(customerId: string): void {
-    console.log(`Navigating to customer details for ID: ${customerId}`);
     // Example: this.router.navigate(['/customer', customerId]);
   }
 

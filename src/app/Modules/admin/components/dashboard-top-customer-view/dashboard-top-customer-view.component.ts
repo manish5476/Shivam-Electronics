@@ -29,9 +29,10 @@ import { ToastModule, } from 'primeng/toast'; // For toast messages
 import { MessageService, } from 'primeng/api';
 // import { InvoicePrintComponent } from '../../../billing/components/invoice-print/invoice-print.component';
 import { CommonMethodService } from '../../../../core/Utils/common-method.service';
+import { InvoicePrintComponent } from "../../../billing/components/invoice-print/invoice-print.component";
 @Component({
   selector: 'app-dashboard-top-customer-view',
-  imports: [CommonModule, IconFieldModule, InputIconModule, CarouselModule, DialogModule, FormsModule, TableModule, ButtonModule, InputTextModule, TagModule, ToastModule],
+  imports: [CommonModule, IconFieldModule, InputIconModule, CarouselModule, DialogModule, FormsModule, TableModule, ButtonModule, InputTextModule, TagModule, ToastModule, InvoicePrintComponent],
   templateUrl: './dashboard-top-customer-view.component.html',
   styleUrl: './dashboard-top-customer-view.component.css'
 })
@@ -45,14 +46,14 @@ export class DashboardTopCustomerViewComponent {
   getDateParam: any
   topCustomers: any
   scale: any;
+  showpdf: any;
+  invoiceId: any;
   // 
 
   constructor(private dashboardService: DashboardService, public CommonMethodService: CommonMethodService, private messageService: MessageService) { }
 
   ngOnChanges(changes: SimpleChanges): void {
-    console.log(this.params, changes);
-    //Called before any other lifecycle hook. Use it to inject dependencies, but avoid any serious work here.
-    //Add '${implements OnChanges}' to the class.
+
     // if (changes && changes['currenValue']) {
     this.fetchTopCustomersByPurchase(this.params)
     // }
@@ -80,7 +81,6 @@ export class DashboardTopCustomerViewComponent {
   }
 
   viewCustomerDetails(customerId: string): void {
-    console.log(`Navigating to customer details for ID: ${customerId}`);
     // Example: this.router.navigate(['/customer', customerId]);
   }
 
@@ -118,8 +118,8 @@ export class DashboardTopCustomerViewComponent {
 
 
   showInvoicePdf(id: any) {
-    // this.dashboard.invoiceId = id
-    // this.dashboard.showpdf = true
+    this.invoiceId = id
+    this.showpdf = true
   }
 
   ngOnDestroy(): void {

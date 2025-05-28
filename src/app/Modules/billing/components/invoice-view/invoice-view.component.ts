@@ -83,7 +83,6 @@ export class InvoiceViewComponent {
         dataItem[field] = newValue;
         this.InvoiceService.updateinvoice(dataItem.id, dataItem).subscribe({
           next: (res: any) => {
-            // console.log('✅ invoice updated successfully:', res);
           },
           error: (err: any) => {
             console.error('❌ Error updating invoice:', err);

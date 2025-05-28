@@ -47,7 +47,6 @@ export function loggingInterceptor(req: HttpRequest<unknown>, next: HttpHandlerF
     tap({
       next: (event: HttpEvent<any>) => {
         if (event.type === HttpEventType.Response) {
-          // console.log(`${req.url} returned a response with status ${event.status}`);
         }
       },
       error: (error: HttpErrorResponse) => {

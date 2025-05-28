@@ -42,7 +42,6 @@ export class LoginComponent implements OnInit {
     if (this.loginForm.valid) {
       this.errorMessage = null; // Clear previous errors
       const loginDetails = this.loginForm.value;
-      console.log('Attempting login with:', loginDetails); // Log form value
 
       this.auth.login(loginDetails).subscribe({
         next: (response: any) => {

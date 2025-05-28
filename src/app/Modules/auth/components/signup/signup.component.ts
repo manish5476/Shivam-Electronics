@@ -65,7 +65,6 @@ export class SignupComponent implements OnInit {
     this.errorMessage = 'null'; // Clear previous errors
 
     const signupDetails = this.signupForm.value;
-    console.log('Attempting signup with:', signupDetails);
 
     this.auth.signUp(signupDetails).subscribe({
       next: (response: any) => {

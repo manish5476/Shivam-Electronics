@@ -72,7 +72,6 @@ export class CustomerListComponent implements OnInit {
             { field: 'totalPurchasedAmount', headerName: 'Total Purchased Amount', sortable: true, filter: true, resizable: true },
             {
                 field: 'remainingAmount', headerName: 'Remaining Amount', sortable: true, filter: true, resizable: true, cellStyle: (params: any) => {
-                    // console.log(params); // Keep for debugging if needed
                     const remaining = params.data.remainingAmount;
                     if (typeof remaining !== 'number' || isNaN(remaining)) {
                         return {}; // Return default style if not a valid number

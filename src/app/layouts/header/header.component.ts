@@ -79,7 +79,6 @@ export class HeaderComponent {
     // This method replaces the combined openUserDropDown/showPanel logic
     toggleMobileMenu(): void {
       this.isMobileMenuOpen = !this.isMobileMenuOpen;
-      console.log('Mobile menu toggled:', this.isMobileMenuOpen);
     }
 
   toggleNotificationDropdown() {
