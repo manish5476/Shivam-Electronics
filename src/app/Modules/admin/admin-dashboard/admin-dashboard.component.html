@@ -88,8 +88,11 @@
       </div>
     </div>
 
- 
+
     <div class="grid gap-4 mb-8">
+      <div class="soft-card p-6">
+        <app-dashboard-chart-component></app-dashboard-chart-component>
+      </div>
       <div class="soft-card p-6">
         <app-dashboard-summary [params]="getDateParam"></app-dashboard-summary>
       </div>
@@ -197,6 +200,3 @@
   [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }" [maximizable]="true">
   <app-invoice-print [Id]="invoiceId"></app-invoice-print>
 </p-dialog> -->
-
-
-

@@ -1,0 +1,47 @@
+<!-- <div class="card p-4">
+  <ng-container *ngIf="!isLoading; else loading">
+    <p-chart type="bar" [data]="chartData" [options]="chartOptions" class="h-[30rem] w-full" />
+  </ng-container>
+  <ng-template #loading>
+    <p-skeleton height="30rem" class="w-full" />
+  </ng-template>
+</div> -->
+
+<div class="mb-4 flex gap-3">
+  <button pButton type="button" label="Bar Chart" (click)="onToggleView('bar')"
+    [class.p-button-outlined]="chartView !== 'bar'">Bar</button>
+  <button pButton type="button" label="Line Chart" (click)="onToggleView('line')"
+    [class.p-button-outlined]="chartView !== 'line'">Line</button>
+  <button pButton type="button" label="Both" (click)="onToggleView('both')"
+    [class.p-button-outlined]="chartView !== 'both'">Chart</button>
+</div>
+
+<div *ngIf="isLoading" class="p-4">
+  <p-skeleton height="30rem"></p-skeleton>
+</div>
+<div *ngIf="!isLoading" class="flex flex-row md:flex-row gap-6">
+  <div *ngIf="chartView === 'bar' || chartView === 'both'"
+    [ngClass]="chartView === 'both' ? 'w-full md:w-1/2' : 'w-full'" class="card">
+    <p-chart type="bar" [data]="chartDataBar" [options]="chartOptionsBar" class="h-[30rem]"></p-chart>
+  </div>
+
+  <div *ngIf="chartView === 'line' || chartView === 'both'"
+    [ngClass]="chartView === 'both' ? 'w-full md:w-1/2' : 'w-full'" class="card">
+    <p-chart type="line" [data]="chartDataLine" [options]="chartOptionsLine" class="h-[30rem]"></p-chart>
+  </div>
+</div>
+
+<!-- 
+<div *ngIf="!isLoading" class="flex flex-col md:flex-row gap-6">
+  Bar Chart
+  <div *ngIf="chartView === 'bar' || chartView === 'both'"
+    [ngClass]="chartView === 'both' ? 'w-full md:w-1/2' : 'w-full'" class="card">
+    <p-chart type="bar" [data]="chartDataBar" [options]="chartOptionsBar" class="h-[30rem]"></p-chart>
+  </div>
+
+  Line Chart
+  <div *ngIf="chartView === 'line' || chartView === 'both'"
+    [ngClass]="chartView === 'both' ? 'w-full md:w-1/2' : 'w-full'" class="card">
+    <p-chart type="line" [data]="chartDataLine" [options]="chartOptionsLine" class="h-[30rem]"></p-chart>
+  </div>
+</div> -->

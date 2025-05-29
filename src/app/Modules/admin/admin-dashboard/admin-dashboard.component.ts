@@ -3,7 +3,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import { takeUntil, catchError } from 'rxjs/operators';
 import {
-  DashboardService,
+  
   ConsolidatedSummaryData,
   SalesTrendData,
   ProductInsightData,
@@ -12,7 +12,8 @@ import {
   PaymentMethodData,
   InventoryValueData,
   ApiResponse // Import ApiResponse
-} from '../../../core/services/dashboard.service'; // Adjust path as needed
+} from '../../../core/Models/dashboard-models'; // Adjust path as needed
+import { DashboardService } from '../../../core/services/dashboard.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -37,7 +38,8 @@ import { ToastModule, } from 'primeng/toast'; // For toast messages
 import { MessageService, } from 'primeng/api';
 import { DashboardTopCustomerViewComponent } from "../components/dashboard-top-customer-view/dashboard-top-customer-view.component";
 import { MainDashboardComponent } from "../../../layouts/main-dashboard/main-dashboard.component";
-import { DashboardSummaryComponent } from "../components/dashboard-summary/dashboard-summary.component"; // For toast messages
+import { DashboardSummaryComponent } from "../components/dashboard-summary/dashboard-summary.component";
+import { DashboardChartComponentComponent } from "../components/dashboard-chart-component/dashboard-chart-component.component"; // For toast messages
 type Severity = "success" | "secondary" | "info" | "warn" | "danger" | "contrast" | undefined;
 interface Invoice {
   _id: string;
@@ -82,7 +84,7 @@ interface CustomerData {
 @Component({
   selector: 'app-admin-dashboard',
   standalone: true,
-  imports: [CommonModule, CarouselModule, DialogModule, FormsModule, TableModule, ButtonModule, InputTextModule, TagModule, ToastModule, DashboardTopCustomerViewComponent, DashboardSummaryComponent,],
+  imports: [CommonModule, CarouselModule, DialogModule, FormsModule, TableModule, ButtonModule, InputTextModule, TagModule, ToastModule, DashboardTopCustomerViewComponent, DashboardSummaryComponent, DashboardChartComponentComponent],
   templateUrl: './admin-dashboard.component.html',
   styleUrls: ['./admin-dashboard.component.css']
 })
@@ -326,29 +328,29 @@ export class DashboardComponent implements OnInit, OnDestroy {
       });
   }
 
-  fetchFailedPaymentsCount(params: any): void {
-    this.dashboardService.getFailedPaymentsCount(params)
-      .pipe(takeUntil(this.ngUnsubscribe), catchError(this.CommonMethodService.handleError<ApiResponse<{ failedPaymentsCount: number }>>()))
-      .subscribe(response => {
-        if (response) this.failedPaymentsCountData = response.data.failedPaymentsCount;
-      });
-  }
+  // fetchFailedPaymentsCount(params: any): void {
+  //   this.dashboardService.getFailedPaymentsCount(params)
+  //     .pipe(takeUntil(this.ngUnsubscribe), catchError(this.CommonMethodService.handleError<ApiResponse<{ failedPaymentsCount: number }>>()))
+  //     .subscribe(response => {
+  //       if (response) this.failedPaymentsCountData = response.data.failedPaymentsCount;
+  //     });
+  // }
 
-  fetchOverallAverageRating(): void {
-    this.dashboardService.getOverallAverageRating()
-      .pipe(takeUntil(this.ngUnsubscribe), catchError(this.CommonMethodService.handleError<ApiResponse<{ overallAverage: number, totalReviewsConsidered: number }>>()))
-      .subscribe(response => {
-        if (response) this.overallAverageRatingData = response.data;
-      });
-  }
+  // fetchOverallAverageRating(): void {
+  //   this.dashboardService.getOverallAverageRating()
+  //     .pipe(takeUntil(this.ngUnsubscribe), catchError(this.CommonMethodService.handleError<ApiResponse<{ overallAverage: number, totalReviewsConsidered: number }>>()))
+  //     .subscribe(response => {
+  //       if (response) this.overallAverageRatingData = response.data;
+  //     });
+  // }
 
-  fetchRecentReviews(params: any): void {
-    this.dashboardService.getRecentReviews(params)
-      .pipe(takeUntil(this.ngUnsubscribe), catchError(this.CommonMethodService.handleError<ApiResponse<ReviewData[]>>()))
-      .subscribe(response => {
-        if (response) this.recentReviews = response.data;
-      });
-  }
+  // fetchRecentReviews(params: any): void {
+  //   this.dashboardService.getRecentReviews(params)
+  //     .pipe(takeUntil(this.ngUnsubscribe), catchError(this.CommonMethodService.handleError<ApiResponse<ReviewData[]>>()))
+  //     .subscribe(response => {
+  //       if (response) this.recentReviews = response.data;
+  //     });
+  // }
 
   fetchTotalInventoryValue(): void {
     this.dashboardService.getTotalInventoryValue()

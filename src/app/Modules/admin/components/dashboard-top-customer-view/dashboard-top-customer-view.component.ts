@@ -3,7 +3,7 @@ import { Component, Input, OnInit, OnDestroy, SimpleChanges } from '@angular/cor
 import { Observable, Subject } from 'rxjs';
 import { takeUntil, catchError } from 'rxjs/operators';
 import {
-  DashboardService,
+
   ConsolidatedSummaryData,
   SalesTrendData,
   ProductInsightData,
@@ -12,7 +12,8 @@ import {
   PaymentMethodData,
   InventoryValueData,
   ApiResponse // Import ApiResponse
-} from '../../../../core/services/dashboard.service'; // Adjust path as needed
+} from '../../../../core/Models/dashboard-models'; // Adjust path as needed
+import { DashboardService } from '../../../../core/services/dashboard.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
