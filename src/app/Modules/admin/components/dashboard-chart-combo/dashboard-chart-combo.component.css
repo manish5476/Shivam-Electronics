@@ -1,0 +1,23 @@
+.chart-title {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+.card {
+  background: var(--p-surface-card);
+  border-radius: var(--p-content-border-radius);
+  box-shadow: var(--p-content-box-shadow);
+  padding: 1rem;
+}
+
+.p-button-primary {
+  background-color: var(--p-cyan-500);
+  border-color: var(--p-cyan-500);
+}
+
+.p-button-primary:hover {
+  background-color: var(--p-cyan-400);
+  border-color: var(--p-cyan-400);
+}

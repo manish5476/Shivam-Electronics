@@ -1,0 +1,123 @@
+<!-- <div class="dashboard-charts-container p-3">
+  <div *ngIf="isLoading" class="loading-indicator">
+    <p>Loading chart data...</p>
+  </div>
+
+  <div *ngIf="!isLoading && !dashboardYearlyChart?.yearlySales?.monthlySales?.length" class="no-data-indicator">
+    <p>No sales data available to display for the selected period.</p>
+  </div>
+
+  <div *ngIf="!isLoading && dashboardYearlyChart?.yearlySales?.monthlySales?.length">
+    <div class="chart-wrapper mb-5">
+      <h4 class="chart-title">Monthly Revenue ({{ dashboardYearlyChart?.year }})</h4>
+      <div class="card">
+        <p-chart type="bar" [data]="barChartData" [options]="barChartOptions" class="h-[30rem]" />
+      </div>
+    </div>
+
+    <div class="chart-wrapper">
+      <h4 class="chart-title">Monthly Sales Count ({{ dashboardYearlyChart?.year }})</h4>
+      <div class="card">
+        <p-chart type="line" [data]="lineChartData" [options]="lineChartOptions" class="h-[30rem]" />
+      </div>
+    </div>
+  </div>
+</div> -->
+
+<!-- <div class="grid grid-flow-col grid-rows-3 gap-4 p-4">
+  <div class="row-span-3 bg-white p-4 rounded-lg shadow">
+    <h3 class="text-lg font-bold mb-4">Select Year</h3>
+    <div class="flex items-center gap-2">
+      <input
+        pInputText
+        [(ngModel)]="yearInput"
+        placeholder="Enter year (e.g., 2025)"
+        class="w-full p-2 border rounded"
+      />
+      <button
+        pButton
+        label="Fetch Data"
+        icon="pi pi-refresh"
+        (click)="fetchSalesData()"
+        class="p-button-primary"
+      ></button>
+    </div>
+    <div *ngIf="isLoading" class="mt-4 text-center">
+      <p>Loading chart data...</p>
+    </div>
+    <div *ngIf="!isLoading && !dashboardYearlyChart?.yearlySales?.monthlySales?.length && !dashboardYearlyChart?.weeklySales?.length" class="mt-4 text-center">
+      <p>No sales data available for the selected year.</p>
+    </div>
+  </div>
+  <div class="col-span-2 bg-white p-4 rounded-lg shadow">
+    <h4 class="chart-title">Monthly Sales and Revenue ({{ dashboardYearlyChart?.year || 'N/A' }})</h4>
+    <p-chart
+      type="bar"
+      [data]="monthlyChartData"
+      [options]="monthlyChartOptions"
+      class="h-[30rem]"
+      *ngIf="!isLoading && dashboardYearlyChart?.yearlySales?.monthlySales?.length"
+    />
+  </div>
+  <div class="col-span-2 row-span-2 bg-white p-4 rounded-lg shadow">
+    <h4 class="chart-title">Weekly Revenue ({{ dashboardYearlyChart?.year || 'N/A' }})</h4>
+    <p-chart
+      type="bar"
+      [data]="weeklyChartData"
+      [options]="weeklyChartOptions"
+      class="h-[30rem]"
+      *ngIf="!isLoading && dashboardYearlyChart?.weeklySales?.length"
+    />
+  </div>
+</div> -->
+<div class="grid grid-flow-col grid-rows-3 gap-4 p-4">
+  <!-- Input Section (Row Span 3) -->
+  <div class="row-span-3 card p-4">
+    <h3 class="text-lg font-bold mb-4">Select Year</h3>
+    <div class="flex items-center gap-2">
+      <input
+        pInputText
+        [(ngModel)]="yearInput"
+        placeholder="Enter year (e.g., 2025)"
+        class="w-full p-2 border rounded"
+      />
+      <button
+        pButton
+        label="Fetch Data"
+        icon="pi pi-refresh"
+        (click)="fetchSalesData()"
+        class="p-button-primary"
+      ></button>
+    </div>
+    <div *ngIf="isLoading" class="mt-4 text-center">
+      <p>Loading chart data...</p>
+    </div>
+    <div *ngIf="!isLoading && !dashboardYearlyChart?.yearlySales?.monthlySales?.length && !dashboardYearlyChart?.weeklySales?.length" class="mt-4 text-center">
+      <p>No sales data available for the selected year.</p>
+    </div>
+  </div>
+
+  <!-- Monthly Combo Chart (Col Span 2) -->
+  <div class="col-span-2 card p-4">
+    <h4 class="chart-title">Monthly Sales and Revenue ({{ dashboardYearlyChart?.year || 'N/A' }})</h4>
+    <p-chart
+      type="bar"
+      [data]="monthlyChartData"
+      [options]="monthlyChartOptions"
+      class="h-[30rem]"
+      *ngIf="!isLoading && dashboardYearlyChart?.yearlySales?.monthlySales?.length"
+    />
+  </div>
+
+  <!-- Weekly Chart (Col Span 2, Row Span 2) -->
+  <div class="col-span-2 row-span-2 card p-4">
+    <h4 class="chart-title">Weekly Revenue ({{ dashboardYearlyChart?.year || 'N/A' }})</h4>
+    <p-chart
+      type="bar"
+      [data]="weeklyChartData"
+      [options]="weeklyChartOptions"
+      class="h-[30rem]"
+      *ngIf="!isLoading && dashboardYearlyChart?.weeklySales?.length"
+    />
+  </div>
+</div>

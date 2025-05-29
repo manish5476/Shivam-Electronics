@@ -39,7 +39,8 @@ import { MessageService, } from 'primeng/api';
 import { DashboardTopCustomerViewComponent } from "../components/dashboard-top-customer-view/dashboard-top-customer-view.component";
 import { MainDashboardComponent } from "../../../layouts/main-dashboard/main-dashboard.component";
 import { DashboardSummaryComponent } from "../components/dashboard-summary/dashboard-summary.component";
-import { DashboardChartComponentComponent } from "../components/dashboard-chart-component/dashboard-chart-component.component"; // For toast messages
+import { DashboardChartComponentComponent } from "../components/dashboard-chart-component/dashboard-chart-component.component";
+import { DashboardChartComboComponent } from "../components/dashboard-chart-combo/dashboard-chart-combo.component"; // For toast messages
 type Severity = "success" | "secondary" | "info" | "warn" | "danger" | "contrast" | undefined;
 interface Invoice {
   _id: string;
@@ -84,7 +85,7 @@ interface CustomerData {
 @Component({
   selector: 'app-admin-dashboard',
   standalone: true,
-  imports: [CommonModule, CarouselModule, DialogModule, FormsModule, TableModule, ButtonModule, InputTextModule, TagModule, ToastModule, DashboardTopCustomerViewComponent, DashboardSummaryComponent, DashboardChartComponentComponent],
+  imports: [CommonModule, CarouselModule, DialogModule, FormsModule, TableModule, ButtonModule, InputTextModule, TagModule, ToastModule, DashboardTopCustomerViewComponent, DashboardSummaryComponent, DashboardChartComponentComponent, DashboardChartComboComponent],
   templateUrl: './admin-dashboard.component.html',
   styleUrls: ['./admin-dashboard.component.css']
 })
