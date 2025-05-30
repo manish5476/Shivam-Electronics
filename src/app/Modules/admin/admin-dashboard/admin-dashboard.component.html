@@ -1,3 +1,120 @@
+<!-- <div class="dashboard-main-container bg-gray-100 dark:bg-gray-900 min-h-screen">
+  <div class="flex-1 p-4 md:p-6">
+
+    <header class="mb-6">
+      <div class="flex justify-between items-center mb-4">
+        <h1 class="text-3xl font-bold text-gray-800 dark:text-gray-50">Shivam Electronics</h1>
+      </div>
+
+      <div class="soft-card bg-white dark:bg-gray-800 p-4 rounded-lg shadow">
+        <div class="flex flex-wrap items-end -mx-2">
+          <div class="w-full md:w-1/4 px-2 mb-4 md:mb-0">
+            <label for="periodSelect" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Predefined
+              Period:</label>
+            <select id="periodSelect"
+              class="form-select block w-full rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-200 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50"
+              [(ngModel)]="selectedPeriod" (ngModelChange)="onPeriodChange($event)">
+              <option value="today">Today</option>
+              <option value="yesterday">Yesterday</option>
+              <option value="week">This Week</option>
+              <option value="month">This Month</option>
+              <option value="last_month">Last Month</option>
+              <option value="year">This Year</option>
+            </select>
+          </div>
+          <div class="w-full md:w-1/4 px-2 mb-4 md:mb-0">
+            <label for="customStartDate" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Start
+              Date:</label>
+            <input type="date" id="customStartDate"
+              class="form-input block w-full rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-200 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50"
+              [(ngModel)]="customStartDate">
+          </div>
+          <div class="w-full md:w-1/4 px-2 mb-4 md:mb-0">
+            <label for="customEndDate" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">End
+              Date:</label>
+            <input type="date" id="customEndDate"
+              class="form-input block w-full rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-200 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50"
+              [(ngModel)]="customEndDate">
+          </div>
+          <div class="w-full md:w-1/4 px-2">
+            <button
+              class="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 dark:bg-blue-500 dark:hover:bg-blue-600"
+              (click)="applyCustomDateRange()">
+              Apply Custom Range & Reload
+            </button>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <section class="hero-section">
+      <div class="charts-section mb-6 space-y-6">
+        <div class="soft-card bg-white dark:bg-gray-800 p-4 sm:p-6 rounded-lg shadow">
+          <h3 class="text-lg font-semibold text-gray-700 dark:text-gray-200 mb-3">Yearly Chart</h3>
+          <app-dashboard-chart-component></app-dashboard-chart-component>
+        </div>
+        <div class="soft-card bg-white dark:bg-gray-800 p-4 sm:p-6 rounded-lg shadow">
+          <h3 class="text-lg font-semibold text-gray-700 dark:text-gray-200 mb-3">Combo Chart</h3>
+          <app-dashboard-chart-combo></app-dashboard-chart-combo>
+        </div>
+      </div>
+
+      <div class="template-section soft-card bg-white dark:bg-gray-800 p-6 rounded-lg shadow mb-6">
+        <h3 class="text-lg font-semibold text-gray-700 dark:text-gray-200 mb-3">Custom Content Area</h3>
+        <p class="text-sm text-gray-600 dark:text-gray-400 mb-4">
+          Place your custom components, code, or any other content here. For example, you could embed specific summaries
+          or interactive elements.
+        </p>
+        <div class="border-t border-gray-200 dark:border-gray-700 pt-4">
+          <p class="text-center text-gray-500 dark:text-gray-400">Your content here...</p>
+        </div>
+      </div>
+
+      <div class="reference-tables-section mb-6">
+        <h2 class="text-xl font-semibold text-gray-800 dark:text-gray-100 mb-4">Reference Tables</h2>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div class="soft-card bg-white dark:bg-gray-800 p-4 rounded-lg shadow">
+            <h4 class="font-semibold text-md text-gray-700 dark:text-gray-200 mb-2">Reference Table 1</h4>
+            <div class="text-sm text-gray-600 dark:text-gray-400">Placeholder for table content. Could be a list of
+              recent orders, top products, etc. This area should contain actual tabular data or summaries.</div>
+          </div>
+          <div class="soft-card bg-white dark:bg-gray-800 p-4 rounded-lg shadow">
+            <h4 class="font-semibold text-md text-gray-700 dark:text-gray-200 mb-2">Reference Table 2</h4>
+            <div class="text-sm text-gray-600 dark:text-gray-400">Placeholder for table content.</div>
+          </div>
+          <div class="soft-card bg-white dark:bg-gray-800 p-4 rounded-lg shadow">
+            <h4 class="font-semibold text-md text-gray-700 dark:text-gray-200 mb-2">Reference Table 3</h4>
+            <div class="text-sm text-gray-600 dark:text-gray-400">Placeholder for table content.</div>
+          </div>
+          <div class="soft-card bg-white dark:bg-gray-800 p-4 rounded-lg shadow">
+            <h4 class="font-semibold text-md text-gray-700 dark:text-gray-200 mb-2">Reference Table 4</h4>
+            <div class="text-sm text-gray-600 dark:text-gray-400">Placeholder for table content.</div>
+          </div>
+        </div>
+      </div>
+
+    </section>
+    <footer class="bottom-grid-section soft-card bg-white dark:bg-gray-800 p-6 rounded-lg shadow">
+      <h3 class="text-lg font-semibold text-gray-700 dark:text-gray-200 mb-3">Additional Data / Components</h3>
+      <div class="text-sm text-gray-600 dark:text-gray-400">
+        This is a full-width grid area at the bottom for more extensive data tables, detailed reports, or other
+        components.
+        You could place the "Sales Trend" cards or "Quick Links" from your previous layout here if they are still
+        needed.
+      </div>
+      <div class="border-t border-gray-200 dark:border-gray-700 pt-4 mt-4">
+        <p class="text-center text-gray-500 dark:text-gray-400">Your full-width content here...</p>
+      </div>
+    </footer>
+
+  </div>
+</div> -->
+
+
+
+
+
+<!--  -->
 <div class="dashboard-main-container">
   <div class="flex-1 p-4 pt-1 md:p-6">
     <header class="flex justify-between items-center mb-6">
@@ -90,12 +207,22 @@
 
 
     <div class="grid gap-4 mb-8">
-      <div class="soft-card p-6">
+      <div class="charts-section mb-6 space-y-6">
+        <div class="soft-card bg-white dark:bg-gray-800 p-4 sm:p-6 rounded-lg shadow">
+          <h3 class="text-lg font-semibold text-gray-700 dark:text-gray-200 mb-3">Yearly Chart</h3>
+          <app-dashboard-chart-component></app-dashboard-chart-component>
+        </div>
+        <div class="soft-card bg-white dark:bg-gray-800 p-4 sm:p-6 rounded-lg shadow">
+          <h3 class="text-lg font-semibold text-gray-700 dark:text-gray-200 mb-3">Combo Chart</h3>
+          <app-dashboard-chart-combo></app-dashboard-chart-combo>
+        </div>
+      </div>
+      <!-- <div class="soft-card p-6">
         <app-dashboard-chart-component></app-dashboard-chart-component>
       </div>
       <div class="soft-card p-6">
         <app-dashboard-chart-combo></app-dashboard-chart-combo>
-      </div>
+      </div> -->
       <div class="soft-card p-6">
         <app-dashboard-summary [params]="getDateParam"></app-dashboard-summary>
       </div>
