@@ -1,0 +1,13 @@
+/* Optional if you want button hover overrides */
+.p-button-primary {
+  background-color: var(--p-cyan-500) !important;
+  border-color: var(--p-cyan-500) !important;
+}
+.p-button-primary:hover {
+  background-color: var(--p-cyan-400) !important;
+  border-color: var(--p-cyan-400) !important;
+}
+
+::ng-deep canvas {
+  background-color: transparent !important;
+}
