@@ -119,8 +119,8 @@ export class HeaderComponent {
           { label: 'Admin Dashboard', icon: 'pi pi-user', routerLink: ['/admin/adminDashboard'] },
           { label: 'users', icon: 'pi pi-user', routerLink: ['/admin/users'] },
           { label: 'dashboard', icon: 'pi pi-user', routerLink: ['/admin/dashboard'] },
-          { label: 'adusers', icon: 'pi pi-user', routerLink: ['/admin/adusers'] }
-
+          { label: 'adusers', icon: 'pi pi-user', routerLink: ['/admin/adusers'] },
+          { label: 'logs', icon: 'pi pi-user', routerLink: ['/admin/logs'] }
         ]
       },
       {
@@ -139,7 +139,7 @@ export class HeaderComponent {
         items: [
           { label: 'Product List', icon: 'pi pi-list', routerLink: ['/products/list'] },
           { label: 'Product Master', icon: 'pi pi-cog', routerLink: ['/products/master'] },
-          // { label: 'Product Details', icon: 'pi pi-info-circle', routerLink: ['/products/detail/:id'] }
+          { label: 'Product Details', icon: 'pi pi-info-circle', routerLink: ['/products/detail'] }
         ]
       },
       {

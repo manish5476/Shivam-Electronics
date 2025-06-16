@@ -122,7 +122,7 @@ export class CustomerListComponent implements OnInit {
       let filterParams = {
             _id:this.customerFilter.name,
             guaranteerId:this.customerFilter.guaranter,
-            page:this.customerFilter.page,
+            page:this.customerFilter.page||1,
             email:this.customerFilter.email,
             mobileNumber:this.customerFilter.phone,
             limit:this.customerFilter.limit || 20 ,

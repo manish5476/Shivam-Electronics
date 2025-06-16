@@ -1,0 +1,10 @@
+:host {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.ag-theme-alpine {
+  width: 100% !important;
+  height: 100%;
+}
