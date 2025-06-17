@@ -20,6 +20,10 @@ export class DashboardService extends BaseApiService {
     }).pipe(catchError(err => this.errorhandler.handleError('getDashboardSummary', err)));
   }
 
+   getDashboardLogsDetails(params: any): Observable<ApiResponse<any>> {
+    return this.http.get<ApiResponse<any>>(`${this.apiUrl}/logs`, { params: this.createHttpParams(params), })
+      .pipe(catchError((error: HttpErrorResponse) => this.errorhandler.handleError('getDashboardLogsDetails', error)));
+  }
   // --- Sales ---
   getTotalRevenue(params: DateRangeParams): Observable<ApiResponse<{ totalRevenue: number }>> {
     return this.http.get<ApiResponse<{ totalRevenue: number }>>(`${this.apiUrl}/sales/revenue`, {

@@ -6,5 +6,5 @@ import { ProductDetailComponent } from './components/product-detail/product-deta
 export const PRODUCT_ROUTES: Routes = [
   { path: 'list', component: ProductListComponent },
   { path: 'master', component: ProductMasterComponent },
-  { path: 'detail/:id', component: ProductDetailComponent },
+  { path: 'detail', component: ProductDetailComponent },
 ];

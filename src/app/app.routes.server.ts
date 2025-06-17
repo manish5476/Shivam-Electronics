@@ -5,8 +5,8 @@ export const serverRoutes: ServerRoute[] = [
     path: '**',
     renderMode: RenderMode.Prerender
   },
-  {
-    path: 'products/detail/:id',
-    renderMode: RenderMode.Server  // 👈 ensures SSR, not prerender
-  },
+  // {
+  //   path: 'products/detail/:id',
+  //   renderMode: RenderMode.Server  // 👈 ensures SSR, not prerender
+  // },
 ];

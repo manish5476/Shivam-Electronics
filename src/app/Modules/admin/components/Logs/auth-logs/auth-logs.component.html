@@ -1,0 +1,33 @@
+<div class="h-[calc(100vh-56px)] flex flex-col overflow-hidden">
+  <div class="ag-grid-container">
+    <div class="ag-grid-header-filter-area">
+      <div class="header-info">
+        <h4 class="text-lg font-medium text-surface-950 dark:text-surface-0">{{'Customer List'}}</h4>
+      </div>
+      <div class="header-controls-glass-container">
+        <div class="header-controls-content">
+          <div class="header-buttons">
+            <div class="controls">
+              <label for="logFileSelect">Select Log File:</label>
+              <p-select id="logFileSelect" [options]="logFileOptions" [(ngModel)]="selectedLogFile"
+                (onChange)="onFileSelect($event)" placeholder="Select a log file" [filter]="true" filterBy="label" optionLabel="label" optionValue="value"
+                [showClear]="true"></p-select>
+              <div class="pagination-controls">
+                <button (click)="onPageChange(currentPage - 1)" [disabled]="currentPage === 1">Previous</button>
+                <span>Page {{ currentPage }}</span>
+                <button (click)="onPageChange(currentPage + 1)"
+                  [disabled]="currentPage * itemsPerPage >= totalLogs">Next</button>
+                <span *ngIf="totalLogs > 0"> ({{ totalLogs }} total)</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="ag-grid-main-area">
+      <app-shared-grid [data]="data" [rowSelectionMode]="rowSelectionMode" [column]="column"
+        (eventFromGrid)="eventFromGrid($event)">
+      </app-shared-grid>
+    </div>
+  </div>
+</div>
