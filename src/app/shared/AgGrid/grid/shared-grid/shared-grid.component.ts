@@ -110,7 +110,7 @@ export class SharedGridComponent implements OnInit, OnChanges {
     } else {
       this.columnDefs = [...this.column];
     }
-    this.addActionButtonCol();
+    // this.addActionButtonCol();
   }
 
   addActionButtonCol() {
