@@ -13,10 +13,10 @@ import * as QRCode from 'qrcode';
   styleUrls: ['./invoice-print.component.css']
 })
 export class InvoicePrintComponent implements OnInit, OnChanges {
-  @Input() readonly Id: number | undefined;
+  @Input()  Id: number | undefined;
   invoiceData: any;
 
-  constructor(private readonly invoiceService: InvoiceService) { }
+  constructor(private  invoiceService: InvoiceService) { }
 
   ngOnInit() {
     if (!this.Id) {
