@@ -28,7 +28,7 @@ export class SharedGridComponent implements OnInit, OnChanges {
   @Input() gridHeight: string = '500px';
   @Input() gridWidth: string = '100%';
   @Input() padding: string = '0 0px';
-
+  @Input() paginationPageSize: any= 100
   @Output() dataChanged = new EventEmitter<any>();
   @Output() eventFromGrid = new EventEmitter<any>();
   @Output() gridReady = new EventEmitter<GridReadyEvent>();
@@ -64,7 +64,7 @@ export class SharedGridComponent implements OnInit, OnChanges {
     // For headers:
     headerFontFamily: 'Inter, sans-serif', // Often the same as fontFamily
     headerFontWeight: 'bold',
-   rangeSelectionBorderColor: 'rgb(193, 0, 97)',
+    rangeSelectionBorderColor: 'rgb(193, 0, 97)',
     rangeSelectionBorderStyle: 'dashed',
     // background color of selection - you can use a semi-transparent color
     // and it wil overlay on top of the existing cells
@@ -72,11 +72,11 @@ export class SharedGridComponent implements OnInit, OnChanges {
     // color used to indicate that data has been copied form the cell range
     rangeSelectionHighlightColor: 'rgb(60, 188, 0, 0.3)',
 
-      inputBorder: { color: 'orange', style: 'dotted', width: 3 },
+    inputBorder: { color: 'orange', style: 'dotted', width: 3 },
     inputBackgroundColor: 'rgb(255, 209, 123)', // light orange
     inputPlaceholderTextColor: 'rgb(155, 101, 1)', // darker orange
     inputIconColor: 'purple', // light orange
-    
+
     selectedRowBackgroundColor: '#73A9AD',
     // Add other parameters as needed for further customization
     // rowHoverColor: '...',

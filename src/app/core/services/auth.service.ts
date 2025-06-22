@@ -82,7 +82,6 @@ export class AuthService {
   private removeItem(key: string): void {
     if (isPlatformBrowser(this.platformId)) {
       localStorage.removeItem(key);
-
     } else {
 
     }

@@ -41,6 +41,7 @@ import { AuthService } from '../../core/services/auth.service';
 export class HeaderComponent {
 
   visibles: boolean = false;
+  user: any;
   showPanel() {
     this.visibles = !this.visibles
   }
@@ -76,10 +77,10 @@ export class HeaderComponent {
     this.themeService.toggleTheme();
     this.themeLabel = this.themeLabel === 'Dark Mode' ? 'Light Mode' : 'Dark Mode';
   }
-    // This method replaces the combined openUserDropDown/showPanel logic
-    toggleMobileMenu(): void {
-      this.isMobileMenuOpen = !this.isMobileMenuOpen;
-    }
+  // This method replaces the combined openUserDropDown/showPanel logic
+  toggleMobileMenu(): void {
+    this.isMobileMenuOpen = !this.isMobileMenuOpen;
+  }
 
   toggleNotificationDropdown() {
     this.shownotificationdropdown = !this.shownotificationdropdown;
@@ -104,38 +105,36 @@ export class HeaderComponent {
 
   menuItems: MenuItem[] = [];
 
+
   ngOnInit() {
-    // this.getMenuItems();
-    this.ngOnInits()
-  }
-  ngOnInits() {
+    this.user = this.authService.getItem('user');
+
     this.menuItemss = [
-      { label: 'Dashboard', icon: 'pi pi-home', routerLink: ['/dashboard']
-      },
+      { label: 'Dashboard', icon: 'pi pi-home', routerLink: ['/dashboard'] },
       {
         label: 'Admin',
-        icon: 'pi pi-users',
+        icon: 'pi pi-lock',
         items: [
-          { label: 'Admin Dashboard', icon: 'pi pi-user', routerLink: ['/admin/adminDashboard'] },
-          { label: 'users', icon: 'pi pi-user', routerLink: ['/admin/users'] },
-          { label: 'dashboard', icon: 'pi pi-user', routerLink: ['/admin/dashboard'] },
-          { label: 'adusers', icon: 'pi pi-user', routerLink: ['/admin/adusers'] },
-          { label: 'logs', icon: 'pi pi-user', routerLink: ['/admin/logs'] }
+          { label: 'Admin Dashboard', icon: 'pi pi-th-large', routerLink: ['/admin/adminDashboard'] },
+          { label: 'Users', icon: 'pi pi-user', routerLink: ['/admin/users'] },
+          { label: 'Role Dashboard', icon: 'pi pi-chart-line', routerLink: ['/admin/dashboard'] },
+          { label: 'Add Users', icon: 'pi pi-user-plus', routerLink: ['/admin/adusers'] },
+          { label: 'Logs', icon: 'pi pi-database', routerLink: ['/admin/logs'] }
         ]
       },
       {
         label: 'Customers',
-        icon: 'pi pi-user-plus',
+        icon: 'pi pi-users',
         items: [
           { label: 'List', icon: 'pi pi-list', routerLink: ['/customers/list'] },
           { label: 'Master', icon: 'pi pi-cog', routerLink: ['/customers/master'] },
           { label: 'Details', icon: 'pi pi-info-circle', routerLink: ['/customers/details'] },
-          { label: 'Detailed List', icon: 'pi pi-list', routerLink: ['/customers/detailed'] }
+          { label: 'Detailed List', icon: 'pi pi-th-list', routerLink: ['/customers/detailed'] }
         ]
       },
       {
         label: 'Products',
-        icon: 'pi pi-box',
+        icon: 'pi pi-shopping-bag',
         items: [
           { label: 'Product List', icon: 'pi pi-list', routerLink: ['/products/list'] },
           { label: 'Product Master', icon: 'pi pi-cog', routerLink: ['/products/master'] },
@@ -146,9 +145,9 @@ export class HeaderComponent {
         label: 'Sellers',
         icon: 'pi pi-briefcase',
         items: [
-          { label: 'Seller', icon: 'pi pi-user', routerLink: ['/sellers/Seller'] },
-          { label: 'Seller Details', icon: 'pi pi-info-circle', routerLink: ['/sellers/Seller details'] },
-          { label: 'Seller List', icon: 'pi pi-list', routerLink: ['/sellers/Seller List'] }
+          { label: 'Seller', icon: 'pi pi-id-card', routerLink: ['/sellers/Seller'] },
+          { label: 'Seller Details', icon: 'pi pi-user-edit', routerLink: ['/sellers/Seller details'] },
+          { label: 'Seller List', icon: 'pi pi-th-large', routerLink: ['/sellers/Seller List'] }
         ]
       },
       {
@@ -156,82 +155,20 @@ export class HeaderComponent {
         icon: 'pi pi-file',
         items: [
           { label: 'View Invoice', icon: 'pi pi-eye', routerLink: ['/invoices/view'] },
-          { label: 'Create Invoice', icon: 'pi pi-plus', routerLink: ['/invoices/create'] },
-          { label: 'Invoice Details', icon: 'pi pi-file', routerLink: ['/invoices/Details'] }
+          { label: 'Create Invoice', icon: 'pi pi-plus-circle', routerLink: ['/invoices/create'] },
+          { label: 'Invoice Details', icon: 'pi pi-file-edit', routerLink: ['/invoices/Details'] }
         ]
       },
       {
         label: 'Payments',
-        icon: 'pi pi-credit-card',
+        icon: 'pi pi-wallet',
         items: [
           { label: 'Payment', icon: 'pi pi-money-bill', routerLink: ['/payment/payment'] },
-          { label: 'View Payment', icon: 'pi pi-file', routerLink: ['/payment/paymentView'] }, 
-          { label: 'Payment List', icon: 'pi pi-file', routerLink: ['/payment/paymentList'] }
+          { label: 'View Payment', icon: 'pi pi-eye', routerLink: ['/payment/paymentView'] },
+          { label: 'Payment List', icon: 'pi pi-list', routerLink: ['/payment/paymentList'] }
         ]
-      },
-   
+      }
     ];
   }
 
-  // getMenuItems() {
-  //   this.menuItems = [
-  //     {
-  //       label: 'Dashboard',
-  //       icon: 'pi pi-home',
-  //       routerLink: ['/dashboard']
-  //     },
-  //     {
-  //       label: 'Admin',
-  //       icon: 'pi pi-users',
-  //       items: [
-  //         { label: 'Admin Dashboard', icon: 'pi pi-user', routerLink: ['/admin/adminDashboard'] }
-  //       ]
-  //     },
-  //     {
-  //       label: 'Customers',
-  //       icon: 'pi pi-user-plus',
-  //       items: [
-  //         { label: 'List', icon: 'pi pi-list', routerLink: ['/customers/list'] },
-  //         { label: 'Master', icon: 'pi pi-cog', routerLink: ['/customers/master'] },
-  //         { label: 'Details', icon: 'pi pi-info-circle', routerLink: ['/customers/details'] },
-  //         { label: 'Detailed List', icon: 'pi pi-list', routerLink: ['/customers/detailed'] }
-  //       ]
-  //     },
-  //     {
-  //       label: 'Sellers',
-  //       icon: 'pi pi-briefcase',
-  //       items: [
-  //         { label: 'Seller', icon: 'pi pi-user', routerLink: ['/sellers/Seller'] },
-  //         { label: 'Seller Details', icon: 'pi pi-info-circle', routerLink: ['/sellers/Seller details'] },
-  //         { label: 'Seller List', icon: 'pi pi-list', routerLink: ['/sellers/Seller List'] }
-  //       ]
-  //     },
-  //     {
-  //       label: 'Invoices',
-  //       icon: 'pi pi-file',
-  //       items: [
-  //         { label: 'View Invoice', icon: 'pi pi-eye', routerLink: ['/invoices/view'] },
-  //         { label: 'Create Invoice', icon: 'pi pi-plus', routerLink: ['/invoices/create'] },
-  //         { label: 'Invoice Details', icon: 'pi pi-file', routerLink: ['/invoices/Details'] }
-  //       ]
-  //     },
-  //     {
-  //       label: 'Payments',
-  //       icon: 'pi pi-credit-card',
-  //       items: [
-  //         { label: 'Payment', icon: 'pi pi-money-bill', routerLink: ['/payment/payment'] },
-  //         { label: 'GST Invoice', icon: 'pi pi-file', routerLink: ['/payment/invoice'] }
-  //       ]
-  //     },
-  //     {
-  //       label: 'Products',
-  //       icon: 'pi pi-box',
-  //       items: [
-  //         { label: 'Product List', icon: 'pi pi-list', routerLink: ['/products/list'] },
-  //         { label: 'Product Master', icon: 'pi pi-cog', routerLink: ['/products/master'] },
-  //         { label: 'Product Details', icon: 'pi pi-info-circle', routerLink: ['/products/detail/:id'] }
-  //       ]
-  //     }
-  //   ];
-  // }
 }

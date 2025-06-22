@@ -1,4 +1,4 @@
-
+<!-- 
 <div class="bg-gray-100 text-gray-900" [formGroup]="invoiceForm">
   <div class="w-full mx-auto p-6 bg-gray-200 shadow-md mt-10 rounded-lg">
     <div class="text-center mb-6">
@@ -169,4 +169,146 @@
       Save & Continue
     </button>
   </div>
-</div> 
+</div>  -->
+<div class="bg-gray-100 text-gray-900 py-6 px-4 md:px-8 lg:px-12" [formGroup]="invoiceForm">
+  <div class="text-center mb-2">
+    <h2 class="text-3xl font-bold text-purple-500">GST Invoice</h2>
+  </div>
+
+  <!-- Form Fields -->
+  <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-4 bg-white p-6 rounded-lg shadow-md mb-6">
+    <div>
+      <label class="block text-sm font-medium mb-1" for="invoiceNumber">Invoice No*</label>
+      <input type="text" id="invoiceNumber" formControlName="invoiceNumber"
+        placeholder="Enter Invoice No"
+        class="w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-purple-400">
+    </div>
+    <div>
+      <label class="block text-sm font-medium mb-1" for="invoiceDate">Invoice Date*</label>
+      <input type="date" id="invoiceDate" formControlName="invoiceDate"
+        class="w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-purple-400">
+    </div>
+    <div>
+      <label class="block text-sm font-medium mb-1" for="dueDate">Due Date</label>
+      <input type="date" id="dueDate" formControlName="dueDate"
+        class="w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-purple-400">
+    </div>
+    <div>
+      <label class="block text-sm font-medium mb-1">Billed By</label>
+      <p-select appendTo="body" [options]="InvoiceObject.sellersDrop" optionLabel="name" optionValue="_id"
+        formControlName="seller" placeholder="Select Seller" class="w-full"></p-select>
+    </div>
+    <div>
+      <label class="block text-sm font-medium mb-1">Billed To</label>
+      <p-select appendTo="body" [options]="InvoiceObject.customerIDDropdown" optionLabel="fullname"
+        optionValue="_id" formControlName="buyer" placeholder="Select Buyer" class="w-full"></p-select>
+    </div>
+  </div>
+
+  <!-- Items Table -->
+  <div class="overflow-x-auto bg-white p-4 rounded-lg shadow-md mb-6">
+    <table class="min-w-full text-sm text-left border border-gray-200">
+      <thead class="bg-gray-100 text-gray-700">
+        <tr>
+          <th class="p-2">Item</th>
+          <th class="p-2">GST (%)</th>
+          <th class="p-2">Qty</th>
+          <th class="p-2">Rate</th>
+          <th class="p-2">Discount (%)</th>
+          <th class="p-2">Taxable</th>
+          <th class="p-2">GST Amt</th>
+          <th class="p-2">Total</th>
+          <th class="p-2 text-center">Actions</th>
+        </tr>
+      </thead>
+      <tbody formArrayName="items">
+        <tr *ngFor="let itemFormGroup of itemsFormArray.controls; let i = index" [formGroupName]="i"
+          class="hover:bg-gray-50 border-t">
+          <td class="p-2">
+            <p-select appendTo="body" formControlName="product" [options]="InvoiceObject.productdrop"
+              optionValue="_id" optionLabel="title" (onChange)="onProductChange($event, i)"
+              (ngModelChange)="onItemValueChange(i)" class="w-full"></p-select>
+          </td>
+          <td class="p-2"><input type="number" formControlName="gstRate" (ngModelChange)="onItemValueChange(i)"
+              class="w-full border border-gray-300 rounded-md p-1"></td>
+          <td class="p-2"><input type="number" formControlName="quantity" (ngModelChange)="onItemValueChange(i)"
+              class="w-full border border-gray-300 rounded-md p-1"></td>
+          <td class="p-2"><input type="number" formControlName="rate" (ngModelChange)="onItemValueChange(i)"
+              class="w-full border border-gray-300 rounded-md p-1"></td>
+          <td class="p-2"><input type="number" formControlName="discount" (ngModelChange)="onItemValueChange(i)"
+              class="w-full border border-gray-300 rounded-md p-1"></td>
+          <td class="p-2"><input type="number" formControlName="taxableValue" readonly
+              class="w-full bg-gray-100 border border-gray-300 rounded-md p-1"></td>
+          <td class="p-2"><input type="number" formControlName="gstAmount" readonly
+              class="w-full bg-gray-100 border border-gray-300 rounded-md p-1"></td>
+          <td class="p-2"><input type="number" formControlName="amount" readonly
+              class="w-full bg-gray-100 border border-gray-300 rounded-md p-1"></td>
+          <td class="p-2 text-center flex gap-2 justify-center">
+            <button (click)="addItem()" class="text-green-600 hover:text-green-800">
+              <i class="pi pi-check"></i>
+            </button>
+            <button (click)="removeItem(i)" class="text-red-600 hover:text-red-800">
+              <i class="pi pi-times"></i>
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Round Off Section -->
+  <div class="flex items-center gap-6 mb-6">
+    <label class="flex items-center gap-2 text-sm">
+      <input type="checkbox" formControlName="roundUp" (change)="calculateInvoiceTotals()"
+        class="form-checkbox text-purple-500">
+      Round Up
+    </label>
+    <label class="flex items-center gap-2 text-sm">
+      <input type="checkbox" formControlName="roundDown" (change)="calculateInvoiceTotals()"
+        class="form-checkbox text-purple-500">
+      Round Down
+    </label>
+  </div>
+
+  <!-- Totals Box -->
+  <div class="bg-white shadow-md rounded-lg p-6 mb-6 grid grid-cols-1 lg:grid-cols-2 gap-6">
+    <div>
+      <h3 class="font-semibold text-md mb-2">Place of Supply</h3>
+      <p>{{ invoiceForm.get('placeOfSupply')?.value || 'N/A' }}</p>
+    </div>
+    <div>
+      <div class="flex justify-between mb-2">
+        <span class="font-medium">Sub Total:</span>
+        <span>₹ {{ invoiceForm.get('subTotal')?.value | number : '1.2-2' }}</span>
+      </div>
+      <div class="flex justify-between mb-2">
+        <span class="font-medium">GST:</span>
+        <span>₹ {{ invoiceForm.get('gst')?.value | number : '1.2-2' }}</span>
+      </div>
+      <div class="flex justify-between mb-2">
+        <span class="font-medium">CESS:</span>
+        <span>₹ {{ invoiceForm.get('cess')?.value | number : '1.2-2' }}</span>
+      </div>
+      <div class="flex justify-between mb-2">
+        <span class="font-medium">Discount:</span>
+        <span>₹ {{ invoiceForm.get('totalDiscount')?.value | number : '1.2-2' }}</span>
+      </div>
+      <div class="flex justify-between border-t pt-2 mt-2">
+        <span class="font-semibold">Taxable Value:</span>
+        <span>₹ {{ invoiceForm.get('taxableValue')?.value }}</span>
+      </div>
+      <div class="flex justify-between pt-4 mt-4 border-t">
+        <h2 class="text-lg font-semibold">Total (INR)</h2>
+        <h2 class="text-lg font-semibold">₹ {{ invoiceForm.get('totalAmount')?.value | number : '1.2-2' }}</h2>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer Button -->
+  <div class="text-center">
+    <button type="button"
+      class="bg-purple-600 hover:bg-purple-700 text-white font-medium py-2 px-6 rounded-md shadow-md transition">
+      Save & Continue
+    </button>
+  </div>
+</div>
