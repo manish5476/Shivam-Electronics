@@ -41,6 +41,32 @@ export class InvoiceDetailCardComponent implements OnInit {
         break
     }
   }
+  
+  printInvoice() {
+  const printContent = document.getElementById('invoice-print-section');
+  const WindowPrt = window.open('', '', 'left=0,top=0,width=900,height=700,toolbar=0,scrollbars=0,status=0');
+  if (WindowPrt && printContent) {
+    WindowPrt.document.write(`
+      <html>
+        <head>
+          <title>Invoice</title>
+          <style>
+            body { font-family: Arial, sans-serif; padding: 20px; }
+            table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+            th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+            th { background-color: #f4f4f4; }
+          </style>
+        </head>
+        <body>${printContent.innerHTML}</body>
+      </html>`);
+    WindowPrt.document.close();
+    WindowPrt.focus();
+    WindowPrt.print();
+    WindowPrt.close();
+  }
+}
+
+
   getCustomerdata() {
     if (this.Id) {
       this.loading = true;

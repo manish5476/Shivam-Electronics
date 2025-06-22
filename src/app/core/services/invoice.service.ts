@@ -13,7 +13,7 @@ export class InvoiceService extends BaseApiService {
       .pipe(catchError((error: HttpErrorResponse) => this.errorhandler.handleError('getAllCustomerData', error)));
   }
   
-  getinvoiceDataWithId(id: string): Observable<any> {
+  getinvoiceDataWithId(id: any): Observable<any> {
     return this.http.get<any>(`${this.baseUrl}/v1/invoices/${id}`)
       .pipe(catchError((error: HttpErrorResponse) => this.errorhandler.handleError('getinvoiceDataWithId', error)));
   }

@@ -7,6 +7,10 @@ html, body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+.ag-theme-alpine {
+  width: 100% !important;
+  height: 100%;
+}
 
 :root {
   /* Light Theme with Gradient */

@@ -1,4 +1,172 @@
-<div *ngIf="!loading && invoiceData" class="space-y-4 p-4 bg-gray-100 text-sm">
+<div id="invoice-print-section">
+
+  <div *ngIf="!loading && invoiceData" class="space-y-6 px-4 py-6 bg-gray-100 text-sm max-w-screen-xl mx-auto">
+    <!-- Header -->
+    <!-- <div class="flex justify-between items-center">
+      <h1 class="text-3xl font-bold text-gray-800">Invoice Details</h1>
+      <button (click)="printInvoice()"
+        class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md shadow flex items-center">
+        <i class="pi pi-print mr-2"></i> Print
+      </button>
+    </div> -->
+
+    <!-- Invoice Info -->
+    <div class="rounded-lg border border-gray-200 shadow-md bg-white">
+      <div class="px-4 py-3 border-b border-gray-200">
+        <h2 class="text-lg font-semibold text-gray-800 flex items-center gap-2">
+          <i class="pi pi-file-invoice text-purple-500"></i> Invoice Information
+        </h2>
+      </div>
+      <div class="divide-y divide-gray-200">
+        <div class="px-4 py-2 grid grid-cols-3 gap-4">
+          <dt class="font-medium text-gray-500">Number</dt>
+          <dd class="text-gray-800 col-span-2">{{ invoiceData.invoiceNumber || 'N/A' }}</dd>
+        </div>
+        <div class="px-4 py-2 grid grid-cols-3 gap-4">
+          <dt class="font-medium text-gray-500">Date</dt>
+          <dd class="text-gray-800 col-span-2">{{ invoiceData.invoiceDate | date:'longDate' }}</dd>
+        </div>
+        <div class="px-4 py-2 grid grid-cols-3 gap-4">
+          <dt class="font-medium text-gray-500">Due Date</dt>
+          <dd class="text-gray-800 col-span-2">{{ invoiceData.dueDate | date:'longDate' }}</dd>
+        </div>
+        <div class="px-4 py-2 grid grid-cols-3 gap-4 items-center">
+          <dt class="font-medium text-gray-500">Status</dt>
+          <dd class="col-span-2">
+            <p-tag [value]="invoiceData.status" [severity]="getStatusSeverity(invoiceData.status)"></p-tag>
+          </dd>
+        </div>
+        <div class="px-4 py-2 grid grid-cols-3 gap-4">
+          <dt class="font-medium text-gray-500">Place of Supply</dt>
+          <dd class="text-gray-800 col-span-2">{{ invoiceData.placeOfSupply || 'N/A' }}</dd>
+        </div>
+        <div class="px-4 py-2 grid grid-cols-3 gap-4">
+          <dt class="font-medium text-gray-500">Payment Terms</dt>
+          <dd class="text-gray-800 col-span-2">{{ invoiceData.paymentTerms || 'N/A' }}</dd>
+        </div>
+        <div class="px-4 py-2 grid grid-cols-3 gap-4">
+          <dt class="font-medium text-gray-500">Notes</dt>
+          <dd class="text-gray-800 col-span-2 whitespace-pre-line">{{ invoiceData.notes || 'N/A' }}</dd>
+        </div>
+      </div>
+    </div>
+
+    <!-- Seller and Buyer -->
+    <div class="flex flex-col lg:flex-row gap-4">
+      <div class="rounded-lg border border-gray-200 shadow-md bg-white w-full">
+        <div class="px-4 py-3 border-b border-gray-200">
+          <h2 class="text-lg font-semibold text-gray-800 flex items-center gap-2">
+            <i class="pi pi-user text-blue-500"></i> Seller Details
+          </h2>
+        </div>
+        <div class="divide-y divide-gray-200 p-2">
+          <div class="grid grid-cols-3 gap-4 py-2"
+            *ngFor="let key of ['name','shopname','gstin','pan','contactNumber','address','createdAt','updatedAt']">
+            <dt class="font-medium text-gray-500 capitalize">{{ key }}</dt>
+            <dd class="text-gray-800 col-span-2 truncate">{{ invoiceData.sellerDetails?.[key] || 'N/A' }}</dd>
+          </div>
+        </div>
+      </div>
+
+      <div class="rounded-lg border border-gray-200 shadow-md bg-white w-full">
+        <div class="px-4 py-3 border-b border-gray-200">
+          <h2 class="text-lg font-semibold text-gray-800 flex items-center gap-2">
+            <i class="pi pi-user-plus text-teal-500"></i> Buyer Details
+          </h2>
+        </div>
+        <div class="divide-y divide-gray-200 p-2">
+          <div class="grid grid-cols-3 gap-4 py-2">
+            <dt class="font-medium text-gray-500">Name</dt>
+            <dd class="text-gray-800 col-span-2">{{ invoiceData.buyerDetails?.fullname || 'N/A' }}</dd>
+          </div>
+          <div class="grid grid-cols-3 gap-4 py-2">
+            <dt class="font-medium text-gray-500">Address</dt>
+            <dd class="text-gray-800 col-span-2 whitespace-pre-line">
+              {{ invoiceData.buyerDetails?.addresses?.[0]?.street || 'N/A' }},
+              {{ invoiceData.buyerDetails?.addresses?.[0]?.city || '' }}
+              {{ invoiceData.buyerDetails?.addresses?.[0]?.state || '' }}
+              {{ invoiceData.buyerDetails?.addresses?.[0]?.zipCode || '' }}
+            </dd>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Items Table -->
+    <div class="rounded-lg border border-gray-200 shadow-md bg-white overflow-x-auto">
+      <div class="px-4 py-3 border-b border-gray-200">
+        <h2 class="text-lg font-semibold text-gray-800 flex items-center gap-2">
+          <i class="pi pi-list text-indigo-500"></i> Items
+        </h2>
+      </div>
+      <p-table [value]="invoiceData.items" styleClass="p-datatable-sm p-datatable-striped"
+        [tableStyle]="{ 'min-width': '65rem' }" responsiveLayout="scroll">
+        <ng-template pTemplate="header">
+          <tr>
+            <th>Item</th>
+            <th class="text-right">Qty</th>
+            <th class="text-right">Rate</th>
+            <th class="text-right">Discount</th>
+            <th class="text-right">Taxable</th>
+            <th class="text-right">CGST</th>
+            <th class="text-right">SGST</th>
+            <th class="text-right">Amount</th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-item>
+          <tr>
+            <td>{{ item.itemDetails?.title || 'N/A' }}</td>
+            <td class="text-right">{{ item.quantity }}</td>
+            <td class="text-right">{{ item.rate | currency:'INR' }}</td>
+            <td class="text-right">{{ item.discount | currency:'INR' }}</td>
+            <td class="text-right">{{ item.taxableValue | currency:'INR' }}</td>
+            <td class="text-right">{{ item.cgstAmount | currency:'INR' }} ({{ item.cgstRate }}%)</td>
+            <td class="text-right">{{ item.sgstAmount | currency:'INR' }} ({{ item.sgstRate }}%)</td>
+            <td class="text-right font-medium">{{ item.amount | currency:'INR' }}</td>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="emptymessage">
+          <tr>
+            <td colspan="8" class="text-center py-4">No items found in this invoice.</td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </div>
+
+    <!-- Financial Summary -->
+    <div class="rounded-lg border border-gray-200 shadow-md bg-white">
+      <div class="px-4 py-3 border-b border-gray-200">
+        <h2 class="text-lg font-semibold text-gray-800 flex items-center gap-2">
+          <i class="pi pi-wallet text-green-600"></i> Financial Summary
+        </h2>
+      </div>
+      <div class="divide-y divide-gray-200 px-4 py-2">
+        <div class="flex justify-between py-1">
+          <span class="text-gray-600">Sub Total</span>
+          <span>{{ invoiceData.subTotal | currency:'INR' }}</span>
+        </div>
+        <div class="flex justify-between py-1">
+          <span class="text-red-600">Total Discount</span>
+          <span>({{ invoiceData.totalDiscount | currency:'INR' }})</span>
+        </div>
+        <div class="flex justify-between py-1">
+          <span>Total Tax (CGST+SGST/IGST)</span>
+          <span>{{ (invoiceData.igst || 0) + (invoiceData.totalCGST || 0) + (invoiceData.totalSGST || 0) |
+            currency:'INR' }}</span>
+        </div>
+        <div class="flex justify-between py-1">
+          <span>CESS</span>
+          <span>{{ invoiceData.cess | currency:'INR' }}</span>
+        </div>
+        <div class="flex justify-between border-t pt-3 mt-3">
+          <span class="text-lg font-semibold text-gray-700">Grand Total</span>
+          <span class="text-xl font-bold text-green-600">{{ invoiceData.totalAmount | currency:'INR' }}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- <div *ngIf="!loading && invoiceData" class="space-y-4 p-4 bg-gray-100 text-sm">
 
   <h1 class="text-2xl font-semibold text-gray-800 mb-4">Invoice Details</h1>
 
@@ -217,7 +385,7 @@
     <p class="font-semibold">Error loading invoice details.</p>
     <p>Please check the invoice ID or try again later.</p>
   </div>
-</div>
+</div> -->
 
 <!-- 
 <div *ngIf="!loading && invoiceData" class="space-y-3">

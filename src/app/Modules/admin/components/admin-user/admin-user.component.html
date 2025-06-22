@@ -1,50 +1,21 @@
-<!-- <div class="card ">
-  <p-toast />
-  <app-common-header [title]="'Customer List'">
-    <ng-template #start>
-      <p-button label="New" icon="pi pi-plus" class="mr-2" (onClick)="openNew()" />
-      <p-button severity="danger" label="Delete" icon="pi pi-trash" outlined (onClick)="deleteSelectedProducts()"
-        [disabled]="!selectedProducts || !selectedProducts.length" />
-    </ng-template>
-
-    <ng-template #end>
-      <p-fileUpload mode="basic" accept="image/*" [maxFileSize]="1000000" label="Import" chooseLabel="Import" auto
-        customUpload class="mr-2 inline-block" [chooseButtonProps]="{ severity: 'secondary' }" />
-      <p-button label="Export" icon="pi pi-upload" severity="secondary" (onClick)="exportCSV()" />
-    </ng-template>
-  </app-common-header>
-  
-  <div class="container mx-auto mt-4">
-    <app-shared-grid [gridHeight]="'520px'" [gridWidth]="'100%'" [padding]="'0'" [data]="users"
-      [rowSelectionMode]="rowSelectionMode" [column]="columnDefs" (eventFromGrid)="eventFromGrid($event)">
-    </app-shared-grid>
-   -->
-    <!-- <app-common-header [gridWidth]="'100%'"></app-common-header>
-<app-shared-grid [gridHeight]="'520px'" [gridWidth]="" [padding]="" [data]="data" [rowSelectionMode]="rowSelectionMode"
-  [rowSelectionMode]="rowSelectionMode" [column]="column" (eventFromGrid)="eventFromGrid($event)">
-</app-shared-grid> -->
-<!-- <app-common-header [gridWidth]="'100%'"></app-common-header>
-<app-shared-grid [gridHeight]="'520px'" [gridWidth]="" [padding]="" [data]="data" [rowSelectionMode]="rowSelectionMode"
-  [rowSelectionMode]="rowSelectionMode" [column]="column" (eventFromGrid)="eventFromGrid($event)">
-</app-shared-grid> -->
-
+<!-- 
 
 <div class="h-[calc(100vh-56px)] flex flex-col overflow-hidden">
 <div class="ag-grid-container">
   <div class="ag-grid-header-filter-area">
     <div class="header-info">
-      <h4 class="text-lg font-medium text-surface-950 dark:text-surface-0">{{'Customer List'}}</h4>
+      <h4 class="text-lg font-medium text-surface-950 dark:text-surface-0">{{'Users List'}}</h4>
     </div>
     <div class="header-controls-glass-container">
       <div class="header-controls-content">
         <div class="header-buttons">
           <app-common-header class="h-17" [gridWidth]="'100%'">
-            <!-- <ng-template #limit>
+            <ng-template #limit>
               <p-iftalabel>
                 <input pInputText id="limit" (change)="getData()" [(ngModel)]="customerFilter.limit" />
                 <label for="limit">limit</label>
               </p-iftalabel>
-            </ng-template> -->
+            </ng-template>
           </app-common-header>
         </div>
       </div>
@@ -57,3 +28,48 @@
     </app-shared-grid>
   </div>
 </div></div>
+<div class="h-[calc(100vh-56px)] flex flex-col overflow-hidden bg-gray-50 dark:bg-surface-950">
+  <div
+    class="flex items-center justify-between p-4 border-b border-gray-200 dark:border-gray-800 bg-white dark:bg-surface-900 shadow-sm">
+    <div>
+      <h1 class="text-lg font-semibold text-gray-800 dark:text-white">Users List</h1>
+      <p class="text-sm text-gray-500 dark:text-gray-400">Manage all users, import/export data, and view details</p>
+    </div>
+    <div class="flex items-center gap-2">
+      <p-button label="New" icon="pi pi-plus" (onClick)="openNew()" class="p-button-sm" />
+      <p-button severity="danger" label="Delete" icon="pi pi-trash" outlined class="p-button-sm"
+        [disabled]="!selectedProducts || !selectedProducts.length" (onClick)="deleteSelectedProducts()" />
+
+      <p-button label="Export" icon="pi pi-upload" severity="secondary" class="p-button-sm" (onClick)="exportCSV()" />
+    </div>
+  </div>
+
+  <app-shared-grid [rowSelectionMode]="rowSelectionMode" [gridHeight]="'calc(100vh - 190px)'" [padding]="'0'"
+    [data]="users" [column]="columnDefs" (eventFromGrid)="eventFromGrid($event)"></app-shared-grid>
+</div> -->
+<div class="h-[calc(100vh-56px)] flex flex-col overflow-hidden bg-gray-50 dark:bg-surface-950">
+  <!-- Header Bar -->
+  <div
+    class="flex items-center justify-between flex-wrap gap-4 px-4 py-3 border-b border-gray-200 dark:border-gray-800 bg-white dark:bg-surface-900 shadow-sm">
+    <div>
+      <h1 class="text-xl font-semibold text-gray-800 dark:text-white">Users List</h1>
+      <p class="text-sm text-gray-500 dark:text-gray-400">Manage users, import/export, and edit details</p>
+    </div>
+    <div class="flex items-center gap-2">
+      <p-button label="New" icon="pi pi-plus" (onClick)="openNew()" class="p-button-sm" />
+      <p-button severity="danger" label="Delete" icon="pi pi-trash" outlined class="p-button-sm"
+        [disabled]="!selectedProducts || !selectedProducts.length" (onClick)="deleteSelectedProducts()" />
+      <p-button label="Export" icon="pi pi-upload" severity="secondary" class="p-button-sm" (onClick)="exportCSV()" />
+    </div>
+  </div>
+
+  <!-- Shared Grid -->
+  <app-shared-grid
+    [rowSelectionMode]="rowSelectionMode"
+    [gridHeight]="'calc(100vh - 190px)'"
+    [padding]="'0'"
+    [data]="users"
+    [column]="columnDefs"
+    (eventFromGrid)="eventFromGrid($event)">
+  </app-shared-grid>
+</div>

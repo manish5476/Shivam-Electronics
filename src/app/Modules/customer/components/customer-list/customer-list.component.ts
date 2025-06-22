@@ -4,7 +4,7 @@ import { CellValueChangedEvent } from 'ag-grid-community';
 import { ToolbarComponent } from "../../../../shared/Components/toolbar/toolbar.component";
 import { CustomerService } from '../../../../core/services/customer.service';
 import { InvoiceService } from '../../../../core/services/invoice.service';
-import { SelectModule } from 'primeng/select';import { DynamicCellComponent } from '../../../../shared/AgGrid/AgGridcomponents/dynamic-cell/dynamic-cell.component';
+import { SelectModule } from 'primeng/select'; import { DynamicCellComponent } from '../../../../shared/AgGrid/AgGridcomponents/dynamic-cell/dynamic-cell.component';
 import { GridContext } from '../../../../shared/AgGrid/AgGridcomponents/ag-grid-reference/ag-grid-reference.component';
 import { IftaLabelModule } from 'primeng/iftalabel';
 import { FormsModule } from '@angular/forms';
@@ -12,12 +12,20 @@ import { AutopopulateService } from '../../../../core/services/autopopulate.serv
 @Component({
     selector: 'app-customer-list',
     standalone: true,
-    imports: [SharedGridComponent,SelectModule, FormsModule, IftaLabelModule, ToolbarComponent, ToolbarComponent],
+    imports: [SharedGridComponent, SelectModule, FormsModule, IftaLabelModule, ToolbarComponent, ToolbarComponent],
     providers: [CustomerService],
     templateUrl: './customer-list.component.html',
     styleUrl: './customer-list.component.css'
 })
 export class CustomerListComponent implements OnInit {
+    resetFilters() {
+        this.customerFilter.name = null
+        this.customerFilter.mobileNumber = null
+        this.customerFilter.guaranter = null
+        this.customerFilter.email = null
+        this.customerFilter.page = 1
+        this.getData();
+    }
     data: any = [];
     column: any = [];
     rowSelectionMode: any = 'singleRow';
@@ -25,9 +33,9 @@ export class CustomerListComponent implements OnInit {
         name: '',
         mobileNumber: '',
         guaranter: '',
-        page:'',
-        email:'',
-        limit:'',
+        page: '',
+        email: '',
+        limit: '',
         customerIDDropdown: [],
     }
     constructor(private cdr: ChangeDetectorRef, private autoPopulate: AutopopulateService, private InvoiceService: InvoiceService, private CustomerService: CustomerService) { }
@@ -119,16 +127,16 @@ export class CustomerListComponent implements OnInit {
     }
 
     getData() {
-      let filterParams = {
-            _id:this.customerFilter.name,
-            guaranteerId:this.customerFilter.guaranter,
-            page:this.customerFilter.page||1,
-            email:this.customerFilter.email,
-            mobileNumber:this.customerFilter.phone,
-            limit:this.customerFilter.limit || 20 ,
+        let filterParams = {
+            _id: this.customerFilter.name,
+            guaranteerId: this.customerFilter.guaranter,
+            page: this.customerFilter.page || 1,
+            email: this.customerFilter.email,
+            mobileNumber: this.customerFilter.phone,
+            limit: this.customerFilter.limit || 100,
             // fields:'mobileNumber fullName'
         }
-        
+
         this.CustomerService.getAllCustomerData(filterParams).subscribe((res: any) => {
             this.data = res.data;
             this.cdr.markForCheck();
