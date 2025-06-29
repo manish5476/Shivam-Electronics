@@ -33,7 +33,7 @@ interface ExportColumn {
 
 @Component({
     selector: 'app-admin-user',
-    imports: [TableModule, ButtonModule, SelectModule, ToastModule, ToolbarModule,  InputTextModule, TextareaModule, CommonModule, InputTextModule, FormsModule, IconFieldModule, InputIconModule, SharedGridComponent, ToolbarComponent], // Add SharedGridComponent to imports
+    imports: [TableModule, ButtonModule, SelectModule, ToastModule, ToolbarModule,  InputTextModule, TextareaModule, CommonModule, InputTextModule, FormsModule, IconFieldModule, InputIconModule, SharedGridComponent], // Add SharedGridComponent to imports
     providers: [MessageService, ConfirmationService, ApiService],
     templateUrl: './admin-user.component.html',
     styleUrl: './admin-user.component.css'

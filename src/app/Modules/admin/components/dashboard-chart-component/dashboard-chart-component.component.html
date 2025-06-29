@@ -1,96 +1,77 @@
-<!-- <div class="card p-4">
-  <ng-container *ngIf="!isLoading; else loading">
-    <p-chart type="bar" [data]="chartData" [options]="chartOptions" class="h-[30rem] w-full" />
-  </ng-container>
-  <ng-template #loading>
-    <p-skeleton height="30rem" class="w-full" />
-  </ng-template>
-</div> -->
-<!-- <div class="flex flex-col md:flex-row items-center gap-4 w-full md:w-auto">
-  <h3 class="text-xl font-bold text-gray-800 whitespace-nowrap">📅 Select Year</h3>
-  <input pInputText [(ngModel)]="yearInput" placeholder="Enter year (e.g., 2025)"
-    class="p-inputtext w-full md:w-60 p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-400" />
-  <button pButton label="Fetch Data" icon="pi pi-refresh" (click)="getSalesDataForChartsYearly()"
-    class="p-button p-button-primary">
-  </button>
-</div>
-<div class="mb-4 flex gap-3">
-  <button pButton type="button" label="Bar Chart" (click)="onToggleView('bar')"
-    [class.p-button-outlined]="chartView !== 'bar'">Bar</button>
-  <button pButton type="button" label="Line Chart" (click)="onToggleView('line')"
-    [class.p-button-outlined]="chartView !== 'line'">Line</button>
-  <button pButton type="button" label="Both" (click)="onToggleView('both')"
-    [class.p-button-outlined]="chartView !== 'both'">Chart</button>
-</div> -->
-<!-- Year Selector + Fetch Button -->
-<div class="bg-white p-6 rounded-2xl shadow flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
-  <!-- Left Side: Input + Fetch + Toggle Buttons -->
-  <div class="flex flex-col gap-4 w-full md:flex-row md:items-center md:gap-6">
-    <!-- Label + Input -->
-    <div class="flex flex-col md:flex-row md:items-center gap-4 w-full md:w-auto">
-      <h3 class="text-xl font-semibold text-gray-800 whitespace-nowrap">📅 Select Year</h3>
+<div class="bg-white p-6 rounded-2xl shadow-lg flex flex-col gap-6">
+  <div class="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+    <div class="flex flex-col gap-4 md:flex-row md:items-center md:gap-4 w-full md:w-auto">
+      <h3 class="text-lg font-semibold text-gray-800">📅 Select Year</h3>
       <input pInputText [(ngModel)]="yearInput" placeholder="Enter year (e.g., 2025)"
-        class="p-inputtext w-full md:w-60 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyan-500 focus:outline-none" />
+        class="p-inputtext w-full md:w-48 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:outline-none transition-all duration-200" />
       <button pButton type="button" label="Fetch" icon="pi pi-refresh" (click)="getSalesDataForChartsYearly()"
-        class="p-button p-button-primary h-11 px-4"></button>
+        class="p-button p-button-primary h-10 px-4 bg-gradient-to-r from-teal-500 to-teal-300 text-gray-900 hover:from-teal-300 hover:to-teal-500 hover:shadow-[0_0_10px_rgba(20,184,166,0.5)] transition-all duration-200">
+      </button>
+    </div>
+    <div class="flex flex-wrap gap-3 items-center">
+      <!-- Bar Chart -->
+      <button pButton type="button" (click)="onToggleView('bar')"
+        class="flex items-center gap-2 h-10 px-4 rounded-lg shadow-sm transition-all" [ngClass]="{
+      'bg-gradient-to-r from-teal-500 to-teal-300 text-white font-semibold': chartView === 'bar',
+      'bg-white border border-gray-300 text-gray-700 hover:bg-gray-100': chartView !== 'bar'}">
+        <i class="pi pi-chart-bar"></i>
+        <span>Bar Chart</span>
+      </button>
+
+      <!-- Line Chart -->
+      <button pButton type="button" (click)="onToggleView('line')"
+        class="flex items-center gap-2 h-10 px-4 rounded-lg shadow-sm transition-all" [ngClass]="{
+      'bg-gradient-to-r from-blue-500 to-blue-300 text-white font-semibold': chartView === 'line',
+      'bg-white border border-gray-300 text-gray-700 hover:bg-gray-100': chartView !== 'line'}">
+        <i class="pi pi-chart-line"></i>
+        <span>Line Chart</span>
+      </button>
+
+      <!-- Both Charts -->
+      <button pButton type="button" (click)="onToggleView('both')"
+        class="flex items-center gap-2 h-10 px-4 rounded-lg shadow-sm transition-all" [ngClass]="{
+      'bg-gradient-to-r from-purple-500 to-pink-400 text-white font-semibold': chartView === 'both',
+      'bg-white border border-gray-300 text-gray-700 hover:bg-gray-100': chartView !== 'both'}">
+        <i class="pi pi-chart-pie"></i>
+        <span>Both</span>
+      </button>
     </div>
 
-    <!-- Toggle Buttons -->
-    <div class="flex flex-wrap gap-2">
+    <!-- <div class="flex flex-wrap gap-2">
       <button pButton type="button" label="Bar Chart" icon="pi pi-chart-bar" (click)="onToggleView('bar')"
-        class="p-button" [class.p-button-outlined]="chartView !== 'bar'">
-        Bar
+        class="p-button h-10 px-4"
+        [ngClass]="{'p-button-primary bg-gradient-to-r from-teal-500 to-teal-300 text-gray-900': chartView === 'bar', 'p-button-outlined': chartView !== 'bar'}">
+        <i class="pi pi-check" style="color: slateblue"></i>
       </button>
       <button pButton type="button" label="Line Chart" icon="pi pi-chart-line" (click)="onToggleView('line')"
-        class="p-button" [class.p-button-outlined]="chartView !== 'line'">
-        Line
+        class="p-button h-10 px-4"
+        [ngClass]="{'p-button-primary bg-gradient-to-r from-teal-500 to-teal-300 text-gray-900': chartView === 'line', 'p-button-outlined': chartView !== 'line'}">
+        <i class="pi pi-check" style="color: slateblue"></i>
       </button>
-      <button pButton type="button" label="Both" icon="pi pi-chart-mixed" (click)="onToggleView('both')"
-        class="p-button" [class.p-button-outlined]="chartView !== 'both'">
-        Chart
+      <button pButton type="button" label="Both" icon="pi pi-chart-bar" (click)="onToggleView('both')"
+        class="p-button h-10 px-4"
+        [ngClass]="{'p-button-primary bg-gradient-to-r from-teal-500 to-teal-300 text-gray-900': chartView === 'both', 'p-button-outlined': chartView !== 'both'}">
+        <i class="pi pi-check" style="color: slateblue"></i>
       </button>
+    </div> -->
+  </div>
+
+  <!-- Chart Display -->
+  <div class="chart-container">
+    <p-skeleton width="100%" height="400px" *ngIf="isLoading"></p-skeleton>
+    <div *ngIf="!isLoading" class="grid gap-4"
+      [ngClass]="{'grid-cols-1': chartView !== 'both', 'grid-cols-1 lg:grid-cols-2': chartView === 'both'}">
+      <div *ngIf="chartView === 'bar' || chartView === 'both'"
+        class="chart-card p-4 bg-gray-50 rounded-lg shadow-sm transition-all duration-300 hover:shadow-[0_0_10px_rgba(20,184,166,0.3)]">
+        <h4 class="text-md font-medium text-gray-700 mb-3">Bar Chart - Yearly Sales</h4>
+        <p-chart type="bar" [data]="chartDataBar" [options]="chartOptionsBar" [style]="{'height': '350px'}"></p-chart>
+      </div>
+      <div *ngIf="chartView === 'line' || chartView === 'both'"
+        class="chart-card p-4 bg-gray-50 rounded-lg shadow-sm transition-all duration-300 hover:shadow-[0_0_10px_rgba(20,184,166,0.3)]">
+        <h4 class="text-md font-medium text-gray-700 mb-3">Line Chart - Yearly Sales</h4>
+        <p-chart type="line" [data]="chartDataLine" [options]="chartOptionsLine"
+          [style]="{'height': '350px'}"></p-chart>
+      </div>
     </div>
   </div>
-
-  <!-- Right Side: Status Message -->
-  <div class="text-sm text-gray-500 text-center md:text-right w-full md:w-auto">
-    <ng-container *ngIf="isLoading">
-      <p>Loading chart data...</p>
-    </ng-container>
-    <ng-container *ngIf="!isLoading && !chartDataBar?.datasets?.length">
-      <p>No sales data available for the selected year.</p>
-    </ng-container>
-  </div>
 </div>
-
-<!-- Chart Toggle Buttons -->
-
-<div *ngIf="isLoading" class="p-4">
-  <p-skeleton height="30rem"></p-skeleton>
-</div>
-<div *ngIf="!isLoading" class="flex flex-row md:flex-row gap-6 pt-6">
-  <div *ngIf="chartView === 'bar' || chartView === 'both'"
-    [ngClass]="chartView === 'both' ? 'w-full md:w-1/2' : 'w-full'" class="card">
-    <p-chart type="bar" [data]="chartDataBar" [options]="chartOptionsBar" class="h-[30rem]"></p-chart>
-  </div>
-
-  <div *ngIf="chartView === 'line' || chartView === 'both'"
-    [ngClass]="chartView === 'both' ? 'w-full md:w-1/2' : 'w-full'" class="card">
-    <p-chart type="line" [data]="chartDataLine" [options]="chartOptionsLine" class="h-[30rem]"></p-chart>
-  </div>
-</div>
-
-<!-- 
-<div *ngIf="!isLoading" class="flex flex-col md:flex-row gap-6">
-  Bar Chart
-  <div *ngIf="chartView === 'bar' || chartView === 'both'"
-    [ngClass]="chartView === 'both' ? 'w-full md:w-1/2' : 'w-full'" class="card">
-    <p-chart type="bar" [data]="chartDataBar" [options]="chartOptionsBar" class="h-[30rem]"></p-chart>
-  </div>
-
-  Line Chart
-  <div *ngIf="chartView === 'line' || chartView === 'both'"
-    [ngClass]="chartView === 'both' ? 'w-full md:w-1/2' : 'w-full'" class="card">
-    <p-chart type="line" [data]="chartDataLine" [options]="chartOptionsLine" class="h-[30rem]"></p-chart>
-  </div>
-</div> -->

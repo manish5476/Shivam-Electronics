@@ -1,4 +1,4 @@
-/* Optional if you want button hover overrides */
+/* Optional if you want button hover overrides
 .p-button-primary {
   background-color: var(--p-cyan-500) !important;
   border-color: var(--p-cyan-500) !important;
@@ -10,4 +10,76 @@
 
 ::ng-deep canvas {
   background-color: transparent !important;
+} */
+:root {
+  --teal-500: #14b8a6;
+  --teal-300: #5eead4;
+  --gray-50: #f9fafb;
+  --gray-100: #f3f4f6;
+  --gray-200: #e5e7eb;
+  --gray-700: #374151;
+  --gray-800: #1f2937;
+  --orange-500: #f97316;
+  --blue-400: #60a5fa;
+}
+
+.chart-container {
+  width: 100%;
+  max-width: 100%;
+  margin: 0 auto;
+}
+
+.chart-card {
+  background-color: var(--gray-50);
+  border: 1px solid var(--gray-200);
+  border-radius: 8px;
+  transition: all 0.3s ease-in-out;
+}
+
+.chart-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(20, 184, 166, 0.2);
+}
+
+.p-button-primary {
+  background: linear-gradient(to right, var(--teal-500), var(--teal-300));
+  border: none;
+  color: var(--gray-800);
+  transition: all 0.3s ease;
+}
+
+.p-button-primary:hover {
+  background: linear-gradient(to right, var(--teal-300), var(--teal-500));
+  box-shadow: 0 0 10px rgba(20, 184, 166, 0.5);
+}
+
+.p-button-outlined {
+  background: var(--gray-50);
+  border: 1px solid var(--gray-200);
+  color: var(--gray-700);
+  transition: all 0.3s ease;
+}
+
+.p-button-outlined:hover {
+  background: var(--gray-100);
+  border-color: var(--teal-500);
+  color: var(--teal-500);
+}
+
+.p-inputtext {
+  background: var(--gray-50);
+  border: 1px solid var(--gray-200);
+  color: var(--gray-800);
+  transition: all 0.2s ease;
+}
+
+.p-inputtext:focus {
+  border-color: var(--teal-500);
+  box-shadow: 0 0 8px rgba(20, 184, 166, 0.5);
+  outline: none;
+}
+
+:host ::ng-deep .p-skeleton {
+  background-color: var(--gray-100);
+  border-radius: 8px;
 }

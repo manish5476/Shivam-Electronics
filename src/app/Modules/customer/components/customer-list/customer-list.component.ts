@@ -12,7 +12,7 @@ import { AutopopulateService } from '../../../../core/services/autopopulate.serv
 @Component({
     selector: 'app-customer-list',
     standalone: true,
-    imports: [SharedGridComponent, SelectModule, FormsModule, IftaLabelModule, ToolbarComponent, ToolbarComponent],
+    imports: [SharedGridComponent, SelectModule, FormsModule, IftaLabelModule,],
     providers: [CustomerService],
     templateUrl: './customer-list.component.html',
     styleUrl: './customer-list.component.css'

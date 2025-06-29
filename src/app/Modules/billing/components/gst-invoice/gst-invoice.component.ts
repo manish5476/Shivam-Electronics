@@ -132,22 +132,51 @@ export class GstInvoiceComponent implements OnInit, OnChanges {
     });
   }
 
+createInvoice() {
+  const customerId: string = this.invoiceForm.get('buyer')?.value;
 
-  createInvoice() {
-    // Generate Invoice Number
-    const customerId = this.invoiceForm.get('buyer')?.value;
-    const now = new Date();
-    const datePart = `${now.getFullYear()}${String(now.getMonth() + 1).padStart(2, '0')}${String(now.getDate()).padStart(2, '0')}`;
-    const timePart = `${String(now.getHours()).padStart(2, '0')}${String(now.getMinutes()).padStart(2, '0')}${String(now.getSeconds()).padStart(2, '0')}`;
-    this.invoiceForm.patchValue({ invoiceNumber: `${customerId.substring(0, 5)}_${datePart}_${timePart}` });
-    this.invoiceService.createNewinvoice(this.invoiceForm.getRawValue()).subscribe((res: any) => {
-      if (res) {
-        this.messageService.showSuccessMessage('Invoice created successfully!')
-      } else {
-        this.messageService.showError('Failed to create invoice.')
-      }
-    });
+  if (!customerId) {
+    this.messageService.showError('Buyer is required.');
+    return;
   }
+
+  const now = new Date();
+  const datePart = `${now.getFullYear()}${String(now.getMonth() + 1).padStart(2, '0')}${String(now.getDate()).padStart(2, '0')}`;
+  const timePart = `${String(now.getHours()).padStart(2, '0')}${String(now.getMinutes()).padStart(2, '0')}${String(now.getSeconds()).padStart(2, '0')}`;
+  const invoiceNumber = `${customerId.substring(0, 5)}_${datePart}_${timePart}`;
+
+  this.invoiceForm.patchValue({ invoiceNumber });
+
+  this.invoiceService.createNewinvoice(this.invoiceForm.getRawValue()).subscribe({
+    next: (res: any) => {
+      if (res) {
+        this.messageService.showSuccessMessage('Invoice created successfully!');
+      } else {
+        this.messageService.showError('Failed to create invoice.');
+      }
+    },
+    error: (err) => {
+      console.error(err);
+      this.messageService.showError('Server error while creating invoice.');
+    }
+  });
+}
+
+  // createInvoice() {
+  //   // Generate Invoice Number
+  //   const customerId = this.invoiceForm.get('buyer')?.value;
+  //   const now = new Date();
+  //   const datePart = `${now.getFullYear()}${String(now.getMonth() + 1).padStart(2, '0')}${String(now.getDate()).padStart(2, '0')}`;
+  //   const timePart = `${String(now.getHours()).padStart(2, '0')}${String(now.getMinutes()).padStart(2, '0')}${String(now.getSeconds()).padStart(2, '0')}`;
+  //   this.invoiceForm.patchValue({ invoiceNumber: `${customerId.substring(0, 5)}_${datePart}_${timePart}` });
+  //   this.invoiceService.createNewinvoice(this.invoiceForm.getRawValue()).subscribe((res: any) => {
+  //     if (res) {
+  //       this.messageService.showSuccessMessage('Invoice created successfully!')
+  //     } else {
+  //       this.messageService.showError('Failed to create invoice.')
+  //     }
+  //   });
+  // }
 
 
   addItem(): void {
