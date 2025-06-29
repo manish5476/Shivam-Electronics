@@ -67,6 +67,7 @@ export interface SalesTrendData {
 
 // Product insights (used for low stock, top-selling, etc.)
 export interface ProductInsightData {
+image: any;
   productId: string;
   title: string;
   slug?: string;
