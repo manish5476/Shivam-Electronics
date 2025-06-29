@@ -1,5 +1,5 @@
 
-import { ChangeDetectorRef, Component, EventEmitter, inject, Output } from '@angular/core';
+import { ChangeDetectorRef, Component, EventEmitter, inject, Input, Output } from '@angular/core';
 import { SharedGridComponent } from '../../../../shared/AgGrid/grid/shared-grid/shared-grid.component';
 import { InvoiceService } from '../../../../core/services/invoice.service';
 import { CellValueChangedEvent } from 'ag-grid-community';
@@ -20,7 +20,7 @@ import { IftaLabel } from 'primeng/iftalabel';
 import { FormsModule } from '@angular/forms';
 @Component({
   selector: 'app-invoice-view',
-  imports: [SharedGridComponent, FormsModule, ToolbarComponent, IftaLabel, SelectModule, ReactiveFormsModule,],
+  imports: [SharedGridComponent, FormsModule, SelectModule, ReactiveFormsModule,],
   templateUrl: './invoice-view.component.html',
   styleUrl: './invoice-view.component.css'
 })
@@ -31,6 +31,7 @@ export class InvoiceViewComponent {
   public customerService = inject(CustomerService)
   public sellerService = inject(SellerService)
   public productService = inject(ProductService)
+  @Input() invoiceId:any
   filterForm!: FormGroup;
   data: any;
   column: any

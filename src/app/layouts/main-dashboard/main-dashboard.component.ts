@@ -40,9 +40,6 @@ export class MainDashboardComponent {
 
   activeComponent: any = HomePageComponent;
   componentNavItems: any[] = [
-    // { label: 'home1', component: HomePage1Component },
-    // { label: 'admin', component: AdminDashboardComponent },
-
     { label: 'home', component: HomePageComponent },
     { label: 'invoice', component: GstInvoiceComponent }, // Corrected key
     { label: 'Product List', component: ProductListComponent },
