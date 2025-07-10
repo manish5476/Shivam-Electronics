@@ -15,11 +15,8 @@ import * as QRCode from 'qrcode';
 export class InvoicePrintComponent implements OnInit, OnChanges {
   @Input() Id: number | any;
   @Input() invoiceId: any
-
   invoiceData: any;
-
   constructor(private invoiceService: InvoiceService) { }
-
   ngOnInit() {
     if (!this.Id) {
       console.error('Invoice ID is required');

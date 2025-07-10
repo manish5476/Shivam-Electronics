@@ -47,7 +47,7 @@ export class MainLayoutComponent {
     constructor(private themeService: ThemeService) {}
 
     ngOnInit() {
-      this.gradient$ = this.themeService.currentGradient$;
+      // this.gradient$ = this.themeService.currentGradient$;
       // this.gradient$.subscribe(newValue => {
       // });
     }
