@@ -1,3 +1,68 @@
+<div class="gradient-card rounded-md shadow-sm overflow-hidden w-full"
+  [ngClass]="{'bg-[var(--theme-bg-primary)] text-[var(--theme-text-primary)]': true}">
+  <div class="ag-grid-header-filter-area ">
+    <div class="header-controls-glass-container">
+      <div class="header-controls-content">
+        <div class="header-control-item">
+          <label for="colorPicker" class="text-[0.75rem] mr-2 text-[var(--theme-text-secondary)]">Accent Color</label>
+          <p-colorPicker id="colorPicker" [(ngModel)]="accentColor" (onChange)="onColorChange($event)" appendTo="body"
+            [style]="{'width': '24px', 'height': '24px'}" [inline]="false"></p-colorPicker>
+        </div>
+        <div class="ag-grid-search-input header-control-item">
+          <i class="pi pi-search"></i>
+          <input type="text" placeholder="Search..." (input)="onSearch($event)" />
+        </div>
+        <div class="header-buttons">
+          <button class="ag-grid-button filter-button" (click)="onFilterClick()">
+            <i class="pi pi-filter"></i> Filter
+          </button>
+          <button class="ag-grid-button export-button" (click)="exportToCSV()">
+            <i class="pi pi-upload"></i> Export
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Grid -->
+  <div class="relative w-full ag-grid-main-area" [style.width]="gridWidth"
+    [style.height]="gridHeight">
+    <ag-grid-angular style="height: 100%; width: 100%;" [rowData]="rowData" [columnDefs]="columnDefs" [theme]="theme"
+      [defaultColDef]="defaultColDef" [pagination]="true" [rowSelection]="rowSelection" [rowClassRules]="rowClassrules"
+      [paginationPageSize]="paginationPageSize" 
+      (cellValueChanged)="onCellValueChanged($event)" (rowSelected)="onRowSelected($event)"
+      (cellClicked)="onCellClicked($event)" (gridReady)="onGridReady($event)" [getRowId]="getRowId">
+    </ag-grid-angular>
+  </div>
+</div>
+
+
+
+
+
+<!-- [rowAnimationEnabled]="true" [enableCellChangeFlash]="true" -->
+<!-- <div class="gradient-card rounded-md shadow-sm overflow-hidden w-full"
+  [ngClass]="{'bg-[var(--theme-bg-primary)] text-[var(--theme-text-primary)]': true}">
+  <div class="relative w-full" [style.width]="gridWidth" [style.padding]="padding" [style.height]="gridHeight">
+    <ag-grid-angular style="height: 100%; width: 100%;" [rowData]="rowData" [columnDefs]="columnDefs" [theme]="theme"
+      [defaultColDef]="defaultColDef" [pagination]="true" [rowSelection]="rowSelection" [rowClassRules]="rowClassrules"
+      [paginationPageSize]="paginationPageSize" 
+      (cellValueChanged)="onCellValueChanged($event)" (rowSelected)="onRowSelected($event)"
+      (cellClicked)="onCellClicked($event)" (gridReady)="onGridReady($event)" [getRowId]="getRowId">
+    </ag-grid-angular>
+  </div>
+</div> -->
+<!-- [rowAnimationEnabled]="true" [enableCellChangeFlash]="true" -->
+<!-- <div class="rounded-lg shadow-lg overflow-hidden w-full mb-0 mt-4 ag-grid-container"
+  style="background: var(--background); color: var(--text-color); border-color: var(--border-color)">
+  <div class="relative w-full" [style.width]="gridWidth" [style.padding]="padding" [style.height]="gridHeight">
+    <ag-grid-angular style="height: 100%; width: 100%;" [rowData]="rowData" [columnDefs]="columnDefs" [theme]="theme"
+      [defaultColDef]="defaultColDef" [pagination]="true" [rowSelection]="rowSelection" [rowClassRules]="rowClassrules"
+  [paginationPageSize]="paginationPageSize"    (cellValueChanged)="onCellValueChanged($event)" (rowSelected)="onRowSelected($event)"
+      (cellClicked)="onCellClicked($event)" (gridReady)="onGridReady($event)"  [getRowId]="getRowId">
+    </ag-grid-angular>
+  </div>
+</div> -->
+<!-- [paginationAutoPageSize]="true" -->
 <!-- <app-common-header>
   <ng-template>
     <p-select id="theme" appendTo="body" [options]="baseThemes" optionLabel="id" optionValue="value"
@@ -12,17 +77,3 @@
       class="p-dropdown select-box" [(ngModel)]="colorScheme"></p-select>
   </ng-template>
 </app-common-header> -->
-
-
-<!-- [rowAnimationEnabled]="true" [enableCellChangeFlash]="true" -->
-<div class="rounded-lg shadow-lg overflow-hidden w-full mb-0 mt-4 ag-grid-container"
-  style="background: var(--background); color: var(--text-color); border-color: var(--border-color)">
-  <div class="relative w-full" [style.width]="gridWidth" [style.padding]="padding" [style.height]="gridHeight">
-    <ag-grid-angular style="height: 100%; width: 100%;" [rowData]="rowData" [columnDefs]="columnDefs" [theme]="theme"
-      [defaultColDef]="defaultColDef" [pagination]="true" [rowSelection]="rowSelection" [rowClassRules]="rowClassrules"
-  [paginationPageSize]="paginationPageSize"    (cellValueChanged)="onCellValueChanged($event)" (rowSelected)="onRowSelected($event)"
-      (cellClicked)="onCellClicked($event)" (gridReady)="onGridReady($event)"  [getRowId]="getRowId">
-    </ag-grid-angular>
-  </div>
-</div>
-<!-- [paginationAutoPageSize]="true" -->

@@ -1,6 +1,5 @@
 
 <div class="dashboard-main-container p-4 pt-1 md:p-6 bg-gray-900 text-gray-100">
-  <!-- Date Filter Section -->
   <div class="soft-card p-4 mb-6 bg-gray-800 rounded-2xl shadow-lg transition-all duration-300 hover:shadow-[0_0_15px_rgba(13,148,136,0.5)]">
     <div class="flex flex-wrap items-end -mx-2">
       <div class="w-full md:w-1/4 px-2 mb-4 md:mb-0">
@@ -33,7 +32,6 @@
     </div>
   </div>
 
-  <!-- KPI Cards -->
   <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 gap-4 mb-8">
     <div class="soft-card p-4 flex items-center space-x-3 bg-gray-800 rounded-lg shadow-lg transition-all duration-300 hover:shadow-[0_0_15px_rgba(13,148,136,0.5)] hover:-translate-y-1">
       <div class="bg-yellow-100 text-yellow-600 p-3 rounded-full"><i class="pi pi-user-plus text-xl"></i></div>
@@ -52,7 +50,7 @@
     <div class="soft-card p-4 flex items-center space-x-3 bg-gray-800 rounded-lg shadow-lg transition-all duration-300 hover:shadow-[0_0_15px_rgba(13,148,136,0.5)] hover:-translate-y-1">
       <div class="bg-red-100 text-red-600 p-3 rounded-full"><i class="pi pi-cart-arrow-down text-xl"></i></div>
       <div>
-        <div class="text-xl font-bold text-gray-100">{{ salesTrends[0]?.dailyRevenue | number:'1.2-2' }}</div>
+        <div class="text-xl font-bold text-gray-100">{{ salesTrends[0]?.dailyRevenue || 0 }}</div>
         <div class="text-gray-400 text-sm">Daily Revenue</div>
       </div>
     </div>
@@ -72,7 +70,6 @@
     </div>
   </div>
 
-  <!-- Charts and Summary Section -->
   <div class="grid gap-4 mb-8">
     <div class="charts-section space-y-6">
       <div class="soft-card bg-gray-800 p-4 sm:p-6 rounded-2xl shadow-lg transition-all duration-300 hover:shadow-[0_0_15px_rgba(13,148,136,0.5)]">
@@ -94,7 +91,6 @@
     </div>
   </div>
 
-  <!-- Sales Trend and Quick Links -->
   <div class="grid grid-cols-1 lg:grid-cols-3 gap-4 mb-8">
     <div class="lg:col-span-2 flex flex-col gap-4">
       <div class="soft-card bg-gray-800 p-6 rounded-2xl shadow-lg transition-all duration-300 hover:shadow-[0_0_15px_rgba(13,148,136,0.5)]">
@@ -148,7 +144,6 @@
       </div>
     </div>
 
-    <!-- Quick Links -->
     <div class="soft-card bg-gray-800 p-6 rounded-2xl shadow-lg transition-all duration-300 hover:shadow-[0_0_15px_rgba(13,148,136,0.5)]">
       <h3 class="text-lg font-semibold text-teal-400 mb-4">Quick Links</h3>
       <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
@@ -180,7 +175,6 @@
     </div>
   </div>
 
-  <!-- Dialogs for Grids -->
   <p-dialog header="Customers" [(visible)]="showcustomerGrid" [modal]="true" [style]="{ width: '90vw', maxWidth: '1200px' }" class="bg-gray-800 text-gray-100">
     <app-customer-list></app-customer-list>
   </p-dialog>
@@ -197,335 +191,3 @@
     <app-invoice-print [Id]="dashboard.invoiceId"></app-invoice-print>
   </p-dialog>
 </div>
-<!-- <div class="dashboard-main-container bg-gray-100 dark:bg-gray-900 min-h-screen">
-  <div class="flex-1 p-4 md:p-6">
-
-    <header class="mb-6">
-      <div class="flex justify-between items-center mb-4">
-        <h1 class="text-3xl font-bold text-gray-800 dark:text-gray-50">Shivam Electronics</h1>
-      </div>
-
-      <div class="soft-card bg-white dark:bg-gray-800 p-4 rounded-lg shadow">
-        <div class="flex flex-wrap items-end -mx-2">
-          <div class="w-full md:w-1/4 px-2 mb-4 md:mb-0">
-            <label for="periodSelect" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Predefined
-              Period:</label>
-            <select id="periodSelect"
-              class="form-select block w-full rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-200 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50"
-              [(ngModel)]="selectedPeriod" (ngModelChange)="onPeriodChange($event)">
-              <option value="today">Today</option>
-              <option value="yesterday">Yesterday</option>
-              <option value="week">This Week</option>
-              <option value="month">This Month</option>
-              <option value="last_month">Last Month</option>
-              <option value="year">This Year</option>
-            </select>
-          </div>
-          <div class="w-full md:w-1/4 px-2 mb-4 md:mb-0">
-            <label for="customStartDate" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Start
-              Date:</label>
-            <input type="date" id="customStartDate"
-              class="form-input block w-full rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-200 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50"
-              [(ngModel)]="customStartDate">
-          </div>
-          <div class="w-full md:w-1/4 px-2 mb-4 md:mb-0">
-            <label for="customEndDate" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">End
-              Date:</label>
-            <input type="date" id="customEndDate"
-              class="form-input block w-full rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-200 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50"
-              [(ngModel)]="customEndDate">
-          </div>
-          <div class="w-full md:w-1/4 px-2">
-            <button
-              class="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 dark:bg-blue-500 dark:hover:bg-blue-600"
-              (click)="applyCustomDateRange()">
-              Apply Custom Range & Reload
-            </button>
-          </div>
-        </div>
-      </div>
-    </header>
-
-    <section class="hero-section">
-      <div class="charts-section mb-6 space-y-6">
-        <div class="soft-card bg-white dark:bg-gray-800 p-4 sm:p-6 rounded-lg shadow">
-          <h3 class="text-lg font-semibold text-gray-700 dark:text-gray-200 mb-3">Yearly Chart</h3>
-          <app-dashboard-chart-component></app-dashboard-chart-component>
-        </div>
-        <div class="soft-card bg-white dark:bg-gray-800 p-4 sm:p-6 rounded-lg shadow">
-          <h3 class="text-lg font-semibold text-gray-700 dark:text-gray-200 mb-3">Combo Chart</h3>
-          <app-dashboard-chart-combo></app-dashboard-chart-combo>
-        </div>
-      </div>
-
-      <div class="template-section soft-card bg-white dark:bg-gray-800 p-6 rounded-lg shadow mb-6">
-        <h3 class="text-lg font-semibold text-gray-700 dark:text-gray-200 mb-3">Custom Content Area</h3>
-        <p class="text-sm text-gray-600 dark:text-gray-400 mb-4">
-          Place your custom components, code, or any other content here. For example, you could embed specific summaries
-          or interactive elements.
-        </p>
-        <div class="border-t border-gray-200 dark:border-gray-700 pt-4">
-          <p class="text-center text-gray-500 dark:text-gray-400">Your content here...</p>
-        </div>
-      </div>
-
-      <div class="reference-tables-section mb-6">
-        <h2 class="text-xl font-semibold text-gray-800 dark:text-gray-100 mb-4">Reference Tables</h2>
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          <div class="soft-card bg-white dark:bg-gray-800 p-4 rounded-lg shadow">
-            <h4 class="font-semibold text-md text-gray-700 dark:text-gray-200 mb-2">Reference Table 1</h4>
-            <div class="text-sm text-gray-600 dark:text-gray-400">Placeholder for table content. Could be a list of
-              recent orders, top products, etc. This area should contain actual tabular data or summaries.</div>
-          </div>
-          <div class="soft-card bg-white dark:bg-gray-800 p-4 rounded-lg shadow">
-            <h4 class="font-semibold text-md text-gray-700 dark:text-gray-200 mb-2">Reference Table 2</h4>
-            <div class="text-sm text-gray-600 dark:text-gray-400">Placeholder for table content.</div>
-          </div>
-          <div class="soft-card bg-white dark:bg-gray-800 p-4 rounded-lg shadow">
-            <h4 class="font-semibold text-md text-gray-700 dark:text-gray-200 mb-2">Reference Table 3</h4>
-            <div class="text-sm text-gray-600 dark:text-gray-400">Placeholder for table content.</div>
-          </div>
-          <div class="soft-card bg-white dark:bg-gray-800 p-4 rounded-lg shadow">
-            <h4 class="font-semibold text-md text-gray-700 dark:text-gray-200 mb-2">Reference Table 4</h4>
-            <div class="text-sm text-gray-600 dark:text-gray-400">Placeholder for table content.</div>
-          </div>
-        </div>
-      </div>
-
-    </section>
-    <footer class="bottom-grid-section soft-card bg-white dark:bg-gray-800 p-6 rounded-lg shadow">
-      <h3 class="text-lg font-semibold text-gray-700 dark:text-gray-200 mb-3">Additional Data / Components</h3>
-      <div class="text-sm text-gray-600 dark:text-gray-400">
-        This is a full-width grid area at the bottom for more extensive data tables, detailed reports, or other
-        components.
-        You could place the "Sales Trend" cards or "Quick Links" from your previous layout here if they are still
-        needed.
-      </div>
-      <div class="border-t border-gray-200 dark:border-gray-700 pt-4 mt-4">
-        <p class="text-center text-gray-500 dark:text-gray-400">Your full-width content here...</p>
-      </div>
-    </footer>
-
-  </div>
-</div> -->
-
-
-
-
-
-<!--  -->
-<!-- <div class="dashboard-main-container">
-  <div class="flex-1 p-4 pt-1 md:p-6">
-    <header class="flex justify-between items-center mb-6">
-      <div class="flex items-center space-x-2">
-        <svg class="w-6 h-6 text-gray-50" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-          xmlns="http://www.w3.org/2000/svg">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
-        </svg>
-        <span class="text-xl font-bold text-gray-50">Shivam Electronics</span>
-      </div>
-    </header>
-
-    <div class="soft-card p-4 mb-6">
-      <div class="flex flex-wrap items-end -mx-2">
-        <div class="w-full md:w-1/4 px-2 mb-4 md:mb-0">
-          <label for="periodSelect" class="block text-sm font-medium text-gray-700 mb-1">Predefined Period:</label>
-          <select id="periodSelect"
-            class="form-select block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50"
-            [(ngModel)]="selectedPeriod" (ngModelChange)="onPeriodChange($event)">
-            <option value="today">Today</option>
-            <option value="yesterday">Yesterday</option>
-            <option value="week">This Week</option>
-            <option value="month">This Month</option>
-            <option value="last_month">Last Month</option>
-            <option value="year">This Year</option>
-          </select>
-        </div>
-        <div class="w-full md:w-1/4 px-2 mb-4 md:mb-0">
-          <label for="customStartDate" class="block text-sm font-medium text-gray-700 mb-1">Start Date:</label>
-          <input type="date" id="customStartDate"
-            class="form-input block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50"
-            [(ngModel)]="customStartDate">
-        </div>
-        <div class="w-full md:w-1/4 px-2 mb-4 md:mb-0">
-          <label for="customEndDate" class="block text-sm font-medium text-gray-700 mb-1">End Date:</label>
-          <input type="date" id="customEndDate"
-            class="form-input block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50"
-            [(ngModel)]="customEndDate">
-        </div>
-        <div class="w-full md:w-1/4 px-2">
-          <button
-            class="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
-            (click)="applyCustomDateRange()">
-            Apply Custom Range & Reload
-          </button>
-        </div>
-      </div>
-    </div>
-
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 gap-4 mb-8">
-      <div class="soft-card p-4 flex items-center space-x-3">
-        <div class="bg-yellow-100 text-yellow-600 p-3 rounded-full"><i class="pi pi-user-plus"></i></div>
-        <div>
-          <div class="text-xl font-bold text-gray-800">{{newCustomersCountData || 0}}</div>
-          <div class="text-gray-600 text-sm">New Customers</div>
-        </div>
-      </div>
-      <div class="soft-card p-4 flex items-center space-x-3">
-        <div class="bg-green-100 text-green-600 p-3 rounded-full"><i class="pi pi-shopping-bag"></i></div>
-        <div>
-          <div class="text-xl font-bold text-gray-800">{{this.salesTrends[0]?.dailySalesCount||0}}</div>
-          <div class="text-gray-600 text-sm">Sales Count</div>
-        </div>
-      </div>
-      <div class="soft-card p-4 flex items-center space-x-3">
-        <div class="bg-red-100 text-red-600 p-3 rounded-full"><i class="pi pi-cart-arrow-down"></i></div>
-        <div>
-          <div class="text-xl font-bold text-gray-800">
-            {{ this.salesTrends[0]?.dailyRevenue | number:'1.2-2' }}
-          </div>
-          <div class="text-gray-600 text-sm">Daily Revenue</div>
-        </div>
-      </div>
-      <div class="soft-card p-4 flex items-center space-x-3">
-        <div class="bg-teal-100 text-teal-600 p-3 rounded-full"><i class="pi pi-box"></i></div>
-        <div>
-          <div class="text-xl font-bold text-gray-800">{{ this.totalInventoryValueData?.totalValue | number:'1.2-2' }}
-          </div>
-          <div class="text-gray-600 text-sm">Inventory Total Value</div>
-        </div>
-      </div>
-      <div class="soft-card p-4 flex items-center space-x-3">
-        <div class="bg-teal-100 text-teal-600 p-3 rounded-full"><i class="pi pi-box"></i></div>
-        <div>
-          <div class="text-xl font-bold text-gray-800">{{ this.totalInventoryValueData?.totalItemsInStock || 0 }}</div>
-          <div class="text-gray-600 text-sm">Inventory Total Stocks Available</div>
-        </div>
-      </div>
-    </div>
-
-
-    <div class="grid gap-4 mb-8">
-      <div class="charts-section mb-6 space-y-6">
-        <div class="soft-card bg-white dark:bg-gray-800 p-4 sm:p-6 rounded-lg shadow">
-          <h3 class="text-lg font-semibold text-gray-700 dark:text-gray-200 mb-3">Yearly Chart</h3>
-          <app-dashboard-chart-component></app-dashboard-chart-component>
-        </div>
-        <div class="soft-card bg-white dark:bg-gray-800 p-4 sm:p-6 rounded-lg shadow">
-          <h3 class="text-lg font-semibold text-gray-700 dark:text-gray-200 mb-3">Combo Chart</h3>
-          <app-dashboard-chart-combo></app-dashboard-chart-combo>
-        </div>
-      </div>
-      <div class="soft-card p-6">
-        <app-dashboard-chart-component></app-dashboard-chart-component>
-      </div>
-      <div class="soft-card p-6">
-        <app-dashboard-chart-combo></app-dashboard-chart-combo>
-      </div>
-      <div class="soft-card p-6">
-        <app-dashboard-summary [params]="getDateParam"></app-dashboard-summary>
-      </div>
-      <div class="soft-card p-6">
-        <app-dashboard-top-customer-view [params]="getDateParam"></app-dashboard-top-customer-view>
-      </div>
-    </div>
-
-    <div class="grid grid-cols-1 lg:grid-cols-3 gap-4 mb-8">
-      <div class="lg:col-span-2 flex flex-col gap-4">
-        <div class="soft-card p-6">
-          <h3 class="text-lg font-semibold text-gray-800 mb-4">Sales Trend</h3>
-          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
-            <div class="soft-card gradient-blue p-4 rounded-lg">
-              <div class="flex items-center justify-between mb-2">
-                <i class="fa fa-box text-2xl opacity-75"></i> <i class="fa fa-ellipsis-h text-xl opacity-75"></i>
-              </div>
-              <div class="text-2xl font-bold mb-1">$11,250</div>
-              <div class="text-sm opacity-90">Royal Package Opportunity</div>
-              <div class="flex items-center mt-3 space-x-2 opacity-80 text-xs">
-                <i class="fa fa-user-circle"></i> <span>David J.</span>
-              </div>
-            </div>
-            <div class="soft-card gradient-teal p-4 rounded-lg">
-              <div class="flex items-center justify-between mb-2">
-                <i class="fa fa-briefcase text-2xl opacity-75"></i> <i class="fa fa-ellipsis-h text-xl opacity-75"></i>
-              </div>
-              <div class="text-2xl font-bold mb-1">21,300$</div>
-              <div class="text-sm opacity-90">Front Deal Business Services</div>
-              <div class="flex items-center mt-3 space-x-2 opacity-80 text-xs">
-                <i class="fa fa-user-circle"></i> <span>Emily C.</span>
-              </div>
-            </div>
-            <div class="soft-card gradient-black p-4 rounded-lg">
-              <div class="flex items-center justify-between mb-2">
-                <i class="fa fa-check-circle text-2xl opacity-75"></i> <i
-                  class="fa fa-ellipsis-h text-xl opacity-75"></i>
-              </div>
-              <div class="text-2xl font-bold mb-1">2,100$</div>
-              <div class="text-sm opacity-90">Absolute Success Deal CRM Service</div>
-              <div class="flex items-center mt-3 space-x-2 opacity-80 text-xs">
-                <i class="fa fa-user-circle"></i> <span>OVA'S</span>
-              </div>
-            </div>
-            <div class="soft-card gradient-yellow p-4 rounded-lg">
-              <div class="flex items-center justify-between mb-2 text-gray-800">
-                <i class="fa fa-dollar-sign text-2xl opacity-75"></i> <i
-                  class="fa fa-ellipsis-h text-xl opacity-75"></i>
-              </div>
-              <div class="text-2xl font-bold mb-1 text-gray-800">4,160$</div>
-              <div class="text-sm opacity-90 text-gray-800">Royal Package Opportunity</div>
-              <div class="flex items-center mt-3 space-x-2 opacity-80 text-xs text-gray-800">
-                <i class="fa fa-user-circle"></i> <span>Jim P.</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="soft-card p-6">
-        <h3 class="text-lg font-semibold text-gray-800 mb-4">Quick Links</h3>
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-          <div class="bg-gray-100 rounded-md p-4 h-32 flex items-center justify-center text-gray-700">
-            <div
-              class="soft-card p-4 rounded-lg cursor-pointer hover:bg-gray-150 transition w-full h-full flex flex-col items-center justify-center"
-              (click)="showcustomerGrid=true">
-              <i class="pi pi-users text-2xl text-blue-600 mb-2"></i>
-              <span class="text-sm font-semibold text-gray-800">View Customers</span>
-            </div>
-          </div>
-
-          <div class="bg-gray-100 rounded-md p-4 h-32 flex items-center justify-center text-gray-700">
-            <div
-              class="soft-card p-4 rounded-lg cursor-pointer hover:bg-gray-150 transition w-full h-full flex flex-col items-center justify-center"
-              (click)="showproductGrid=true">
-              <i class="pi pi-mobile text-2xl text-blue-600 mb-2"></i>
-              <span class="text-sm font-semibold text-gray-800">View Products</span>
-            </div>
-          </div>
-
-          <div class="bg-gray-100 rounded-md p-4 h-32 flex items-center justify-center text-gray-700">
-            <div
-              class="soft-card p-4 rounded-lg cursor-pointer hover:bg-gray-150 transition w-full h-full flex flex-col items-center justify-center"
-              (click)="showInvoiceGrid=true">
-              <i class="pi pi-pen-to-square text-2xl text-blue-600 mb-2"></i>
-              <span class="text-sm font-semibold text-gray-800">View Invoices</span>
-            </div>
-          </div>
-
-          <div class="bg-gray-100 rounded-md p-4 h-32 flex items-center justify-center text-gray-700">
-            <div
-              class="soft-card p-4 rounded-lg cursor-pointer hover:bg-gray-150 transition w-full h-full flex flex-col items-center justify-center"
-              (click)="showPaymentGrid=true">
-              <i class="pi pi-money-bill text-2xl text-blue-600 mb-2"></i>
-              <span class="text-sm font-semibold text-gray-800">View Payment</span>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div> -->
-
-<!-- <p-dialog header="Invoice Data" [modal]="true" [(visible)]="showpdf" [style]="{ width: '95rem',height:'80rem' }"
-  [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }" [maximizable]="true">
-  <app-invoice-print [Id]="invoiceId"></app-invoice-print>
-</p-dialog> -->

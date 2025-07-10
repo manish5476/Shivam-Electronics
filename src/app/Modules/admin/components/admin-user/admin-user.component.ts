@@ -1,55 +1,41 @@
-import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { ConfirmationService, MessageService } from 'primeng/api';
-import { TableModule } from 'primeng/table';
-import { Dialog } from 'primeng/dialog';
-import { Ripple } from 'primeng/ripple';
 import { ButtonModule } from 'primeng/button';
 import { ToastModule } from 'primeng/toast';
-import { ToolbarModule } from 'primeng/toolbar';
-import { ConfirmDialog } from 'primeng/confirmdialog';
-import { InputTextModule } from 'primeng/inputtext';
-import { TextareaModule } from 'primeng/textarea';
 import { CommonModule } from '@angular/common';
-import { FileUpload } from 'primeng/fileupload';
-import { SelectModule } from 'primeng/select';
-import { FormsModule } from '@angular/forms';
-import { IconFieldModule } from 'primeng/iconfield';
-import { InputIconModule } from 'primeng/inputicon';
-import { Table } from 'primeng/table';
+import { FormsModule } from '@angular/forms'; // Keep FormsModule if any ngModel is used in the future, though not directly in provided HTML
 import { ApiService } from '../../../../core/services/api.service';
 import { SharedGridComponent } from '../../../../shared/AgGrid/grid/shared-grid/shared-grid.component';
-import { ToolbarComponent } from '../../../../shared/Components/toolbar/toolbar.component';
+
 import { CellValueChangedEvent } from 'ag-grid-community';
+// import { MouseEvent, HTMLElement } from '@angular/platform-browser'; // Keep for onButtonHover
+
 interface Column {
     field: string;
     header: string;
     customExportHeader?: string;
 }
 
-interface ExportColumn {
-    title: string;
-    dataKey: string;
-}
-
 @Component({
     selector: 'app-admin-user',
-    imports: [TableModule, ButtonModule, SelectModule, ToastModule, ToolbarModule,  InputTextModule, TextareaModule, CommonModule, InputTextModule, FormsModule, IconFieldModule, InputIconModule, SharedGridComponent], // Add SharedGridComponent to imports
+    standalone: true,
+    imports: [
+        ButtonModule,
+        ToastModule,
+        CommonModule,
+        FormsModule,
+        SharedGridComponent
+    ],
     providers: [MessageService, ConfirmationService, ApiService],
     templateUrl: './admin-user.component.html',
     styleUrl: './admin-user.component.css'
 })
 export class AdminUserComponent implements OnInit {
-    userDialog: boolean = false;
     users: any = [];
-    user: any;
-    selectedProducts: any | null = [];
-    submitted: boolean = false;
-    statuses: any = [];
-    @ViewChild('dt') dt!: Table; // Potentially remove if you don't need direct access to p-table
-    cols: any = []; // Adjusted type
-    exportColumns!: ExportColumn;
+    selectedProducts: any | null = []; // Renamed from selectedUsers for consistency with original code
+    cols: any = []; // Column definitions for the grid
     columnDefs: any = []; // For SharedGridComponent
-    rowSelectionMode: any = 'singleRow';
+    rowSelectionMode: any = 'multiple'; // Changed to 'multiple' to support 'Delete Selected' button
 
     constructor(
         private apiService: ApiService,
@@ -60,79 +46,101 @@ export class AdminUserComponent implements OnInit {
 
     ngOnInit(): void {
         this.loadDemoData();
+        // Map cols to columnDefs for SharedGridComponent (assuming it's an AG-Grid wrapper)
         this.columnDefs = this.cols.map((col: { field: any; header: any; }) => ({
             field: col.field,
             headerName: col.header,
             sortable: true,
             filter: true,
-            resizable: true
+            resizable: true,
+            editable: true // Assuming some fields might be editable based on updateinvoice call
         }));
     }
 
+    /**
+     * Placeholder for opening a new user creation form/dialog.
+     * The actual dialog implementation would be in a separate component or service.
+     */
+    openNew() {
+        this.messageService.add({
+            severity: 'info',
+            summary: 'Info',
+            detail: 'Open New User Dialog (Not implemented in this component yet)',
+            life: 3000
+        });
+        // Logic to open a new user creation dialog/form would go here
+    }
+
+    /**
+     * Deletes selected users from the list after confirmation.
+     */
+    deleteSelectedProducts() {
+        if (!this.selectedProducts || this.selectedProducts.length === 0) {
+            this.messageService.add({
+                severity: 'warn',
+                summary: 'Warning',
+                detail: 'No users selected for deletion.',
+                life: 3000
+            });
+            return;
+        }
+
+        this.confirmationService.confirm({
+            message: 'Are you sure you want to delete the selected users?',
+            header: 'Confirm',
+            icon: 'pi pi-exclamation-triangle',
+            accept: () => {
+                // Filter out the selected users
+                this.users = this.users.filter((val: any) => !this.selectedProducts.includes(val));
+                this.selectedProducts = null; // Clear selection
+                this.messageService.add({
+                    severity: 'success',
+                    summary: 'Successful',
+                    detail: 'Users Deleted',
+                    life: 3000
+                });
+                this.cd.markForCheck(); // Trigger change detection if necessary
+            }
+        });
+    }
+
+    /**
+     * Placeholder for exporting data to CSV.
+     * If using AG-Grid, you would call its export API here.
+     */
     exportCSV() {
-        this.dt.exportCSV();
+        this.messageService.add({
+            severity: 'info',
+            summary: 'Info',
+            detail: 'Export to CSV (AG-Grid export logic would go here)',
+            life: 3000
+        });
+        // Example for AG-Grid export (assuming gridApi is available from SharedGridComponent)
+        // this.gridApi.exportDataAsCsv();
     }
 
-    filterSearch(event: Event): void {
-        const input = event.target as HTMLInputElement;
-        this.dt.filterGlobal(input.value, 'contains');
-    }
-
+    /**
+     * Loads demo user data and defines grid columns.
+     */
     loadDemoData() {
         this.apiService.getAllUserData().subscribe((res: any) => {
             this.users = res.data;
             this.cd.markForCheck();
         });
 
-        this.statuses = [
-            { label: 'INSTOCK', value: 'instock' },
-            { label: 'LOWSTOCK', value: 'lowstock' },
-            { label: 'OUTOFSTOCK', value: 'outofstock' }
-        ];
-
+        // Define columns for the grid
         this.cols = [
-            { field: 'name', header: 'Code', customExportHeader: 'Product Code',width:'200px' },
-            { field: 'email', header: 'Name' },
+            { field: 'name', header: 'User Name', width: '200px' },
+            { field: 'email', header: 'Email' },
             { field: 'role', header: 'Role' },
-            { field: 'password', header: 'Password' },
+            // Removed 'password' field as it's sensitive and usually not displayed or directly editable in a list
         ];
-
-        this.exportColumns = this.cols.map((col: { header: any; field: any; }) => ({ title: col.header, dataKey: col.field }));
     }
 
-    openNew() {
-        this.user = {};
-        this.submitted = false;
-        this.userDialog = true;
-    }
-
-    editProduct(product: any) {
-        this.user = { ...product };
-        this.userDialog = true;
-    }
-
-    deleteSelectedProducts() {
-        this.confirmationService.confirm({
-            message: 'Are you sure you want to delete the selected products?',
-            header: 'Confirm',
-            icon: 'pi pi-exclamation-triangle',
-            accept: () => {
-                this.users = this.users.filter((val: any) => !this.selectedProducts?.includes(val));
-                this.selectedProducts = null;
-                this.messageService.add({
-                    severity: 'success',
-                    summary: 'Successful',
-                    detail: 'Products Deleted',
-                    life: 3000
-                });
-            }
-        });
-    }
-
-    hideDialog() {
-        this.userDialog = false;
-        this.submitted = false;
-    }
+    /**
+     * Handles events emitted from the SharedGridComponent.
+     * @param event The event object from the grid.
+     */
     eventFromGrid(event: any) {
         if (event.eventType === 'onCellValueCHanged') {
             const cellValueChangedEvent = event.event as CellValueChangedEvent;
@@ -143,312 +151,66 @@ export class AdminUserComponent implements OnInit {
 
             if (field) {
                 dataItem[field] = newValue;
+                // Assuming updateinvoice is a generic update for user data
                 this.apiService.updateinvoice(dataItem.id, dataItem).subscribe({
                     next: (res: any) => {
+                        this.messageService.add({
+                            severity: 'success',
+                            summary: 'Update Successful',
+                            detail: `User ${field} updated to ${newValue}`,
+                            life: 3000
+                        });
                     },
                     error: (err: any) => {
-                        console.error('❌ Error updating invoice:', err);
+                        console.error('❌ Error updating user data:', err);
+                        this.messageService.add({
+                            severity: 'error',
+                            summary: 'Update Failed',
+                            detail: `Failed to update user ${field}.`,
+                            life: 3000
+                        });
                     }
                 });
             } else {
                 console.error('❌ Error: Field is undefined in cellValueChangedEvent.colDef');
             }
         }
-
-    }
-
-
-    deleteProduct(product: any) {
-        this.confirmationService.confirm({
-            message: 'Are you sure you want to delete ' + product.name + '?',
-            header: 'Confirm',
-            icon: 'pi pi-exclamation-triangle',
-            accept: () => {
-                this.users = this.users.filter((val: { id: any; }) => val.id !== product.id);
-                this.user = {};
-                this.messageService.add({
-                    severity: 'success',
-                    summary: 'Successful',
-                    detail: 'Product Deleted',
-                    life: 3000
-                });
-            }
-        });
-    }
-
-    findIndexById(id: string): number {
-        let index = -1;
-        for (let i = 0; i < this.users.length; i++) {
-            if (this.users[i].id === id) {
-                index = i;
-                break;
-            }
-        }
-        return index;
-    }
-
-    createId(): string {
-        let id = '';
-        var chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-        for (var i = 0; i < 5; i++) {
-            id += chars.charAt(Math.floor(Math.random() * chars.length));
-        }
-        return id;
-    }
-
-    getSeverity(status: string) {
-        switch (status) {
-            case 'INSTOCK':
-                return 'success';
-            case 'LOWSTOCK':
-                return 'warn';
-            case 'OUTOFSTOCK':
-                return 'danger';
-            default:
-                return 'success';
+        // Handle row selection event from the grid
+        if (event.eventType === 'onSelectionChanged') {
+            this.selectedProducts = event.event.api.getSelectedRows();
+            this.cd.markForCheck(); // Update UI if needed
         }
     }
 
-    saveProduct() {
-        this.submitted = true;
+    /**
+     * Handles hover effects for buttons by directly manipulating their style properties.
+     * @param event The mouse event (mouseenter or mouseleave).
+     * @param isHovering True if mouseenter, false if mouseleave.
+     * @param type The type of button to apply specific hover styles.
+     */
+    onButtonHover(event: MouseEvent, isHovering: boolean, type: 'primary' | 'danger-outlined' | 'secondary-accent') {
+        const button = event.currentTarget as HTMLElement;
 
-        if (this.user.name?.trim()) {
-            if (this.user.id) {
-                this.users[this.findIndexById(this.user.id)] = this.user;
-                this.messageService.add({
-                    severity: 'success',
-                    summary: 'Successful',
-                    detail: 'Product Updated',
-                    life: 3000
-                });
+        if (type === 'primary') {
+            if (isHovering) {
+                button.style.backgroundColor = 'var(--theme-button-hover-bg-primary)';
             } else {
-                this.user.id = this.createId();
-                this.user.image = 'product-placeholder.svg';
-                this.users.push(this.user);
-                this.messageService.add({
-                    severity: 'success',
-                    summary: 'Successful',
-                    detail: 'Product Created',
-                    life: 3000
-                });
+                button.style.backgroundColor = 'var(--theme-button-bg-primary)';
             }
-
-            this.users = [...this.users];
-            this.userDialog = false;
-            this.user = {};
+        } else if (type === 'danger-outlined') {
+            if (isHovering) {
+                button.style.backgroundColor = 'var(--theme-button-danger-hover-bg)';
+                button.style.color = 'var(--theme-button-danger-hover-text)';
+            } else {
+                button.style.backgroundColor = 'transparent'; // Outlined buttons have transparent background by default
+                button.style.color = 'var(--theme-button-danger-text)';
+            }
+        } else if (type === 'secondary-accent') {
+            if (isHovering) {
+                button.style.backgroundColor = 'var(--theme-secondary-accent-hover)';
+            } else {
+                button.style.backgroundColor = 'var(--theme-secondary-accent-primary)';
+            }
         }
     }
 }
-// import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
-// import { ConfirmationService, MessageService } from 'primeng/api';
-// import { TableModule } from 'primeng/table';
-// import { Dialog } from 'primeng/dialog';
-// import { Ripple } from 'primeng/ripple';
-// import { ButtonModule } from 'primeng/button';
-// import { ToastModule } from 'primeng/toast';
-// import { ToolbarModule } from 'primeng/toolbar';
-// import { ConfirmDialog } from 'primeng/confirmdialog';
-// import { InputTextModule } from 'primeng/inputtext';
-// import { TextareaModule } from 'primeng/textarea';
-// import { CommonModule } from '@angular/common';
-// import { FileUpload } from 'primeng/fileupload';
-// import { SelectModule } from 'primeng/select';
-// import { FormsModule } from '@angular/forms';
-// import { IconFieldModule } from 'primeng/iconfield';
-// import { InputIconModule } from 'primeng/inputicon';
-// import { Table } from 'primeng/table';
-// import { ApiService } from '../../core/services/api.service';
-
-// interface Column {
-//     field: string;
-//     header: string;
-//     customExportHeader?: string;
-// }
-
-// interface ExportColumn {
-//     title: string;
-//     dataKey: string;
-// }
-
-// @Component({
-//     selector: 'app-admin-user',
-//     imports: [TableModule, ButtonModule, Dialog, SelectModule, ToastModule, ToolbarModule, ConfirmDialog, InputTextModule, TextareaModule, CommonModule, FileUpload, InputTextModule, FormsModule, IconFieldModule, InputIconModule],
-//     providers: [MessageService, ConfirmationService],
-//     templateUrl: './admin-user.component.html',
-//     styleUrl: './admin-user.component.scss'
-// })
-// export class AdminUserComponent implements OnInit {
-//     userDialog: boolean = false;
-
-//     users!: any[];
-
-//     user!: any;
-
-//     selectedProducts!: any[] | null;
-
-//     submitted: boolean = false;
-
-//     statuses!: any[];
-
-//     @ViewChild('dt') dt!: Table;
-
-//     cols!: Column[];
-
-//     exportColumns!: ExportColumn[];
-
-//     constructor(
-//         private apiService: ApiService,
-//         // private productService: ProductService,
-//         private messageService: MessageService,
-//         private confirmationService: ConfirmationService,
-//         private cd: ChangeDetectorRef
-//     ) { }
-//     ngOnInit(): void {
-//         this.loadDemoData()
-//     }
-
-//     exportCSV() {
-//         this.dt.exportCSV();
-//     }
-
-//     filterSearch(event: Event): void {
-//         const input = event.target as HTMLInputElement;
-//         this.dt.filterGlobal(input.value, 'contains');
-//     }
-//     loadDemoData() {
-//         this.apiService.getAllUserData().subscribe((res: any) => {
-//             this.users = res.data;
-//             this.cd.markForCheck();
-//         });
-
-//         this.statuses = [
-//             { label: 'INSTOCK', value: 'instock' },
-//             { label: 'LOWSTOCK', value: 'lowstock' },
-//             { label: 'OUTOFSTOCK', value: 'outofstock' }
-//         ];
-
-//         this.cols = [
-//             { field: 'name', header: 'Code', customExportHeader: 'Product Code' },
-//             { field: 'email', header: 'Name' },
-//             { field: 'role', header: 'Image' },
-//             { field: 'password', header: 'Price' },
-//         ];
-
-//         this.exportColumns = this.cols.map((col) => ({ title: col.header, dataKey: col.field }));
-//     }
-
-//     openNew() {
-//         this.user = {};
-//         this.submitted = false;
-//         this.userDialog = true;
-//     }
-
-//     editProduct(product: any) {
-//         this.user = { ...product };
-//         this.userDialog = true;
-//     }
-
-//     deleteSelectedProducts() {
-//         this.confirmationService.confirm({
-//             message: 'Are you sure you want to delete the selected products?',
-//             header: 'Confirm',
-//             icon: 'pi pi-exclamation-triangle',
-//             accept: () => {
-//                 this.users = this.users.filter((val) => !this.selectedProducts?.includes(val));
-//                 this.selectedProducts = null;
-//                 this.messageService.add({
-//                     severity: 'success',
-//                     summary: 'Successful',
-//                     detail: 'Products Deleted',
-//                     life: 3000
-//                 });
-//             }
-//         });
-//     }
-
-//     hideDialog() {
-//         this.userDialog = false;
-//         this.submitted = false;
-//     }
-//     deleteProduct(product: any) {
-//         this.confirmationService.confirm({
-//             message: 'Are you sure you want to delete ' + product.name + '?',
-//             header: 'Confirm',
-//             icon: 'pi pi-exclamation-triangle',
-//             accept: () => {
-//                 this.users = this.users.filter((val) => val.id !== product.id);
-//                 this.user = {};
-//                 this.messageService.add({
-//                     severity: 'success',
-//                     summary: 'Successful',
-//                     detail: 'Product Deleted',
-//                     life: 3000
-//                 });
-//             }
-//         });
-//     }
-
-//     findIndexById(id: string): number {
-//         let index = -1;
-//         for (let i = 0; i < this.users.length; i++) {
-//             if (this.users[i].id === id) {
-//                 index = i;
-//                 break;
-//             }
-//         }
-
-//         return index;
-//     }
-
-//     createId(): string {
-//         let id = '';
-//         var chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-//         for (var i = 0; i < 5; i++) {
-//             id += chars.charAt(Math.floor(Math.random() * chars.length));
-//         }
-//         return id;
-//     }
-
-//     getSeverity(status: string) {
-//         switch (status) {
-//             case 'INSTOCK':
-//                 return 'success';
-//             case 'LOWSTOCK':
-//                 return 'warn';
-//             case 'OUTOFSTOCK':
-//                 return 'danger';
-//             default:
-//                 return 'success';
-//         }
-//     }
-
-//     saveProduct() {
-//         this.submitted = true;
-
-//         if (this.user.name?.trim()) {
-//             if (this.user.id) {
-//                 this.users[this.findIndexById(this.user.id)] = this.user;
-//                 this.messageService.add({
-//                     severity: 'success',
-//                     summary: 'Successful',
-//                     detail: 'Product Updated',
-//                     life: 3000
-//                 });
-//             } else {
-//                 this.user.id = this.createId();
-//                 this.user.image = 'product-placeholder.svg';
-//                 this.users.push(this.user);
-//                 this.messageService.add({
-//                     severity: 'success',
-//                     summary: 'Successful',
-//                     detail: 'Product Created',
-//                     life: 3000
-//                 });
-//             }
-
-//             this.users = [...this.users];
-//             this.userDialog = false;
-//             this.user = {};
-//         }
-//     }
-// }
