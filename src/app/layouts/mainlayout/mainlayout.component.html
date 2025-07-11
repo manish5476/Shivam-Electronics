@@ -1,1 +1,41 @@
-<p>mainlayout works!</p>
+<div class="min-h-screen flex flex-col bg-[var(--theme-bg-primary)] text-[var(--theme-text-primary)]" [style.background-image]="gradient$ | async">
+  <app-header class="h-2 bg-[var(--theme-bg-secondary)] z-50 fixed top-0 left-0 right-0" (toggleSidebar)="toggleSidebar()" (colorChange)="onColorChange($event)" (search)="onSearch($event)" (mobileMenuToggle)="toggleMobileMenu()"></app-header>
+  <div class="flex h-[calc(100vh-48px)] mt-12">
+    <app-sidebar class="h-full transition-all duration-300 fixed top-12" [ngClass]="{'w-64': isSidebarPinned || isSidebarHovered, 'w-0': !isSidebarPinned && !isSidebarHovered}" [isPinned]="isSidebarPinned" [isHovered]="isSidebarHovered" (pinToggle)="togglePin()" (mouseEnter)="onMouseEnter()" (mouseEnterTriggerZone)="onMouseEnterTriggerZone()" (mouseLeave)="onMouseLeave()"></app-sidebar>
+    <main class="flex-1  p-2 bg-[var(--theme-bg-main)] overflow-y-auto transition-all duration-300" [ngClass]="{'ml-64': isSidebarPinned || isSidebarHovered}" (mouseenter)="onMouseEnterMainContent()">
+      <div class="gradient-card   shadow-md overflow-x-auto bg-[var(--theme-bg-primary)] border border-[var(--theme-border-primary)] h-[calc(100vh-65px)]">
+        <router-outlet></router-outlet>
+        <div *ngIf="!isLoaded" class="text-center text-[var(--theme-text-secondary)]">Loading component...</div>
+      </div>
+    </main>
+  </div>
+</div>
+<!-- <div class="min-h-screen flex flex-col bg-[var(--theme-bg-primary)] text-[var(--theme-text-primary)]" [style.background-image]="gradient$ | async">
+  
+  <app-header (toggleSidebar)="toggleSidebar()" (colorChange)="onColorChange($event)" (search)="onSearch($event)" (mobileMenuToggle)="toggleMobileMenu()"></app-header>
+  
+  <app-sidebar [isPinned]="isSidebarPinned" [isHovered]="isSidebarHovered" (pinToggle)="togglePin()" (mouseEnter)="onMouseEnter()" (mouseEnterTriggerZone)="onMouseEnterTriggerZone()" (mouseLeave)="onMouseLeave()"></app-sidebar>
+  
+  <div class="flex-1 flex flex-col">
+    
+    <div class="h-10"></div>
+    
+    <section class="flex-shrink-0 bg-[var(--theme-bg-secondary)] py-4">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <ng-content select="[hero]"></ng-content>
+      </div>
+    </section>
+    
+    <main class="flex-1 overflow-y-auto px-4 py-4 bg-transparent" [ngClass]="{
+        'pl-4': !isSidebarPinned && !isSidebarHovered,
+        'pl-64': isSidebarPinned || isSidebarHovered
+      }" (mouseenter)="onMouseEnterMainContent()">
+      <div class="max-w-7xl mx-auto h-full">
+        <div class="gradient-card p-4 rounded-lg shadow-md overflow-x-auto bg-[var(--theme-bg-primary)] border border-[var(--theme-border-primary)]">
+          <router-outlet></router-outlet>
+          <div *ngIf="!isLoaded" class="text-center text-[var(--theme-text-secondary)]">Loading component...</div>
+        </div>
+      </div>
+    </main>
+  </div>
+</div> -->

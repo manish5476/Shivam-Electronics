@@ -1,62 +1,29 @@
 <div class="h-[calc(100vh-56px)] flex flex-col overflow-hidden">
-  <!-- Header & Filters -->
-  <div class="flex items-center justify-between flex-wrap gap-4 px-4 py-3 border-b border-gray-200 bg-white shadow-sm">
-    <!-- Title -->
+  <div class="flex items-center justify-between flex-wrap gap-4  rounded-sm order-b border-gray-200 bg-white shadow-sm">
     <h4 class="text-xl font-semibold text-gray-800">
       Customer List
     </h4>
-
-    <!-- Controls Section -->
     <div class="flex items-center flex-wrap gap-4">
-      <!-- Log File Select -->
       <div class="flex items-center gap-2">
         <label for="logFileSelect" class="text-sm text-gray-700 whitespace-nowrap">Select Log File:</label>
-        <p-select
-          id="logFileSelect"
-          [options]="logFileOptions"
-          [(ngModel)]="selectedLogFile"
-          (onChange)="onFileSelect($event)"
-          placeholder="Select a log file"
-          [filter]="true"
-          filterBy="label"
-          optionLabel="label"
-          optionValue="value"
-          [showClear]="true"
-          styleClass="w-56"
-        ></p-select>
+        <p-select id="logFileSelect" [options]="logFileOptions" [(ngModel)]="selectedLogFile"
+          (onChange)="onFileSelect($event)" placeholder="Select a log file" [filter]="true" filterBy="label"
+          optionLabel="label" optionValue="value" [showClear]="true" styleClass="w-56"></p-select>
       </div>
-
-      <!-- Pagination Controls -->
       <div class="flex items-center gap-2 text-sm text-gray-700">
-        <button
-          class="px-3 py-1 rounded border text-gray-700 hover:bg-gray-100 disabled:opacity-50"
-          (click)="onPageChange(currentPage - 1)"
-          [disabled]="currentPage === 1"
-        >
+        <button class="px-3 py-1 rounded border text-gray-700 hover:bg-gray-100 disabled:opacity-50"
+          (click)="onPageChange(currentPage - 1)" [disabled]="currentPage === 1">
           Previous
         </button>
         <span class="font-medium">Page {{ currentPage }}</span>
-        <button
-          class="px-3 py-1 rounded border text-gray-700 hover:bg-gray-100 disabled:opacity-50"
-          (click)="onPageChange(currentPage + 1)"
-          [disabled]="currentPage * itemsPerPage >= totalLogs"
-        >
+        <button class="px-3 py-1 rounded border text-gray-700 hover:bg-gray-100 disabled:opacity-50"
+          (click)="onPageChange(currentPage + 1)" [disabled]="currentPage * itemsPerPage >= totalLogs">
           Next
         </button>
         <span *ngIf="totalLogs > 0">({{ totalLogs }} total)</span>
       </div>
     </div>
   </div>
-
-  <!-- AG Grid Area -->
-  <!-- <div class="flex-1 overflow-auto"> -->
-    <app-shared-grid
-      [data]="data"
-      [gridHeight]="'600px'"
-      [rowSelectionMode]="rowSelectionMode"
-      [column]="column"
-      [paginationPageSize]="itemsPerPage"
-      (eventFromGrid)="eventFromGrid($event)"
-    ></app-shared-grid>
-  <!-- </div> -->
+  <app-shared-grid [data]="data" [gridHeight]="'520px'" [rowSelectionMode]="rowSelectionMode" [column]="column"
+    [paginationPageSize]="itemsPerPage" (eventFromGrid)="eventFromGrid($event)"></app-shared-grid>
 </div>
