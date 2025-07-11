@@ -1,39 +1,49 @@
 <div class="gradient-card rounded-md shadow-sm overflow-hidden w-full"
-  [ngClass]="{'bg-[var(--theme-bg-primary)] text-[var(--theme-text-primary)]': true}">
-  <div class="ag-grid-header-filter-area ">
+  [style.backgroundColor]="'var(--theme-bg-secondary)'" [style.color]="'var(--theme-text-primary)'"
+  [style.borderColor]="'var(--theme-border-primary)'" [style.boxShadow]="'0 2px 5px var(--theme-shadow-color)'">
+  <div class="ag-grid-header-filter-area border-b" [style.borderColor]="'var(--theme-bg-tertiarys)'">
     <div class="header-controls-glass-container">
-      <div class="header-controls-content">
+      <div class="header-controls-content flex items-center flex-wrap gap-x-4 gap-y-2">
         <div class="header-control-item">
-          <label for="colorPicker" class="text-[0.75rem] mr-2 text-[var(--theme-text-secondary)]">Accent Color</label>
+          <label for="colorPicker" class="text-[0.75rem] mr-2" [style.color]="'var(--theme-text-secondary)'">Accent
+            Color</label>
           <p-colorPicker id="colorPicker" [(ngModel)]="accentColor" (onChange)="onColorChange($event)" appendTo="body"
             [style]="{'width': '24px', 'height': '24px'}" [inline]="false"></p-colorPicker>
         </div>
-        <div class="ag-grid-search-input header-control-item">
-          <i class="pi pi-search"></i>
-          <input type="text" placeholder="Search..." (input)="onSearch($event)" />
+        <div class="ag-grid-search-input header-control-item flex items-center border rounded-md px-2 py-1"
+          [style.borderColor]="'var(--theme-border-secondary)'" [style.backgroundColor]="'var(--theme-bg-tertiary)'">
+          <i class="pi pi-search mr-2" [style.color]="'var(--theme-text-secondary)'"></i>
+          <input type="text" placeholder="Search..." (input)="onSearch($event)"
+            class="bg-transparent border-none text-[0.875rem] w-full focus:outline-none"
+            [style.color]="'var(--theme-text-primary)'" [style.placeholderColor]="'var(--theme-text-secondary)'" />
         </div>
-        <div class="header-buttons">
-          <button class="ag-grid-button filter-button" (click)="onFilterClick()">
+        <div class="header-buttons flex gap-2">
+          <button class="ag-grid-button filter-button p-button rounded-sm p-component p-button-sm"
+            [style.backgroundColor]="'var(--theme-brand-primary)'" [style.color]="'var(--theme-text-inverted)'"
+            (mouseenter)="onButtonHover($event, true, 'brand')" (mouseleave)="onButtonHover($event, false, 'brand')"
+            (click)="onFilterClick()">
             <i class="pi pi-filter"></i> Filter
           </button>
-          <button class="ag-grid-button export-button" (click)="exportToCSV()">
+          <button class="ag-grid-button export-button p-button p-component p-button-sm"
+            [style.backgroundColor]="'var(--theme-secondary-accent-primary)'"
+            [style.color]="'var(--theme-text-inverted)'" (mouseenter)="onButtonHover($event, true, 'secondary-accent')"
+            (mouseleave)="onButtonHover($event, false, 'secondary-accent')" (click)="exportToCSV()">
             <i class="pi pi-upload"></i> Export
           </button>
         </div>
       </div>
     </div>
   </div>
-  <!-- Grid -->
-  <div class="relative w-full ag-grid-main-area" [style.width]="gridWidth"
-    [style.height]="gridHeight">
+  <div class="relative w-full ag-grid-main-area" [style.width]="gridWidth" [style.height]="gridHeight">
     <ag-grid-angular style="height: 100%; width: 100%;" [rowData]="rowData" [columnDefs]="columnDefs" [theme]="theme"
       [defaultColDef]="defaultColDef" [pagination]="true" [rowSelection]="rowSelection" [rowClassRules]="rowClassrules"
-      [paginationPageSize]="paginationPageSize" 
-      (cellValueChanged)="onCellValueChanged($event)" (rowSelected)="onRowSelected($event)"
-      (cellClicked)="onCellClicked($event)" (gridReady)="onGridReady($event)" [getRowId]="getRowId">
+      [paginationPageSize]="paginationPageSize" (cellValueChanged)="onCellValueChanged($event)"
+      (rowSelected)="onRowSelected($event)" (cellClicked)="onCellClicked($event)" (gridReady)="onGridReady($event)"
+      [getRowId]="getRowId">
     </ag-grid-angular>
   </div>
 </div>
+
 
 
 

@@ -74,7 +74,7 @@ export class SharedGridComponent implements OnInit, OnChanges {
     selectedRowBackgroundColor: 'var(--theme-accent-primary-light)'
   });
 
-  constructor(private themeService: ThemeService) {}
+  constructor(private themeService: ThemeService) { }
 
   getRowId = (params: { data: any }) => params.data._id;
 
@@ -216,6 +216,33 @@ export class SharedGridComponent implements OnInit, OnChanges {
     this.gridApi.setFilterModel(null);
     this.gridApi.onFilterChanged();
   }
+  
+  onButtonHover(event: MouseEvent, isHovering: boolean, type: 'brand' | 'brand-outlined' | 'secondary-accent') {
+    const button = event.currentTarget as HTMLElement;
+
+    if (type === 'brand') {
+      if (isHovering) {
+        button.style.backgroundColor = 'var(--theme-brand-primary-hover)';
+      } else {
+        button.style.backgroundColor = 'var(--theme-brand-primary)';
+      }
+    } else if (type === 'brand-outlined') {
+      if (isHovering) {
+        button.style.backgroundColor = 'var(--theme-button-outlined-hover-bg)';
+        // button.style.color = 'var(--theme-button-outlined-hover-text)'; // If text color also changes on hover
+      } else {
+        button.style.backgroundColor = 'transparent';
+        // button.style.color = 'var(--theme-button-outlined-text)';
+      }
+    } else if (type === 'secondary-accent') {
+      if (isHovering) {
+        button.style.backgroundColor = 'var(--theme-secondary-accent-hover)';
+      } else {
+        button.style.backgroundColor = 'var(--theme-secondary-accent-primary)';
+      }
+    }
+  }
+
 }
 
 // import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';

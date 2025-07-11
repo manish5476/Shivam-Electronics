@@ -58,7 +58,6 @@ preview
   </p-drawer>
 </div> -->
 <div class="card">
-  <p-toast />
   <p-toolbar styleClass="mb-6">
       <ng-template #start>
           <p-button label="New" icon="pi pi-plus" class="mr-2" (onClick)="openNew()" />
@@ -70,8 +69,6 @@ preview
               customUpload class="mr-2 inline-block" [chooseButtonProps]="{ severity: 'secondary' }" />
           <p-button label="Export" icon="pi pi-upload" severity="secondary" (onClick)="exportCSV()" />
       </ng-template>
-
-
   </p-toolbar>
   <p-table #dt [value]="products" [rows]="10" [columns]="cols" [paginator]="true"
       [globalFilterFields]="['title', 'country.name', 'representative.name', 'status']"

@@ -1,9 +1,42 @@
+<header
+  class="fixed top-0 left-0 w-full z-20 bg-[var(--theme-bg-secondary)] border-b border-[var(--theme-border-primary)] shadow-md">
+  <div class="flex h-10 items-center justify-between px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+    <div class="flex items-center gap-3">
+      <button type="button"
+        class="flex items-center justify-center w-8 h-6 rounded-md bg-[var(--theme-bg-tertiary)] hover:bg-[var(--theme-hover-bg)] transition"
+        (click)="toggleSidebar.emit()">
+        <i class="pi pi-bars text-[var(--theme-accent-primary)] text-base"></i>
+      </button>
+      <a href="/" class="text-[var(--theme-accent-primary)] text-base font-semibold tracking-tight">Shivam  Electronics</a>
+    </div>
+    <div class="flex items-center gap-2">
+      <p-avatar [image]="user?.avatar || 'https://primefaces.org/cdn/primeng/images/demo/avatar/amyelsner.png'"
+        shape="circle" class="w-6 h-6"></p-avatar>
+      <button type="button"
+        class="md:hidden w-8 h-8 rounded-full bg-[var(--theme-bg-tertiary)] hover:bg-[var(--theme-hover-bg)] flex items-center justify-center"
+        (click)="mobileMenuToggle.emit()">
+        <i class="pi pi-bars text-[var(--theme-accent-primary)] text-base"></i>
+      </button>
+    </div>
+  </div>
+  <!-- Mobile Navigation -->
+  <div
+    class="md:hidden transition-all duration-300 ease-out overflow-hidden bg-[var(--theme-bg-secondary)] border-t border-[var(--theme-border-primary)]"
+    [ngClass]="{'opacity-100 max-h-60': isMobileMenuOpen, 'opacity-0 max-h-0': !isMobileMenuOpen}">
+    <div class="flex flex-col gap-4 p-4 text-sm">
+      <a routerLink="/personalInfo/aboutus" (click)="mobileMenuToggle.emit()"
+        class="text-[var(--theme-text-secondary)] hover:text-[var(--theme-accent-primary)]">Contact</a>
+      <a routerLink="/auth/login" (click)="mobileMenuToggle.emit()"
+        class="text-[var(--theme-text-secondary)] hover:text-[var(--theme-accent-primary)]">Login</a>
+      <a routerLink="/auth/signup" (click)="mobileMenuToggle.emit()"
+        class="text-[var(--theme-text-secondary)] hover:text-[var(--theme-accent-primary)]">Register</a>
+    </div>
+  </div>
+</header>
+<!-- 
 
-<!-- Main Container -->
 <div class="flex h-screen" [ngClass]="{'bg-[var(--theme-bg-primary)] text-[var(--theme-text-primary)]': true}">
-  <!-- Hover Trigger Zone (10px wide, semi-transparent for debugging, adjust z-index) -->
   <div class="fixed inset-y-0 left-0 z-10 w-3 bg-blue-500/20" (mouseenter)="onMouseEnterTriggerZone()" *ngIf="!isSidebarPinned && !isSidebarHovered" (click)="debugTriggerZone()"></div>
-  <!-- Sidebar -->
   <div class="fixed inset-y-0 left-0 z-10 transition-all duration-300 ease-in-out" [ngClass]="{
       'w-0 overflow-hidden': !isSidebarPinned && !isSidebarHovered,
       'w-64': isSidebarPinned || isSidebarHovered
@@ -38,16 +71,16 @@
           </div>
         </div>
       </div>
-      <!-- Footer Buttons -->
+      
       <div class="border-t border-[var(--theme-border-primary)] px-4 py-4 transition-all duration-300" [ngClass]="{'opacity-0 hidden': !isSidebarPinned && !isSidebarHovered, 'opacity-100': isSidebarPinned || isSidebarHovered}">
         <button pButton label="Settings" icon="pi pi-cog" class="w-full p-button-outlined text-sm" [ngClass]="{'text-[var(--theme-accent-primary)] border-[var(--theme-accent-primary)] hover:bg-[var(--theme-button-outlined-hover-bg)] hover:text-[var(--theme-button-outlined-hover-text)]': true}"></button>
         <button pButton (click)="logout()" label="Logout" icon="pi pi-sign-out" class="w-full p-button-danger p-button-text text-sm" [ngClass]="{'text-[var(--theme-button-danger-text)] hover:bg-[var(--theme-button-danger-hover-bg)] hover:text-[var(--theme-button-danger-hover-text)]': true}"></button>
       </div>
     </div>
   </div>
-  <!-- Content Area -->
+  
   <div class="flex-1 flex flex-col" (mouseenter)="onMouseEnterMainContent()">
-    <!-- Header -->
+    
     <header class="bg-[var(--theme-bg-secondary)] shadow-lg sticky top-0 z-20 border-b border-[var(--theme-border-primary)]">
       <div class="flex h-14 items-center justify-between px-4 sm:px-6 lg:px-8">
         <div class="flex items-center gap-3">
@@ -66,7 +99,7 @@
           </button>
         </div>
       </div>
-      <!-- Mobile Navigation -->
+      
       <div class="md:hidden transition-all duration-300 ease-out overflow-hidden bg-[var(--theme-bg-secondary)] border-t border-[var(--theme-border-primary)]" [ngClass]="{'opacity-100 max-h-60': isMobileMenuOpen, 'opacity-0 max-h-0': !isMobileMenuOpen}">
         <div class="flex flex-col gap-4 p-4 text-sm">
           <a routerLink="/personalInfo/aboutus" (click)="toggleMobileMenu()" class="text-[var(--theme-text-secondary)] hover:text-[var(--theme-accent-primary)]">Contact</a>
@@ -75,9 +108,9 @@
         </div>
       </div>
     </header>
-    <!-- Main Content -->
+    
     <main class="flex-1 overflow-y-auto p-4 rounder-sm transition-all duration-300 bg-[var(--theme-bg-primary)] text-[var(--theme-text-primary)]" [ngClass]="{'ml-0': !isSidebarPinned && !isSidebarHovered, 'ml-64': isSidebarPinned || isSidebarHovered}">
       <router-outlet></router-outlet>
     </main>
   </div>
-</div>
+</div> -->

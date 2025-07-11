@@ -10,7 +10,7 @@ import { LoadingService } from './core/services/loading.service';
   imports: [
     RouterOutlet,
     ButtonModule, ToastModule,
-    LoadingComponent
+    LoadingComponent,
 ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
