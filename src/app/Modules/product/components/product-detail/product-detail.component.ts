@@ -2,10 +2,9 @@ import { ChangeDetectorRef, Component, EventEmitter, Output } from '@angular/cor
 import { SharedGridComponent } from '../../../../shared/AgGrid/grid/shared-grid/shared-grid.component';
 import { CellValueChangedEvent } from 'ag-grid-community';
 import { ProductService } from '../../../../core/services/product.service';
-import { ToolbarComponent } from "../../../../shared/Components/toolbar/toolbar.component";
 @Component({
     selector: 'app-product-detail',
-    imports: [SharedGridComponent, ToolbarComponent],
+    imports: [SharedGridComponent, ],
     templateUrl: './product-detail.component.html',
     styleUrl: './product-detail.component.css'
 })
@@ -31,8 +30,6 @@ export class ProductDetailComponent {
 
             if (field) {
                 dataItem[field] = newValue;
-
-
                 // Call API to update product
                 this.ProductService.updateProduct(dataItem.id, dataItem).subscribe({
                     next: (res: any) => {
@@ -45,7 +42,6 @@ export class ProductDetailComponent {
                 console.error('❌ Error: Field is undefined in cellValueChangedEvent.colDef');
             }
         }
-
     }
 
 

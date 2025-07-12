@@ -1,13 +1,41 @@
-/* @import "tailwindcss"; */.gradient-border {
-  border: 2px solid transparent;
-  background-image: linear-gradient(white, white), linear-gradient(to right, #4f46e5, #e91e63);
-  background-origin: border-box;
-  background-clip: content-box, border-box;
-  box-shadow: 2px 1000px 1px white inset;
-  border-radius: 0.5rem; /* Equivalent to rounded-md */
+/* .container {
+  width: 100%;
+  max-width: none;
 }
 
-.dark .gradient-border {
-  background-image: linear-gradient(#1f2937, #1f2937), linear-gradient(to right, #4f46e5, #e91e63);
-  box-shadow: 2px 1000px 1px #1f2937 inset;
+.card {
+  display: flex;
+  align-items: self-start;
+  gap: 0.25rem;
+  padding: 4px;
+  border: 0px;
 }
+
+.grid {
+  align-items: stretch;
+}
+
+p-floatLabel .p-inputtext,
+p-floatLabel .p-inputtextarea,
+p-dropdown {
+  min-height: 1.5rem;
+  display: flex;
+  align-items: center;
+}
+
+p-dropdown .p-dropdown-label {
+  padding: 0.25rem;
+}
+
+p-button.p-button-sm {
+  padding: 0.25rem 0.5rem;
+  font-size: 0.75rem;
+}
+
+h1 {
+  font-size: 1.5rem;
+}
+
+h2 {
+  font-size: 0.875rem;
+} */

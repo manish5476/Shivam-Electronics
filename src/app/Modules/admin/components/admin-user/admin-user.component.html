@@ -1,42 +1,5 @@
-<!-- Main Container: Uses global CSS variables for background and text color -->
-<div class="flex flex-col h-[calc(100vh-64px)] overflow-hidden" [style.backgroundColor]="'var(--theme-bg-primary)'"
-  [style.color]="'var(--theme-text-primary)'">
-  <!-- Header Bar: Uses global CSS variables for background, borders, and shadow -->
-  <div
-    class="flex items-center justify-between flex-wrap gap-3 px-4 py-2 border-b shadow-sm backdrop-filter backdrop-blur-sm"
-    [style.borderColor]="'var(--theme-border-primary)'" [style.backgroundColor]="'var(--theme-bg-secondary)'">
-
-    <!-- <div class="flex items-center gap-2 h-10">
-      <p-button label="New" icon="pi pi-plus" class="p-button-xs"
-                [style.backgroundColor]="'var(--theme-button-bg-primary)'"
-                [style.color]="'var(--theme-button-text-primary-btn)'"
-                (mouseenter)="onButtonHover($event, true, 'primary')"
-                (mouseleave)="onButtonHover($event, false, 'primary')"
-                (onClick)="openNew()" aria-label="Add new user"/>
-
-      <p-button label="Delete" icon="pi pi-trash" class="p-button-xs p-button-outlined"
-                [disabled]="!selectedProducts || !selectedProducts.length"
-                [style.color]="'var(--theme-button-danger-text)'"
-                [style.borderColor]="'var(--theme-button-danger-text)'"
-                (mouseenter)="onButtonHover($event, true, 'danger-outlined')"
-                (mouseleave)="onButtonHover($event, false, 'danger-outlined')"
-                (onClick)="deleteSelectedProducts()" aria-label="Delete selected users"/>
-
-      <p-button label="Export" icon="pi pi-upload" class="p-button-xs"
-                [style.backgroundColor]="'var(--theme-secondary-accent-primary)'"
-                [style.color]="'var(--theme-text-inverted)'"
-                (mouseenter)="onButtonHover($event, true, 'secondary-accent')"
-                (mouseleave)="onButtonHover($event, false, 'secondary-accent')"
-                (onClick)="exportCSV()" aria-label="Export users to CSV"/>
-    </div>
-  </div> -->
-    <!-- Shared Grid Section -->
-    <div class="flex-1 p-3">
-      <!-- <div class="gradient-card p-3 rounded-md shadow-sm" [style.backgroundColor]="'var(--theme-bg-secondary)'"
-        [style.borderColor]="'var(--theme-border-primary)'" [style.boxShadow]="'0 2px 5px var(--theme-shadow-color)'"> -->
-        <app-shared-grid [rowSelectionMode]="rowSelectionMode" [gridHeight]="'calc(100vh - 240px)'" [padding]="'0'"
-          [data]="users" [column]="columnDefs" (eventFromGrid)="eventFromGrid($event)">
-        </app-shared-grid>
-      <!-- </div> -->
-    </div>
-  </div>
+<!-- Shared Grid Section -->
+<app-shared-grid [rowSelectionMode]="rowSelectionMode" [gridHeight]="'170px'" [padding]="'0'"
+  [GridName]="'Users Details'" [data]="users" [column]="columnDefs"
+  (eventFromGrid)="eventFromGrid($event)">
+</app-shared-grid>

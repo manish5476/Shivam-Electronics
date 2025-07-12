@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, Output, OnInit, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ColorPickerModule } from 'primeng/colorpicker';
@@ -7,15 +7,17 @@ import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
 import { RouterModule } from '@angular/router';
 import { AuthService } from '../../core/services/auth.service';
-
+import { Popover, PopoverModule } from 'primeng/popover';
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [CommonModule, FormsModule, ColorPickerModule, AvatarModule, ButtonModule, InputTextModule, RouterModule],
+  imports: [CommonModule, FormsModule,PopoverModule, ColorPickerModule, AvatarModule, ButtonModule, InputTextModule, RouterModule],
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.css']
 })
 export class HeaderComponent implements OnInit {
+     @ViewChild('op') op!: Popover;
+
   @Input() isMobileMenuOpen: boolean = false;
   @Output() toggleSidebar = new EventEmitter<void>();
   @Output() colorChange = new EventEmitter<string>();
@@ -30,6 +32,11 @@ export class HeaderComponent implements OnInit {
     this.user = this.authService.getItem('user');
     this.accentColor = getComputedStyle(document.documentElement).getPropertyValue('--theme-accent-primary').trim() || '#007bff';
   }
+    toggle(event: any) {
+      console.log(event);
+        this.op.toggle(event);
+    }
+
 }
 // import { Component, OnInit } from '@angular/core';
 // import { ButtonModule } from 'primeng/button';
