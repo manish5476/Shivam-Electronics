@@ -9,7 +9,7 @@
       </button>
       <span class="text-sm font-semibold text-[var(--theme-text-primary)] transition-opacity duration-300" [ngClass]="{'opacity-0 hidden': !isPinned && !isHovered, 'opacity-100': isPinned || isHovered}">Menu</span>
     </div> -->
-    <div class="flex flex-col items-center gap-2 px-4 py-6 border-b border-[var(--theme-border-primary)] transition-all duration-300" [ngClass]="{'hidden': !isPinned && !isHovered}">
+    <div class="flex flex-col items-center gap-2 border-b border-[var(--theme-border-primary)] transition-all duration-300" [ngClass]="{'hidden': !isPinned && !isHovered}">
       <!-- <p-avatar [image]="user?.avatar || 'https://primefaces.org/cdn/primeng/images/demo/avatar/amyelsner.png'" shape="circle" class="w-16 h-16 border-2 border-[var(--theme-accent-primary)]" /> -->
       <div class="text-center text-sm">
         <div class="font-semibold text-[var(--theme-text-primary)]">{{ user?.name || 'User' }}</div>

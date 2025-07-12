@@ -4,8 +4,8 @@
   <div class="ag-grid-header-filter-area border-b" [style.borderColor]="'var(--theme-bg-tertiarys)'">
     <div class="header-controls-glass-container">
       <div class="header-controls-content flex items-center flex-wrap gap-x-4 gap-y-2">
+        <label for="colorPicker" class="text-[3rem] mr-2" [style.color]="'var(--theme-text-heading)'"><h3>{{GridName}}</h3></label>
         <div class="header-control-item">
-          <label for="colorPicker" class="text-[3rem] mr-2" [style.color]="'var(--theme-text-heading)'">{{GridName}}</label>
           <p-colorPicker id="colorPicker" [(ngModel)]="accentColor" (onChange)="onColorChange($event)" appendTo="body"
             [style]="{'width': '24px', 'height': '24px'}" [inline]="false"></p-colorPicker>
         </div>
