@@ -34,7 +34,7 @@ export class SharedGridComponent implements OnInit, OnChanges {
   @Output() dataChanged = new EventEmitter<any>();
   @Output() eventFromGrid = new EventEmitter<any>();
   @Output() gridReady = new EventEmitter<GridReadyEvent>();
-
+  @Input() GridName:any
   private gridApi!: GridApi;
   rowData: any[] = [];
   columnDefs: ColDef[] = [];
@@ -51,18 +51,40 @@ export class SharedGridComponent implements OnInit, OnChanges {
   };
 
   rowSelection: any = { mode: 'single' };
-  theme = themeQuartz.withParams({
+  // theme = themeQuartz.withParams({
+  //   backgroundColor: 'var(--theme-bg-primary)',
+  //   foregroundColor: 'var(--theme-text-primary)',
+  //   headerTextColor: '#090979',
+  //   headerBackgroundColor: '#6BAFD1',
+  //   oddRowBackgroundColor: '#EEAECA',
+  //   headerColumnResizeHandleColor: 'var(--theme-accent-primary)',
+  //   borderColor: 'var(--theme-border-primary)',
+  //   fontFamily: 'Roboto, sans-serif',
+  //   fontSize: '0.8125rem',
+  //   headerFontFamily: 'Roboto, sans-serif',
+  //   headerFontWeight: '600',
+  //   rangeSelectionBorderColor: 'var(--theme-accent-primary)',
+  //   rangeSelectionBorderStyle: 'dashed',
+  //   rangeSelectionBackgroundColor: 'var(--theme-accent-primary-light)',
+  //   rangeSelectionHighlightColor: 'var(--theme-accent-primary)',
+  //   inputBorder: { color: 'var(--theme-accent-primary)', style: 'solid', width: 1 },
+  //   inputBackgroundColor: 'var(--theme-bg-tertiary)',
+  //   inputPlaceholderTextColor: 'var(--theme-text-secondary)',
+  //   inputIconColor: 'var(--theme-accent-primary)',
+  //   selectedRowBackgroundColor: 'var(--theme-accent-primary-light)'
+  // });
+   theme = themeQuartz.withParams({
     backgroundColor: 'var(--theme-bg-primary)',
     foregroundColor: 'var(--theme-text-primary)',
-    headerTextColor: '#FFFDF6',
-    headerBackgroundColor: '#131D4F',
-    oddRowBackgroundColor: '#A2AADB',
+    headerTextColor: 'var(--theme-text-heading)', // Use theme heading color for better contrast
+    headerBackgroundColor: 'var(--theme-bg-secondary)', // Lighter header using secondary background
+    oddRowBackgroundColor: 'var(--theme-bg-primary)', // Adjusted for consistency
     headerColumnResizeHandleColor: 'var(--theme-accent-primary)',
     borderColor: 'var(--theme-border-primary)',
-    fontFamily: 'Roboto, sans-serif',
-    fontSize: '0.8125rem',
-    headerFontFamily: 'Roboto, sans-serif',
-    headerFontWeight: '600',
+    fontFamily: 'Inter, Poppins, sans-serif', // Modern, clean font stack
+    fontSize: '0.875rem', // Slightly larger for readability
+    headerFontFamily: 'Inter, Poppins, sans-serif', // Consistent with body font
+    headerFontWeight: '500', // Lighter weight for a modern look
     rangeSelectionBorderColor: 'var(--theme-accent-primary)',
     rangeSelectionBorderStyle: 'dashed',
     rangeSelectionBackgroundColor: 'var(--theme-accent-primary-light)',
@@ -73,7 +95,6 @@ export class SharedGridComponent implements OnInit, OnChanges {
     inputIconColor: 'var(--theme-accent-primary)',
     selectedRowBackgroundColor: 'var(--theme-accent-primary-light)'
   });
-
   constructor(private themeService: ThemeService) { }
 
   getRowId = (params: { data: any }) => params.data._id;

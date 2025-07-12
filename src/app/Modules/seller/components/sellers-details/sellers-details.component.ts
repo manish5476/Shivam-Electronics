@@ -3,11 +3,10 @@ import { SellerService } from '../../../../core/services/seller.service';
 import { SharedGridComponent } from '../../../../shared/AgGrid/grid/shared-grid/shared-grid.component';
 import { CellValueChangedEvent } from 'ag-grid-community';
 import { CommonModule } from '@angular/common';
-import { ToolbarComponent } from "../../../../shared/Components/toolbar/toolbar.component";
 
 @Component({
   selector: 'app-sellers-details',
-  imports: [SharedGridComponent, CommonModule, ToolbarComponent],
+  imports: [SharedGridComponent, CommonModule],
   templateUrl: './sellers-details.component.html',
   styleUrl: './sellers-details.component.css'
 })

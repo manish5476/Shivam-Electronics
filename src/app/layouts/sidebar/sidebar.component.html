@@ -3,14 +3,14 @@
     'w-64': isPinned || isHovered
   }" (mouseenter)="mouseEnter.emit()" (mouseleave)="mouseLeave.emit()">
   <div class="flex flex-col h-full bg-[var(--theme-bg-secondary)] shadow-xl rounded-r-2xl border-r border-[var(--theme-border-primary)]">
-    <div class="flex items-center justify-between p-4 border-b border-[var(--theme-border-primary)]">
+    <!-- <div class="flex items-center justify-between p-4 border-b border-[var(--theme-border-primary)]">
       <button type="button" class="flex items-center justify-center w-8 h-8 rounded-md hover:bg-[var(--theme-hover-bg)] transition" (click)="pinToggle.emit()">
         <i class="pi" [ngClass]="isPinned ? 'pi-thumbtack text-[var(--theme-accent-primary)]' : 'pi-thumbtack text-[var(--theme-text-secondary)]'" [style.transform]="isPinned ? 'rotate(45deg)' : 'rotate(0deg)'" style="transition: transform 0.3s ease;"></i>
       </button>
       <span class="text-sm font-semibold text-[var(--theme-text-primary)] transition-opacity duration-300" [ngClass]="{'opacity-0 hidden': !isPinned && !isHovered, 'opacity-100': isPinned || isHovered}">Menu</span>
-    </div>
+    </div> -->
     <div class="flex flex-col items-center gap-2 px-4 py-6 border-b border-[var(--theme-border-primary)] transition-all duration-300" [ngClass]="{'hidden': !isPinned && !isHovered}">
-      <p-avatar [image]="user?.avatar || 'https://primefaces.org/cdn/primeng/images/demo/avatar/amyelsner.png'" shape="circle" class="w-16 h-16 border-2 border-[var(--theme-accent-primary)]" />
+      <!-- <p-avatar [image]="user?.avatar || 'https://primefaces.org/cdn/primeng/images/demo/avatar/amyelsner.png'" shape="circle" class="w-16 h-16 border-2 border-[var(--theme-accent-primary)]" /> -->
       <div class="text-center text-sm">
         <div class="font-semibold text-[var(--theme-text-primary)]">{{ user?.name || 'User' }}</div>
         <div class="text-[var(--theme-text-secondary)] text-xs">{{ user?.email || 'user@example.com' }}</div>
