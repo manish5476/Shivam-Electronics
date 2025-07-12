@@ -1,13 +1,9 @@
 
 <div
-  class="flex flex-col h-[calc(100vh-64px)] overflow-hidden bg-[var(--theme-bg-primary)] text-[var(--theme-text-primary)]">
-  <!-- Header Filter Area -->
+  class="flex flex-col rounded-sm erflow-hidden bg-[var(--theme-bg-primary)] text-[var(--theme-text-primary)]">
   <div class="ag-grid-header-filter-area px-3 rounded-sm py-2">
     <div class="header-controls-glass-container">
       <div class="header-controls-content">
-        <div class="header-info flex items-center">
-          <h4 class="text-sm font-semibold text-[var(--theme-text-heading)] tracking-tight">Customer List</h4>
-        </div>
         <div class="header-control-item">
           <p-select id="customer" appendTo="body" [options]="customerFilter.customerIDDropdown"
             [(ngModel)]="customerFilter.name" (onChange)="getData()" [filter]="true" filterBy="fullname"
@@ -50,124 +46,7 @@
   </div>
   <!-- Grid Area -->
     <!-- <div class="gradient-card p-3 rounded-md shadow-sm"> -->
-      <app-shared-grid [data]="data" [gridHeight]="'500px'" [rowSelectionMode]="rowSelectionMode"
+      <app-shared-grid [data]="data" [gridHeight]="'250px'" [rowSelectionMode]="rowSelectionMode"  [GridName]="'Customer Details'"
         [column]="column" (eventFromGrid)="eventFromGrid($event)"></app-shared-grid>
   <!-- </div> -->
 </div>
-<!-- 
-<div class="h-[calc(100vh-56px)] flex flex-col overflow-hidden">
-  <div class="ag-grid-container">
-    <div class="ag-grid-header-filter-area bg-gradient-to-r from-gray-900 to-gray-800 text-white shadow-2xl border-b border-gray-700">
-      <div class="flex items-center justify-between px-6 py-4">
-        
-        <div class="header-info">
-          <h4 class="text-xl font-bold tracking-wide text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-500 animate-pulse">
-            Customer List
-          </h4>
-        </div>
-
-        
-        <div class="header-controls flex items-center space-x-4">
-          
-          <div class="relative">
-            <p-select
-              id="customer"
-              appendTo="body"
-              [options]="customerFilter.customerIDDropdown"
-              [(ngModel)]="customerFilter.name"
-              (onChange)="getData()"
-              [checkmark]="true"
-              [filter]="true"
-              filterBy="fullname"
-              optionLabel="fullname"
-              optionValue="_id"
-              [showClear]="true"
-              placeholder="Select Customer"
-              class="w-64 bg-gray-800 border border-gray-600 rounded-lg text-white focus:ring-2 focus:ring-cyan-500 transition-all duration-300"
-            />
-          </div>
-
-          
-          <div class="relative">
-            <input
-              pInputText
-              id="email"
-              [(ngModel)]="customerFilter.email"
-              (change)="getData()"
-              placeholder="Email"
-              class="w-48 bg-gray-800 border border-gray-600 rounded-lg text-white placeholder-gray-400 px-4 py-2 focus:ring-2 focus:ring-cyan-500 focus:outline-none transition-all duration-300"
-            />
-          </div>
-
-          
-          <div class="relative">
-            <input
-              pInputText
-              id="phone"
-              [(ngModel)]="customerFilter.phone"
-              (change)="getData()"
-              placeholder="Phone"
-              class="w-40 bg-gray-800 border border-gray-600 rounded-lg text-white placeholder-gray-400 px-4 py-2 focus:ring-2 focus:ring-cyan-500 focus:outline-none transition-all duration-300"
-            />
-          </div>
-
-          
-          <div class="relative">
-            <input
-              pInputText
-              id="page"
-              [(ngModel)]="customerFilter.page"
-              (change)="getData()"
-              placeholder="Page"
-              type="number"
-              min="1"
-              class="w-24 bg-gray-800 border border-gray-600 rounded-lg text-white placeholder-gray-400 px-4 py-2 focus:ring-2 focus:ring-cyan-500 focus:outline-none transition-all duration-300"
-            />
-          </div>
-
-          
-          <div class="relative">
-            <input
-              pInputText
-              id="limit"
-              [(ngModel)]="customerFilter.limit"
-              (change)="getData()"
-              placeholder="Limit"
-              type="number"
-              min="1"
-              class="w-24 bg-gray-800 border border-gray-600 rounded-lg text-white placeholder-gray-400 px-4 py-2 focus:ring-2 focus:ring-cyan-500 focus:outline-none transition-all duration-300"
-            />
-          </div>
-
-          
-          <div class="flex space-x-2">
-            <button
-              type="button"
-              (click)="getData()"
-              class="bg-cyan-500 hover:bg-cyan-600 text-gray-900 font-semibold px-6 py-2 rounded-lg shadow-md hover:shadow-cyan-500/50 transition-all duration-300 transform hover:scale-105"
-            >
-              Apply
-            </button>
-            <button
-              type="button"
-              (click)="resetFilters()"
-              class="bg-gray-700 hover:bg-gray-600 text-white font-semibold px-6 py-2 rounded-lg shadow-md hover:shadow-gray-500/50 transition-all duration-300 transform hover:scale-105"
-            >
-              Reset
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="ag-grid-main-area flex-1 overflow-auto">
-      <app-shared-grid
-        [data]="data"
-        [gridHeight]="'600px'"
-        [rowSelectionMode]="rowSelectionMode"
-        [column]="column"
-        (eventFromGrid)="eventFromGrid($event)"
-      ></app-shared-grid>
-    </div>
-  </div>
-</div> -->

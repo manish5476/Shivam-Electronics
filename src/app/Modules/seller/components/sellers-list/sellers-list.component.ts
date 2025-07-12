@@ -4,11 +4,10 @@ import { SharedGridComponent } from '../../../../shared/AgGrid/grid/shared-grid/
 // import { ToolbarComponent } from "../../../../shared/Components/toolbar/toolbar.component";
 import { CellValueChangedEvent } from 'ag-grid-community';
 import { CommonModule } from '@angular/common';
-import { ToolbarComponent } from "../../../../shared/Components/toolbar/toolbar.component";
 
 @Component({
   selector: 'app-sellers-lists',
-  imports: [SharedGridComponent, CommonModule, ToolbarComponent],
+  imports: [SharedGridComponent, CommonModule],
   templateUrl: './sellers-list.component.html',
   styleUrl: './sellers-list.component.css'
 })
