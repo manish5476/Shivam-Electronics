@@ -87,6 +87,8 @@ import { Table } from 'primeng/table';
 import { RatingModule } from 'primeng/rating';
 import { ProductMasterComponent } from "../product-master/product-master.component";
 import { AppMessageService } from '../../../../core/services/message.service';
+import { DrawerModule } from 'primeng/drawer';
+
 interface Column {
     field: string;
     header: string;
@@ -101,10 +103,11 @@ interface ExportColumn {
     selector: 'app-product-list',
     templateUrl: './product-list.component.html',
     styleUrl: './product-list.component.css',
-    imports: [TableModule, Dialog, RatingModule, ButtonModule, SelectModule, ToastModule, ToolbarModule, ConfirmDialog, InputTextModule, TextareaModule, CommonModule, FileUpload, Tag, Rating, InputTextModule, FormsModule, IconFieldModule, InputIconModule, ProductMasterComponent],
+    imports: [TableModule, Dialog, DrawerModule, RatingModule, ButtonModule, SelectModule, ToastModule, ToolbarModule, ConfirmDialog, InputTextModule, TextareaModule, CommonModule, FileUpload, Tag, Rating, InputTextModule, FormsModule, IconFieldModule, InputIconModule, ProductMasterComponent],
     providers: [MessageService, ConfirmationService, ProductService],
 })
 export class ProductListComponent implements OnInit {
+
     @ViewChild('dt') dt!: Table;
     productDialog: boolean = false;
     products: any[] = [];
@@ -115,6 +118,7 @@ export class ProductListComponent implements OnInit {
     cols: Column[] = [];
     exportColumns: ExportColumn[] = [];
     redirectedProduct: any;
+    visible: boolean = false;
 
     constructor(
         // private productService: ProductService,
@@ -257,5 +261,24 @@ export class ProductListComponent implements OnInit {
             default:
                 return 'success';
         }
+    }
+
+    isFirstPage(): unknown {
+        throw new Error('Method not implemented.');
+    }
+    prev() {
+        throw new Error('Method not implemented.');
+    }
+    reset() {
+        throw new Error('Method not implemented.');
+    }
+    isLastPage(): unknown {
+        throw new Error('Method not implemented.');
+    }
+    next() {
+        throw new Error('Method not implemented.');
+    }
+    saveProduct() {
+        throw new Error('Method not implemented.');
     }
 }
