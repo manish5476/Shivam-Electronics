@@ -1,231 +1,220 @@
-<main class="flex-1 p-8 overflow-y-auto">
-  <h1 class="text-3xl font-bold text-gray-800 mb-8">Customer Overview</h1>
-  <div class="card p-6 bg-white rounded-lg shadow-md">
+<main class="flex-1 p-8 overflow-y-auto" style="background: linear-gradient(to bottom, var(--theme-body-gradient-start), var(--theme-body-gradient-end));">
+  <h1 class="text-3xl font-bold text-[var(--theme-text-heading)] mb-8">Customer Overview</h1>
+  <div class="card p-6 rounded-xl transition-all duration-300 hover:shadow-[0_4px_20px_var(--theme-shadow-color)]">
     <p-toast />
-    <h2 class="text-xl font-semibold text-gray-800 mb-5">Customer Overview</h2>
+    <h2 class="text-xl font-semibold text-[var(--theme-text-heading)] mb-5">
+      <i class="pi pi-users mr-2"></i>Customer Overview
+    </h2>
 
     <div class="mb-4 flex items-center gap-2 md:gap-3">
       <span class="p-input-icon-left">
-        <i class="pi pi-search"></i>
+        <i class="pi pi-search text-[var(--theme-text-secondary)]"></i>
         <input pInputText type="text" [(ngModel)]="searchTerm" (input)="filterCustomers()"
-          placeholder="Search customers..." class="w-40 sm:w-48 md:w-56 text-sm p-inputtext-sm">
+          placeholder="Search customers..."
+          class="w-40 sm:w-48 md:w-56 text-sm p-inputtext-sm rounded-md bg-[var(--theme-bg-tertiary)] text-[var(--theme-text-primary)] border-[var(--theme-border-secondary)] focus:border-[var(--theme-accent-primary)] focus:ring-[var(--theme-accent-focus-ring)]" />
       </span>
       <p-button label="Expand All" icon="pi pi-plus" text (onClick)="expandAll()"
-        class="p-button-sm p-button-text"></p-button>
+        class="p-button-sm p-button-text bg-[var(--theme-button-outlined-border)] text-[var(--theme-button-outlined-text)] hover:bg-[var(--theme-button-outlined-hover-bg)] hover:text-[var(--theme-button-outlined-hover-text)]"></p-button>
       <p-button label="Collapse All" icon="pi pi-minus" text (onClick)="collapseAll()"
-        class="p-button-sm p-button-text"></p-button>
+        class="p-button-sm p-button-text bg-[var(--theme-button-outlined-border)] text-[var(--theme-button-outlined-text)] hover:bg-[var(--theme-button-outlined-hover-bg)] hover:text-[var(--theme-button-outlined-hover-text)]"></p-button>
     </div>
 
     <p-table [value]="filteredCustomers" dataKey="_id" [tableStyle]="{ 'min-width': '60rem' }"
       [expandedRowKeys]="expandedRows" (onRowExpand)="onRowExpand($event)" (onRowCollapse)="onRowCollapse($event)">
       <ng-template pTemplate="header">
         <tr>
-          <th style="width: 5rem; background-color: #3B82F6; color: white; padding: 0.75rem 1rem;"></th>
-          <th pSortableColumn="fullname" style="background-color: #3B82F6; color: white; padding: 0.75rem 1rem;">Full
-            Name <p-sortIcon field="fullname" /></th>
-          <th pSortableColumn="email" style="background-color: #3B82F6; color: white; padding: 0.75rem 1rem;">Email
-            <p-sortIcon field="email" />
+          <th style="width: 5rem; background: var(--theme-brand-primary); color: var(--theme-text-inverted); padding: 0.75rem 1rem;"></th>
+          <th pSortableColumn="fullname" style="background: var(--theme-brand-primary); color: var(--theme-text-inverted); padding: 0.75rem 1rem;">
+            Full Name <p-sortIcon field="fullname" />
           </th>
-          <th pSortableColumn="totalPurchasedAmount"
-            style="background-color: #3B82F6; color: white; padding: 0.75rem 1rem;">Total Purchased
-            <p-sortIcon field="totalPurchasedAmount" />
+          <th pSortableColumn="email" style="background: var(--theme-brand-primary); color: var(--theme-text-inverted); padding: 0.75rem 1rem;">
+            Email <p-sortIcon field="email" />
           </th>
-          <th pSortableColumn="remainingAmount" style="background-color: #3B82F6; color: white; padding: 0.75rem 1rem;">
-            Remaining Amount
-            <p-sortIcon field="remainingAmount" />
+          <th pSortableColumn="totalPurchasedAmount" style="background: var(--theme-brand-primary); color: var(--theme-text-inverted); padding: 0.75rem 1rem;">
+            Total Purchased <p-sortIcon field="totalPurchasedAmount" />
           </th>
-          <th pSortableColumn="status" style="background-color: #3B82F6; color: white; padding: 0.75rem 1rem;">Status
-            <p-sortIcon field="status" />
+          <th pSortableColumn="remainingAmount" style="background: var(--theme-brand-primary); color: var(--theme-text-inverted); padding: 0.75rem 1rem;">
+            Remaining Amount <p-sortIcon field="remainingAmount" />
           </th>
-          <th style="width: 6rem; background-color: #3B82F6; color: white; padding: 0.75rem 1rem;">Actions</th>
+          <th pSortableColumn="status" style="background: var(--theme-brand-primary); color: var(--theme-text-inverted); padding: 0.75rem 1rem;">
+            Status <p-sortIcon field="status" />
+          </th>
+          <th style="width: 6rem; background: var(--theme-brand-primary); color: var(--theme-text-inverted); padding: 0.75rem 1rem;">Actions</th>
         </tr>
       </ng-template>
       <ng-template pTemplate="body" let-customer let-expanded="expanded">
-        <tr>
+        <tr class="hover:bg-[var(--theme-hover-bg)] transition-all duration-200">
           <td><p-button type="button" pRipple [pRowToggler]="customer" [text]="true" [rounded]="true" [plain]="true"
-              [icon]="expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'" /> </td>
+              [icon]="expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'" styleClass="text-[var(--theme-text-primary)]" /></td>
           <td>{{ customer.fullname }}</td>
           <td>{{ customer.email }}</td>
           <td>{{ customer.totalPurchasedAmount | currency : 'INR' : 'symbol' : '1.2-2' }}</td>
           <td>{{ customer.remainingAmount | currency : 'INR' : 'symbol' : '1.2-2' }}</td>
           <td><p-tag [value]="customer.remainingAmount === 0 ? 'Paid' : 'Unpaid'"
-              [severity]="CommonMethodService.getSeverity(customer.remainingAmount === 0 ? 'Paid' : 'Unpaid')" />
-          </td>
+              [severity]="CommonMethodService.getSeverity(customer.remainingAmount === 0 ? 'Paid' : 'Unpaid')"
+              styleClass="p-tag-sm bg-[var(--theme-success-light)] text-[var(--theme-success-primary)]" /></td>
           <td>
             <button pButton type="button" icon="pi pi-user-edit"
-              class="p-button-sm p-button-text p-button-rounded"></button>
+              class="p-button-sm p-button-text p-button-rounded text-[var(--theme-text-primary)] hover:bg-[var(--theme-hover-bg)]"></button>
           </td>
         </tr>
       </ng-template>
       <ng-template pTemplate="emptymessage">
         <tr>
-          <td colspan="7" class="text-center py-4">No customers found.</td>
+          <td colspan="7" class="text-center py-4 text-[var(--theme-text-secondary)]">No customers found.</td>
         </tr>
       </ng-template>
 
       <ng-template pTemplate="expandedrow" let-customer>
         <tr>
           <td [attr.colspan]="7">
-            <div class="p-4 pl-8 bg-gray-50 border border-gray-200 rounded-md my-2">
-
-              <h5 class="text-md font-semibold text-gray-700 mb-3">Products Purchased by {{ customer.fullname }}</h5>
+            <div class="p-4 pl-8 gradient-card border border-[var(--theme-border-secondary)] rounded-md my-2">
+              <h5 class="text-md font-semibold text-[var(--theme-text-heading)] mb-3">
+                Products Purchased by {{ customer.fullname }}
+              </h5>
               <p-table [value]="customer.cart.items" dataKey="productId._id" [tableStyle]="{ 'min-width': '45rem' }"
                 [expandedRowKeys]="expandedProductRows" (onRowExpand)="onProductRowExpand($event)"
                 (onRowCollapse)="onProductRowCollapse($event)" styleClass="p-datatable-sm">
                 <ng-template pTemplate="header">
-        <tr>
-          <th
-            style="width: 3rem; background-color: #93C5FD; color: #1E40AF; padding: 0.5rem 0.75rem; font-size: 0.875rem;">
-          </th>
-          <th pSortableColumn="productId.title"
-            style="background-color: #93C5FD; color: #1E40AF; padding: 0.5rem 0.75rem; font-size: 0.875rem;"> Product
-            Name <p-sortIcon field="productId.title" /></th>
-          <th pSortableColumn="productId.price"
-            style="background-color: #93C5FD; color: #1E40AF; padding: 0.5rem 0.75rem; font-size: 0.875rem;">Price
-            <p-sortIcon field="productId.price" />
-          </th>
-          <th style="background-color: #93C5FD; color: #1E40AF; padding: 0.5rem 0.75rem; font-size: 0.875rem;">Thumbnail
-          </th>
-          <th pSortableColumn="invoiceIds.length"
-            style="background-color: #93C5FD; color: #1E40AF; padding: 0.5rem 0.75rem; font-size: 0.875rem;"> Invoices
-            Count <p-sortIcon field="invoiceIds.length" /> </th>
-          <th style="background-color: #93C5FD; color: #1E40AF; padding: 0.5rem 0.75rem; font-size: 0.875rem;">View</th>
+                  <tr>
+                    <th style="width: 3rem; background: var(--theme-brand-primary-light); color: var(--theme-brand-primary); padding: 0.5rem 0.75rem; font-size: 0.875rem;"></th>
+                    <th pSortableColumn="productId.title" style="background: var(--theme-brand-primary-light); color: var(--theme-brand-primary); padding: 0.5rem 0.75rem; font-size: 0.875rem;">
+                      Product Name <p-sortIcon field="productId.title" />
+                    </th>
+                    <th pSortableColumn="productId.price" style="background: var(--theme-brand-primary-light); color: var(--theme-brand-primary); padding: 0.5rem 0.75rem; font-size: 0.875rem;">
+                      Price <p-sortIcon field="productId.price" />
+                    </th>
+                    <th style="background: var(--theme-brand-primary-light); color: var(--theme-brand-primary); padding: 0.5rem 0.75rem; font-size: 0.875rem;">Thumbnail</th>
+                    <th pSortableColumn="invoiceIds.length" style="background: var(--theme-brand-primary-light); color: var(--theme-brand-primary); padding: 0.5rem 0.75rem; font-size: 0.875rem;">
+                      Invoices Count <p-sortIcon field="invoiceIds.length" />
+                    </th>
+                    <th style="background: var(--theme-brand-primary-light); color: var(--theme-brand-primary); padding: 0.5rem 0.75rem; font-size: 0.875rem;">View</th>
+                  </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-cartItem let-expandedProduct="expanded">
+                  <tr class="text-sm hover:bg-[var(--theme-hover-bg)] transition-all duration-200">
+                    <td><p-button type="button" pRipple [pRowToggler]="cartItem" [text]="true" [rounded]="true" [plain]="true"
+                        [icon]="expandedProduct ? 'pi pi-chevron-down' : 'pi pi-chevron-right'" styleClass="text-[var(--theme-text-primary)]" /></td>
+                    <td>{{ cartItem.productId.title }}</td>
+                    <td>{{ cartItem.productId.price | currency : 'INR' : 'symbol' : '1.2-2' }}</td>
+                    <td><img [src]="cartItem.productId.thumbnail" [alt]="cartItem.productId.title" width="40"
+                        class="shadow-sm rounded border-[var(--theme-border-secondary)]" /></td>
+                    <td>{{ cartItem.invoiceIds.length }}</td>
+                    <td>
+                      <button class="p-button p-button-sm p-button-secondary text-sm bg-[var(--theme-button-outlined-border)] text-[var(--theme-button-outlined-text)] hover:bg-[var(--theme-button-outlined-hover-bg)] hover:text-[var(--theme-button-outlined-hover-text)]">
+                        <i class="pi pi-file-pdf mr-1" (click)="showInvoicePdf(cartItem.invoiceIds[0]._id)"></i> PDF
+                      </button>
+                    </td>
+                  </tr>
+                </ng-template>
+                <ng-template pTemplate="emptymessage">
+                  <tr>
+                    <td colspan="6" class="text-center py-3 text-sm text-[var(--theme-text-secondary)]">No products found in cart.</td>
+                  </tr>
+                </ng-template>
 
-        </tr>
-      </ng-template>
-      <ng-template pTemplate="body" let-cartItem let-expandedProduct="expanded">
-        <tr class="text-sm">
-          <td> <p-button type="button" pRipple [pRowToggler]="cartItem" [text]="true" [rounded]="true" [plain]="true" [icon]="expandedProduct ? 'pi pi-chevron-down' : 'pi pi-chevron-right'" class="scaleclass" />
-          </td>
-          <td>{{ cartItem.productId.title }}</td>
-          <td>{{ cartItem.productId.price | currency : 'INR' : 'symbol' : '1.2-2' }}</td>
-          <td> <img [src]="cartItem.productId.thumbnail" [alt]="cartItem.productId.title" width="40"
-              class="shadow-sm rounded" /> </td>
-          <td>{{ cartItem.invoiceIds.length }}</td>
-          <td> <button class="p-button p-button-sm p-button-secondary text-sm">
-              <i class="pi pi-file-pdf mr-1" (click)="showInvoicePdf(cartItem.invoiceIds[0]._id)"></i> PDF
-            </button></td>
+                <ng-template pTemplate="expandedrow" let-cartItem>
+                  <tr>
+                    <td [attr.colspan]="6">
+                      <div class="p-3 pl-6 gradient-card border border-[var(--theme-border-secondary)] rounded-md">
+                        <h6 class="text-sm font-semibold text-[var(--theme-text-heading)] mb-2">
+                          Invoices for {{ cartItem.productId.title }}
+                        </h6>
+                        <p-table [value]="cartItem.invoiceIds" dataKey="_id" [tableStyle]="{ 'min-width': '35rem' }"
+                          styleClass="p-datatable-sm">
+                          <ng-template pTemplate="header">
+                            <tr>
+                              <th pSortableColumn="invoiceNumber" style="background: var(--theme-brand-primary-light); color: var(--theme-brand-primary); padding: 0.4rem 0.6rem; font-size: 0.8rem;">
+                                Invoice No. <p-sortIcon field="invoiceNumber" />
+                              </th>
+                              <th pSortableColumn="invoiceDate" style="background: var(--theme-brand-primary-light); color: var(--theme-brand-primary); padding: 0.4rem 0.6rem; font-size: 0.8rem;">
+                                Date <p-sortIcon field="invoiceDate" />
+                              </th>
+                              <th pSortableColumn="totalAmount" style="background: var(--theme-brand-primary-light); color: var(--theme-brand-primary); padding: 0.4rem 0.6rem; font-size: 0.8rem;">
+                                Amount <p-sortIcon field="totalAmount" />
+                              </th>
+                              <th pSortableColumn="status" style="background: var(--theme-brand-primary-light); color: var(--theme-brand-primary); padding: 0.4rem 0.6rem; font-size: 0.8rem;">
+                                Status <p-sortIcon field="status" />
+                              </th>
+                            </tr>
+                          </ng-template>
+                          <ng-template pTemplate="body" let-invoice>
+                            <tr class="text-xs hover:bg-[var(--theme-hover-bg)] transition-all duration-200">
+                              <td>{{ invoice.invoiceNumber }}</td>
+                              <td>{{ invoice.invoiceDate | date:'mediumDate' }}</td>
+                              <td>{{ invoice.totalAmount | currency : 'INR' : 'symbol' : '1.2-2' }}</td>
+                              <td>
+                                <p-tag [value]="invoice.status" [severity]="CommonMethodService.getInvoiceStatusSeverity(invoice.status)"
+                                  styleClass="p-tag-sm bg-[var(--theme-success-light)] text-[var(--theme-success-primary)]" />
+                              </td>
+                            </tr>
+                          </ng-template>
+                          <ng-template pTemplate="emptymessage">
+                            <tr>
+                              <td colspan="4" class="text-center py-2 text-xs text-[var(--theme-text-secondary)]">No invoices for this product.</td>
+                            </tr>
+                          </ng-template>
+                        </p-table>
+                      </div>
+                    </td>
+                  </tr>
+                </ng-template>
+              </p-table>
 
-        </tr>
-      </ng-template>
-      <ng-template pTemplate="emptymessage">
-        <tr>
-          <td colspan="5" class="text-center py-3 text-sm">No products found in cart.</td>
-        </tr>
-      </ng-template>
-
-      <ng-template pTemplate="expandedrow" let-cartItem>
-        <tr>
-          <td [attr.colspan]="5">
-            <div class="p-3 pl-6 my-2 bg-blue-50 border border-blue-200 rounded-md">
-              <h6 class="text-sm font-semibold text-blue-700 mb-2">Invoices for {{ cartItem.productId.title }}
+              <h6 class="text-sm font-semibold text-[var(--theme-text-heading)] mt-4 mb-2">
+                Payment History for {{ customer.fullname }}
               </h6>
-              <p-table [value]="cartItem.invoiceIds" dataKey="_id" [tableStyle]="{ 'min-width': '35rem' }"
-                styleClass="p-datatable-sm">
-                <ng-template pTemplate="header">
-        <tr>
-          <th pSortableColumn="invoiceNumber"
-            style="background-color: #BFDBFE; color: #1D4ED8; padding: 0.4rem 0.6rem; font-size: 0.8rem;"> Invoice No.
-            <p-sortIcon field="invoiceNumber" />
-          </th>
-          <th pSortableColumn="invoiceDate"
-            style="background-color: #BFDBFE; color: #1D4ED8; padding: 0.4rem 0.6rem; font-size: 0.8rem;"> Date
-            <p-sortIcon field="invoiceDate" />
-          </th>
-          <th pSortableColumn="totalAmount"
-            style="background-color: #BFDBFE; color: #1D4ED8; padding: 0.4rem 0.6rem; font-size: 0.8rem;"> Amount
-            <p-sortIcon field="totalAmount" />
-          </th>
-          <th pSortableColumn="status"
-            style="background-color: #BFDBFE; color: #1D4ED8; padding: 0.4rem 0.6rem; font-size: 0.8rem;"> Status
-            <p-sortIcon field="status" />
-          </th>
-        </tr>
-      </ng-template>
-      <ng-template pTemplate="body" let-invoice>
-        <tr class="text-xs">
-          <td>{{ invoice.invoiceNumber }}</td>
-          <td>{{ invoice.invoiceDate | date:'mediumDate' }}</td>
-          <td>{{ invoice.totalAmount | currency : 'INR' : 'symbol' : '1.2-2' }}</td>
-          <td> <p-tag [value]="invoice.status" [severity]="CommonMethodService.getInvoiceStatusSeverity(invoice.status)"
-              styleClass="p-tag-sm" /> </td>
-        </tr>
-      </ng-template>
-      <ng-template pTemplate="emptymessage">
-        <tr>
-          <td colspan="4" class="text-center py-2 text-xs">No invoices for this product.</td>
-        </tr>
-      </ng-template>
-    </p-table>
-  </div>
-  </td>
-  </tr>
-  </ng-template>
-  </p-table>
 
-
-
-  <h6 class="text-sm font-semibold text-blue-700 mt-4 mb-2">
-    Payment History for {{ customer.fullname }}
-  </h6>
-
-  <div class="p-3 pl-6 my-2 bg-blue-50 border border-blue-200 rounded-md">
-    <p-table [value]="customer.paymentHistory" dataKey="_id" [tableStyle]="{ 'min-width': '35rem' }"
-      styleClass="p-datatable-sm">
-      <ng-template pTemplate="header">
-        <tr>
-          <th pSortableColumn="transactionId"
-            style="background-color: #BFDBFE; color: #1D4ED8; padding: 0.4rem 0.6rem; font-size: 0.8rem;">
-            Transaction ID
-            <p-sortIcon field="transactionId" />
-          </th>
-          <th pSortableColumn="amount"
-            style="background-color: #BFDBFE; color: #1D4ED8; padding: 0.4rem 0.6rem; font-size: 0.8rem;">
-            Amount
-            <p-sortIcon field="amount" />
-          </th>
-          <th pSortableColumn="status"
-            style="background-color: #BFDBFE; color: #1D4ED8; padding: 0.4rem 0.6rem; font-size: 0.8rem;">
-            Status
-            <p-sortIcon field="status" />
-          </th>
-          <th pSortableColumn="createdAt"
-            style="background-color: #BFDBFE; color: #1D4ED8; padding: 0.4rem 0.6rem; font-size: 0.8rem;">
-            Date
-            <p-sortIcon field="createdAt" />
-          </th>
-        </tr>
-      </ng-template>
-
-      <ng-template pTemplate="body" let-payment>
-        <tr class="text-xs">
-          <td>{{ payment.transactionId }}</td>
-          <td>{{ payment.amount | currency: 'INR': 'symbol': '1.2-2' }}</td>
-          <td>
-            <p-tag [value]="payment.status" [severity]="CommonMethodService.getPaymentStatusSeverity(payment.status)"
-              styleClass="p-tag-sm"></p-tag>
+              <div class="p-3 pl-6 gradient-card border border-[var(--theme-border-secondary)] rounded-md">
+                <p-table [value]="customer.paymentHistory" dataKey="_id" [tableStyle]="{ 'min-width': '35rem' }"
+                  styleClass="p-datatable-sm">
+                  <ng-template pTemplate="header">
+                    <tr>
+                      <th pSortableColumn="transactionId" style="background: var(--theme-brand-primary-light); color: var(--theme-brand-primary); padding: 0.4rem 0.6rem; font-size: 0.8rem;">
+                        Transaction ID <p-sortIcon field="transactionId" />
+                      </th>
+                      <th pSortableColumn="amount" style="background: var(--theme-brand-primary-light); color: var(--theme-brand-primary); padding: 0.4rem 0.6rem; font-size: 0.8rem;">
+                        Amount <p-sortIcon field="amount" />
+                      </th>
+                      <th pSortableColumn="status" style="background: var(--theme-brand-primary-light); color: var(--theme-brand-primary); padding: 0.4rem 0.6rem; font-size: 0.8rem;">
+                        Status <p-sortIcon field="status" />
+                      </th>
+                      <th pSortableColumn="createdAt" style="background: var(--theme-brand-primary-light); color: var(--theme-brand-primary); padding: 0.4rem 0.6rem; font-size: 0.8rem;">
+                        Date <p-sortIcon field="createdAt" />
+                      </th>
+                    </tr>
+                  </ng-template>
+                  <ng-template pTemplate="body" let-payment>
+                    <tr class="text-xs hover:bg-[var(--theme-hover-bg)] transition-all duration-200">
+                      <td>{{ payment.transactionId }}</td>
+                      <td>{{ payment.amount | currency: 'INR': 'symbol': '1.2-2' }}</td>
+                      <td>
+                        <p-tag [value]="payment.status" [severity]="CommonMethodService.getPaymentStatusSeverity(payment.status)"
+                          styleClass="p-tag-sm bg-[var(--theme-success-light)] text-[var(--theme-success-primary)]" />
+                      </td>
+                      <td>{{ payment.createdAt | date: 'mediumDate' }}</td>
+                    </tr>
+                  </ng-template>
+                  <ng-template pTemplate="emptymessage">
+                    <tr>
+                      <td colspan="4" class="text-center py-2 text-xs text-[var(--theme-text-secondary)]">No payment history found.</td>
+                    </tr>
+                  </ng-template>
+                </p-table>
+              </div>
+            </div>
           </td>
-          <td>{{ payment.createdAt | date: 'mediumDate' }}</td>
-        </tr>
-      </ng-template>
-
-      <ng-template pTemplate="emptymessage">
-        <tr>
-          <td colspan="4" class="text-center py-2 text-xs">No payment history found.</td>
         </tr>
       </ng-template>
     </p-table>
-  </div>
-
-  </div>
-  </td>
-  </tr>
-  </ng-template>
-  </p-table>
   </div>
 </main>
 
-<p-dialog header="Invoice Data" [modal]="true" [(visible)]="showpdf" [style]="{ width: '95rem',height:'80rem' }"
-  [maximizable]="true">
+<p-dialog header="Invoice Data" [modal]="true" [(visible)]="showpdf" [style]="{ width: '95rem', height: '80rem' }"
+  [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }" [maximizable]="true" class="bg-[var(--theme-dialog-bg)] text-[var(--theme-text-primary)] rounded-xl">
   <app-invoice-print [Id]="invoiceId"></app-invoice-print>
+  <p-footer>
+    <button pButton type="button" label="Close" icon="pi pi-times" (click)="showpdf=false"
+      class="p-button p-button-secondary bg-[var(--theme-button-outlined-border)] text-[var(--theme-button-outlined-text)] hover:bg-[var(--theme-button-outlined-hover-bg)] hover:text-[var(--theme-button-outlined-hover-text)]"></button>
+  </p-footer>
 </p-dialog>

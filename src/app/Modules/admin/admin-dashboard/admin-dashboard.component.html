@@ -1,4 +1,242 @@
-<div class="dashboard-main-container p-4 pt-1 md:p-6 bg-gray-900 text-gray-100">
+<div class="dashboard-main-container p-4 pt-2 md:p-6 rounded-sm"
+  style="background: linear-gradient(to bottom, var(--theme-body-gradient-start), var(--theme-body-gradient-end));">
+  <!-- Date Filter Section -->
+  <div class="card p-4 mb-6 rounded-xl transition-all duration-300 hover:shadow-[0_4px_20px_var(--theme-shadow-color)]">
+    <div class="flex flex-wrap items-end -mx-2">
+      <div class="w-full md:w-1/4 px-2 mb-4 md:mb-0">
+        <label for="periodSelect" class="form-label">Predefined Period:</label>
+        <select id="periodSelect" [(ngModel)]="selectedPeriod" (ngModelChange)="onPeriodChange($event)"
+          class="p-inputtext w-full rounded-md border bg-[var(--theme-bg-tertiary)] text-[var(--theme-text-primary)] focus:border-[var(--theme-accent-primary)] focus:ring-[var(--theme-accent-focus-ring)]">
+          <option value="today">Today</option>
+          <option value="yesterday">Yesterday</option>
+          <option value="week">This Week</option>
+          <option value="month">This Month</option>
+          <option value="last_month">Last Month</option>
+          <option value="year">This Year</option>
+        </select>
+      </div>
+      <div class="w-full md:w-1/4 px-2 mb-4 md:mb-0">
+        <label for="customStartDate" class="form-label">Start Date:</label>
+        <input type="date" id="customStartDate" [(ngModel)]="customStartDate"
+          class="p-inputtext w-full rounded-md border bg-[var(--theme-bg-tertiary)] text-[var(--theme-text-primary)] focus:border-[var(--theme-accent-primary)] focus:ring-[var(--theme-accent-focus-ring)]">
+      </div>
+      <div class="w-full md:w-1/4 px-2 mb-4 md:mb-0">
+        <label for="customEndDate" class="form-label">End Date:</label>
+        <input type="date" id="customEndDate" [(ngModel)]="customEndDate"
+          class="p-inputtext w-full rounded-md border bg-[var(--theme-bg-tertiary)] text-[var(--theme-text-primary)] focus:border-[var(--theme-accent-primary)] focus:ring-[var(--theme-accent-focus-ring)]">
+      </div>
+      <div class="w-full md:w-1/4 px-2">
+        <button pButton type="button" label="Apply Custom Range & Reload" icon="pi pi-refresh"
+          class="p-button w-full h-11 px-4 bg-[var(--theme-button-bg-primary)] text-[var(--theme-button-text-primary-btn)] hover:bg-[var(--theme-button-hover-bg-primary)] rounded-md transition-all duration-200">
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Metrics Cards -->
+  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 gap-4 mb-8">
+    <div
+      class="card p-4 flex items-center space-x-3 rounded-lg transition-all duration-300 hover:shadow-[0_4px_20px_var(--theme-shadow-color)] hover:-translate-y-1">
+      <div
+        class="bg-[var(--theme-secondary-accent-light)] text-[var(--theme-secondary-accent-primary)] p-3 rounded-full">
+        <i class="pi pi-user-plus text-xl"></i>
+      </div>
+      <div>
+        <div class="text-xl font-bold text-[var(--theme-text-primary)]">{{ newCustomersCountData || 0 }}</div>
+        <div class="text-[var(--theme-text-secondary)] text-sm">New Customers</div>
+      </div>
+    </div>
+    <div
+      class="card p-4 flex items-center space-x-3 rounded-lg transition-all duration-300 hover:shadow-[0_4px_20px_var(--theme-shadow-color)] hover:-translate-y-1">
+      <div class="bg-[var(--theme-success-light)] text-[var(--theme-success-primary)] p-3 rounded-full">
+        <i class="pi pi-shopping-bag text-xl"></i>
+      </div>
+      <div>
+        <div class="text-xl font-bold text-[var(--theme-text-primary)]">{{ salesTrends[0].dailySalesCount || 0 }}</div>
+        <div class="text-[var(--theme-text-secondary)] text-sm">Sales Count</div>
+      </div>
+    </div>
+    <div
+      class="card p-4 flex items-center space-x-3 rounded-lg transition-all duration-300 hover:shadow-[0_4px_20px_var(--theme-shadow-color)] hover:-translate-y-1">
+      <div class="bg-[var(--theme-error-light)] text-[var(--theme-error-primary)] p-3 rounded-full">
+        <i class="pi pi-cart-arrow-down text-xl"></i>
+      </div>
+      <div>
+        <div class="text-xl font-bold text-[var(--theme-text-primary)]">{{ salesTrends[0].dailyRevenue || 0 }}</div>
+        <div class="text-[var(--theme-text-secondary)] text-sm">Daily Revenue</div>
+      </div>
+    </div>
+    <div
+      class="card p-4 flex items-center space-x-3 rounded-lg transition-all duration-300 hover:shadow-[0_4px_20px_var(--theme-shadow-color)] hover:-translate-y-1">
+      <div class="bg-[var(--theme-tertiary-accent-light)] text-[var(--theme-tertiary-accent-primary)] p-3 rounded-full">
+        <i class="pi pi-box text-xl"></i>
+      </div>
+      <div>
+        <div class="text-xl font-bold text-[var(--theme-text-primary)]">{{ totalInventoryValueData?.totalValue |
+          number:'1.2-2' }}</div>
+        <div class="text-[var(--theme-text-secondary)] text-sm">Inventory Total Value</div>
+      </div>
+    </div>
+    <div
+      class="card p-4 flex items-center space-x-3 rounded-lg transition-all duration-300 hover:shadow-[0_4px_20px_var(--theme-shadow-color)] hover:-translate-y-1">
+      <div class="bg-[var(--theme-tertiary-accent-light)] text-[var(--theme-tertiary-accent-primary)] p-3 rounded-full">
+        <i class="pi pi-box text-xl"></i>
+      </div>
+      <div>
+        <div class="text-xl font-bold text-[var(--theme-text-primary)]">{{ totalInventoryValueData?.totalItemsInStock ||
+          0 }}</div>
+        <div class="text-[var(--theme-text-secondary)] text-sm">Inventory Total Stocks</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Charts Section -->
+  <div class="grid gap-4 mb-8">
+    <div
+      class="card p-4 sm:p-6 rounded-xl transition-all duration-300 hover:shadow-[0_4px_20px_var(--theme-shadow-color)]">
+      <h3 class="text-lg font-semibold text-[var(--theme-text-heading)] mb-3">Yearly Sales Chart</h3>
+      <app-dashboard-chart-component></app-dashboard-chart-component>
+    </div>
+    <div
+      class="card p-4 sm:p-6 rounded-sm transition-all duration-300 hover:shadow-[0_4px_20px_var(--theme-shadow-color)]">
+      <h3 class="text-lg font-semibold text-[var(--theme-text-heading)] mb-3">Combo Chart</h3>
+      <app-dashboard-chart-combo></app-dashboard-chart-combo>
+    </div>
+    <div class="card p-6 rounded-xl transition-all duration-300 hover:shadow-[0_4px_20px_var(--theme-shadow-color)]">
+      <h3 class="text-lg font-semibold text-[var(--theme-text-heading)] mb-4">Summary</h3>
+      <app-dashboard-summary [params]="getDateParam"></app-dashboard-summary>
+    </div>
+    <div class="card p-6 rounded-xl transition-all duration-300 hover:shadow-[0_4px_20px_var(--theme-shadow-color)]">
+      <h3 class="text-lg font-semibold text-[var(--theme-text-heading)] mb-4">Top Customers</h3>
+      <app-dashboard-top-customer-view [params]="getDateParam"></app-dashboard-top-customer-view>
+    </div>
+  </div>
+
+  <!-- Sales Trend and Quick Links -->
+  <div class="grid grid-cols-1 lg:grid-cols-3 gap-4 mb-8">
+    <div class="lg:col-span-2 flex flex-col gap-4">
+      <div class="card p-6 rounded-xl transition-all duration-300 hover:shadow-[0_4px_20px_var(--theme-shadow-color)]">
+        <h3 class="text-lg font-semibold text-[var(--theme-text-heading)] mb-4">Sales Trend</h3>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+          <div
+            class="gradient-card p-4 rounded-lg transition-all duration-200 hover:-translate-y-1 hover:shadow-[0_4px_10px_var(--theme-shadow-color)]">
+            <div class="flex items-center justify-between mb-2">
+              <i class="pi pi-box text-2xl text-[var(--theme-accent-primary)]"></i>
+              <i class="pi pi-ellipsis-h text-xl text-[var(--theme-text-secondary)]"></i>
+            </div>
+            <div class="text-2xl font-bold text-[var(--theme-text-primary)]">$11,250</div>
+            <div class="text-sm text-[var(--theme-text-secondary)]">Royal Package Opportunity</div>
+            <div class="flex items-center mt-3 space-x-2 text-xs text-[var(--theme-text-secondary)]">
+              <i class="pi pi-user-circle"></i><span>David J.</span>
+            </div>
+          </div>
+          <div
+            class="gradient-card p-4 rounded-lg transition-all duration-200 hover:-translate-y-1 hover:shadow-[0_4px_10px_var(--theme-shadow-color)]">
+            <div class="flex items-center justify-between mb-2">
+              <i class="pi pi-briefcase text-2xl text-[var(--theme-accent-primary)]"></i>
+              <i class="pi pi-ellipsis-h text-xl text-[var(--theme-text-secondary)]"></i>
+            </div>
+            <div class="text-2xl font-bold text-[var(--theme-text-primary)]">$21,300</div>
+            <div class="text-sm text-[var(--theme-text-secondary)]">Front Deal Business Services</div>
+            <div class="flex items-center mt-3 space-x-2 text-xs text-[var(--theme-text-secondary)]">
+              <i class="pi pi-user-circle"></i><span>Emily C.</span>
+            </div>
+          </div>
+          <div
+            class="gradient-card p-4 rounded-lg transition-all duration-200 hover:-translate-y-1 hover:shadow-[0_4px_10px_var(--theme-shadow-color)]">
+            <div class="flex items-center justify-between mb-2">
+              <i class="pi pi-check-circle text-2xl text-[var(--theme-success-primary)]"></i>
+              <i class="pi pi-ellipsis-h text-xl text-[var(--theme-text-secondary)]"></i>
+            </div>
+            <div class="text-2xl font-bold text-[var(--theme-text-primary)]">$2,100</div>
+            <div class="text-sm text-[var(--theme-text-secondary)]">Absolute Success Deal CRM Service</div>
+            <div class="flex items-center mt-3 space-x-2 text-xs text-[var(--theme-text-secondary)]">
+              <i class="pi pi-user-circle"></i><span>OVA'S</span>
+            </div>
+          </div>
+          <div
+            class="gradient-card p-4 rounded-lg transition-all duration-200 hover:-translate-y-1 hover:shadow-[0_4px_10px_var(--theme-shadow-color)]">
+            <div class="flex items-center justify-between mb-2">
+              <i class="pi pi-dollar text-2xl text-[var(--theme-secondary-accent-primary)]"></i>
+              <i class="pi pi-ellipsis-h text-xl text-[var(--theme-text-secondary)]"></i>
+            </div>
+            <div class="text-2xl font-bold text-[var(--theme-text-primary)]">$4,160</div>
+            <div class="text-sm text-[var(--theme-text-secondary)]">Royal Package Opportunity</div>
+            <div class="flex items-center mt-3 space-x-2 text-xs text-[var(--theme-text-secondary)]">
+              <i class="pi pi-user-circle"></i><span>Jim P.</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Quick Links -->
+    <div class="card p-6 rounded-xl transition-all duration-300 hover:shadow-[0_4px_20px_var(--theme-shadow-color)]">
+      <h3 class="text-lg font-semibold text-[var(--theme-text-heading)] mb-4">Quick Links</h3>
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+        <div
+          class="gradient-card p-4 rounded-md h-32 flex items-center justify-center transition-all duration-200 hover:bg-[var(--theme-hover-bg)] hover:shadow-[0_4px_10px_var(--theme-shadow-color)]">
+          <div class="p-4 rounded-lg cursor-pointer w-full h-full flex flex-col items-center justify-center"
+            (click)="showcustomerGrid=true">
+            <i class="pi pi-users text-2xl text-[var(--theme-accent-primary)] mb-2"></i>
+            <span class="text-sm font-semibold text-[var(--theme-text-primary)]">View Customers</span>
+          </div>
+        </div>
+        <div
+          class="gradient-card p-4 rounded-md h-32 flex items-center justify-center transition-all duration-200 hover:bg-[var(--theme-hover-bg)] hover:shadow-[0_4px_10px_var(--theme-shadow-color)]">
+          <div class="p-4 rounded-lg cursor-pointer w-full h-full flex flex-col items-center justify-center"
+            (click)="showproductGrid=true">
+            <i class="pi pi-mobile text-2xl text-[var(--theme-accent-primary)] mb-2"></i>
+            <span class="text-sm font-semibold text-[var(--theme-text-primary)]">View Products</span>
+          </div>
+        </div>
+        <div
+          class="gradient-card p-4 rounded-md h-32 flex items-center justify-center transition-all duration-200 hover:bg-[var(--theme-hover-bg)] hover:shadow-[0_4px_10px_var(--theme-shadow-color)]">
+          <div class="p-4 rounded-lg cursor-pointer w-full h-full flex flex-col items-center justify-center"
+            (click)="showInvoiceGrid=true">
+            <i class="pi pi-pen-to-square text-2xl text-[var(--theme-accent-primary)] mb-2"></i>
+            <span class="text-sm font-semibold text-[var(--theme-text-primary)]">View Invoices</span>
+          </div>
+        </div>
+        <div
+          class="gradient-card p-4 rounded-md h-32 flex items-center justify-center transition-all duration-200 hover:bg-[var(--theme-hover-bg)] hover:shadow-[0_4px_10px_var(--theme-shadow-color)]">
+          <div class="p-4 rounded-lg cursor-pointer w-full h-full flex flex-col items-center justify-center"
+            (click)="showPaymentGrid=true">
+            <i class="pi pi-money-bill text-2xl text-[var(--theme-accent-primary)] mb-2"></i>
+            <span class="text-sm font-semibold text-[var(--theme-text-primary)]">View Payments</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PrimeNG Dialogs -->
+  <p-dialog header="Customers" [(visible)]="showcustomerGrid" [modal]="true"
+    [style]="{ width: '90vw', maxWidth: '1200px' }"
+    class="bg-[var(--theme-dialog-bg)] text-[var(--theme-text-primary)] rounded-xl">
+    <app-customer-list></app-customer-list>
+  </p-dialog>
+  <p-dialog header="Products" [(visible)]="showproductGrid" [modal]="true"
+    [style]="{ width: '90vw', maxWidth: '1200px' }"
+    class="bg-[var(--theme-dialog-bg)] text-[var(--theme-text-primary)] rounded-xl">
+    <app-product-list></app-product-list>
+  </p-dialog>
+  <p-dialog header="Invoices" [(visible)]="showInvoiceGrid" [modal]="true"
+    [style]="{ width: '80vw', maxWidth: '1200px' }"
+    class="bg-[var(--theme-dialog-bg)] text-[var(--theme-text-primary)] rounded-xl">
+    <app-invoice-view></app-invoice-view>
+  </p-dialog>
+  <p-dialog header="Payments" [(visible)]="showPaymentGrid" [modal]="true"
+    [style]="{ width: '90vw', maxWidth: '1200px' }"
+    class="bg-[var(--theme-dialog-bg)] text-[var(--theme-text-primary)] rounded-xl">
+    <app-payment-list></app-payment-list>
+  </p-dialog>
+  <p-dialog header="Invoice" [(visible)]="showpdf" [modal]="true" [style]="{ width: '90vw', maxWidth: '1200px' }"
+    class="bg-[var(--theme-dialog-bg)] text-[var(--theme-text-primary)] rounded-xl">
+    <app-invoice-print [Id]="dashboard.invoiceId"></app-invoice-print>
+  </p-dialog>
+</div>
+<!-- <div class="dashboard-main-container p-4 pt-1 md:p-6 bg-gray-900 text-gray-100">
   <div
     class="soft-card p-4 mb-6 bg-gray-800 rounded-2xl shadow-lg transition-all duration-300 hover:shadow-[0_0_15px_rgba(13,148,136,0.5)]">
     <div class="flex flex-wrap items-end -mx-2">
@@ -221,4 +459,4 @@
     class="bg-gray-800 text-gray-100">
     <app-invoice-print [Id]="dashboard.invoiceId"></app-invoice-print>
   </p-dialog>
-</div>
+</div> -->

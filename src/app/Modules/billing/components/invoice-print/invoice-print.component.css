@@ -1,21 +1,49 @@
-/* @import "tailwindcss"; */
- @layer components {
-    .invoice-container {
-      /* @apply bg-white p-6 rounded-md shadow-md; */
-    }
-  
-    .download-button {
-      /* @apply text-center mt-4; */
-    }
+.invoice-container {
+  max-width: 800px;
+  margin: 0 auto;
+  font-family: Arial, sans-serif;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th,
+td {
+  padding: 8px;
+  text-align: left;
+  border: 1px solid #e5e7eb;
+}
+
+thead {
+  background-color: #f9fafb;
+}
+
+tfoot {
+  font-weight: 600;
+}
+
+.spinner {
+  border: 2px solid #f3f3f3;
+  border-top: 2px solid #3498db;
+  border-radius: 50%;
+  width: 16px;
+  height: 16px;
+  animation: spin 1s linear infinite;
+  vertical-align: middle;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
   }
-  
-  @media print {
-    .download-button {
-      /* @apply hidden; */
-    }
-  
-    .invoice-container {
-      /* @apply shadow-none border-none p-0 m-0 w-full; */
-    }
-  } 
-  
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.download-button button:disabled {
+  background-color: #cccccc;
+  cursor: not-allowed;
+}

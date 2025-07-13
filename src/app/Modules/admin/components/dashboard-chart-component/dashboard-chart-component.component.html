@@ -1,76 +1,89 @@
-<div class="bg-white p-6 rounded-2xl shadow-lg flex flex-col gap-6">
+<div class="card p-6 rounded-xl flex flex-col gap-6 transition-all duration-300 hover:shadow-[0_4px_20px_var(--theme-shadow-color)]"
+  style="background: linear-gradient(to bottom, var(--theme-bg-secondary), color-mix(in srgb, var(--theme-bg-secondary) 80%, white));">
   <div class="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
     <div class="flex flex-col gap-4 md:flex-row md:items-center md:gap-4 w-full md:w-auto">
-      <h3 class="text-lg font-semibold text-gray-800">📅 Select Year</h3>
+      <h3 class="text-lg font-semibold text-[var(--theme-text-heading)]">
+        <i class="pi pi-calendar mr-2"></i>Select Year
+      </h3>
       <input pInputText [(ngModel)]="yearInput" placeholder="Enter year (e.g., 2025)"
-        class="p-inputtext w-full md:w-48 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:outline-none transition-all duration-200" />
+        class="p-inputtext w-full md:w-48 px-3 py-2 rounded-md border bg-[var(--theme-bg-tertiary)] text-[var(--theme-text-primary)] focus:border-[var(--theme-accent-primary)] focus:ring-[var(--theme-accent-focus-ring)] transition-all duration-200" />
       <button pButton type="button" label="Fetch" icon="pi pi-refresh" (click)="getSalesDataForChartsYearly()"
-        class="p-button p-button-primary h-10 px-4 bg-gradient-to-r from-teal-500 to-teal-300 text-gray-900 hover:from-teal-300 hover:to-teal-500 hover:shadow-[0_0_10px_rgba(20,184,166,0.5)] transition-all duration-200">
+        class="p-button h-10 px-4 bg-[var(--theme-button-bg-primary)] text-[var(--theme-button-text-primary-btn)] hover:bg-[var(--theme-button-hover-bg-primary)] rounded-md transition-all duration-200">
       </button>
     </div>
     <div class="flex flex-wrap gap-3 items-center">
-      <!-- Bar Chart -->
+      <!-- Bar Chart Button -->
       <button pButton type="button" (click)="onToggleView('bar')"
-        class="flex items-center gap-2 h-10 px-4 rounded-lg shadow-sm transition-all" [ngClass]="{
-      'bg-gradient-to-r from-teal-500 to-teal-300 text-white font-semibold': chartView === 'bar',
-      'bg-white border border-gray-300 text-gray-700 hover:bg-gray-100': chartView !== 'bar'}">
+        class="flex items-center gap-2 h-10 px-4 rounded-md shadow-sm transition-all"
+        [ngClass]="{
+          'bg-[var(--theme-accent-primary)] text-[var(--theme-text-inverted)] font-semibold': chartView === 'bar',
+          'bg-[var(--theme-bg-secondary)] border border-[var(--theme-border-secondary)] text-[var(--theme-text-primary)] hover:bg-[var(--theme-hover-bg)]': chartView !== 'bar'
+        }">
         <i class="pi pi-chart-bar"></i>
         <span>Bar Chart</span>
       </button>
 
-      <!-- Line Chart -->
+      <!-- Line Chart Button -->
       <button pButton type="button" (click)="onToggleView('line')"
-        class="flex items-center gap-2 h-10 px-4 rounded-lg shadow-sm transition-all" [ngClass]="{
-      'bg-gradient-to-r from-blue-500 to-blue-300 text-white font-semibold': chartView === 'line',
-      'bg-white border border-gray-300 text-gray-700 hover:bg-gray-100': chartView !== 'line'}">
+        class="flex items-center gap-2 h-10 px-4 rounded-md shadow-sm transition-all"
+        [ngClass]="{
+          'bg-[var(--theme-brand-primary)] text-[var(--theme-text-inverted)] font-semibold': chartView === 'line',
+          'bg-[var(--theme-bg-secondary)] border border-[var(--theme-border-secondary)] text-[var(--theme-text-primary)] hover:bg-[var(--theme-hover-bg)]': chartView !== 'line'
+        }">
         <i class="pi pi-chart-line"></i>
         <span>Line Chart</span>
       </button>
 
-      <!-- Both Charts -->
+      <!-- Both Charts Button -->
       <button pButton type="button" (click)="onToggleView('both')"
-        class="flex items-center gap-2 h-10 px-4 rounded-lg shadow-sm transition-all" [ngClass]="{
-      'bg-gradient-to-r from-purple-500 to-pink-400 text-white font-semibold': chartView === 'both',
-      'bg-white border border-gray-300 text-gray-700 hover:bg-gray-100': chartView !== 'both'}">
+        class="flex items-center gap-2 h-10 px-4 rounded-md shadow-sm transition-all"
+        [ngClass]="{
+          'bg-[var(--theme-tertiary-accent-primary)] text-[var(--theme-text-inverted)] font-semibold': chartView === 'both',
+          'bg-[var(--theme-bg-secondary)] border border-[var(--theme-border-secondary)] text-[var(--theme-text-primary)] hover:bg-[var(--theme-hover-bg)]': chartView !== 'both'
+        }">
         <i class="pi pi-chart-pie"></i>
         <span>Both</span>
       </button>
     </div>
 
+    <!-- Commented Button Section (Styled) -->
     <!-- <div class="flex flex-wrap gap-2">
       <button pButton type="button" label="Bar Chart" icon="pi pi-chart-bar" (click)="onToggleView('bar')"
-        class="p-button h-10 px-4"
-        [ngClass]="{'p-button-primary bg-gradient-to-r from-teal-500 to-teal-300 text-gray-900': chartView === 'bar', 'p-button-outlined': chartView !== 'bar'}">
-        <i class="pi pi-check" style="color: slateblue"></i>
+        class="p-button h-10 px-4 bg-[var(--theme-accent-primary)] text-[var(--theme-text-inverted)]"
+        [ngClass]="{'bg-[var(--theme-accent-primary)] text-[var(--theme-text-inverted)]': chartView === 'bar', 'bg-[var(--theme-bg-secondary)] border border-[var(--theme-border-secondary)] text-[var(--theme-text-primary)] hover:bg-[var(--theme-hover-bg)]': chartView !== 'bar'}">
+        <i class="pi pi-check text-[var(--theme-brand-primary)]"></i>
       </button>
-      <button pButton type="button" label="Line Chart" icon="pi pi-chart-line" (click)="onToggleView('line')"
-        class="p-button h-10 px-4"
-        [ngClass]="{'p-button-primary bg-gradient-to-r from-teal-500 to-teal-300 text-gray-900': chartView === 'line', 'p-button-outlined': chartView !== 'line'}">
-        <i class="pi pi-check" style="color: slateblue"></i>
+      <button pButton type="button" label="Bar Chart" icon="pi pi-chart-bar" (click)="onToggleView('line')"
+        class="p-button h-10 px-4 bg-[var(--theme-brand-primary)] text-[var(--theme-text-inverted)]"
+        [ngClass]="{'bg-[var(--theme-brand-primary)] text-[var(--theme-text-inverted)]': chartView === 'line', 'bg-[var(--theme-bg-secondary)] border border-[var(--theme-border-secondary)] text-[var(--theme-text-primary)] hover:bg-[var(--theme-hover-bg)]': chartView !== 'line'}">
+        <i class="pi pi-check text-[var(--theme-brand-primary)]"></i>
       </button>
       <button pButton type="button" label="Both" icon="pi pi-chart-bar" (click)="onToggleView('both')"
-        class="p-button h-10 px-4"
-        [ngClass]="{'p-button-primary bg-gradient-to-r from-teal-500 to-teal-300 text-gray-900': chartView === 'both', 'p-button-outlined': chartView !== 'both'}">
-        <i class="pi pi-check" style="color: slateblue"></i>
+        class="p-button h-10 px-4 bg-[var(--theme-tertiary-accent-primary)] text-[var(--theme-text-inverted)]"
+        [ngClass]="{'bg-[var(--theme-tertiary-accent-primary)] text-[var(--theme-text-inverted)]': chartView === 'both', 'bg-[var(--theme-bg-secondary)] border border-[var(--theme-border-secondary)] text-[var(--theme-text-primary)] hover:bg-[var(--theme-hover-bg)]': chartView !== 'both'}">
+        <i class="pi pi-check text-[var(--theme-brand-primary)]"></i>
       </button>
     </div> -->
   </div>
 
   <!-- Chart Display -->
   <div class="chart-container">
-    <p-skeleton width="100%" height="400px" *ngIf="isLoading"></p-skeleton>
+    <p-skeleton width="100%" height="400px" *ngIf="isLoading" styleClass="rounded-xl bg-[var(--theme-bg-tertiary)]"></p-skeleton>
     <div *ngIf="!isLoading" class="grid gap-4"
       [ngClass]="{'grid-cols-1': chartView !== 'both', 'grid-cols-1 lg:grid-cols-2': chartView === 'both'}">
       <div *ngIf="chartView === 'bar' || chartView === 'both'"
-        class="chart-card p-4 bg-gray-50 rounded-lg shadow-sm transition-all duration-300 hover:shadow-[0_0_10px_rgba(20,184,166,0.3)]">
-        <h4 class="text-md font-medium text-gray-700 mb-3">Bar Chart - Yearly Sales</h4>
+        class="card p-4 rounded-lg transition-all duration-300 hover:shadow-[0_4px_20px_var(--theme-shadow-color)]">
+        <h4 class="text-md font-medium text-[var(--theme-text-heading)] mb-3">
+          <i class="pi pi-chart-bar mr-2"></i>Bar Chart - Yearly Sales
+        </h4>
         <p-chart type="bar" [data]="chartDataBar" [options]="chartOptionsBar" [style]="{'height': '350px'}"></p-chart>
       </div>
       <div *ngIf="chartView === 'line' || chartView === 'both'"
-        class="chart-card p-4 bg-gray-50 rounded-lg shadow-sm transition-all duration-300 hover:shadow-[0_0_10px_rgba(20,184,166,0.3)]">
-        <h4 class="text-md font-medium text-gray-700 mb-3">Line Chart - Yearly Sales</h4>
-        <p-chart type="line" [data]="chartDataLine" [options]="chartOptionsLine"
-          [style]="{'height': '350px'}"></p-chart>
+        class="card p-4 rounded-lg transition-all duration-300 hover:shadow-[0_4px_20px_var(--theme-shadow-color)]">
+        <h4 class="text-md font-medium text-[var(--theme-text-heading)] mb-3">
+          <i class="pi pi-chart-line mr-2"></i>Line Chart - Yearly Sales
+        </h4>
+        <p-chart type="line" [data]="chartDataLine" [options]="chartOptionsLine" [style]="{'height': '350px'}"></p-chart>
       </div>
     </div>
   </div>

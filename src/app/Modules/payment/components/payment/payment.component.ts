@@ -106,6 +106,33 @@ export class PaymentComponent {
       this.fetchCustomerData()
     })
   }
+
+
+    onDetailBoxHover(event: MouseEvent, isHovering: boolean) {
+    const element = event.currentTarget as HTMLElement; // Use currentTarget for event delegation
+
+    if (isHovering) {
+      // Apply hover styles
+      element.style.boxShadow = '0 10px 40px 0 rgba(13, 148, 136, 0.3)'; // Example: a subtle teal shadow
+      // You might also want to change background color slightly, e.g.:
+      // element.style.backgroundColor = 'var(--theme-hover-bg)';
+    } else {
+      // Revert to default styles
+      element.style.boxShadow = '0 1px 3px 0 var(--theme-shadow-color), 0 1px 2px -1px var(--theme-shadow-color)'; // Revert to default shadow from styles.css .card
+      // element.style.backgroundColor = 'var(--theme-bg-tertiary)'; // Revert background
+    }
+  }
+
+  onProcessPaymentButtonHover(event: MouseEvent, isHovering: boolean) {
+    const button = event.currentTarget as HTMLElement;
+
+    if (isHovering) {
+      button.style.background = 'var(--theme-button-hover-bg-primary)'; // Use the hover background variable
+    } else {
+      button.style.background = 'var(--theme-button-bg-primary)'; 
+    }
+  }
+
 }
 
 

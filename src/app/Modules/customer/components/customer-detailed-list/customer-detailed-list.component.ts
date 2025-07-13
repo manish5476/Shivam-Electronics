@@ -26,13 +26,15 @@ import { AutopopulateService } from '../../../../core/services/autopopulate.serv
 // import { Tooltip } from 'primeng/tooltip';
 @Component({
   selector: 'app-customer-detailed-list',
-  imports: [TableModule,TabViewModule, CheckboxModule,FieldsetModule, AvatarModule, AccordionModule, SelectModule, PanelModule, DialogModule, FormsModule, Tag, ToastModule, CardModule, ButtonModule, CommonModule],
+  imports: [TableModule, TabViewModule, CheckboxModule, FieldsetModule, AvatarModule, AccordionModule, SelectModule, PanelModule, DialogModule, FormsModule, Tag, ToastModule, CardModule, ButtonModule, CommonModule],
   templateUrl: './customer-detailed-list.component.html',
   styleUrl: './customer-detailed-list.component.css'
 })
 export class CustomerDetailedListComponent {
   isLoading: boolean = true; // Add a loading flag
   customer: any;
+  activeTab: 'phone' | 'address' = 'phone'; // Default to 'phone' tab
+
   customerItems: any[] = [];
   paymentHistory: any[] = [];
   customerId: string = '';
@@ -45,10 +47,10 @@ export class CustomerDetailedListComponent {
   dynamicComponent: any;
 
 
-  constructor(private CustomerService: CustomerService, 
-              private autoPopulate: AutopopulateService,
-              private cdr: ChangeDetectorRef,
-              private loadingService:LoadingService) { }
+  constructor(private CustomerService: CustomerService,
+    private autoPopulate: AutopopulateService,
+    private cdr: ChangeDetectorRef,
+    private loadingService: LoadingService) { }
 
 
   ngOnInit(): void {
@@ -119,25 +121,25 @@ export class CustomerDetailedListComponent {
     // this.autoPopulate.getModuleData('sellers').subscribe((data:any) => {
     //   this.sellersDrop = data;
     // });
-    this.autoPopulate.getModuleData('customers').subscribe((data:any) => {
+    this.autoPopulate.getModuleData('customers').subscribe((data: any) => {
       this.customerIDDropdown = data;
     });
   }
 
   getCustomerDetail(): void {
     this.loadingService.show(); // Hide the loader on success
-    
+
     this.CustomerService.getCustomerDataWithId(this.customerId).subscribe((res: any) => {
-        this.customer = res.data;
-        this.customerItems = this.customer.cart?.items || [];
-        this.paymentHistory = this.customer.paymentHistory || [];
-        this.cdr.markForCheck();
-        this.loadingService.hide(); // Hide the loader on success
-      }, (error) => {
-        console.error('Error fetching customer data:', error);
-        this.isLoading = false; // Set loading to false on error
+      this.customer = res.data;
+      this.customerItems = this.customer.cart?.items || [];
+      this.paymentHistory = this.customer.paymentHistory || [];
+      this.cdr.markForCheck();
+      this.loadingService.hide(); // Hide the loader on success
+    }, (error) => {
+      console.error('Error fetching customer data:', error);
+      this.isLoading = false; // Set loading to false on error
     });
-}
+  }
 
   // getCustomerDetail(): void {
   //   this.CustomerService.getCustomerDataWithId(this.customerId).subscribe((res: any) => {
