@@ -1,130 +1,143 @@
-<div class="dashboard-container">
+<div class="dashboard-container p-4 space-y-4" style="background: linear-gradient(to bottom, var(--theme-body-gradient-start), var(--theme-body-gradient-end));">
+  <!-- Metrics Cards -->
   <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-    <div class="soft-card p-4 flex items-center space-x-3">
-      <div class="bg-blue-100 text-blue-600 p-3 rounded-full"><i class="pi pi-indian-rupee"></i></div>
+    <div class="card p-4 flex items-center space-x-3 rounded-xl transition-all duration-300 hover:shadow-[0_4px_20px_var(--theme-shadow-color)] hover:-translate-y-1">
+      <div class="bg-[var(--theme-brand-primary-light)] text-[var(--theme-brand-primary)] p-3 rounded-full">
+        <i class="pi pi-indian-rupee text-xl"></i>
+      </div>
       <div>
-        <div class="text-xl font-bold text-gray-800">{{ dashboardSummary?.sales?.totalRevenue}}</div>
-        <div class="text-gray-600 text-sm">Total Earning</div>
+        <div class="text-xl font-bold text-[var(--theme-text-primary)]">{{ dashboardSummary?.sales?.totalRevenue || 0 }}</div>
+        <div class="text-[var(--theme-text-secondary)] text-sm">Total Earning</div>
       </div>
     </div>
-    <div class="soft-card p-4 flex items-center space-x-3">
-      <div class="bg-purple-100 text-purple-600 p-3 rounded-full"><i class="pi pi-chart-line"></i></div>
+    <div class="card p-4 flex items-center space-x-3 rounded-xl transition-all duration-300 hover:shadow-[0_4px_20px_var(--theme-shadow-color)] hover:-translate-y-1">
+      <div class="bg-[var(--theme-tertiary-accent-light)] text-[var(--theme-tertiary-accent-primary)] p-3 rounded-full">
+        <i class="pi pi-chart-line text-xl"></i>
+      </div>
       <div>
-        <div class="text-xl font-bold text-gray-800">{{dashboardSummary?.sales?.numberOfSales || 0 }}</div>
-        <div class="text-gray-600 text-sm">Number of Sales</div>
+        <div class="text-xl font-bold text-[var(--theme-text-primary)]">{{ dashboardSummary?.sales?.numberOfSales || 0 }}</div>
+        <div class="text-[var(--theme-text-secondary)] text-sm">Number of Sales</div>
       </div>
     </div>
-    <div class="soft-card p-4 flex items-center space-x-3">
-      <div class="bg-indigo-100 text-indigo-600 p-3 rounded-full"><i class="pi pi-envelope"></i></div>
+    <div class="card p-4 flex items-center space-x-3 rounded-xl transition-all duration-300 hover:shadow-[0_4px_20px_var(--theme-shadow-color)] hover:-translate-y-1">
+      <div class="bg-[var(--theme-brand-primary-light)] text-[var(--theme-brand-primary)] p-3 rounded-full">
+        <i class="pi pi-envelope text-xl"></i>
+      </div>
       <div>
-        <div class="text-xl font-bold text-gray-800">{{ dashboardSummary?.sales?.averageOrderValue || 0 }}</div>
-        <div class="text-gray-600 text-sm">average Sale</div>
+        <div class="text-xl font-bold text-[var(--theme-text-primary)]">{{ dashboardSummary?.sales?.averageOrderValue || 0 }}</div>
+        <div class="text-[var(--theme-text-secondary)] text-sm">Average Sale</div>
       </div>
     </div>
-    <div class="soft-card p-4 flex items-center space-x-3">
-      <div class="bg-pink-100 text-pink-600 p-3 rounded-full"><i class="pi pi-star"></i></div>
+    <div class="card p-4 flex items-center space-x-3 rounded-xl transition-all duration-300 hover:shadow-[0_4px_20px_var(--theme-shadow-color)] hover:-translate-y-1">
+      <div class="bg-[var(--theme-secondary-accent-light)] text-[var(--theme-secondary-accent-primary)] p-3 rounded-full">
+        <i class="pi pi-star text-xl"></i>
+      </div>
       <div>
-        <div class="text-xl font-bold text-gray-800">{{ dashboardSummary?.payments?.totalReceived || 0}}</div>
-        <div class="text-gray-600 text-sm">Payment received</div>
+        <div class="text-xl font-bold text-[var(--theme-text-primary)]">{{ dashboardSummary?.payments?.totalReceived || 0 }}</div>
+        <div class="text-[var(--theme-text-secondary)] text-sm">Payment Received</div>
       </div>
     </div>
   </div>
 
+  <!-- Customer Carousel and Product List -->
   <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
-    <div class="soft-card p-6">
-      <div class="carousel-container pt-15">
+    <div class="card p-6 rounded-xl transition-all duration-300 hover:shadow-[0_4px_20px_var(--theme-shadow-color)]">
+      <div class="carousel-container pt-4">
+        <h3 class="text-lg font-semibold text-[var(--theme-text-heading)] mb-4">
+          <i class="pi pi-users mr-2"></i>Outstanding Payments
+        </h3>
         <p-carousel [value]="dashboardSummary?.customers?.outstandingPayments" [autoplayInterval]="9000"
           [responsiveOptions]="CommonMethodService.responsiveOptions" [numVisible]="1" [numScroll]="10"
           [circular]="false">
           <ng-template let-customer #item>
             <article
-              class="w-full max-w-xl mx-auto p-4 sm:p-6 rounded-2xl border border-gray-200 bg-white shadow-sm transition hover:shadow-md duration-300">
+              class="w-full max-w-xl mx-auto p-4 sm:p-6 rounded-xl border border-[var(--theme-border-primary)] bg-[var(--theme-bg-secondary)] shadow-sm transition hover:shadow-[0_4px_20px_var(--theme-shadow-color)] duration-300">
               <div class="flex items-center gap-4">
                 <img
                   [src]="customer.avatarUrl || 'https://www.primefaces.org/cdn/primeng/images/galleria/galleria1.jpg'"
-                  alt="Customer Avatar" class="w-16 h-16 rounded-full object-cover border-2 border-gray-300" />
-
+                  alt="Customer Avatar" class="w-16 h-16 rounded-full object-cover border-2 border-[var(--theme-border-secondary)]" />
                 <div>
-                  <h3 class="text-lg font-semibold text-gray-900">{{ customer.fullname }}</h3>
-                  <p class="text-sm text-gray-500 mt-1 flex items-center gap-1">
-                    <i class="pi pi-phone text-gray-400 text-xs"></i>
+                  <h3 class="text-lg font-semibold text-[var(--theme-text-primary)]">{{ customer.fullname }}</h3>
+                  <p class="text-sm text-[var(--theme-text-secondary)] mt-1 flex items-center gap-1">
+                    <i class="pi pi-phone text-[var(--theme-text-secondary)] text-xs"></i>
                     {{ customer.mobileNumber }}
                   </p>
-                  <p class="text-sm text-gray-500 mt-0.5 flex items-center gap-1">
-                    <i class="pi pi-envelope text-gray-400 text-xs"></i>
+                  <p class="text-sm text-[var(--theme-text-secondary)] mt-0.5 flex items-center gap-1">
+                    <i class="pi pi-envelope text-[var(--theme-text-secondary)] text-xs"></i>
                     {{ customer.email }}
                   </p>
                 </div>
                 <div class="grid grid-cols-2 gap-2">
-                  <div class="rounded-lg bg-gray-50 border border-gray-200 p-4">
-                    <p class="text-sm text-gray-500 mb-1">Outstanding Amount</p>
-                    <p class="text-2xl font-bold text-emerald-600">
+                  <div class="rounded-lg bg-[var(--theme-bg-tertiary)] border border-[var(--theme-border-secondary)] p-4">
+                    <p class="text-sm text-[var(--theme-text-secondary)] mb-1">Outstanding Amount</p>
+                    <p class="text-2xl font-bold text-[var(--theme-success-primary)]">
                       ₹{{ customer.remainingAmount | number: '1.2-2' }}
                     </p>
                   </div>
-                  <div class="rounded-lg bg-gray-50 border border-gray-200 p-4">
-                    <p class="text-sm text-gray-500 mb-1">Items Unpaid</p>
-                    <p class="text-2xl font-bold text-blue-600">{{ customer.cart.items.length }}</p>
+                  <div class="rounded-lg bg-[var(--theme-bg-tertiary)] border border-[var(--theme-border-secondary)] p-4">
+                    <p class="text-sm text-[var(--theme-text-secondary)] mb-1">Items Unpaid</p>
+                    <p class="text-2xl font-bold text-[var(--theme-brand-primary)]">{{ customer.cart.items.length }}</p>
                   </div>
                 </div>
               </div>
-              <hr class="my-5 border-gray-200" />
+              <hr class="my-5 border-[var(--theme-border-secondary)]" />
 
               <div>
-                <h4 class="text-sm font-semibold text-gray-800 mb-3">Outstanding Invoices</h4>
+                <h4 class="text-sm font-semibold text-[var(--theme-text-heading)] mb-3">Outstanding Invoices</h4>
                 <p-carousel [value]="getUniqueInvoices(customer.cart.items)" [numVisible]="1" [numScroll]="100"
                   [circular]="true" [autoplayInterval]="3000"
                   [responsiveOptions]="CommonMethodService.responsiveOptions"
                   *ngIf="getUniqueInvoices(customer.cart.items).length > 0">
                   <ng-template let-invoice #item>
                     <div
-                      class="rounded-xl border border-gray-200 bg-white shadow-sm p-5 text-sm text-gray-700 space-y-3">
-                      <div class="flex justify-between items-center border-b border-gray-100 pb-2">
-                        <p class="font-semibold text-gray-800 text-base">Invoice Details</p>
+                      class="rounded-xl border border-[var(--theme-border-primary)] bg-[var(--theme-bg-secondary)] shadow-sm p-5 text-sm text-[var(--theme-text-primary)] space-y-3">
+                      <div class="flex justify-between items-center border-b border-[var(--theme-border-secondary)] pb-2">
+                        <p class="font-semibold text-[var(--theme-text-primary)] text-base">Invoice Details</p>
                         <span class="px-2 py-0.5 text-xs font-medium rounded-full"
-                          [ngClass]="{ 'bg-green-100 text-green-700': invoice.status === 'Paid', 'bg-yellow-100 text-yellow-700': invoice.status === 'Pending', 'bg-red-100 text-red-700': invoice.status === 'Overdue' }">
+                          [ngClass]="{ 'bg-[var(--theme-success-light)] text-[var(--theme-success-primary)]': invoice.status === 'Paid', 'bg-[var(--theme-warning-light)] text-[var(--theme-warning-primary)]': invoice.status === 'Pending', 'bg-[var(--theme-error-light)] text-[var(--theme-error-primary)]': invoice.status === 'Overdue' }">
                           {{ invoice.status }}
                         </span>
                       </div>
 
-                      <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-2 text-gray-700">
+                      <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-2 text-[var(--theme-text-primary)]">
                         <div>
-                          <p class="text-xs text-gray-500 mb-0.5">Invoice Number</p>
+                          <p class="text-xs text-[var(--theme-text-secondary)] mb-0.5">Invoice Number</p>
                           <p class="font-medium">{{ invoice.invoiceNumber }}</p>
                         </div>
                         <div>
-                          <p class="text-xs text-gray-500 mb-0.5">Invoice Date</p>
+                          <p class="text-xs text-[var(--theme-text-secondary)] mb-0.5">Invoice Date</p>
                           <p class="font-medium">{{ invoice.invoiceDate | date: 'mediumDate' }}</p>
                         </div>
                         <div>
-                          <p class="text-xs text-gray-500 mb-0.5">Total Amount</p>
-                          <p class="font-semibold text-indigo-600">₹{{ invoice.totalAmount | number: '1.2-2' }}</p>
+                          <p class="text-xs text-[var(--theme-text-secondary)] mb-0.5">Total Amount</p>
+                          <p class="font-semibold text-[var(--theme-brand-primary)]">₹{{ invoice.totalAmount | number: '1.2-2' }}</p>
                         </div>
                         <div>
-                          <p class="text-xs text-gray-500 mb-0.5">Payment Status</p>
+                          <p class="text-xs text-[var(--theme-text-secondary)] mb-0.5">Payment Status</p>
                           <p class="font-medium">{{ invoice.status }}</p>
                         </div>
                       </div>
 
-                      <div class="pt-3 border-t border-gray-100 flex gap-3">
-                        <button class="p-button p-button-sm p-button-secondary text-sm">
+                      <div class="pt-3 border-t border-[var(--theme-border-secondary)] flex gap-3">
+                        <button class="p-button p-button-sm p-button-secondary text-sm bg-[var(--theme-button-outlined-border)] text-[var(--theme-button-outlined-text)] hover:bg-[var(--theme-button-outlined-hover-bg)] hover:text-[var(--theme-button-outlined-hover-text)]">
                           <i class="pi pi-file-pdf mr-1" (click)="showInvoicePdf(invoice.id)"></i> PDF
                         </button>
                       </div>
                     </div>
                   </ng-template>
                 </p-carousel>
-                <div *ngIf="getUniqueInvoices(customer.cart.items).length === 0" class="text-gray-400 text-sm mt-2">
+                <div *ngIf="getUniqueInvoices(customer.cart.items).length === 0" class="text-[var(--theme-text-secondary)] text-sm mt-2">
                   No outstanding invoices.
                 </div>
               </div>
 
-              <div class="flex gap-3 mt-5"> <button
-                  class="w-full py-2 px-4 rounded-lg bg-indigo-600 hover:bg-indigo-700 text-white font-medium transition">
+              <div class="flex gap-3 mt-5">
+                <button
+                  class="w-full py-2 px-4 rounded-lg bg-[var(--theme-brand-primary)] hover:bg-[var(--theme-brand-primary-hover)] text-[var(--theme-text-inverted)] font-medium transition">
                   <i class="pi pi-phone mr-2"></i> {{customer.mobileNumber}}
                 </button>
                 <button
-                  class="w-full py-2 px-4 rounded-lg border border-gray-300 text-gray-700 hover:border-gray-400 hover:text-black transition">
+                  class="w-full py-2 px-4 rounded-lg border border-[var(--theme-button-outlined-border)] text-[var(--theme-button-outlined-text)] hover:bg-[var(--theme-button-outlined-hover-bg)] hover:text-[var(--theme-button-outlined-hover-text)] transition">
                   <i class="pi pi-history mr-2"></i> View History
                 </button>
               </div>
@@ -135,38 +148,40 @@
     </div>
 
     <div class="flex flex-col gap-4">
-      <div class="soft-card p-6 overflow-y-auto no-scrollbar" style="height: 400px;">
-        <h3 class="text-lg font-semibold text-gray-800 mb-4">Product List</h3>
+      <div class="card p-6 overflow-y-auto no-scrollbar rounded-xl transition-all duration-300 hover:shadow-[0_4px_20px_var(--theme-shadow-color)]" style="height: 400px;">
+        <h3 class="text-lg font-semibold text-[var(--theme-text-heading)] mb-4">
+          <i class="pi pi-box mr-2"></i>Product List
+        </h3>
         <div class="grid grid-cols-1 sm:grid-cols-1 lg:grid-cols-1 gap-6">
           <ng-container *ngIf="hasProducts(); else noProductsMessage">
             <div *ngFor="let product of dashboardSummary?.products?.lowStock"
-              class="relative bg-slate-400 rounded-2xl border border-gray-200 shadow-sm p-6 transition-transform duration-200 hover:shadow-lg hover:-translate-y-1 overflow-hidden w-full max-w-md mx-auto">
+              class="relative gradient-card rounded-xl border border-[var(--theme-border-primary)] shadow-sm p-6 transition-transform duration-200 hover:shadow-[0_4px_20px_var(--theme-shadow-color)] hover:-translate-y-1 overflow-hidden w-full max-w-md mx-auto">
               <span
-                class="absolute inset-x-0 bottom-0 h-1 bg-gradient-to-r from-rose-400 via-purple-500 to-indigo-500"></span>
-              <div class="absolute top-4 right-4 text-xs font-semibold text-gray-600">
+                class="absolute inset-x-0 bottom-0 h-1 bg-gradient-to-r from-[var(--theme-accent-primary)] via-[var(--theme-secondary-accent-primary)] to-[var(--theme-brand-primary)]"></span>
+              <div class="absolute top-4 right-4 text-xs font-semibold text-[var(--theme-text-secondary)]">
                 SKU: {{ product.sku || 'N/A' }}
               </div>
               <div class="flex items-center gap-4 mb-4">
                 <img [alt]="product.title || 'Product Image'"
                   [src]="product.image || 'https://placehold.co/80x80/E5E7EB/4B5563?text=No+Image'"
-                  class="h-16 w-16 rounded-xl border border-gray-200 object-cover" />
+                  class="h-16 w-16 rounded-xl border border-[var(--theme-border-secondary)] object-cover" />
                 <div class="flex flex-col">
-                  <h2 class="text-base font-semibold text-gray-800 leading-tight line-clamp-2">
+                  <h2 class="text-base font-semibold text-[var(--theme-text-primary)] leading-tight line-clamp-2">
                     {{ product.title || 'N/A' }}
                   </h2>
-                  <p class="text-sm text-gray-500 mt-1">Brand:
-                    <span class="font-medium text-gray-700">{{ product.brand || 'N/A' }}</span>
+                  <p class="text-sm text-[var(--theme-text-secondary)] mt-1">Brand:
+                    <span class="font-medium text-[var(--theme-text-primary)]">{{ product.brand || 'N/A' }}</span>
                   </p>
                 </div>
               </div>
               <div class="grid grid-cols-2 gap-4 text-sm mt-4">
                 <div>
-                  <p class="text-gray-500">Price</p>
-                  <p class="text-xl font-bold text-blue-600">{{ CommonMethodService.formatCurrency(product.rate) }}</p>
+                  <p class="text-[var(--theme-text-secondary)]">Price</p>
+                  <p class="text-xl font-bold text-[var(--theme-brand-primary)]">{{ CommonMethodService.formatCurrency(product.rate) }}</p>
                 </div>
                 <div>
-                  <p class="text-gray-500">Stock</p>
-                  <p [ngClass]="{ 'text-red-600': product.stock <= 5, 'text-orange-500': product.stock > 5 && product.stock <= 10, 'text-green-600': product.stock > 10 }"
+                  <p class="text-[var(--theme-text-secondary)]">Stock</p>
+                  <p [ngClass]="{ 'text-[var(--theme-error-primary)]': product.stock <= 5, 'text-[var(--theme-warning-primary)]': product.stock > 5 && product.stock <= 10, 'text-[var(--theme-success-primary)]': product.stock > 10 }"
                     class="text-xl font-bold">
                     {{ product.stock !== undefined ? product.stock : 'N/A' }} units
                   </p>
@@ -176,100 +191,72 @@
           </ng-container>
 
           <ng-template #noProductsMessage>
-            <p class="text-center text-gray-500">No products available.</p>
+            <p class="text-center text-[var(--theme-text-secondary)]">No products available.</p>
           </ng-template>
         </div>
       </div>
 
-      <div class="soft-card p-6">
-        <div class="flex items-center justify-between mb-4">
-          <!-- <h3 class="text-lg font-semibold text-gray-800">Detailed Information</h3> -->
-          <div class="flex items-center space-x-2 text-gray-600">
-            <i class="fa fa-expand-alt cursor-pointer"></i> <i class="fa fa-ellipsis-h cursor-pointer"></i>
-          </div>
-          <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
-            <div class="bg-gray-100 rounded-md p-2 h-28 flex items-center justify-center text-gray-700">
-              <div (click)="showcustomerGrid=true" class="soft-card p-3 rounded-lg cursor-pointer
-                            hover:bg-gray-50 transition w-full h-full flex flex-col items-center justify-center
-                            gradient-border-card">
-                <i class="pi pi-users text-2xl text-blue-600 mb-1"></i>
-                <span class="text-sm font-semibold text-gray-800">View Customers</span>
-              </div>
-            </div>
-
-            <div class="bg-gray-100 rounded-md p-2 h-28 flex items-center justify-center text-gray-700">
-              <div (click)="showproductGrid=true" class="soft-card p-3 rounded-lg cursor-pointer
-                            hover:bg-gray-50 transition w-full h-full flex flex-col items-center justify-center
-                            gradient-border-card">
-                <i class="pi pi-mobile text-2xl text-green-600 mb-1"></i>
-                <span class="text-sm font-semibold text-gray-800">View Products</span>
-              </div>
-            </div>
-
-            <div class="bg-gray-100 rounded-md p-2 h-28 flex items-center justify-center text-gray-700">
-              <div (click)="showInvoiceGrid=true" class="soft-card p-3 rounded-lg cursor-pointer
-                            hover:bg-gray-50 transition w-full h-full flex flex-col items-center justify-center
-                            gradient-border-card">
-                <i class="pi pi-pen-to-square text-2xl text-yellow-600 mb-1"></i>
-                <span class="text-sm font-semibold text-gray-800">View Invoices</span>
-              </div>
-            </div>
-
-            <div class="bg-gray-100 rounded-md p-2 h-28 flex items-center justify-center text-gray-700">
-              <div (click)="showPaymentGrid=true" class="soft-card p-3 rounded-lg cursor-pointer
-                            hover:bg-gray-50 transition w-full h-full flex flex-col items-center justify-center
-                            gradient-border-card">
-                <i class="pi pi-money-bill text-2xl text-red-600 mb-1"></i>
-                <span class="text-sm font-semibold text-gray-800">View Payments</span>
-              </div>
+      <div class="card p-6 rounded-xl transition-all duration-300 hover:shadow-[0_4px_20px_var(--theme-shadow-color)]">
+        <h3 class="text-lg font-semibold text-[var(--theme-text-heading)] mb-4">
+          <i class="pi pi-info-circle mr-2"></i>Detailed Information
+        </h3>
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
+          <div class="gradient-card rounded-md p-2 h-28 flex items-center justify-center text-[var(--theme-text-primary)]">
+            <div (click)="showcustomerGrid=true" class="p-3 rounded-lg cursor-pointer hover:bg-[var(--theme-hover-bg)] transition w-full h-full flex flex-col items-center justify-center">
+              <i class="pi pi-users text-2xl text-[var(--theme-brand-primary)] mb-1"></i>
+              <span class="text-sm font-semibold text-[var(--theme-text-primary)]">View Customers</span>
             </div>
           </div>
-
+          <div class="gradient-card rounded-md p-2 h-28 flex items-center justify-center text-[var(--theme-text-primary)]">
+            <div (click)="showproductGrid=true" class="p-3 rounded-lg cursor-pointer hover:bg-[var(--theme-hover-bg)] transition w-full h-full flex flex-col items-center justify-center">
+              <i class="pi pi-mobile text-2xl text-[var(--theme-success-primary)] mb-1"></i>
+              <span class="text-sm font-semibold text-[var(--theme-text-primary)]">View Products</span>
+            </div>
+          </div>
+          <div class="gradient-card rounded-md p-2 h-28 flex items-center justify-center text-[var(--theme-text-primary)]">
+            <div (click)="showInvoiceGrid=true" class="p-3 rounded-lg cursor-pointer hover:bg-[var(--theme-hover-bg)] transition w-full h-full flex flex-col items-center justify-center">
+              <i class="pi pi-pen-to-square text-2xl text-[var(--theme-warning-primary)] mb-1"></i>
+              <span class="text-sm font-semibold text-[var(--theme-text-primary)]">View Invoices</span>
+            </div>
+          </div>
+          <div class="gradient-card rounded-md p-2 h-28 flex items-center justify-center text-[var(--theme-text-primary)]">
+            <div (click)="showPaymentGrid=true" class="p-3 rounded-lg cursor-pointer hover:bg-[var(--theme-hover-bg)] transition w-full h-full flex flex-col items-center justify-center">
+              <i class="pi pi-money-bill text-2xl text-[var(--theme-error-primary)] mb-1"></i>
+              <span class="text-sm font-semibold text-[var(--theme-text-primary)]">View Payments</span>
+            </div>
+          </div>
         </div>
       </div>
     </div>
+  </div>
 
-    <!-- <p-dialog header="Invoice Data" [modal]="true" [visible]="showpdf" [style]="{ width: '95rem',height:'80rem' }"
-    [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }" [maximizable]="true" [closable]="true">
-    <app-invoice-print [Id]="this.invoiceId"></app-invoice-print>
+  <!-- PrimeNG Dialogs -->
+  <p-dialog header="Invoice Data" [modal]="true" [(visible)]="showpdf" [style]="{ width: '95rem', height: '80rem' }"
+    [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }" [maximizable]="true" class="bg-[var(--theme-dialog-bg)] text-[var(--theme-text-primary)] rounded-xl">
+    <app-invoice-print [Id]="invoiceId"></app-invoice-print>
     <p-footer>
-      <ng-template #name>
-        <button (click)="showpdf=false">
-          close
-        </button>
-      </ng-template>
+      <button pButton type="button" label="Close" icon="pi pi-times" (click)="showpdf=false"
+        class="p-button p-button-secondary bg-[var(--theme-button-outlined-border)] text-[var(--theme-button-outlined-text)] hover:bg-[var(--theme-button-outlined-hover-bg)] hover:text-[var(--theme-button-outlined-hover-text)]"></button>
     </p-footer>
   </p-dialog>
-</div> -->
-    <p-dialog header="Invoice Data" [modal]="true" [(visible)]="showpdf" [style]="{ width: '95rem',height:'80rem' }"
-      [maximizable]="true">
-      <app-invoice-print [Id]="invoiceId"></app-invoice-print>
-    </p-dialog>
 
+  <p-dialog header="Customers Data" [modal]="true" [(visible)]="showcustomerGrid" [style]="{ width: '95rem', height: '80rem' }"
+    [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }" [maximizable]="true" class="bg-[var(--theme-dialog-bg)] text-[var(--theme-text-primary)] rounded-xl">
+    <app-customer-list></app-customer-list>
+  </p-dialog>
 
-    <!-- customer List Component -->
-    <p-dialog header="Customers Data" class="bg-gray-400" [modal]="true" [(visible)]="showcustomerGrid"
-      [style]="{ width: '95rem',height:'80rem' }" [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }"
-      [maximizable]="true">
-      <app-customer-list></app-customer-list>
-    </p-dialog>
+  <p-dialog header="Product Data" [modal]="true" [(visible)]="showproductGrid" [style]="{ width: '95rem' }"
+    [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }" [maximizable]="true" class="bg-[var(--theme-dialog-bg)] text-[var(--theme-text-primary)] rounded-xl">
+    <app-product-detail></app-product-detail>
+  </p-dialog>
 
-    <!-- customer List Component -->
-    <p-dialog header="Product Data" [modal]="true" [(visible)]="showproductGrid" [style]="{ width: '95rem' }"
-      [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }" [maximizable]="true">
-      <app-product-detail></app-product-detail>
-    </p-dialog>
+  <p-dialog header="Invoice Data" [modal]="true" [(visible)]="showInvoiceGrid" [style]="{ width: '95rem' }"
+    [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }" [maximizable]="true" class="bg-[var(--theme-dialog-bg)] text-[var(--theme-text-primary)] rounded-xl">
+    <!-- <app-invoice-view></app-invoice-view> -->
+  </p-dialog>
 
-    <!-- customer List Component -->
-    <p-dialog header="Invoice Data" [modal]="true" [(visible)]="showInvoiceGrid" [style]="{ width: '95rem' }"
-      [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }" [maximizable]="true">
-      <!-- <app-invoice-view> </app-invoice-view> -->
-    </p-dialog>
-
-    <!-- customer List Component -->
-    <p-dialog header="Payment Data" [modal]="true" [(visible)]="showPaymentGrid" [style]="{ width: '95rem' }"
-      [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }" [maximizable]="true">
-      <app-payment-list></app-payment-list>
-    </p-dialog>
-
-    <!-- showpdfdialog -->
+  <p-dialog header="Payment Data" [modal]="true" [(visible)]="showPaymentGrid" [style]="{ width: '95rem' }"
+    [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }" [maximizable]="true" class="bg-[var(--theme-dialog-bg)] text-[var(--theme-text-primary)] rounded-xl">
+    <app-payment-list></app-payment-list>
+  </p-dialog>
+</div>

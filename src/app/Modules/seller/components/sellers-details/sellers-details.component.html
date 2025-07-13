@@ -1,41 +1,6 @@
-<!-- <section class="body-font"> -->
-<!-- <div class="container px-5 py-1 mx-auto flex flex-wrap"> -->
-<!-- <div class="flex w-full mb-8 flex-wrap justify-between items-center">
-      <h1 class="sm:text-3xl text-2xl font-medium title-font text-gray-900 lg:mb-0 mb-4">
-        Seller Details</h1>
-    </div> -->
-    <!-- <div class="flex flex-wrap md:-m-2 -m-1 w-full">
-      <div class="flex flex-wrap w-full p-2">
-        <div class="md:p-2 p-1 w-full">
-          <div class="grid-container">
-            <app-shared-grid [data]="data" [rowSelectionMode]="rowSelectionMode" [rowClassrules]="rowClassrules"
-              [column]="column" (eventFromGrid)="eventFromGrid($event)">
-            </app-shared-grid>
-          </div>
-        </div>
-      </div>
-    </div> -->
-    <!-- </section> -->
-     
-<div class="h-[calc(100vh-56px)] flex flex-col overflow-hidden">
-  <div class="ag-grid-container">
-    <!-- <div class="ag-grid-header-filter-area">
-      <div class="header-info">
-        <h4 class="text-lg font-medium text-surface-950 dark:text-surface-0">{{'Customer List'}}</h4>
-      </div>
-      <div class="header-controls-glass-container">
-        <div class="header-controls-content">
-          <div class="header-buttons">
-         
-          </div>
-        </div>
-      </div>
-    </div> -->
 
     <div class="ag-grid-main-area">
           <app-shared-grid [data]="data" [rowSelectionMode]="rowSelectionMode" [rowClassrules]="rowClassrules" 
-            [GridName]="'seller Details'"  [gridHeight]="'600px'" [column]="column" (eventFromGrid)="eventFromGrid($event)">
+            [GridName]="'seller Details'"  [gridHeight]="'185px'" [column]="column" (eventFromGrid)="eventFromGrid($event)">
           </app-shared-grid>
     </div>
-  </div>
-</div>

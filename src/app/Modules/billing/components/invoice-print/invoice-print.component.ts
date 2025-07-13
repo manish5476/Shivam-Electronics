@@ -95,7 +95,7 @@ export class InvoicePrintComponent implements OnInit, OnChanges {
           format: 'a4'
         });
 
-        this.addAdvertisementPage(pdf);
+        // this.addAdvertisementPage(pdf);
 
         const pdfWidth = pdf.internal.pageSize.getWidth();
         const pdfHeight = (canvas.height / canvas.width) * pdfWidth;
@@ -110,81 +110,81 @@ export class InvoicePrintComponent implements OnInit, OnChanges {
     }
   }
 
-  private addAdvertisementPage(pdf: jsPDF) {
-    const pageWidth = pdf.internal.pageSize.getWidth();
-    const pageHeight = pdf.internal.pageSize.getHeight();
-    // Background
-    pdf.setFillColor(255, 255, 255);
-    pdf.rect(0, 0, pageWidth, pageHeight, 'F');
+  // private addAdvertisementPage(pdf: jsPDF) {
+  //   const pageWidth = pdf.internal.pageSize.getWidth();
+  //   const pageHeight = pdf.internal.pageSize.getHeight();
+  //   // Background
+  //   pdf.setFillColor(255, 255, 255);
+  //   pdf.rect(0, 0, pageWidth, pageHeight, 'F');
 
-    // Logo Placeholder
-    pdf.setFont('Helvetica', 'bold');
-    pdf.setFontSize(16);
-    pdf.setTextColor(0, 0, 0);
-    pdf.text('[Shivam Electronics Logo]', pageWidth / 2, 0.5, { align: 'center' });
+  //   // Logo Placeholder
+  //   pdf.setFont('Helvetica', 'bold');
+  //   pdf.setFontSize(16);
+  //   pdf.setTextColor(0, 0, 0);
+  //   pdf.text('[Shivam Electronics Logo]', pageWidth / 2, 0.5, { align: 'center' });
 
-    // Shop Name and Address
-    pdf.setFontSize(28);
-    pdf.setFont('Helvetica', 'bold');
-    pdf.setTextColor(0, 0, 0);
-    pdf.text('Shivam Electronics', pageWidth / 2, 1.2, { align: 'center' });
-    pdf.setFontSize(12);
-    pdf.setFont('Helvetica', 'normal');
-    pdf.setTextColor(50, 50, 50);
-    pdf.text('F-8, JB Shopping Center, Jolwa, Gujarat, India', pageWidth / 2, 1.5, { align: 'center' });
-    pdf.text('Phone: +91 98765 43210 | Email: contact@shivamelectronics.com | www.shivamelectronics.com', pageWidth / 2, 1.7, { align: 'center' });
+  //   // Shop Name and Address
+  //   pdf.setFontSize(28);
+  //   pdf.setFont('Helvetica', 'bold');
+  //   pdf.setTextColor(0, 0, 0);
+  //   pdf.text('Shivam Electronics', pageWidth / 2, 1.2, { align: 'center' });
+  //   pdf.setFontSize(12);
+  //   pdf.setFont('Helvetica', 'normal');
+  //   pdf.setTextColor(50, 50, 50);
+  //   pdf.text('F-8, JB Shopping Center, Jolwa, Gujarat, India', pageWidth / 2, 1.5, { align: 'center' });
+  //   pdf.text('Phone: +91 98765 43210 | Email: contact@shivamelectronics.com | www.shivamelectronics.com', pageWidth / 2, 1.7, { align: 'center' });
 
-    // Happy Customers Section
-    pdf.setFontSize(18);
-    pdf.setFont('Helvetica', 'bold');
-    pdf.setTextColor(0, 0, 0);
-    pdf.text('Our Happy Customers', pageWidth / 2, 2.3, { align: 'center' });
+  //   // Happy Customers Section
+  //   pdf.setFontSize(18);
+  //   pdf.setFont('Helvetica', 'bold');
+  //   pdf.setTextColor(0, 0, 0);
+  //   pdf.text('Our Happy Customers', pageWidth / 2, 2.3, { align: 'center' });
 
-    const testimonials = [
-      { name: 'Rahul Patel', quote: '"Best electronics store! Amazing service and quality products!"' },
-      { name: 'Priya Sharma', quote: '"Trusted shop for all my gadgets. Highly recommended!"' },
-      { name: 'Amit Kumar', quote: '"Great deals and fast delivery. Shivam is the best!"' }
-    ];
+  //   const testimonials = [
+  //     { name: 'Rahul Patel', quote: '"Best electronics store! Amazing service and quality products!"' },
+  //     { name: 'Priya Sharma', quote: '"Trusted shop for all my gadgets. Highly recommended!"' },
+  //     { name: 'Amit Kumar', quote: '"Great deals and fast delivery. Shivam is the best!"' }
+  //   ];
 
-    let y = 2.8;
-    testimonials.forEach(testimonial => {
-      pdf.setFontSize(12);
-      pdf.setFont('Helvetica', 'italic');
-      pdf.setTextColor(50, 50, 50);
-      pdf.text(testimonial.quote!, pageWidth / 2, y, { align: 'center', maxWidth: pageWidth - 1 });
-      pdf.setFont('Helvetica', 'bold');
-      pdf.setTextColor(0, 0, 0);
-      pdf.text(`- ${testimonial.name}`, pageWidth / 2, y + 0.2, { align: 'center' });
-      y += 0.5;
-    });
+  //   let y = 2.8;
+  //   testimonials.forEach(testimonial => {
+  //     pdf.setFontSize(12);
+  //     pdf.setFont('Helvetica', 'italic');
+  //     pdf.setTextColor(50, 50, 50);
+  //     pdf.text(testimonial.quote!, pageWidth / 2, y, { align: 'center', maxWidth: pageWidth - 1 });
+  //     pdf.setFont('Helvetica', 'bold');
+  //     pdf.setTextColor(0, 0, 0);
+  //     pdf.text(`- ${testimonial.name}`, pageWidth / 2, y + 0.2, { align: 'center' });
+  //     y += 0.5;
+  //   });
 
-    // Brands Section
-    pdf.setFontSize(18);
-    pdf.setFont('Helvetica', 'bold');
-    pdf.setTextColor(0, 0, 0);
-    pdf.text('Proudly Offering Top Brands', pageWidth / 2, y + 0.5, { align: 'center' });
+  //   // Brands Section
+  //   pdf.setFontSize(18);
+  //   pdf.setFont('Helvetica', 'bold');
+  //   pdf.setTextColor(0, 0, 0);
+  //   pdf.text('Proudly Offering Top Brands', pageWidth / 2, y + 0.5, { align: 'center' });
 
-    const brands = ['Samsung', 'Sony', 'LG', 'Apple', 'Philips', 'Bose'];
-    const brandCols = 3;
-    const brandWidth = pageWidth / brandCols;
-    y += 0.8;
+  //   const brands = ['Samsung', 'Sony', 'LG', 'Apple', 'Philips', 'Bose'];
+  //   const brandCols = 3;
+  //   const brandWidth = pageWidth / brandCols;
+  //   y += 0.8;
 
-    brands.forEach((brand, index) => {
-      const x = (index % brandCols) * brandWidth + brandWidth / 2;
-      const rowY = y + Math.floor(index / brandCols) * 0.3;
-      pdf.setFontSize(14);
-      pdf.setFont('Helvetica', 'normal');
-      pdf.setTextColor(50, 50, 50);
-      pdf.text(brand, x, rowY, { align: 'center' });
-    });
+  //   brands.forEach((brand, index) => {
+  //     const x = (index % brandCols) * brandWidth + brandWidth / 2;
+  //     const rowY = y + Math.floor(index / brandCols) * 0.3;
+  //     pdf.setFontSize(14);
+  //     pdf.setFont('Helvetica', 'normal');
+  //     pdf.setTextColor(50, 50, 50);
+  //     pdf.text(brand, x, rowY, { align: 'center' });
+  //   });
 
-    // Footer
-    pdf.setFontSize(10);
-    pdf.setTextColor(100, 100, 100);
-    pdf.text('Thank you for choosing Shivam Electronics. Quality and Trust Since 2008.', pageWidth / 2, pageHeight - 0.3, { align: 'center' });
+  //   // Footer
+  //   pdf.setFontSize(10);
+  //   pdf.setTextColor(100, 100, 100);
+  //   pdf.text('Thank you for choosing Shivam Electronics. Quality and Trust Since 2008.', pageWidth / 2, pageHeight - 0.3, { align: 'center' });
 
-    pdf.addPage();
-  }
+  //   pdf.addPage();
+  // }
 }
 // import { CommonModule } from '@angular/common';
 // import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';

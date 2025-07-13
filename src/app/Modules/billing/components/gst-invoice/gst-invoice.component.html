@@ -1,214 +1,47 @@
-<!-- 
-<div class="bg-gray-100 text-gray-900" [formGroup]="invoiceForm">
-  <div class="w-full mx-auto p-6 bg-gray-200 shadow-md mt-10 rounded-lg">
-    <div class="text-center mb-6">
-      <h1 class="text-3xl font-bold text-purple-400">GST Invoice</h1>
-    </div>
-    <div class="grid grid-cols-1 md:grid-cols-6 gap-4 mb-4">
-      <div class="form-group">
-        <label for="invoiceNumber">Invoice No*</label>
-        <input type="text" id="invoiceNumber" formControlName="invoiceNumber" placeholder="Enter Invoice No"
-          class="mt-1 block w-full rounded-md border-gray-300 shadow-sm h-10 bg-white text-gray-900 focus:ring-primary-light focus:border-primary-light" />
-      </div>
-      <div class="form-group">
-        <label for="invoiceDate">Invoice Date*</label>
-        <input type="date" id="invoiceDate" formControlName="invoiceDate"
-          class="mt-1 block w-full rounded-md border-gray-300 shadow-sm h-10 bg-white text-gray-900 focus:ring-primary-light focus:border-primary-light" />
-      </div>
-      <div class="form-group">
-        <label for="dueDate">Due Date</label>
-        <input type="date" id="dueDate" formControlName="dueDate" placeholder="Enter Due Date"
-          class="mt-1 block w-full rounded-md border-gray-300 shadow-sm h-10 bg-white text-gray-900 focus:ring-primary-light focus:border-primary-light" />
-      </div>
-      <div class="form-group">
-        <label>Billed By (Your Details)</label>
-        <p-select appendTo="body" [options]="InvoiceObject.sellersDrop" optionLabel="name" optionValue="_id" formControlName="seller"
-          placeholder="Select Seller" class="w-full"></p-select>
-      </div>
-      <div class="form-group">
-        <label>Billed To (Client Details)</label>
-        <p-select appendTo="body" [options]="InvoiceObject.customerIDDropdown" optionLabel="fullname" optionValue="_id"
-          formControlName="buyer" placeholder="Select Buyer" class="w-full"></p-select>
-      </div>
-    </div>
-   
-    <div class="flex justify-between items-center mb-6">
-      <div class="flex items-center space-x-4">
-      </div>
-    </div>
-    <div class="max-w-full overflow-x-auto mb-4"  >
-      <table  class="table-auto w-full bg-background-surface text-text-primary rounded-md shadow-sm" styleClass="p-datatable-gridlines" scrollHeight="300px">
-          <thead class="bg-gray-300 text-text-secondary">
-          <tr>
-            <th class="py-2 px-3 border-b border-border-light text-left text-sm font-semibold">Item</th>
-            <th class="py-2 px-3 border-b border-border-light text-left text-sm font-semibold">GST (%)</th>
-            <th class="py-2 px-3 border-b border-border-light text-left text-sm font-semibold">Quantity</th>
-            <th class="py-2 px-3 border-b border-border-light text-left text-sm font-semibold">Rate (Ex-GST)</th>
-            <th class="py-2 px-3 border-b border-border-light text-left text-sm font-semibold">Discount (%)</th>
-            <th class="py-2 px-3 border-b border-border-light text-left text-sm font-semibold">Taxable Value</th>
-            <th class="py-2 px-3 border-b border-border-light text-left text-sm font-semibold">GST Amount</th>
-            <th class="py-2 px-3 border-b border-border-light text-left text-sm font-semibold">Total Amount</th>
-            <th class="py-2 px-3 border-b border-border-light text-center text-sm font-semibold">Actions</th>
-          </tr>
-        </thead>
-        <tbody formArrayName="items" >
-          <tr *ngFor="let itemFormGroup of itemsFormArray.controls; let i = index" [formGroupName]="i"
-            class="hover:bg-gray-50 transition-colors duration-150">
-            <td class="py-1 px-3 border-b border-border-light">
-              <p-select appendTo="body" type="text" formControlName="product" (onChange)="onProductChange($event, i)"
-                [options]="InvoiceObject.productdrop" (ngModelChange)="onItemValueChange(i)" optionValue="_id" optionLabel="title"
-                class="w-full border-gray-300 rounded-md shadow-sm focus:border-primary-light focus:ring focus:ring-primary-light focus:ring-opacity-50 text-sm h-8 bg-white text-gray-900"></p-select>
-            </td>
-            <td class="py-1 px-3 border-b border-border-light">
-              <input type="number" formControlName="gstRate" (ngModelChange)="onItemValueChange(i)"
-                class="w-full border-gray-300 rounded-md shadow-sm focus:border-primary-light focus:ring focus:ring-primary-light focus:ring-opacity-50 text-sm h-8 bg-white text-gray-900"
-                step="0.01" />
-            </td>
-            <td class="py-1 px-3 border-b border-border-light">
-              <input type="number" formControlName="quantity" (ngModelChange)="onItemValueChange(i)"
-                class="w-full border-gray-300 rounded-md shadow-sm focus:border-primary-light focus:ring focus:ring-primary-light focus:ring-opacity-50 text-sm h-8 bg-white text-gray-900"
-                step="1" />
-            </td>
-            <td class="py-1 px-3 border-b border-border-light">
-              <input type="number" formControlName="rate" (ngModelChange)="onItemValueChange(i)"
-                class="w-full border-gray-300 rounded-md shadow-sm focus:border-primary-light focus:ring focus:ring-primary-light focus:ring-opacity-50 text-sm h-8 bg-white text-gray-900"
-                step="0.01" />
-            </td>
-            <td class="py-1 px-3 border-b border-border-light">
-              <input type="number" formControlName="discount" (ngModelChange)="onItemValueChange(i)"
-                class="w-full border-gray-300 rounded-md shadow-sm focus:border-primary-light focus:ring focus:ring-primary-light focus:ring-opacity-50 text-sm h-8 bg-white text-gray-900"
-                step="0.01" />
-            </td>
-            <td class="py-1 px-3 border-b border-border-light">
-              <input type="number" formControlName="taxableValue"
-                class="w-full border-gray-300 rounded-md shadow-sm focus:border-primary-light focus:ring focus:ring-primary-light focus:ring-opacity-50 text-sm h-8 bg-gray-100 text-gray-900"
-                readonly />
-            </td>
-            <td class="py-1 px-3 border-b border-border-light">
-              <input type="number" formControlName="gstAmount"
-                class="w-full border-gray-300 rounded-md shadow-sm focus:border-primary-light focus:ring focus:ring-primary-light focus:ring-opacity-50 text-sm h-8 bg-gray-100 text-gray-900"
-                readonly />
-            </td>
-            <td class="py-1 px-3 border-b border-border-light">
-              <input type="number" formControlName="amount"
-                class="w-full border-gray-300 rounded-md shadow-sm focus:border-primary-light focus:ring focus:ring-primary-light focus:ring-opacity-50 text-sm h-8 bg-gray-100 text-gray-900"
-                readonly />
-            </td>
-            <td class="py-1 px-3 border-b border-border-light text-center flex items-center justify-center space-x-2">
-              <a type="button" class="text-primary hover:text-primary-hover text-sm" (click)="addItem()">
-                <i class="pi pi-check" style="font-size: 1rem"></i>
-              </a>
-              <a type="button" class="text-error hover:text-error-hover text-sm" (click)="removeItem(i)">
-                <i class="pi pi-times" style="font-size: 1rem"></i>
-              </a>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-    <div class="flex items-center space-x-4">
-      <div class="flex items-center">
-        <input type="checkbox" id="roundUp" formControlName="roundUp"
-          class="mr-1 rounded border-gray-600 text-purple-500 focus:ring-purple-500"
-          (change)="calculateInvoiceTotals()" />
-        <label for="roundUp" class="ml-1 text-sm text-gray-500">Round Up</label>
-      </div>
-      <div class="flex items-center">
-        <input type="checkbox" id="roundDown" formControlName="roundDown"
-          class="mr-1 rounded border-gray-600 text-purple-500 focus:ring-purple-500"
-          (change)="calculateInvoiceTotals()" />
-        <label for="roundDown" class="ml-1 text-sm text-gray-500">Round Down</label>
-      </div>
-    </div>    
-    <div class="bg-gray-200 text-gray-900 shadow-lg rounded-lg p-6 mb-6 flex">
-      <div class="w-3/4 pr-4">
-        <h3 class="font-semibold text-md mb-2">Place of Supply</h3>
-        <p class="font-normal">{{ invoiceForm.get('placeOfSupply')?.value || 'N/A' }}</p>
-      </div>
-      <div class="w-2/3">
-        <div class="mb-2 flex justify-between">
-          <span class="font-semibold">Sub Total:</span>
-          <span>₹ {{ invoiceForm.get('subTotal')?.value | number : "1.2-2" }}</span>
-        </div>
-        <div class="mb-2 flex justify-between">
-          <span class="font-semibold">GST:</span>
-          <span>₹ {{ invoiceForm.get('gst')?.value | number : "1.2-2" }}</span>
-        </div>
-        <div class="mb-2 flex justify-between">
-          <span class="font-semibold">CESS:</span>
-          <span>₹ {{ invoiceForm.get('cess')?.value | number : "1.2-2" }}</span>
-        </div>
-        <div class="mb-2 flex justify-between">
-          <span class="font-semibold">Discount:</span>
-          <span>₹ {{ invoiceForm.get('totalDiscount')?.value | number : "1.2-2" }}</span>
-        </div>
-        <div class="mb-2 flex justify-between border-t border-gray-600 pt-2">
-          <span class="font-semibold">Taxable Value:</span>
-          <span>₹ {{ invoiceForm.get('taxableValue')?.value  }}</span>
-        </div>
-        <div class="mt-4 border-t border-gray-600 pt-4 flex justify-between items-start">
-          <div class="w-1/2 pr-4">
-            <h2 class="text-md font-semibold mb-2">Signature</h2>
-            <div class="border-b-2 border-gray-400 h-12"></div>
-            <p class="text-gray-600 text-xs mt-2">Date: <span id="currentDateRight"></span></p>
-          </div>
-          <div class="w-1/2 text-right">
-            <h2 class="text-lg font-semibold">Total (INR)</h2>
-            <h2 class="text-lg font-semibold">
-              ₹ {{ invoiceForm.get('totalAmount')?.value | number : "1.2-2" }}
-            </h2>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div class="text-center">
-    <button type="button"
-      class="bg-pink-500 hover:bg-pink-700 text-gray-900 py-2 px-4 rounded-md transition duration-300 ease-in-out"
-      (click)="saveInvoice()">
-      Save & Continue
-    </button>
-  </div>
-</div>  -->
-<div class="bg-gray-100 text-gray-900 py-6 px-4 md:px-8 lg:px-12" [formGroup]="invoiceForm">
+<div class="bg-[var(--theme-bg-main)] rounded-sm text-[var(--theme-text-primary)] py-2 px-2 md:px-4 lg:px-5"
+  [formGroup]="invoiceForm">
   <div class="text-center mb-2">
-    <h2 class="text-3xl font-bold text-purple-500">GST Invoice</h2>
+    <h2 class="text-3xl font-bold text-[var(--theme-brand-primary)]">GST Invoice</h2>
   </div>
 
   <!-- Form Fields -->
-  <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-4 bg-white p-6 rounded-lg shadow-md mb-6">
+  <div
+    class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-4 bg-[var(--theme-bg-secondary)] p-6 rounded-lg shadow-md mb-4">
     <div>
       <label class="block text-sm font-medium mb-1" for="invoiceNumber">Invoice No*</label>
-      <input type="text" id="invoiceNumber" formControlName="invoiceNumber"
-        placeholder="Enter Invoice No"
-        class="w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-purple-400">
+      <input type="text" id="invoiceNumber" formControlName="invoiceNumber" placeholder="Enter Invoice No"
+        class="w-full border border-[var(--theme-border-secondary)] rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-[var(--theme-brand-primary)]">
     </div>
     <div>
       <label class="block text-sm font-medium mb-1" for="invoiceDate">Invoice Date*</label>
       <input type="date" id="invoiceDate" formControlName="invoiceDate"
-        class="w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-purple-400">
+        class="w-full border border-[var(--theme-border-secondary)] rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-[var(--theme-brand-primary)]">
     </div>
     <div>
       <label class="block text-sm font-medium mb-1" for="dueDate">Due Date</label>
       <input type="date" id="dueDate" formControlName="dueDate"
-        class="w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-purple-400">
+        class="w-full border border-[var(--theme-border-secondary)] rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-[var(--theme-brand-primary)]">
     </div>
     <div>
       <label class="block text-sm font-medium mb-1">Billed By</label>
       <p-select appendTo="body" [options]="InvoiceObject.sellersDrop" optionLabel="name" optionValue="_id"
-        formControlName="seller" placeholder="Select Seller" class="w-full"></p-select>
+        formControlName="seller" placeholder="Select Seller"
+        class="w-full bg-[var(--theme-bg-tertiary)] text-[var(--theme-text-primary)] border border-[var(--theme-border-secondary)]"
+        panelStyleClass="bg-[var(--theme-bg-secondary)] border-[var(--theme-border-primary)]"></p-select>
     </div>
     <div>
       <label class="block text-sm font-medium mb-1">Billed To</label>
-      <p-select appendTo="body" [options]="InvoiceObject.customerIDDropdown" optionLabel="fullname"
-        optionValue="_id" formControlName="buyer" placeholder="Select Buyer" class="w-full"></p-select>
+      <p-select appendTo="body" [options]="InvoiceObject.customerIDDropdown" optionLabel="fullname" optionValue="_id"
+        formControlName="buyer" placeholder="Select Buyer"
+        class="w-full bg-[var(--theme-bg-tertiary)] text-[var(--theme-text-primary)] border border-[var(--theme-border-secondary)]"
+        panelStyleClass="bg-[var(--theme-bg-secondary)] border-[var(--theme-border-primary)]"></p-select>
     </div>
   </div>
 
   <!-- Items Table -->
-  <div class="overflow-x-auto bg-white p-4 rounded-lg shadow-md mb-6">
-    <table class="min-w-full text-sm text-left border border-gray-200">
-      <thead class="bg-gray-100 text-gray-700">
+  <div class="overflow-x-auto bg-[var(--theme-bg-secondary)] p-4 rounded-lg shadow-md mb-4">
+    <table class="min-w-full text-sm text-left border border-[var(--theme-border-secondary)]">
+      <thead class="bg-[var(--theme-bg-tertiary)] text-[var(--theme-text-secondary)]">
         <tr>
           <th class="p-2">Item</th>
           <th class="p-2">GST (%)</th>
@@ -223,31 +56,48 @@
       </thead>
       <tbody formArrayName="items">
         <tr *ngFor="let itemFormGroup of itemsFormArray.controls; let i = index" [formGroupName]="i"
-          class="hover:bg-gray-50 border-t">
+          class="hover:bg-[var(--theme-hover-bg)] border-t border-[var(--theme-border-secondary)]">
           <td class="p-2">
-            <p-select appendTo="body" formControlName="product" [options]="InvoiceObject.productdrop"
-              optionValue="_id" optionLabel="title" (onChange)="onProductChange($event, i)"
-              (ngModelChange)="onItemValueChange(i)" class="w-full"></p-select>
+            <p-select appendTo="body" formControlName="product" [options]="InvoiceObject.productdrop" optionValue="_id"
+              optionLabel="title" (onChange)="onProductChange($event, i)" (ngModelChange)="onItemValueChange(i)"
+              class="w-full bg-[var(--theme-bg-tertiary)] text-[var(--theme-text-primary)] border border-[var(--theme-border-secondary)]"
+              panelStyleClass="bg-[var(--theme-bg-secondary)] border-[var(--theme-border-primary)]"></p-select>
           </td>
-          <td class="p-2"><input type="number" formControlName="gstRate" (ngModelChange)="onItemValueChange(i)"
-              class="w-full border border-gray-300 rounded-md p-1"></td>
-          <td class="p-2"><input type="number" formControlName="quantity" (ngModelChange)="onItemValueChange(i)"
-              class="w-full border border-gray-300 rounded-md p-1"></td>
-          <td class="p-2"><input type="number" formControlName="rate" (ngModelChange)="onItemValueChange(i)"
-              class="w-full border border-gray-300 rounded-md p-1"></td>
-          <td class="p-2"><input type="number" formControlName="discount" (ngModelChange)="onItemValueChange(i)"
-              class="w-full border border-gray-300 rounded-md p-1"></td>
-          <td class="p-2"><input type="number" formControlName="taxableValue" readonly
-              class="w-full bg-gray-100 border border-gray-300 rounded-md p-1"></td>
-          <td class="p-2"><input type="number" formControlName="gstAmount" readonly
-              class="w-full bg-gray-100 border border-gray-300 rounded-md p-1"></td>
-          <td class="p-2"><input type="number" formControlName="amount" readonly
-              class="w-full bg-gray-100 border border-gray-300 rounded-md p-1"></td>
+          <td class="p-2">
+            <input type="number" formControlName="gstRate" (ngModelChange)="onItemValueChange(i)"
+              class="w-full border border-[var(--theme-border-secondary)] rounded-md p-1">
+          </td>
+          <td class="p-2">
+            <input type="number" formControlName="quantity" (ngModelChange)="onItemValueChange(i)"
+              class="w-full border border-[var(--theme-border-secondary)] rounded-md p-1">
+          </td>
+          <td class="p-2">
+            <input type="number" formControlName="rate" (ngModelChange)="onItemValueChange(i)"
+              class="w-full border border-[var(--theme-border-secondary)] rounded-md p-1">
+          </td>
+          <td class="p-2">
+            <input type="number" formControlName="discount" (ngModelChange)="onItemValueChange(i)"
+              class="w-full border border-[var(--theme-border-secondary)] rounded-md p-1">
+          </td>
+          <td class="p-2">
+            <input type="number" formControlName="taxableValue" readonly
+              class="w-full bg-[var(--theme-bg-tertiary)] border border-[var(--theme-border-secondary)] rounded-md p-1">
+          </td>
+          <td class="p-2">
+            <input type="number" formControlName="gstAmount" readonly
+              class="w-full bg-[var(--theme-bg-tertiary)] border border-[var(--theme-border-secondary)] rounded-md p-1">
+          </td>
+          <td class="p-2">
+            <input type="number" formControlName="amount" readonly
+              class="w-full bg-[var(--theme-bg-tertiary)] border border-[var(--theme-border-secondary)] rounded-md p-1">
+          </td>
           <td class="p-2 text-center flex gap-2 justify-center">
-            <button (click)="addItem()" class="text-green-600 hover:text-green-800">
+            <button (click)="addItem()"
+              class="text-[var(--theme-success-primary)] hover:text-[var(--theme-success-hover)]">
               <i class="pi pi-check"></i>
             </button>
-            <button (click)="removeItem(i)" class="text-red-600 hover:text-red-800">
+            <button (click)="removeItem(i)"
+              class="text-[var(--theme-error-primary)] hover:text-[var(--theme-error-hover)]">
               <i class="pi pi-times"></i>
             </button>
           </td>
@@ -257,49 +107,52 @@
   </div>
 
   <!-- Round Off Section -->
-  <div class="flex items-center gap-6 mb-6">
-    <label class="flex items-center gap-2 text-sm">
+  <div class="flex items-center gap-6 mb-2">
+    <label class="flex items-center gap-2 text-sm text-[var(--theme-text-secondary)]">
       <input type="checkbox" formControlName="roundUp" (change)="calculateInvoiceTotals()"
-        class="form-checkbox text-purple-500">
+        class="form-checkbox text-[var(--theme-brand-primary)]">
       Round Up
     </label>
-    <label class="flex items-center gap-2 text-sm">
+    <label class="flex items-center gap-2 text-sm text-[var(--theme-text-secondary)]">
       <input type="checkbox" formControlName="roundDown" (change)="calculateInvoiceTotals()"
-        class="form-checkbox text-purple-500">
+        class="form-checkbox text-[var(--theme-brand-primary)]">
       Round Down
     </label>
   </div>
 
   <!-- Totals Box -->
-  <div class="bg-white shadow-md rounded-lg p-6 mb-6 grid grid-cols-1 lg:grid-cols-2 gap-6">
+  <div class="bg-[var(--theme-bg-secondary)] shadow-md rounded-lg p-2 mb-2  grid grid-cols-1 lg:grid-cols-2 gap-6">
     <div>
-      <h3 class="font-semibold text-md mb-2">Place of Supply</h3>
-      <p>{{ invoiceForm.get('placeOfSupply')?.value || 'N/A' }}</p>
+      <h3 class="font-semibold text-md mb-2 text-[var(--theme-text-heading)]">Place of Supply</h3>
+      <p class="text-[var(--theme-text-primary)]">{{ invoiceForm.get('placeOfSupply')?.value || 'N/A' }}</p>
     </div>
     <div>
       <div class="flex justify-between mb-2">
-        <span class="font-medium">Sub Total:</span>
-        <span>₹ {{ invoiceForm.get('subTotal')?.value | number : '1.2-2' }}</span>
+        <span class="font-medium text-[var(--theme-text-secondary)]">Sub Total:</span>
+        <span class="text-[var(--theme-text-primary)]">₹ {{ invoiceForm.get('subTotal')?.value | number: '1.2-2'
+          }}</span>
       </div>
       <div class="flex justify-between mb-2">
-        <span class="font-medium">GST:</span>
-        <span>₹ {{ invoiceForm.get('gst')?.value | number : '1.2-2' }}</span>
+        <span class="font-medium text-[var(--theme-text-secondary)]">GST:</span>
+        <span class="text-[var(--theme-text-primary)]">₹ {{ invoiceForm.get('gst')?.value | number: '1.2-2' }}</span>
       </div>
       <div class="flex justify-between mb-2">
-        <span class="font-medium">CESS:</span>
-        <span>₹ {{ invoiceForm.get('cess')?.value | number : '1.2-2' }}</span>
+        <span class="font-medium text-[var(--theme-text-secondary)]">CESS:</span>
+        <span class="text-[var(--theme-text-primary)]">₹ {{ invoiceForm.get('cess')?.value | number: '1.2-2' }}</span>
       </div>
       <div class="flex justify-between mb-2">
-        <span class="font-medium">Discount:</span>
-        <span>₹ {{ invoiceForm.get('totalDiscount')?.value | number : '1.2-2' }}</span>
+        <span class="font-medium text-[var(--theme-text-secondary)]">Discount:</span>
+        <span class="text-[var(--theme-text-primary)]">₹ {{ invoiceForm.get('totalDiscount')?.value | number: '1.2-2'
+          }}</span>
       </div>
-      <div class="flex justify-between border-t pt-2 mt-2">
-        <span class="font-semibold">Taxable Value:</span>
-        <span>₹ {{ invoiceForm.get('taxableValue')?.value }}</span>
+      <div class="flex justify-between border-t pt-2 mt-2 border-[var(--theme-border-secondary)]">
+        <span class="font-semibold text-[var(--theme-text-heading)]">Taxable Value:</span>
+        <span class="text-[var(--theme-text-primary)]">₹ {{ invoiceForm.get('taxableValue')?.value }}</span>
       </div>
-      <div class="flex justify-between pt-4 mt-4 border-t">
-        <h2 class="text-lg font-semibold">Total (INR)</h2>
-        <h2 class="text-lg font-semibold">₹ {{ invoiceForm.get('totalAmount')?.value | number : '1.2-2' }}</h2>
+      <div class="flex justify-between pt-4 mt-4 border-t border-[var(--theme-border-secondary)]">
+        <h2 class="text-lg font-semibold text-[var(--theme-text-heading)]">Total (INR)</h2>
+        <h2 class="text-lg font-semibold text-[var(--theme-text-heading)]">₹ {{ invoiceForm.get('totalAmount')?.value |
+          number: '1.2-2' }}</h2>
       </div>
     </div>
   </div>
@@ -307,7 +160,7 @@
   <!-- Footer Button -->
   <div class="text-center">
     <button type="button" (click)="saveInvoice()"
-      class="bg-purple-600 hover:bg-purple-700 text-white font-medium py-2 px-6 rounded-md shadow-md transition">
+      class="bg-[var(--theme-button-bg-primary)] hover:bg-[var(--theme-button-hover-bg-primary)] text-[var(--theme-button-text-primary-btn)] font-medium py-2 px-6 rounded-md shadow-md transition">
       Save & Continue
     </button>
   </div>

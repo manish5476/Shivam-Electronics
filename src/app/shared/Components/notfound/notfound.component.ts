@@ -16,7 +16,7 @@ import { RouterModule } from '@angular/router';
   selector: 'app-notfound',
   imports: [RouterModule,],
   template: `
-<div class="grid h-screen place-content-center bg-white px-4 dark:bg-gray-900">
+<div class="grid h-screen place-content-center rounded-sm  px-4 ">
   <div class="text-center">
     <svg
       xmlns="http://www.w3.org/2000/svg"

@@ -1,109 +1,147 @@
-
-<div class="card dark:bg-white dark:text-gray">
-  <p-card header="Customer Details" class="bg-white text-bold text-gray dark:bg-white dark:text-gray">
+<div class="  text-[var(--theme-text-primary)]">
+  <div header="Customer Details" class="p-1"
+    styleClass="bg-[var(--theme-bg-primary)] text-[var(--theme-text-heading)] font-bold">
     <p-select [(ngModel)]="customerId" (onChange)="getCustomerDetail()" [options]="customerIDDropdown"
-      optionLabel="fullname" optionValue="_id" placeholder="Select Customer" class="w-full md:w-56">
-    </p-select>
-    <div class="mx-auto max-w-full px-2 py-2">
+      optionLabel="fullname" optionValue="_id" placeholder="Select Customer"
+      class="w-full md:w-56 bg-[var(--theme-bg-tertiary)] text-[var(--theme-text-primary)] border border-[var(--theme-border-secondary)]"
+      panelStyleClass="bg-[var(--theme-bg-secondary)] border-[var(--theme-border-primary)]"></p-select>
+    <div class="mx-auto max-w-full ">
       <div class="mx-auto max-w-full text-center">
-        <dl class="mt-8 grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5">
-          <div class="flex flex-col rounded-lg border border-gray-200 px-6 py-8 text-center dark:border-gray-700">
-            <dt class="order-last text-lg font-medium text-gray-500 dark:text-gray-400">Full Name</dt>
-            <dd class="text-xl font-semibold text-gray dark:text-gray">{{ customer?.fullname }}</dd>
+        <dl class="mt-2 grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5">
+          <div
+            class="flex flex-col rounded-2xl border  bg-[var(--theme-bg-main)] border-[var(--theme-border-secondary)]  px-2 py-5 text-center">
+            <dt class="order-last text-lg font-medium text-[var(--theme-text-secondary)]">Full Name</dt>
+            <dd class="text-xl font-semibold text-[var(--theme-text-primary)]">{{ customer?.fullname }}</dd>
           </div>
-          <div class="flex flex-col rounded-lg border border-gray-200 px-6 py-8 text-center dark:border-gray-700">
-            <dt class="order-last text-lg font-medium text-gray-500 dark:text-gray-400">Email</dt>
-            <dd class="text-xl font-semibold text-gray dark:text-gray">{{ customer?.email }}</dd>
+          <div
+            class="flex flex-col rounded-2xl border border-[var(--theme-border-secondary)] bg-[var(--theme-bg-main)]  px-2 py-5 text-center">
+            <dt class="order-last text-lg font-medium text-[var(--theme-text-secondary)]">Email</dt>
+            <dd class="text-xl font-semibold text-[var(--theme-text-primary)]">{{ customer?.email }}</dd>
           </div>
-
-          <div class="flex flex-col rounded-lg border border-gray-200 px-6 py-8 text-center dark:border-gray-700">
-            <dt class="order-last text-lg font-medium text-gray-500 dark:text-gray-400">Status</dt>
-            <dd class="text-xl font-semibold text-gray dark:text-gray">{{ customer?.status }}</dd>
+          <div
+            class="flex flex-col rounded-2xl border border-[var(--theme-border-secondary)] bg-[var(--theme-bg-main)]  px-2 py-5 text-center">
+            <dt class="order-last text-lg font-medium text-[var(--theme-text-secondary)]">Status</dt>
+            <dd class="text-xl font-semibold text-[var(--theme-text-primary)]">{{ customer?.status }}</dd>
           </div>
-
-          <div class="flex flex-col rounded-lg border border-gray-200 px-6 py-8 text-center dark:border-gray-700">
-            <dt class="order-last text-lg font-medium text-gray-500 dark:text-gray-400">Total Purchased</dt>
-            <dd class="text-xl font-semibold text-gray dark:text-gray">{{ customer?.totalPurchasedAmount |
-              currency:'INR' }}</dd>
+          <div
+            class="flex flex-col rounded-2xl border border-[var(--theme-border-secondary)] bg-[var(--theme-bg-main)]  px-2 py-5 text-center">
+            <dt class="order-last text-lg font-medium text-[var(--theme-text-secondary)]">Total Purchased</dt>
+            <dd class="text-xl font-semibold text-[var(--theme-text-primary)]">{{ customer?.totalPurchasedAmount |
+              currency: 'INR' }}</dd>
           </div>
-
-          <div class="flex flex-col rounded-lg border border-gray-200 px-6 py-8 text-center dark:border-gray-700">
-            <dt class="order-last text-lg font-medium text-gray-500 dark:text-gray-400">Remaining Amount</dt>
-            <dd class="text-xl font-semibold text-gray dark:text-gray">{{ customer?.remainingAmount | currency:
-              'USD' }}
-            </dd>
+          <div
+            class="flex flex-col rounded-2xl border border-[var(--theme-border-secondary)] bg-[var(--theme-bg-main)]  px-2 py-5 text-center">
+            <dt class="order-last text-lg font-medium text-[var(--theme-text-secondary)]">Remaining Amount</dt>
+            <dd class="text-xl font-semibold text-[var(--theme-text-primary)]">{{ customer?.remainingAmount | currency:
+              'INR' }}</dd>
           </div>
         </dl>
       </div>
     </div>
 
     <!-- Personal Details Section -->
-    <div class="mt-4">
-      <div class="bg-white text-gray-800 p-6 rounded-2xl shadow-xl border border-gray-200">
-        <h2 class="text-2xl font-semibold text-gray-900 mb-4">Personal Details</h2>
-
+    <div class="mt-2">
+      <div class="p-2  rounded-2xl shadow-xl border" [style.backgroundColor]="'var(--theme-bg-primary)'"
+        [style.color]="'var(--theme-text-main)'" [style.borderColor]="'var(--theme-border-secondary)'">
+        <h2 class="text-2xl font-semibold mb-4 bg-[var(--theme-bg-primary)]" [style.color]="'var(--theme-text-heading)'">Personal Details</h2>
         <div *ngIf="customer">
-          <p-tabView>
-            <!-- Phone Numbers Tab -->
-            <p-tabPanel header="Phone Numbers">
-              <div class="bg-gray-50 p-4 rounded-xl shadow-sm border border-gray-200">
-                <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center gap-2">
-                  <i class="pi pi-phone text-blue-500"></i> Phone Numbers
-                </h3>
+          <!-- Custom Tab View -->
+          <div class="custom-tab-view bg-[var(--theme-bg-secondary)] rounded-xl overflow-hidden">
+            <!-- Tab Headers -->
+            <div class="flex border-b" [style.backgroundColor]="'var(--theme-bg-main)'" [style.borderColor]="'var(--theme-border-primary)'">
+              <div class="px-4 py-2 cursor-pointer transition-colors duration-200"
+                [ngClass]="{'font-semibold border-b-2': activeTab === 'phone', 'text-[var(--theme-text-secondary)] hover:bg-[var(--theme-hover-bg)]': activeTab !== 'phone'}"
+                [style.borderColor]="activeTab === 'phone' ? 'var(--theme-brand-primary)' : 'transparent'"
+                [style.color]="activeTab === 'phone' ? 'var(--theme-text-primary)' : 'var(--theme-text-secondary)'"
+                (click)="activeTab = 'phone'">
+                Phone Numbers
+              </div>
+              <div class="px-4 py-2 cursor-pointer transition-colors duration-200"
+                [ngClass]="{'font-semibold border-b-2': activeTab === 'address', 'text-[var(--theme-text-secondary)] hover:bg-[var(--theme-hover-bg)]': activeTab !== 'address'}"
+                [style.borderColor]="activeTab === 'address' ? 'var(--theme-brand-primary)' : 'transparent'"
+                [style.color]="activeTab === 'address' ? 'var(--theme-text-primary)' : 'var(--theme-text-secondary)'"
+                (click)="activeTab = 'address'">
+                Addresses
+              </div>
+            </div>
 
-                <div class="grid grid-cols-3 gap-3 text-sm font-medium text-gray-600 border-b pb-2">
-                  <div>Number</div>
-                  <div>Type</div>
-                  <div class="text-center">Primary</div>
-                </div>
+            <!-- Tab Content -->
+            <div class="p-4 rounded-b-xl shadow-inner border-t" [style.backgroundColor]="'var(--theme-bg-primary)'"
+              [style.borderColor]="'var(--theme-border-primary)'">
 
-                <div *ngFor="let phone of customer.phoneNumbers"
-                  class="grid grid-cols-3 gap-3 py-3 border-b border-gray-100 text-sm items-center">
-                  <span class="text-gray-700">{{ phone.number }}</span>
-                  <span class="px-2 py-1 rounded-md bg-blue-50 text-blue-700 text-center text-xs">
-                    {{ phone.type }}
-                  </span>
-                  <div class="flex justify-center">
-                    <p-checkbox [(ngModel)]="phone.primary" binary="true" [disabled]="true"></p-checkbox>
+              <!-- Phone Numbers Tab Content -->
+              <div *ngIf="activeTab === 'phone'">
+                <div class="rounded-xl shadow-sm border p-4" [style.backgroundColor]="'var(--theme-bg-tertiary)'"
+                  [style.borderColor]="'var(--theme-border-secondary)'">
+                  <h3 class="text-lg font-semibold mb-4 flex items-center gap-2"
+                    [style.color]="'var(--theme-text-heading)'">
+                    <i class="pi pi-phone" [style.color]="'var(--theme-brand-primary)'"></i> Phone Numbers
+                  </h3>
+                  <div class="grid grid-cols-3 gap-3 text-base font-medium border-b pb-2 mb-2"
+                    [style.color]="'var(--theme-text-secondary)'" [style.borderColor]="'var(--theme-border-secondary)'">
+                    <div>Number</div>
+                    <div>Type</div>
+                    <div class="text-center">Primary</div>
+                  </div>
+                  <div *ngFor="let phone of customer.phoneNumbers"
+                    class="grid grid-cols-3 gap-3 py-3 border-b text-base items-center leading-normal"
+                    [style.borderColor]="'var(--theme-border-secondary)'">
+                    <span [style.color]="'var(--theme-text-primary)'">{{ phone.number }}</span>
+                    <span class="px-3 py-1 rounded-full text-center text-sm font-semibold"
+                      [style.backgroundColor]="'var(--theme-brand-primary-light)'"
+                      [style.color]="'var(--theme-brand-primary)'">{{ phone.type }}</span>
+                    <div class="flex justify-center">
+                      <!-- Custom Checkbox -->
+                      <input type="checkbox" [checked]="phone.primary" [disabled]="true"
+                        class="appearance-none h-5 w-5 border rounded-sm checked:bg-[var(--theme-brand-primary)] checked:border-[var(--theme-brand-primary)] focus:outline-none focus:ring-2 focus:ring-[var(--theme-accent-focus-ring)] disabled:opacity-50 disabled:cursor-not-allowed"
+                        [style.borderColor]="'var(--theme-border-primary)'"
+                        [style.backgroundColor]="'var(--theme-bg-secondary)'">
+                    </div>
                   </div>
                 </div>
               </div>
-            </p-tabPanel>
 
-            <!-- Addresses Tab -->
-            <p-tabPanel header="Addresses">
-              <div class="bg-gray-50 p-4 rounded-xl shadow-sm border border-gray-200">
-                <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center gap-2">
-                  <i class="pi pi-home text-green-500"></i> Addresses
-                </h3>
-
-                <div class="grid grid-cols-7 gap-2 font-medium text-sm text-gray-600 border-b pb-2">
-                  <div>Street</div>
-                  <div>City</div>
-                  <div>State</div>
-                  <div>ZIP</div>
-                  <div>Country</div>
-                  <div>Type</div>
-                  <div class="text-center">Default</div>
-                </div>
-
-                <div *ngFor="let address of customer.addresses"
-                  class="grid grid-cols-7 gap-2 py-3 border-b border-gray-100 text-sm items-center">
-                  <span class="text-gray-700">{{ address.street }}</span>
-                  <span class="text-gray-700">{{ address.city }}</span>
-                  <span class="text-gray-700">{{ address.state }}</span>
-                  <span class="text-gray-700">{{ address.zipCode }}</span>
-                  <span class="text-gray-700">{{ address.country }}</span>
-                  <span class="px-2 py-1 rounded-md bg-green-50 text-green-700 text-xs text-center">
-                    {{ address.type }}
-                  </span>
-                  <div class="flex justify-center">
-                    <p-checkbox [(ngModel)]="address.isDefault" binary="true" [disabled]="true"></p-checkbox>
+              <!-- Addresses Tab Content -->
+              <div *ngIf="activeTab === 'address'">
+                <div class="rounded-xl shadow-sm border p-4" [style.backgroundColor]="'var(--theme-bg-tertiary)'"
+                  [style.borderColor]="'var(--theme-border-secondary)'">
+                  <h3 class="text-lg font-semibold mb-4 flex items-center gap-2"
+                    [style.color]="'var(--theme-text-heading)'">
+                    <i class="pi pi-home" [style.color]="'var(--theme-brand-primary)'"></i> Addresses
+                  </h3>
+                  <div class="grid grid-cols-7 gap-2 font-medium text-base border-b pb-2 mb-2"
+                    [style.color]="'var(--theme-text-secondary)'" [style.borderColor]="'var(--theme-border-secondary)'">
+                    <div>Street</div>
+                    <div>City</div>
+                    <div>State</div>
+                    <div>ZIP</div>
+                    <div>Country</div>
+                    <div>Type</div>
+                    <div class="text-center">Default</div>
+                  </div>
+                  <div *ngFor="let address of customer.addresses"
+                    class="grid grid-cols-7 gap-2 py-3 border-b text-base items-center leading-normal"
+                    [style.borderColor]="'var(--theme-border-secondary)'">
+                    <span [style.color]="'var(--theme-text-primary)'">{{ address.street }}</span>
+                    <span [style.color]="'var(--theme-text-primary)'">{{ address.city }}</span>
+                    <span [style.color]="'var(--theme-text-primary)'">{{ address.state }}</span>
+                    <span [style.color]="'var(--theme-text-primary)'">{{ address.zipCode }}</span>
+                    <span [style.color]="'var(--theme-text-primary)'">{{ address.country }}</span>
+                    <span class="px-3 py-1 rounded-full text-sm font-semibold text-center"
+                      [style.backgroundColor]="'var(--theme-brand-primary-light)'"
+                      [style.color]="'var(--theme-brand-primary)'">{{ address.type }}</span>
+                    <div class="flex justify-center">
+                      <!-- Custom Checkbox -->
+                      <input type="checkbox" [checked]="address.isDefault" [disabled]="true"
+                        class="appearance-none h-5 w-5 border rounded-sm checked:bg-[var(--theme-brand-primary)] checked:border-[var(--theme-brand-primary)] focus:outline-none focus:ring-2 focus:ring-[var(--theme-accent-focus-ring)] disabled:opacity-50 disabled:cursor-not-allowed"
+                        [style.borderColor]="'var(--theme-border-primary)'"
+                        [style.backgroundColor]="'var(--theme-bg-secondary)'">
+                    </div>
                   </div>
                 </div>
               </div>
-            </p-tabPanel>
-          </p-tabView>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -112,7 +150,7 @@
     <div class="mt-4">
       <p-accordion value="0">
         <p-accordion-panel value="0">
-          <p-accordion-header>
+          <p-accordion-header [style.backgroundColor]="'var(--theme-bg-main)'">
             <ng-template #toggleicon let-active="active">
               @if (active) {
               <i class="pi pi-minus"></i>
@@ -120,86 +158,72 @@
               <i class="pi pi-plus"></i>
               }
             </ng-template>
-            <span class="flex items-center gap-3 w-full text-gray-800">
+            <span class="flex items-center gap-3 w-full text-[var(--theme-text-heading)]">
               <p-avatar image="https://primefaces.org/cdn/primeng/images/demo/avatar/amyelsner.png" shape="circle" />
               <span class="font-bold text-lg">Cart Details</span>
             </span>
           </p-accordion-header>
-
           <p-accordion-content>
-            <p-panel header="Cart Items">
+            <p-panel header="Cart Items" styleClass="bg-[var(--theme-bg-primary)]">
               <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                 <div *ngFor="let item of customer?.cart?.items"
-                  class="bg-white rounded-2xl shadow-lg overflow-hidden border border-gray-200 flex flex-col">
-
+                  class="bg-[var(--theme-bg-primary)] rounded-2xl shadow-lg overflow-hidden border border-[var(--theme-border-secondary)] flex flex-col">
                   <!-- IMAGE + DATE PILL -->
                   <div class="relative">
                     <img [src]="'https://i.pinimg.com/736x/73/e1/53/73e153f060c76ca956f6fa9140d9ec1b.jpg'"
                       [alt]="item.productId.title" class="w-full h-36 object-cover" />
                     <div
-                      class="absolute top-2 right-2 bg-white bg-opacity-90 text-gray-700 text-xs font-medium rounded-full px-2 py-1">
-                      {{ item.invoiceIds[0]?.invoiceDate | date:'MMM d, y' }}
+                      class="absolute top-2 right-2 bg-[var(--theme-bg-tertiary)] text-[var(--theme-text-secondary)] text-xs font-medium rounded-full px-2 py-1">
+                      {{ item.invoiceIds[0]?.invoiceDate | date: 'MMM d, y' }}
                     </div>
                   </div>
-
                   <!-- BODY: TITLE + PRICE + DESCRIPTION -->
                   <div class="p-4 flex-1 flex flex-col gap-4">
-                    <!-- Title + Price Row -->
                     <div class="flex justify-between items-center">
-                      <!-- Product Title with primary-color left border -->
-                      <h3 class="text-lg font-semibold text-gray-800 truncate
-             border-l-4 border-indigo-600 pl-3">
+                      <h3
+                        class="text-lg font-semibold text-[var(--theme-text-heading)] truncate border-l-4 border-[var(--theme-brand-primary)] pl-3">
                         {{ item.productId.title }}
                       </h3>
-
-                      <!-- Price Badge with same accent -->
-                      <span class="text-lg font-bold text-indigo-600
-             border border-indigo-600 rounded-md px-3 py-1">
-                        {{ item.productId.price | currency:'USD' }}
+                      <span
+                        class="text-lg font-bold text-[var(--theme-brand-primary)] border border-[var(--theme-brand-primary)] rounded-2xl px-3 py-1">
+                        {{ item.productId.price | currency: 'INR' }}
                       </span>
                     </div>
-
-                    <!-- Description Card -->
-                    <div class="bg-gray-50 border border-gray-200 rounded-md p-3 text-sm text-gray-600">
+                    <div
+                      class="bg-[var(--theme-bg-tertiary)] border border-[var(--theme-border-secondary)] rounded-2xl p-3 text-sm text-[var(--theme-text-secondary)]">
                       {{ item.productId.description }}
                     </div>
                   </div>
-
-
                   <!-- FOOTER: GRADIENT BAR WITH INVOICE INFO -->
-                  <div class="bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 
-                    text-white px-4 py-3 rounded-b-2xl flex items-center justify-between">
-
-                    <!-- Left: Amount & Status Pills -->
+                  <div
+                    class="bg-[var(--theme-brand-primary)] text-[var(--theme-button-text-primary-btn)] px-4 py-3 rounded-b-2xl flex items-center justify-between">
                     <div class="flex flex-col">
                       <div class="text-sm opacity-90">Invoice Amount</div>
-                      <div class="text-xl font-bold">₹{{ item.invoiceIds[0].totalAmount | number:'1.0-0' }}</div>
+                      <div class="text-xl font-bold">{{ item.invoiceIds[0].totalAmount | currency: 'INR' }}</div>
                       <div class="mt-2 flex flex-wrap gap-1">
                         <p-button *ngFor="let inv of item.invoiceIds" [label]="inv.status"
                           [severity]="getStatusSeverity(inv.status)" variant="outlined"
-                          styleClass="!text-xs !py-0.5 !px-2 !rounded-full !border-white !text-white"></p-button>
+                          styleClass="!text-xs !py-0.5 !px-2 !rounded-full !border-[var(--theme-border-primary)] !text-[var(--theme-button-text-primary-btn)]"></p-button>
                       </div>
                     </div>
-
-                    <!-- Right: PDF Icon -->
                     <button (click)="openInvoiceDialog(item.invoiceIds[0]._id)"
-                      class="p-2 bg-white bg-opacity-20 hover:bg-opacity-30 rounded-full transition">
-                      <i class="pi pi-file-pdf text-white text-xl"></i>
+                      class="p-2 bg-[var(--theme-bg-tertiary)] hover:bg-[var(--theme-hover-bg)] rounded-full transition">
+                      <i class="pi pi-file-pdf text-[var(--theme-button-text-primary-btn)] text-xl"></i>
                     </button>
                   </div>
                 </div>
               </div>
             </p-panel>
           </p-accordion-content>
-
         </p-accordion-panel>
       </p-accordion>
     </div>
+
     <!-- Payment Accordion Section -->
     <div class="mt-4">
       <p-accordion value="0">
         <p-accordion-panel value="0">
-          <p-accordion-header>
+          <p-accordion-header [style.backgroundColor]="'var(--theme-bg-main)'">
             <ng-template #toggleicon let-active="active">
               @if (active) {
               <i class="pi pi-minus"></i>
@@ -207,75 +231,61 @@
               <i class="pi pi-plus"></i>
               }
             </ng-template>
-            <span class="flex items-center gap-3 w-full text-gray-800">
+            <span class="flex items-center gap-3 w-full text-[var(--theme-text-heading)]">
               <p-avatar image="https://primefaces.org/cdn/primeng/images/demo/avatar/amyelsner.png" shape="circle" />
               <span class="font-bold text-lg">Payment History</span>
             </span>
           </p-accordion-header>
-
           <p-accordion-content>
-            <p-panel header="Payment Transactions">
+            <p-panel header="Payment Transactions" styleClass="bg-[var(--theme-bg-primary)]">
               <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-
                 <div *ngFor="let payment of customer?.paymentHistory"
-                  class="relative bg-white p-6 rounded-2xl shadow-md border border-gray-200 w-full max-w-md mx-auto overflow-hidden">
-                  <span
-                    class="absolute inset-x-0 bottom-0 h-2 bg-gradient-to-r from-green-300 via-blue-500 to-purple-600"></span>
-
-                  <div class="absolute top-4 right-4 text-sm text-gray-800 font-medium">
-                    {{ payment.createdAt | date:'mediumDate' }}
+                  class="relative bg-[var(--theme-bg-primary)] p-6 rounded-2xl shadow-md border border-[var(--theme-border-secondary)] w-full max-w-md mx-auto overflow-hidden">
+                  <span class="absolute inset-x-0 bottom-0 h-2 bg-[var(--theme-brand-primary)]"></span>
+                  <div class="absolute top-4 right-4 text-sm text-[var(--theme-text-secondary)] font-medium">
+                    {{ payment.createdAt | date: 'mediumDate' }}
                   </div>
-
                   <div class="flex items-center gap-2 mb-2">
-                    <i class="pi pi-wallet text-lg text-gray-600"></i>
-                    <h2 class="text-xl font-semibold text-gray-800">Payment Details</h2>
+                    <i class="pi pi-wallet text-lg text-[var(--theme-text-secondary)]"></i>
+                    <h2 class="text-xl font-semibold text-[var(--theme-text-heading)]">Payment Details</h2>
                   </div>
-
                   <div class="flex flex-wrap gap-2 mt-2">
                     <p-button label="Transaction ID" icon="pi pi-hashtag" iconPos="left" severity="info"
                       variant="outlined" styleClass="!text-sm !py-1 !px-3 !rounded-full" [disabled]="true"></p-button>
-
                     <p-button [label]="payment.transactionId" variant="outlined" severity="contrast"
                       styleClass="!text-sm !py-1 !px-3 !rounded-full" [disabled]="true"></p-button>
                   </div>
-
                   <div class="mt-6">
-                    <p class="text-sm text-gray-500">Amount</p>
-                    <div class="text-3xl font-bold text-gray-900">
-                      ₹{{ payment.amount | number:'1.2-2' }}
-                    </div>
+                    <p class="text-sm text-[var(--theme-text-secondary)]">Amount</p>
+                    <div class="text-3xl font-bold text-[var(--theme-text-heading)]">{{ payment.amount | currency: 'INR'
+                      }}</div>
                   </div>
-
                   <div class="mt-4 flex justify-end">
                     <p-tag [value]="payment.status" [severity]="getStatusSeverity(payment.status)"
                       styleClass="!text-sm !py-1 !px-4 !rounded-lg" />
                   </div>
-
                 </div>
               </div>
             </p-panel>
           </p-accordion-content>
-      
         </p-accordion-panel>
       </p-accordion>
     </div>
-
-  </p-card>
+  </div>
 </div>
 
 <p-dialog [(visible)]="display" modal="true" header="Detailed View (Invoice)" appendTo="body"
   [style]="{ width: '80vw', height: '80vh' }" [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }"
-  [maximizable]="true">
+  styleClass="bg-[var(--theme-dialog-bg)] text-[var(--theme-text-primary)]" [maximizable]="true">
   <ng-container *ngComponentOutlet="dynamicComponent; inputs: { Id: Id }"></ng-container>
   <ng-container *ngIf="!dynamicComponent">
-    <div>
+    <div class="text-[var(--theme-text-secondary)]">
       <p>Loading component...</p>
     </div>
   </ng-container>
 </p-dialog>
 
-
-    <!-- <p-accordion-content>
+<!-- <p-accordion-content>
         <p-panel header="Payment Transactions">
           <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             <div *ngFor="let payment of customer?.paymentHistory"
@@ -315,7 +325,7 @@
           </div>
         </p-panel>
       </p-accordion-content> -->
-         <!-- <p-accordion-content>
+<!-- <p-accordion-content>
             <p-panel header="Cart Items">
               <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                 <div *ngFor="let item of customer?.cart?.items"
@@ -368,4 +378,3 @@
               </div>
             </p-panel>
           </p-accordion-content> -->
-       

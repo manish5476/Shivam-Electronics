@@ -2,13 +2,12 @@ import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { CellValueChangedEvent } from 'ag-grid-community';
 import { ApiService } from '../../../../core/services/api.service';
 import { SharedGridComponent } from '../../../../shared/AgGrid/grid/shared-grid/shared-grid.component';
-import { ToolbarComponent } from '../../../../shared/Components/toolbar/toolbar.component';
 import { PaymentService } from '../../../../core/services/payment.service';
 
 @Component({
   selector: 'app-payment-list',
   standalone: true,
-  imports: [SharedGridComponent, ToolbarComponent],
+  imports: [SharedGridComponent],
   templateUrl: './payment-list.component.html',
   styleUrls: ['./payment-list.component.css']
 })

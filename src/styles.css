@@ -6,8 +6,9 @@
   /* Primary Backgrounds */
   --theme-bg-primary: #f9f7f3; /* Light beige for main content */
   --theme-bg-secondary: #ffffff; /* White for sidebar/header/cards */
-  --theme-bg-tertiary: #c5c6ca; /* Lighter gray for input backgrounds */
-  --theme-bg-main: #090979; /* Lighter gray for input backgrounds */
+  --theme-bg-tertiary: #B3C8CF; /* Lighter gray for input backgrounds */
+  --theme-bg-main: #78B3CE; /* Lighter gray for input backgrounds */
+  --theme-bg-home: #003161; /* Lighter gray for input backgrounds */
 
   /* Text Colors */
   --theme-text-primary: #1e293b; /* Gray 800 for general content */
@@ -26,9 +27,9 @@
   --theme-brand-primary-light: #a5b4fc; /* Indigo 300 */
   --theme-brand-primary-hover: #4f46e5; /* Indigo 600 */
 
-  --theme-accent-primary: #f472b6; /* Pink 400 (original accent) */
-  --theme-accent-secondary: #f9a8d4; /* Pink 200 (original accent light) */
-  --theme-accent-hover: #ec489a; /* Pink 500 (original accent hover) */
+  --theme-accent-primary: #176B87; /* Pink 400 (original accent) */
+  --theme-accent-secondary: #176B87; /* Pink 200 (original accent light) */
+  --theme-accent-hover: #64CCC5; /* Pink 500 (original accent hover) */
   --theme-accent-focus-ring: rgba(99, 102, 241, 0.25); /* Primary light with opacity */
 
   --theme-secondary-accent-primary: #facc15; /* Yellow 400 */
@@ -74,8 +75,8 @@
   --theme-scroll-thumb: #9ca3af;
 
   /* Body Background Gradient (Light Mode) */
-  --theme-body-gradient-start: #ffffff;
-  --theme-body-gradient-end: #EEAECA;
+  --theme-body-gradient-start: #A4CCD9;
+  --theme-body-gradient-end: #578FCA;
 }
 
 /* Dark Theme Overrides */
@@ -181,6 +182,16 @@ body {
 .ag-theme-alpine {
   width: 100% !important;
   height: 100%;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+/* Hide scrollbar for IE, Edge and Firefox */
+.no-scrollbar {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
 }
 
 /* Common Link Style */
