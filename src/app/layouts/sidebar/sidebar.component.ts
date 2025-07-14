@@ -49,15 +49,15 @@ export class SidebarComponent implements OnInit {
     {
       label: 'Sellers', icon: 'pi pi-briefcase', items: [
         { label: 'Seller', icon: 'pi pi-id-card', routerLink: ['/sellers/Seller'] },
-        { label: 'Seller Details', icon: 'pi pi-user-edit', routerLink: ['/sellers/Seller details'] },
-        { label: 'Seller List', icon: 'pi pi-th-large', routerLink: ['/sellers/Seller List'] }
+        { label: 'Seller Details', icon: 'pi pi-user-edit', routerLink: ['/sellers/Sellerdetails'] },
+        // { label: 'Seller List', icon: 'pi pi-th-large', routerLink: ['/sellers/SellerList'] }
       ]
     },
     {
       label: 'Invoices', icon: 'pi pi-file', items: [
         { label: 'View Invoice', icon: 'pi pi-eye', routerLink: ['/invoices/view'] },
         { label: 'Create Invoice', icon: 'pi pi-plus-circle', routerLink: ['/invoices/create'] },
-        { label: 'Invoice Details', icon: 'pi pi-file-edit', routerLink: ['/invoices/Details'] }
+        { label: 'Invoice Details', icon: 'pi pi-file-edit', routerLink: ['/invoices/details'] }
       ]
     },
     {

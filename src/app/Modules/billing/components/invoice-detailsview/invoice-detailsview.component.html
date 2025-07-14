@@ -1,87 +1,122 @@
-<div id="invoice-print-section">
+<div id="invoice-print-section" class="p-4"
+     [style.backgroundColor]="'var(--theme-bg-main)'"
+     [style.color]="'var(--theme-text-primary)'">
 
-  <div *ngIf="!loading && invoiceData" class="space-y-6 px-4 py-6 bg-gray-100 text-sm max-w-screen-xl mx-auto">
+  <!-- Invoice Selection Dropdown -->
+  <p-select appendTo="body" [(ngModel)]="Id" (onChange)="getCustomerdata()" [options]="invoiceDropDown"
+    optionLabel="invoiceNumber" optionValue="_id" placeholder="Select Invoice"
+    class="w-full mb-6 rounded-md overflow-hidden"
+    [style.backgroundColor]="'var(--theme-bg-tertiary)'"
+    [style.color]="'var(--theme-text-primary)'"
+    [style.borderColor]="'var(--theme-border-secondary)'"
+    panelStyleClass="bg-[var(--theme-bg-secondary)] border-[var(--theme-border-primary)] shadow-lg rounded-md">
+  </p-select>
+
+  <div  class="space-y-6 w-full max-w-screen-xl mx-auto">
     <!-- Header -->
-    <!-- <div class="flex justify-between items-center">
-      <h1 class="text-3xl font-bold text-gray-800">Invoice Details</h1>
+    <div class="flex flex-col sm:flex-row justify-between items-center gap-4">
+      <h1 class="text-3xl font-bold text-center sm:text-left"
+          [style.color]="'var(--theme-text-heading)'">Invoice Details</h1>
       <button (click)="printInvoice()"
-        class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md shadow flex items-center">
-        <i class="pi pi-print mr-2"></i> Print
+        class="px-6 py-2 rounded-md shadow-lg flex items-center gap-2 transition-all duration-300 ease-in-out"
+        [style.backgroundColor]="'var(--theme-button-bg-primary)'"
+        [style.color]="'var(--theme-button-text-primary-btn)'"
+        (mouseenter)="onPrintButtonHover($event, true)"
+        (mouseleave)="onPrintButtonHover($event, false)">
+        <i class="pi pi-print"></i> Print Invoice
       </button>
-    </div> -->
+    </div>
 
     <!-- Invoice Info -->
-    <div class="rounded-lg border border-gray-200 shadow-md bg-white">
-      <div class="px-4 py-3 border-b border-gray-200">
-        <h2 class="text-lg font-semibold text-gray-800 flex items-center gap-2">
-          <i class="pi pi-file-invoice text-purple-500"></i> Invoice Information
+    <div class="rounded-lg border shadow-md"
+         [style.backgroundColor]="'var(--theme-bg-secondary)'"
+         [style.borderColor]="'var(--theme-border-primary)'"
+         (mouseenter)="onCardHover($event, true)"
+         (mouseleave)="onCardHover($event, false)">
+      <div class="px-4 py-3 border-b"
+           [style.borderColor]="'var(--theme-border-primary)'">
+        <h2 class="text-lg font-semibold flex items-center gap-2"
+            [style.color]="'var(--theme-text-heading)'">
+          <i class="pi pi-file-invoice" [style.color]="'var(--theme-brand-primary)'"></i> Invoice Information
         </h2>
       </div>
-      <div class="divide-y divide-gray-200">
-        <div class="px-4 py-2 grid grid-cols-3 gap-4">
-          <dt class="font-medium text-gray-500">Number</dt>
-          <dd class="text-gray-800 col-span-2">{{ invoiceData.invoiceNumber || 'N/A' }}</dd>
+      <div class="divide-y p-2" [style.borderColor]="'var(--theme-border-secondary)'">
+        <div class="px-2 py-2 grid grid-cols-1 sm:grid-cols-3 gap-2">
+          <dt class="font-medium" [style.color]="'var(--theme-text-secondary)'">Number</dt>
+          <dd class="col-span-2" [style.color]="'var(--theme-text-primary)'">{{ invoiceData.invoiceNumber || 'N/A' }}</dd>
         </div>
-        <div class="px-4 py-2 grid grid-cols-3 gap-4">
-          <dt class="font-medium text-gray-500">Date</dt>
-          <dd class="text-gray-800 col-span-2">{{ invoiceData.invoiceDate | date:'longDate' }}</dd>
+        <div class="px-2 py-2 grid grid-cols-1 sm:grid-cols-3 gap-2">
+          <dt class="font-medium" [style.color]="'var(--theme-text-secondary)'">Date</dt>
+          <dd class="col-span-2" [style.color]="'var(--theme-text-primary)'">{{ invoiceData.invoiceDate | date:'longDate' }}</dd>
         </div>
-        <div class="px-4 py-2 grid grid-cols-3 gap-4">
-          <dt class="font-medium text-gray-500">Due Date</dt>
-          <dd class="text-gray-800 col-span-2">{{ invoiceData.dueDate | date:'longDate' }}</dd>
+        <div class="px-2 py-2 grid grid-cols-1 sm:grid-cols-3 gap-2">
+          <dt class="font-medium" [style.color]="'var(--theme-text-secondary)'">Due Date</dt>
+          <dd class="col-span-2" [style.color]="'var(--theme-text-primary)'">{{ invoiceData.dueDate | date:'longDate' }}</dd>
         </div>
-        <div class="px-4 py-2 grid grid-cols-3 gap-4 items-center">
-          <dt class="font-medium text-gray-500">Status</dt>
+        <div class="px-2 py-2 grid grid-cols-1 sm:grid-cols-3 gap-2 items-center">
+          <dt class="font-medium" [style.color]="'var(--theme-text-secondary)'">Status</dt>
           <dd class="col-span-2">
             <p-tag [value]="invoiceData.status" [severity]="getStatusSeverity(invoiceData.status)"></p-tag>
           </dd>
         </div>
-        <div class="px-4 py-2 grid grid-cols-3 gap-4">
-          <dt class="font-medium text-gray-500">Place of Supply</dt>
-          <dd class="text-gray-800 col-span-2">{{ invoiceData.placeOfSupply || 'N/A' }}</dd>
+        <div class="px-2 py-2 grid grid-cols-1 sm:grid-cols-3 gap-2">
+          <dt class="font-medium" [style.color]="'var(--theme-text-secondary)'">Place of Supply</dt>
+          <dd class="col-span-2" [style.color]="'var(--theme-text-primary)'">{{ invoiceData.placeOfSupply || 'N/A' }}</dd>
         </div>
-        <div class="px-4 py-2 grid grid-cols-3 gap-4">
-          <dt class="font-medium text-gray-500">Payment Terms</dt>
-          <dd class="text-gray-800 col-span-2">{{ invoiceData.paymentTerms || 'N/A' }}</dd>
+        <div class="px-2 py-2 grid grid-cols-1 sm:grid-cols-3 gap-2">
+          <dt class="font-medium" [style.color]="'var(--theme-text-secondary)'">Payment Terms</dt>
+          <dd class="col-span-2" [style.color]="'var(--theme-text-primary)'">{{ invoiceData.paymentTerms || 'N/A' }}</dd>
         </div>
-        <div class="px-4 py-2 grid grid-cols-3 gap-4">
-          <dt class="font-medium text-gray-500">Notes</dt>
-          <dd class="text-gray-800 col-span-2 whitespace-pre-line">{{ invoiceData.notes || 'N/A' }}</dd>
+        <div class="px-2 py-2 grid grid-cols-1 sm:grid-cols-3 gap-2">
+          <dt class="font-medium" [style.color]="'var(--theme-text-secondary)'">Notes</dt>
+          <dd class="col-span-2 whitespace-pre-line" [style.color]="'var(--theme-text-primary)'">{{ invoiceData.notes || 'N/A' }}</dd>
         </div>
       </div>
     </div>
 
-    <!-- Seller and Buyer -->
-    <div class="flex flex-col lg:flex-row gap-4">
-      <div class="rounded-lg border border-gray-200 shadow-md bg-white w-full">
-        <div class="px-4 py-3 border-b border-gray-200">
-          <h2 class="text-lg font-semibold text-gray-800 flex items-center gap-2">
-            <i class="pi pi-user text-blue-500"></i> Seller Details
+    <!-- Seller and Buyer Details -->
+    <div class="flex flex-col lg:flex-row gap-6">
+      <div class="rounded-lg border shadow-md w-full"
+           [style.backgroundColor]="'var(--theme-bg-secondary)'"
+           [style.borderColor]="'var(--theme-border-primary)'"
+           (mouseenter)="onCardHover($event, true)"
+           (mouseleave)="onCardHover($event, false)">
+        <div class="px-4 py-3 border-b"
+             [style.borderColor]="'var(--theme-border-primary)'">
+          <h2 class="text-lg font-semibold flex items-center gap-2"
+              [style.color]="'var(--theme-text-heading)'">
+            <i class="pi pi-user" [style.color]="'var(--theme-brand-primary)'"></i> Seller Details
           </h2>
         </div>
-        <div class="divide-y divide-gray-200 p-2">
-          <div class="grid grid-cols-3 gap-4 py-2"
+        <div class="divide-y p-2" [style.borderColor]="'var(--theme-border-secondary)'">
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-2 py-2"
             *ngFor="let key of ['name','shopname','gstin','pan','contactNumber','address','createdAt','updatedAt']">
-            <dt class="font-medium text-gray-500 capitalize">{{ key }}</dt>
-            <dd class="text-gray-800 col-span-2 truncate">{{ invoiceData.sellerDetails?.[key] || 'N/A' }}</dd>
+            <dt class="font-medium capitalize" [style.color]="'var(--theme-text-secondary)'">{{ key }}</dt>
+            <dd class="col-span-2 truncate" [style.color]="'var(--theme-text-primary)'">{{ invoiceData.sellerDetails?.[key] || 'N/A' }}</dd>
           </div>
         </div>
       </div>
 
-      <div class="rounded-lg border border-gray-200 shadow-md bg-white w-full">
-        <div class="px-4 py-3 border-b border-gray-200">
-          <h2 class="text-lg font-semibold text-gray-800 flex items-center gap-2">
-            <i class="pi pi-user-plus text-teal-500"></i> Buyer Details
+      <div class="rounded-lg border shadow-md w-full"
+           [style.backgroundColor]="'var(--theme-bg-secondary)'"
+           [style.borderColor]="'var(--theme-border-primary)'"
+           (mouseenter)="onCardHover($event, true)"
+           (mouseleave)="onCardHover($event, false)">
+        <div class="px-4 py-3 border-b"
+             [style.borderColor]="'var(--theme-border-primary)'">
+          <h2 class="text-lg font-semibold flex items-center gap-2"
+              [style.color]="'var(--theme-text-heading)'">
+            <i class="pi pi-user-plus" [style.color]="'var(--theme-accent-primary)'"></i> Buyer Details
           </h2>
         </div>
-        <div class="divide-y divide-gray-200 p-2">
-          <div class="grid grid-cols-3 gap-4 py-2">
-            <dt class="font-medium text-gray-500">Name</dt>
-            <dd class="text-gray-800 col-span-2">{{ invoiceData.buyerDetails?.fullname || 'N/A' }}</dd>
+        <div class="divide-y p-2" [style.borderColor]="'var(--theme-border-secondary)'">
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-2 py-2">
+            <dt class="font-medium" [style.color]="'var(--theme-text-secondary)'">Name</dt>
+            <dd class="col-span-2" [style.color]="'var(--theme-text-primary)'">{{ invoiceData.buyerDetails?.fullname || 'N/A' }}</dd>
           </div>
-          <div class="grid grid-cols-3 gap-4 py-2">
-            <dt class="font-medium text-gray-500">Address</dt>
-            <dd class="text-gray-800 col-span-2 whitespace-pre-line">
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-2 py-2">
+            <dt class="font-medium" [style.color]="'var(--theme-text-secondary)'">Address</dt>
+            <dd class="col-span-2 whitespace-pre-line" [style.color]="'var(--theme-text-primary)'">
               {{ invoiceData.buyerDetails?.addresses?.[0]?.street || 'N/A' }},
               {{ invoiceData.buyerDetails?.addresses?.[0]?.city || '' }}
               {{ invoiceData.buyerDetails?.addresses?.[0]?.state || '' }}
@@ -93,513 +128,94 @@
     </div>
 
     <!-- Items Table -->
-    <div class="rounded-lg border border-gray-200 shadow-md bg-white overflow-x-auto">
-      <div class="px-4 py-3 border-b border-gray-200">
-        <h2 class="text-lg font-semibold text-gray-800 flex items-center gap-2">
-          <i class="pi pi-list text-indigo-500"></i> Items
+    <div class="rounded-lg border shadow-md overflow-hidden"
+         [style.backgroundColor]="'var(--theme-bg-secondary)'"
+         [style.borderColor]="'var(--theme-border-primary)'"
+         (mouseenter)="onCardHover($event, true)"
+         (mouseleave)="onCardHover($event, false)">
+      <div class="px-4 py-3 border-b"
+           [style.borderColor]="'var(--theme-border-primary)'">
+        <h2 class="text-lg font-semibold flex items-center gap-2"
+            [style.color]="'var(--theme-text-heading)'">
+          <i class="pi pi-list" [style.color]="'var(--theme-brand-primary)'"></i> Items
         </h2>
       </div>
-      <p-table [value]="invoiceData.items" styleClass="p-datatable-sm p-datatable-striped"
-        [tableStyle]="{ 'min-width': '65rem' }" responsiveLayout="scroll">
-        <ng-template pTemplate="header">
-          <tr>
-            <th>Item</th>
-            <th class="text-right">Qty</th>
-            <th class="text-right">Rate</th>
-            <th class="text-right">Discount</th>
-            <th class="text-right">Taxable</th>
-            <th class="text-right">CGST</th>
-            <th class="text-right">SGST</th>
-            <th class="text-right">Amount</th>
-          </tr>
-        </ng-template>
-        <ng-template pTemplate="body" let-item>
-          <tr>
-            <td>{{ item.itemDetails?.title || 'N/A' }}</td>
-            <td class="text-right">{{ item.quantity }}</td>
-            <td class="text-right">{{ item.rate | currency:'INR' }}</td>
-            <td class="text-right">{{ item.discount | currency:'INR' }}</td>
-            <td class="text-right">{{ item.taxableValue | currency:'INR' }}</td>
-            <td class="text-right">{{ item.cgstAmount | currency:'INR' }} ({{ item.cgstRate }}%)</td>
-            <td class="text-right">{{ item.sgstAmount | currency:'INR' }} ({{ item.sgstRate }}%)</td>
-            <td class="text-right font-medium">{{ item.amount | currency:'INR' }}</td>
-          </tr>
-        </ng-template>
-        <ng-template pTemplate="emptymessage">
-          <tr>
-            <td colspan="8" class="text-center py-4">No items found in this invoice.</td>
-          </tr>
-        </ng-template>
-      </p-table>
+      <div class="overflow-x-auto"> <!-- Added for responsiveness on small screens -->
+        <p-table [value]="invoiceData.items"
+                 styleClass="p-datatable-sm p-datatable-striped"
+                 [tableStyle]="{ 'min-width': '65rem' }"
+                 responsiveLayout="scroll">
+          <ng-template pTemplate="header">
+            <tr [style.backgroundColor]="'var(--theme-bg-tertiary)'"
+                [style.color]="'var(--theme-text-label)'">
+              <th class="p-2">Item</th>
+              <th class="text-right p-2">Qty</th>
+              <th class="text-right p-2">Rate</th>
+              <th class="text-right p-2">Discount</th>
+              <th class="text-right p-2">Taxable</th>
+              <th class="text-right p-2">CGST</th>
+              <th class="text-right p-2">SGST</th>
+              <th class="text-right p-2">Amount</th>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-item>
+            <tr [style.backgroundColor]="'var(--theme-bg-secondary)'"
+                [style.color]="'var(--theme-text-primary)'">
+              <td class="p-2">{{ item.itemDetails?.title || 'N/A' }}</td>
+              <td class="text-right p-2">{{ item.quantity }}</td>
+              <td class="text-right p-2">{{ item.rate | currency:'INR' }}</td>
+              <td class="text-right p-2">{{ item.discount | currency:'INR' }}</td>
+              <td class="text-right p-2">{{ item.taxableValue | currency:'INR' }}</td>
+              <td class="text-right p-2">{{ item.cgstAmount | currency:'INR' }} ({{ item.cgstRate }}%)</td>
+              <td class="text-right p-2">{{ item.sgstAmount | currency:'INR' }} ({{ item.sgstRate }}%)</td>
+              <td class="text-right font-medium p-2">{{ item.amount | currency:'INR' }}</td>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="emptymessage">
+            <tr>
+              <td colspan="8" class="text-center py-4" [style.color]="'var(--theme-text-secondary)'">No items found in this invoice.</td>
+            </tr>
+          </ng-template>
+        </p-table>
+      </div>
     </div>
 
     <!-- Financial Summary -->
-    <div class="rounded-lg border border-gray-200 shadow-md bg-white">
-      <div class="px-4 py-3 border-b border-gray-200">
-        <h2 class="text-lg font-semibold text-gray-800 flex items-center gap-2">
-          <i class="pi pi-wallet text-green-600"></i> Financial Summary
+    <div class="rounded-lg border shadow-md"
+         [style.backgroundColor]="'var(--theme-bg-secondary)'"
+         [style.borderColor]="'var(--theme-border-primary)'"
+         (mouseenter)="onCardHover($event, true)"
+         (mouseleave)="onCardHover($event, false)">
+      <div class="px-4 py-3 border-b"
+           [style.borderColor]="'var(--theme-border-primary)'">
+        <h2 class="text-lg font-semibold flex items-center gap-2"
+            [style.color]="'var(--theme-text-heading)'">
+          <i class="pi pi-wallet" [style.color]="'var(--theme-success-primary)'"></i> Financial Summary
         </h2>
       </div>
-      <div class="divide-y divide-gray-200 px-4 py-2">
-        <div class="flex justify-between py-1">
-          <span class="text-gray-600">Sub Total</span>
-          <span>{{ invoiceData.subTotal | currency:'INR' }}</span>
+      <div class="divide-y px-4 py-2" [style.borderColor]="'var(--theme-border-secondary)'">
+        <div class="flex justify-between py-2">
+          <span [style.color]="'var(--theme-text-secondary)'">Sub Total</span>
+          <span [style.color]="'var(--theme-text-primary)'">{{ invoiceData.subTotal | currency:'INR' }}</span>
         </div>
-        <div class="flex justify-between py-1">
-          <span class="text-red-600">Total Discount</span>
-          <span>({{ invoiceData.totalDiscount | currency:'INR' }})</span>
+        <div class="flex justify-between py-2">
+          <span [style.color]="'var(--theme-error-primary)'">Total Discount</span>
+          <span [style.color]="'var(--theme-error-primary)'">({{ invoiceData.totalDiscount | currency:'INR' }})</span>
         </div>
-        <div class="flex justify-between py-1">
-          <span>Total Tax (CGST+SGST/IGST)</span>
-          <span>{{ (invoiceData.igst || 0) + (invoiceData.totalCGST || 0) + (invoiceData.totalSGST || 0) |
-            currency:'INR' }}</span>
+        <div class="flex justify-between py-2">
+          <span [style.color]="'var(--theme-text-primary)'">Total Tax (CGST+SGST/IGST)</span>
+          <span [style.color]="'var(--theme-text-primary)'">{{ (invoiceData.igst || 0) + (invoiceData.totalCGST || 0) + (invoiceData.totalSGST || 0) | currency:'INR' }}</span>
         </div>
-        <div class="flex justify-between py-1">
-          <span>CESS</span>
-          <span>{{ invoiceData.cess | currency:'INR' }}</span>
+        <div class="flex justify-between py-2">
+          <span [style.color]="'var(--theme-text-primary)'">CESS</span>
+          <span [style.color]="'var(--theme-text-primary)'">{{ invoiceData.cess | currency:'INR' }}</span>
         </div>
-        <div class="flex justify-between border-t pt-3 mt-3">
-          <span class="text-lg font-semibold text-gray-700">Grand Total</span>
-          <span class="text-xl font-bold text-green-600">{{ invoiceData.totalAmount | currency:'INR' }}</span>
+        <div class="flex justify-between border-t pt-3 mt-3"
+             [style.borderColor]="'var(--theme-border-primary)'">
+          <span class="text-lg font-semibold" [style.color]="'var(--theme-text-heading)'">Grand Total</span>
+          <span class="text-xl font-bold" [style.color]="'var(--theme-success-primary)'">{{ invoiceData.totalAmount | currency:'INR' }}</span>
         </div>
       </div>
     </div>
   </div>
 </div>
-<!-- <div *ngIf="!loading && invoiceData" class="space-y-4 p-4 bg-gray-100 text-sm">
-
-  <h1 class="text-2xl font-semibold text-gray-800 mb-4">Invoice Details</h1>
-
-  <div class="rounded-lg border border-gray-200 shadow-md bg-white">
-    <div class="px-4 py-3 border-b border-gray-200">
-      <h2 class="text-lg font-semibold text-gray-800">Invoice Information</h2>
-    </div>
-    <div class="divide-y divide-gray-200">
-      <div class="px-4 py-2 grid grid-cols-3 gap-4">
-        <dt class="font-medium text-gray-500">Number</dt>
-        <dd class="text-gray-800 col-span-2">{{ invoiceData.invoiceNumber || 'N/A' }}</dd>
-      </div>
-      <div class="px-4 py-2 grid grid-cols-3 gap-4">
-        <dt class="font-medium text-gray-500">Date</dt>
-        <dd class="text-gray-800 col-span-2">{{ invoiceData.invoiceDate | date:'longDate' }}</dd>
-      </div>
-      <div class="px-4 py-2 grid grid-cols-3 gap-4">
-        <dt class="font-medium text-gray-500">Due Date</dt>
-        <dd class="text-gray-800 col-span-2">{{ invoiceData.dueDate | date:'longDate' }}</dd>
-      </div>
-      <div class="px-4 py-2 grid grid-cols-3 gap-4 items-center">
-        <dt class="font-medium text-gray-500">Status</dt>
-        <dd class="col-span-2">
-          <p-tag [value]="invoiceData.status" [severity]="getStatusSeverity(invoiceData.status)"></p-tag>
-        </dd>
-      </div>
-      <div class="px-4 py-2 grid grid-cols-3 gap-4">
-        <dt class="font-medium text-gray-500">Place of Supply</dt>
-        <dd class="text-gray-800 col-span-2">{{ invoiceData.placeOfSupply || 'N/A' }}</dd>
-      </div>
-      <div class="px-4 py-2 grid grid-cols-3 gap-4">
-        <dt class="font-medium text-gray-500">Payment Terms</dt>
-        <dd class="text-gray-800 col-span-2">{{ invoiceData.paymentTerms || 'N/A' }}</dd>
-      </div>
-      <div class="px-4 py-2 grid grid-cols-3 gap-4">
-        <dt class="font-medium text-gray-500">Notes</dt>
-        <dd class="text-gray-800 col-span-2 whitespace-pre-line">{{ invoiceData.notes || 'N/A' }}</dd>
-      </div>
-    </div>
-  </div>
-
-  <div class="flex flex-col lg:flex-row gap-4">
-
-    <div class="rounded-lg border border-gray-200 shadow-md bg-white w-full">
-      <div class="px-4 py-3 border-b border-gray-200">
-        <h2 class="text-lg font-semibold text-gray-800">Seller Details</h2>
-      </div>
-      <div class="divide-y divide-gray-200">
-        <div class="px-4 py-2 grid grid-cols-3 gap-4">
-          <dt class="font-medium text-gray-500">Name</dt>
-          <dd class="text-gray-800 col-span-2 truncate">{{ invoiceData.sellerDetails?.name || 'N/A' }}</dd>
-        </div>
-        <div class="px-4 py-2 grid grid-cols-3 gap-4">
-          <dt class="font-medium text-gray-500">Shop</dt>
-          <dd class="text-gray-800 col-span-2 truncate">{{ invoiceData.sellerDetails?.shopname || 'N/A' }}</dd>
-        </div>
-        <div class="px-4 py-2 grid grid-cols-3 gap-4">
-          <dt class="font-medium text-gray-500">GSTIN</dt>
-          <dd class="text-gray-800 col-span-2 truncate">{{ invoiceData.sellerDetails?.gstin || 'N/A' }}</dd>
-        </div>
-        <div class="px-4 py-2 grid grid-cols-3 gap-4">
-          <dt class="font-medium text-gray-500">PAN</dt>
-          <dd class="text-gray-800 col-span-2 truncate">{{ invoiceData.sellerDetails?.pan || 'N/A' }}</dd>
-        </div>
-        <div class="px-4 py-2 grid grid-cols-3 gap-4">
-          <dt class="font-medium text-gray-500">Contact</dt>
-          <dd class="text-gray-800 col-span-2 truncate">{{ invoiceData.sellerDetails?.contactNumber || 'N/A' }}</dd>
-        </div>
-        <div class="px-4 py-2 grid grid-cols-3 gap-4">
-          <dt class="font-medium text-gray-500">Address</dt>
-          <dd class="text-gray-800 col-span-2 whitespace-pre-line">{{ invoiceData.sellerDetails?.address || 'N/A' }}
-          </dd>
-        </div>
-        <div class="px-4 py-2 grid grid-cols-3 gap-4">
-          <dt class="font-medium text-gray-500">Created</dt>
-          <dd class="text-gray-800 col-span-2">{{ invoiceData.sellerDetails?.createdAt | date:'short' }}</dd>
-        </div>
-        <div class="px-4 py-2 grid grid-cols-3 gap-4">
-          <dt class="font-medium text-gray-500">Updated</dt>
-          <dd class="text-gray-800 col-span-2">{{ invoiceData.sellerDetails?.updatedAt | date:'short' }}</dd>
-        </div>
-      </div>
-    </div>
-
-    <div class="rounded-lg border border-gray-200 shadow-md bg-white w-full">
-      <div class="px-4 py-3 border-b border-gray-200">
-        <h2 class="text-lg font-semibold text-gray-800">Buyer Details</h2>
-      </div>
-      <div class="divide-y divide-gray-200">
-        <div class="px-4 py-2 grid grid-cols-3 gap-4">
-          <dt class="font-medium text-gray-500">Name</dt>
-          <dd class="text-gray-800 col-span-2 truncate">{{ invoiceData.buyerDetails?.fullname || 'N/A' }}</dd>
-        </div>
-        <div class="px-4 py-2 grid grid-cols-3 gap-4">
-          <dt class="font-medium text-gray-500">Email</dt>
-          <dd class="text-gray-800 col-span-2 truncate">{{ invoiceData.buyerDetails?.email || 'N/A' }}</dd>
-        </div>
-        <div class="px-4 py-2 grid grid-cols-3 gap-4">
-          <dt class="font-medium text-gray-500">Guarantor ID</dt>
-          <dd class="text-gray-800 col-span-2 truncate">{{ invoiceData.buyerDetails?.guaranteerId || 'N/A' }}</dd>
-        </div>
-        <div class="px-4 py-2 grid grid-cols-3 gap-4">
-          <dt class="font-medium text-gray-500">Status</dt>
-          <dd class="text-gray-800 col-span-2 truncate">{{ invoiceData.buyerDetails?.status || 'N/A' }}</dd>
-        </div>
-        <div class="px-4 py-2 grid grid-cols-3 gap-4">
-          <dt class="font-medium text-gray-500">Contact</dt>
-          <dd class="text-gray-800 col-span-2 truncate">{{ invoiceData.buyerDetails?.phoneNumbers?.[0]?.number || 'N/A'
-            }}</dd>
-        </div>
-        <div class="px-4 py-2 grid grid-cols-3 gap-4">
-          <dt class="font-medium text-gray-500">Address</dt>
-          <dd class="text-gray-800 col-span-2 whitespace-pre-line">
-            {{ invoiceData.buyerDetails?.addresses?.[0]?.street || 'N/A' }},
-            {{ invoiceData.buyerDetails?.addresses?.[0]?.city || 'N/A' }},
-            {{ invoiceData.buyerDetails?.addresses?.[0]?.state || 'N/A' }}
-            {{ invoiceData.buyerDetails?.addresses?.[0]?.zipCode || '' }}
-            {{ invoiceData.buyerDetails?.addresses?.[0]?.country || '' }}
-          </dd>
-        </div>
-        <div class="px-4 py-2 grid grid-cols-3 gap-4">
-          <dt class="font-medium text-gray-500">Created</dt>
-          <dd class="text-gray-800 col-span-2">{{ invoiceData.buyerDetails?.createdAt | date:'short' }}</dd>
-        </div>
-        <div class="px-4 py-2 grid grid-cols-3 gap-4">
-          <dt class="font-medium text-gray-500">Updated</dt>
-          <dd class="text-gray-800 col-span-2">{{ invoiceData.buyerDetails?.updatedAt | date:'short' }}</dd>
-        </div>
-      </div>
-    </div>
-
-  </div>
-
-  <div class="rounded-lg border border-gray-200 shadow-md bg-white">
-    <div class="px-4 py-3 border-b border-gray-200">
-      <h2 class="text-lg font-semibold text-gray-800">Items</h2>
-    </div>
-    <div class="p-0">
-      <p-table [value]="invoiceData.items" styleClass="p-datatable-sm p-datatable-striped"
-        [tableStyle]="{ 'min-width': '65rem' }" responsiveLayout="scroll">
-        <ng-template pTemplate="header">
-          <tr>
-            <th class="whitespace-nowrap">Item Name</th>
-            <th class="whitespace-nowrap text-right">Qty</th>
-            <th class="whitespace-nowrap text-right">Rate</th>
-            <th class="whitespace-nowrap text-right">Discount</th>
-            <th class="whitespace-nowrap text-right">Taxable Value</th>
-            <th class="whitespace-nowrap text-right">CGST</th>
-            <th class="whitespace-nowrap text-right">SGST</th>
-            <th class="whitespace-nowrap text-right">Amount</th>
-          </tr>
-        </ng-template>
-        <ng-template pTemplate="body" let-item>
-          <tr>
-            <td>{{ item.itemDetails?.title || 'N/A' }}</td>
-            <td class="text-right">{{ item.quantity }}</td>
-            <td class="text-right">{{ item.rate | currency:'INR' }}</td>
-            <td class="text-right">{{ item.discount | currency:'INR' }}</td>
-            <td class="text-right">{{ item.taxableValue | currency:'INR' }}</td>
-            <td class="text-right">{{ item.cgstAmount | currency:'INR' }} ({{ item.cgstRate }}%)</td>
-            <td class="text-right">{{ item.sgstAmount | currency:'INR' }} ({{ item.sgstRate }}%)</td>
-            <td class="text-right font-medium">{{ item.amount | currency:'INR' }}</td>
-          </tr>
-        </ng-template>
-        <ng-template pTemplate="emptymessage">
-          <tr>
-            <td colspan="8" class="text-center py-4">No items found in this invoice.</td>
-          </tr>
-        </ng-template>
-      </p-table>
-    </div>
-  </div>
-
-  <div class="rounded-lg border border-gray-200 shadow-md bg-white">
-    <div class="px-4 py-3 border-b border-gray-200">
-      <h2 class="text-lg font-semibold text-gray-800">Financial Summary</h2>
-    </div>
-    <div class="divide-y divide-gray-200">
-      <div class="px-4 py-2 grid grid-cols-3 gap-4">
-        <dt class="font-medium text-gray-500">Sub Total</dt>
-        <dd class="text-gray-800 col-span-2 text-right">{{ invoiceData.subTotal | currency:'INR' }}</dd>
-      </div>
-      <div class="px-4 py-2 grid grid-cols-3 gap-4">
-        <dt class="font-medium text-gray-500">Total Discount</dt>
-        <dd class="text-red-600 col-span-2 text-right">({{ invoiceData.totalDiscount | currency:'INR' }})</dd>
-      </div>
-      <div class="px-4 py-2 grid grid-cols-3 gap-4">
-        <dt class="font-medium text-gray-500">Total Tax (CGST+SGST/IGST)</dt>
-        <dd class="text-gray-800 col-span-2 text-right">{{ (invoiceData.igst || 0) + (invoiceData.totalCGST || 0) +
-          (invoiceData.totalSGST || 0) | currency:'INR' }}</dd>
-      </div>
-      <div class="px-4 py-2 grid grid-cols-3 gap-4">
-        <dt class="font-medium text-gray-500">CESS</dt>
-        <dd class="text-gray-800 col-span-2 text-right">{{ invoiceData.cess | currency:'INR' }}</dd>
-      </div>
-      <div class="px-4 py-3 grid grid-cols-3 gap-4 items-center">
-        <dt class="text-base font-semibold text-gray-700">Grand Total</dt>
-        <dd class="text-xl font-bold text-green-600 col-span-2 text-right">{{ invoiceData.totalAmount | currency:'INR'
-          }}</dd>
-      </div>
-    </div>
-  </div>
-
-</div>
-
-<div *ngIf="loading" class="flex justify-center items-center py-10">
-  <div class="text-center space-y-2">
-    <i class="pi pi-spin pi-spinner text-4xl text-blue-500"></i>
-    <p class="text-gray-600">Loading invoice details...</p>
-  </div>
-</div>
-
-<div *ngIf="!loading && !invoiceData && Id" class="flex justify-center items-center py-10">
-  <div class="text-center space-y-2 text-red-700 border border-red-300 bg-red-50 p-6 rounded-lg shadow-sm">
-    <i class="pi pi-exclamation-triangle text-4xl"></i>
-    <p class="font-semibold">Error loading invoice details.</p>
-    <p>Please check the invoice ID or try again later.</p>
-  </div>
-</div> -->
-
-<!-- 
-<div *ngIf="!loading && invoiceData" class="space-y-3">
-  <div class="rounded-lg border border-gray-700 shadow-md dark:border-gray-700 bg-gray-800">
-    <div class="px-4 py-2 border-b border-gray-700">
-      <h2 class="text-lg font-semibold text-white">Invoice Information</h2>
-    </div>
-    <div class="divide-y divide-gray-700">
-      <div class="px-4 py-2 grid grid-cols-2 sm:grid-cols-3 gap-x-2 gap-y-1">
-        <dt class="font-medium text-gray-300">Invoice Number</dt>
-        <dd class="text-white sm:col-span-2 truncate">{{ invoiceData.invoiceNumber }}</dd>
-      </div>
-      <div class="px-4 py-2 grid grid-cols-2 sm:grid-cols-3 gap-x-2 gap-y-1">
-        <dt class="font-medium text-gray-300">Invoice Date</dt>
-        <dd class="text-white sm:col-span-2">{{ invoiceData.invoiceDate | date }}</dd>
-      </div>
-      <div class="px-4 py-2 grid grid-cols-2 sm:grid-cols-3 gap-x-2 gap-y-1">
-        <dt class="font-medium text-gray-300">Due Date</dt>
-        <dd class="text-white sm:col-span-2">{{ invoiceData.dueDate | date }}</dd>
-      </div>
-      <div class="px-4 py-2 grid grid-cols-2 sm:grid-cols-3 gap-x-2 gap-y-1">
-        <dt class="font-medium text-gray-300">Status</dt>
-        <dd class="text-white sm:col-span-2">{{ invoiceData.status }}</dd>
-      </div>
-      <div class="px-4 py-2 grid grid-cols-2 sm:grid-cols-3 gap-x-2 gap-y-1">
-        <dt class="font-medium text-gray-300">Place of Supply</dt>
-        <dd class="text-white sm:col-span-2">{{ invoiceData.placeOfSupply }}</dd>
-      </div>
-      <div class="px-4 py-2 grid grid-cols-2 sm:grid-cols-3 gap-x-2 gap-y-1">
-        <dt class="font-medium text-gray-300">Payment Terms</dt>
-        <dd class="text-white sm:col-span-2">{{ invoiceData.paymentTerms }}</dd>
-      </div>
-      <div class="px-4 py-2 grid grid-cols-2 sm:grid-cols-3 gap-x-2 gap-y-1">
-        <dt class="font-medium text-gray-300">Notes</dt>
-        <dd class="text-white sm:col-span-2">{{ invoiceData.notes }}</dd>
-      </div>
-    </div>
-  </div>
-
-  <div class="flex flex-col sm:flex-row gap-3">
-    <div class="rounded-lg border border-gray-700 shadow-md dark:border-gray-700 bg-gray-800 w-full">
-      <div class="px-4 py-2 border-b border-gray-700">
-        <h2 class="text-lg font-semibold text-white">Seller Details</h2>
-      </div>
-      <div class="divide-y divide-gray-700">
-        <div class="px-4 py-2 grid grid-cols-2 sm:grid-cols-2 gap-x-2 gap-y-1">
-          <dt class="font-medium text-gray-300">Name</dt>
-          <dd class="text-white truncate">{{ invoiceData.sellerDetails?.name }}</dd>
-        </div>
-        <div class="px-4 py-2 grid grid-cols-2 sm:grid-cols-2 gap-x-2 gap-y-1">
-          <dt class="font-medium text-gray-300">Shop Name</dt>
-          <dd class="text-white truncate">{{ invoiceData.sellerDetails?.shopname }}</dd>
-        </div>
-        <div class="px-4 py-2 grid grid-cols-2 sm:grid-cols-2 gap-x-2 gap-y-1">
-          <dt class="font-medium text-gray-300">GSTIN</dt>
-          <dd class="text-white truncate">{{ invoiceData.sellerDetails?.gstin }}</dd>
-        </div>
-        <div class="px-4 py-2 grid grid-cols-2 sm:grid-cols-2 gap-x-2 gap-y-1">
-          <dt class="font-medium text-gray-300">PAN</dt>
-          <dd class="text-white truncate">{{ invoiceData.sellerDetails?.pan }}</dd>
-        </div>
-        <div class="px-4 py-2 grid grid-cols-2 sm:grid-cols-2 gap-x-2 gap-y-1">
-          <dt class="font-medium text-gray-300">Contact</dt>
-          <dd class="text-white truncate">{{ invoiceData.sellerDetails?.contactNumber }}</dd>
-        </div>
-        <div class="px-4 py-2 grid grid-cols-2 sm:grid-cols-2 gap-x-2 gap-y-1">
-          <dt class="font-medium text-gray-300">Address</dt>
-          <dd class="text-white truncate">{{ invoiceData.sellerDetails?.address }}</dd>
-        </div>
-        <div class="px-4 py-2 grid grid-cols-2 sm:grid-cols-2 gap-x-2 gap-y-1">
-          <dt class="font-medium text-gray-300">Created</dt>
-          <dd class="text-white truncate">{{ invoiceData.sellerDetails?.createdAt | date:'short' }}</dd>
-        </div>
-        <div class="px-4 py-2 grid grid-cols-2 sm:grid-cols-2 gap-x-2 gap-y-1">
-          <dt class="font-medium text-gray-300">Updated</dt>
-          <dd class="text-white truncate">{{ invoiceData.sellerDetails?.updatedAt | date:'short' }}</dd>
-        </div>
-      </div>
-    </div>
-
-    <div class="rounded-lg border border-gray-700 shadow-md dark:border-gray-700 bg-gray-800 w-full">
-      <div class="px-4 py-2 border-b border-gray-700">
-        <h2 class="text-lg font-semibold text-white">Buyer Details</h2>
-      </div>
-      <div class="divide-y divide-gray-700">
-        <div class="px-4 py-2 grid grid-cols-2 sm:grid-cols-2 gap-x-2 gap-y-1">
-          <dt class="font-medium text-gray-300">Full Name</dt>
-          <dd class="text-white truncate">{{ invoiceData.buyerDetails?.fullname }}</dd>
-        </div>
-        <div class="px-4 py-2 grid grid-cols-2 sm:grid-cols-2 gap-x-2 gap-y-1">
-          <dt class="font-medium text-gray-300">Email</dt>
-          <dd class="text-white truncate">{{ invoiceData.buyerDetails?.email }}</dd>
-        </div>
-        <div class="px-4 py-2 grid grid-cols-2 sm:grid-cols-2 gap-x-2 gap-y-1">
-          <dt class="font-medium text-gray-300">Guarantor ID</dt>
-          <dd class="text-white truncate">{{ invoiceData.buyerDetails?.guaranteerId }}</dd>
-        </div>
-        <div class="px-4 py-2 grid grid-cols-2 sm:grid-cols-2 gap-x-2 gap-y-1">
-          <dt class="font-medium text-gray-300">Status</dt>
-          <dd class="text-white truncate">{{ invoiceData.buyerDetails?.status }}</dd>
-        </div>
-        <div class="px-4 py-2 grid grid-cols-2 sm:grid-cols-2 gap-x-2 gap-y-1">
-          <dt class="font-medium text-gray-300">Contact</dt>
-          <dd class="text-white truncate">{{ invoiceData.buyerDetails?.phoneNumbers?.[0]?.number }}</dd>
-        </div>
-        <div class="px-4 py-2 grid grid-cols-2 sm:grid-cols-2 gap-x-2 gap-y-1">
-          <dt class="font-medium text-gray-300">Address</dt>
-          <dd class="text-white truncate">
-            {{ invoiceData.buyerDetails?.addresses?.[0]?.street }},
-            {{ invoiceData.buyerDetails?.addresses?.[0]?.city }},
-            {{ invoiceData.buyerDetails?.addresses?.[0]?.state }}
-          </dd>
-        </div>
-        <div class="px-4 py-2 grid grid-cols-2 sm:grid-cols-2 gap-x-2 gap-y-1">
-          <dt class="font-medium text-gray-300">Created</dt>
-          <dd class="text-white truncate">{{ invoiceData.buyerDetails?.createdAt | date:'short' }}</dd>
-        </div>
-        <div class="px-4 py-2 grid grid-cols-2 sm:grid-cols-2 gap-x-2 gap-y-1">
-          <dt class="font-medium text-gray-300">Updated</dt>
-          <dd class="text-white truncate">{{ invoiceData.buyerDetails?.updatedAt | date:'short' }}</dd>
-        </div>
-      </div>
-    </div>
-  </div>
-
-
-  <div class="rounded-lg border border-gray-700 shadow-md dark:border-gray-700 bg-gray-800">
-    <div class="px-4 py-2 border-b border-gray-700">
-      <h2 class="text-lg font-semibold text-white">Items</h2>
-    </div>
-    <ul class="divide-y divide-gray-700">
-      <li *ngFor="let item of invoiceData.items" class="px-4 py-3">
-        <h4 class="font-semibold text-white">{{ item.itemDetails?.title || 'Product Details Unavailable' }}</h4>
-        <div class="grid grid-cols-2 gap-3 mt-2 text-sm">
-          <div>
-            <div class="grid grid-cols-2 gap-x-2 gap-y-1">
-              <dt class="font-medium text-gray-300">Qty</dt>
-              <dd class="text-white">{{ item.quantity }}</dd>
-            </div>
-            <div class="grid grid-cols-2 gap-x-2 gap-y-1">
-              <dt class="font-medium text-gray-300">Rate</dt>
-              <dd class="text-white">{{ item.rate }}</dd>
-            </div>
-            <div class="grid grid-cols-2 gap-x-2 gap-y-1">
-              <dt class="font-medium text-gray-300">Discount</dt>
-              <dd class="text-white">{{ item.discount }}</dd>
-            </div>
-            <div class="grid grid-cols-2 gap-x-2 gap-y-1">
-              <dt class="font-medium text-gray-300">Taxable Value</dt>
-              <dd class="text-white">{{ item.taxableValue }}</dd>
-            </div>
-          </div>
-          <div>
-            <div class="grid grid-cols-2 gap-x-2 gap-y-1">
-              <dt class="font-medium text-gray-300">CGST Rate</dt>
-              <dd class="text-white">{{ item.cgstRate }}%</dd>
-            </div>
-            <div class="grid grid-cols-2 gap-x-2 gap-y-1">
-              <dt class="font-medium text-gray-300">SGST Rate</dt>
-              <dd class="text-white">{{ item.sgstRate }}%</dd>
-            </div>
-            <div class="grid grid-cols-2 gap-x-2 gap-y-1">
-              <dt class="font-medium text-gray-300">CGST Amt</dt>
-              <dd class="text-white">{{ item.cgstAmount }}</dd>
-            </div>
-            <div class="grid grid-cols-2 gap-x-2 gap-y-1">
-              <dt class="font-medium text-gray-300">SGST Amt</dt>
-              <dd class="text-white">{{ item.sgstAmount }}</dd>
-            </div>
-            <div class="grid grid-cols-2 gap-x-2 gap-y-1">
-              <dt class="font-medium text-gray-300">Amount</dt>
-              <dd class="text-white">{{ item.amount }}</dd>
-            </div>
-          </div>
-        </div>
-      </li>
-    </ul>
-  </div>
-
-
-  <div class="rounded-lg border border-gray-700 shadow-md dark:border-gray-700 bg-gray-800">
-    <div class="px-4 py-2 border-b border-gray-700">
-      <h2 class="text-lg font-semibold text-white">Financials</h2>
-    </div>
-    <div class="divide-y divide-gray-700">
-      <div class="px-4 py-2 grid grid-cols-2 sm:grid-cols-3 gap-x-2 gap-y-1">
-        <dt class="font-medium text-gray-300">Sub Total</dt>
-        <dd class="text-white sm:col-span-2">{{ invoiceData.subTotal }}</dd>
-      </div>
-      <div class="px-4 py-2 grid grid-cols-2 sm:grid-cols-3 gap-x-2 gap-y-1">
-        <dt class="font-medium text-gray-300">Total Discount</dt>
-        <dd class="text-white sm:col-span-2">{{ invoiceData.totalDiscount }}</dd>
-      </div>
-      <div class="px-4 py-2 grid grid-cols-2 sm:grid-cols-3 gap-x-2 gap-y-1">
-        <dt class="font-medium text-gray-300">IGST</dt>
-        <dd class="text-white sm:col-span-2">{{ invoiceData.igst }}</dd>
-      </div>
-      <div class="px-4 py-2 grid grid-cols-2 sm:grid-cols-3 gap-x-2 gap-y-1">
-        <dt class="font-medium text-gray-300">CESS</dt>
-        <dd class="text-white sm:col-span-2">{{ invoiceData.cess }}</dd>
-      </div>
-      <div class="px-4 py-3 grid grid-cols-2 sm:grid-cols-3 gap-x-2 gap-y-1">
-        <dt class="font-medium text-gray-300">Total Amount</dt>
-        <dd class="text-2xl font-semibold text-green-400 sm:col-span-2">{{ invoiceData.totalAmount }}</dd>
-      </div>
-    </div>
-  </div>
-
-</div>
-
-<div *ngIf="loading" class="text-center py-4 text-gray-300">
-  Loading invoice details...
-</div>
-
-<div *ngIf="!loading && !invoiceData && Id" class="text-center py-4 text-red-400 text-gray-300">
-  Error loading invoice details. Please try again.
-</div> -->
