@@ -1,1 +1,44 @@
-/* @import "tailwindcss"; */
+.container {
+  max-width: 1200px;
+}
+
+.p-datatable .p-datatable-thead > tr > th {
+  padding: 0.75rem;
+  font-weight: 600;
+  border-bottom: 1px solid var(--theme-border-primary);
+}
+
+.p-datatable .p-datatable-tbody > tr > td {
+  padding: 0.75rem;
+  border-bottom: 1px solid var(--theme-border-secondary);
+}
+
+.p-datatable .p-datatable-tbody > tr:nth-child(even) {
+  background-color: rgba(var(--theme-brand-primary-rgb), 0.05);
+}
+
+@media print {
+  body {
+    margin: 0;
+    padding: 0;
+    background: none;
+  }
+  .container {
+    box-shadow: none;
+    border: none;
+    padding: 0;
+    max-width: 100%;
+  }
+  .p-datatable {
+    border-collapse: collapse;
+    width: 100%;
+  }
+  .p-datatable .p-datatable-thead > tr > th,
+  .p-datatable .p-datatable-tbody > tr > td {
+    border: 1px solid var(--theme-border-primary);
+    page-break-inside: avoid;
+  }
+  button {
+    display: none;
+  }
+}

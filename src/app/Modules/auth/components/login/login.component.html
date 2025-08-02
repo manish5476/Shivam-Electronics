@@ -1,60 +1,102 @@
 
-<section class="min-h-screen flex items-center lg:items-start lg:py-20 justify-center animate-fadein animate-duration-300 animate-ease-in max-w-[100rem] mx-auto">
-    <div class="flex w-full h-full justify-center gap-12">
-        <h1 class="text-3xl font-semibold text-surface-950 dark:text-surface-0 text-center lg:text-center">Login</h1>
+<!-- login.component.html -->
+<div class="bg-gray-100 min-h-screen flex items-center justify-center p-4">
+    <section class="w-full h-9/10 max-w-screen-2xl">
+        <div class="bg-white rounded-[40px] shadow-2xl overflow-hidden flex flex-col lg:flex-row w-full lg:max-w-full mx-auto">
+            <!-- Left Side: Image and Profile Card -->
+            <div class="relative w-full lg:w-2/5 xl:w-1/2 overflow-hidden rounded-t-[40px] lg:rounded-l-[40px] lg:rounded-tr-none min-h-[400px] lg:min-h-0">
+                <img src="https://plus.unsplash.com/premium_photo-1669042646165-1878c78e6604?q=80&w=711&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" 
+                     onerror="this.src='https://placehold.co/800x1200/554955/white?text=Artistic+Background'"
+                     alt="Electronic components on a desk"
+                     class="absolute inset-0 w-full h-full object-cover">
+                
+                <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
+                              
+            </div>
 
-        <div class="flex flex-col py-20 lg:min-w-[30rem]">
- 
-            <div class="max-w-md mx-auto w-full">
-                <form [formGroup]="loginForm" (ngSubmit)="onLogin()" novalidate>
-                    <div class="flex flex-col gap-2">
-                         <label for="email" class="text-sm font-medium text-surface-700 dark:text-white/70">Email</label>
-                        <input type="text" id="email" formControlName="email" pInputText placeholder="Email" required
-                               class="p-inputtext p-component w-full border border-surface-300 dark:border-surface-700 rounded-md py-2 px-3 outline-none focus:border-primary-500 dark:focus:border-primary-500 bg-transparent text-surface-900 dark:text-surface-0">
-                         <div *ngIf="loginForm.get('email')?.invalid && (loginForm.get('email')?.dirty || loginForm.get('email')?.touched)" class="text-red-500 text-sm">
+            <!-- Right Side: Login Form -->
+            <div class="flex flex-col p-8 md:p-16 lg:p-12 xl:p-16 w-full lg:w-3/5 xl:w-1/2">
+                <div class="flex items-center justify-between">
+                    <div class="font-bold text-xl">SHIVAM ELECTRONICS</div>
+                </div>
+
+                <div class="mt-12 mb-8">
+                    <h1 class="text-4xl font-bold text-gray-800">Hi There!</h1>
+                    <p class="text-gray-500 mt-2">Welcome to Shivam Electronics</p>
+                </div>
+                
+                <!-- Login Form -->
+                <form [formGroup]="loginForm" (ngSubmit)="onLogin()" class="space-y-6 w-full" novalidate>
+                    <div class="space-y-2">
+                        <label for="email" class="text-sm font-medium text-gray-700">Email</label>
+                        <input type="email" id="email" formControlName="email" placeholder="Email" required
+                               class="w-full border-b border-gray-300 py-3 bg-transparent outline-none focus:border-blue-500 text-gray-900">
+                        <div *ngIf="loginForm.get('email')?.invalid && (loginForm.get('email')?.dirty || loginForm.get('email')?.touched)" class="text-red-500 text-sm">
                              <span *ngIf="loginForm.get('email')?.errors?.['required']">Email is required</span>
                              <span *ngIf="loginForm.get('email')?.errors?.['email']">Invalid email format</span>
-                         </div>
+                        </div>
                     </div>
 
-                    <div class="flex flex-col gap-2 mt-4">
-                         <label for="password" class="text-sm font-medium text-surface-700 dark:text-white/70">Password</label>
-                        <input type="password" id="password" formControlName="password" pInputText placeholder="Password" required
-                               class="p-inputtext p-component w-full border border-surface-300 dark:border-surface-700 rounded-md py-2 px-3 outline-none focus:border-primary-500 dark:focus:border-primary-500 bg-transparent text-surface-900 dark:text-surface-0">
-                         <div *ngIf="loginForm.get('password')?.invalid && (loginForm.get('password')?.dirty || loginForm.get('password')?.touched)" class="text-red-500 text-sm">
+                    <div class="space-y-2">
+                        <label for="password" class="text-sm font-medium text-gray-700">Password</label>
+                        <input type="password" id="password" formControlName="password" placeholder="Password" required
+                               class="w-full border-b border-gray-300 py-3 bg-transparent outline-none focus:border-blue-500 text-gray-900">
+                        <div *ngIf="loginForm.get('password')?.invalid && (loginForm.get('password')?.dirty || loginForm.get('password')?.touched)" class="text-red-500 text-sm">
                              <span *ngIf="loginForm.get('password')?.errors?.['required']">Password is required</span>
                              <span *ngIf="loginForm.get('password')?.errors?.['minlength']">Password must be at least 6 characters long</span>
-                         </div>
+                        </div>
                     </div>
-                    <div class="my-8 flex items-center justify-between">
-                        <div class="flex items-center gap-2">
+                    
+                    <div class="flex justify-end text-sm">
+                        <a routerLink="/auth/forgot-password" class="text-blue-500 hover:underline">Forgot password?</a>
                     </div>
-                        <a routerLink="/auth/forgot-password" class="text-sm text-primary-500 hover:underline">Forgot password?</a>
+                    
+                    <div class="relative flex items-center py-5">
+                        <div class="flex-grow border-t border-gray-300"></div>
+                        <span class="flex-shrink mx-4 text-gray-400 text-sm">or</span>
+                        <div class="flex-grow border-t border-gray-300"></div>
                     </div>
 
-                    <button type="submit" class="bg-primary-500 text-white py-2.5 px-4 rounded-md font-semibold hover:bg-primary-emphasis transition-colors w-full"
-                            [disabled]="loginForm.invalid || isSubmitting"> Login
-                         <span *ngIf="isSubmitting">...</span>
+                    <!-- <button type="button" class="w-full flex items-center justify-center gap-3 px-4 py-3 rounded-xl border border-gray-300 text-gray-700 font-medium hover:bg-gray-50 transition-colors">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/4/4a/Logo_2013_Google_G_logo.svg" class="w-5 h-5" alt="Google Logo">
+                        Login with Google
+                    </button> -->
+
+                    <button type="submit" 
+                            class="w-full bg-red-500 text-white py-4 px-4 rounded-xl font-bold hover:bg-red-600 transition-colors"
+                            [disabled]="loginForm.invalid || isSubmitting">
+                        Login
+                        <span *ngIf="isSubmitting">...</span>
                     </button>
                 </form>
 
-                <div class="mt-8 text-sm text-center lg:text-left text-surface-500 dark:text-white/64">
-                    Not registered? <a routerLink="/auth/signup" class="text-primary-500 hover:underline">Create an Account</a>
+                <div class="mt-8 text-center text-sm text-gray-500">
+                    Don't have an account? <a routerLink="/auth/signup" class="text-blue-500 hover:underline font-medium">Sign up</a>
                 </div>
-
-                 <div *ngIf="errorMessage" class="text-red-500 text-center text-sm mt-4">
-                     {{ errorMessage }}
-                  </div>
-
+                
+                <div class="mt-12 flex items-center justify-center gap-6 text-gray-400">
+                    <a  class="hover:text-blue-500">
+                        <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                            <path fill-rule="evenodd" d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.505 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z" clip-rule="evenodd" />
+                        </svg>
+                    </a>
+                    <a  class="hover:text-blue-500">
+                         <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                            <path d="M12.315 2.416a8.973 8.973 0 0 1 11.298 8.283c-.074.92-.095 1.348-.124 2.502-.132 5.37-3.045 7.854-8.384 7.854-5.32 0-8.384-2.484-8.384-7.854 0-5.367 3.064-7.853 8.384-7.853zM12 4.195a6.804 6.804 0 0 0-6.804 6.804c0 1.258.077 2.146.126 3.256.12 2.76 1.433 4.298 4.604 4.298 3.17 0 4.484-1.538 4.603-4.298.05-.1.125-.26.126-.33V9.255c0-.687-.234-.875-.724-.875-1.282 0-1.748-.488-1.748-1.77 0-1.282.466-1.77 1.748-1.77.49 0 .724-.188.724-.875V2.416z"/>
+                        </svg>
+                    </a>
+                    <a  class="hover:text-blue-500">
+                        <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10c5.51 0 10-4.48 10-10S17.51 2 12 2zm4.184 6.877c0 .19-.018.375-.028.56a6.83 6.83 0 0 1-6.945 6.944 6.88 6.88 0 0 1-3.722-1.096c.094.01.187.018.282.018a4.873 4.873 0 0 0 3.17-1.082 2.438 2.438 0 0 1-2.278-1.697c.074.015.15.02.226.02a2.5 2.5 0 0 0 .664-.09c-2.438-.485-2.44-3.376-2.44-3.376s.443.088.448.093c.09.04.18.082.27.126a2.444 2.444 0 0 1 1.956-.91c-1.5-1.3-3.763-1.636-4.524-1.76-.237-.038-.475-.055-.713-.055-1.554 0-2.822 1.258-2.822 2.822a2.436 2.436 0 0 0 .647 1.636c-.035-.005-.07-.01-.106-.015a6.884 6.884 0 0 1-2.008-1.564v.03a2.44 2.44 0 0 0 1.958 2.38 2.476 2.476 0 0 1-1.08.04 2.44 2.44 0 0 0 2.276 1.696c-1.895 1.5-4.28 2.15-6.84 2.15-.443 0-.88-.025-1.31-.077a9.98 9.98 0 0 0 5.41 1.587c6.49 0 10.024-5.385 10.024-10.025 0-.153-.004-.305-.01-.456a7.172 7.172 0 0 0 1.76-1.82z" />
+                        </svg>
+                    </a>
+                    <a  class="hover:text-blue-500">
+                        <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                            <path d="M12 2C6.477 2 2 6.477 2 12s4.477 10 10 10c5.518 0 10-4.482 10-10S17.518 2 12 2zm.068 15.34c-1.465 0-2.658-1.193-2.658-2.658s1.193-2.658 2.658-2.658c1.465 0 2.658 1.193 2.658 2.658s-1.193 2.658-2.658 2.658zm5.727-8.151c-.694 0-1.256-.562-1.256-1.256s.562-1.256 1.256-1.256c.694 0 1.256.562 1.256 1.256s-.562 1.256-1.256 1.256zM18.5 12c0 3.585-2.915 6.5-6.5 6.5s-6.5-2.915-6.5-6.5S8.415 5.5 12 5.5s6.5 2.915 6.5 6.5z" />
+                        </svg>
+                    </a>
+                </div>
             </div>
         </div>
-
-        <div class="hidden lg:flex h-full py-20">
-            <div class="h-full w-full lg:max-w-[32.5rem] xl:max-w-[60.5rem] mx-auto flex items-center justify-center shadow-[0px_1px_2px_0px_rgba(18,18,23,0.05)] rounded-3xl border border-surface overflow-hidden">
-                 <img src="https://images.unsplash.com/photo-1621330396167-b3d451b9b83b?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NzB8fHNtYXJ0cGhvbmV8ZW58MHx8MHx8fDA%3D" alt="Auth Image"
-                      class="w-auto h-full object-contain object-left transition-opacity duration-700 ease-out delay-75">
-             </div>
-        </div>
-
-    </div>
-</section>
+    </section>
+</div>

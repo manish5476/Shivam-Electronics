@@ -1,6 +1,6 @@
-<main class="flex-1 p-8 overflow-y-auto" style="background: linear-gradient(to bottom, var(--theme-body-gradient-start), var(--theme-body-gradient-end));">
+<main class="flex-1 p-2 overflow-y-auto" style="background: linear-gradient(to bottom, var(--theme-body-gradient-start), var(--theme-body-gradient-end));">
   <h1 class="text-3xl font-bold text-[var(--theme-text-heading)] mb-8">Customer Overview</h1>
-  <div class="card p-6 rounded-xl transition-all duration-300 hover:shadow-[0_4px_20px_var(--theme-shadow-color)]">
+  <div class="card p-2 rounded-xl transition-all duration-300 hover:shadow-[0_4px_20px_var(--theme-shadow-color)]">
     <p-toast />
     <h2 class="text-xl font-semibold text-[var(--theme-text-heading)] mb-5">
       <i class="pi pi-users mr-2"></i>Customer Overview
@@ -72,7 +72,7 @@
               <h5 class="text-md font-semibold text-[var(--theme-text-heading)] mb-3">
                 Products Purchased by {{ customer.fullname }}
               </h5>
-              <p-table [value]="customer.cart.items" dataKey="productId._id" [tableStyle]="{ 'min-width': '45rem' }"
+              <p-table [value]="customer.cart?.items" dataKey="productId._id" [tableStyle]="{ 'min-width': '45rem' }"
                 [expandedRowKeys]="expandedProductRows" (onRowExpand)="onProductRowExpand($event)"
                 (onRowCollapse)="onProductRowCollapse($event)" styleClass="p-datatable-sm">
                 <ng-template pTemplate="header">
