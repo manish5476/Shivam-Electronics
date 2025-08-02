@@ -1,69 +1,291 @@
-/* @import "tailwindcss"; */
+
+/* 
 .loading-overlay {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent black */
+  background: radial-gradient(circle, rgba(0, 0, 0, 0.7) 0%, rgba(0, 0, 0, 0.4) 100%);
   display: flex;
   align-items: center;
   justify-content: center;
   z-index: 1000;
-  color: #fff; /* Default text color (will be transparent with the fancy background) */
-  font-family: 'Work Sans', sans-serif; /* Use the font from your body */
-  font-weight: 900; /* Use the font weight from your body */
-  font-size: 8vw; /* Adjust size as needed for loader */
+  backdrop-filter: blur(3px); 
 }
 
-.typewriter-loader {
+.loader-container {
   display: flex;
+  flex-direction: column;
   align-items: center;
-  text-align: center; /* Center the text */
-  line-height: 1;
+  gap: 1rem;
 }
 
-.fancy-loader {
-  white-space: nowrap;
-  overflow: hidden;
-  border-right: .08em solid white; /* The cursor */
-  animation:
-    typing 4s steps(16, end) infinite, /* Adjust duration if needed */
-    blink-caret .75s step-end infinite;
-  @supports (background-clip: text) or (-webkit-background-clip: text) {
-    background: rgb(131,58,180);
-    background: linear-gradient(90deg, rgba(131,58,180,1) 0%, rgba(253,29,29,1) 77%, rgba(252,176,69,1) 100%);    /* background-image:
-      url("data:image/svg+xml,%3Csvg width='2250' height='900' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cg%3E%3Cpath fill='%2300A080' d='M0 0h2255v899H0z'/%3E%3Ccircle cx='366' cy='207' r='366' fill='%2300FDCF'/%3E%3Ccircle cx='1777.5' cy='318.5' r='477.5' fill='%2300FDCF'/%3E%3Ccircle cx='1215' cy='737' r='366' fill='%23008060'/%3E%3C/g%3E%3C/svg%3E%0A"); */
-    background-size: 110% auto;
-    background-position: center;
-    color: transparent;
-    -webkit-background-clip: text;
-    background-clip: text;
+.circuit-loader {
+  width: 100px;
+  height: 100px;
+  animation: rotate 10s linear infinite; 
+}
+
+.circuit-group {
+  transform-origin: center;
+}
+
+.circuit-path {
+  stroke-dasharray: 100;
+  stroke-dashoffset: 100;
+  animation: pulse 2s ease-in-out infinite;
+}
+
+.electron {
+  animation: orbit 1.5s linear infinite;
+}
+
+.brand-text {
+  font-family: 'Orbitron', sans-serif;
+  font-size: clamp(1.5rem, 4vw, 2rem); 
+  font-weight: 700;
+  color: transparent;
+  background: linear-gradient(90deg, #00FDCF, #FD1D1D, #FCBC45);
+  -webkit-background-clip: text;
+  background-clip: text;
+  text-shadow: 0 0 10px rgba(0, 253, 207, 0.5); 
+  animation: fadeIn 1.5s ease-in-out infinite alternate;
+}
+
+@keyframes rotate {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
   }
 }
 
-@keyframes typing {
-  from { width: 0 }
-  to { width: 100% }
+@keyframes pulse {
+  0% {
+    stroke-dashoffset: 100;
+    stroke: #00FDCF;
+  }
+  50% {
+    stroke-dashoffset: 0;
+    stroke: #FCBC45;
+  }
+  100% {
+    stroke-dashoffset: 100;
+    stroke: #00FDCF;
+  }
 }
 
-@keyframes blink-caret {
-  from, to { border-color: transparent }
-  50% { border-color: white; }
+@keyframes orbit {
+  0% {
+    transform: translate(0, 0);
+  }
+  25% {
+    transform: translate(20px, -20px);
+  }
+  50% {
+    transform: translate(0, -40px);
+  }
+  75% {
+    transform: translate(-20px, -20px);
+  }
+  100% {
+    transform: translate(0, 0);
+  }
 }
 
-.cursor {
-  /* You can further style the cursor if needed */
-}
-@keyframes background-pan {
-  from { background-position: 0% center; }
-  to { background-position: -200% center; }
+@keyframes fadeIn {
+  from {
+    opacity: 0.7;
+  }
+  to {
+    opacity: 1;
+  }
+}  */
+/*   
+
+@layer utilities {
+  @keyframes rotate {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
+  @keyframes pulse {
+    0% { stroke-dashoffset: 100; stroke: #00FDCF; }
+    50% { stroke-dashoffset: 0; stroke: #FCBC45; }
+    100% { stroke-dashoffset: 100; stroke: #00FDCF; }
+  }
+  @keyframes orbit {
+    0% { transform: translate(0, 0); }
+    25% { transform: translate(20px, -20px); }
+    50% { transform: translate(0, -40px); }
+    75% { transform: translate(-20px, -20px); }
+    100% { transform: translate(0, 0); }
+  }
+  @keyframes fadeIn {
+    from { opacity: 0.7; }
+    to { opacity: 1; }
+  }
+} 
+ 
+
+.loading-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  
+  background: linear-gradient(
+    to bottom,
+    color-mix(in srgb, var(--theme-bg-primary) 80%, transparent),
+    color-mix(in srgb, var(--theme-body-gradient-end) 80%, transparent)
+  );
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  backdrop-filter: blur(2px); 
 }
 
-.fancy-loader {
-  /* ... other styles ... */
-  animation:
-    typing 4s steps(16, end) infinite,
-    blink-caret .75s step-end infinite,
-    background-pan 4s linear infinite; /* Add this line */
+.loader-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+.circuit-loader {
+  width: 80px; 
+  height: 80px;
+  animation: rotate 12s linear infinite; 
+}
+
+.circuit-group {
+  transform-origin: center;
+}
+
+.circuit-path {
+  stroke-dasharray: 80;
+  stroke-dashoffset: 80;
+  animation: pulse 2.5s ease-in-out infinite;
+}
+
+.electron {
+  animation: orbit 1.8s linear infinite;
+}
+
+.brand-text {
+  font-family: 'Orbitron', 'Roboto', 'Helvetica Neue', sans-serif; 
+  font-size: clamp(1.25rem, 3vw, 1.75rem); 
+  font-weight: 700;
+  color: var(--theme-text-primary); 
+  background: linear-gradient(
+    90deg,
+    var(--theme-brand-primary),
+    var(--theme-accent-primary),
+    var(--theme-secondary-accent-primary)
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  text-shadow: 0 0 8px var(--theme-accent-focus-ring); 
+  animation: fadeIn 2s ease-in-out infinite alternate;
+}
+
+
+@keyframes rotate {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes pulse {
+  0% {
+    stroke-dashoffset: 80;
+    stroke: var(--theme-brand-primary);
+  }
+  50% {
+    stroke-dashoffset: 0;
+    stroke: var(--theme-accent-primary);
+  }
+  100% {
+    stroke-dashoffset: 80;
+    stroke: var(--theme-brand-primary);
+  }
+}
+
+@keyframes orbit {
+  0% {
+    transform: translate(0, 0);
+  }
+  25% {
+    transform: translate(15px, -15px);
+  }
+  50% {
+    transform: translate(0, -30px);
+  }
+  75% {
+    transform: translate(-15px, -15px);
+  }
+  100% {
+    transform: translate(0, 0);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0.8;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+
+body.dark-mode .loading-overlay {
+  background: linear-gradient(
+    to bottom,
+    color-mix(in srgb, var(--theme-bg-primary) 80%, transparent),
+    color-mix(in srgb, var(--theme-bg-secondary) 80%, transparent)
+  );
+}
+
+body.dark-mode .brand-text {
+  color: var(--theme-text-primary); 
+}
+  */
+
+  
+@layer utilities {
+  @keyframes rotate {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
+  @keyframes pulse {
+    0% { stroke-dashoffset: 60; stroke: var(--theme-brand-primary); }
+    50% { stroke-dashoffset: 0; stroke: var(--theme-accent-primary); }
+    100% { stroke-dashoffset: 60; stroke: var(--theme-brand-primary); }
+  }
+  @keyframes orbit {
+    0% { transform: translate(0, 0); }
+    25% { transform: translate(12px, -12px); }
+    50% { transform: translate(0, -24px); }
+    75% { transform: translate(-12px, -12px); }
+    100% { transform: translate(0, 0); }
+  }
+  @keyframes fadeIn {
+    from { opacity: 0.8; }
+    to { opacity: 1; }
+  }
+}
+
+body.dark-mode .loading-overlay {
+  background: rgba(17, 24, 39, 0.8);
+}
+
+body.dark-mode .brand-text {
+  color: var(--theme-accent-primary);
 }
