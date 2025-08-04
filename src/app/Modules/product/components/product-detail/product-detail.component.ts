@@ -2,9 +2,11 @@ import { ChangeDetectorRef, Component, EventEmitter, Output } from '@angular/cor
 import { SharedGridComponent } from '../../../../shared/AgGrid/grid/shared-grid/shared-grid.component';
 import { CellValueChangedEvent } from 'ag-grid-community';
 import { ProductService } from '../../../../core/services/product.service';
+import { Dialog } from 'primeng/dialog';
+import { ProductMasterComponent } from '../product-master/product-master.component';
 @Component({
     selector: 'app-product-detail',
-    imports: [SharedGridComponent, ],
+    imports: [SharedGridComponent, ProductMasterComponent, Dialog],
     templateUrl: './product-detail.component.html',
     styleUrl: './product-detail.component.css'
 })
@@ -12,6 +14,9 @@ export class ProductDetailComponent {
     data: any;
     column: any
     rowSelectionMode: any
+    productDialog: boolean = false
+    redirectedProduct: any;
+
     constructor(private cdr: ChangeDetectorRef, private ProductService: ProductService) { }
 
     ngOnInit(): void {
@@ -21,16 +26,15 @@ export class ProductDetailComponent {
     }
 
     eventFromGrid(event: any) {
-        if (event.eventType === 'onCellValueCHanged') {
+        console.log(event);
+        if (event.eventType === 'onCellValueChanged') {
             const cellValueChangedEvent = event.event as CellValueChangedEvent;
             const rowNode = cellValueChangedEvent.node;
             const dataItem = rowNode.data;
             const field = cellValueChangedEvent.colDef.field;
             const newValue = cellValueChangedEvent.newValue;
-
             if (field) {
                 dataItem[field] = newValue;
-                // Call API to update product
                 this.ProductService.updateProduct(dataItem.id, dataItem).subscribe({
                     next: (res: any) => {
                     },
@@ -65,6 +69,11 @@ export class ProductDetailComponent {
                 { field: 'finalPrice', sortable: true, filter: true, resizable: true, editable: true }
 
             ];
+    }
+
+    editProduct(product: any) {
+        this.redirectedProduct = { ...product };
+        this.productDialog = true;
     }
 
     getData() {

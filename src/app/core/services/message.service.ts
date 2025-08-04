@@ -7,7 +7,7 @@ import { HttpErrorResponse } from '@angular/common/http';
   providedIn: 'root',
 })
 export class AppMessageService {
-  constructor(private messageService: MessageService) { }
+  constructor(public messageService: MessageService) { }
 
   handleResponse(response: any, successSummary?: string, successDetail?: string) {
     if (this.isSuccessful(response)) {
@@ -19,7 +19,7 @@ export class AppMessageService {
     }
   }
 
-  private isSuccessful(response: any): boolean {
+  public isSuccessful(response: any): boolean {
     if (!response) return false;
     return (
       response === 'success' ||
@@ -29,11 +29,11 @@ export class AppMessageService {
     );
   }
 
-  private isNoContent(response: any): boolean {
+  public isNoContent(response: any): boolean {
     return response && response.status === 204;
   }
 
-  private showSuccess(summary?: string, detail?: string) {
+  public showSuccess(summary?: string, detail?: string) {
     this.add({
       severity: 'success',
       summary: summary || 'Success',
@@ -42,7 +42,7 @@ export class AppMessageService {
     });
   }
 
-  private showNoContentSuccess(summary?: string, detail?: string) {
+  public showNoContentSuccess(summary?: string, detail?: string) {
     this.add({
       severity: 'success',
       summary: summary || 'Success',
@@ -118,7 +118,7 @@ export class AppMessageService {
 // })
 // export class AppMessageService {
 
-//   constructor(private messageService: MessageService) { }
+//   constructor(public messageService: MessageService) { }
 
 //   handleResponse(response: any, successSummary?: string, successDetail?: string) {
 //     if (response === 'success' || response.statusCode === 200 || response.status === 201) {
@@ -182,7 +182,7 @@ export class AppMessageService {
 // // })
 // // export class AppMessageService {
 
-// //   constructor(private messageService: MessageService) { }
+// //   constructor(public messageService: MessageService) { }
 
 // //   add(message: { severity: string; summary: string; detail?: string; life?: number }) {
 // //     this.messageService.add(message);

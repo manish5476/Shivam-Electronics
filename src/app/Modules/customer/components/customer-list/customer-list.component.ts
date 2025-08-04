@@ -9,6 +9,7 @@ import { GridContext } from '../../../../shared/AgGrid/AgGridcomponents/ag-grid-
 import { IftaLabelModule } from 'primeng/iftalabel';
 import { FormsModule } from '@angular/forms';
 import { AutopopulateService } from '../../../../core/services/autopopulate.service';
+import { AppMessageService } from '../../../../core/services/message.service';
 @Component({
     selector: 'app-customer-list',
     standalone: true,
@@ -27,6 +28,7 @@ export class CustomerListComponent implements OnInit {
         this.getData();
     }
     data: any = [];
+    customer:any
     column: any = [];
     rowSelectionMode: any = 'singleRow';
     customerFilter: any = {
@@ -38,7 +40,7 @@ export class CustomerListComponent implements OnInit {
         limit: '',
         customerIDDropdown: [],
     }
-    constructor(private cdr: ChangeDetectorRef, private autoPopulate: AutopopulateService, private InvoiceService: InvoiceService, private CustomerService: CustomerService) { }
+    constructor(private cdr: ChangeDetectorRef, private autoPopulate: AutopopulateService, private InvoiceService: InvoiceService, private CustomerService: CustomerService,private messageService:AppMessageService) { }
 
     ngOnInit(): void {
         this.autopopulatedata()
@@ -136,18 +138,19 @@ export class CustomerListComponent implements OnInit {
             limit: this.customerFilter.limit || 100,
             // fields:'mobileNumber fullName'
         }
-
         this.CustomerService.getAllCustomerData(filterParams).subscribe((res: any) => {
             this.data = res.data;
+            console.log(this.data);
             this.cdr.markForCheck();
         });
     }
 
     eventFromGrid(event: any) {
-        if (event.eventType === 'onCellValueCHanged') {
+        if (event.eventType === 'onCellValueChanged') {
             const cellValueChangedEvent = event.event as CellValueChangedEvent;
             const rowNode = cellValueChangedEvent.node;
             const dataItem = rowNode.data;
+            this.customer=dataItem
             const field = cellValueChangedEvent.colDef.field;
             const newValue = cellValueChangedEvent.newValue;
 
@@ -161,6 +164,43 @@ export class CustomerListComponent implements OnInit {
                 console.error('❌ Error: Field is undefined in cellValueChangedEvent.colDef');
             }
         }
-
     }
+
+
+    validateCustomer(): boolean {
+        if (!this.customer.fullname) {
+            return false;
+        }
+        if (!this.customer.email || !this.customer.email.match(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/)) {
+            return false;
+        }
+
+        return true;
+    }
+
+    saveCustomer() {
+    if (this.validateCustomer()) {
+    //   this.customer.guaranteerId = this.selectedGuaranter._id;
+      this.customer.mobileNumber = Number(this.customer.phoneNumbers[0].number); // Convert string to number
+      this.CustomerService.createNewCustomer(this.customer).subscribe(
+        (response: any) => {
+          if (response.status === 'success') {
+            const customerId = response.data._id;
+            // this.customerId = customerId;
+          } else {
+            this.messageService.showError('Error', response.message || 'Failed to create customer.');
+          }
+        },
+        (error) => {
+          // Handle HTTP errors
+          const errorMessage = error.error?.message || 'An unexpected error occurred.';
+          this.messageService.showError('Error', errorMessage);
+        }
+      );
+    } else {
+      this.messageService.showError('Validation Error', 'Please fill in all required fields.');
+    }
+  }
+
+
 }

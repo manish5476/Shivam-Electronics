@@ -1,7 +1,6 @@
 @import "tailwindcss";
 @import "primeicons/primeicons.css";
 
-
 :root {
   /* Primary Backgrounds */
   --theme-bg-primary: #f9f7f3; /* Light beige for main content */
@@ -79,106 +78,77 @@
   --theme-body-gradient-end: #578FCA;
 }
 
-/* Dark Theme Overrides */
-/* These variables are applied when the 'light-mode' class is NOT present on the body.
-   Since the default is light, we'll apply dark mode when 'dark-mode' class is present,
-   or simply by default if no class is present and the initial state is dark.
-   Let's adjust the logic slightly: default is light, so `body.dark-mode` will define dark.
-   Or, more simply, if we remove `light-mode`, it defaults to `:root`.
-   For this setup, let's assume `body.dark-mode` is added for dark, and `body.light-mode` for light.
-   If no class, it's neutral, which we'll make dark by default.
-*/
-body.dark-mode { /* This class will be added/removed by the ThemeService */
-  /* Primary Backgrounds */
-  --theme-bg-primary: #111827; /* Very dark background for main content (gray-900) */
-  --theme-bg-secondary: #1f2937; /* Darker background for sidebar/header/cards (gray-800) */
-  --theme-bg-tertiary: #374151; /* Even lighter dark for input backgrounds (gray-700) */
-
-  /* Text Colors */
-  --theme-text-primary: #e2e8f0; /* Light text for general content (gray-200) */
-  --theme-text-secondary: #a0aec0; /* Slightly darker light text (gray-400) */
-  --theme-text-label: #d1d5db; /* Labels (gray-300) */
-  --theme-text-heading: #2dd4bf; /* Teal for headings (teal-400) */
-  --theme-text-error: #ef4444; /* Red for errors (red-500) */
-  --theme-text-inverted: #1f2937; /* Dark text on light backgrounds/buttons */
-
-  /* Border Colors */
-  --theme-border-primary: #374151; /* Darker borders (gray-700) */
-  --theme-border-secondary: #4b5563; /* Input borders (gray-600) */
-
-  /* Brand/Accent Colors (Dark Mode favors Teal as primary accent) */
-  --theme-brand-primary: #6366f1; /* Indigo 500 - kept for consistency, but less prominent */
-  --theme-brand-primary-light: #a5b4fc; /* Indigo 300 */
-  --theme-brand-primary-hover: #4f46e5; /* Indigo 600 */
-
-  --theme-accent-primary: #2dd4bf; /* Main accent color (teal-400) */
-  --theme-accent-secondary: #0d9488; /* Darker accent (teal-600) */
-  --theme-accent-hover: #14b8a6; /* Accent hover (teal-500) */
-  --theme-accent-focus-ring: #2dd4bf; /* Focus ring (teal-400) */
-
-  --theme-secondary-accent-primary: #facc15; /* Yellow 400 */
-  --theme-secondary-accent-light: #fde047; /* Yellow 300 */
-  --theme-secondary-accent-hover: #eab308; /* Yellow 500 */
-
-  --theme-tertiary-accent-primary: #f472b6; /* Pink 400 */
-  --theme-tertiary-accent-light: #f9a8d4; /* Pink 200 */
-  --theme-tertiary-accent-hover: #ec489a; /* Pink 500 */
-
-  /* Status Colors */
-  --theme-success-primary: #22c55e; /* Green 500 */
-  --theme-success-light: #86efac; /* Green 300 */
-  --theme-success-hover: #16a34a; /* Green 600 */
-
-  --theme-warning-primary: #f59e0b; /* Amber 500 */
-  --theme-warning-light: #fcd34d; /* Amber 300 */
-  --theme-warning-hover: #d97706; /* Amber 600 */
-
-  /* Button Colors */
+body.dark-mode {
+  --theme-bg-primary: #111827;
+  --theme-bg-secondary: #1f2937;
+  --theme-bg-tertiary: #374151;
+  --theme-text-primary: #e2e8f0;
+  --theme-text-secondary: #a0aec0;
+  --theme-text-label: #d1d5db;
+  --theme-text-heading: #2dd4bf;
+  --theme-text-error: #ef4444;
+  --theme-text-inverted: #1f2937;
+  --theme-border-primary: #374151;
+  --theme-border-secondary: #4b5563;
+  --theme-brand-primary: #6366f1;
+  --theme-brand-primary-light: #a5b4fc;
+  --theme-brand-primary-hover: #4f46e5;
+  --theme-accent-primary: #2dd4bf;
+  --theme-accent-secondary: #0d9488;
+  --theme-accent-hover: #14b8a6;
+  --theme-accent-focus-ring: #2dd4bf;
+  --theme-secondary-accent-primary: #facc15;
+  --theme-secondary-accent-light: #fde047;
+  --theme-secondary-accent-hover: #eab308;
+  --theme-tertiary-accent-primary: #f472b6;
+  --theme-tertiary-accent-light: #f9a8d4;
+  --theme-tertiary-accent-hover: #ec489a;
+  --theme-success-primary: #22c55e;
+  --theme-success-light: #86efac;
+  --theme-success-hover: #16a34a;
+  --theme-error-primary: #ef4444;
+  --theme-error-light: #fca5a5;
+  --theme-error-hover: #dc2626;
+  --theme-warning-primary: #f59e0b;
+  --theme-warning-light: #fcd34d;
+  --theme-warning-hover: #d97706;
   --theme-button-bg-primary: linear-gradient(135deg, var(--theme-accent-secondary), var(--theme-accent-primary));
-  --theme-button-text-primary-btn: #1f2937; /* Dark text on accent buttons */
+  --theme-button-text-primary-btn: #1f2937;
   --theme-button-hover-bg-primary: linear-gradient(135deg, var(--theme-accent-primary), var(--theme-accent-secondary));
   --theme-button-outlined-border: var(--theme-accent-primary);
   --theme-button-outlined-text: var(--theme-accent-primary);
-  --theme-button-outlined-hover-bg: rgba(45, 212, 191, 0.1); /* Subtle teal hover */
+  --theme-button-outlined-hover-bg: rgba(45, 212, 191, 0.1);
   --theme-button-outlined-hover-text: #ffffff;
   --theme-button-danger-text: #ef4444;
-  --theme-button-danger-hover-bg: rgba(239, 68, 68, 0.1); /* Subtle red hover */
+  --theme-button-danger-hover-bg: rgba(239, 68, 68, 0.1);
   --theme-button-danger-hover-text: #ffffff;
-
-  /* Other UI Elements */
   --theme-shadow-color: rgba(0, 0, 0, 0.1);
-  --theme-hover-bg: #1f2937; /* Sidebar menu item hover (gray-800) */
+  --theme-hover-bg: #1f2937;
   --theme-dialog-bg: var(--theme-bg-secondary);
   --theme-dialog-header-bg: var(--theme-bg-secondary);
   --theme-dialog-border: var(--theme-border-primary);
-  --theme-scroll-track: #2d3748; /* Darker track */
-  --theme-scroll-thumb: #718096; /* Lighter thumb for contrast */
-
-  /* Body Background Gradient (Dark Mode) */
+  --theme-scroll-track: #2d3748;
+  --theme-scroll-thumb: #718096;
   --theme-body-gradient-start: var(--theme-bg-primary);
-  --theme-body-gradient-end: var(--theme-bg-primary); /* Solid color for dark mode */
+  --theme-body-gradient-end: var(--theme-bg-primary);
 }
 
-
-/* Global HTML and Body Styles */
 html, body {
   height: 100%;
-  font-family: Roboto, "Helvetica Neue", sans-serif; /* Default font */
+  font-family: Roboto, "Helvetica Neue", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
 body {
-  /* These will now dynamically change based on the theme class on <body> */
   background-color: var(--theme-bg-primary);
   color: var(--theme-text-primary);
   background-image: linear-gradient(to bottom, var(--theme-body-gradient-start), var(--theme-body-gradient-end));
-  background-attachment: fixed; /* Optional: Fixed background gradient */
+  background-attachment: fixed;
   margin: 0;
   min-height: 100%;
 }
 
-/* AG-Grid Theme (if used globally) */
 .ag-theme-alpine {
   width: 100% !important;
   height: 100%;
@@ -188,15 +158,13 @@ body {
   display: none;
 }
 
-/* Hide scrollbar for IE, Edge and Firefox */
 .no-scrollbar {
-  -ms-overflow-style: none;  /* IE and Edge */
-  scrollbar-width: none;  /* Firefox */
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }
 
-/* Common Link Style */
 a {
-  color: var(--theme-brand-primary); /* Use brand primary for links */
+  color: var(--theme-brand-primary);
   text-decoration: none;
 }
 
@@ -205,17 +173,15 @@ a:hover {
   text-decoration: underline;
 }
 
-/* Common Card Style */
 .card {
-  background-color: var(--theme-bg-secondary); /* Use secondary background for cards */
+  background-color: var(--theme-bg-secondary);
   border: 1px solid var(--theme-border-primary);
   border-radius: 0.5rem;
   box-shadow: 0 1px 3px 0 var(--theme-shadow-color), 0 1px 2px -1px var(--theme-shadow-color);
   padding: 1.5rem;
-  margin-bottom: 1rem; /* Adjust spacing as needed */
+  margin-bottom: 1rem;
 }
 
-/* Common Input Style (for native HTML inputs) */
 input[type="text"],
 input[type="number"],
 input[type="email"],
@@ -235,13 +201,12 @@ textarea {
 input:focus,
 select:focus,
 textarea:focus {
-  border-color: var(--theme-accent-primary); /* Use accent color for focus */
+  border-color: var(--theme-accent-primary);
   outline: none;
-  box-shadow: 0 0 0 0.2rem var(--theme-accent-focus-ring); /* Use accent focus ring */
+  box-shadow: 0 0 0 0.2rem var(--theme-accent-focus-ring);
 }
 
-/* Common Button Style (for native HTML buttons) */
-button:not([pButton]) { /* Exclude PrimeNG buttons from this rule if they have pButton directive */
+button:not([pButton]) {
   background-color: var(--theme-button-bg-primary);
   color: var(--theme-button-text-primary-btn);
   padding: 0.75rem 1.25rem;
@@ -262,30 +227,26 @@ button:not([pButton]):disabled {
   cursor: not-allowed;
 }
 
-/* Common Label Style */
 label {
   display: block;
   margin-bottom: 0.5rem;
   font-size: 0.875rem;
-  color: var(--theme-text-label); /* Use theme label color */
+  color: var(--theme-text-label);
   font-weight: 500;
 }
 
-/* Error Text */
 .error-text {
-  color: var(--theme-text-error); /* Use theme error color */
+  color: var(--theme-text-error);
   font-size: 0.875rem;
   margin-top: 0.25rem;
 }
 
-/* Success Text */
 .success-text {
-  color: var(--theme-success-primary); /* Use theme success color */
+  color: var(--theme-success-primary);
   font-size: 0.875rem;
   margin-top: 0.25rem;
 }
 
-/* Layout Containers (you can adapt these in your components) */
 .container {
   padding: 1rem;
 }
@@ -300,32 +261,29 @@ label {
   gap: 1rem;
 }
 
-/* Common Heading Styles */
 h1 {
   font-size: 2rem;
   font-weight: 600;
-  color: var(--theme-text-primary); /* Use theme primary text color */
+  color: var(--theme-text-primary);
   margin-bottom: 1.5rem;
 }
 
 h2 {
   font-size: 1.5rem;
   font-weight: 500;
-  color: var(--theme-text-primary); /* Use theme primary text color */
+  color: var(--theme-text-primary);
   margin-bottom: 1rem;
 }
 
-/* Example of a gradient card (uses theme variables) */
 .gradient-card {
   background-color: var(--theme-bg-secondary);
   border: 1px solid var(--theme-border-secondary);
   border-radius: 0.5rem;
   box-shadow: 0 2px 5px var(--theme-shadow-color);
-  padding:.5rem;
+  padding: .5rem;
   background-image: linear-gradient(to bottom right, color-mix(in srgb, var(--theme-bg-secondary) 80%, white), white);
 }
 
-/* Specific button type example (uses theme variables) */
 .primary-button {
   background-color: var(--theme-brand-primary);
   color: var(--theme-text-inverted);
@@ -339,10 +297,6 @@ h2 {
   background-color: var(--theme-brand-primary-hover);
 }
 
-/* PrimeNG Overrides (Global) */
-/* These target PrimeNG component classes directly, not via :host ::ng-deep */
-
-/* PrimeNG InputText, Dropdown, etc. */
 .p-inputtext,
 .p-dropdown {
   background-color: var(--theme-bg-tertiary) !important;
@@ -351,13 +305,12 @@ h2 {
 }
 
 .p-inputtext:focus,
-.p-dropdown.p-focus { /* PrimeNG dropdown focus class */
+.p-dropdown.p-focus {
   border-color: var(--theme-accent-primary) !important;
   box-shadow: 0 0 0 0.2rem var(--theme-accent-focus-ring) !important;
   outline: none;
 }
 
-/* PrimeNG Dialogs */
 .p-dialog .p-dialog-header {
   background: var(--theme-dialog-header-bg) !important;
   color: var(--theme-text-primary) !important;
@@ -369,9 +322,8 @@ h2 {
   color: var(--theme-text-primary) !important;
 }
 
-/* PrimeNG Buttons (General) */
 .p-button {
-  background-color: var(--theme-button-bg-primary); /* Default for pButton */
+  background-color: var(--theme-button-bg-primary);
   color: var(--theme-button-text-primary-btn);
   border: none;
   transition: background-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
@@ -381,7 +333,6 @@ h2 {
   background-color: var(--theme-button-hover-bg-primary);
 }
 
-/* PrimeNG Outlined Buttons (Specific) */
 .p-button-outlined {
   border-color: var(--theme-button-outlined-border) !important;
   color: var(--theme-button-outlined-text) !important;
@@ -393,7 +344,6 @@ h2 {
   color: var(--theme-button-outlined-hover-text) !important;
 }
 
-/* PrimeNG Danger/Text Buttons */
 .p-button-danger.p-button-text {
   color: var(--theme-button-danger-text) !important;
   background-color: transparent !important;
@@ -404,13 +354,12 @@ h2 {
   color: var(--theme-button-danger-hover-text) !important;
 }
 
-/* PrimeNG SelectButton (Theme Toggle) */
 .theme-toggle-button .p-button {
   background-color: var(--theme-bg-tertiary) !important;
   color: var(--theme-text-secondary) !important;
   border-color: var(--theme-border-secondary) !important;
-  font-size: 0.75rem; /* Smaller font for compactness */
-  padding: 0.4rem 0.6rem; /* Smaller padding */
+  font-size: 0.75rem;
+  padding: 0.4rem 0.6rem;
 }
 
 .theme-toggle-button .p-button.p-highlight {
@@ -424,7 +373,6 @@ h2 {
   color: var(--theme-text-primary) !important;
 }
 
-/* Custom scrollbar for dark/light theme */
 .custom-scroll::-webkit-scrollbar {
   width: 6px;
 }
@@ -437,3 +385,434 @@ h2 {
   background-color: var(--theme-scroll-thumb);
   border-radius: 3px;
 }
+/* @import "tailwindcss";
+@import "primeicons/primeicons.css";
+
+
+:root {
+  
+  --theme-bg-primary: #f9f7f3; 
+  --theme-bg-secondary: #ffffff; 
+  --theme-bg-tertiary: #B3C8CF; 
+  --theme-bg-main: #78B3CE; 
+  --theme-bg-home: #003161; 
+
+  
+  --theme-text-primary: #1e293b; 
+  --theme-text-secondary: #4b5563; 
+  --theme-text-label: #374151; 
+  --theme-text-heading: #1e293b; 
+  --theme-text-error: #ef4444; 
+  --theme-text-inverted: #ffffff; 
+
+  
+  --theme-border-primary: #d1d5db; 
+  --theme-border-secondary: #e5e7eb; 
+
+  
+  --theme-brand-primary: #6366f1; 
+  --theme-brand-primary-light: #a5b4fc; 
+  --theme-brand-primary-hover: #4f46e5; 
+
+  --theme-accent-primary: #176B87; 
+  --theme-accent-secondary: #176B87; 
+  --theme-accent-hover: #64CCC5; 
+  --theme-accent-focus-ring: rgba(99, 102, 241, 0.25); 
+
+  --theme-secondary-accent-primary: #facc15; 
+  --theme-secondary-accent-light: #fde047; 
+  --theme-secondary-accent-hover: #eab308; 
+
+  --theme-tertiary-accent-primary: #2dd4bf; 
+  --theme-tertiary-accent-light: #0d9488; 
+  --theme-tertiary-accent-hover: #14b8a6; 
+
+  
+  --theme-success-primary: #22c55e; 
+  --theme-success-light: #86efac; 
+  --theme-success-hover: #16a34a; 
+
+  --theme-error-primary: #ef4444; 
+  --theme-error-light: #fca5a5; 
+  --theme-error-hover: #dc2626; 
+
+  --theme-warning-primary: #f59e0b; 
+  --theme-warning-light: #fcd34d; 
+  --theme-warning-hover: #d97706; 
+
+  
+  --theme-button-bg-primary: var(--theme-brand-primary);
+  --theme-button-text-primary-btn: var(--theme-text-inverted);
+  --theme-button-hover-bg-primary: var(--theme-brand-primary-hover);
+  --theme-button-outlined-border: var(--theme-brand-primary);
+  --theme-button-outlined-text: var(--theme-brand-primary);
+  --theme-button-outlined-hover-bg: rgba(99, 102, 241, 0.1); 
+  --theme-button-outlined-hover-text: var(--theme-brand-primary);
+  --theme-button-danger-text: var(--theme-error-primary);
+  --theme-button-danger-hover-bg: rgba(239, 68, 68, 0.1); 
+  --theme-button-danger-hover-text: var(--theme-error-primary);
+
+  
+  --theme-shadow-color: rgba(0, 0, 0, 0.1);
+  --theme-hover-bg: #f3f4f6; 
+  --theme-dialog-bg: var(--theme-bg-secondary);
+  --theme-dialog-header-bg: var(--theme-bg-secondary);
+  --theme-dialog-border: var(--theme-border-primary);
+  --theme-scroll-track: #e5e7eb;
+  --theme-scroll-thumb: #9ca3af;
+
+  
+  --theme-body-gradient-start: #A4CCD9;
+  --theme-body-gradient-end: #578FCA;
+}
+
+
+body.dark-mode { 
+  
+  --theme-bg-primary: #111827; 
+  --theme-bg-secondary: #1f2937; 
+  --theme-bg-tertiary: #374151; 
+
+  
+  --theme-text-primary: #e2e8f0; 
+  --theme-text-secondary: #a0aec0; 
+  --theme-text-label: #d1d5db; 
+  --theme-text-heading: #2dd4bf; 
+  --theme-text-error: #ef4444; 
+  --theme-text-inverted: #1f2937; 
+
+  
+  --theme-border-primary: #374151; 
+  --theme-border-secondary: #4b5563; 
+
+  
+  --theme-brand-primary: #6366f1; 
+  --theme-brand-primary-light: #a5b4fc; 
+  --theme-brand-primary-hover: #4f46e5; 
+
+  --theme-accent-primary: #2dd4bf; 
+  --theme-accent-secondary: #0d9488; 
+  --theme-accent-hover: #14b8a6; 
+  --theme-accent-focus-ring: #2dd4bf; 
+
+  --theme-secondary-accent-primary: #facc15; 
+  --theme-secondary-accent-light: #fde047; 
+  --theme-secondary-accent-hover: #eab308; 
+
+  --theme-tertiary-accent-primary: #f472b6; 
+  --theme-tertiary-accent-light: #f9a8d4; 
+  --theme-tertiary-accent-hover: #ec489a; 
+
+  
+  --theme-success-primary: #22c55e; 
+  --theme-success-light: #86efac; 
+  --theme-success-hover: #16a34a; 
+
+  --theme-warning-primary: #f59e0b; 
+  --theme-warning-light: #fcd34d; 
+  --theme-warning-hover: #d97706; 
+
+  
+  --theme-button-bg-primary: linear-gradient(135deg, var(--theme-accent-secondary), var(--theme-accent-primary));
+  --theme-button-text-primary-btn: #1f2937; 
+  --theme-button-hover-bg-primary: linear-gradient(135deg, var(--theme-accent-primary), var(--theme-accent-secondary));
+  --theme-button-outlined-border: var(--theme-accent-primary);
+  --theme-button-outlined-text: var(--theme-accent-primary);
+  --theme-button-outlined-hover-bg: rgba(45, 212, 191, 0.1); 
+  --theme-button-outlined-hover-text: #ffffff;
+  --theme-button-danger-text: #ef4444;
+  --theme-button-danger-hover-bg: rgba(239, 68, 68, 0.1); 
+  --theme-button-danger-hover-text: #ffffff;
+
+  
+  --theme-shadow-color: rgba(0, 0, 0, 0.1);
+  --theme-hover-bg: #1f2937; 
+  --theme-dialog-bg: var(--theme-bg-secondary);
+  --theme-dialog-header-bg: var(--theme-bg-secondary);
+  --theme-dialog-border: var(--theme-border-primary);
+  --theme-scroll-track: #2d3748; 
+  --theme-scroll-thumb: #718096; 
+
+  
+  --theme-body-gradient-start: var(--theme-bg-primary);
+  --theme-body-gradient-end: var(--theme-bg-primary); 
+}
+
+
+
+html, body {
+  height: 100%;
+  font-family: Roboto, "Helvetica Neue", sans-serif; 
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  
+  background-color: var(--theme-bg-primary);
+  color: var(--theme-text-primary);
+  background-image: linear-gradient(to bottom, var(--theme-body-gradient-start), var(--theme-body-gradient-end));
+  background-attachment: fixed; 
+  margin: 0;
+  min-height: 100%;
+}
+
+
+.ag-theme-alpine {
+  width: 100% !important;
+  height: 100%;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+
+.no-scrollbar {
+  -ms-overflow-style: none;  
+  scrollbar-width: none;  
+}
+
+
+a {
+  color: var(--theme-brand-primary); 
+  text-decoration: none;
+}
+
+a:hover {
+  color: var(--theme-brand-primary-hover);
+  text-decoration: underline;
+}
+
+
+.card {
+  background-color: var(--theme-bg-secondary); 
+  border: 1px solid var(--theme-border-primary);
+  border-radius: 0.5rem;
+  box-shadow: 0 1px 3px 0 var(--theme-shadow-color), 0 1px 2px -1px var(--theme-shadow-color);
+  padding: 1.5rem;
+  margin-bottom: 1rem; 
+}
+
+
+input[type="text"],
+input[type="number"],
+input[type="email"],
+input[type="password"],
+select,
+textarea {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid var(--theme-border-secondary);
+  border-radius: 0.375rem;
+  background-color: var(--theme-bg-tertiary);
+  color: var(--theme-text-primary);
+  font-size: 0.875rem;
+  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+  border-color: var(--theme-accent-primary); 
+  outline: none;
+  box-shadow: 0 0 0 0.2rem var(--theme-accent-focus-ring); 
+}
+
+
+button:not([pButton]) { 
+  background-color: var(--theme-button-bg-primary);
+  color: var(--theme-button-text-primary-btn);
+  padding: 0.75rem 1.25rem;
+  border: none;
+  border-radius: 0.375rem;
+  font-weight: 500;
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition: background-color 0.15s ease-in-out;
+}
+
+button:not([pButton]):hover {
+  background-color: var(--theme-button-hover-bg-primary);
+}
+
+button:not([pButton]):disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+
+label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-size: 0.875rem;
+  color: var(--theme-text-label); 
+  font-weight: 500;
+}
+
+
+.error-text {
+  color: var(--theme-text-error); 
+  font-size: 0.875rem;
+  margin-top: 0.25rem;
+}
+
+
+.success-text {
+  color: var(--theme-success-primary); 
+  font-size: 0.875rem;
+  margin-top: 0.25rem;
+}
+
+
+.container {
+  padding: 1rem;
+}
+
+.form-group {
+  margin-bottom: 1rem;
+}
+
+.grid-cols-2 {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+}
+
+
+h1 {
+  font-size: 2rem;
+  font-weight: 600;
+  color: var(--theme-text-primary); 
+  margin-bottom: 1.5rem;
+}
+
+h2 {
+  font-size: 1.5rem;
+  font-weight: 500;
+  color: var(--theme-text-primary); 
+  margin-bottom: 1rem;
+}
+
+
+.gradient-card {
+  background-color: var(--theme-bg-secondary);
+  border: 1px solid var(--theme-border-secondary);
+  border-radius: 0.5rem;
+  box-shadow: 0 2px 5px var(--theme-shadow-color);
+  padding:.5rem;
+  background-image: linear-gradient(to bottom right, color-mix(in srgb, var(--theme-bg-secondary) 80%, white), white);
+}
+
+
+.primary-button {
+  background-color: var(--theme-brand-primary);
+  color: var(--theme-text-inverted);
+  padding: 0.8rem 1.5rem;
+  border-radius: 0.4rem;
+  font-weight: 600;
+  transition: background-color 0.2s ease-in-out;
+}
+
+.primary-button:hover {
+  background-color: var(--theme-brand-primary-hover);
+}
+
+
+
+
+
+.p-inputtext,
+.p-dropdown {
+  background-color: var(--theme-bg-tertiary) !important;
+  border-color: var(--theme-border-secondary) !important;
+  color: var(--theme-text-primary) !important;
+}
+
+.p-inputtext:focus,
+.p-dropdown.p-focus { 
+  border-color: var(--theme-accent-primary) !important;
+  box-shadow: 0 0 0 0.2rem var(--theme-accent-focus-ring) !important;
+  outline: none;
+}
+
+
+.p-dialog .p-dialog-header {
+  background: var(--theme-dialog-header-bg) !important;
+  color: var(--theme-text-primary) !important;
+  border-bottom: 1px solid var(--theme-dialog-border) !important;
+}
+
+.p-dialog .p-dialog-content {
+  background: var(--theme-dialog-bg) !important;
+  color: var(--theme-text-primary) !important;
+}
+
+
+.p-button {
+  background-color: var(--theme-button-bg-primary); 
+  color: var(--theme-button-text-primary-btn);
+  border: none;
+  transition: background-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+.p-button:hover {
+  background-color: var(--theme-button-hover-bg-primary);
+}
+
+
+.p-button-outlined {
+  border-color: var(--theme-button-outlined-border) !important;
+  color: var(--theme-button-outlined-text) !important;
+  background-color: transparent !important;
+}
+
+.p-button-outlined:hover {
+  background-color: var(--theme-button-outlined-hover-bg) !important;
+  color: var(--theme-button-outlined-hover-text) !important;
+}
+
+
+.p-button-danger.p-button-text {
+  color: var(--theme-button-danger-text) !important;
+  background-color: transparent !important;
+}
+
+.p-button-danger.p-button-text:hover {
+  background-color: var(--theme-button-danger-hover-bg) !important;
+  color: var(--theme-button-danger-hover-text) !important;
+}
+
+
+.theme-toggle-button .p-button {
+  background-color: var(--theme-bg-tertiary) !important;
+  color: var(--theme-text-secondary) !important;
+  border-color: var(--theme-border-secondary) !important;
+  font-size: 0.75rem; 
+  padding: 0.4rem 0.6rem; 
+}
+
+.theme-toggle-button .p-button.p-highlight {
+  background-color: var(--theme-accent-primary) !important;
+  color: var(--theme-text-inverted) !important;
+  border-color: var(--theme-accent-primary) !important;
+}
+
+.theme-toggle-button .p-button:not(.p-highlight):hover {
+  background-color: var(--theme-hover-bg) !important;
+  color: var(--theme-text-primary) !important;
+}
+
+
+.custom-scroll::-webkit-scrollbar {
+  width: 6px;
+}
+
+.custom-scroll::-webkit-scrollbar-track {
+  background: var(--theme-scroll-track);
+}
+
+.custom-scroll::-webkit-scrollbar-thumb {
+  background-color: var(--theme-scroll-thumb);
+  border-radius: 3px;
+} */

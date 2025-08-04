@@ -1,6 +1,14 @@
+<div class="ag-grid-main-area">
+  <app-shared-grid [data]="data" [rowSelectionMode]="rowSelectionMode" [column]="column"
+    (eventFromGrid)="eventFromGrid($event)">
+  </app-shared-grid>
+</div>
 
-    <div class="ag-grid-main-area">
-      <app-shared-grid [data]="data" [rowSelectionMode]="rowSelectionMode" [column]="column"
-        (eventFromGrid)="eventFromGrid($event)">
-      </app-shared-grid>
-    </div>
+<p-dialog [(visible)]="productDialog" [style]="{ width: '32rem' }" header="Product Details" [modal]="true"
+  styleClass="bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 rounded-lg shadow-lg">
+  <ng-template pTemplate="content">
+    <app-product-master [redirectedData]="redirectedProduct"></app-product-master>
+  </ng-template>
+  <ng-template pTemplate="footer">
+  </ng-template>
+</p-dialog>
