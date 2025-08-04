@@ -1,64 +1,37 @@
-:host ::ng-deep .p-dialog .product-image {
-  width: 150px;
-  margin: 0 auto 2rem auto;
-  display: block;
+/* Ensure fixed row heights and AG Grid-like styling */
+.p-datatable .p-datatable-tbody > tr {
+    height: 40px !important;
 }
-
-.gradient-border .p-select-list {
-  border: 2px solid transparent;
-  border-image: linear-gradient(to left, #ff9800, #ff5722) 1;
-  border-image-slice: 1;
-  animation: border-gradient-animation 10s linear infinite;
+.p-datatable .p-datatable-thead > tr > th {
+    height: 40px !important;
 }
-
-@keyframes border-gradient-animation {
-  to {
-    border-image-position: 100% 0;
-  }
+.p-datatable .p-datatable-tbody > tr > td,
+.p-datatable .p-datatable-thead > tr > th {
+    padding: 0.5rem !important;
+    border-bottom: 1px solid #e5e7eb; /* Light mode border */
 }
-
-.p-datatable-tbody>tr>td {
-  text-align: start;
-  border-color: var(--p-datatable-body-cell-border-color);
-  border-style: solid;
-  /* border-width: 0 0 1px 0; */
-  padding: 2px;
+.dark .p-datatable .p-datatable-tbody > tr > td,
+.dark .p-datatable .p-datatable-thead > tr > th {
+    border-bottom: 1px solid #374151; /* Dark mode border */
 }
-
-.gradient-border .p-dropdown-list-item {
-  border: 2px solid transparent;
-  border-image: linear-gradient(to left, #ff9800, #ff5722) 1;
-  border-image-slice: 1;
+.p-datatable .p-datatable-tbody > tr:hover {
+    background-color: #f9fafb; /* Light mode hover */
 }
-
-.gradient-border .p-dropdown-label {
-  border: 2px solid transparent;
-  border-image: linear-gradient(to left, #ff9800, #ff5722) 1;
-  border-image-slice: 1;
+.dark .p-datatable .p-datatable-tbody > tr:hover {
+    background-color: #374151; /* Dark mode hover */
 }
-
-.custom-toolbar {
-  overflow-x: auto;
-  white-space: nowrap;
-  padding: 0.5rem 1rem;
-
-  .p-toolbar-group-start,
-  .p-toolbar-group-end {
-    display: inline-block;
-    white-space: nowrap;
-  }
-
-  &::-webkit-scrollbar {
-    height: 8px;
-  }
-
-  &::-webkit-scrollbar-thumb {
-    background-color: #aaa;
-    border-radius: 4px;
-  }
-
-  &::-webkit-scrollbar-track {
-    background-color: #eee;
-    border-radius: 4px;
-  }
+.p-paginator {
+    background-color: transparent !important;
+    border-top: 1px solid #e5e7eb;
+    padding: 0.5rem;
+}
+.dark .p-paginator {
+    border-top: 1px solid #374151;
+}
+.p-paginator .p-paginator-pages .p-paginator-page.p-highlight {
+    background-color: #3b82f6 !important; /* Blue highlight */
+    color: white !important;
+}
+.p-paginator .p-paginator-element {
+    font-size: 0.75rem !important; /* Match text-xs */
 }

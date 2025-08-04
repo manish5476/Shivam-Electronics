@@ -31,9 +31,7 @@ export class SellersDetailsComponent {
       const dataItem = rowNode.data;
       const field = cellValueChangedEvent.colDef.field;
       const newValue = cellValueChangedEvent.newValue;
-
       if (field) {
-        // Handle nested address fields
         if (field.startsWith('address.')) {
           const addressField = field.substring(8);
           dataItem.address[addressField] = newValue;
@@ -44,9 +42,6 @@ export class SellersDetailsComponent {
         else {
           dataItem[field] = newValue;
         }
-
-
-        // Call API to update seller
         this.SellerService.updateSellersdata(dataItem.id, dataItem).subscribe({
           next: (res: any) => {
           },
@@ -58,9 +53,7 @@ export class SellersDetailsComponent {
         console.error('❌ Error: Field is undefined in cellValueChangedEvent.colDef');
       }
     }
-
   }
-
 
   getColumn() {
     this.column =

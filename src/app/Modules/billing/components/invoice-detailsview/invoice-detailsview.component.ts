@@ -28,12 +28,11 @@ export class InvoiceDetailCardComponent implements OnInit {
   invoiceDropDown: any;
   constructor(private InvoiceService: InvoiceService, private messageService: AppMessageService, private cdr: ChangeDetectorRef) { }
   ngOnInit(): void {
-    // this.getCustomerdata()
     this.autoPopulate.getModuleData('invoices').subscribe((data: any) => {
       this.invoiceDropDown = data;
     });
     this.cdr.detectChanges();
-
+    if (this.Id) { this.getCustomerdata() }
   }
   onPrintButtonHover(event: MouseEvent, isHovering: boolean) {
     const button = event.currentTarget as HTMLElement;

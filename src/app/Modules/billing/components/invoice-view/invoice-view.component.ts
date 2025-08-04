@@ -38,14 +38,14 @@ export class InvoiceViewComponent {
   rowSelectionMode: any
   customerIDDropdown: any
   invoiceFilter: any = {
-    invoiceNumber: '',
-    buyer: '',
-    buyerEmail: '',
-    status: '',
-    createdFrom: '',
-    createdTo: '',
-    minRemainingAmount: '',
-    maxRemainingAmount: ''
+    invoiceNumber: null,
+    buyer: null,
+    buyerEmail: null,
+    status: null,
+    createdFrom: null,
+    createdTo: null,
+    minRemainingAmount: null,
+    maxRemainingAmount: null
   };
 
   constructor(private cdr: ChangeDetectorRef, private fb: FormBuilder, private InvoiceService: InvoiceService) { }
