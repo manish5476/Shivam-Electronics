@@ -129,10 +129,8 @@
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 py-2">
           <dt class="font-medium text-sm" style="color: var(--theme-text-secondary);">Address</dt>
           <dd class="text-sm whitespace-pre-line" style="color: var(--theme-text-primary);">
-            {{ invoiceData && invoiceData.buyerDetails && invoiceData.buyerDetails.addresses &&
-            invoiceData.buyerDetails.addresses[0] ?
-            (invoiceData.buyerDetails.addresses[0].street ? invoiceData.buyerDetails.addresses[0].street : 'N/A') + ', '
-            +
+            {{ invoiceData && invoiceData.buyerDetails && invoiceData.buyerDetails.addresses && invoiceData.buyerDetails.addresses[0] ?
+            (invoiceData.buyerDetails.addresses[0].street ? invoiceData.buyerDetails.addresses[0].street : 'N/A') + ', '+
             (invoiceData.buyerDetails.addresses[0].city ? invoiceData.buyerDetails.addresses[0].city : '') + ' ' +
             (invoiceData.buyerDetails.addresses[0].state ? invoiceData.buyerDetails.addresses[0].state : '') + ' ' +
             (invoiceData.buyerDetails.addresses[0].zipCode ? invoiceData.buyerDetails.addresses[0].zipCode : '') : 'N/A'
@@ -168,26 +166,19 @@
         </ng-template>
         <ng-template pTemplate="body" let-item>
           <tr style="background-color: var(--theme-bg-secondary); color: var(--theme-text-primary);">
-            <td class="p-3 text-sm">{{ item && item.itemDetails ? (item.itemDetails.title ? item.itemDetails.title :
-              'N/A') : 'N/A' }}</td>
+            <td class="p-3 text-sm">{{ item && item.itemDetails ? (item.itemDetails.title ? item.itemDetails.title : 'N/A') : 'N/A' }}</td>
             <td class="text-right p-3 text-sm">{{ item ? (item.quantity ? item.quantity : 'N/A') : 'N/A' }}</td>
             <td class="text-right p-3 text-sm">{{ item && item.rate ? (item.rate | currency:'INR') : 'N/A' }}</td>
-            <td class="text-right p-3 text-sm">{{ item && item.discount ? (item.discount | currency:'INR') : 'N/A' }}
-            </td>
-            <td class="text-right p-3 text-sm">{{ item && item.taxableValue ? (item.taxableValue | currency:'INR') :
-              'N/A' }}</td>
-            <td class="text-right p-3 text-sm">{{ item && item.cgstAmount ? (item.cgstAmount | currency:'INR') + ' (' +
-              (item.cgstRate ? item.cgstRate : '0') + '%)' : 'N/A' }}</td>
-            <td class="text-right p-3 text-sm">{{ item && item.sgstAmount ? (item.sgstAmount | currency:'INR') + ' (' +
-              (item.sgstRate ? item.sgstRate : '0') + '%)' : 'N/A' }}</td>
-            <td class="text-right p-3 text-sm font-medium">{{ item && item.amount ? (item.amount | currency:'INR') :
-              'N/A' }}</td>
+            <td class="text-right p-3 text-sm">{{ item && item.discount ? (item.discount | currency:'INR') : 'N/A' }}</td>
+            <td class="text-right p-3 text-sm">{{ item && item.taxableValue ? (item.taxableValue | currency:'INR') : 'N/A' }}</td>
+            <td class="text-right p-3 text-sm">{{ item && item.cgstAmount ? (item.cgstAmount | currency:'INR') + ' (' + (item.cgstRate ? item.cgstRate : '0') + '%)' : 'N/A' }}</td>
+            <td class="text-right p-3 text-sm">{{ item && item.sgstAmount ? (item.sgstAmount | currency:'INR') + ' (' + (item.sgstRate ? item.sgstRate : '0') + '%)' : 'N/A' }}</td>
+            <td class="text-right p-3 text-sm font-medium">{{ item && item.amount ? (item.amount | currency:'INR') :'N/A' }}</td>
           </tr>
         </ng-template>
         <ng-template pTemplate="emptymessage">
           <tr>
-            <td colspan="8" class="text-center py-4 text-sm" style="color: var(--theme-text-secondary);">No items found
-              in this invoice.</td>
+            <td colspan="8" class="text-center py-4 text-sm" style="color: var(--theme-text-secondary);">No items found in this invoice.</td>
           </tr>
         </ng-template>
       </p-table>

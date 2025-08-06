@@ -9,7 +9,6 @@ import { AppMessageService } from '../../../../core/services/message.service'; /
 export const passwordMatchValidator: ValidatorFn = (control: AbstractControl): ValidationErrors | null => {
   const password = control.get('password');
   const passwordConfirm = control.get('passwordConfirm');
-  // Don't validate if controls missing or untouched/empty in confirm field (prevents premature error)
   if (!password || !passwordConfirm || !passwordConfirm.value) {
     return null;
   }
@@ -89,4 +88,40 @@ export class SignupComponent implements OnInit {
       },
     });
   }
+
+    onButtonHover(event: MouseEvent, isHovering: boolean) {
+    const button = event.currentTarget as HTMLElement;
+    if (isHovering) {
+      button.style.backgroundColor = 'var(--theme-button-hover-bg-primary)';
+      button.style.boxShadow = '0 4px 10px rgba(0, 0, 0, 0.2)'; // Add a subtle shadow on hover
+    } else {
+      button.style.backgroundColor = 'var(--theme-button-bg-primary)';
+      button.style.boxShadow = '0 1px 3px rgba(0, 0, 0, 0.1), 0 1px 2px rgba(0, 0, 0, 0.06)'; // Revert to default shadow
+    }
+  }
+
+
+  onInputFocus(event: FocusEvent, isFocused: boolean) {
+    const input = event.target as HTMLElement;
+    if (isFocused) {
+      input.style.borderColor = 'var(--theme-brand-primary)'; // Change border color on focus
+      input.style.boxShadow = '0 0 0 2px var(--theme-accent-focus-ring)'; // Add focus ring
+    } else {
+      input.style.borderColor = 'var(--theme-border-secondary)'; // Revert border color
+      input.style.boxShadow = 'none'; // Remove focus ring
+    }
+  }
+
+
+  onLinkHover(event: MouseEvent, isHovering: boolean) {
+    const link = event.currentTarget as HTMLElement;
+    if (isHovering) {
+      link.style.textDecoration = 'underline';
+      link.style.color = 'var(--theme-brand-primary-hover)';
+    } else {
+      link.style.textDecoration = 'none';
+      link.style.color = 'var(--theme-brand-primary)';
+    }
+  }
+
 }

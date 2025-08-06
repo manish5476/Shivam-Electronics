@@ -1,100 +1,129 @@
+<!-- Outer container: Fills the screen height, centers content, and hides overall overflow -->
+<div class="h-screen flex items-center justify-center p-4 overflow-hidden"
+     [style.backgroundColor]="'var(--theme-bg-primary)'">
+    <section class="w-full max-w-screen-2xl">
+        <div class="rounded-[40px] shadow-2xl overflow-hidden flex flex-col lg:flex-row w-full lg:max-w-full mx-auto"
+             [style.backgroundColor]="'var(--theme-bg-secondary)'"
+             [style.color]="'var(--theme-text-primary)'"
+             [style.borderColor]="'var(--theme-border-primary)'"
+             [style.boxShadow]="'0 25px 50px -12px var(--theme-shadow-color)'"
+             style="max-height: calc(100vh - 2rem);"> <!-- Max height to fit within viewport, accounting for p-4 -->
 
-    <div class="bg-gray-100 min-h-screen flex items-center justify-center p-4">
-        <section class="w-full max-w-screen-2xl">
-            <div class="bg-white rounded-[40px] shadow-2xl overflow-hidden flex flex-col lg:flex-row w-full lg:max-w-full mx-auto">
-                
-                <!-- Left Side: Image and Profile Card -->
-                <div class="relative w-full lg:w-2/5 xl:w-1/2 overflow-hidden rounded-t-[40px] lg:rounded-l-[40px] lg:rounded-tr-none min-h-[400px] lg:min-h-0">
-                    <img src="https://plus.unsplash.com/premium_photo-1669042646165-1878c78e6604?q=80&w=711&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" 
-                        onerror="this.src='https://placehold.co/800x1200/554955/white?text=Artistic+Background'"
-                        alt="Electronic components on a desk"
-                        class="absolute inset-0 w-full h-full object-cover">
-                    
-                    <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
+            <!-- Left Side: Image and Profile Card -->
+            <div class="relative w-full p-2 lg:w-2/5 xl:w-1/2 overflow-hidden rounded-t-[40px] lg:rounded-l-[40px] lg:rounded-tr-none min-h-[400px] lg:min-h-0">
+                <img src="https://plus.unsplash.com/premium_photo-1669042646165-1878c78e6604?q=80&w=711&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                    onerror="this.src='https://placehold.co/800x1200/554955/white?text=Artistic+Background'"
+                    alt="Electronic components on a desk"
+                    class="absolute inset-0 w-full h-full object-cover">
+
+                <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
+            </div>
+
+            <!-- Right Side: Signup Form Container - Allows internal scrolling -->
+            <div class="flex flex-col p-2 md:p-10 lg:p-8 xl:p-10 w-full lg:w-3/5 xl:w-1/2 overflow-y-auto">
+                <div class="flex items-center justify-between">
+                    <div class="font-bold text-xl" [style.color]="'var(--theme-text-heading)'">SHIVAM ELECTRONICS</div>
                 </div>
 
-                <!-- Right Side: Signup Form -->
-                <div class="flex flex-col p-8 md:p-16 lg:p-12 xl:p-16 w-full lg:w-3/5 xl:w-1/2">
-                    <div class="flex items-center justify-between">
-                        <div class="font-bold text-xl">SHIVAM ELECTRONICS</div>
+                <div class="mt-3 mb-2">
+                    <h1 class="text-4xl font-bold" [style.color]="'var(--theme-text-heading)'">Create an account</h1>
+                </div>
+
+                <!-- Signup Form -->
+                <form [formGroup]="signupForm" (ngSubmit)="signUp()" class="space-y-6 w-full" novalidate>
+
+                    <!-- Full Name -->
+                    <div class="space-y-2">
+                        <label for="name" class="text-sm font-medium" [style.color]="'var(--theme-text-label)'">Full Name</label>
+                        <input type="text" id="name" formControlName="name" placeholder="John Doe" required
+                            class="w-full border-b py-3 bg-transparent outline-none transition-colors duration-200"
+                            [style.borderColor]="'var(--theme-border-secondary)'"
+                            [style.color]="'var(--theme-text-primary)'"
+                            (focus)="onInputFocus($event, true)"
+                            (blur)="onInputFocus($event, false)">
+                        <div *ngIf="signupForm.get('name')?.invalid && (signupForm.get('name')?.dirty || signupForm.get('name')?.touched)" class="text-sm" [style.color]="'var(--theme-text-error)'">
+                            <span *ngIf="signupForm.get('name')?.errors?.['required']">Full Name is required</span>
+                            <span *ngIf="signupForm.get('name')?.errors?.['minlength']">Full Name must be at least 2 characters long</span>
+                        </div>
                     </div>
 
-                    <div class="mt-12 mb-8">
-                        <h1 class="text-4xl font-bold text-gray-800">Create an account</h1>
-                        <p class="text-gray-500 mt-2">Join us today to get started!</p>
+                    <!-- Email Address -->
+                    <div class="space-y-2">
+                        <label for="email" class="text-sm font-medium" [style.color]="'var(--theme-text-label)'">Email Address</label>
+                        <input type="email" id="email" formControlName="email" placeholder="john@example.com" required
+                            class="w-full border-b py-3 bg-transparent outline-none transition-colors duration-200"
+                            [style.borderColor]="'var(--theme-border-secondary)'"
+                            [style.color]="'var(--theme-text-primary)'"
+                            (focus)="onInputFocus($event, true)"
+                            (blur)="onInputFocus($event, false)">
+                        <div *ngIf="signupForm.get('email')?.invalid && (signupForm.get('email')?.dirty || signupForm.get('email')?.touched)" class="text-sm" [style.color]="'var(--theme-text-error)'">
+                            <span *ngIf="signupForm.get('email')?.errors?.['required']">Email is required</span>
+                            <span *ngIf="signupForm.get('email')?.errors?.['email']">Invalid email format</span>
+                        </div>
                     </div>
 
-                    <!-- Signup Form -->
-                    <form [formGroup]="signupForm" (ngSubmit)="signUp()" class="space-y-6 w-full" novalidate>
-
-                        <!-- Full Name -->
-                        <div class="space-y-2">
-                            <label for="name" class="text-sm font-medium text-gray-700">Full Name</label>
-                            <input type="text" id="name" formControlName="name" placeholder="John Doe" required
-                                class="w-full border-b border-gray-300 py-3 bg-transparent outline-none focus:border-blue-500 text-gray-900">
-                            <div *ngIf="signupForm.get('name')?.invalid && (signupForm.get('name')?.dirty || signupForm.get('name')?.touched)" class="text-red-500 text-sm">
-                                <span *ngIf="signupForm.get('name')?.errors?.['required']">Full Name is required</span>
-                                <span *ngIf="signupForm.get('name')?.errors?.['minlength']">Full Name must be at least 2 characters long</span>
-                            </div>
+                    <!-- Password -->
+                    <div class="space-y-2">
+                        <label for="password" class="text-sm font-medium" [style.color]="'var(--theme-text-label)'">Password</label>
+                        <input type="password" id="password" formControlName="password" placeholder="Password" required
+                            class="w-full border-b py-3 bg-transparent outline-none transition-colors duration-200"
+                            [style.borderColor]="'var(--theme-border-secondary)'"
+                            [style.color]="'var(--theme-text-primary)'"
+                            (focus)="onInputFocus($event, true)"
+                            (blur)="onInputFocus($event, false)">
+                        <div *ngIf="signupForm.get('password')?.invalid && (signupForm.get('password')?.dirty || signupForm.get('password')?.touched)" class="text-sm" [style.color]="'var(--theme-text-error)'">
+                            <span *ngIf="signupForm.get('password')?.errors?.['required']">Password is required</span>
+                            <span *ngIf="signupForm.get('password')?.errors?.['minlength']">Password must be at least 8 characters long</span>
                         </div>
-
-                        <!-- Email Address -->
-                        <div class="space-y-2">
-                            <label for="email" class="text-sm font-medium text-gray-700">Email Address</label>
-                            <input type="email" id="email" formControlName="email" placeholder="john@example.com" required
-                                class="w-full border-b border-gray-300 py-3 bg-transparent outline-none focus:border-blue-500 text-gray-900">
-                            <div *ngIf="signupForm.get('email')?.invalid && (signupForm.get('email')?.dirty || signupForm.get('email')?.touched)" class="text-red-500 text-sm">
-                                <span *ngIf="signupForm.get('email')?.errors?.['required']">Email is required</span>
-                                <span *ngIf="signupForm.get('email')?.errors?.['email']">Invalid email format</span>
-                            </div>
-                        </div>
-
-                        <!-- Password -->
-                        <div class="space-y-2">
-                            <label for="password" class="text-sm font-medium text-gray-700">Password</label>
-                            <input type="password" id="password" formControlName="password" placeholder="Password" required
-                                class="w-full border-b border-gray-300 py-3 bg-transparent outline-none focus:border-blue-500 text-gray-900">
-                            <div *ngIf="signupForm.get('password')?.invalid && (signupForm.get('password')?.dirty || signupForm.get('password')?.touched)" class="text-red-500 text-sm">
-                                <span *ngIf="signupForm.get('password')?.errors?.['required']">Password is required</span>
-                                <span *ngIf="signupForm.get('password')?.errors?.['minlength']">Password must be at least 8 characters long</span>
-                            </div>
-                        </div>
-
-                        <!-- Confirm Password -->
-                        <div class="space-y-2">
-                            <label for="confirm-password" class="text-sm font-medium text-gray-700">Confirm Password</label>
-                            <input type="password" id="confirm-password" formControlName="passwordConfirm" placeholder="Confirm Password" required
-                                class="w-full border-b border-gray-300 py-3 bg-transparent outline-none focus:border-blue-500 text-gray-900">
-                            <div *ngIf="signupForm.get('passwordConfirm')?.invalid && (signupForm.get('passwordConfirm')?.dirty || signupForm.get('passwordConfirm')?.touched)" class="text-red-500 text-sm">
-                                <span *ngIf="signupForm.get('passwordConfirm')?.errors?.['required']">Confirm Password is required</span>
-                            </div>
-                            <div *ngIf="signupForm.errors?.['passwordMismatch'] && (signupForm.get('passwordConfirm')?.dirty || signupForm.get('passwordConfirm')?.touched)" class="text-red-500 text-sm">
-                                <span>Passwords do not match.</span>
-                            </div>
-                        </div>
-
-                        <!-- Role -->
-                        <div class="space-y-2">
-                            <label for="role" class="text-sm font-medium text-gray-700">Role</label>
-                            <input type="text" id="role" formControlName="role" placeholder="Customer" required
-                                class="w-full border-b border-gray-300 py-3 bg-transparent outline-none focus:border-blue-500 text-gray-900">
-                            <div *ngIf="signupForm.get('role')?.invalid && (signupForm.get('role')?.dirty || signupForm.get('role')?.touched)" class="text-red-500 text-sm">
-                                <span *ngIf="signupForm.get('role')?.errors?.['required']">Role is required</span>
-                            </div>
-                        </div>
-
-                        <button type="submit" 
-                                class="w-full bg-red-500 text-white py-4 px-4 rounded-xl font-bold hover:bg-red-600 transition-colors"
-                                [disabled]="signupForm.invalid || isSubmitting">
-                            <span *ngIf="!isSubmitting">Sign Up</span>
-                            <span *ngIf="isSubmitting">Signing Up...</span>
-                        </button>
-                    </form>
-
-                    <div class="mt-8 text-center text-sm text-gray-500">
-                        Already have an account? <a routerLink="/auth/login" class="text-blue-500 hover:underline font-medium">Login</a>
                     </div>
+
+                    <!-- Confirm Password -->
+                    <div class="space-y-2">
+                        <label for="confirm-password" class="text-sm font-medium" [style.color]="'var(--theme-text-label)'">Confirm Password</label>
+                        <input type="password" id="confirm-password" formControlName="passwordConfirm" placeholder="Confirm Password" required
+                            class="w-full border-b py-3 bg-transparent outline-none transition-colors duration-200"
+                            [style.borderColor]="'var(--theme-border-secondary)'"
+                            [style.color]="'var(--theme-text-primary)'"
+                            (focus)="onInputFocus($event, true)"
+                            (blur)="onInputFocus($event, false)">
+                        <div *ngIf="signupForm.get('passwordConfirm')?.invalid && (signupForm.get('passwordConfirm')?.dirty || signupForm.get('passwordConfirm')?.touched)" class="text-sm" [style.color]="'var(--theme-text-error)'">
+                            <span *ngIf="signupForm.get('passwordConfirm')?.errors?.['required']">Confirm Password is required</span>
+                        </div>
+                        <div *ngIf="signupForm.errors?.['passwordMismatch'] && (signupForm.get('passwordConfirm')?.dirty || signupForm.get('passwordConfirm')?.touched)" class="text-sm" [style.color]="'var(--theme-text-error)'">
+                            <span>Passwords do not match.</span>
+                        </div>
+                    </div>
+
+                    <!-- Role -->
+                    <div class="space-y-2">
+                        <label for="role" class="text-sm font-medium" [style.color]="'var(--theme-text-label)'">Role</label>
+                        <input type="text" id="role" formControlName="role" placeholder="Customer" required
+                            class="w-full border-b py-3 bg-transparent outline-none transition-colors duration-200"
+                            [style.borderColor]="'var(--theme-border-secondary)'"
+                            [style.color]="'var(--theme-text-primary)'"
+                            (focus)="onInputFocus($event, true)"
+                            (blur)="onInputFocus($event, false)">
+                        <div *ngIf="signupForm.get('role')?.invalid && (signupForm.get('role')?.dirty || signupForm.get('role')?.touched)" class="text-sm" [style.color]="'var(--theme-text-error)'">
+                            <span *ngIf="signupForm.get('role')?.errors?.['required']">Role is required</span>
+                        </div>
+                    </div>
+
+                    <button type="submit"
+                            class="w-full py-4 px-4 rounded-xl font-bold shadow-md transition-all duration-300 ease-in-out"
+                            [style.backgroundColor]="'var(--theme-button-bg-primary)'"
+                            [style.color]="'var(--theme-button-text-primary-btn)'"
+                            (mouseenter)="onButtonHover($event, true)"
+                            (mouseleave)="onButtonHover($event, false)"
+                            [disabled]="signupForm.invalid || isSubmitting">
+                        <span *ngIf="!isSubmitting">Sign Up</span>
+                        <span *ngIf="isSubmitting">Signing Up...</span>
+                    </button>
+                </form>
+
+                <div class="mt-8 text-center text-sm" [style.color]="'var(--theme-text-secondary)'">
+                    Already have an account? <a routerLink="/auth/login" class="font-medium" [style.color]="'var(--theme-brand-primary)'" (mouseenter)="onLinkHover($event, true)" (mouseleave)="onLinkHover($event, false)">Login</a>
                 </div>
             </div>
-        </section>
-    </div>
+        </div>
+    </section>
+</div>
