@@ -20,53 +20,91 @@ ModuleRegistry.registerModules([AllCommunityModule]);
   standalone: true,
   imports: [AgGridAngular, FormsModule, ToolbarModule, CommonModule, SelectModule, ColorPickerModule],
   template: `
-    <div class="gradient-card rounded-md shadow-sm overflow-hidden w-full bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100"
-         [style.borderColor]="'var(--theme-border-primary, #e5e7eb)'" [style.boxShadow]="'0 2px 5px var(--theme-shadow-color, rgba(0,0,0,0.1))'">
-      <div class="ag-grid-header-filter-area border-b border-gray-200 dark:border-gray-700">
-        <div class="header-controls-glass-container rounded-sm bg-gray-50 dark:bg-gray-700 p-2">
-          <div class="header-controls-content flex items-center flex-wrap gap-x-4 gap-y-2">
-            <div class="header-control-item">
-              <label for="colorPicker" class="text-xs mr-2 text-gray-600 dark:text-gray-300">Accent Color</label>
-              <p-colorPicker id="colorPicker" [(ngModel)]="accentColor" (onChange)="onColorChange($event)" appendTo="body"
-                             [style]="{'width': '24px', 'height': '24px'}" [inline]="false"></p-colorPicker>
-            </div>
-            <div class="ag-grid-search-input header-control-item flex items-center border rounded-md px-2 py-1 bg-gray-100 dark:bg-gray-600 border-gray-300 dark:border-gray-500">
-              <i class="pi pi-search mr-2 text-xs text-gray-500 dark:text-gray-400"></i>
-              <input type="text" placeholder="Search..." (input)="onSearch($event)"
-                     class="bg-transparent border-none text-xs w-48 focus:outline-none text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400" />
-            </div>
-            <div class="header-buttons flex gap-2">
-              <button class="p-button p-component p-button-sm text-xs bg-blue-600 text-white hover:bg-blue-700 rounded-md px-3 py-1.5"
-                      (click)="onFilterClick()">
-                <i class="pi pi-filter text-xs mr-1"></i> Filter
-              </button>
-              <button class="p-button p-component p-button-sm text-xs bg-gray-600 dark:bg-gray-500 text-white hover:bg-gray-700 dark:hover:bg-gray-400 rounded-md px-3 py-1.5"
-                      (click)="exportToCSV()">
-                <i class="pi pi-upload text-xs mr-1"></i> Export
-              </button>
-            </div>
-          </div>
-        </div>
+<!-- Main container for the entire grid, styled as a modern card -->
+<!-- Main container for the entire grid, styled as a modern card using your theme variables -->
+<div class="rounded-lg shadow-xl overflow-hidden w-full"
+     [style.backgroundColor]="'var(--theme-bg-secondary)'"
+     [style.color]="'var(--theme-text-primary)'"
+     [style.borderColor]="'var(--theme-border-primary)'"
+     [style.boxShadow]="'0 2px 5px var(--theme-shadow-color)'">
+
+  <!-- The header filter area, visible only if the headerFilter input is true -->
+  <div *ngIf="headerFilter"
+       class="p-4 border-b"
+       [style.borderColor]="'var(--theme-border-primary)'"
+       [style.backgroundColor]="'var(--theme-bg-secondary)'">
+
+    <!-- Flexbox container for the controls. Uses 'flex-wrap' for responsiveness on smaller screens -->
+    <div class="flex flex-wrap items-center justify-between gap-4">
+
+      <!-- Accent Color Picker and Label -->
+      <div class="flex items-center gap-2">
+        <label for="colorPicker"
+               class="text-sm font-medium"
+               [style.color]="'var(--theme-text-label)'">Accent Color</label>
+        <p-colorPicker id="colorPicker" [(ngModel)]="accentColor" (onChange)="onColorChange($event)" appendTo="body"
+          [style]="{'width': '2.25rem', 'height': '2.25rem'}" class="rounded-full overflow-hidden"></p-colorPicker>
       </div>
-      <div class="relative w-full ag-grid-main-area" [style.width]="gridWidth" [style.height]="mainGridHeight">
-        <ag-grid-angular
-          style="height: 100%; width: 100%;"
-          [rowData]="rowData"
-          [columnDefs]="columnDefs"
-          [theme]="theme"
-          [defaultColDef]="defaultColDef"
-          [pagination]="true"
-          [rowSelection]="rowSelection"
-          [rowClassRules]="mergedRowClassRules"
-          [paginationPageSize]="paginationPageSize"
-          [getRowId]="getRowId"
-          (cellValueChanged)="onCellValueChanged($event)"
-          (rowSelected)="onRowSelected($event)"
-          (cellClicked)="onCellClicked($event)"
-          (gridReady)="onGridReady($event)">
-        </ag-grid-angular>
+      
+      <!-- Global Search Input with an icon -->
+      <div class="flex items-center flex-1 min-w-[16rem] rounded-lg shadow-inner focus-within:ring-2"
+           [style.backgroundColor]="'var(--theme-bg-tertiary)'"
+           [style.color]="'var(--theme-text-primary)'"
+           [style.boxShadow]="'inset 0 1px 2px var(--theme-shadow-color)'"
+           [style.outlineColor]="'var(--theme-accent-focus-ring)'">
+        <i class="pi pi-search text-base p-2" [style.color]="'var(--theme-text-secondary)'"></i>
+        <input type="text" placeholder="Search grid data..." (input)="onSearch($event)"
+               class="bg-transparent border-none text-sm w-full py-2 px-1 focus:outline-none"
+               [style.color]="'var(--theme-text-primary)'"
+               [style.placeholderColor]="'var(--theme-text-secondary)'"/>
       </div>
+
+      <!-- Action Buttons -->
+      <div class="flex items-center gap-2 ml-auto">
+        <!-- Filter button uses the theme's brand primary color -->
+        <button class="p-button p-component p-button-sm rounded-md px-4 py-2 text-sm"
+                (click)="onFilterClick()"
+                [style.backgroundColor]="'var(--theme-brand-primary)'"
+                [style.color]="'var(--theme-button-text-primary-btn)'"
+                [style.hoverBackgroundColor]="'var(--theme-brand-primary-hover)'">
+          <i class="pi pi-filter mr-2"></i> Filter
+        </button>
+        <!-- Export button uses a secondary, outlined style -->
+        <button class="p-button p-component p-button-sm p-button-outlined rounded-md px-4 py-2 text-sm"
+                (click)="exportToCSV()"
+                [style.borderColor]="'var(--theme-button-outlined-border)'"
+                [style.color]="'var(--theme-button-outlined-text)'"
+                [style.hoverBackgroundColor]="'var(--theme-button-outlined-hover-bg)'"
+                [style.hoverColor]="'var(--theme-button-outlined-hover-text)'">
+          <i class="pi pi-upload mr-2"></i> Export
+        </button>
+      </div>
+
     </div>
+  </div>
+
+  <!-- The main AG-Grid area -->
+  <div class="relative w-full ag-grid-main-area" [style.height]="mainGridHeight">
+    <ag-grid-angular
+      style="height: 100%; width: 100%;"
+      [rowData]="rowData"
+      [columnDefs]="columnDefs"
+      [theme]="theme"
+      [defaultColDef]="defaultColDef"
+      [pagination]="true"
+      [rowSelection]="rowSelection"
+      [rowClassRules]="mergedRowClassRules"
+      [paginationPageSize]="paginationPageSize"
+      [getRowId]="getRowId"
+      (cellValueChanged)="onCellValueChanged($event)"
+      (rowSelected)="onRowSelected($event)"
+      (cellClicked)="onCellClicked($event)"
+      (gridReady)="onGridReady($event)">
+    </ag-grid-angular>
+  </div>
+</div>
+
+
   `,
   styles: [`
     .ag-grid-main-area {
@@ -91,6 +129,7 @@ export class SharedGridComponent implements OnInit, OnChanges {
   @Input() padding: string = '0 0px';
   @Input() paginationPageSize: number = 100;
   @Input() GridName: string = '';
+  @Input() headerFilter: boolean = true;
   @Output() dataChanged = new EventEmitter<any>();
   @Output() eventFromGrid = new EventEmitter<any>();
   @Output() gridReady = new EventEmitter<GridReadyEvent>();
@@ -150,7 +189,7 @@ export class SharedGridComponent implements OnInit, OnChanges {
     return params.data._id || String(params.data.id);
   };
 
-  constructor(private themeService: ThemeService) {}
+  constructor(private themeService: ThemeService) { }
 
   ngOnInit(): void {
     this.rowSelection = { mode: this.rowSelectionMode };

@@ -1,4 +1,24 @@
-<i (click)="openDialog()" class="pi pi-user" style="font-size: 2rem"></i>
+
+<button pButton pRipple type="button" icon="pi pi-user" (click)="openDialog()" 
+  class="w-12 h-12 flex items-center justify-center p-0 transition-colors duration-200 ease-in-out hover:bg-opacity-10 focus:ring-2 focus:ring-[var(--theme-accent-focus-ring)] focus:outline-none"
+  [style]="{ 'color': 'var(--theme-brand-primary)' }" pTooltip="Detailed View" tooltipPosition="bottom"></button>
+<p-dialog [(visible)]="display" modal="true" header="Detailed View" appendTo="body"
+  [style]="{ width: '80vw', height: '80vh' }" [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }" [maximizable]="true"
+  styleClass="bg-[var(--theme-bg-secondary)] text-[var(--theme-text-primary)] rounded-lg shadow-2xl overflow-hidden">
+  <ng-container *ngComponentOutlet="dynamicComponent; inputs: { Id: id }"></ng-container>
+  <ng-container *ngIf="!dynamicComponent">
+    <div>
+      <p>Loading component...</p>
+    </div>
+  </ng-container>
+
+  <!-- <ng-template pTemplate="footer">
+    <button pButton type="button" (click)="display = false" label="Close" 
+      styleClass="p-button-primary"></button>
+  </ng-template> -->
+</p-dialog>
+
+<!-- <i (click)="openDialog()" class="pi pi-user" style="font-size: 2rem"></i>
 
 <p-dialog [(visible)]="display" modal="true" header="Detailed View" appendTo="body"
   [style]="{ width: '80vw', height: '80vh' }" [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }"
@@ -10,4 +30,4 @@
     </div>
   </ng-container>
   <button pButton type="button" (click)="display = false" label="Close">Close</button>
-</p-dialog>
+</p-dialog> -->

@@ -1,10 +1,9 @@
 <div class="gradient-card rounded-md shadow-sm overflow-hidden w-full"
   [style.backgroundColor]="'var(--theme-bg-secondary)'" [style.color]="'var(--theme-text-primary)'"
   [style.borderColor]="'var(--theme-border-primary)'" [style.boxShadow]="'0 2px 5px var(--theme-shadow-color)'">
-  <div class="ag-grid-header-filter-area  border-b" [style.borderColor]="'var(--theme-border-primary)'">
+  <div class="ag-grid-header-filter-area  border-b" *ngIf="headerFilter" [style.borderColor]="'var(--theme-border-primary)'">
     <div class="header-controls-glass-container rounded-sm"  [style.backgroundColor]="'var(--theme-bg-main)'">
       <div class="header-controls-content flex items-center flex-wrap gap-x-4 gap-y-2">
-        <!-- Added flex and gap for better layout -->
         <div class="header-control-item">
           <label for="colorPicker" class="text-[0.75rem] mr-2" [style.color]="'var(--theme-text-secondary)'">Accent
             Color</label>

@@ -4,8 +4,7 @@ import { CellValueChangedEvent } from 'ag-grid-community';
 import { ToolbarComponent } from "../../../../shared/Components/toolbar/toolbar.component";
 import { CustomerService } from '../../../../core/services/customer.service';
 import { InvoiceService } from '../../../../core/services/invoice.service';
-import { SelectModule } from 'primeng/select'; import { DynamicCellComponent } from '../../../../shared/AgGrid/AgGridcomponents/dynamic-cell/dynamic-cell.component';
-import { GridContext } from '../../../../shared/AgGrid/AgGridcomponents/ag-grid-reference/ag-grid-reference.component';
+import { SelectModule } from 'primeng/select';
 import { IftaLabelModule } from 'primeng/iftalabel';
 import { FormsModule } from '@angular/forms';
 import { AutopopulateService } from '../../../../core/services/autopopulate.service';
@@ -32,7 +31,7 @@ export class CustomerListComponent implements OnInit {
     column: any = [];
     rowSelectionMode: any = 'singleRow';
     customerFilter: any = {
-        name: '',
+        name: null,
         mobileNumber: '',
         guaranter: '',
         page: '',
