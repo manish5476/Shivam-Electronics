@@ -1,5 +1,52 @@
-<div class="ag-grid-main-area">
-  <app-shared-grid [data]="data" [rowSelectionMode]="rowSelectionMode" [column]="column"
+  <div class="flex flex-col rounded-md overflow-hidden bg-[var(--theme-bg-primary)] text-[var(--theme-text-primary)]">
+      <div class="ag-grid-header-filter-area px-4 py-3 rounded-md shadow-sm bg-[var(--theme-bg-secondary)] border-b border-[var(--theme-border-primary)]">
+        <!-- Controls Container: Uses flex-wrap for responsiveness -->
+        <div class="header-controls flex flex-wrap items-center gap-4 sm:gap-6">
+          
+          <input pInputText id="title" [(ngModel)]="productFilter.title" placeholder="Title"
+            class="p-inputtext-sm w-full sm:w-auto flex-1 min-w-[10rem] border border-[var(--theme-border-primary)] rounded-md" />
+
+           <p-select id="category" [(ngModel)]="productFilter.category" [options]="categoryOptions" optionLabel="name" optionValue="value" 
+            placeholder="All Categories" (onChange)="getData()"
+            styleClass="p-inputtext-sm flex-1 min-w-[10rem]"></p-select>
+
+         <p-select id="brand" [(ngModel)]="productFilter.brand" [options]="brandOptions" optionLabel="name" optionValue="value" 
+            placeholder="All Brands" (onChange)="getData()"
+            styleClass="p-inputtext-sm flex-1 min-w-[10rem]"></p-select>
+          
+          <!-- Actions Buttons -->
+          <div class="flex space-x-2 flex-grow-0">
+            <button pButton type="button" (click)="getData()" label="Apply" icon="pi pi-check"
+              class="p-button-sm"
+              [style.backgroundColor]="'var(--theme-brand-primary)'"
+              [style.color]="'var(--theme-text-inverted)'"></button>
+            <button pButton type="button" (click)="resetFilters()" label="Reset" icon="pi pi-times"
+              class="p-button-sm p-button-outlined p-button-secondary"
+              [style.color]="'var(--theme-text-secondary)'"
+              [style.borderColor]="'var(--theme-border-primary)'"></button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Grid Area -->
+      <div class="ag-grid-main-area mt-4">
+        <app-shared-grid [data]="data"  [gridHeight]="'200px'" [headerFilter]="false" [rowSelectionMode]="rowSelectionMode" [column]="column"
+          (eventFromGrid)="eventFromGrid($event)">
+        </app-shared-grid>
+      </div>
+
+      <!-- Dialog for editing product details -->
+      <p-dialog [(visible)]="productDialog" [style]="{ width: '32rem' }" header="Product Details" [modal]="true"
+        styleClass="bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 rounded-lg shadow-lg">
+        <ng-template pTemplate="content">
+          <app-product-master [redirectedData]="redirectedProduct"></app-product-master>
+        </ng-template>
+        <ng-template pTemplate="footer">
+        </ng-template>
+      </p-dialog>
+    </div>
+<!-- <div class="ag-grid-main-area">
+  <app-shared-grid [data]="data" [headerFilter]="false"  [rowSelectionMode]="rowSelectionMode" [column]="column"
     (eventFromGrid)="eventFromGrid($event)">
   </app-shared-grid>
 </div>
@@ -11,4 +58,4 @@
   </ng-template>
   <ng-template pTemplate="footer">
   </ng-template>
-</p-dialog>
+</p-dialog> -->

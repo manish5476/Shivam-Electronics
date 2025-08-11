@@ -1,16 +1,4 @@
-<!-- The main loading overlay container -->
-<div class="loading-overlay fixed inset-0 bg-gradient-to-r from-black/70 to-black/40 backdrop-blur-sm flex items-center justify-center z-[1000]" *ngIf="isLoading$ | async">
-    <div class="loader-container flex flex-col items-center gap-4">
-        <!-- Canvas for the ripple effect -->
-        <!-- Responsive sizing for the canvas -->
-        <canvas id="rippleCanvas" class="w-64 h-64 md:w-80 md:h-80 lg:w-96 lg:h-96 rounded-full"></canvas>
-        
-        <!-- Animated "Universe Loading..." text -->
-        <span class="brand-text font-['Inter'] text-[clamp(1.5rem,4vw,2rem)] font-bold bg-gradient-to-r from-[#00FDCF] via-[#FD1D1D] to-[#FCBC45] bg-clip-text text-transparent drop-shadow-[0_0_10px_rgba(0,253,207,0.5)] animate-pulse">Universe Loading...</span>
-    </div>
-</div>
 
-<!-- 
 <div class="loading-overlay fixed inset-0 bg-gradient-to-r from-black/70 to-black/40 backdrop-blur-sm flex items-center justify-center z-[1000]" *ngIf="isLoading$ | async">
   <div class="loader-container flex flex-col items-center gap-4">
     <svg class="circuit-loader w-24 h-24 animate-[rotate_10s_linear_infinite]" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
@@ -22,4 +10,4 @@
     </svg>
     <span class="brand-text font-['Orbitron'] text-[clamp(1.5rem,4vw,2rem)] font-bold bg-gradient-to-r from-[#00FDCF] via-[#FD1D1D] to-[#FCBC45] bg-clip-text text-transparent drop-shadow-[0_0_10px_rgba(0,253,207,0.5)] animate-[fadeIn_1.5s_ease-in-out_infinite_alternate]">Shivam Electronics</span>
   </div>
-</div> -->
+</div>

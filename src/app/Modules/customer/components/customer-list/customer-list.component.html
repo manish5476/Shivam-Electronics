@@ -1,52 +1,51 @@
+<div class="flex flex-col rounded-md overflow-hidden bg-[var(--theme-bg-primary)] text-[var(--theme-text-primary)]">
 
-<div
-  class="flex flex-col rounded-sm erflow-hidden bg-[var(--theme-bg-primary)] text-[var(--theme-text-primary)]">
-  <div class="ag-grid-header-filter-area px-3 rounded-sm py-2">
-    <div class="header-controls-glass-container">
-      <div class="header-controls-content">
-        <div class="header-control-item">
-          <p-select id="customer" appendTo="body" [options]="customerFilter.customerIDDropdown"
-            [(ngModel)]="customerFilter.name" (onChange)="getData()" [filter]="true" filterBy="fullname"
-            optionLabel="fullname" optionValue="_id" [showClear]="true" placeholder="Customer"
-            styleClass="w-28 text-[0.75rem] bg-transparent border-none"></p-select>
-        </div>
-        <!-- Email Input -->
-        <div class="header-control-item">
-          <input pInputText id="email" [(ngModel)]="customerFilter.email" (input)="getData()" placeholder="Email"
-            class="w-24 bg-transparent border-none text-[0.75rem] placeholder-[var(--theme-text-secondary)] focus:outline-none" />
-        </div>
-        <!-- Phone Input -->
-        <div class="header-control-item">
-          <input pInputText id="phone" [(ngModel)]="customerFilter.phone" (input)="getData()" placeholder="Phone"
-            class="w-20 bg-transparent border-none text-[0.75rem] placeholder-[var(--theme-text-secondary)] focus:outline-none" />
-        </div>
-        <!-- Page Input -->
-        <div class="header-control-item">
-          <input pInputText id="page" [(ngModel)]="customerFilter.page" (input)="getData()" placeholder="Page"
-            type="number" min="1"
-            class="w-16 bg-transparent border-none text-[0.75rem] placeholder-[var(--theme-text-secondary)] focus:outline-none" />
-        </div>
-        <!-- Limit Input -->
-        <div class="header-control-item">
-          <input pInputText id="limit" [(ngModel)]="customerFilter.limit" (input)="getData()" placeholder="Limit"
-            type="number" min="1"
-            class="w-16 bg-transparent border-none text-[0.75rem] placeholder-[var(--theme-text-secondary)] focus:outline-none" />
-        </div>
-        <!-- Actions -->
-        <div class="header-buttons">
-          <button class="ag-grid-button" (click)="getData()">
-            <i class="pi pi-check"></i> Apply
-          </button>
-          <button class="ag-grid-button filter-button" (click)="resetFilters()">
-            <i class="pi pi-times"></i> Reset
-          </button>
-        </div>
+  <!-- Header Filter Area with a clean, modern look -->
+  <div class="ag-grid-header-filter-area px-4 py-3 rounded-md shadow-sm bg-[var(--theme-bg-secondary)] border-b border-[var(--theme-border-primary)]">
+    <!-- Controls Container: Uses flex-wrap for responsiveness -->
+    <div class="header-controls flex flex-wrap items-center gap-4 sm:gap-6">
+      
+      <!-- Customer Dropdown: Responsive width, clear border -->
+      <p-select id="customer" appendTo="body" [options]="customerFilter.customerIDDropdown"
+        [(ngModel)]="customerFilter.name" (onChange)="getData()" [filter]="true" filterBy="fullname"
+        optionLabel="fullname" optionValue="_id" [showClear]="true" placeholder="Customer"
+        styleClass="p-inputtext-sm w-full sm:w-auto flex-1 min-w-[10rem] border border-[var(--theme-border-primary)] rounded-md"></p-select>
+
+      <!-- Email Input: Responsive width, clear border, larger font -->
+      <input pInputText id="email" [(ngModel)]="customerFilter.email" (input)="getData()" placeholder="Email"
+        class="p-inputtext-sm w-full sm:w-auto flex-1 min-w-[10rem] border border-[var(--theme-border-primary)] rounded-md" />
+
+      <!-- Phone Input: Responsive width, clear border, larger font -->
+      <input pInputText id="phone" [(ngModel)]="customerFilter.phone" (input)="getData()" placeholder="Phone"
+        class="p-inputtext-sm w-full sm:w-auto flex-1 min-w-[8rem] border border-[var(--theme-border-primary)] rounded-md" />
+        
+      <!-- Page Input: Responsive width, clear border, larger font -->
+      <input pInputText id="page" [(ngModel)]="customerFilter.page" (input)="getData()" placeholder="Page"
+        type="number" min="1"
+        class="p-inputtext-sm w-full sm:w-auto flex-1 min-w-[5rem] border border-[var(--theme-border-primary)] rounded-md" />
+        
+      <!-- Limit Input: Responsive width, clear border, larger font -->
+      <input pInputText id="limit" [(ngModel)]="customerFilter.limit" (input)="getData()" placeholder="Limit"
+        type="number" min="1"
+        class="p-inputtext-sm w-full sm:w-auto flex-1 min-w-[5rem] border border-[var(--theme-border-primary)] rounded-md" />
+        
+      <!-- Actions Buttons: Use PrimeNG buttons for consistency -->
+      <div class="flex space-x-2 flex-grow-0">
+        <button pButton type="button" (click)="getData()" label="Apply" icon="pi pi-check"
+          class="p-button-sm"
+          [style.backgroundColor]="'var(--theme-brand-primary)'"
+          [style.color]="'var(--theme-text-inverted)'"></button>
+        <button pButton type="button" (click)="resetFilters()" label="Reset" icon="pi pi-times"
+          class="p-button-sm p-button-outlined p-button-secondary"
+          [style.color]="'var(--theme-text-secondary)'"
+          [style.borderColor]="'var(--theme-border-primary)'"></button>
       </div>
     </div>
   </div>
+
   <!-- Grid Area -->
-    <!-- <div class="gradient-card p-3 rounded-md shadow-sm"> -->
-      <app-shared-grid [data]="data" [gridHeight]="'250px'" [rowSelectionMode]="rowSelectionMode"  [GridName]="'Customer Details'"
-        [column]="column" (eventFromGrid)="eventFromGrid($event)"></app-shared-grid>
-  <!-- </div> -->
+  <div class="mt-4">
+    <app-shared-grid [data]="data" [gridHeight]="'200px'" [headerFilter]="false"  [rowSelectionMode]="rowSelectionMode" [GridName]="'Customer Details'"
+      [column]="column" (eventFromGrid)="eventFromGrid($event)"></app-shared-grid>
+  </div>
 </div>
