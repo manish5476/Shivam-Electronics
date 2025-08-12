@@ -17,7 +17,7 @@ interface EventItem {
   date?: string;
   icon?: string;
   color?: string;
-  data?: any; // To hold the payment data
+  data?: any; 
 }
 
 @Component({

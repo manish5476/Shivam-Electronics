@@ -1,84 +1,84 @@
 <!-- <header
   class="fixed rounded-md top-0 m-1 mr-1 left-0 w-full z-20 bg-[var(--theme-bg-secondary)] border-b border-[var(--theme-border-primary)] shadow-lg"> -->
-<header
-  class="fixed top-1 left-2 right-2 z-20 rounded-xl bg-[var(--theme-bg-secondary)] border-b border-[var(--theme-border-primary)] shadow-2xl">
-  <div class="flex h-12 items-center justify-between px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
-    <div class="flex items-center gap-4">
-      <button type="button"
-        class="flex items-center justify-center w-10 h-8 rounded-lg bg-[var(--theme-bg-tertiary)] hover:bg-[var(--theme-hover-bg)] transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-[var(--theme-accent-primary)] focus:ring-opacity-75"
-        (click)="toggleSidebar.emit()">
-        <i class="pi pi-bars text-[var(--theme-accent-primary)] text-xl"></i>
-      </button>
-      <a href="/" class="text-[var(--theme-accent-primary)] text-2xl font-bold tracking-tight">Shivam Electronics</a>
-    </div>
 
-    <div class="flex items-center gap-4">
-      <button type="button"
-        class="flex h-9 items-center gap-2 group focus:outline-none focus:ring-2 focus:ring-[var(--theme-accent-primary)] focus:ring-opacity-75 rounded-full"
-        (click)="op.toggle($event)">
-        <p-avatar [image]="user?.avatar || 'https://plus.unsplash.com/premium_photo-1747851400213-5140b43aee3b?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxmZWF0dXJlZC1waG90b3MtZmVlZHwxMTB8fHxlbnwwfHx8fHw%3D'"
-          shape="circle" class="w-9 h-6 border-2 border-[var(--theme-border-primary)]"></p-avatar>
-        <span
-          class="hidden md:inline-block text-[var(--theme-text-primary)] text-base font-medium group-hover:text-[var(--theme-accent-primary)] transition-colors duration-200">{{
-          user?.name || 'Guest' }}</span>
-        <i
-          class="hidden md:inline-block pi pi-angle-down text-[var(--theme-text-secondary)] group-hover:text-[var(--theme-accent-primary)] transition-colors duration-200"></i>
-      </button>
+<div class="w-full  mx-auto flex h-12 items-center justify-between px-3 sm:px-4 lg:px-6">
+  <div class="flex items-center gap-4">
+    <button type="button"
+      class="flex items-center justify-center w-10 h-8 rounded-lg bg-[var(--theme-bg-primary)] hover:bg-[var(--theme-hover-bg)] transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-[var(--theme-accent-primary)] focus:ring-opacity-75"
+      (click)="toggleSidebar.emit()">
+      <i class="pi pi-bars text-[var(--theme-bg-primary)] text-xl"></i>
+    </button>
+    <a href="/" class="text-[var(--theme-accent-primary)] text-2xl font-bold tracking-tight">Shivam Electronics</a>
+  </div>
 
-      <p-popover #op>
-        <div
-          class="p-4 bg-[var(--theme-bg-secondary)] border border-[var(--theme-border-primary)] rounded-lg shadow-xl min-w-[200px]">
-          <div class="flex flex-col items-center gap-3 pb-3 mb-3 border-b border-[var(--theme-border-primary)]">
-            <p-avatar [image]="user?.avatar || 'https://primefaces.org/cdn/primeng/images/demo/avatar/amyelsner.png'"
-              shape="circle" class="w-12 h-12 border-2 border-[var(--theme-accent-primary)]"></p-avatar>
-            <div class="text-center">
-              <div class="font-bold text-lg text-[var(--theme-text-primary)]">{{ user?.name || 'User Name' }}</div>
-              <div class="text-[var(--theme-text-secondary)] text-sm">{{ user?.email || 'user@example.com' }}</div>
-              <div class="text-[var(--theme-accent-primary)] text-xs font-semibold uppercase tracking-wide mt-1">{{
-                user?.role || 'User Role' }}</div>
-            </div>
-          </div>
-          <div class="flex flex-col gap-2">
-            <a routerLink="/user/profile" (click)="op.hide()"
-              class="flex items-center gap-2 py-2 px-3 rounded-md text-[var(--theme-text-secondary)] hover:text-[var(--theme-accent-primary)] hover:bg-[var(--theme-hover-bg)] transition-colors duration-200">
-              <i class="pi pi-user text-base"></i>
-              <span>My Profile</span>
-            </a>
-            <a routerLink="/user/settings" (click)="op.hide()"
-              class="flex items-center gap-2 py-2 px-3 rounded-md text-[var(--theme-text-secondary)] hover:text-[var(--theme-accent-primary)] hover:bg-[var(--theme-hover-bg)] transition-colors duration-200">
-              <i class="pi pi-cog text-base"></i>
-              <span>Settings</span>
-            </a>
-            <a routerLink="/auth/login" (click)="op.hide()"
-              class="flex items-center gap-2 py-2 px-3 rounded-md text-red-500 hover:bg-red-100 hover:text-red-700 transition-colors duration-200 mt-2">
-              <i class="pi pi-sign-out text-base"></i>
-              <span>Logout</span>
-            </a>
+  <div class="flex items-center gap-4">
+    <button type="button"
+      class="flex h-9 items-center gap-2 group focus:outline-none focus:ring-2 focus:ring-[var(--theme-accent-primary)] focus:ring-opacity-75 rounded-full"
+      (click)="op.toggle($event)">
+      <p-avatar
+        [image]="user?.avatar || 'https://plus.unsplash.com/premium_photo-1747851400213-5140b43aee3b?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxmZWF0dXJlZC1waG90b3MtZmVlZHwxMTB8fHxlbnwwfHx8fHw%3D'"
+        shape="circle" class="w-9 h-6 border-2 border-[var(--theme-border-primary)]"></p-avatar>
+      <span
+        class="hidden md:inline-block text-[var( --theme-text-inverted)] text-base font-medium group-hover:text-[var( --theme-text-inverted)] transition-colors duration-200">{{
+        user?.name || 'Guest' }}</span>
+      <i
+        class="hidden md:inline-block pi pi-angle-down text-[var(--theme-text-secondary)] group-hover:text-[var(--theme-accent-primary)] transition-colors duration-200"></i>
+    </button>
+
+    <p-popover #op>
+      <div
+        class="p-4 bg-[var(--theme-bg-secondary)] border border-[var(--theme-border-primary)] rounded-lg shadow-xl min-w-[200px]">
+        <div class="flex flex-col items-center gap-3 pb-3 mb-3 border-b border-[var(--theme-border-primary)]">
+          <p-avatar [image]="user?.avatar || 'https://primefaces.org/cdn/primeng/images/demo/avatar/amyelsner.png'"
+            shape="circle" class="w-12 h-12 border-2 border-[var(--theme-accent-primary)]"></p-avatar>
+          <div class="text-center">
+            <div class="font-bold text-lg text-[var(--theme-text-primary)]">{{ user?.name || 'User Name' }}</div>
+            <div class="text-[var(--theme-text-secondary)] text-sm">{{ user?.email || 'user@example.com' }}</div>
+            <div class="text-[var(--theme-accent-primary)] text-xs font-semibold uppercase tracking-wide mt-1">{{
+              user?.role || 'User Role' }}</div>
           </div>
         </div>
-      </p-popover>
+        <div class="flex flex-col gap-2">
+          <a routerLink="/user/profile" (click)="op.hide()"
+            class="flex items-center gap-2 py-2 px-3 rounded-md text-[var(--theme-text-secondary)] hover:text-[var(--theme-accent-primary)] hover:bg-[var(--theme-hover-bg)] transition-colors duration-200">
+            <i class="pi pi-user text-base"></i>
+            <span>My Profile</span>
+          </a>
+          <a routerLink="/user/settings" (click)="op.hide()"
+            class="flex items-center gap-2 py-2 px-3 rounded-md text-[var(--theme-text-secondary)] hover:text-[var(--theme-accent-primary)] hover:bg-[var(--theme-hover-bg)] transition-colors duration-200">
+            <i class="pi pi-cog text-base"></i>
+            <span>Settings</span>
+          </a>
+          <a routerLink="/auth/login" (click)="op.hide()"
+            class="flex items-center gap-2 py-2 px-3 rounded-md text-red-500 hover:bg-red-100 hover:text-red-700 transition-colors duration-200 mt-2">
+            <i class="pi pi-sign-out text-base"></i>
+            <span>Logout</span>
+          </a>
+        </div>
+      </div>
+    </p-popover>
 
-      <button type="button"
-        class="md:hidden w-10 h-10 rounded-full bg-[var(--theme-bg-tertiary)] hover:bg-[var(--theme-hover-bg)] flex items-center justify-center transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-[var(--theme-accent-primary)] focus:ring-opacity-75"
-        (click)="mobileMenuToggle.emit()">
-        <i class="pi pi-bars text-[var(--theme-accent-primary)] text-xl"></i>
-      </button>
-    </div>
+    <button type="button"
+      class="md:hidden w-10 h-10 rounded-full bg-[var(--theme-bg-tertiary)] hover:bg-[var(--theme-hover-bg)] flex items-center justify-center transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-[var(--theme-accent-primary)] focus:ring-opacity-75"
+      (click)="mobileMenuToggle.emit()">
+      <i class="pi pi-bars text-[var(--theme-accent-primary)] text-xl"></i>
+    </button>
   </div>
+</div>
 
-  <div
-    class="md:hidden transition-all duration-300 ease-out overflow-hidden bg-[var(--theme-bg-secondary)] border-t border-[var(--theme-border-primary)]"
-    [ngClass]="{'opacity-100 max-h-60 py-4': isMobileMenuOpen, 'opacity-0 max-h-0': !isMobileMenuOpen}">
-    <div class="flex flex-col gap-3 px-4 text-base">
-      <a routerLink="/personalInfo/aboutus" (click)="mobileMenuToggle.emit()"
-        class="block py-2 text-[var(--theme-text-secondary)] hover:text-[var(--theme-accent-primary)] hover:bg-[var(--theme-hover-bg)] rounded-md px-3 transition-colors duration-200">Contact</a>
-      <a routerLink="/auth/login" (click)="mobileMenuToggle.emit()"
-        class="block py-2 text-[var(--theme-text-secondary)] hover:text-[var(--theme-accent-primary)] hover:bg-[var(--theme-hover-bg)] rounded-md px-3 transition-colors duration-200">Login</a>
-      <a routerLink="/auth/signup" (click)="mobileMenuToggle.emit()"
-        class="block py-2 text-[var(--theme-text-secondary)] hover:text-[var(--theme-accent-primary)] hover:bg-[var(--theme-hover-bg)] rounded-md px-3 transition-colors duration-200">Register</a>
-    </div>
+<div
+  class="md:hidden transition-all duration-300 ease-out overflow-hidden bg-[var(--theme-bg-secondary)] border-t border-[var(--theme-border-primary)]"
+  [ngClass]="{'opacity-100 max-h-60 py-4': isMobileMenuOpen, 'opacity-0 max-h-0': !isMobileMenuOpen}">
+  <div class="flex flex-col gap-3 px-4 text-base">
+    <a routerLink="/personalInfo/aboutus" (click)="mobileMenuToggle.emit()"
+      class="block py-2 text-[var(--theme-text-secondary)] hover:text-[var(--theme-accent-primary)] hover:bg-[var(--theme-hover-bg)] rounded-md px-3 transition-colors duration-200">Contact</a>
+    <a routerLink="/auth/login" (click)="mobileMenuToggle.emit()"
+      class="block py-2 text-[var(--theme-text-secondary)] hover:text-[var(--theme-accent-primary)] hover:bg-[var(--theme-hover-bg)] rounded-md px-3 transition-colors duration-200">Login</a>
+    <a routerLink="/auth/signup" (click)="mobileMenuToggle.emit()"
+      class="block py-2 text-[var(--theme-text-secondary)] hover:text-[var(--theme-accent-primary)] hover:bg-[var(--theme-hover-bg)] rounded-md px-3 transition-colors duration-200">Register</a>
   </div>
-</header>
+</div>
+<!-- </div> -->
 <!-- <header
   class="fixed top-0 left-0 w-full z-20 bg-[var(--theme-bg-secondary)] border-b border-[var(--theme-border-primary)] shadow-md">
   <div class="flex h-10 items-center justify-between px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">

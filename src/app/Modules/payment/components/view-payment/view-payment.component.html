@@ -92,3 +92,66 @@
     </div>
   </ng-template>
 </p-timeline>
+
+<!-- 
+
+<div class="flex flex-col md:flex-row justify-between items-center gap-4 mb-4">
+  <p-select [(ngModel)]="paymentFilter.customerId" (onChange)="getPaymentData()" [options]="customerIDDropdown"
+    optionLabel="fullname" optionValue="_id" placeholder="Select Customer" class="w-full md:w-64">
+  </p-select>
+</div>
+
+<p-timeline [value]="paymentFilter.data" align="alternate" styleClass="customized-timeline">
+  <ng-template pTemplate="marker" let-event>
+    <span class="flex w-8 h-8 items-center justify-center text-white rounded-full shadow-sm z-10"
+      [style.backgroundColor]="'black'">
+      <i [class]="'pi pi-money-bill'"></i>
+    </span>
+  </ng-template>
+
+  <ng-template pTemplate="content" let-payment>
+    <div class="payment-card">
+      <span class="payment-card-ribbon"></span>
+      <div class="payment-date">
+        {{ payment.createdAt | date:'mediumDate' }}
+      </div>
+
+      <div class="header">
+        <i class="pi pi-wallet"></i>
+        <h2>Payment Details</h2>
+      </div>
+
+      <div class="transaction-buttons">
+        <p-button label="Transaction ID" icon="pi pi-hashtag" iconPos="left" severity="info" variant="outlined"
+          styleClass="!text-sm !py-1 !px-3 !rounded-full" [disabled]="true">
+        </p-button>
+        <p-button [label]="payment.transactionId" variant="outlined" severity="contrast"
+          styleClass="!text-sm !py-1 !px-3 !rounded-full" [disabled]="true">
+        </p-button>
+      </div>
+
+      <div class="payment-amount">
+        <p class="payment-amount-label">Amount</p>
+        <div class="payment-amount-value">
+          ₹{{ payment.amount | number:'1.2-2' }}
+        </div>
+      </div>
+
+      <div class="mt-2 text-blue-700 font-medium">
+        {{ payment.paymentMethod }}
+      </div>
+
+      <div *ngIf="payment.description" class="payment-description"> {{ payment.description }}      </div>
+
+      <div *ngIf="payment.customerName" class="customer-info">        <strong>Customer Name:</strong> {{ payment.customerName }}      </div>
+      <div *ngIf="payment.phoneNumbers" class="customer-info">
+        <strong>Phone:</strong> {{ payment.phoneNumbers }}
+      </div>
+
+      <div class="payment-status-tag">
+        <p-tag [value]="payment.status" [severity]="getStatusSeverity(payment.status)"
+          styleClass="!text-sm !py-1 !px-4 !rounded-lg" />
+      </div>
+    </div>
+  </ng-template>
+</p-timeline> -->

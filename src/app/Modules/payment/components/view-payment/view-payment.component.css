@@ -1,0 +1,143 @@
+/* Customizing the PrimeNG Timeline component */
+:host ::ng-deep .customized-timeline {
+  .p-timeline-event:first-child {
+    padding-top: 0;
+  }
+  .p-timeline-event:last-child {
+    padding-bottom: 0;
+  }
+  .p-timeline-event-content,
+  .p-timeline-event-opposite {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+  .p-timeline-event-marker {
+    background: #4B78EB; /* A nice, consistent brand color for markers */
+  }
+}
+
+/* Styling for the individual payment cards */
+.payment-card {
+  position: relative;
+  background-color: #ffffff;
+  padding: 1.25rem; /* Reduced padding for a smaller card */
+  border-radius: 12px; /* Smoother rounded corners */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08); /* A more subtle shadow */
+  border: 1px solid #e0e0e0;
+  max-width: 400px; /* Setting a max-width to keep cards from getting too wide */
+  transition: transform 0.2s ease-in-out;
+}
+
+.payment-card:hover {
+  transform: translateY(-5px); /* Lift card on hover for a subtle effect */
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
+}
+
+.payment-card-ribbon {
+  position: absolute;
+  inset-x: 0;
+  bottom: 0;
+  height: 4px; /* Thinner ribbon */
+  background: linear-gradient(
+    90deg,
+    #66b5ff 0%,
+    #4b78eb 50%,
+    #8f4be8 100%
+  );
+  border-radius: 0 0 12px 12px; /* Matches card border radius */
+}
+
+/* Header and Typography */
+.payment-card .header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.payment-card .header h2 {
+  font-size: 1.1rem; /* Slightly smaller header font */
+  font-weight: 600;
+  color: #212529;
+}
+
+.payment-card .header .pi {
+  font-size: 1rem;
+  color: #6c757d;
+}
+
+/* Date styling */
+.payment-date {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  font-size: 0.8rem;
+  color: #6c757d;
+  font-weight: 500;
+}
+
+/* Transaction ID buttons */
+.transaction-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 0.75rem;
+}
+
+/* Amount styling */
+.payment-amount {
+  margin-top: 1.25rem;
+}
+
+.payment-amount-label {
+  font-size: 0.8rem;
+  color: #6c757d;
+  margin-bottom: 0.25rem;
+}
+
+.payment-amount-value {
+  font-size: 2rem; /* Reduced amount font size */
+  font-weight: 700;
+  color: #212529;
+}
+
+/* Description box */
+.payment-description {
+  margin-top: 1rem;
+  padding: 0.75rem;
+  border: 1px solid #dee2e6;
+  border-radius: 8px;
+  background-color: #f8f9fa;
+  font-size: 0.9rem;
+  color: #495057;
+  white-space: pre-line;
+}
+
+/* Customer and contact info */
+.customer-info {
+  margin-top: 1rem;
+  font-size: 0.9rem;
+  color: #495057;
+}
+
+/* Status tag styling */
+.payment-status-tag {
+  margin-top: 1rem;
+  display: flex;
+  justify-content: flex-end;
+}
+
+/* PrimeNG overrides for buttons and tags */
+:host ::ng-deep .p-button.p-button-info.p-button-outlined {
+  color: #4B78EB;
+  border-color: #4B78EB;
+}
+
+:host ::ng-deep .p-button.p-button-contrast.p-button-outlined {
+  color: #212529;
+  border-color: #212529;
+}
+
+:host ::ng-deep .p-button-label {
+  font-size: 0.8rem;
+}

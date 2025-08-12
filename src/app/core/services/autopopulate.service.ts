@@ -17,9 +17,6 @@ export class AutopopulateService extends BaseApiService {
     return this.masterCache[key].asObservable();
   }
 
-  /**
-   * Manually refresh specific module
-   */
   refreshModuleData(module: string): void {
     const key = module.toLowerCase();
     if (!this.masterCache[key]) {
