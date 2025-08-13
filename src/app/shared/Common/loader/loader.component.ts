@@ -1,44 +1,7 @@
 import { Component, AfterViewInit, OnDestroy, ViewChild, ElementRef, Inject, PLATFORM_ID } from '@angular/core';
-import { CommonModule, isPlatformBrowser } from '@angular/common'; // Import isPlatformBrowser
+import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { Observable } from 'rxjs';
 import { LoadingService } from '../../../core/services/loading.service';
-
-// Define the Ripple class directly within the component or in a separate file if preferred
-class Ripple {
-    x: number;
-    y: number;
-    radius: number;
-    maxRadius: number;
-    alpha: number;
-    speed: number;
-    color: { r: number; g: number; b: number; };
-
-    constructor(x: number, y: number, maxRadius: number, speed: number, color: { r: number; g: number; b: number; }) {
-        this.x = x;
-        this.y = y;
-        this.radius = 0;
-        this.maxRadius = maxRadius;
-        this.alpha = 1;
-        this.speed = speed;
-        this.color = color;
-    }
-
-    update() {
-        this.radius += this.speed;
-        this.alpha = 1 - (this.radius / this.maxRadius);
-        if (this.alpha < 0) this.alpha = 0;
-    }
-
-    draw(ctx: CanvasRenderingContext2D) {
-        ctx.save();
-        ctx.beginPath();
-        ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
-        ctx.strokeStyle = `rgba(${this.color.r}, ${this.color.g}, ${this.color.b}, ${this.alpha})`;
-        ctx.lineWidth = 2;
-        ctx.stroke();
-        ctx.restore();
-    }
-}
 
 @Component({
     selector: 'app-loading',
@@ -47,43 +10,49 @@ class Ripple {
     templateUrl: './loader.component.html',
     styleUrls: ['./loader.component.css'],
 })
-export class LoadingComponent implements AfterViewInit, OnDestroy {
+export class LoadingComponent implements OnDestroy {
     isLoading$: Observable<boolean>;
-
-    // Get a reference to the canvas element in the template
-    @ViewChild('rippleCanvas') canvasRef!: ElementRef<HTMLCanvasElement>;
+    private _canvasRef!: ElementRef<HTMLCanvasElement>;
     private ctx!: CanvasRenderingContext2D;
-    private ripples: Ripple[] = [];
-    private frameCount: number = 0;
-    private animationFrameId: number = 0; // To store the requestAnimationFrame ID for cleanup
+    private animationFrameId: number = 0;
 
-    // Inject PLATFORM_ID to determine the execution environment
-    constructor(
-        private loadingService: LoadingService,
-        @Inject(PLATFORM_ID) private platformId: Object // Inject PLATFORM_ID
-    ) {
-        this.isLoading$ = this.loadingService.isLoading$;
-    }
+    // Animation variables
+    private earthRadius = 0;
+    private rotationAngle = 0;
+    private locations = [
+        { lat: 34.0522, lon: -118.2437 }, // Los Angeles
+        { lat: 51.5074, lon: -0.1278 }, // London
+        { lat: 35.6895, lon: 139.6917 }, // Tokyo
+        { lat: 28.6139, lon: 77.2090 }, // New Delhi
+        { lat: -33.8688, lon: 151.2093 } // Sydney
+    ];
+    private connections: any[] = [];
+    private stars: any[] = [];
+    private backgroundStars: any[] = []; // Array for background stars
+    private frameCount = 0;
 
-    ngAfterViewInit(): void {
-        // Only run this code if in a browser environment
-        if (isPlatformBrowser(this.platformId) && this.canvasRef && this.canvasRef.nativeElement) {
-            const canvas = this.canvasRef.nativeElement;
-            this.ctx = canvas.getContext('2d')!; // Get the 2D rendering context
-
-            // Initial resize and add resize listener
+    @ViewChild('earthCanvas')
+    set canvasRef(ref: ElementRef<HTMLCanvasElement>) {
+        if (ref && isPlatformBrowser(this.platformId)) {
+            this._canvasRef = ref;
+            const canvas = this._canvasRef.nativeElement;
+            this.ctx = canvas.getContext('2d')!;
             this.resizeCanvas();
+            this.generateBackgroundStars(); // Generate static stars on init
             window.addEventListener('resize', this.resizeCanvas.bind(this));
-
-            // Start the animation loop
             this.animate();
         }
     }
 
+    constructor(
+        private loadingService: LoadingService,
+        @Inject(PLATFORM_ID) private platformId: Object
+    ) {
+        this.isLoading$ = this.loadingService.isLoading$;
+    }
+
     ngOnDestroy(): void {
-        // Only run this code if in a browser environment
         if (isPlatformBrowser(this.platformId)) {
-            // Clean up: cancel the animation frame and remove the resize listener
             if (this.animationFrameId) {
                 cancelAnimationFrame(this.animationFrameId);
             }
@@ -92,76 +61,180 @@ export class LoadingComponent implements AfterViewInit, OnDestroy {
     }
 
     private resizeCanvas(): void {
-        const canvas = this.canvasRef.nativeElement;
-        const rect = canvas.getBoundingClientRect();
-        canvas.width = rect.width;
-        canvas.height = rect.height;
+        if (this._canvasRef) {
+            const canvas = this._canvasRef.nativeElement;
+            const rect = canvas.getBoundingClientRect();
+            canvas.width = rect.width;
+            canvas.height = rect.height;
+            this.earthRadius = Math.min(canvas.width, canvas.height) * 0.2;
+        }
     }
 
-    private drawStars(): void {
-        const canvas = this.canvasRef.nativeElement;
-        const ctx = this.ctx;
+    // Generate static background stars once
+    private generateBackgroundStars(): void {
+        const canvas = this._canvasRef.nativeElement;
         const numStars = 150;
-        ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
-
         for (let i = 0; i < numStars; i++) {
-            const x = Math.random() * canvas.width;
-            const y = Math.random() * canvas.height;
-            const radius = Math.random() * 1.5;
-            ctx.beginPath();
-            ctx.arc(x, y, radius, 0, Math.PI * 2);
-            ctx.fill();
+            this.backgroundStars.push({
+                x: Math.random() * canvas.width,
+                y: Math.random() * canvas.height,
+                radius: Math.random() * 1.5,
+            });
         }
     }
 
     private animate(): void {
-        // Ensure animation only runs in browser
-        if (isPlatformBrowser(this.platformId)) {
-            this.animationFrameId = requestAnimationFrame(() => this.animate()); // Request next frame
-        } else {
-            return; // Stop animation if not in browser
-        }
+        if (!isPlatformBrowser(this.platformId) || !this.ctx) return;
 
-        const canvas = this.canvasRef.nativeElement;
-        const ctx = this.ctx;
-
-        // Clear the canvas for the new frame
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        // Draw a subtle dark background to enhance the universe feel
-        ctx.fillStyle = 'rgba(0, 0, 0, 0.1)';
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-        this.drawStars(); // Draw the starry background
-
-        // Add a new ripple periodically from the center of the canvas
-        if (this.frameCount % 60 === 0) {
-            const centerX = canvas.width / 2;
-            const centerY = canvas.height / 2;
-            const maxR = Math.min(canvas.width, canvas.height) * 0.45;
-            const speed = Math.min(canvas.width, canvas.height) * 0.005;
-
-            const colors = [
-                { r: 0, g: 253, b: 207 },
-                { r: 253, g: 29, b: 29 },
-                { r: 252, g: 188, b: 69 },
-                { r: 100, g: 149, b: 237 },
-                { r: 147, g: 112, b: 219 },
-                { r: 255, g: 255, b: 255 }
-            ];
-            const randomColor = colors[Math.floor(Math.random() * colors.length)];
-
-            this.ripples.push(new Ripple(centerX, centerY, maxR, speed, randomColor));
-        }
-
-        // Update and draw all active ripples
-        for (let i = this.ripples.length - 1; i >= 0; i--) {
-            this.ripples[i].update();
-            this.ripples[i].draw(ctx);
-            if (this.ripples[i].alpha <= 0) {
-                this.ripples.splice(i, 1);
-            }
-        }
-
+        this.animationFrameId = requestAnimationFrame(() => this.animate());
         this.frameCount++;
+
+        const canvas = this._canvasRef.nativeElement;
+        this.ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        const centerX = canvas.width / 2;
+        const centerY = canvas.height / 2;
+
+        this.drawBackgroundStars(); // Draw the background stars first
+
+        this.drawEarth(centerX, centerY);
+        this.updateConnections();
+        this.drawConnections(centerX, centerY);
+        this.updateStars();
+        this.drawStars();
+
+        this.rotationAngle += 0.005;
+    }
+
+    private drawBackgroundStars(): void {
+        this.ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
+        this.backgroundStars.forEach(star => {
+            this.ctx.beginPath();
+            this.ctx.arc(star.x, star.y, star.radius, 0, Math.PI * 2);
+            this.ctx.fill();
+        });
+    }
+
+    private drawEarth(centerX: number, centerY: number): void {
+        this.ctx.beginPath();
+        this.ctx.arc(centerX, centerY, this.earthRadius, 0, Math.PI * 2);
+        this.ctx.fillStyle = '#011F4B';
+        this.ctx.fill();
+        this.ctx.strokeStyle = '#00FDCF';
+        this.ctx.lineWidth = 2;
+        this.ctx.stroke();
+
+        const glowRadius = this.earthRadius * 1.05 + Math.sin(this.frameCount * 0.05) * 5;
+        this.ctx.beginPath();
+        this.ctx.arc(centerX, centerY, glowRadius, 0, Math.PI * 2);
+        this.ctx.strokeStyle = `rgba(0, 253, 207, ${0.4 + Math.sin(this.frameCount * 0.05) * 0.2})`;
+        this.ctx.lineWidth = 10;
+        this.ctx.stroke();
+
+        this.ctx.fillStyle = '#00FDCF';
+        this.locations.forEach(loc => {
+            const pos = this.toCartesian(loc.lat, loc.lon, centerX, centerY);
+            this.ctx.beginPath();
+            this.ctx.arc(pos.x, pos.y, 2, 0, Math.PI * 2);
+            this.ctx.fill();
+        });
+    }
+
+    private updateConnections(): void {
+        if (this.frameCount % 90 === 0) {
+            const randomIndex1 = Math.floor(Math.random() * this.locations.length);
+            let randomIndex2 = Math.floor(Math.random() * this.locations.length);
+            while (randomIndex2 === randomIndex1) {
+                randomIndex2 = Math.floor(Math.random() * this.locations.length);
+            }
+            this.connections.push({
+                start: this.locations[randomIndex1],
+                end: this.locations[randomIndex2],
+                progress: 0
+            });
+        }
+
+        this.connections.forEach(conn => {
+            conn.progress += 0.02;
+        });
+
+        this.connections = this.connections.filter(conn => conn.progress <= 1);
+    }
+
+    private drawConnections(centerX: number, centerY: number): void {
+        this.connections.forEach(conn => {
+            const { start, end, progress } = conn;
+
+            const startPos = this.toCartesian(start.lat, start.lon, centerX, centerY);
+            const endPos = this.toCartesian(end.lat, end.lon, centerX, centerY);
+
+            const pulseSize = Math.sin(progress * Math.PI) * 8 + 3;
+            this.ctx.beginPath();
+            this.ctx.arc(startPos.x, startPos.y, pulseSize, 0, Math.PI * 2);
+            this.ctx.fillStyle = '#FD1D1D';
+            this.ctx.fill();
+
+            const currentX = startPos.x + (endPos.x - startPos.x) * progress;
+            const currentY = startPos.y + (endPos.y - startPos.y) * progress;
+
+            this.ctx.beginPath();
+            this.ctx.moveTo(startPos.x, startPos.y);
+            this.ctx.lineTo(currentX, currentY);
+            this.ctx.strokeStyle = `rgba(0, 253, 207, ${1 - progress})`;
+            this.ctx.lineWidth = 2;
+            this.ctx.stroke();
+
+            if (progress >= 0.5) {
+                this.ctx.beginPath();
+                this.ctx.arc(currentX, currentY, pulseSize * 0.5, 0, Math.PI * 2);
+                this.ctx.fillStyle = '#FD1D1D';
+                this.ctx.fill();
+            }
+        });
+    }
+
+    private updateStars(): void {
+        if (this.frameCount % 120 === 0) {
+            const randomIndex = Math.floor(Math.random() * this.locations.length);
+            const startLoc = this.locations[randomIndex];
+            const startPos = this.toCartesian(startLoc.lat, startLoc.lon, this._canvasRef.nativeElement.width / 2, this._canvasRef.nativeElement.height / 2);
+            this.stars.push({
+                x: startPos.x,
+                y: startPos.y,
+                radius: 2,
+                opacity: 1,
+                speed: Math.random() * 0.5 + 0.5
+            });
+        }
+
+        this.stars.forEach(star => {
+            const directionX = star.x - this._canvasRef.nativeElement.width / 2;
+            const directionY = star.y - this._canvasRef.nativeElement.height / 2;
+            const distance = Math.sqrt(directionX * directionX + directionY * directionY);
+
+            star.x += (directionX / distance) * star.speed;
+            star.y += (directionY / distance) * star.speed;
+
+            star.radius += 0.1;
+            star.opacity -= 0.01;
+        });
+
+        this.stars = this.stars.filter(star => star.radius < 20 && star.opacity > 0);
+    }
+
+    private drawStars(): void {
+        this.stars.forEach(star => {
+            this.ctx.beginPath();
+            this.ctx.arc(star.x, star.y, star.radius, 0, Math.PI * 2);
+            this.ctx.fillStyle = `rgba(255, 255, 255, ${star.opacity})`;
+            this.ctx.fill();
+        });
+    }
+
+    private toCartesian(lat: number, lon: number, centerX: number, centerY: number): { x: number, y: number } {
+        const rotatedLon = lon + (this.rotationAngle * 180 / Math.PI);
+        const x = centerX + this.earthRadius * Math.cos(lat * Math.PI / 180) * Math.cos(rotatedLon * Math.PI / 180);
+        const y = centerY + this.earthRadius * Math.sin(lat * Math.PI / 180);
+        return { x, y };
     }
 }

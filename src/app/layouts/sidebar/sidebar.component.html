@@ -32,8 +32,6 @@
     </div>
     <div class="border-t border-[var(--theme-border-primary)] px-0.4 py-0.4 transition-all duration-300"
       [ngClass]="{'opacity-0 hidden': !isPinned && !isHovered, 'opacity-100': isPinned || isHovered}">
-      <!-- <button pButton label="Settings" icon="pi pi-cog" class="w-full p-button-outlined text-sm"
-        [ngClass]="{'text-[var(--theme-accent-primary)] border-[var(--theme-accent-primary)] hover:bg-[var(--theme-button-outlined-hover-bg)] hover:text-[var(--theme-button-outlined-hover-text)]': true}"></button> -->
       <button pButton (click)="logout()" label="Logout" icon="pi pi-sign-out"
         class="w-full p-button-danger p-button-text text-sm"
         [ngClass]="{'text-[var(--theme-button-danger-text)] hover:bg-[var(--theme-button-danger-hover-bg)] hover:text-[var(--theme-button-danger-hover-text)]': true}"></button>
