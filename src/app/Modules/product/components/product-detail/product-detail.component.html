@@ -30,7 +30,7 @@
 
       <!-- Grid Area -->
       <div class="ag-grid-main-area mt-4">
-        <app-shared-grid [data]="data"  [gridHeight]="'200px'" [headerFilter]="false" [rowSelectionMode]="rowSelectionMode" [column]="column"
+        <app-shared-grid [data]="data"  [gridHeight]="'200px'" [showActions]="false" [headerFilter]="false" [rowSelectionMode]="rowSelectionMode" [column]="column"
           (eventFromGrid)="eventFromGrid($event)">
         </app-shared-grid>
       </div>
