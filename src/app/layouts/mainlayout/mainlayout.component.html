@@ -1,5 +1,6 @@
-<div class="min-h-screen  no-scrollbar overflow-auto flex flex-col bg-[var(--theme-bg-home)] text-[var(--theme-text-primary)]" [style.background-image]="gradient$ | async">
-  <app-header class=" bg-[var(--theme-bg-secondary)] z-50 fixed top-0 left-0 right-0" (toggleSidebar)="toggleSidebar()" (colorChange)="onColorChange($event)" (search)="onSearch($event)" (mobileMenuToggle)="toggleMobileMenu()"></app-header>
+<div class="min-h-screen  no-scrollbar overflow-auto flex flex-col bg-[var(--theme-bg-ternary)] text-[var(--theme-text-primary)]" >
+  <app-header class=" bg-[var(--theme-bg-secondary)] z-50 fixed top-0 left-0 right-0" (toggleSidebar)="toggleSidebar()"  (mobileMenuToggle)="toggleMobileMenu()"></app-header>
+  <!-- (colorChange)="onColorChange($event)"  (search)="onSearch($event)"-->
   <div class="flex h-[calc(100vh - 65px)] mt-13">
     <app-sidebar class="h-full no-scrollbar overflow-auto transition-all duration-300 fixed top-13" [ngClass]="{'w-64': isSidebarPinned || isSidebarHovered, 'w-0': !isSidebarPinned && !isSidebarHovered}"
      [isPinned]="isSidebarPinned" [isHovered]="isSidebarHovered" (pinToggle)="togglePin()" 

@@ -1,0 +1,139 @@
+/* --- Main Dashboard Container --- */
+.dashboard-container {
+  background-color: var(--theme-bg-primary);
+}
+
+/* --- Section Headers --- */
+.section-header {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: var(--theme-text-primary);
+  margin-bottom: 1rem;
+}
+
+/* --- Filter Card --- */
+.filter-card {
+  background-color: var(--theme-bg-secondary);
+  border: 1px solid var(--theme-border-primary);
+  border-radius: 0.75rem;
+}
+.form-label {
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--theme-text-label);
+    margin-bottom: 0.5rem;
+    display: block;
+}
+
+/* --- "Wow Factor" Metric Cards --- */
+.metric-card {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1.25rem;
+  border-radius: 0.75rem;
+  background-color: color-mix(in srgb, var(--theme-bg-secondary) 50%, transparent);
+  border: 1px solid var(--theme-border-primary);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.metric-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border-radius: inherit;
+  border: 1px solid transparent;
+  background: linear-gradient(to right, var(--theme-accent-primary), var(--theme-accent-primary-light)) border-box;
+  -webkit-mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: destination-out;
+  mask-composite: exclude;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.metric-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 25px var(--theme-shadow-color);
+}
+
+.metric-card:hover::before {
+  opacity: 1;
+}
+
+.metric-icon {
+  flex-shrink: 0;
+  width: 3.5rem;
+  height: 3.5rem;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.metric-content {
+  min-width: 0;
+}
+
+.metric-value {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: var(--theme-text-primary);
+  line-height: 1.2;
+}
+
+.metric-label {
+  font-size: 0.875rem;
+  color: var(--theme-text-secondary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.metric-card-skeleton {
+  border-radius: 0.75rem;
+}
+
+/* --- Quick Links --- */
+.quick-link {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  border-radius: 0.75rem;
+  cursor: pointer;
+  background-color: var(--theme-bg-secondary);
+  border: 1px solid var(--theme-border-primary);
+  transition: all 0.2s ease-in-out;
+}
+
+.quick-link:hover {
+  transform: translateY(-4px);
+  background-color: var(--theme-hover-bg);
+  box-shadow: 0 4px 10px var(--theme-shadow-color);
+  color: var(--theme-accent-primary);
+}
+
+.quick-link i {
+  margin-bottom: 0.5rem;
+  color: var(--theme-accent-primary);
+  transition: color 0.2s ease-in-out;
+}
+
+.quick-link span {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--theme-text-primary);
+  transition: color 0.2s ease-in-out;
+}
+
+.quick-link:hover span {
+  color: var(--theme-accent-primary);
+}
