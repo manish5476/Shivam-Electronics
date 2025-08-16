@@ -128,7 +128,7 @@ export class DashboardService extends BaseApiService {
       .pipe(catchError((error: HttpErrorResponse) => this.errorhandler.handleError('getSalesDataForChartsWeekly', error)));
   }
 
-  getSalesDataForChartsCombo(params: SalesChartParams): Observable<ApiResponse<SalesChartData>> {
+    getSalesDataForChartsCombo(params: SalesChartParams): Observable<ApiResponse<SalesChartData>> {
     return this.http.get<ApiResponse<SalesChartData>>(`${this.apiUrl}/sales/charts`, { params: this.createHttpParams(params) })
       .pipe(catchError((error: HttpErrorResponse) => this.errorhandler.handleError('getSalesDataForChartsCombo', error)));
   }

@@ -18,6 +18,7 @@ export class InvoicePrintComponent implements OnInit, OnChanges {
   invoiceData: any;
   constructor(private invoiceService: InvoiceService) { }
   ngOnInit() {
+    console.log(this.Id);
     if (!this.Id) {
       console.error('Invoice ID is required');
       return;
@@ -35,6 +36,7 @@ export class InvoicePrintComponent implements OnInit, OnChanges {
     this.invoiceService.getinvoiceDataWithId(this.Id).subscribe({
       next: (res: any) => {
         this.invoiceData = res.data;
+        console.log(res.data);
         this.generateQRCode();
       },
       error: (err: any) => {

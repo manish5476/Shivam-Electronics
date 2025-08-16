@@ -20,6 +20,8 @@
 
   /* --- Default Accent Color (Blue) --- */
   --theme-accent-primary: #3b82f6;
+    --theme-accent-primary1: #2dd4bf;
+
   --theme-accent-primary-light: #bfdbfe;
   --theme-accent-primary-hover: #2563eb;
   --theme-accent-text-color: #ffffff; /* Text color for solid accent backgrounds */
@@ -33,6 +35,15 @@
   /* Body Background Gradient (Light Mode) */
   --theme-body-gradient-start: #A4CCD9;
   --theme-body-gradient-end: #578FCA;
+
+    --theme-border-primary: rgba(255, 255, 255, 0.1);
+  --theme-border-secondary: rgba(255, 255, 255, 0.05);
+  --theme-scroll-thumb: #526379;
+  --theme-accent-primary: #e94560;
+  --theme-accent-success: #4caf50;
+  --theme-accent-success-dark: #388e3c;
+  --theme-accent-danger: #f44336;
+  --theme-accent-danger-dark: #d32f2f;
 }
 
 body.dark-mode {

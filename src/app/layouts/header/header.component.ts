@@ -92,18 +92,31 @@ export class HeaderComponent implements OnInit {
 
   // --- NEW: Theme Control Methods ---
 
+
   onThemeModeChange(isDark: boolean): void {
     this.isDarkMode = isDark;
-    this.themeService.setTheme(this.accentColor, this.isDarkMode);
+    // FIX: Call the new, more specific method
+    this.themeService.setDarkMode(this.isDarkMode);
   }
 
   onAccentColorChange(colorClass: string, colorHex: string): void {
     this.accentColor = colorHex;
-    // Set the theme class on the body
-    document.body.className = document.body.className.replace(/theme-\w+/g, '');
-    document.body.classList.add(colorClass);
-    this.themeService.setTheme(this.accentColor, this.isDarkMode);
+    // FIX: Call the new, more specific method
+    this.themeService.setAccentColor(this.accentColor);
   }
+  
+  // onThemeModeChange(isDark: boolean): void {
+  //   this.isDarkMode = isDark;
+  //   this.themeService.setTheme(this.accentColor, this.isDarkMode);
+  // }
+
+  // onAccentColorChange(colorClass: string, colorHex: string): void {
+  //   this.accentColor = colorHex;
+  //   // Set the theme class on the body
+  //   document.body.className = document.body.className.replace(/theme-\w+/g, '');
+  //   document.body.classList.add(colorClass);
+  //   this.themeService.setTheme(this.accentColor, this.isDarkMode);
+  // }
 
   // --- FIX: Add the missing getInitials method ---
   getInitials(name: string): string {

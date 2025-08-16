@@ -1,9 +1,10 @@
-/* --- Main Dashboard Container --- */
+
+/* 
 .dashboard-container {
   background-color: var(--theme-bg-primary);
 }
 
-/* --- Section Headers --- */
+
 .section-header {
   font-size: 1.125rem;
   font-weight: 600;
@@ -11,7 +12,7 @@
   margin-bottom: 1rem;
 }
 
-/* --- Filter Card --- */
+
 .filter-card {
   background-color: var(--theme-bg-secondary);
   border: 1px solid var(--theme-border-primary);
@@ -25,7 +26,7 @@
     display: block;
 }
 
-/* --- "Wow Factor" Metric Cards --- */
+
 .metric-card {
   display: flex;
   align-items: center;
@@ -100,7 +101,7 @@
   border-radius: 0.75rem;
 }
 
-/* --- Quick Links --- */
+
 .quick-link {
   display: flex;
   flex-direction: column;
@@ -136,4 +137,4 @@
 
 .quick-link:hover span {
   color: var(--theme-accent-primary);
-}
+} */

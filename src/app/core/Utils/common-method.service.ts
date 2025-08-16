@@ -23,6 +23,24 @@ export class CommonMethodService {
   constructor() { }
 
   // --- Data Formatting Utilities ---
+   
+  public responsiveOptions = [
+    {
+      breakpoint: '1024px',
+      numVisible: 1,
+      numScroll: 1
+    },
+    {
+      breakpoint: '768px',
+      numVisible: 1,
+      numScroll: 1
+    },
+    {
+      breakpoint: '560px',
+      numVisible: 1,
+      numScroll: 1
+    }
+  ];
 
   /**
    * Formats a number as Indian Rupee currency (e.g., ₹1,00,000.00).

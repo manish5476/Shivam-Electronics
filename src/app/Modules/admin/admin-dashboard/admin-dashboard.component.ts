@@ -31,44 +31,6 @@ import { DashboardSummaryComponent } from '../components/dashboard-summary/dashb
 import { DashboardChartComponentComponent } from '../components/dashboard-chart-component/dashboard-chart-component.component';
 import { DashboardChartComboComponent } from '../components/dashboard-chart-combo/dashboard-chart-combo.component';
 
-interface Invoice {
-  _id: string;
-  invoiceNumber: string;
-  invoiceDate: string;
-  totalAmount: number;
-  status: string;
-  sellerDetails: any;
-  buyerDetails: any;
-  itemDetails: any[];
-  id: string;
-}
-
-interface Product {
-  _id: string;
-  title: string;
-  description: string;
-  thumbnail: string;
-  price: number;
-  finalPrice: number | null;
-  id: string;
-}
-
-interface CartItem {
-  productId: Product;
-  invoiceIds: Invoice[];
-}
-
-interface CustomerData {
-  cart: { items: CartItem[] };
-  _id: string;
-  email: string;
-  fullname: string;
-  mobileNumber: string;
-  remainingAmount: number;
-  paymentHistory: any[];
-  avatarUrl?: string;
-}
-
 @Component({
   selector: 'app-admin-dashboard',
   standalone: true,
@@ -97,7 +59,6 @@ interface CustomerData {
 export class AdminDashboardComponent implements OnInit, OnDestroy {
   private ngUnsubscribe = new Subject<void>();
   searchTerm: string = '';
-  filteredCustomers: CustomerData[] = [];
   expandedRows: { [key: string]: boolean } = {};
   expandedProductRows: { [key: string]: boolean } = {};
   getDateParam: any;
@@ -164,10 +125,10 @@ export class AdminDashboardComponent implements OnInit, OnDestroy {
     this.fetchTotalInventoryValue();
   }
 
-  getUniqueInvoices(cartItems: CartItem[]): Invoice[] {
-    const uniqueInvoiceMap = new Map<string, Invoice>();
+  getUniqueInvoices(cartItems: any[]): any[] {
+    const uniqueInvoiceMap = new Map<string, any>();
     cartItems.forEach(item => {
-      item.invoiceIds.forEach((invoice: Invoice) => {
+      item.invoiceIds.forEach((invoice: any) => {
         uniqueInvoiceMap.set(invoice._id, invoice);
       });
     });
@@ -285,27 +246,6 @@ export class AdminDashboardComponent implements OnInit, OnDestroy {
     }
   }
 
-  // filterCustomers(): void {
-  //   const lowerCaseSearchTerm = this.searchTerm.toLowerCase();
-  //   this.filteredCustomers = this.topCustomers.filter((customer: CustomerData) =>
-  //     customer.fullname.toLowerCase().includes(lowerCaseSearchTerm) ||
-  //     customer.email.toLowerCase().includes(lowerCaseSearchTerm)
-  //   );
-  // }
-
-  expandAll(): void {
-    this.expandedRows = this.filteredCustomers.reduce((acc:any, customer:any) => {
-      acc[customer._id] = true;
-      return acc;
-    }, {});
-    this.messageService.add({ severity: 'success', summary: 'All Rows Expanded', life: 3000 });
-  }
-
-  collapseAll(): void {
-    this.expandedRows = {};
-    this.expandedProductRows = {};
-    this.messageService.add({ severity: 'info', summary: 'All Rows Collapsed', life: 3000 });
-  }
 
   ngOnDestroy(): void {
     this.ngUnsubscribe.next();
