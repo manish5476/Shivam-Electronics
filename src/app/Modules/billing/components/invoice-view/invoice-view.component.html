@@ -1,5 +1,5 @@
 <div class="h-[calc(100vh-56px)] flex flex-col overflow-hidden">
-  <div class="ag-grid-header-filter-area rounded-lg shadow-lg bg-[var(--theme-bg-secondary)] text-[var(--theme-text-primary)] border-[var(--theme-border-primary)] border-b">
+  <div class="ag-grid-header-filter-area card-filter">
     <div class="flex items-center justify-between px-6 py-3">
       <div class="header-info">
         <h4 class="text-xl font-bold tracking-wide text-[var(--theme-text-heading)]">Invoice List</h4>
@@ -58,8 +58,8 @@
     </div>
   </div>
 
-  <div class="ag-grid-main-area mt-2">
-    <app-shared-grid [gridHeight]="'170px'" [headerFilter]="false" [data]="data" [GridName]="'Invoice Details'"
+  <div class="card mt-1">
+    <app-shared-grid [gridHeight]="'210px'" [headerFilter]="false" [data]="data" [GridName]="'Invoice Details'"
       [rowSelectionMode]="rowSelectionMode" [rowClassRules]="rowClassrules" [column]="column"
       (eventFromGrid)="eventFromGrid($event)"></app-shared-grid>
   </div>

@@ -4,15 +4,26 @@
 /* --- 1. CORE THEME & COLOR PALETTE DEFINITIONS --- */
 :root {
   /* --- Base Layout & Text (Light Mode) --- */
-  --theme-bg-primary: #f9f7f3; /* Light beige for main content */
-  --theme-bg-secondary: #ffffff; /* White for cards, headers, etc. */
-  --theme-bg-tertiary: #e9ecef; /* Light gray for input backgrounds */
-  --theme-text-primary: #1e293b; /* Dark slate for main text */
-  --theme-text-secondary: #4b5563; /* Lighter slate for secondary text */
-  --theme-text-label: #374151; /* A bit darker for labels */
-  --theme-text-inverted: #ffffff; /* White text for dark backgrounds */
-  --theme-border-primary: #d1d5db; /* Main borders */
-  --theme-border-secondary: #e5e7eb; /* Lighter borders for inputs */
+  --theme-bg-primary: #f9f7f3;
+  /* Light beige for main content */
+  --theme-bg-secondary: #ffffff;
+  /* White for cards, headers, etc. */
+  --theme-bg-tertiary: #c5cdd5;
+  /* Light gray for input backgrounds */
+  --theme-text-primary: #1e293b;
+  /* Dark slate for main text */
+  --theme-text-secondary: #4b5563;
+  /* Lighter slate for secondary text */
+  --theme-text-label: #374151;
+  /* A bit darker for labels */
+  --theme-text-inverted: #ffffff;
+  /* White text for dark backgrounds */
+  --theme-border-primary: #d1d5db;
+  /* Main borders */
+  --theme-border-secondary: #e5e7eb;
+  /* Lighter borders for inputs */
+  --theme-border-dark: #5d7097;
+  /* Lighter borders for inputs */
   --theme-shadow-color: rgba(0, 0, 0, 0.1);
   --theme-hover-bg: #f1f3f5;
   --theme-scroll-track: #e9ecef;
@@ -20,11 +31,12 @@
 
   /* --- Default Accent Color (Blue) --- */
   --theme-accent-primary: #3b82f6;
-    --theme-accent-primary1: #2dd4bf;
+  --theme-accent-primary1: #2dd4bf;
 
   --theme-accent-primary-light: #bfdbfe;
   --theme-accent-primary-hover: #2563eb;
-  --theme-accent-text-color: #ffffff; /* Text color for solid accent backgrounds */
+  --theme-accent-text-color: #ffffff;
+  /* Text color for solid accent backgrounds */
   --theme-accent-focus-ring: rgba(59, 130, 246, 0.25);
 
   /* --- Status Colors --- */
@@ -36,7 +48,7 @@
   --theme-body-gradient-start: #A4CCD9;
   --theme-body-gradient-end: #578FCA;
 
-    --theme-border-primary: rgba(255, 255, 255, 0.1);
+  --theme-border-primary: rgba(255, 255, 255, 0.1);
   --theme-border-secondary: rgba(255, 255, 255, 0.05);
   --theme-scroll-thumb: #526379;
   --theme-accent-primary: #e94560;
@@ -68,27 +80,153 @@ body.dark-mode {
 
 /* --- 2. DYNAMIC THEME PALETTE --- */
 /* Add one of these classes to the <body> tag to change the theme */
-.theme-slate { --theme-accent-primary: #64748b; --theme-accent-primary-light: #cbd5e1; --theme-accent-primary-hover: #475569; --theme-accent-text-color: #ffffff; --theme-accent-focus-ring: rgba(100, 116, 139, 0.25); }
-.theme-red { --theme-accent-primary: #ef4444; --theme-accent-primary-light: #fecaca; --theme-accent-primary-hover: #dc2626; --theme-accent-text-color: #ffffff; --theme-accent-focus-ring: rgba(239, 68, 68, 0.25); }
-.theme-orange { --theme-accent-primary: #f97316; --theme-accent-primary-light: #fed7aa; --theme-accent-primary-hover: #ea580c; --theme-accent-text-color: #ffffff; --theme-accent-focus-ring: rgba(249, 115, 22, 0.25); }
-.theme-amber { --theme-accent-primary: #f59e0b; --theme-accent-primary-light: #fde68a; --theme-accent-primary-hover: #d97706; --theme-accent-text-color: #ffffff; --theme-accent-focus-ring: rgba(245, 158, 11, 0.25); }
-.theme-yellow { --theme-accent-primary: #eab308; --theme-accent-primary-light: #fef08a; --theme-accent-primary-hover: #ca8a04; --theme-accent-text-color: #1f2937; --theme-accent-focus-ring: rgba(234, 179, 8, 0.25); }
-.theme-lime { --theme-accent-primary: #84cc16; --theme-accent-primary-light: #d9f99d; --theme-accent-primary-hover: #65a30d; --theme-accent-text-color: #1f2937; --theme-accent-focus-ring: rgba(132, 204, 22, 0.25); }
-.theme-green { --theme-accent-primary: #22c55e; --theme-accent-primary-light: #bbf7d0; --theme-accent-primary-hover: #16a34a; --theme-accent-text-color: #ffffff; --theme-accent-focus-ring: rgba(34, 197, 94, 0.25); }
-.theme-emerald { --theme-accent-primary: #10b981; --theme-accent-primary-light: #a7f3d0; --theme-accent-primary-hover: #059669; --theme-accent-text-color: #ffffff; --theme-accent-focus-ring: rgba(16, 185, 129, 0.25); }
-.theme-teal { --theme-accent-primary: #14b8a6; --theme-accent-primary-light: #99f6e4; --theme-accent-primary-hover: #0d9488; --theme-accent-text-color: #ffffff; --theme-accent-focus-ring: rgba(20, 184, 166, 0.25); }
-.theme-cyan { --theme-accent-primary: #06b6d4; --theme-accent-primary-light: #a5f3fc; --theme-accent-primary-hover: #0891b2; --theme-accent-text-color: #ffffff; --theme-accent-focus-ring: rgba(6, 182, 212, 0.25); }
-.theme-sky { --theme-accent-primary: #0ea5e9; --theme-accent-primary-light: #bae6fd; --theme-accent-primary-hover: #0284c7; --theme-accent-text-color: #ffffff; --theme-accent-focus-ring: rgba(14, 165, 233, 0.25); }
-.theme-blue { --theme-accent-primary: #3b82f6; --theme-accent-primary-light: #bfdbfe; --theme-accent-primary-hover: #2563eb; --theme-accent-text-color: #ffffff; --theme-accent-focus-ring: rgba(59, 130, 246, 0.25); }
-.theme-indigo { --theme-accent-primary: #6366f1; --theme-accent-primary-light: #c7d2fe; --theme-accent-primary-hover: #4f46e5; --theme-accent-text-color: #ffffff; --theme-accent-focus-ring: rgba(99, 102, 241, 0.25); }
-.theme-violet { --theme-accent-primary: #8b5cf6; --theme-accent-primary-light: #ddd6fe; --theme-accent-primary-hover: #7c3aed; --theme-accent-text-color: #ffffff; --theme-accent-focus-ring: rgba(139, 92, 246, 0.25); }
-.theme-purple { --theme-accent-primary: #a855f7; --theme-accent-primary-light: #e9d5ff; --theme-accent-primary-hover: #9333ea; --theme-accent-text-color: #ffffff; --theme-accent-focus-ring: rgba(168, 85, 247, 0.25); }
-.theme-fuchsia { --theme-accent-primary: #d946ef; --theme-accent-primary-light: #f5d0fe; --theme-accent-primary-hover: #c026d3; --theme-accent-text-color: #ffffff; --theme-accent-focus-ring: rgba(217, 70, 239, 0.25); }
-.theme-pink { --theme-accent-primary: #ec4899; --theme-accent-primary-light: #fbcfe8; --theme-accent-primary-hover: #db2777; --theme-accent-text-color: #ffffff; --theme-accent-focus-ring: rgba(236, 72, 153, 0.25); }
-.theme-rose { --theme-accent-primary: #f43f5e; --theme-accent-primary-light: #fecdd3; --theme-accent-primary-hover: #e11d48; --theme-accent-text-color: #ffffff; --theme-accent-focus-ring: rgba(244, 63, 94, 0.25); }
+.theme-slate {
+  --theme-accent-primary: #64748b;
+  --theme-accent-primary-light: #cbd5e1;
+  --theme-accent-primary-hover: #475569;
+  --theme-accent-text-color: #ffffff;
+  --theme-accent-focus-ring: rgba(100, 116, 139, 0.25);
+}
+
+.theme-red {
+  --theme-accent-primary: #ef4444;
+  --theme-accent-primary-light: #fecaca;
+  --theme-accent-primary-hover: #dc2626;
+  --theme-accent-text-color: #ffffff;
+  --theme-accent-focus-ring: rgba(239, 68, 68, 0.25);
+}
+
+.theme-orange {
+  --theme-accent-primary: #f97316;
+  --theme-accent-primary-light: #fed7aa;
+  --theme-accent-primary-hover: #ea580c;
+  --theme-accent-text-color: #ffffff;
+  --theme-accent-focus-ring: rgba(249, 115, 22, 0.25);
+}
+
+.theme-amber {
+  --theme-accent-primary: #f59e0b;
+  --theme-accent-primary-light: #fde68a;
+  --theme-accent-primary-hover: #d97706;
+  --theme-accent-text-color: #ffffff;
+  --theme-accent-focus-ring: rgba(245, 158, 11, 0.25);
+}
+
+.theme-yellow {
+  --theme-accent-primary: #eab308;
+  --theme-accent-primary-light: #fef08a;
+  --theme-accent-primary-hover: #ca8a04;
+  --theme-accent-text-color: #1f2937;
+  --theme-accent-focus-ring: rgba(234, 179, 8, 0.25);
+}
+
+.theme-lime {
+  --theme-accent-primary: #84cc16;
+  --theme-accent-primary-light: #d9f99d;
+  --theme-accent-primary-hover: #65a30d;
+  --theme-accent-text-color: #1f2937;
+  --theme-accent-focus-ring: rgba(132, 204, 22, 0.25);
+}
+
+.theme-green {
+  --theme-accent-primary: #22c55e;
+  --theme-accent-primary-light: #bbf7d0;
+  --theme-accent-primary-hover: #16a34a;
+  --theme-accent-text-color: #ffffff;
+  --theme-accent-focus-ring: rgba(34, 197, 94, 0.25);
+}
+
+.theme-emerald {
+  --theme-accent-primary: #10b981;
+  --theme-accent-primary-light: #a7f3d0;
+  --theme-accent-primary-hover: #059669;
+  --theme-accent-text-color: #ffffff;
+  --theme-accent-focus-ring: rgba(16, 185, 129, 0.25);
+}
+
+.theme-teal {
+  --theme-accent-primary: #14b8a6;
+  --theme-accent-primary-light: #99f6e4;
+  --theme-accent-primary-hover: #0d9488;
+  --theme-accent-text-color: #ffffff;
+  --theme-accent-focus-ring: rgba(20, 184, 166, 0.25);
+}
+
+.theme-cyan {
+  --theme-accent-primary: #06b6d4;
+  --theme-accent-primary-light: #a5f3fc;
+  --theme-accent-primary-hover: #0891b2;
+  --theme-accent-text-color: #ffffff;
+  --theme-accent-focus-ring: rgba(6, 182, 212, 0.25);
+}
+
+.theme-sky {
+  --theme-accent-primary: #0ea5e9;
+  --theme-accent-primary-light: #bae6fd;
+  --theme-accent-primary-hover: #0284c7;
+  --theme-accent-text-color: #ffffff;
+  --theme-accent-focus-ring: rgba(14, 165, 233, 0.25);
+}
+
+.theme-blue {
+  --theme-accent-primary: #3b82f6;
+  --theme-accent-primary-light: #bfdbfe;
+  --theme-accent-primary-hover: #2563eb;
+  --theme-accent-text-color: #ffffff;
+  --theme-accent-focus-ring: rgba(59, 130, 246, 0.25);
+}
+
+.theme-indigo {
+  --theme-accent-primary: #6366f1;
+  --theme-accent-primary-light: #c7d2fe;
+  --theme-accent-primary-hover: #4f46e5;
+  --theme-accent-text-color: #ffffff;
+  --theme-accent-focus-ring: rgba(99, 102, 241, 0.25);
+}
+
+.theme-violet {
+  --theme-accent-primary: #8b5cf6;
+  --theme-accent-primary-light: #ddd6fe;
+  --theme-accent-primary-hover: #7c3aed;
+  --theme-accent-text-color: #ffffff;
+  --theme-accent-focus-ring: rgba(139, 92, 246, 0.25);
+}
+
+.theme-purple {
+  --theme-accent-primary: #a855f7;
+  --theme-accent-primary-light: #e9d5ff;
+  --theme-accent-primary-hover: #9333ea;
+  --theme-accent-text-color: #ffffff;
+  --theme-accent-focus-ring: rgba(168, 85, 247, 0.25);
+}
+
+.theme-fuchsia {
+  --theme-accent-primary: #d946ef;
+  --theme-accent-primary-light: #f5d0fe;
+  --theme-accent-primary-hover: #c026d3;
+  --theme-accent-text-color: #ffffff;
+  --theme-accent-focus-ring: rgba(217, 70, 239, 0.25);
+}
+
+.theme-pink {
+  --theme-accent-primary: #ec4899;
+  --theme-accent-primary-light: #fbcfe8;
+  --theme-accent-primary-hover: #db2777;
+  --theme-accent-text-color: #ffffff;
+  --theme-accent-focus-ring: rgba(236, 72, 153, 0.25);
+}
+
+.theme-rose {
+  --theme-accent-primary: #f43f5e;
+  --theme-accent-primary-light: #fecdd3;
+  --theme-accent-primary-hover: #e11d48;
+  --theme-accent-text-color: #ffffff;
+  --theme-accent-focus-ring: rgba(244, 63, 94, 0.25);
+}
 
 /* --- 3. GLOBAL STYLES & TRANSITIONS --- */
-html, body {
+html,
+body {
   height: 100%;
   font-family: 'Inter', sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -104,53 +242,81 @@ body {
   margin: 0;
 }
 
-*, *::before, *::after {
+*,
+*::before,
+*::after {
   transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
 }
+
+
 
 /* --- 4. PRIMENG COMPONENT STYLES (v18+) --- */
 
 /* General Inputs (p-inputtext, p-password, p-inputnumber, p-textarea) */
-.p-inputtext, .p-inputnumber-input, .p-password-input, .p-textarea {
-  background-color: var(--theme-bg-secondary) !important;
-  border: 1px solid var(--theme-border-secondary) !important;
+.p-inputtext,
+.p-inputnumber-input,
+.p-password-input,
+.p-textarea {
+  background-color: var(--theme-bg-tertiary) !important;
+  border: 1px solid var(--theme-border-ter--theme-bg-tertiary) !important;
   color: var(--theme-text-primary) !important;
   border-radius: 6px !important;
 }
-.p-inputtext:hover, .p-inputnumber:hover .p-inputnumber-input, .p-password:hover .p-password-input, .p-textarea:hover {
+
+.p-inputtext:hover,
+.p-inputnumber:hover .p-inputnumber-input,
+.p-password:hover .p-password-input,
+.p-textarea:hover {
   border-color: var(--theme-accent-primary) !important;
 }
-.p-inputtext:focus, .p-inputnumber-input:focus, .p-password-input:focus, .p-textarea:focus {
+
+.p-inputtext:focus,
+.p-inputnumber-input:focus,
+.p-password-input:focus,
+.p-textarea:focus {
   border-color: var(--theme-accent-primary) !important;
   box-shadow: 0 0 0 1px var(--theme-accent-primary) !important;
 }
 
 /* Dropdowns & Selects (p-dropdown, p-multiselect) */
-.p-dropdown, .p-multiselect {
-  background-color: var(--theme-bg-secondary) !important;
+.p-dropdown,
+.p-multiselect {
+  background-color: var(--theme-bg-tertiary) !important;
   border: 1px solid var(--theme-border-secondary) !important;
   color: var(--theme-text-primary) !important;
   border-radius: 6px !important;
 }
-.p-dropdown:hover, .p-multiselect:hover {
+
+.p-dropdown:hover,
+.p-multiselect:hover {
   border-color: var(--theme-accent-primary) !important;
 }
-.p-dropdown.p-focus, .p-multiselect.p-focus {
+
+.p-dropdown.p-focus,
+.p-multiselect.p-focus {
   border-color: var(--theme-accent-primary) !important;
   box-shadow: 0 0 0 1px var(--theme-accent-primary) !important;
 }
-.p-dropdown-panel, .p-multiselect-panel {
+
+.p-dropdown-panel,
+.p-multiselect-panel {
   background-color: var(--theme-bg-secondary) !important;
   border: 1px solid var(--theme-border-primary) !important;
   box-shadow: 0 4px 6px -1px var(--theme-shadow-color) !important;
 }
-.p-dropdown-item, .p-multiselect-item {
+
+.p-dropdown-item,
+.p-multiselect-item {
   color: var(--theme-text-primary) !important;
 }
-.p-dropdown-item:hover, .p-multiselect-item:hover {
+
+.p-dropdown-item:hover,
+.p-multiselect-item:hover {
   background-color: var(--theme-hover-bg) !important;
 }
-.p-dropdown-item.p-highlight, .p-multiselect-item.p-highlight {
+
+.p-dropdown-item.p-highlight,
+.p-multiselect-item.p-highlight {
   background-color: var(--theme-accent-primary) !important;
   color: var(--theme-accent-text-color) !important;
 }
@@ -160,13 +326,16 @@ body {
   border: 1px solid var(--theme-border-secondary) !important;
   background-color: var(--theme-bg-secondary) !important;
 }
+
 .p-checkbox:not(.p-checkbox-disabled) .p-checkbox-box:hover {
   border-color: var(--theme-accent-primary) !important;
 }
+
 .p-checkbox .p-checkbox-box.p-highlight {
   background-color: var(--theme-accent-primary) !important;
   border-color: var(--theme-accent-primary) !important;
 }
+
 .p-checkbox .p-checkbox-box.p-highlight .p-checkbox-icon {
   color: var(--theme-accent-text-color) !important;
 }
@@ -178,54 +347,65 @@ body {
   border: 1px solid var(--theme-accent-primary) !important;
   border-radius: 6px !important;
 }
+
 .p-button:hover {
   background-color: var(--theme-accent-primary-hover) !important;
   border-color: var(--theme-accent-primary-hover) !important;
 }
+
 .p-button.p-button-secondary {
   background-color: var(--theme-bg-tertiary) !important;
   color: var(--theme-text-secondary) !important;
   border-color: var(--theme-border-secondary) !important;
 }
+
 .p-button.p-button-secondary:hover {
   background-color: var(--theme-border-primary) !important;
   color: var(--theme-text-primary) !important;
 }
+
 .p-button-outlined {
   border-color: var(--theme-accent-primary) !important;
   color: var(--theme-accent-primary) !important;
   background-color: transparent !important;
 }
+
 .p-button-outlined:hover {
   background-color: color-mix(in srgb, var(--theme-accent-primary) 10%, transparent) !important;
   color: var(--theme-accent-primary) !important;
 }
+
 .p-button-danger.p-button-text {
   color: var(--theme-error-primary) !important;
   background-color: transparent !important;
 }
+
 .p-button-danger.p-button-text:hover {
   background-color: color-mix(in srgb, var(--theme-error-primary) 10%, transparent) !important;
 }
 
 /* Data Table (p-table) */
-.p-datatable .p-datatable-thead > tr > th {
+.p-datatable .p-datatable-thead>tr>th {
   background-color: var(--theme-bg-secondary) !important;
   border-bottom: 2px solid var(--theme-border-primary) !important;
   color: var(--theme-text-primary) !important;
   font-weight: 600;
 }
-.p-datatable .p-datatable-tbody > tr {
+
+.p-datatable .p-datatable-tbody>tr {
   background-color: var(--theme-bg-primary) !important;
   color: var(--theme-text-secondary) !important;
 }
-.p-datatable .p-datatable-tbody > tr:hover {
+
+.p-datatable .p-datatable-tbody>tr:hover {
   background-color: var(--theme-hover-bg) !important;
 }
+
 .p-datatable .p-paginator {
   background-color: var(--theme-bg-secondary) !important;
   border-top: 1px solid var(--theme-border-primary) !important;
 }
+
 .p-paginator .p-paginator-page.p-highlight {
   background-color: var(--theme-accent-primary) !important;
   color: var(--theme-accent-text-color) !important;
@@ -237,6 +417,7 @@ body {
   color: var(--theme-text-primary) !important;
   border-bottom: 1px solid var(--theme-border-primary) !important;
 }
+
 .p-dialog .p-dialog-content {
   background-color: var(--theme-bg-primary) !important;
 }
@@ -246,6 +427,7 @@ body {
 .no-scrollbar::-webkit-scrollbar {
   display: none;
 }
+
 .no-scrollbar {
   -ms-overflow-style: none;
   scrollbar-width: none;
@@ -255,18 +437,45 @@ a {
   color: var(--theme-accent-primary);
   text-decoration: none;
 }
+
 a:hover {
   color: var(--theme-accent-primary-hover);
   text-decoration: underline;
 }
 
 .card {
-  background-color: var(--theme-bg-secondary);
-  border: 1px solid var(--theme-border-primary);
-  border-radius: 0.75rem;
+  background-color: var(--theme-bg-tertiary);
+  border: 1.5px dashed var(--theme-border-dark);
+  border-radius: .5rem;
   box-shadow: 0 4px 6px -1px var(--theme-shadow-color);
-  padding: 1.5rem;
-  margin-bottom: 1rem;
+  padding: 1rem;
+  margin-bottom: .8rem;
+}
+
+.card-filter {
+  background-color: var(--theme-bg-tertiary);
+  border: 1px dashed var(--theme-border-dark);
+  border-radius: 1rem;
+  box-shadow: 0 4px 6px -1px var(--theme-shadow-color);
+  padding: 1px;
+  /* margin-bottom: .8rem; */
+}
+
+.card-container {
+  background-color: var(--theme-accent-primary-light);
+  border: 1px dashed var(--theme-border-dark);
+  border-radius: .5rem;
+  box-shadow: 0 4px 6px -1px var(--theme-shadow-color);
+  padding: 1px;
+  height: 95%;
+  padding-top: 3px;
+  padding-bottom: 3px;
+  overflow-x: auto
+  /* margin-bottom: .8rem; */
+}
+
+.p-timeline-event-separator{
+  color:var(--theme-text-primary)
 }
 
 .gradient-card {
@@ -278,8 +487,12 @@ a:hover {
   background-image: linear-gradient(to bottom right, color-mix(in srgb, var(--theme-bg-secondary) 80%, white), white);
 }
 
+.dashed-border {
+  border: 2px dashed var(--theme-border-dark);
+}
+
 body.dark-mode .gradient-card {
-   background-image: linear-gradient(to bottom right, color-mix(in srgb, var(--theme-bg-secondary) 80%, black), var(--theme-bg-secondary));
+  background-image: linear-gradient(to bottom right, color-mix(in srgb, var(--theme-bg-secondary) 80%, black), var(--theme-bg-secondary));
 }
 
 label {
@@ -302,20 +515,36 @@ label {
   margin-top: 0.25rem;
 }
 
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   color: var(--theme-text-primary);
 }
 
-h1 { font-size: 2.25rem; font-weight: 700; margin-bottom: 1.5rem; }
-h2 { font-size: 1.875rem; font-weight: 600; margin-bottom: 1.25rem; }
+h1 {
+  font-size: 2.25rem;
+  font-weight: 700;
+  margin-bottom: .5rem;
+}
+
+h2 {
+  font-size: 1.875rem;
+  font-weight: 600;
+  margin-bottom: .5rem;
+}
 
 /* Custom Scrollbar */
 .custom-scroll::-webkit-scrollbar {
   width: 6px;
 }
+
 .custom-scroll::-webkit-scrollbar-track {
   background: var(--theme-scroll-track);
 }
+
 .custom-scroll::-webkit-scrollbar-thumb {
   background-color: var(--theme-scroll-thumb);
   border-radius: 3px;

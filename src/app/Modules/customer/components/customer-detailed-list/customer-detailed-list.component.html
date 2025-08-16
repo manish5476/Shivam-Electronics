@@ -1,80 +1,130 @@
+
 <div class="customer-view-container">
   <p-toast></p-toast>
 
-  <!-- Header Section -->
+  <!-- Header -->
   <div class="card header-card">
-    <div class="flex flex-wrap items-center justify-between gap-4">
+    <div class="flex gap-6">
       <h2 class="page-title">Customer Details</h2>
-      <div class="flex items-center gap-2">
-        <p-select [(ngModel)]="customerId" (onChange)="getCustomerDetail()" [options]="customerIDDropdown"
-          optionLabel="fullname" optionValue="_id" placeholder="Select a Customer" [filter]="true" filterBy="fullname"
-          styleClass="w-full sm:w-64"></p-select>
+      <div class="header-actions">
+        <p-select appendTo="body" [(ngModel)]="customerId" (onChange)="getCustomerDetail()"
+          [options]="customerIDDropdown" optionLabel="fullname" optionValue="_id" placeholder="Select a Customer"
+          [filter]="true" filterBy="fullname" styleClass="filter-input filter-input-lg">
+        </p-select>
       </div>
     </div>
   </div>
 
-  <ng-container *ngIf="!isLoading && customer; else loadingState">
-    <!-- Customer Profile & Financials -->
-    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
-      <div class="lg:col-span-1">
-        <div class="card profile-card">
+  <!-- Content -->
+  <ng-container *ngIf="!isLoading && customer">
+
+    <!-- Profile + Financials (side by side row) -->
+    <div class="row-grid">
+      <!-- Profile Card -->
+      <div class="card profile-card">
+        <div class="profile-header">
           <p-avatar [image]="customer.profileImg" [label]="commonMethod.getInitials(customer.fullname)" shape="circle"
-            styleClass="w-24 h-24 text-4xl mb-4"></p-avatar>
-          <h3 class="text-xl font-bold text-[var(--theme-text-primary)]">{{ customer.fullname }}</h3>
-          <p class="text-sm text-[var(--theme-text-secondary)]">{{ customer.email }}</p>
-          <p-tag [value]="customer.status" [severity]="commonMethod.getInvoiceStatusSeverity(customer.status)"
-            styleClass="mt-2"></p-tag>
+            styleClass="profile-avatar">
+          </p-avatar>
+          <div>
+            <h3 class="profile-name">{{ customer.fullname }}</h3>
+            <p class="profile-email">{{ customer.email }}</p>
+            <p-tag [value]="customer.status" [severity]="commonMethod.getInvoiceStatusSeverity(customer.status)"
+              styleClass="status-tag">
+            </p-tag>
+          </div>
+        </div>
+
+        <!-- Contact Info -->
+        <div class="profile-details grid-2col">
+          <div class="detail-box">
+            <span class="label">📱 Phone</span>
+            <span class="value">{{ customer.mobileNumber || 'N/A' }}</span>
+          </div>
+          <div class="detail-box">
+            <span class="label">📧 Email</span>
+            <span class="value">{{ customer.email }}</span>
+          </div>
+          <div class="detail-box" *ngIf="customer.addresses?.length">
+            <span class="label">🏠 Address</span>
+            <span class="value">
+              {{ customer.addresses[0].street }}, {{ customer.addresses[0].city }},
+              {{ customer.addresses[0].state }} - {{ customer.addresses[0].zipCode }},
+              {{ customer.addresses[0].country }}
+            </span>
+          </div>
+          <div class="detail-box">
+            <span class="label">📅 Joined</span>
+            <span class="value">{{ customer.createdAt | date:'mediumDate' }}</span>
+          </div>
         </div>
       </div>
-      <div class="lg:col-span-2 card">
-        <h3 class="section-header">Financial Overview</h3>
+
+      <!-- Financial Overview Card -->
+      <div class="card financial-card">
+        <h3 class="section-header">💰 Financial Overview</h3>
         <div class="financial-stats">
-          <div>
-            <span class="label">Total Purchased</span>
-            <span class="value">{{ commonMethod.formatCurrency(customer.totalPurchasedAmount) }}</span>
+          <div class="stat-box positive">
+            <i class="pi pi-shopping-cart"></i>
+            <div>
+              <span class="label">Total Purchased</span>
+              <span class="value">{{ commonMethod.formatCurrency(customer.totalPurchasedAmount) }}</span>
+            </div>
           </div>
-          <div>
-            <span class="label">Amount Due</span>
-            <span class="value text-rose-500">{{ commonMethod.formatCurrency(customer.remainingAmount) }}</span>
+          <div class="stat-box negative">
+            <i class="pi pi-exclamation-triangle"></i>
+            <div>
+              <span class="label">Amount Due</span>
+              <span class="value">{{ commonMethod.formatCurrency(customer.remainingAmount) }}</span>
+            </div>
           </div>
         </div>
       </div>
     </div>
 
-    <!-- Purchase & Payment History Timelines -->
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+
+    <!-- Purchase & Payment History (side by side row) -->
+    <div class="row-grid">
+      <!-- Purchases -->
       <div class="card">
-        <h3 class="section-header">Purchase History</h3>
-        <div class="timeline-container">
-          <p-timeline [value]="customer.cart?.items" layout="vertical">
+        <h3 class="section-header">🛒 Purchase History</h3>
+        <div class="timeline-container colorful-timeline card-container">
+          <p-timeline [value]="customer.cart?.items" layout="vertical" align="alternate">
             <ng-template pTemplate="content" let-item>
-              <div class="timeline-card">
+              <div class="timeline-card purchase">
                 <div class="font-bold">{{ item.productId?.title }}</div>
-                <div class="text-sm text-[var(--theme-text-secondary)]">{{
-                  commonMethod.formatCurrency(item.productId?.price) }}</div>
-                <div class="text-xs mt-1">Invoice: {{ item.invoiceIds?.[0]?.invoiceNumber }}</div>
+                <div class="timeline-subtext">
+                  {{ commonMethod.formatCurrency(item.productId?.price) }}
+                </div>
+                <div class="timeline-meta">
+                  Invoice: {{ item.invoiceIds?.[0]?.invoiceNumber }}
+                </div>
               </div>
             </ng-template>
           </p-timeline>
         </div>
       </div>
+
+      <!-- Payments -->
       <div class="card">
-        <h3 class="section-header">Payment History</h3>
-        <div class="timeline-container">
-          <p-timeline [value]="customer.paymentHistory" layout="vertical" align="opposite">
-            <ng-template pTemplate="marker" let-payment>
+        <h3 class="section-header">💳 Payment History</h3>
+        <div class="timeline-container colorful-timeline card-container">
+          <p-timeline [value]="customer.paymentHistory" layout="vertical" align="alternate">
+            <ng-template pTemplate="content" let-payment>
               <span class="timeline-marker" [ngClass]="'bg-' + getStatusSeverity(payment.status) + '-500'">
-                <i class="pi"
-                  [ngClass]="{'pi-check': payment.status === 'completed', 'pi-wallet': payment.status !== 'completed'}"></i>
+                <i class="pi" [ngClass]="{
+                    'pi-check': payment.status === 'completed',
+                    'pi-wallet': payment.status !== 'completed'
+                  }">
+                </i>
               </span>
             </ng-template>
             <ng-template pTemplate="content" let-payment>
-              <div class="timeline-card">
+              <div class="timeline-card purchase" [ngClass]="getStatusSeverity(payment.status)">
                 <div class="font-bold">{{ commonMethod.formatCurrency(payment.amount) }}</div>
-                <div class="text-sm text-[var(--theme-text-secondary)]">{{ payment.createdAt | date:'mediumDate' }}
-                </div>
+                <div class="timeline-subtext">{{ payment.createdAt | date:'mediumDate' }}</div>
                 <p-tag [value]="payment.status" [severity]="getStatusSeverity(payment.status)"
-                  styleClass="mt-2"></p-tag>
+                  styleClass="status-tag"></p-tag>
               </div>
             </ng-template>
           </p-timeline>
@@ -82,22 +132,4 @@
       </div>
     </div>
   </ng-container>
-
-  <ng-template #loadingState>
-    <div class="card header-card"><p-skeleton width="100%" height="4rem"></p-skeleton></div>
-    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
-      <div class="lg:col-span-1 card"><p-skeleton width="100%" height="12rem"></p-skeleton></div>
-      <div class="lg:col-span-2 card"><p-skeleton width="100%" height="12rem"></p-skeleton></div>
-    </div>
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-      <div class="card"><p-skeleton width="100%" height="20rem"></p-skeleton></div>
-      <div class="card"><p-skeleton width="100%" height="20rem"></p-skeleton></div>
-    </div>
-  </ng-template>
-
-  <!-- Dialog for Invoice Details -->
-  <p-dialog [(visible)]="displayInvoiceDialog" [modal]="true" header="Invoice Details"
-    [style]="{ width: '80vw', 'max-width': '1200px' }">
-    <ng-container *ngComponentOutlet="dynamicComponent; inputs: { Id: invoiceIdForDialog }"></ng-container>
-  </p-dialog>
 </div>

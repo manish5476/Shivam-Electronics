@@ -1,4 +1,169 @@
-<div class="p-2 mx-auto max-full rounded-xl shadow-2xl border transition-all duration-500 ease-in-out"
+<div class="p-6 mx-auto w-full rounded-2xl shadow-xl border transition-all duration-500 ease-in-out"
+  [style.backgroundColor]="'var(--theme-bg-main)'" [style.borderColor]="'var(--theme-border-secondary)'"
+  [style.color]="'var(--theme-text-primary)'">
+  <!-- Header -->
+  <header class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-2">
+    <h1 class="text-3xl font-bold text-center md:text-left flex-1" [style.color]="'var(--theme-text-heading)'">
+      💳 Customer Payment
+    </h1>
+
+    <div class="w-full md:w-80">
+      <p-select [(ngModel)]="customerId" (onChange)="fetchCustomerData()" [options]="customerIDDropdown"
+        optionLabel="label" optionValue="_id" placeholder="Select Customer" class="w-full">
+      </p-select>
+    </div>
+  </header>
+
+  <!-- Content -->
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+    <!-- Customer Info Card -->
+    <section class="p-6 rounded-xl shadow-md border" [style.backgroundColor]="'var(--theme-bg-secondary)'"
+      [style.borderColor]="'var(--theme-border-secondary)'">
+      <h2 class="text-xl font-semibold mb-4 flex items-center gap-2" [style.color]="'var(--theme-text-heading)'">
+        👤 Customer Information
+      </h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <!-- Detail Item -->
+        <div class="p-3 rounded-lg border" [style.backgroundColor]="'var(--theme-bg-tertiary)'"
+          [style.borderColor]="'var(--theme-border-secondary)'">
+          <dt class="font-semibold" [style.color]="'var(--theme-text-label)'">Name</dt>
+          <dd class="text-lg font-medium">{{ customer?.fullname || 'Customer Name' }}</dd>
+        </div>
+
+        <div class="p-3 rounded-lg border" [style.backgroundColor]="'var(--theme-bg-tertiary)'"
+          [style.borderColor]="'var(--theme-border-secondary)'">
+          <dt class="font-semibold">Email</dt>
+          <dd class="text-lg font-medium">{{ customer?.email || 'email' }}</dd>
+        </div>
+
+        <div class="p-3 rounded-lg border" [style.backgroundColor]="'var(--theme-bg-tertiary)'"
+          [style.borderColor]="'var(--theme-border-secondary)'">
+          <dt class="font-semibold">Phone</dt>
+          <dd class="text-lg font-medium">
+            {{ customer?.phoneNumbers?.[0]?.number || '' }}
+            (<span class="opacity-75">{{ customer?.phoneNumbers?.[0]?.type || 'Phone' }}</span>)
+          </dd>
+        </div>
+
+        <div class="p-3 rounded-lg border" [style.backgroundColor]="'var(--theme-bg-tertiary)'"
+          [style.borderColor]="'var(--theme-border-secondary)'">
+          <dt class="font-semibold">Status</dt>
+          <dd class="text-lg font-medium" [ngClass]="{
+              'text-[var(--theme-success-primary)]': customer?.status === 'active',
+              'text-[var(--theme-error-primary)]': customer?.status !== 'active'
+            }">
+            {{ customer?.status || '' }}
+          </dd>
+        </div>
+
+        <div class="p-3 rounded-lg border" [style.backgroundColor]="'var(--theme-bg-tertiary)'"
+          [style.borderColor]="'var(--theme-border-secondary)'">
+          <dt class="font-semibold">Total Purchased</dt>
+          <dd class="font-bold text-xl text-[var(--theme-success-primary)]">₹{{ customer?.totalPurchasedAmount || '0' }}
+          </dd>
+        </div>
+
+        <div class="p-3 rounded-lg border" [style.backgroundColor]="'var(--theme-bg-tertiary)'"
+          [style.borderColor]="'var(--theme-border-secondary)'">
+          <dt class="font-semibold">Remaining Amount</dt>
+          <dd class="font-bold text-xl text-[var(--theme-error-primary)]">₹{{ customer?.remainingAmount || '0' }}</dd>
+        </div>
+
+        <div class="p-3 rounded-lg border md:col-span-2" [style.backgroundColor]="'var(--theme-bg-tertiary)'"
+          [style.borderColor]="'var(--theme-border-secondary)'">
+          <dt class="font-semibold">Address</dt>
+          <dd class="text-lg font-medium">
+            {{ customer?.addresses?.[0]?.street || 'Street' }},
+            {{ customer?.addresses?.[0]?.city || 'City' }},
+            {{ customer?.addresses?.[0]?.state || 'State' }},
+            {{ customer?.addresses?.[0]?.zipCode || 'Zipcode' }}
+          </dd>
+        </div>
+
+        <div class="p-3 rounded-lg border md:col-span-2" [style.backgroundColor]="'var(--theme-bg-tertiary)'"
+          [style.borderColor]="'var(--theme-border-secondary)'">
+          <dt class="font-semibold">Guarantor ID</dt>
+          <dd class="text-lg font-medium">{{ customer?.guaranteerId || '-' }}</dd>
+        </div>
+      </div>
+    </section>
+
+    <!-- Payment Form Card -->
+    <section class="p-6 rounded-xl shadow-md border flex flex-col" [style.backgroundColor]="'var(--theme-bg-secondary)'"
+      [style.borderColor]="'var(--theme-border-secondary)'">
+      <h2 class="text-2xl font-semibold mb-4 text-center flex items-center justify-center gap-2"
+        [style.color]="'var(--theme-text-heading)'">
+        🏦 Process Payment
+      </h2>
+
+      <form (ngSubmit)="onSubmit()" class="flex flex-col flex-1">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+
+          <!-- Amount -->
+          <div class="md:col-span-2">
+            <label for="amount-input" class="block text-sm font-bold mb-1">Amount <span
+                class="text-red-500">*</span></label>
+            <input id="amount-input" type="number" [(ngModel)]="paymentData.amount" name="amount"
+              placeholder="Enter amount" min="0" required
+              class="w-full p-3 rounded-lg border shadow-sm focus:ring-2 focus:ring-blue-500" />
+          </div>
+
+          <!-- Payment Method -->
+          <div>
+            <label for="payment-method" class="block text-sm font-bold mb-1">Method <span
+                class="text-red-500">*</span></label>
+            <select id="payment-method" [(ngModel)]="paymentData.paymentMethod" name="paymentMethod" required
+              class="w-full p-3 rounded-lg border shadow-sm focus:ring-2 focus:ring-blue-500">
+              <option *ngFor="let method of paymentMethods" [value]="method">{{ method }}</option>
+            </select>
+          </div>
+
+          <!-- Status -->
+          <div>
+            <label for="payment-status" class="block text-sm font-bold mb-1">Status <span
+                class="text-red-500">*</span></label>
+            <select id="payment-status" [(ngModel)]="paymentData.status" name="status" required
+              class="w-full p-3 rounded-lg border shadow-sm focus:ring-2 focus:ring-blue-500">
+              <option *ngFor="let status of statuses" [value]="status">{{ status }}</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Description -->
+        <div class="mt-4">
+          <label class="block text-sm font-bold mb-1">Description</label>
+          <textarea [(ngModel)]="paymentData.description" name="description" rows="2"
+            placeholder="Payment description (max 200 chars)" maxlength="200"
+            class="w-full p-3 rounded-lg border shadow-sm focus:ring-2 focus:ring-blue-500"></textarea>
+        </div>
+
+        <!-- Metadata -->
+        <div class="mt-4">
+          <label class="block text-sm font-bold mb-1">Metadata (JSON)</label>
+          <textarea [(ngModel)]="paymentData.metadata" name="metadata" rows="3"
+            placeholder='Optional JSON (e.g., {"invoice_id": "123"})'
+            class="w-full p-3 rounded-lg border shadow-sm focus:ring-2 focus:ring-blue-500"></textarea>
+          <p *ngIf="paymentData.metadata && !isValidJson(paymentData.metadata)" class="text-sm mt-1 text-red-500">
+            Invalid JSON format
+          </p>
+        </div>
+
+        <!-- Submit -->
+        <div class="mt-6">
+          <button type="submit"
+            class="w-full py-3 px-6 rounded-lg font-bold shadow-md transition hover:opacity-90 disabled:opacity-50 disabled:cursor-not-allowed"
+            [style.background]="'var(--theme-button-bg-primary)'" [style.color]="'var(--theme-button-text-primary-btn)'"
+            [disabled]="!customerId || !paymentData.amount || !isValidJson(paymentData.metadata)">
+            Process Payment
+          </button>
+        </div>
+      </form>
+    </section>
+  </div>
+</div>
+<p-toast></p-toast>
+
+<!-- <div class="p-2 mx-auto max-full rounded-xl shadow-2xl border transition-all duration-500 ease-in-out"
   [style.backgroundColor]="'var(--theme-bg-main)'" [style.borderColor]="'var(--theme-border-secondary)'"
   [style.color]="'var(--theme-text-primary)'">
 
@@ -159,4 +324,4 @@
       </form>
     </section>
   </div>
-</div>
+</div> -->

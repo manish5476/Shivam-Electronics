@@ -12,6 +12,7 @@ import { DropdownModule } from 'primeng/dropdown'; // For availabilityStatus
 import { ConfirmationService, MessageService } from 'primeng/api';
 import lodash from 'lodash';
 import { AutopopulateService } from '../../../../core/services/autopopulate.service';
+import { Toast } from "primeng/toast";
 
 // Updated Product Interface based on Mongoose Schema
 interface Product {
@@ -48,8 +49,9 @@ interface Product {
     RouterModule,
     InputTextModule,
     TextareaModule,
-    ButtonModule
-  ],
+    ButtonModule,
+    Toast
+],
   templateUrl: './product-master.component.html',
   styleUrl: './product-master.component.css',
   providers: [ConfirmationService, MessageService]
