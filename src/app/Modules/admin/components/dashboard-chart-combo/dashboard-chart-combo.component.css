@@ -1,23 +1,35 @@
-.chart-title {
-  font-size: 1.5rem;
-  font-weight: bold;
-  margin-bottom: 1rem;
-  text-align: center;
+:host {
+  display: block;
+  height: 500px;
+  /* Give the component a default height */
 }
 
-.card {
-  background: var(--p-surface-card);
-  border-radius: var(--p-content-border-radius);
-  box-shadow: var(--p-content-box-shadow);
-  padding: 1rem;
+.chart-panel {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: 1.5rem;
+  overflow-x: auto;
+  overflow-y: hidden;
 }
 
-.p-button-primary {
-  background-color: var(--p-cyan-500);
-  border-color: var(--p-cyan-500);
+.chart-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
 }
 
-.p-button-primary:hover {
-  background-color: var(--p-cyan-400);
-  border-color: var(--p-cyan-400);
+.section-header {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--theme-text-primary);
+  margin: 0;
+}
+
+.chart-body {
+  flex-grow: 1;
+  position: relative;
 }

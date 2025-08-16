@@ -1,116 +1,115 @@
-/* @import "tailwindcss"; */@import 'primeicons/primeicons.css';
-/* @import 'primeflex/primeflex.css'; */
+/* 3. The New CSS for a Stunning Look */
+/* File: src/app/Modules/customer/components/customer-master/customer-master.component.css */
 
-/* Keep ::ng-deep ONLY for things you absolutely cannot style otherwise */
-/* Try overriding PrimeNG variables in styles.css first */
-:host ::ng-deep {
-
-  /* Gradient Border for Cards (Modified to use CSS Vars) */
-  /* Apply this class selectively if needed, or apply directly */
-  .p-card.animated-gradient-border {
-    border: 2px solid transparent;
-    padding: 1px;
-    background-clip: padding-box;
-    position: relative;
-    overflow: hidden;
-    width: 100%; /* Ensure width */
-  }
-
-  .p-card.animated-gradient-border::before {
-    content: '';
-    position: absolute;
-    top: 0; right: 0; bottom: 0; left: 0;
-    z-index: -1;
-    margin: -2px; /* Match border width */
-    border-radius: inherit;
-    /* Use CSS variables for gradient colors */
-    background: repeating-linear-gradient(
-      45deg,
-      var(--color-primary), /* Use theme colors */
-      var(--color-primary) 10px,
-      var(--color-secondary) 10px, /* Use theme colors */
-      var(--color-secondary) 20px,
-      var(--color-accent) 20px, /* Use theme colors */
-      var(--color-accent) 30px
-    );
-    background-size: 200% 200%;
-    animation: wave-border 4s linear infinite;
-  }
-
-  /* PrimeNG Input/Dropdown Styling (Example Overrides) */
-  /* These might conflict with inline classes, use carefully */
-  .p-inputtext,
-  .p-dropdown .p-dropdown-label,
-  .p-select .p-select-label { /* Use p-select for PrimeNG v17+ */
-    background-color: var(--color-bg-base) !important;
-    color: var(--color-text-base) !important;
-    border: 1px solid var(--color-border) !important;
-  }
-  .p-inputtext:focus,
-  .p-dropdown:not(.p-disabled).p-focus,
-  .p-select:not(.p-disabled).p-focus { /* Use p-select */
-     border-color: var(--color-primary) !important;
-     box-shadow: 0 0 0 1px var(--color-primary) !important; /* Adjust focus ring */
-  }
-
-  /* Style dropdown panel */
-  .p-dropdown-panel .p-dropdown-items .p-dropdown-item,
-  .p-select-panel .p-select-items .p-select-item { /* Use p-select */
-    color: var(--color-text-base) !important;
-  }
-   .p-dropdown-panel .p-dropdown-items .p-dropdown-item.p-highlight,
-   .p-select-panel .p-select-items .p-select-item.p-highlight { /* Use p-select */
-     background-color: var(--color-primary) !important;
-     color: var(--color-text-inverted) !important;
-   }
-
-   /* Style Table */
-   .p-datatable .p-datatable-thead > tr > th {
-     background-color: var(--color-surface) !important;
-     color: var(--color-text-base) !important;
-     border-bottom-color: var(--color-border) !important;
-     border-width: 0 0 1px 0 !important; /* Ensure bottom border only */
-   }
-    .p-datatable .p-datatable-tbody > tr {
-       background-color: transparent !important; /* Allow striped styles */
-       color: var(--color-text-base) !important;
-       border-bottom-color: var(--color-border) !important;
-    }
-     /* Optional: Striped rows */
-    .p-datatable-striped .p-datatable-tbody > tr:nth-child(even) {
-        background-color: var(--color-border)/10 !important; /* Faint bg */
-    }
-     .p-datatable .p-datatable-tbody > tr > td {
-        border-bottom-color: var(--color-border) !important;
-        border-width: 0 0 1px 0 !important;
-     }
-
-     /* Dialog Styling */
-      .p-dialog .p-dialog-header {
-        background-color: var(--color-surface) !important;
-        color: var(--color-text-base) !important;
-        border-bottom: 1px solid var(--color-border) !important;
-      }
-      .p-dialog .p-dialog-content {
-         background-color: var(--color-surface) !important;
-         color: var(--color-text-base) !important;
-      }
-      .p-dialog .p-dialog-footer {
-         background-color: var(--color-surface) !important;
-         border-top: 1px solid var(--color-border) !important;
-      }
-
-} /* End ::ng-deep */
-
-/* Keep only animations or truly unique styles here */
-@keyframes wave-border {
-  0% { background-position: 0 0; }
-  50% { background-position: 100% 0; }
-  100% { background-position: 0 0; }
+:host {
+  display: block;
 }
 
-/* Remove all custom classes like .profile-card, .form-input, etc.
-   that have been replaced by Tailwind utilities in the HTML */
+.header-card {
+  background-color: var(--theme-bg-secondary);
+  border: 1px solid var(--theme-border-primary);
+  border-radius: 0.75rem;
+  margin-bottom: 1.5rem;
+  padding: 1.5rem;
+  position: relative;
+  overflow: hidden;
+}
 
+.header-card::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--theme-accent-primary), var(--theme-accent-primary-light));
+}
 
+.section-header {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: var(--theme-text-primary);
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+}
 
+.financial-stats {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.financial-stats > div {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+}
+
+.financial-stats .label {
+    font-size: 0.875rem;
+    color: var(--theme-text-secondary);
+}
+
+.financial-stats .value {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--theme-text-primary);
+}
+
+/* Custom Table Styling for a cleaner look */
+:host ::ng-deep .p-datatable-sm .p-datatable-thead > tr > th {
+    background-color: var(--theme-bg-tertiary);
+    color: var(--theme-text-secondary);
+    font-weight: 500;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+:host ::ng-deep .p-datatable-sm .p-datatable-tbody > tr {
+    background-color: var(--theme-bg-secondary);
+}
+
+:host ::ng-deep .p-datatable-sm .p-datatable-tbody > tr:hover {
+    background-color: var(--theme-hover-bg);
+}
+
+/* --- NEW: Dialog Styling --- */
+:host ::ng-deep .p-dialog {
+    background-color: var(--theme-bg-secondary);
+    border: 1px solid var(--theme-border-primary);
+    border-radius: 0.75rem;
+    box-shadow: 0 8px 25px var(--theme-shadow-color);
+}
+
+:host ::ng-deep .p-dialog .p-dialog-header {
+    background-color: transparent;
+    color: var(--theme-text-primary);
+    border-bottom: 1px solid var(--theme-border-primary);
+}
+
+:host ::ng-deep .p-dialog .p-dialog-content {
+    background-color: var(--theme-bg-primary);
+}
+
+:host ::ng-deep .p-dialog .p-dialog-footer {
+    background-color: var(--theme-bg-secondary);
+    border-top: 1px solid var(--theme-border-primary);
+}
+
+.dialog-responsive {
+    width: 50vw;
+}
+
+@media (max-width: 960px) {
+    .dialog-responsive {
+        width: 75vw;
+    }
+}
+
+@media (max-width: 640px) {
+    .dialog-responsive {
+        width: 90vw;
+    }
+}

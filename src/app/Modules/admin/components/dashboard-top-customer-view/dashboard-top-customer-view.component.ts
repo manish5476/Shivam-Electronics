@@ -31,9 +31,10 @@ import { MessageService, } from 'primeng/api';
 // import { InvoicePrintComponent } from '../../../billing/components/invoice-print/invoice-print.component';
 import { CommonMethodService } from '../../../../core/Utils/common-method.service';
 import { InvoicePrintComponent } from "../../../billing/components/invoice-print/invoice-print.component";
+import { Avatar } from "primeng/avatar";
 @Component({
   selector: 'app-dashboard-top-customer-view',
-  imports: [CommonModule, IconFieldModule, InputIconModule, CarouselModule, DialogModule, FormsModule, TableModule, ButtonModule, InputTextModule, TagModule, ToastModule, InvoicePrintComponent],
+  imports: [CommonModule, IconFieldModule, InputIconModule, CarouselModule, DialogModule, FormsModule, TableModule, ButtonModule, InputTextModule, TagModule, ToastModule, InvoicePrintComponent, Avatar],
   templateUrl: './dashboard-top-customer-view.component.html',
   styleUrl: './dashboard-top-customer-view.component.css'
 })
@@ -120,6 +121,7 @@ export class DashboardTopCustomerViewComponent {
 
 
   showInvoicePdf(id: any) {
+    console.log(id,"id");
     this.invoiceId = id
     this.showpdf = true
   }

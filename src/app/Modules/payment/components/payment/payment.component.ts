@@ -88,19 +88,19 @@ export class PaymentComponent {
   }
 
   onSubmit() {
-    this.paymentData.customerName=this.customer.fullname?this.customer?.fullname:null
-    this.paymentData.phoneNumbers=this.customer?.phoneNumbers[0]?.number?this.customer?.phoneNumbers[0]?.number:null
+    this.paymentData.customerName = this.customer.fullname ? this.customer?.fullname : null
+    this.paymentData.phoneNumbers = this.customer?.phoneNumbers[0]?.number ? this.customer?.phoneNumbers[0]?.number : null
     if (!this.paymentData.customerId || this.paymentData.amount <= 0) {
       alert('Please fill all required fields correctly.');
       return;
     }
 
-    const formData = {
+    const formData = [{
       ...this.paymentData,
       amount: parseFloat(String(this.paymentData.amount)),
       // metadata: JSON.parse(this.paymentData.metadata),
       updatedAt: new Date().toISOString()
-    };
+    }];
 
     this.PaymentService.createNewpayment(formData).subscribe((res: any) => {
       this.fetchCustomerData()
@@ -108,7 +108,7 @@ export class PaymentComponent {
   }
 
 
-    onDetailBoxHover(event: MouseEvent, isHovering: boolean) {
+  onDetailBoxHover(event: MouseEvent, isHovering: boolean) {
     const element = event.currentTarget as HTMLElement; // Use currentTarget for event delegation
 
     if (isHovering) {
@@ -129,7 +129,7 @@ export class PaymentComponent {
     if (isHovering) {
       button.style.background = 'var(--theme-button-hover-bg-primary)'; // Use the hover background variable
     } else {
-      button.style.background = 'var(--theme-button-bg-primary)'; 
+      button.style.background = 'var(--theme-button-bg-primary)';
     }
   }
 

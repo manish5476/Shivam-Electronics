@@ -241,7 +241,4 @@ export class ApiService {
     const body = { ids: invoiceIds };
     return this.http.delete(endpoint, { body: body }).pipe(catchError((error) => this.errorhandler.handleError('delete invoice ', error)));
   }
-
-
-
 }

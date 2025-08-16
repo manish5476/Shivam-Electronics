@@ -1,4 +1,31 @@
-.hide-scrollbar {
+:host {
+  display: block;
+  height: 100vh;
+  overflow: hidden;
+  /* Prevent the host itself from scrolling */
+}
+
+app-sidebar {
+  flex-shrink: 0;
+  /* Prevent the sidebar from shrinking */
+}
+
+main {
+  min-width: 0;
+  /* A flexbox fix to prevent content overflow */
+}
+
+/* Your original no-scrollbar utility class */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* .hide-scrollbar {
   scrollbar-width: none;
 }
 
@@ -20,22 +47,19 @@
   min-height: 100vh;
 }
 
-/* Ensure sidebar doesn’t affect main width unexpectedly */
 app-sidebar {
   flex-shrink: 0;
   overflow: hidden;
 }
 
 main {
-  min-width: 0; /* Prevent flex shrinkage issues */
-}
+  min-width: 0; }
 
 .no-scrollbar::-webkit-scrollbar {
   display: none;
 }
 
-/* Hide scrollbar for IE, Edge and Firefox */
 .no-scrollbar {
-  -ms-overflow-style: none;  /* IE and Edge */
-  scrollbar-width: none;  /* Firefox */
-}
+  -ms-overflow-style: none; 
+  scrollbar-width: none; 
+} */

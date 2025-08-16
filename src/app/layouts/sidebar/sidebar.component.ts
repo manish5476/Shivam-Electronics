@@ -4,7 +4,8 @@ import { CommonModule } from '@angular/common';
 import { ButtonModule } from 'primeng/button';
 import { AvatarModule } from 'primeng/avatar';
 import { RouterModule } from '@angular/router';
-import { AuthService } from '../../core/services/auth.service';
+import { AuthService, User } from '../../core/services/auth.service'; // Import User
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-sidebar',
@@ -69,10 +70,14 @@ export class SidebarComponent implements OnInit {
     }
   ];
 
-  constructor(private authService: AuthService) {}
+ // Use the currentUser$ observable
+  currentUser$: Observable<User | null>;
+
+  constructor(private authService: AuthService) {
+    this.currentUser$ = this.authService.currentUser$;
+  }
 
   ngOnInit() {
-    this.user = this.authService.getItem('user');
     this.expandedItems = new Array(this.menuItems.length).fill(false);
   }
 

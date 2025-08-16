@@ -1,85 +1,61 @@
-/* Optional if you want button hover overrides
-.p-button-primary {
-  background-color: var(--p-cyan-500) !important;
-  border-color: var(--p-cyan-500) !important;
-}
-.p-button-primary:hover {
-  background-color: var(--p-cyan-400) !important;
-  border-color: var(--p-cyan-400) !important;
+
+:host {
+  display: block;
+  height: 500px;
 }
 
-::ng-deep canvas {
-  background-color: transparent !important;
-} */
-:root {
-  --teal-500: #14b8a6;
-  --teal-300: #5eead4;
-  --gray-50: #f9fafb;
-  --gray-100: #f3f4f6;
-  --gray-200: #e5e7eb;
-  --gray-700: #374151;
-  --gray-800: #1f2937;
-  --orange-500: #f97316;
-  --blue-400: #60a5fa;
+.chart-panel {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: 1.5rem;
 }
 
-.chart-container {
+.chart-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.section-header {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--theme-text-primary);
+  margin: 0;
+}
+
+.chart-body {
+  flex-grow: 1;
+  position: relative;
+  overflow: hidden;
+}
+
+.chart-wrapper {
   width: 100%;
-  max-width: 100%;
-  margin: 0 auto;
+  height: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
 }
 
-.chart-card {
-  background-color: var(--gray-50);
-  border: 1px solid var(--gray-200);
-  border-radius: 8px;
-  transition: all 0.3s ease-in-out;
+:host ::ng-deep .chart-wrapper .p-chart {
+  min-width: 800px;
+  height: 100%;
 }
 
-.chart-card:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(20, 184, 166, 0.2);
+.chart-wrapper::-webkit-scrollbar {
+  height: 8px;
 }
-
-.p-button-primary {
-  background: linear-gradient(to right, var(--teal-500), var(--teal-300));
-  border: none;
-  color: var(--gray-800);
-  transition: all 0.3s ease;
+.chart-wrapper::-webkit-scrollbar-track {
+  background: var(--theme-bg-tertiary);
+  border-radius: 4px;
 }
-
-.p-button-primary:hover {
-  background: linear-gradient(to right, var(--teal-300), var(--teal-500));
-  box-shadow: 0 0 10px rgba(20, 184, 166, 0.5);
+.chart-wrapper::-webkit-scrollbar-thumb {
+  background-color: var(--theme-scroll-thumb);
+  border-radius: 4px;
 }
-
-.p-button-outlined {
-  background: var(--gray-50);
-  border: 1px solid var(--gray-200);
-  color: var(--gray-700);
-  transition: all 0.3s ease;
-}
-
-.p-button-outlined:hover {
-  background: var(--gray-100);
-  border-color: var(--teal-500);
-  color: var(--teal-500);
-}
-
-.p-inputtext {
-  background: var(--gray-50);
-  border: 1px solid var(--gray-200);
-  color: var(--gray-800);
-  transition: all 0.2s ease;
-}
-
-.p-inputtext:focus {
-  border-color: var(--teal-500);
-  box-shadow: 0 0 8px rgba(20, 184, 166, 0.5);
-  outline: none;
-}
-
-:host ::ng-deep .p-skeleton {
-  background-color: var(--gray-100);
-  border-radius: 8px;
+.chart-wrapper::-webkit-scrollbar-thumb:hover {
+  background-color: var(--theme-accent-primary);
 }

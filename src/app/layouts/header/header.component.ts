@@ -1,202 +1,186 @@
+// 1. The Updated Component Logic
+// File: src/app/layouts/header/header.component.ts
+
 import { Component, EventEmitter, Input, Output, OnInit, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { ColorPickerModule } from 'primeng/colorpicker';
+import { RouterModule } from '@angular/router';
+import { Observable } from 'rxjs';
+
+// PrimeNG Modules
 import { AvatarModule } from 'primeng/avatar';
 import { ButtonModule } from 'primeng/button';
-import { InputTextModule } from 'primeng/inputtext';
-import { RouterModule } from '@angular/router';
-import { AuthService } from '../../core/services/auth.service';
 import { Popover, PopoverModule } from 'primeng/popover';
+import { SelectButtonModule } from 'primeng/selectbutton';
+import { TooltipModule } from 'primeng/tooltip';
+
+// App Services & Interfaces
+import { AuthService, User } from '../../core/services/auth.service';
+import { ThemeService } from '../../core/services/theme.service';
+
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [CommonModule, FormsModule,PopoverModule, ColorPickerModule, AvatarModule, ButtonModule, InputTextModule, RouterModule],
+  imports: [
+    CommonModule,
+    FormsModule,
+    RouterModule,
+    PopoverModule,
+    AvatarModule,
+    ButtonModule,
+    SelectButtonModule,
+    TooltipModule
+  ],
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.css']
 })
 export class HeaderComponent implements OnInit {
-     @ViewChild('op') op!: Popover;
-
+  @ViewChild('op') op!: Popover;
   @Input() isMobileMenuOpen: boolean = false;
   @Output() toggleSidebar = new EventEmitter<void>();
-  @Output() colorChange = new EventEmitter<string>();
-  @Output() search = new EventEmitter<string>();
   @Output() mobileMenuToggle = new EventEmitter<void>();
-  accentColor: string = '#007bff';
-  user: any;
 
-  constructor(private authService: AuthService) {}
+  currentUser$: Observable<User | null>;
+
+  // --- NEW: Theme State Management ---
+  isDarkMode: boolean = false;
+  accentColor: string = '#3B82F6'; // Default accent
+  themeOptions: any[];
+
+  // The 20 color palettes for the theme switcher
+  colorThemes = [
+    { name: 'Indigo', color: '#6366f1', class: 'theme-indigo' },
+    { name: 'Slate', color: '#64748b', class: 'theme-slate' },
+    { name: 'Red', color: '#ef4444', class: 'theme-red' },
+    { name: 'Orange', color: '#f97316', class: 'theme-orange' },
+    { name: 'Amber', color: '#f59e0b', class: 'theme-amber' },
+    { name: 'Yellow', color: '#eab308', class: 'theme-yellow' },
+    { name: 'Lime', color: '#84cc16', class: 'theme-lime' },
+    { name: 'Green', color: '#22c55e', class: 'theme-green' },
+    { name: 'Emerald', color: '#10b981', class: 'theme-emerald' },
+    { name: 'Teal', color: '#14b8a6', class: 'theme-teal' },
+    { name: 'Cyan', color: '#06b6d4', class: 'theme-cyan' },
+    { name: 'Sky', color: '#0ea5e9', class: 'theme-sky' },
+    { name: 'Blue', color: '#3b82f6', class: 'theme-blue' },
+    { name: 'Violet', color: '#8b5cf6', class: 'theme-violet' },
+    { name: 'Purple', color: '#a855f7', class: 'theme-purple' },
+    { name: 'Fuchsia', color: '#d946ef', class: 'theme-fuchsia' },
+    { name: 'Pink', color: '#ec4899', class: 'theme-pink' },
+    { name: 'Rose', color: '#f43f5e', class: 'theme-rose' },
+  ];
+
+  constructor(
+    private authService: AuthService,
+    private themeService: ThemeService
+  ) {
+    this.currentUser$ = this.authService.currentUser$;
+    this.themeOptions = [
+      { icon: 'pi pi-sun', value: false },
+      { icon: 'pi pi-moon', value: true }
+    ];
+  }
 
   ngOnInit() {
-    this.user = this.authService.getItem('user');
-    this.accentColor = getComputedStyle(document.documentElement).getPropertyValue('--theme-accent-primary').trim() || '#007bff';
-  }
-    toggle(event: any) {
-      console.log(event);
-        this.op.toggle(event);
+    // FIX: The ThemeService should be initialized once in a parent component (like main-layout or app).
+    // This component should reflect the current state.
+    const settings = this.themeService.loadSettings(); // Making loadSettings public in ThemeService is one way to fix this.
+    if (settings) {
+      this.isDarkMode = settings.isDarkMode;
+      this.accentColor = settings.accentColor;
     }
+  }
 
+  // --- NEW: Theme Control Methods ---
+
+
+  onThemeModeChange(isDark: boolean): void {
+    this.isDarkMode = isDark;
+    // FIX: Call the new, more specific method
+    this.themeService.setDarkMode(this.isDarkMode);
+  }
+
+  onAccentColorChange(colorClass: string, colorHex: string): void {
+    this.accentColor = colorHex;
+    // FIX: Call the new, more specific method
+    this.themeService.setAccentColor(this.accentColor);
+  }
+  
+  // onThemeModeChange(isDark: boolean): void {
+  //   this.isDarkMode = isDark;
+  //   this.themeService.setTheme(this.accentColor, this.isDarkMode);
+  // }
+
+  // onAccentColorChange(colorClass: string, colorHex: string): void {
+  //   this.accentColor = colorHex;
+  //   // Set the theme class on the body
+  //   document.body.className = document.body.className.replace(/theme-\w+/g, '');
+  //   document.body.classList.add(colorClass);
+  //   this.themeService.setTheme(this.accentColor, this.isDarkMode);
+  // }
+
+  // --- FIX: Add the missing getInitials method ---
+  getInitials(name: string): string {
+    if (!name) return '';
+    return name.split(' ')
+      .map(n => n[0])
+      .slice(0, 2)
+      .join('')
+      .toUpperCase();
+  }
+
+  // --- Existing Methods ---
+
+  logout(): void {
+    this.authService.logout();
+  }
+
+  toggle(event: any) {
+    this.op.toggle(event);
+  }
 }
-// import { Component, OnInit } from '@angular/core';
+
+
+// import { Component, EventEmitter, Input, Output, OnInit, ViewChild } from '@angular/core';
+// import { CommonModule } from '@angular/common';
+// import { FormsModule } from '@angular/forms';
+// import { ColorPickerModule } from 'primeng/colorpicker';
+// import { AvatarModule } from 'primeng/avatar';
 // import { ButtonModule } from 'primeng/button';
 // import { InputTextModule } from 'primeng/inputtext';
-// import { CommonModule } from '@angular/common';
 // import { RouterModule } from '@angular/router';
-// import { AvatarModule } from 'primeng/avatar';
-// import { ThemeService } from '../../core/services/theme.service';
-// import { AuthService } from '../../core/services/auth.service';
+// import { AuthService, User } from '../../core/services/auth.service'; // Import User interface
+// import { Popover, PopoverModule } from 'primeng/popover';
+// import { Observable } from 'rxjs';
 
 // @Component({
 //   selector: 'app-header',
 //   standalone: true,
-//   imports: [
-//     ButtonModule,
-//     CommonModule,
-//     AvatarModule,
-//     InputTextModule,
-//     RouterModule,
-//   ],
+//   imports: [CommonModule, FormsModule, PopoverModule, ColorPickerModule, AvatarModule, ButtonModule, InputTextModule, RouterModule],
 //   templateUrl: './header.component.html',
-//   styleUrls: ['./header.component.css'],
+//   styleUrls: ['./header.component.css']
 // })
 // export class HeaderComponent implements OnInit {
-//   isSidebarPinned: boolean = false;
-//   isSidebarHovered: boolean = false;
-//   isMobileMenuOpen: boolean = false;
-//   user: any;
-//   expandedItems: boolean[] = [];
-//   menuItems = [
-//     { label: 'Dashboard', icon: 'pi pi-home', routerLink: ['/dashboard'] },
-//     {
-//       label: 'Admin',
-//       icon: 'pi pi-lock',
-//       items: [
-//         { label: 'Admin Dashboard', icon: 'pi pi-th-large', routerLink: ['/admin/dashboard'] },
-//         { label: 'Users', icon: 'pi pi-user', routerLink: ['/admin/users'] },
-//         { label: 'Logs', icon: 'pi pi-database', routerLink: ['/admin/logs'] }
-//       ]
-//     },
-//     {
-//       label: 'Customers',
-//       icon: 'pi pi-users',
-//       items: [
-//         { label: 'List', icon: 'pi pi-list', routerLink: ['/customers/list'] },
-//         { label: 'Master', icon: 'pi pi-cog', routerLink: ['/customers/master'] },
-//         { label: 'Details', icon: 'pi pi-info-circle', routerLink: ['/customers/details'] },
-//         { label: 'Detailed List', icon: 'pi pi-th-list', routerLink: ['/customers/detailed'] }
-//       ]
-//     },
-//     {
-//       label: 'Products',
-//       icon: 'pi pi-shopping-bag',
-//       items: [
-//         { label: 'Product List', icon: 'pi pi-list', routerLink: ['/products/list'] },
-//         { label: 'Product Master', icon: 'pi pi-cog', routerLink: ['/products/master'] },
-//         { label: 'Product Details', icon: 'pi pi-info-circle', routerLink: ['/products/detail'] }
-//       ]
-//     },
-//     {
-//       label: 'Sellers',
-//       icon: 'pi pi-briefcase',
-//       items: [
-//         { label: 'Seller', icon: 'pi pi-id-card', routerLink: ['/sellers/Seller'] },
-//         { label: 'Seller Details', icon: 'pi pi-user-edit', routerLink: ['/sellers/Seller details'] },
-//         { label: 'Seller List', icon: 'pi pi-th-large', routerLink: ['/sellers/Seller List'] }
-//       ]
-//     },
-//     {
-//       label: 'Invoices',
-//       icon: 'pi pi-file',
-//       items: [
-//         { label: 'View Invoice', icon: 'pi pi-eye', routerLink: ['/invoices/view'] },
-//         { label: 'Create Invoice', icon: 'pi pi-plus-circle', routerLink: ['/invoices/create'] },
-//         { label: 'Invoice Details', icon: 'pi pi-file-edit', routerLink: ['/invoices/Details'] }
-//       ]
-//     },
-//     {
-//       label: 'Payments',
-//       icon: 'pi pi-wallet',
-//       items: [
-//         { label: 'Payment', icon: 'pi pi-money-bill', routerLink: ['/payment/payment'] },
-//         { label: 'View Payment', icon: 'pi pi-eye', routerLink: ['/payment/paymentView'] },
-//         { label: 'Payment List', icon: 'pi pi-list', routerLink: ['/payment/paymentList'] }
-//       ]
-//     }
-//   ];
+//   @ViewChild('op') op!: Popover;
+//   @Input() isMobileMenuOpen: boolean = false;
+//   @Output() toggleSidebar = new EventEmitter<void>();
+//   @Output() mobileMenuToggle = new EventEmitter<void>();
 
-//   constructor(private themeService: ThemeService, private authService: AuthService) {}
+//   // Use the currentUser$ observable directly in your template with the async pipe
+//   currentUser$: Observable<User | null>;
+
+//   constructor(private authService: AuthService) {
+//     this.currentUser$ = this.authService.currentUser$;
+//   }
 
 //   ngOnInit() {
-//     this.user = this.authService.getItem('user');
-//     this.expandedItems = new Array(this.menuItems.length).fill(false);
-//     // Debugging: Log initial state
-//     console.log('Initial state:', { isSidebarPinned: this.isSidebarPinned, isSidebarHovered: this.isSidebarHovered });
+//     // No need to manually get the user here anymore
 //   }
 
-//   toggleSidebar() {
-//     this.isSidebarPinned = !this.isSidebarPinned;
-//     this.isSidebarHovered = this.isSidebarPinned; // Sync hover state with pin state
-//     console.log('toggleSidebar:', { isSidebarPinned: this.isSidebarPinned, isSidebarHovered: this.isSidebarHovered });
-//   }
-
-//   onMouseEnter() {
-//     if (!this.isSidebarPinned) {
-//       this.isSidebarHovered = true;
-//       console.log('onMouseEnter: Sidebar hovered');
-//     }
-//   }
-
-//   onMouseEnterTriggerZone() {
-//     if (!this.isSidebarPinned) {
-//       this.isSidebarHovered = true;
-//       console.log('onMouseEnterTriggerZone: Trigger zone hovered');
-//     }
-//   }
-
-//   onMouseLeave() {
-//     if (!this.isSidebarPinned) {
-//       this.isSidebarHovered = false;
-//       console.log('onMouseLeave: Sidebar unhovered');
-//     }
-//   }
-
-//   onMouseEnterMainContent() {
-//     if (!this.isSidebarPinned) {
-//       this.isSidebarHovered = false;
-//       console.log('onMouseEnterMainContent: Main content hovered');
-//     }
-//   }
-
-//   togglePin() {
-//     this.isSidebarPinned = !this.isSidebarPinned;
-//     if (this.isSidebarPinned) {
-//       this.isSidebarHovered = true; // Ensure sidebar stays open when pinned
-//     }
-//     console.log('togglePin:', { isSidebarPinned: this.isSidebarPinned, isSidebarHovered: this.isSidebarHovered });
-//   }
-
-//   toggleMenuItem(index: number) {
-//     this.expandedItems[index] = !this.expandedItems[index];
-//     console.log('toggleMenuItem:', { index, expanded: this.expandedItems[index] });
-//   }
-
-//   toggleMobileMenu() {
-//     this.isMobileMenuOpen = !this.isMobileMenuOpen;
-//     console.log('toggleMobileMenu:', { isMobileMenuOpen: this.isMobileMenuOpen });
-//   }
-
-//  onColorChange(event: Event) {
-//   const color = (event.target as HTMLInputElement).value;
-//   document.documentElement.style.setProperty('--theme-accent-primary', color);
-// }
-
-//   logout() {
+//   logout(): void {
 //     this.authService.logout();
-//     console.log('logout: User logged out');
 //   }
 
-//   debugTriggerZone() {
-//     console.log('debugTriggerZone: Trigger zone clicked');
+//   toggle(event: any) {
+//     this.op.toggle(event);
 //   }
 // }

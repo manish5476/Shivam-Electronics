@@ -102,7 +102,6 @@ export class GstInvoiceComponent implements OnInit, OnChanges {
     this.autopopulatedata();
   }
 
-
   createItemFormGroup(): FormGroup {
     return this.fb.group({
       product: [''],
@@ -162,23 +161,6 @@ createInvoice() {
   });
 }
 
-  // createInvoice() {
-  //   // Generate Invoice Number
-  //   const customerId = this.invoiceForm.get('buyer')?.value;
-  //   const now = new Date();
-  //   const datePart = `${now.getFullYear()}${String(now.getMonth() + 1).padStart(2, '0')}${String(now.getDate()).padStart(2, '0')}`;
-  //   const timePart = `${String(now.getHours()).padStart(2, '0')}${String(now.getMinutes()).padStart(2, '0')}${String(now.getSeconds()).padStart(2, '0')}`;
-  //   this.invoiceForm.patchValue({ invoiceNumber: `${customerId.substring(0, 5)}_${datePart}_${timePart}` });
-  //   this.invoiceService.createNewinvoice(this.invoiceForm.getRawValue()).subscribe((res: any) => {
-  //     if (res) {
-  //       this.messageService.showSuccessMessage('Invoice created successfully!')
-  //     } else {
-  //       this.messageService.showError('Failed to create invoice.')
-  //     }
-  //   });
-  // }
-
-
   addItem(): void {
     this.itemsFormArray.push(this.createItemFormGroup());
     this.calculateInvoiceTotals();
@@ -188,7 +170,6 @@ createInvoice() {
     this.itemsFormArray.length > 1 ? this.itemsFormArray.removeAt(index) : this.messageService.showInfo('info', 'one data require')
     this.calculateInvoiceTotals();
   }
-
 
   calculateItemAmount(itemForm: FormGroup): number {
     let quantity = itemForm.get('quantity')?.value || 0;

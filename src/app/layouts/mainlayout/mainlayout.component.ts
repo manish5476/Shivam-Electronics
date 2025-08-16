@@ -11,7 +11,7 @@ import { SidebarComponent } from '../sidebar/sidebar.component';
 @Component({
   selector: 'app-main-layout',
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterModule, AsyncPipe, HeaderComponent, SidebarComponent],
+  imports: [CommonModule, FormsModule, RouterModule, HeaderComponent, SidebarComponent],
   templateUrl: './mainlayout.component.html',
   styleUrls: ['./mainlayout.component.css']
 })

@@ -1,363 +1,103 @@
-<div class="min-h-screen  rounded-lg container"
-  style="background: linear-gradient(to bottom, var(--theme-body-gradient-start), var(--theme-body-gradient-end)); color: var(--theme-text-primary);">
-  <!-- Customer Details Section -->
-  <div class="card p-4">
-    <h2 class="text-xl font-semibold" style="color: var(--theme-text-heading);">Customer Details</h2>
-    <p-select [(ngModel)]="customerId" (onChange)="getCustomerDetail()" [options]="customerIDDropdown"
-      optionLabel="fullname" optionValue="_id" placeholder="Select Customer" styleClass="w-full sm:w-64 text-sm"
-      panelStyleClass="text-sm"></p-select>
-    <div class="mt-6">
-      <dl class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-5">
-        <div class="card flex flex-col p-3">
-          <dt class="text-sm font-medium" style="color: var(--theme-text-secondary);">Full Name</dt>
-          <dd class="text-base font-semibold" style="color: var(--theme-text-primary);">{{ customer?.fullname }}</dd>
-        </div>
-        <div class="card flex flex-col p-3">
-          <dt class="text-sm font-medium" style="color: var(--theme-text-secondary);">Email</dt>
-          <dd class="text-base font-semibold" style="color: var(--theme-text-primary);">{{ customer?.email }}</dd>
-        </div>
-        <div class="card flex flex-col p-3">
-          <dt class="text-sm font-medium" style="color: var(--theme-text-secondary);">Status</dt>
-          <dd class="text-base font-semibold" style="color: var(--theme-text-primary);">{{ customer?.status }}</dd>
-        </div>
-        <div class="card flex flex-col p-3">
-          <dt class="text-sm font-medium" style="color: var(--theme-text-secondary);">Total Purchased</dt>
-          <dd class="text-base font-semibold" style="color: var(--theme-text-primary);">{{
-            customer?.totalPurchasedAmount | currency: 'INR' }}</dd>
-        </div>
-        <div class="card flex flex-col p-3">
-          <dt class="text-sm font-medium" style="color: var(--theme-text-secondary);">Remaining Amount</dt>
-          <dd class="text-base font-semibold" style="color: var(--theme-text-primary);">{{ customer?.remainingAmount |
-            currency: 'INR' }}</dd>
-        </div>
-      </dl>
-    </div>
-  </div>
+<div class="customer-view-container">
+  <p-toast></p-toast>
 
-  <!-- Personal Details Section -->
-  <div class="card p-4">
-    <h2 class="text-xl font-semibold border-b border-[var(--theme-border-primary)] pb-2 mb-4"
-      style="color: var(--theme-text-heading);">Personal Details</h2>
-    <div *ngIf="customer">
-      <!-- Tab Headers -->
-      <div class="flex border-b"
-        style="border-color: var(--theme-border-primary); background-color: var(--theme-bg-secondary);">
-        <div class="px-4 py-2 cursor-pointer text-sm font-medium transition-colors duration-200" [ngClass]="{
-    'font-semibold border-b-2': activeTab === 'phone',
-    'hover:bg-[var(--theme-hover-bg)]': activeTab !== 'phone'}" [ngStyle]="{
-    'border-color': activeTab === 'phone' ? 'var(--theme-brand-primary)' : 'transparent',
-    color: activeTab === 'phone' ? 'var(--theme-text-primary)' : 'var(--theme-text-secondary)'}"
-          (click)="activeTab = 'phone'">
-          Phone Numbers
-        </div>
-
-        <div class="px-4 py-2 cursor-pointer text-sm font-medium transition-colors duration-200" [ngClass]="{
-    'font-semibold border-b-2': activeTab === 'address',
-    'hover:bg-[var(--theme-hover-bg)]': activeTab !== 'address'
-  }" [ngStyle]="{
-    'border-color': activeTab === 'address' ? 'var(--theme-brand-primary)' : 'transparent',
-    color: activeTab === 'address' ? 'var(--theme-text-primary)' : 'var(--theme-text-secondary)'
-  }" (click)="activeTab = 'address'">
-          Addresses
-        </div>
-
-      </div>
-      <!-- Tab Content -->
-      <div class="p-4">
-        <!-- Phone Numbers Tab -->
-        <div *ngIf="activeTab === 'phone'" class="card p-4">
-          <h3 class="text-base font-semibold mb-4 flex items-center gap-2" style="color: var(--theme-text-heading);">
-            <i class="pi pi-phone" style="color: var(--theme-brand-primary);"></i> Phone Numbers
-          </h3>
-          <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 text-sm font-medium border-b pb-2 mb-2"
-            style="color: var(--theme-text-secondary); border-color: var(--theme-border-secondary);">
-            <div>Number</div>
-            <div>Type</div>
-            <div class="text-center">Primary</div>
-          </div>
-          <div *ngFor="let phone of customer.phoneNumbers"
-            class="grid grid-cols-1 sm:grid-cols-3 gap-3 py-3 border-b items-center text-sm"
-            style="border-color: var(--theme-border-secondary);">
-            <span style="color: var(--theme-text-primary);">{{ phone.number }}</span>
-            <span class="px-3 py-1 rounded-full text-center text-sm font-semibold"
-              style="background-color: var(--theme-brand-primary-light); color: var(--theme-brand-primary);">{{
-              phone.type }}</span>
-            <div class="flex justify-center">
-              <input type="checkbox" [checked]="phone.primary" [disabled]="true"
-                class="h-5 w-5 border rounded-sm focus:ring-2 disabled:opacity-50 disabled:cursor-not-allowed"
-                style="border-color: var(--theme-border-primary); background-color: var(--theme-bg-secondary);">
-            </div>
-          </div>
-        </div>
-        <!-- Addresses Tab -->
-        <div *ngIf="activeTab === 'address'" class="card p-4">
-          <h3 class="text-base font-semibold mb-4 flex items-center gap-2" style="color: var(--theme-text-heading);">
-            <i class="pi pi-home" style="color: var(--theme-brand-primary);"></i> Addresses
-          </h3>
-          <div class="grid grid-cols-1 sm:grid-cols-4 lg:grid-cols-7 gap-2 text-sm font-medium border-b pb-2 mb-2"
-            style="   background-color: var(--theme-button-bg-main);color: var(--theme-text-secondary); border-color: var(--theme-border-secondary);">
-            <div>Street</div>
-            <div>City</div>
-            <div>State</div>
-            <div>ZIP</div>
-            <div>Country</div>
-            <div>Type</div>
-            <div class="text-center">Default</div>
-          </div>
-          <div *ngFor="let address of customer.addresses"
-            class="grid grid-cols-1 sm:grid-cols-4 lg:grid-cols-7 gap-2 py-3 border-b items-center text-sm"
-            style="  background-color: var(--theme-bg-secondary) ; border-color: var(--theme-border-secondary);">
-            <span style="color: var(--theme-text-primary);">{{ address.street }}</span>
-            <span style="color: var(--theme-text-primary);">{{ address.city }}</span>
-            <span style="color: var(--theme-text-primary);">{{ address.state }}</span>
-            <span style="color: var(--theme-text-primary);">{{ address.zipCode }}</span>
-            <span style="color: var(--theme-text-primary);">{{ address.country }}</span>
-            <span class="px-3 py-1 rounded-full text-sm font-semibold text-center"
-              style="background-color: var(--theme-brand-primary-light); color: var(--theme-brand-primary);">{{
-              address.type }}</span>
-            <div class="flex justify-center">
-              <input type="checkbox" [checked]="address.isDefault" [disabled]="true"
-                class="h-5 w-5 border rounded-sm focus:ring-2 disabled:opacity-50 disabled:cursor-not-allowed"
-                style="border-color: var(--theme-border-primary); background-color: var(--theme-bg-secondary);">
-            </div>
-          </div>
-        </div>
+  <!-- Header Section -->
+  <div class="card header-card">
+    <div class="flex flex-wrap items-center justify-between gap-4">
+      <h2 class="page-title">Customer Details</h2>
+      <div class="flex items-center gap-2">
+        <p-select [(ngModel)]="customerId" (onChange)="getCustomerDetail()" [options]="customerIDDropdown"
+          optionLabel="fullname" optionValue="_id" placeholder="Select a Customer" [filter]="true" filterBy="fullname"
+          styleClass="w-full sm:w-64"></p-select>
       </div>
     </div>
   </div>
 
-  <!-- Cart Accordion Section -->
-  <div class="card p-4">
-    <p-accordion value="0">
-      <p-accordion-panel value="0">
-        <p-accordion-header style="background-color: var(--theme-bg-main)" styleClass="card">
-          <ng-template #toggleicon let-active="active">
-            <i class="pi" [ngClass]="{ 'pi-minus': active, 'pi-plus': !active }"></i>
-          </ng-template>
-          <span class="flex items-center gap-3 w-full" style="color: var(--theme-text-heading);">
-            <p-avatar image="https://primefaces.org/cdn/primeng/images/demo/avatar/amyelsner.png" shape="circle" />
-            <span class="font-semibold text-base">Cart Details</span>
-          </span>
-        </p-accordion-header>
-
-        <p-accordion-content styleClass="card border-t-0">
-          <div class="p-4">
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-              <div *ngFor="let item of customer?.cart?.items" class="card flex flex-col">
-                <div class="relative">
-                  <img [src]="'https://i.pinimg.com/736x/73/e1/53/73e153f060c76ca956f6fa9140d9ec1b.jpg'"
-                    [alt]="item.productId?.title || 'Product image'"
-                    class="w-full h-32 object-cover rounded-t-[0.5rem]" />
-                  <div class="absolute top-2 right-2 text-xs font-medium rounded-full px-2 py-1"
-                    style="background-color: var(--theme-bg-tertiary); color: var(--theme-text-secondary);">
-                    {{ item.invoiceIds?.[0]?.invoiceDate | date: 'MMM d, y' }}
-                  </div>
-                </div>
-
-                <div class="p-4 flex-1 flex flex-col gap-3">
-                  <div class="flex justify-between items-center">
-                    <h3 class="text-base font-semibold truncate border-l-4 pl-2"
-                      style="border-color: var(--theme-brand-primary); color: var(--theme-text-heading);">
-                      {{ item.productId?.title }}
-                    </h3>
-                    <span class="text-base font-semibold rounded-[0.4rem] px-2 py-1"
-                      style="border: 1px solid var(--theme-brand-primary); color: var(--theme-brand-primary);">
-                      {{ item.productId?.price | currency: 'INR' }}
-                    </span>
-                  </div>
-                  <div class="bg-white p-3 text-sm" style="color: var(--theme-text-secondary);">
-                    {{ item.productId?.description }}
-                  </div>
-                </div>
-
-                <div class="p-3 rounded-b-[0.5rem] flex items-center justify-between"
-                  style="background-color: var(--theme-brand-primary); color: var(--theme-button-text-primary-btn);">
-                  <div class="flex flex-col">
-                    <div class="text-xs opacity-90">Invoice Amount</div>
-                    <div class="text-base font-semibold">
-                      {{ item.invoiceIds?.[0]?.totalAmount | currency: 'INR' }}
-                    </div>
-                    <div class="mt-2 flex flex-wrap gap-1">
-                      <p-button *ngFor="let inv of item.invoiceIds" [label]="inv.status"
-                        [severity]="getStatusSeverity(inv.status)" styleClass="text-xs py-0.5 px-2 rounded-full border"
-                        [style.border-color]="'var(--theme-button-outlined-border)'"
-                        [style.color]="'var(--theme-button-outlined-text)'">
-                      </p-button>
-                    </div>
-                  </div>
-                  <button (click)="openInvoiceDialog(item.invoiceIds?.[0]?._id)"
-                    class="p-2 rounded-full transition hover:bg-[var(--theme-hover-bg)]"
-                    style="background-color: var(--theme-bg-tertiary);">
-                    <i class="pi pi-file-pdf text-lg" style="color: var(--theme-button-text-primary-btn);">
-                    </i>
-                  </button>
-                </div>
-              </div>
-            </div>
+  <ng-container *ngIf="!isLoading && customer; else loadingState">
+    <!-- Customer Profile & Financials -->
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
+      <div class="lg:col-span-1">
+        <div class="card profile-card">
+          <p-avatar [image]="customer.profileImg" [label]="commonMethod.getInitials(customer.fullname)" shape="circle"
+            styleClass="w-24 h-24 text-4xl mb-4"></p-avatar>
+          <h3 class="text-xl font-bold text-[var(--theme-text-primary)]">{{ customer.fullname }}</h3>
+          <p class="text-sm text-[var(--theme-text-secondary)]">{{ customer.email }}</p>
+          <p-tag [value]="customer.status" [severity]="commonMethod.getInvoiceStatusSeverity(customer.status)"
+            styleClass="mt-2"></p-tag>
+        </div>
+      </div>
+      <div class="lg:col-span-2 card">
+        <h3 class="section-header">Financial Overview</h3>
+        <div class="financial-stats">
+          <div>
+            <span class="label">Total Purchased</span>
+            <span class="value">{{ commonMethod.formatCurrency(customer.totalPurchasedAmount) }}</span>
           </div>
-        </p-accordion-content>
-      </p-accordion-panel>
-    </p-accordion>
-  </div>
-
-  <!-- Payment Accordion Section -->
-  <div class="card p-4">
-    <p-accordion value="0">
-      <p-accordion-panel value="0">
-        <p-accordion-header style="background-color: var(--theme-bg-main)" styleClass="card ">
-          <ng-template #toggleicon let-active="active">
-            <i class="pi" [ngClass]="{ 'pi-minus': active, 'pi-plus': !active }"></i>
-          </ng-template>
-          <span class="flex items-center gap-3 w-full" style="color: var(--theme-text-heading);">
-            <p-avatar image="https://primefaces.org/cdn/primeng/images/demo/avatar/amyelsner.png" shape="circle" />
-            <span class="font-semibold text-base">Payment History</span>
-          </span>
-        </p-accordion-header>
-
-        <p-accordion-content styleClass="card border-t-0">
-          <div class="p-4">
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-              <div *ngFor="let payment of customer?.paymentHistory" class="card p-4 relative">
-                <span class="absolute bottom-0 left-0 right-0 h-1.5"
-                  style="background-color: var(--theme-brand-primary);"></span>
-                <div class="absolute top-4 right-4 text-xs font-medium" style="color: var(--theme-text-secondary);">
-                  {{ payment.createdAt | date: 'mediumDate' }}
-                </div>
-                <div class="flex items-center gap-2 mb-2">
-                  <i class="pi pi-wallet text-base" style="color: var(--theme-text-secondary);"></i>
-                  <h2 class="text-base font-semibold" style="color: var(--theme-text-heading);">
-                    Payment Details
-                  </h2>
-                </div>
-                <div class="flex flex-wrap gap-2 mt-2">
-                  <p-button label="Transaction ID" icon="pi pi-hashtag" iconPos="left" severity="info"
-                    variant="outlined" styleClass="text-xs py-1 px-3 rounded-full" [disabled]="true">
-                  </p-button>
-                  <p-button [label]="payment.transactionId" variant="outlined" severity="contrast"
-                    styleClass="text-xs py-1 px-3 rounded-full" [disabled]="true">
-                  </p-button>
-                </div>
-                <div class="mt-4">
-                  <p class="text-xs" style="color: var(--theme-text-secondary);">Amount</p>
-                  <div class="text-lg font-semibold" style="color: var(--theme-text-heading);">
-                    {{ payment.amount | currency: 'INR' }}
-                  </div>
-                </div>
-                <div class="mt-3 flex justify-end">
-                  <p-tag [value]="payment.status" [severity]="getStatusSeverity(payment.status)"
-                    styleClass="text-xs py-1 px-3 rounded-lg">
-                  </p-tag>
-                </div>
-              </div>
-            </div>
+          <div>
+            <span class="label">Amount Due</span>
+            <span class="value text-rose-500">{{ commonMethod.formatCurrency(customer.remainingAmount) }}</span>
           </div>
-        </p-accordion-content>
-      </p-accordion-panel>
-    </p-accordion>
-  </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Purchase & Payment History Timelines -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <div class="card">
+        <h3 class="section-header">Purchase History</h3>
+        <div class="timeline-container">
+          <p-timeline [value]="customer.cart?.items" layout="vertical">
+            <ng-template pTemplate="content" let-item>
+              <div class="timeline-card">
+                <div class="font-bold">{{ item.productId?.title }}</div>
+                <div class="text-sm text-[var(--theme-text-secondary)]">{{
+                  commonMethod.formatCurrency(item.productId?.price) }}</div>
+                <div class="text-xs mt-1">Invoice: {{ item.invoiceIds?.[0]?.invoiceNumber }}</div>
+              </div>
+            </ng-template>
+          </p-timeline>
+        </div>
+      </div>
+      <div class="card">
+        <h3 class="section-header">Payment History</h3>
+        <div class="timeline-container">
+          <p-timeline [value]="customer.paymentHistory" layout="vertical" align="opposite">
+            <ng-template pTemplate="marker" let-payment>
+              <span class="timeline-marker" [ngClass]="'bg-' + getStatusSeverity(payment.status) + '-500'">
+                <i class="pi"
+                  [ngClass]="{'pi-check': payment.status === 'completed', 'pi-wallet': payment.status !== 'completed'}"></i>
+              </span>
+            </ng-template>
+            <ng-template pTemplate="content" let-payment>
+              <div class="timeline-card">
+                <div class="font-bold">{{ commonMethod.formatCurrency(payment.amount) }}</div>
+                <div class="text-sm text-[var(--theme-text-secondary)]">{{ payment.createdAt | date:'mediumDate' }}
+                </div>
+                <p-tag [value]="payment.status" [severity]="getStatusSeverity(payment.status)"
+                  styleClass="mt-2"></p-tag>
+              </div>
+            </ng-template>
+          </p-timeline>
+        </div>
+      </div>
+    </div>
+  </ng-container>
+
+  <ng-template #loadingState>
+    <div class="card header-card"><p-skeleton width="100%" height="4rem"></p-skeleton></div>
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
+      <div class="lg:col-span-1 card"><p-skeleton width="100%" height="12rem"></p-skeleton></div>
+      <div class="lg:col-span-2 card"><p-skeleton width="100%" height="12rem"></p-skeleton></div>
+    </div>
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <div class="card"><p-skeleton width="100%" height="20rem"></p-skeleton></div>
+      <div class="card"><p-skeleton width="100%" height="20rem"></p-skeleton></div>
+    </div>
+  </ng-template>
 
   <!-- Dialog for Invoice Details -->
-  <p-dialog [(visible)]="display" modal="true" header="Detailed View (Invoice)" appendTo="body"
-    [style]="{ width: '80vw', 'max-width': '1200px', height: '80vh' }"
-    [breakpoints]="{ '1024px': '85vw', '640px': '95vw' }">
-    <ng-container *ngComponentOutlet="dynamicComponent; inputs: { Id: Id }"></ng-container>
-    <ng-container *ngIf="!dynamicComponent">
-      <div class="p-4 text-sm" style="color: var(--theme-text-secondary);">
-        <p>Loading component...</p>
-      </div>
-    </ng-container>
+  <p-dialog [(visible)]="displayInvoiceDialog" [modal]="true" header="Invoice Details"
+    [style]="{ width: '80vw', 'max-width': '1200px' }">
+    <ng-container *ngComponentOutlet="dynamicComponent; inputs: { Id: invoiceIdForDialog }"></ng-container>
   </p-dialog>
 </div>
-<!-- <p-accordion-content>
-        <p-panel header="Payment Transactions">
-          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            <div *ngFor="let payment of customer?.paymentHistory"
-              class="relative block overflow-hidden rounded-lg border border-gray-200 p-4 sm:p-6 lg:p-8 shadow-lg">
-              <span
-                class="absolute inset-x-0 bottom-0 h-2 bg-gray-200 from-green-300 via-blue-500 to-purple-600"></span>
-
-              <div class="sm:flex sm:justify-between sm:gap-4">
-                <div>
-                  <h2 class="text-lg font-bold text-blue-900 sm:text-xl">
-                    Transaction ID
-                  </h2>
-                  <p class="mt-1 text-xs font-medium text-gray-500">
-                    {{ payment.transactionId }}
-                  </p>
-                </div>
-              </div>
-
-              <div class="mt-4">
-                <p class="text-sm text-pretty text-gray-500">
-                  Amount:
-                  <span class="font-bold text-gray-700">{{ payment.amount | currency: 'USD' }}</span>
-                </p>
-                <p class="text-sm text-pretty text-gray-500">
-                  Date:
-                  <span class="font-medium text-gray-700">{{ payment.createdAt | date }}</span>
-                </p>
-              </div>
-
-              <div class="mt-4 border-t border-gray-300 pt-4">
-                <h4 class="text-sm font-bold text-gray-700">Status</h4>
-                <div class="mt-2 flex items-center justify-between">
-                  <p-tag [value]="payment.status" [severity]="getStatusSeverity(payment.status)" />
-                </div>
-              </div>
-            </div>
-          </div>
-        </p-panel>
-      </p-accordion-content> -->
-<!-- <p-accordion-content>
-            <p-panel header="Cart Items">
-              <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                <div *ngFor="let item of customer?.cart?.items"
-                  class="relative block overflow-hidden rounded-lg border border-gray-200 p-4 sm:p-6 lg:p-8 shadow-lg">
-                  <span
-                    class="absolute inset-x-0 bottom-0 h-2 bg-gradient-to-r from-green-300 via-blue-500 to-purple-600"></span>
-                  <div class="sm:flex sm:justify-between sm:gap-4">
-                    <div>
-                      <h2 class="text-lg font-bold text-blue-900 sm:text-xl">
-                        {{ item.productId.title }}
-                      </h2>
-                      <p class="mt-1 text-xs font-medium text-gray-500">
-                        Price: {{ item.productId.price | currency : 'USD' }}
-                      </p>
-                    </div>
-
-                    <div class="hidden sm:block sm:shrink-0">
-                      <img [src]="item.productId.image" [alt]="item.productId.title"
-                        class="size-16 rounded-lg object-cover shadow-xs" />
-                    </div>
-                  </div>
-
-                  <div class="mt-4">
-                    <p class="text-sm text-pretty text-gray-500">
-                      {{item.productId.description}}
-                    </p>
-                  </div>
-
-                  <div *ngIf="item.invoiceIds.length > 0" class="mt-4 border-t border-gray-300 pt-4">
-                    <h4 class="text-sm font-bold text-gray-700">Invoices:</h4>
-                    <ul class="mt-2 space-y-2">
-                      <li *ngFor="let invoice of item.invoiceIds"
-                        class="flex justify-between items-center text-sm text-gray-500">
-                        <span>{{ invoice.invoiceDate | date }}</span>
-                        <span>{{ invoice.totalAmount | currency : 'USD' }}</span>
-                         <div class="mt-6">
-                    <p class="text-sm text-gray-500">Amount</p>
-                    <div class="text-3xl font-bold text-gray-900">
-                      ₹{{  invoice.totalAmount  | number:'1.2-2' }}
-                    </div>
-                  </div>
-
-                        <p-tag [value]="invoice.status" [severity]="getStatusSeverity(invoice.status)" />
-                        <i (click)="openInvoiceDialog(invoice._id)"
-                          class="pi pi-file-pdf text-red-500 cursor-pointer"></i>
-                      </li>
-                    </ul>
-                  </div>
-                </div>
-              </div>
-            </p-panel>
-          </p-accordion-content> -->

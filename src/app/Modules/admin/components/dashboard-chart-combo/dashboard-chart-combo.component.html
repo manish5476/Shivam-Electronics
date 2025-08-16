@@ -1,56 +1,24 @@
-<div class="p-4 space-y-4" rounded-sm style="background: linear-gradient(to bottom, var(--theme-body-gradient-start), var(--theme-body-gradient-end));">
-  <!-- Form Header -->
-  <div class="card p-6 rounded-xl transition-all duration-300 hover:shadow-[0_4px_20px_var(--theme-shadow-color)]">
-    <div class="flex flex-col md:flex-row items-center justify-between gap-4">
-      <div class="flex flex-col md:flex-row items-center gap-4 w-full md:w-auto">
-        <h3 class="text-xl font-bold text-[var(--theme-text-heading)] whitespace-nowrap">
-          <i class="pi pi-calendar mr-2"></i>Select Year
-        </h3>
-        <input pInputText [(ngModel)]="yearInput" placeholder="Enter year (e.g., 2025)"
-          class="p-inputtext w-full md:w-60 p-2 rounded-md border bg-[var(--theme-bg-tertiary)] text-[var(--theme-text-primary)] focus:border-[var(--theme-accent-primary)] focus:ring-[var(--theme-accent-focus-ring)]" />
-        <button pButton label="Fetch Data" icon="pi pi-refresh"
-          class="p-button w-full md:w-auto h-11 px-4 bg-[var(--theme-button-bg-primary)] text-[var(--theme-button-text-primary-btn)] hover:bg-[var(--theme-button-hover-bg-primary)] rounded-md transition-all duration-200">
-        </button>
-      </div>
 
-      <div class="text-[var(--theme-text-secondary)] text-sm text-center md:text-right w-full md:w-auto">
-        <ng-container *ngIf="isLoading">
-          <p>Loading chart data...</p>
-        </ng-container>
-        <ng-container
-          *ngIf="!isLoading && !dashboardYearlyChart?.yearlySales?.monthlySales?.length && !dashboardYearlyChart?.weeklySales?.length">
-          <p>No sales data available for the selected year.</p>
-        </ng-container>
-      </div>
+<div class="chart-panel card">
+  <!-- Chart Header -->
+  <div class="chart-header">
+    <div class="flex items-center gap-4">
+      <h3 class="section-header">Sales Overview</h3>
+      <p-selectButton [options]="viewOptions" [(ngModel)]="selectedView" (onChange)="onViewChange($event.value)" optionLabel="label" optionValue="value"></p-selectButton>
+    </div>
+    <div class="flex items-center gap-2">
+      <input pInputText [(ngModel)]="yearInput" placeholder="Enter year" class="p-inputtext-sm w-28" />
+      <button pButton label="Fetch" icon="pi pi-refresh" class="p-button-sm" (click)="fetchSalesData()"></button>
     </div>
   </div>
 
-  <!-- Charts Grid -->
-  <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
-    <!-- Monthly Sales Chart -->
-    <div class="card p-6 rounded-xl transition-all duration-300 hover:shadow-[0_4px_20px_var(--theme-shadow-color)]">
-      <h4 class="text-lg font-semibold text-[var(--theme-text-heading)] mb-2">
-        <i class="pi pi-chart-bar mr-2"></i>Monthly Sales & Revenue ({{ dashboardYearlyChart?.year || 'N/A' }})
-      </h4>
-      <p-chart type="bar" [data]="monthlyChartData" [options]="monthlyChartOptions" class="h-[28rem]"
-        *ngIf="!isLoading && dashboardYearlyChart?.yearlySales?.monthlySales?.length" />
-    </div>
-
-    <!-- Weekly Revenue Chart -->
-    <div class="card p-6 rounded-xl transition-all duration-300 hover:shadow-[0_4px_20px_var(--theme-shadow-color)]">
-      <h4 class="text-lg font-semibold text-[var(--theme-text-heading)] mb-2">
-        <i class="pi pi-chart-line mr-2"></i>Weekly Revenue ({{ dashboardYearlyChart?.year || 'N/A' }})
-      </h4>
-      <p-chart type="bar" [data]="weeklyChartData" [options]="weeklyChartOptions" class="h-[28rem]"
-        *ngIf="!isLoading && dashboardYearlyChart?.weeklySales?.length" />
-    </div>
+  <!-- Chart Body -->
+  <div class="chart-body">
+    <ng-container *ngIf="isLoading; else chartView">
+      <p-skeleton width="100%" height="100%"></p-skeleton>
+    </ng-container>
+    <ng-template #chartView>
+      <p-chart *ngIf="chartData" type="bar" [data]="chartData" [options]="chartOptions" height="100%"></p-chart>
+    </ng-template>
   </div>
-
-  <!-- Full-Width Section (Commented) -->
-  <!-- <div class="card p-6 rounded-xl transition-all duration-300 hover:shadow-[0_4px_20px_var(--theme-shadow-color)]">
-    <h4 class="text-lg font-semibold text-[var(--theme-text-heading)] mb-4">
-      <i class="pi pi-table mr-2"></i>Detailed Sales Table / Trends
-    </h4>
-    <app-dashboard-chart-component></app-dashboard-chart-component>
-  </div> -->
 </div>

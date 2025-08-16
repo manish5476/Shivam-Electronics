@@ -12,9 +12,18 @@ import { ActionbuttonsComponent } from '../../AgGridcomponents/actionbuttons/act
 import { DynamicCellComponent } from '../../AgGridcomponents/dynamic-cell/dynamic-cell.component';
 import { ThemeService } from '../../../../core/services/theme.service';
 import { themeQuartz } from 'ag-grid-community';
+import { StatusCellComponent, StatusColumnConfig } from '../../AgGridcomponents/status-cell/status-cell.component';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
+export interface SharedGridOptions {
+  columnDefs: ColDef[];
+  rowData: any[];
+  rowSelection?: 'single' | 'multiple';
+  height?: string;
+  showActions?: boolean;
+  statusColumn?: StatusColumnConfig;
+}
 @Component({
   selector: 'app-shared-grid',
   standalone: true,
@@ -23,6 +32,11 @@ ModuleRegistry.registerModules([AllCommunityModule]);
   styleUrls: ['./shared-grid.component.css']
 })
 export class SharedGridComponent implements OnInit, OnChanges {
+
+  // --- Inputs ---
+  @Input() gridOptions!: SharedGridOptions;
+  @Input() isLoading: boolean = false;
+
   @Input() rowClassRules: any = {};
   @Input() usertheme: string = 'ag-theme-quartz';
   @Input() data: any[] = [];
@@ -38,32 +52,21 @@ export class SharedGridComponent implements OnInit, OnChanges {
   @Output() gridReady = new EventEmitter<GridReadyEvent>();
 
   private gridApi!: GridApi;
-  rowData: any[] = [];
-  columnDefs: ColDef[] = [];
-  editingRowId: string | null = null;
-  originalRowData: any = {};
-  accentColor: string = '#3b82f6';
-  mainGridHeight: string = 'calc(100vh - 162px)';
-
-  defaultColDef: ColDef = {
-    sortable: true,
-    filter: 'agTextColumnFilter',
-    resizable: true,
-    editable: (params) => this.editingRowId === (params.data?._id || params.data?.id)
-  };
-
-  rowSelection: any = { mode: 'single' };
-
-  defaultRowClassRules = {
+  public rowData: any[] = [];
+  public columnDefs: ColDef[] = [];
+  public editingRowId: string | null = null;
+  public originalRowData: any = {};
+  public accentColor: string = '#3b82f6';
+  public mainGridHeight: string = 'calc(100vh - 162px)';
+  public rowSelection: any = { mode: 'single' };
+  public defaultRowClassRules = {
     'bg-blue-100 dark:bg-blue-900': (params: any) => this.editingRowId === (params.data?._id || params.data?.id),
     'bg-gray-50 dark:bg-gray-700': (params: any) => params.node.rowIndex % 2 === 0,
     'bg-red-100 dark:bg-red-900': (params: any) => params.data.availabilityStatus === 'OutOfStock',
     'bg-green-100 dark:bg-green-900': (params: any) => params.data.availabilityStatus === 'InStock'
   };
-
-  mergedRowClassRules: any = {};
-
-  theme = themeQuartz.withParams({
+  public mergedRowClassRules: any = {};
+  public theme = themeQuartz.withParams({
     backgroundColor: 'var(--theme-bg-primary, #ffffff)',
     foregroundColor: 'var(--theme-text-primary, #111827)',
     headerTextColor: 'var(--theme-text-heading, #374151)',
@@ -86,6 +89,14 @@ export class SharedGridComponent implements OnInit, OnChanges {
     selectedRowBackgroundColor: 'var(--theme-accent-primary-light, #dbeafe)'
   });
 
+  public defaultColDef: ColDef = {
+    sortable: true,
+    filter: 'agTextColumnFilter',
+    resizable: true,
+    flex: 1,
+    minWidth: 120,
+    editable: (params) => this.editingRowId === (params.data?._id || params.data?.id)
+  };
   getRowId: (params: GetRowIdParams) => string = (params: GetRowIdParams) => {
     return params.data._id || String(params.data.id);
   };
