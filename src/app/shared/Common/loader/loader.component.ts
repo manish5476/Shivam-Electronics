@@ -70,18 +70,37 @@ export class LoadingComponent implements OnDestroy {
         }
     }
 
-    // Generate static background stars once
+
     private generateBackgroundStars(): void {
         const canvas = this._canvasRef.nativeElement;
-        const numStars = 150;
+        const numStars = 200;
+        const radius = Math.min(canvas.width, canvas.height) / 2;
+
         for (let i = 0; i < numStars; i++) {
+            const angle = Math.random() * Math.PI * 2;
+            const r = Math.sqrt(Math.random()) * radius; // spread stars evenly in circle
+            const x = canvas.width / 2 + r * Math.cos(angle);
+            const y = canvas.height / 2 + r * Math.sin(angle);
+
             this.backgroundStars.push({
-                x: Math.random() * canvas.width,
-                y: Math.random() * canvas.height,
+                x,
+                y,
                 radius: Math.random() * 1.5,
             });
         }
     }
+    // Generate static background stars once
+    // private generateBackgroundStars(): void {
+    //     const canvas = this._canvasRef.nativeElement;
+    //     const numStars = 150;
+    //     for (let i = 0; i < numStars; i++) {
+    //         this.backgroundStars.push({
+    //             x: Math.random() * canvas.width,
+    //             y: Math.random() * canvas.height,
+    //             radius: Math.random() * 1.5,
+    //         });
+    //     }
+    // }
 
     private animate(): void {
         if (!isPlatformBrowser(this.platformId) || !this.ctx) return;
@@ -90,21 +109,62 @@ export class LoadingComponent implements OnDestroy {
         this.frameCount++;
 
         const canvas = this._canvasRef.nativeElement;
-        this.ctx.clearRect(0, 0, canvas.width, canvas.height);
+        const ctx = this.ctx;
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
 
         const centerX = canvas.width / 2;
         const centerY = canvas.height / 2;
+        const maxRadius = Math.min(centerX, centerY) - 5;
 
-        this.drawBackgroundStars(); // Draw the background stars first
+        // Clip drawing inside circle
+        ctx.save();
+        ctx.beginPath();
+        ctx.arc(centerX, centerY, maxRadius, 0, Math.PI * 2);
+        ctx.clip();
 
+        // Draw cosmic gradient background
+        const gradient = ctx.createRadialGradient(centerX, centerY, maxRadius * 0.2, centerX, centerY, maxRadius);
+        gradient.addColorStop(0, "#000814");
+        gradient.addColorStop(0.7, "#001d3d");
+        gradient.addColorStop(1, "#000000");
+        ctx.fillStyle = gradient;
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+        // Draw stars, earth, connections
+        this.drawBackgroundStars();
         this.drawEarth(centerX, centerY);
         this.updateConnections();
         this.drawConnections(centerX, centerY);
         this.updateStars();
         this.drawStars();
 
+        ctx.restore(); // Restore after clipping
+
         this.rotationAngle += 0.005;
     }
+
+    // private animate(): void {
+    //     if (!isPlatformBrowser(this.platformId) || !this.ctx) return;
+
+    //     this.animationFrameId = requestAnimationFrame(() => this.animate());
+    //     this.frameCount++;
+
+    //     const canvas = this._canvasRef.nativeElement;
+    //     this.ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    //     const centerX = canvas.width / 2;
+    //     const centerY = canvas.height / 2;
+
+    //     this.drawBackgroundStars(); // Draw the background stars first
+
+    //     this.drawEarth(centerX, centerY);
+    //     this.updateConnections();
+    //     this.drawConnections(centerX, centerY);
+    //     this.updateStars();
+    //     this.drawStars();
+
+    //     this.rotationAngle += 0.005;
+    // }
 
     private drawBackgroundStars(): void {
         this.ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
@@ -116,6 +176,7 @@ export class LoadingComponent implements OnDestroy {
     }
 
     private drawEarth(centerX: number, centerY: number): void {
+        // Main Earth
         this.ctx.beginPath();
         this.ctx.arc(centerX, centerY, this.earthRadius, 0, Math.PI * 2);
         this.ctx.fillStyle = '#011F4B';
@@ -124,13 +185,17 @@ export class LoadingComponent implements OnDestroy {
         this.ctx.lineWidth = 2;
         this.ctx.stroke();
 
-        const glowRadius = this.earthRadius * 1.05 + Math.sin(this.frameCount * 0.05) * 5;
-        this.ctx.beginPath();
-        this.ctx.arc(centerX, centerY, glowRadius, 0, Math.PI * 2);
-        this.ctx.strokeStyle = `rgba(0, 253, 207, ${0.4 + Math.sin(this.frameCount * 0.05) * 0.2})`;
-        this.ctx.lineWidth = 10;
-        this.ctx.stroke();
+        // Animated aura glow
+        const glowGradient = this.ctx.createRadialGradient(centerX, centerY, this.earthRadius, centerX, centerY, this.earthRadius * 2);
+        glowGradient.addColorStop(0, "rgba(0, 253, 207, 0.4)");
+        glowGradient.addColorStop(1, "rgba(0, 253, 207, 0)");
 
+        this.ctx.beginPath();
+        this.ctx.arc(centerX, centerY, this.earthRadius * 2, 0, Math.PI * 2);
+        this.ctx.fillStyle = glowGradient;
+        this.ctx.fill();
+
+        // City lights
         this.ctx.fillStyle = '#00FDCF';
         this.locations.forEach(loc => {
             const pos = this.toCartesian(loc.lat, loc.lon, centerX, centerY);
@@ -139,6 +204,31 @@ export class LoadingComponent implements OnDestroy {
             this.ctx.fill();
         });
     }
+
+    // private drawEarth(centerX: number, centerY: number): void {
+    //     this.ctx.beginPath();
+    //     this.ctx.arc(centerX, centerY, this.earthRadius, 0, Math.PI * 2);
+    //     this.ctx.fillStyle = '#011F4B';
+    //     this.ctx.fill();
+    //     this.ctx.strokeStyle = '#00FDCF';
+    //     this.ctx.lineWidth = 2;
+    //     this.ctx.stroke();
+
+    //     const glowRadius = this.earthRadius * 1.05 + Math.sin(this.frameCount * 0.05) * 5;
+    //     this.ctx.beginPath();
+    //     this.ctx.arc(centerX, centerY, glowRadius, 0, Math.PI * 2);
+    //     this.ctx.strokeStyle = `rgba(0, 253, 207, ${0.4 + Math.sin(this.frameCount * 0.05) * 0.2})`;
+    //     this.ctx.lineWidth = 10;
+    //     this.ctx.stroke();
+
+    //     this.ctx.fillStyle = '#00FDCF';
+    //     this.locations.forEach(loc => {
+    //         const pos = this.toCartesian(loc.lat, loc.lon, centerX, centerY);
+    //         this.ctx.beginPath();
+    //         this.ctx.arc(pos.x, pos.y, 2, 0, Math.PI * 2);
+    //         this.ctx.fill();
+    //     });
+    // }
 
     private updateConnections(): void {
         if (this.frameCount % 90 === 0) {
