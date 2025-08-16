@@ -1,7 +1,7 @@
-<div id="invoice-print-section" class="min-h-screen w-full px-4 sm:px-6 lg:px-8"
-  style="background: linear-gradient(to bottom, var(--theme-body-gradient-start), var(--theme-body-gradient-end)); color: var(--theme-text-primary);">
+<div id="invoice-print-section" class="min-h-screen w-full px-2 sm:px-6 lg:px-8"
+  style="background: linear-gradient(to bottom, var(--theme-bg-primary), var(--theme-bg-secondary)); color: var(--theme-text-primary);">
   <!-- Invoice Selection Dropdown -->
-  <div class="card mb-6">
+  <div class="card mb-2">
     <p-select appendTo="body" [(ngModel)]="Id" (onChange)="getCustomerdata()" [options]="invoiceDropDown"
       optionLabel="invoiceNumber" optionValue="_id" placeholder="Select Invoice"
       styleClass="w-full sm:w-80 text-sm rounded-lg"
@@ -10,7 +10,7 @@
   </div>
 
   <!-- Header -->
-  <div class="flex flex-col sm:flex-row justify-between items-center gap-4 mb-8">
+  <div class="flex flex-col sm:flex-row justify-between items-center gap-4 mt-1 ">
     <h1 class="text-2xl font-bold text-center sm:text-left" style="color: var(--theme-text-heading);">Invoice Details
     </h1>
     <button (click)="printInvoice()"
@@ -22,9 +22,9 @@
   </div>
 
   <!-- Invoice Info -->
-  <div class="card mb-6 transition-all duration-200 hover:shadow-lg" (mouseenter)="onCardHover($event, true)"
+  <div class="card mb-2 transition-all duration-200 hover:shadow-lg" (mouseenter)="onCardHover($event, true)"
     (mouseleave)="onCardHover($event, false)">
-    <div class="px-4 py-3 border-b" style="border-color: var(--theme-border-primary);">
+    <div class="px-2 py-1 border-b" style="border-color: var(--theme-border-primary);">
       <h2 class="text-lg font-semibold flex items-center gap-2" style="color: var(--theme-text-heading);">
         <i class="pi pi-file-invoice text-lg" style="color: var(--theme-brand-primary);"></i> Invoice Information
       </h2>
@@ -74,10 +74,10 @@
   </div>
 
   <!-- Seller and Buyer Details -->
-  <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+  <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-2">
     <div class="card transition-all duration-200 hover:shadow-lg" (mouseenter)="onCardHover($event, true)"
       (mouseleave)="onCardHover($event, false)">
-      <div class="px-4 py-3 border-b" style="border-color: var(--theme-border-primary);">
+      <div class="px-2 py-1 border-b" style="border-color: var(--theme-border-primary);">
         <h2 class="text-lg font-semibold flex items-center gap-2" style="color: var(--theme-text-heading);">
           <i class="pi pi-user text-lg" style="color: var(--theme-brand-primary);"></i> Seller Details
         </h2>
@@ -115,7 +115,7 @@
 
     <div class="card transition-all duration-200 hover:shadow-lg" (mouseenter)="onCardHover($event, true)"
       (mouseleave)="onCardHover($event, false)">
-      <div class="px-4 py-3 border-b" style="border-color: var(--theme-border-primary);">
+      <div class="px-2 py-1 border-b" style="border-color: var(--theme-border-primary);">
         <h2 class="text-lg font-semibold flex items-center gap-2" style="color: var(--theme-text-heading);">
           <i class="pi pi-user-plus text-lg" style="color: var(--theme-accent-primary);"></i> Buyer Details
         </h2>
@@ -142,9 +142,9 @@
   </div>
 
   <!-- Items Table -->
-  <div class="card mb-6 overflow-hidden transition-all duration-200 hover:shadow-lg"
+  <div class="card mb-2 overflow-hidden transition-all duration-200 hover:shadow-lg"
     (mouseenter)="onCardHover($event, true)" (mouseleave)="onCardHover($event, false)">
-    <div class="px-4 py-3 border-b" style="border-color: var(--theme-border-primary);">
+    <div class="px-2 py-1 border-b" style="border-color: var(--theme-border-primary);">
       <h2 class="text-lg font-semibold flex items-center gap-2" style="color: var(--theme-text-heading);">
         <i class="pi pi-list text-lg" style="color: var(--theme-brand-primary);"></i> Items
       </h2>
@@ -154,26 +154,26 @@
         styleClass="p-datatable-sm p-datatable-striped" responsiveLayout="stack" [breakpoint]="'640px'">
         <ng-template pTemplate="header">
           <tr style="background-color: var(--theme-bg-tertiary); color: var(--theme-text-label);">
-            <th class="p-3 text-sm">Item</th>
+            <th class="p-3  rounded-tl-lg text-sm">Item</th>
             <th class="text-right p-3 text-sm">Qty</th>
             <th class="text-right p-3 text-sm">Rate</th>
             <th class="text-right p-3 text-sm">Discount</th>
             <th class="text-right p-3 text-sm">Taxable</th>
             <th class="text-right p-3 text-sm">CGST</th>
             <th class="text-right p-3 text-sm">SGST</th>
-            <th class="text-right p-3 text-sm">Amount</th>
+            <th class="text-right rounded-tr-lg p-3 text-sm">Amount</th>
           </tr>
         </ng-template>
         <ng-template pTemplate="body" let-item>
           <tr style="background-color: var(--theme-bg-secondary); color: var(--theme-text-primary);">
-            <td class="p-3 text-sm">{{ item && item.itemDetails ? (item.itemDetails.title ? item.itemDetails.title : 'N/A') : 'N/A' }}</td>
+            <td class="p-3 rounded-bl-lg text-sm">{{ item  ? (item.customTitle ? item.customTitle : 'N/A') : 'N/A' }}</td>
             <td class="text-right p-3 text-sm">{{ item ? (item.quantity ? item.quantity : 'N/A') : 'N/A' }}</td>
             <td class="text-right p-3 text-sm">{{ item && item.rate ? (item.rate | currency:'INR') : 'N/A' }}</td>
             <td class="text-right p-3 text-sm">{{ item && item.discount ? (item.discount | currency:'INR') : 'N/A' }}</td>
             <td class="text-right p-3 text-sm">{{ item && item.taxableValue ? (item.taxableValue | currency:'INR') : 'N/A' }}</td>
             <td class="text-right p-3 text-sm">{{ item && item.cgstAmount ? (item.cgstAmount | currency:'INR') + ' (' + (item.cgstRate ? item.cgstRate : '0') + '%)' : 'N/A' }}</td>
             <td class="text-right p-3 text-sm">{{ item && item.sgstAmount ? (item.sgstAmount | currency:'INR') + ' (' + (item.sgstRate ? item.sgstRate : '0') + '%)' : 'N/A' }}</td>
-            <td class="text-right p-3 text-sm font-medium">{{ item && item.amount ? (item.amount | currency:'INR') :'N/A' }}</td>
+            <td class="text-right p-3 rounded-br-lg  text-sm font-medium">{{ item && item.amount ? (item.amount | currency:'INR') :'N/A' }}</td>
           </tr>
         </ng-template>
         <ng-template pTemplate="emptymessage">
@@ -188,12 +188,12 @@
   <!-- Financial Summary -->
   <div class="card transition-all duration-200 hover:shadow-lg" (mouseenter)="onCardHover($event, true)"
     (mouseleave)="onCardHover($event, false)">
-    <div class="px-4 py-3 border-b" style="border-color: var(--theme-border-primary);">
+    <div class="px-2 py-1 border-b" style="border-color: var(--theme-border-primary);">
       <h2 class="text-lg font-semibold flex items-center gap-2" style="color: var(--theme-text-heading);">
         <i class="pi pi-wallet text-lg" style="color: var(--theme-success-primary);"></i> Financial Summary
       </h2>
     </div>
-    <div class="divide-y px-4 py-4" style="border-color: var(--theme-border-secondary);">
+    <div class="divide-y px-2 py-4" style="border-color: var(--theme-border-secondary);">
       <div class="flex justify-between py-2 text-sm">
         <span style="color: var(--theme-text-secondary);">Sub Total</span>
         <span style="color: var(--theme-text-primary);">{{ invoiceData && invoiceData.subTotal ? (invoiceData.subTotal |

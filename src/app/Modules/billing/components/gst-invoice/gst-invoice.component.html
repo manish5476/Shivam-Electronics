@@ -1,10 +1,10 @@
-<div class="bg-[var(--theme-bg-main)] rounded-sm text-[var(--theme-text-primary)] py-2 px-2 md:px-4 lg:px-5"
+<!-- <div class="bg-[var(--theme-bg-main)] rounded-sm text-[var(--theme-text-primary)] py-2 px-2 md:px-4 lg:px-5"
   [formGroup]="invoiceForm">
   <div class="text-center mb-2">
     <h2 class="text-3xl font-bold text-[var(--theme-brand-primary)]">GST Invoice</h2>
   </div>
 
-  <!-- Form Fields -->
+  Form Fields
   <div
     class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-4 bg-[var(--theme-bg-secondary)] p-6 rounded-lg shadow-md mb-4">
     <div>
@@ -38,7 +38,7 @@
     </div>
   </div>
 
-  <!-- Items Table -->
+  Items Table
   <div class="overflow-x-auto bg-[var(--theme-bg-secondary)] p-4 rounded-lg shadow-md mb-4">
     <table class="min-w-full text-sm text-left border border-[var(--theme-border-secondary)]">
       <thead class="bg-[var(--theme-bg-tertiary)] text-[var(--theme-text-secondary)]">
@@ -106,7 +106,7 @@
     </table>
   </div>
 
-  <!-- Round Off Section -->
+  Round Off Section
   <div class="flex items-center gap-6 mb-2">
     <label class="flex items-center gap-2 text-sm text-[var(--theme-text-secondary)]">
       <input type="checkbox" formControlName="roundUp" (change)="calculateInvoiceTotals()"
@@ -120,7 +120,7 @@
     </label>
   </div>
 
-  <!-- Totals Box -->
+  Totals Box
   <div class="bg-[var(--theme-bg-secondary)] shadow-md rounded-lg p-2 mb-2  grid grid-cols-1 lg:grid-cols-2 gap-6">
     <div>
       <h3 class="font-semibold text-md mb-2 text-[var(--theme-text-heading)]">Place of Supply</h3>
@@ -157,11 +157,177 @@
     </div>
   </div>
 
-  <!-- Footer Button -->
+  Footer Button
   <div class="text-center">
     <button type="button" (click)="saveInvoice()"
       class="bg-[var(--theme-button-bg-primary)] hover:bg-[var(--theme-button-hover-bg-primary)] text-[var(--theme-button-text-primary-btn)] font-medium py-2 px-6 rounded-md shadow-md transition">
       Save & Continue
     </button>
+  </div>
+</div> -->
+<div
+  class="bg-[var(--theme-bg-primary)] rounded-lg text-[var(--theme-text-primary)] py-2 px-1 md:px-6 lg:px-8 shadow-md"
+  [formGroup]="invoiceForm">
+
+  <!-- Header -->
+  <div class="text-center mb-2">
+    <h2 class="text-3xl font-bold text-[var(--theme-accent-primary)] tracking-wide">GST Invoice</h2>
+  </div>
+
+  <!-- Invoice Info Section -->
+  <div
+    class="card grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-6 p-2 rounded-xl border border-[var(--theme-border-secondary)] shadow-sm">
+
+    <!-- Invoice Number -->
+    <div>
+      <label for="invoiceNumber">Invoice No*</label>
+      <input id="invoiceNumber" type="text" formControlName="invoiceNumber" placeholder="Enter Invoice No"
+        class="form-input">
+    </div>
+
+    <!-- Invoice Date -->
+    <div>
+      <label for="invoiceDate">Invoice Date*</label>
+      <input id="invoiceDate" type="date" formControlName="invoiceDate" class="form-input">
+    </div>
+
+    <!-- Due Date -->
+    <div>
+      <label for="dueDate">Due Date</label>
+      <input id="dueDate" type="date" formControlName="dueDate" class="form-input">
+    </div>
+
+    <!-- Seller -->
+    <div>
+      <label>Billed By</label>
+      <p-select formControlName="seller" [options]="InvoiceObject.sellersDrop" optionLabel="name" optionValue="_id"
+        placeholder="Select Seller" appendTo="body" class="w-full form-input"
+        panelStyleClass="bg-[var(--theme-bg-secondary)] border-[var(--theme-border-primary)]">
+      </p-select>
+    </div>
+
+    <!-- Buyer -->
+    <div>
+      <label>Billed To</label>
+      <p-select formControlName="buyer" [options]="InvoiceObject.customerIDDropdown" optionLabel="fullname"
+        optionValue="_id" placeholder="Select Buyer" appendTo="body" class="w-full form-input"
+        panelStyleClass="bg-[var(--theme-bg-secondary)] border-[var(--theme-border-primary)]">
+      </p-select>
+    </div>
+  </div>
+
+  <!-- Items Table -->
+  <div class="gradient-card mt-3 overflow-x-auto rounded-xl border border-[var(--theme-border-secondary)] shadow-sm">
+    <table class="min-w-full text-sm text-left border-collapse">
+      <thead class="bg-[var(--theme-bg-tertiary)] text-[var(--theme-text-secondary)]">
+        <tr>
+          <th class="p-3 rounded-tl-lg">Item</th>
+          <th class="p-3">GST (%)</th>
+          <th class="p-3">Qty</th>
+          <th class="p-3">Rate</th>
+          <th class="p-3">Discount (%)</th>
+          <th class="p-3">Taxable</th>
+          <th class="p-3">GST Amt</th>
+          <th class="p-3">Total</th>
+          <th class="p-3 rounded-tr-lg text-center">Actions</th>
+        </tr>
+      </thead>
+      <tbody formArrayName="items">
+        <tr *ngFor="let itemFormGroup of itemsFormArray.controls; let i = index" [formGroupName]="i"
+          class="border-t border-[var(--theme-border-secondary)] hover:bg-[var(--theme-hover-bg)] transition">
+
+          <!-- Product -->
+          <td class="p-3">
+            <p-select formControlName="product" [options]="InvoiceObject.productdrop" optionLabel="title"
+              optionValue="_id" (onChange)="onProductChange($event, i)" (ngModelChange)="onItemValueChange(i)"
+              appendTo="body" class="w-full form-input"
+              panelStyleClass="bg-[var(--theme-bg-secondary)] border-[var(--theme-border-primary)]">
+            </p-select>
+          </td>
+
+          <!-- Numeric Fields -->
+          <td class="p-3"><input type="number" formControlName="gstRate" (ngModelChange)="onItemValueChange(i)"
+              class="form-input"></td>
+          <td class="p-3"><input type="number" formControlName="quantity" (ngModelChange)="onItemValueChange(i)"
+              class="form-input"></td>
+          <td class="p-3"><input type="number" formControlName="rate" (ngModelChange)="onItemValueChange(i)"
+              class="form-input"></td>
+          <td class="p-3"><input type="number" formControlName="discount" (ngModelChange)="onItemValueChange(i)"
+              class="form-input"></td>
+
+          <!-- Readonly Fields -->
+          <td class="p-3"><input type="number" formControlName="taxableValue" readonly
+              class="form-input bg-[var(--theme-bg-tertiary)]"></td>
+          <td class="p-3"><input type="number" formControlName="gstAmount" readonly
+              class="form-input bg-[var(--theme-bg-tertiary)]"></td>
+          <td class="p-3"><input type="number" formControlName="amount" readonly
+              class="form-input bg-[var(--theme-bg-tertiary)]"></td>
+
+          <!-- Actions -->
+          <td class="p-3 flex justify-center gap-3">
+            <button type="button" (click)="addItem()"
+              class="text-[var(--theme-success-primary)] hover:scale-110 transition">
+              <i class="pi pi-check"></i>
+            </button>
+            <button type="button" (click)="removeItem(i)"
+              class="text-[var(--theme-error-primary)] hover:scale-110 transition">
+              <i class="pi pi-times"></i>
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Rounding Options -->
+  <div class="flex items-center gap-8 my-6">
+    <label class="flex items-center gap-2 text-sm text-[var(--theme-text-secondary)] cursor-pointer">
+      <input type="checkbox" formControlName="roundUp" (change)="calculateInvoiceTotals()" class="form-checkbox">
+      Round Up
+    </label>
+    <label class="flex items-center gap-2 text-sm text-[var(--theme-text-secondary)] cursor-pointer">
+      <input type="checkbox" formControlName="roundDown" (change)="calculateInvoiceTotals()" class="form-checkbox">
+      Round Down
+    </label>
+  </div>
+
+  <!-- Totals Section -->
+  <div
+    class="card grid grid-cols-1 lg:grid-cols-2 gap-6 p-6 rounded-xl border border-[var(--theme-border-secondary)] shadow-sm">
+    <div>
+      <h3 class="font-semibold text-sm mb-2">Place of Supply</h3>
+      <p class="text-[var(--theme-text-primary)] text-sm">{{ invoiceForm.get('placeOfSupply')?.value || 'N/A' }}</p>
+    </div>
+    <div class="text-sm">
+      <div class="flex justify-between mb-1">
+        <span class="font-medium">Sub Total:</span>
+        <span>₹ {{ invoiceForm.get('subTotal')?.value | number:'1.2-2' }}</span>
+      </div>
+      <div class="flex justify-between mb-1">
+        <span class="font-medium">GST:</span>
+        <span>₹ {{ invoiceForm.get('gst')?.value | number:'1.2-2' }}</span>
+      </div>
+      <div class="flex justify-between mb-1">
+        <span class="font-medium">CESS:</span>
+        <span>₹ {{ invoiceForm.get('cess')?.value | number:'1.2-2' }}</span>
+      </div>
+      <div class="flex justify-between mb-1">
+        <span class="font-medium">Discount:</span>
+        <span>₹ {{ invoiceForm.get('totalDiscount')?.value | number:'1.2-2' }}</span>
+      </div>
+      <div class="flex justify-between border-t pt-2 mt-2">
+        <span class="font-semibold">Taxable Value:</span>
+        <span>₹ {{ invoiceForm.get('taxableValue')?.value }}</span>
+      </div>
+      <div class="flex justify-between border-t pt-4 mt-4">
+        <h2 class="text-base font-semibold">Total (INR)</h2>
+        <h2 class="text-base font-semibold">₹ {{ invoiceForm.get('totalAmount')?.value | number:'1.2-2' }}</h2>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer Button -->
+  <div class="mt-6 flex justify-end">
+    <button type="submit" class="p-button px-6 py-2">Save Invoice</button>
   </div>
 </div>

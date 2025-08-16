@@ -1,5 +1,5 @@
   <div class="flex flex-col rounded-md overflow-hidden bg-[var(--theme-bg-primary)] text-[var(--theme-text-primary)]">
-      <div class="ag-grid-header-filter-area px-4 py-3 rounded-md shadow-sm bg-[var(--theme-bg-secondary)] border-b border-[var(--theme-border-primary)]">
+      <div class="card">
         <!-- Controls Container: Uses flex-wrap for responsiveness -->
         <div class="header-controls flex flex-wrap items-center gap-4 sm:gap-6">
           
@@ -19,18 +19,18 @@
             <button pButton type="button" (click)="getData()" label="Apply" icon="pi pi-check"
               class="p-button-sm"
               [style.backgroundColor]="'var(--theme-brand-primary)'"
-              [style.color]="'var(--theme-text-inverted)'"></button>
+              [style.color]="'var(--theme-text-inverted)'">apply</button>
             <button pButton type="button" (click)="resetFilters()" label="Reset" icon="pi pi-times"
               class="p-button-sm p-button-outlined p-button-secondary"
               [style.color]="'var(--theme-text-secondary)'"
-              [style.borderColor]="'var(--theme-border-primary)'"></button>
+              [style.borderColor]="'var(--theme-border-primary)'">reset</button>
           </div>
         </div>
       </div>
 
       <!-- Grid Area -->
-      <div class="ag-grid-main-area mt-4">
-        <app-shared-grid [data]="data"  [gridHeight]="'200px'" [showActions]="false" [headerFilter]="false" [rowSelectionMode]="rowSelectionMode" [column]="column"
+      <div class="card ">
+        <app-shared-grid [data]="data"  [gridHeight]="'220px'" [showActions]="false" [headerFilter]="false" [rowSelectionMode]="rowSelectionMode" [column]="column"
           (eventFromGrid)="eventFromGrid($event)">
         </app-shared-grid>
       </div>

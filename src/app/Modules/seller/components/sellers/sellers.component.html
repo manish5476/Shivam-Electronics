@@ -1,164 +1,205 @@
-<div class="flex flex-wrap md:-m-2 -m-1 w-full" style="background: linear-gradient(to bottom, var(--theme-body-gradient-start), var(--theme-body-gradient-end));">
+<div class="flex flex-wrap md:-m-2 -m-1 w-full"
+  style="background: linear-gradient(to bottom, var(--theme-body-gradient-start), var(--theme-body-gradient-end));">
   <div class="w-full p-1 md:p-2">
-    <div class="card p-6 rounded-xl border border-[var(--theme-border-primary)] shadow-lg transition-all duration-300 hover:shadow-[0_4px_20px_var(--theme-shadow-color)]">
-      <h2 class="text-2xl font-bold text-[var(--theme-text-heading)] mb-6 border-b border-[var(--theme-border-secondary)] pb-3">
+    <div
+      class="card p-6 rounded-xl border border-[var(--theme-border-primary)] shadow-lg transition-all duration-300 hover:shadow-[0_4px_20px_var(--theme-shadow-color)]">
+      <h2
+        class="text-2xl font-bold text-[var(--theme-text-heading)] mb-1 border-b border-[var(--theme-border-secondary)] pb-0">
         <i class="pi pi-user-plus mr-2"></i>Create Seller
       </h2>
       <form [formGroup]="sellerForm" (ngSubmit)="saveSeller()">
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+        <h3
+          class="text-lg font-semibold text-[var(--theme-text-heading)] mb-2 border-b border-[var(--theme-border-secondary)] pb-2">
+          <i class="pi pi-wallet mr-2"></i>Basic Information
+        </h3>
+        <div class="grid grid-cols-1 gradient-card sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+
           <div class="form-group">
-            <label for="name" class="block text-sm font-medium text-[var(--theme-text-secondary)] mb-1">Name <span class="text-[var(--theme-error-primary)]">*</span></label>
+            <label for="name" class="block text-sm font-medium text-[var(--theme-text-secondary)] mb-1">Name <span
+                class="text-[var(--theme-error-primary)]">*</span></label>
             <input id="name" type="text" pInputText
-                   class="w-full h-10 px-3 py-2 bg-[var(--theme-bg-tertiary)] text-[var(--theme-text-primary)] border border-[var(--theme-border-secondary)] rounded-md focus:ring-2 focus:ring-[var(--theme-accent-primary)] focus:border-[var(--theme-accent-primary)] sm:text-sm"
-                   formControlName="name" required />
+              class="w-full h-10 px-3 py-2 bg-[var(--theme-bg-tertiary)] text-[var(--theme-text-primary)] border border-[var(--theme-border-secondary)] rounded-md focus:ring-2 focus:ring-[var(--theme-accent-primary)] focus:border-[var(--theme-accent-primary)] sm:text-sm"
+              formControlName="name" required />
             <small *ngIf="sellerForm.controls['name'].invalid && sellerForm.controls['name'].dirty"
-                   class="text-[var(--theme-error-primary)] text-xs mt-1 block">Name is required</small>
+              class="text-[var(--theme-error-primary)] text-xs mt-1 block">Name is required</small>
           </div>
           <div class="form-group">
-            <label for="shopName" class="block text-sm font-medium text-[var(--theme-text-secondary)] mb-1">Shop Name <span class="text-[var(--theme-error-primary)]">*</span></label>
+            <label for="shopName" class="block text-sm font-medium text-[var(--theme-text-secondary)] mb-1">Shop Name
+              <span class="text-[var(--theme-error-primary)]">*</span></label>
             <input id="shopName" type="text" pInputText
-                   class="w-full h-10 px-3 py-2 bg-[var(--theme-bg-tertiary)] text-[var(--theme-text-primary)] border border-[var(--theme-border-secondary)] rounded-md focus:ring-2 focus:ring-[var(--theme-accent-primary)] focus:border-[var(--theme-accent-primary)] sm:text-sm"
-                   formControlName="shopName" required />
+              class="w-full h-10 px-3 py-2 bg-[var(--theme-bg-tertiary)] text-[var(--theme-text-primary)] border border-[var(--theme-border-secondary)] rounded-md focus:ring-2 focus:ring-[var(--theme-accent-primary)] focus:border-[var(--theme-accent-primary)] sm:text-sm"
+              formControlName="shopName" required />
             <small *ngIf="sellerForm.controls['shopName'].invalid && sellerForm.controls['shopName'].dirty"
-                   class="text-[var(--theme-error-primary)] text-xs mt-1 block">Shop Name is required</small>
+              class="text-[var(--theme-error-primary)] text-xs mt-1 block">Shop Name is required</small>
           </div>
           <div class="form-group">
-            <label for="status" class="block text-sm font-medium text-[var(--theme-text-secondary)] mb-1">Status <span class="text-[var(--theme-error-primary)]">*</span></label>
+            <label for="status" class="block text-sm font-medium text-[var(--theme-text-secondary)] mb-1">Status <span
+                class="text-[var(--theme-error-primary)]">*</span></label>
             <p-select id="status" [options]="statuses" formControlName="status" placeholder="Select Status"
-                      styleClass="w-full" [required]="true"
-                      class="p-inputwrapper-filled w-full h-10 text-[var(--theme-text-primary)] bg-[var(--theme-bg-tertiary)] border border-[var(--theme-border-secondary)] rounded-md focus-within:ring-2 focus-within:ring-[var(--theme-accent-primary)] focus-within:border-[var(--theme-accent-primary)]"
-                      panelStyleClass="bg-[var(--theme-bg-secondary)] border-[var(--theme-border-primary)]">
+              styleClass="w-full" [required]="true"
+              class="p-inputwrapper-filled w-full h-10 text-[var(--theme-text-primary)] bg-[var(--theme-bg-tertiary)] border border-[var(--theme-border-secondary)] rounded-md focus-within:ring-2 focus-within:ring-[var(--theme-accent-primary)] focus-within:border-[var(--theme-accent-primary)]"
+              panelStyleClass="bg-[var(--theme-bg-secondary)] border-[var(--theme-border-primary)]">
             </p-select>
             <small *ngIf="sellerForm.controls['status'].invalid && sellerForm.controls['status'].dirty"
-                   class="text-[var(--theme-error-primary)] text-xs mt-1 block">Status is required</small>
+              class="text-[var(--theme-error-primary)] text-xs mt-1 block">Status is required</small>
           </div>
           <div class="form-group">
-            <label for="contactNumber" class="block text-sm font-medium text-[var(--theme-text-secondary)] mb-1">Contact Number <span class="text-[var(--theme-error-primary)]">*</span></label>
+            <label for="contactNumber" class="block text-sm font-medium text-[var(--theme-text-secondary)] mb-1">Contact
+              Number <span class="text-[var(--theme-error-primary)]">*</span></label>
             <input id="contactNumber" type="tel" pInputText
-                   class="w-full h-10 px-3 py-2 bg-[var(--theme-bg-tertiary)] text-[var(--theme-text-primary)] border border-[var(--theme-border-secondary)] rounded-md focus:ring-2 focus:ring-[var(--theme-accent-primary)] focus:border-[var(--theme-accent-primary)] sm:text-sm"
-                   formControlName="contactNumber" required pattern="[0-9]{10}" />
+              class="w-full h-10 px-3 py-2 bg-[var(--theme-bg-tertiary)] text-[var(--theme-text-primary)] border border-[var(--theme-border-secondary)] rounded-md focus:ring-2 focus:ring-[var(--theme-accent-primary)] focus:border-[var(--theme-accent-primary)] sm:text-sm"
+              formControlName="contactNumber" required pattern="[0-9]{10}" />
             <small *ngIf="sellerForm.controls['contactNumber'].invalid && sellerForm.controls['contactNumber'].dirty"
-                   class="text-[var(--theme-error-primary)] text-xs mt-1 block">Contact Number must be a valid 10-digit number</small>
+              class="text-[var(--theme-error-primary)] text-xs mt-1 block">Contact Number must be a valid 10-digit
+              number</small>
           </div>
         </div>
 
-        <div class="gradient-card p-5 rounded-lg border border-[var(--theme-border-secondary)] mb-6" formGroupName="address">
-          <h3 class="text-lg font-semibold text-[var(--theme-text-heading)] mb-4 border-b border-[var(--theme-border-secondary)] pb-2">
+        <div class="gradient-card p-5 rounded-lg border border-[var(--theme-border-secondary)] mb-6"
+          formGroupName="address">
+          <h3
+            class="text-lg font-semibold text-[var(--theme-text-heading)] mb-2 border-b border-[var(--theme-border-secondary)] pb-2">
             <i class="pi pi-map-marker mr-2"></i>Address Details
           </h3>
           <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
             <div class="form-group">
-              <label for="street" class="block text-sm font-medium text-[var(--theme-text-secondary)] mb-1">Street <span class="text-[var(--theme-error-primary)]">*</span></label>
+              <label for="street" class="block text-sm font-medium text-[var(--theme-text-secondary)] mb-1">Street <span
+                  class="text-[var(--theme-error-primary)]">*</span></label>
               <input id="street" type="text" pInputText
-                     class="w-full h-10 px-3 py-2 bg-[var(--theme-bg-tertiary)] text-[var(--theme-text-primary)] border border-[var(--theme-border-secondary)] rounded-md focus:ring-2 focus:ring-[var(--theme-accent-primary)] focus:border-[var(--theme-accent-primary)] sm:text-sm"
-                     formControlName="street" required />
+                class="w-full h-10 px-3 py-2 bg-[var(--theme-bg-tertiary)] text-[var(--theme-text-primary)] border border-[var(--theme-border-secondary)] rounded-md focus:ring-2 focus:ring-[var(--theme-accent-primary)] focus:border-[var(--theme-accent-primary)] sm:text-sm"
+                formControlName="street" required />
               <small *ngIf="sellerForm.get('address.street')?.invalid && sellerForm.get('address.street')?.dirty"
-                     class="text-[var(--theme-error-primary)] text-xs mt-1 block">Street is required</small>
+                class="text-[var(--theme-error-primary)] text-xs mt-1 block">Street is required</small>
             </div>
             <div class="form-group">
-              <label for="city" class="block text-sm font-medium text-[var(--theme-text-secondary)] mb-1">City <span class="text-[var(--theme-error-primary)]">*</span></label>
+              <label for="city" class="block text-sm font-medium text-[var(--theme-text-secondary)] mb-1">City <span
+                  class="text-[var(--theme-error-primary)]">*</span></label>
               <input id="city" type="text" pInputText
-                     class="w-full h-10 px-3 py-2 bg-[var(--theme-bg-tertiary)] text-[var(--theme-text-primary)] border border-[var(--theme-border-secondary)] rounded-md focus:ring-2 focus:ring-[var(--theme-accent-primary)] focus:border-[var(--theme-accent-primary)] sm:text-sm"
-                     formControlName="city" required />
+                class="w-full h-10 px-3 py-2 bg-[var(--theme-bg-tertiary)] text-[var(--theme-text-primary)] border border-[var(--theme-border-secondary)] rounded-md focus:ring-2 focus:ring-[var(--theme-accent-primary)] focus:border-[var(--theme-accent-primary)] sm:text-sm"
+                formControlName="city" required />
               <small *ngIf="sellerForm.get('address.city')?.invalid && sellerForm.get('address.city')?.dirty"
-                     class="text-[var(--theme-error-primary)] text-xs mt-1 block">City is required</small>
+                class="text-[var(--theme-error-primary)] text-xs mt-1 block">City is required</small>
             </div>
             <div class="form-group">
-              <label for="state" class="block text-sm font-medium text-[var(--theme-text-secondary)] mb-1">State <span class="text-[var(--theme-error-primary)]">*</span></label>
+              <label for="state" class="block text-sm font-medium text-[var(--theme-text-secondary)] mb-1">State <span
+                  class="text-[var(--theme-error-primary)]">*</span></label>
               <input id="state" type="text" pInputText
-                     class="w-full h-10 px-3 py-2 bg-[var(--theme-bg-tertiary)] text-[var(--theme-text-primary)] border border-[var(--theme-border-secondary)] rounded-md focus:ring-2 focus:ring-[var(--theme-accent-primary)] focus:border-[var(--theme-accent-primary)] sm:text-sm"
-                     formControlName="state" required />
+                class="w-full h-10 px-3 py-2 bg-[var(--theme-bg-tertiary)] text-[var(--theme-text-primary)] border border-[var(--theme-border-secondary)] rounded-md focus:ring-2 focus:ring-[var(--theme-accent-primary)] focus:border-[var(--theme-accent-primary)] sm:text-sm"
+                formControlName="state" required />
               <small *ngIf="sellerForm.get('address.state')?.invalid && sellerForm.get('address.state')?.dirty"
-                     class="text-[var(--theme-error-primary)] text-xs mt-1 block">State is required</small>
+                class="text-[var(--theme-error-primary)] text-xs mt-1 block">State is required</small>
             </div>
             <div class="form-group">
-              <label for="pincode" class="block text-sm font-medium text-[var(--theme-text-secondary)] mb-1">Pincode <span class="text-[var(--theme-error-primary)]">*</span></label>
+              <label for="pincode" class="block text-sm font-medium text-[var(--theme-text-secondary)] mb-1">Pincode
+                <span class="text-[var(--theme-error-primary)]">*</span></label>
               <input id="pincode" type="text" pInputText
-                     class="w-full h-10 px-3 py-2 bg-[var(--theme-bg-tertiary)] text-[var(--theme-text-primary)] border border-[var(--theme-border-secondary)] rounded-md focus:ring-2 focus:ring-[var(--theme-accent-primary)] focus:border-[var(--theme-accent-primary)] sm:text-sm"
-                     formControlName="pincode" required pattern="[0-9]{6}" />
+                class="w-full h-10 px-3 py-2 bg-[var(--theme-bg-tertiary)] text-[var(--theme-text-primary)] border border-[var(--theme-border-secondary)] rounded-md focus:ring-2 focus:ring-[var(--theme-accent-primary)] focus:border-[var(--theme-accent-primary)] sm:text-sm"
+                formControlName="pincode" required pattern="[0-9]{6}" />
               <small *ngIf="sellerForm.get('address.pincode')?.invalid && sellerForm.get('address.pincode')?.dirty"
-                     class="text-[var(--theme-error-primary)] text-xs mt-1 block">Pincode must be a valid 6-digit number</small>
+                class="text-[var(--theme-error-primary)] text-xs mt-1 block">Pincode must be a valid 6-digit
+                number</small>
             </div>
           </div>
         </div>
 
         <div class="gradient-card p-5 rounded-lg border border-[var(--theme-border-secondary)] mb-6">
-          <h3 class="text-lg font-semibold text-[var(--theme-text-heading)] mb-4 border-b border-[var(--theme-border-secondary)] pb-2">
+          <h3
+            class="text-lg font-semibold text-[var(--theme-text-heading)] mb-2 border-b border-[var(--theme-border-secondary)] pb-2">
             <i class="pi pi-wallet mr-2"></i>Financial Information
           </h3>
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div class="form-group">
-              <label for="pan" class="block text-sm font-medium text-[var(--theme-text-secondary)] mb-1">PAN <span class="text-[var(--theme-error-primary)]">*</span></label>
+              <label for="pan" class="block text-sm font-medium text-[var(--theme-text-secondary)] mb-1">PAN <span
+                  class="text-[var(--theme-error-primary)]">*</span></label>
               <input id="pan" type="text" pInputText
-                     class="w-full h-10 px-3 py-2 bg-[var(--theme-bg-tertiary)] text-[var(--theme-text-primary)] border border-[var(--theme-border-secondary)] rounded-md focus:ring-2 focus:ring-[var(--theme-accent-primary)] focus:border-[var(--theme-accent-primary)] sm:text-sm"
-                     formControlName="pan" required pattern="[A-Z]{5}[0-9]{4}[A-Z]{1}" />
+                class="w-full h-10 px-3 py-2 bg-[var(--theme-bg-tertiary)] text-[var(--theme-text-primary)] border border-[var(--theme-border-secondary)] rounded-md focus:ring-2 focus:ring-[var(--theme-accent-primary)] focus:border-[var(--theme-accent-primary)] sm:text-sm"
+                formControlName="pan" required pattern="[A-Z]{5}[0-9]{4}[A-Z]{1}" />
               <small *ngIf="sellerForm.controls['pan'].invalid && sellerForm.controls['pan'].dirty"
-                     class="text-[var(--theme-error-primary)] text-xs mt-1 block">PAN must be a valid format (e.g., AAAAA9999A)</small>
+                class="text-[var(--theme-error-primary)] text-xs mt-1 block">PAN must be a valid format (e.g.,
+                AAAAA9999A)</small>
             </div>
             <div class="form-group">
-              <label for="gstin" class="block text-sm font-medium text-[var(--theme-text-secondary)] mb-1">GSTIN <span class="text-[var(--theme-error-primary)]">*</span></label>
+              <label for="gstin" class="block text-sm font-medium text-[var(--theme-text-secondary)] mb-1">GSTIN <span
+                  class="text-[var(--theme-error-primary)]">*</span></label>
               <input id="gstin" type="text" pInputText
-                     class="w-full h-10 px-3 py-2 bg-[var(--theme-bg-tertiary)] text-[var(--theme-text-primary)] border border-[var(--theme-border-secondary)] rounded-md focus:ring-2 focus:ring-[var(--theme-accent-primary)] focus:border-[var(--theme-accent-primary)] sm:text-sm"
-                     formControlName="gstin" required pattern="[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z]{1}[0-9A-Z]{1}Z[0-9A-Z]{1}" />
+                class="w-full h-10 px-3 py-2 bg-[var(--theme-bg-tertiary)] text-[var(--theme-text-primary)] border border-[var(--theme-border-secondary)] rounded-md focus:ring-2 focus:ring-[var(--theme-accent-primary)] focus:border-[var(--theme-accent-primary)] sm:text-sm"
+                formControlName="gstin" required pattern="[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z]{1}[0-9A-Z]{1}Z[0-9A-Z]{1}" />
               <small *ngIf="sellerForm.controls['gstin'].invalid && sellerForm.controls['gstin'].dirty"
-                     class="text-[var(--theme-error-primary)] text-xs mt-1 block">GSTIN must be a valid format (e.g., 12ABCDE1234F1Z5)</small>
+                class="text-[var(--theme-error-primary)] text-xs mt-1 block">GSTIN must be a valid format (e.g.,
+                12ABCDE1234F1Z5)</small>
             </div>
           </div>
         </div>
 
-        <div class="gradient-card p-5 rounded-lg border border-[var(--theme-border-secondary)] mb-6" formGroupName="bankDetails">
-          <h3 class="text-lg font-semibold text-[var(--theme-text-heading)] mb-4 border-b border-[var(--theme-border-secondary)] pb-2">
+        <div class="gradient-card p-5 rounded-lg border border-[var(--theme-border-secondary)] mb-6"
+          formGroupName="bankDetails">
+          <h3
+            class="text-lg font-semibold text-[var(--theme-text-heading)] mb-2 border-b border-[var(--theme-border-secondary)] pb-2">
             <i class="pi pi-building mr-2"></i>Bank Details
           </h3>
           <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
             <div class="form-group">
-              <label for="accountHolderName" class="block text-sm font-medium text-[var(--theme-text-secondary)] mb-1">Account Holder Name <span class="text-[var(--theme-error-primary)]">*</span></label>
+              <label for="accountHolderName"
+                class="block text-sm font-medium text-[var(--theme-text-secondary)] mb-1">Account Holder Name <span
+                  class="text-[var(--theme-error-primary)]">*</span></label>
               <input id="accountHolderName" type="text" pInputText
-                     class="w-full h-10 px-3 py-2 bg-[var(--theme-bg-tertiary)] text-[var(--theme-text-primary)] border border-[var(--theme-border-secondary)] rounded-md focus:ring-2 focus:ring-[var(--theme-accent-primary)] focus:border-[var(--theme-accent-primary)] sm:text-sm"
-                     formControlName="accountHolderName" required />
-              <small *ngIf="sellerForm.get('bankDetails.accountHolderName')?.invalid && sellerForm.get('bankDetails.accountHolderName')?.dirty"
-                     class="text-[var(--theme-error-primary)] text-xs mt-1 block">Account Holder Name is required</small>
+                class="w-full h-10 px-3 py-2 bg-[var(--theme-bg-tertiary)] text-[var(--theme-text-primary)] border border-[var(--theme-border-secondary)] rounded-md focus:ring-2 focus:ring-[var(--theme-accent-primary)] focus:border-[var(--theme-accent-primary)] sm:text-sm"
+                formControlName="accountHolderName" required />
+              <small
+                *ngIf="sellerForm.get('bankDetails.accountHolderName')?.invalid && sellerForm.get('bankDetails.accountHolderName')?.dirty"
+                class="text-[var(--theme-error-primary)] text-xs mt-1 block">Account Holder Name is required</small>
             </div>
             <div class="form-group">
-              <label for="accountNumber" class="block text-sm font-medium text-[var(--theme-text-secondary)] mb-1">Account Number <span class="text-[var(--theme-error-primary)]">*</span></label>
+              <label for="accountNumber"
+                class="block text-sm font-medium text-[var(--theme-text-secondary)] mb-1">Account Number <span
+                  class="text-[var(--theme-error-primary)]">*</span></label>
               <input id="accountNumber" type="text" pInputText
-                     class="w-full h-10 px-3 py-2 bg-[var(--theme-bg-tertiary)] text-[var(--theme-text-primary)] border border-[var(--theme-border-secondary)] rounded-md focus:ring-2 focus:ring-[var(--theme-accent-primary)] focus:border-[var(--theme-accent-primary)] sm:text-sm"
-                     formControlName="accountNumber" required pattern="[0-9]{9,18}" />
-              <small *ngIf="sellerForm.get('bankDetails.accountNumber')?.invalid && sellerForm.get('bankDetails.accountNumber')?.dirty"
-                     class="text-[var(--theme-error-primary)] text-xs mt-1 block">Account Number must be a valid 9-18 digit number</small>
+                class="w-full h-10 px-3 py-2 bg-[var(--theme-bg-tertiary)] text-[var(--theme-text-primary)] border border-[var(--theme-border-secondary)] rounded-md focus:ring-2 focus:ring-[var(--theme-accent-primary)] focus:border-[var(--theme-accent-primary)] sm:text-sm"
+                formControlName="accountNumber" required pattern="[0-9]{9,18}" />
+              <small
+                *ngIf="sellerForm.get('bankDetails.accountNumber')?.invalid && sellerForm.get('bankDetails.accountNumber')?.dirty"
+                class="text-[var(--theme-error-primary)] text-xs mt-1 block">Account Number must be a valid 9-18 digit
+                number</small>
             </div>
             <div class="form-group">
-              <label for="ifscCode" class="block text-sm font-medium text-[var(--theme-text-secondary)] mb-1">IFSC Code <span class="text-[var(--theme-error-primary)]">*</span></label>
+              <label for="ifscCode" class="block text-sm font-medium text-[var(--theme-text-secondary)] mb-1">IFSC Code
+                <span class="text-[var(--theme-error-primary)]">*</span></label>
               <input id="ifscCode" type="text" pInputText
-                     class="w-full h-10 px-3 py-2 bg-[var(--theme-bg-tertiary)] text-[var(--theme-text-primary)] border border-[var(--theme-border-secondary)] rounded-md focus:ring-2 focus:ring-[var(--theme-accent-primary)] focus:border-[var(--theme-accent-primary)] sm:text-sm"
-                     formControlName="ifscCode" required pattern="[A-Z]{4}0[A-Z0-9]{6}" />
-              <small *ngIf="sellerForm.get('bankDetails.ifscCode')?.invalid && sellerForm.get('bankDetails.ifscCode')?.dirty"
-                     class="text-[var(--theme-error-primary)] text-xs mt-1 block">IFSC Code must be a valid format (e.g., SBIN0001234)</small>
+                class="w-full h-10 px-3 py-2 bg-[var(--theme-bg-tertiary)] text-[var(--theme-text-primary)] border border-[var(--theme-border-secondary)] rounded-md focus:ring-2 focus:ring-[var(--theme-accent-primary)] focus:border-[var(--theme-accent-primary)] sm:text-sm"
+                formControlName="ifscCode" required pattern="[A-Z]{4}0[A-Z0-9]{6}" />
+              <small
+                *ngIf="sellerForm.get('bankDetails.ifscCode')?.invalid && sellerForm.get('bankDetails.ifscCode')?.dirty"
+                class="text-[var(--theme-error-primary)] text-xs mt-1 block">IFSC Code must be a valid format (e.g.,
+                SBIN0001234)</small>
             </div>
             <div class="form-group">
-              <label for="bankName" class="block text-sm font-medium text-[var(--theme-text-secondary)] mb-1">Bank Name <span class="text-[var(--theme-error-primary)]">*</span></label>
+              <label for="bankName" class="block text-sm font-medium text-[var(--theme-text-secondary)] mb-1">Bank Name
+                <span class="text-[var(--theme-error-primary)]">*</span></label>
               <input id="bankName" type="text" pInputText
-                     class="w-full h-10 px-3 py-2 bg-[var(--theme-bg-tertiary)] text-[var(--theme-text-primary)] border border-[var(--theme-border-secondary)] rounded-md focus:ring-2 focus:ring-[var(--theme-accent-primary)] focus:border-[var(--theme-accent-primary)] sm:text-sm"
-                     formControlName="bankName" required />
-              <small *ngIf="sellerForm.get('bankDetails.bankName')?.invalid && sellerForm.get('bankDetails.bankName')?.dirty"
-                     class="text-[var(--theme-error-primary)] text-xs mt-1 block">Bank Name is required</small>
+                class="w-full h-10 px-3 py-2 bg-[var(--theme-bg-tertiary)] text-[var(--theme-text-primary)] border border-[var(--theme-border-secondary)] rounded-md focus:ring-2 focus:ring-[var(--theme-accent-primary)] focus:border-[var(--theme-accent-primary)] sm:text-sm"
+                formControlName="bankName" required />
+              <small
+                *ngIf="sellerForm.get('bankDetails.bankName')?.invalid && sellerForm.get('bankDetails.bankName')?.dirty"
+                class="text-[var(--theme-error-primary)] text-xs mt-1 block">Bank Name is required</small>
             </div>
             <div class="form-group col-span-1 sm:col-span-2 lg:col-span-4">
-              <label for="branch" class="block text-sm font-medium text-[var(--theme-text-secondary)] mb-1">Branch <span class="text-[var(--theme-error-primary)]">*</span></label>
+              <label for="branch" class="block text-sm font-medium text-[var(--theme-text-secondary)] mb-1">Branch <span
+                  class="text-[var(--theme-error-primary)]">*</span></label>
               <input id="branch" type="text" pInputText
-                     class="w-full h-10 px-3 py-2 bg-[var(--theme-bg-tertiary)] text-[var(--theme-text-primary)] border border-[var(--theme-border-secondary)] rounded-md focus:ring-2 focus:ring-[var(--theme-accent-primary)] focus:border-[var(--theme-accent-primary)] sm:text-sm"
-                     formControlName="branch" required />
-              <small *ngIf="sellerForm.get('bankDetails.branch')?.invalid && sellerForm.get('bankDetails.branch')?.dirty"
-                     class="text-[var(--theme-error-primary)] text-xs mt-1 block">Branch is required</small>
+                class="w-full h-10 px-3 py-2 bg-[var(--theme-bg-tertiary)] text-[var(--theme-text-primary)] border border-[var(--theme-border-secondary)] rounded-md focus:ring-2 focus:ring-[var(--theme-accent-primary)] focus:border-[var(--theme-accent-primary)] sm:text-sm"
+                formControlName="branch" required />
+              <small
+                *ngIf="sellerForm.get('bankDetails.branch')?.invalid && sellerForm.get('bankDetails.branch')?.dirty"
+                class="text-[var(--theme-error-primary)] text-xs mt-1 block">Branch is required</small>
             </div>
           </div>
         </div>
 
         <div class="mt-6 flex justify-end gap-4">
           <button pButton type="button" label="Cancel" icon="pi pi-times"
-                  class="p-button-text text-[var(--theme-text-secondary)] hover:bg-[var(--theme-border-secondary)]/20"></button>
+            class="p-button-text text-[var(--theme-text-secondary)] hover:bg-[var(--theme-border-secondary)]/20"></button>
           <button pButton type="submit" label="Create Seller" icon="pi pi-check"
-                  class="p-button bg-[var(--theme-button-bg-primary)] text-[var(--theme-button-text-primary-btn)] hover:bg-[var(--theme-button-hover-bg-primary)] rounded-md"></button>
+            class="p-button bg-[var(--theme-button-bg-primary)] text-[var(--theme-button-text-primary-btn)] hover:bg-[var(--theme-button-hover-bg-primary)] rounded-md"></button>
         </div>
       </form>
     </div>
