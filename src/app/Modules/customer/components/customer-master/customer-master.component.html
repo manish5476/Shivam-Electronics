@@ -1,15 +1,207 @@
-
 <div class="customer-detail-container">
   <p-toast></p-toast>
 
-  <!-- Content -->
+  <ng-container *ngIf="!isLoading; else loadingState">
+    <form #customerForm="ngForm" (ngSubmit)="saveCustomer()">
+
+      <div class="header-card-v2">
+        <div class="header-content-v2">
+          <div class="profile-avatar-wrapper">
+            <p-avatar [image]="customer.profileImg" [label]="commonMethodService.getInitials(customer.fullname)"
+              shape="circle" styleClass="profile-avatar-large">
+            </p-avatar>
+            <button pButton pRipple type="button" icon="pi pi-camera"
+              class="p-button-rounded p-button-sm avatar-edit-button" (click)="fileUploader.choose()"
+              pTooltip="Change Profile Image" tooltipPosition="top">
+            </button>
+          </div>
+
+          <div class="header-info">
+            <h1 class="customer-title">{{ customer.fullname || 'New Customer' }}</h1>
+            <p class="customer-subtitle">{{ customer.email }}</p>
+            <div class="info-tags">
+              <span class="info-tag tag-status">
+                <i class="pi pi-user"></i>
+                <span>{{ customer.status | titlecase }}</span>
+              </span>
+              <span class="info-tag tag-phone">
+                <i class="pi pi-phone"></i>
+                <span>{{ customer.phoneNumbers.length ?customer.phoneNumbers.length: 0 }} Phone(s)</span>
+              </span>
+              <span class="info-tag tag-address">
+                <i class="pi pi-map-marker"></i>
+                <span>{{ customer.addresses.length ? customer.addresses.length : '0' }} Address(es)</span>
+              </span>
+            </div>
+          </div>
+
+          <div class="header-actions-v2">
+            <p-select appendTo="body" [options]="customerIDDropdown" [(ngModel)]="selectedCustomerId"
+              name="customerSelector" (onChange)="onCustomerSelect($event)" optionLabel="fullname" optionValue="_id"
+              [filter]="true" filterBy="fullname" placeholder="Switch Customer" styleClass="customer-selector">
+            </p-select>
+            <button pButton pRipple label="Save Changes" icon="pi pi-check" type="submit" class="save-button"></button>
+          </div>
+        </div>
+      </div>
+
+      <div class="main-grid">
+        <div class="grid-column-left">
+          <div class="form-card">
+            <h3 class="section-header"><i class="pi pi-user"></i>Personal Information</h3>
+            <div class="form-fields">
+              <div class="form-group">
+                <label for="fullname">Full Name</label>
+                <input id="fullname" name="fullname" type="text" pInputText [(ngModel)]="customer.fullname" required
+                  placeholder="Enter full name" />
+              </div>
+              <div class="form-group">
+                <label for="email">Email Address</label>
+                <input id="email" name="email" type="email" pInputText [(ngModel)]="customer.email" required email
+                  placeholder="Enter email address" />
+              </div>
+            </div>
+          </div>
+
+          <div class="form-card">
+            <h3 class="section-header"><i class="pi pi-shield-check"></i>Status & Guarantor</h3>
+            <div class="form-fields">
+              <div class="form-group">
+                <label for="status">Customer Status</label>
+                <p-select appendTo="body" id="status" name="status" [options]="statuses" [(ngModel)]="customer.status"
+                  placeholder="Select status"></p-select>
+              </div>
+              <div class="form-group">
+                <label for="guaranteer">Guarantor</label>
+                <p-select appendTo="body" id="guaranteer" name="guaranteer" [options]="customerIDDropdown"
+                  [(ngModel)]="selectedGuaranter" optionLabel="fullname" [filter]="true" filterBy="fullname"
+                  placeholder="Select a guarantor"></p-select>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="grid-column-right">
+          <div class="form-card">
+            <div class="card-header-action">
+              <h3 class="section-header"><i class="pi pi-phone"></i>Phone Numbers</h3>
+              <button pButton type="button" label="Add Phone" icon="pi pi-plus" class="p-button-sm p-button-outlined"
+                (click)="showPhoneDialog()"></button>
+            </div>
+            <div class="table-wrapper">
+              <p-table [value]="customer.phoneNumbers" styleClass="p-datatable-sm modern-table">
+                <ng-template pTemplate="header">
+                  <tr>
+                    <th>Number</th>
+                    <th>Type</th>
+                    <th>Primary</th>
+                    <th>Actions</th>
+                  </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-phone let-i="rowIndex">
+                  <tr>
+                    <td>{{ phone.number }}</td>
+                    <td><p-tag [value]="phone.type | titlecase" [severity]="getSeverityForType(phone.type)"></p-tag>
+                    </td>
+                    <td><i class="pi status-icon"
+                        [ngClass]="phone.primary ? 'pi-check-circle icon-success' : 'pi-circle icon-muted'"></i></td>
+                    <td>
+                      <div class="action-buttons">
+                        <button pButton pRipple type="button" icon="pi pi-pencil"
+                          class="p-button-text p-button-rounded p-button-sm" (click)="showPhoneDialog(i)"></button>
+                        <button pButton pRipple type="button" icon="pi pi-trash"
+                          class="p-button-text p-button-rounded p-button-sm p-button-danger"
+                          (click)="deletePhone(i)"></button>
+                      </div>
+                    </td>
+                  </tr>
+                </ng-template>
+                <ng-template pTemplate="emptymessage">
+                  <tr>
+                    <td colspan="4" class="empty-table-message">No phone numbers added</td>
+                  </tr>
+                </ng-template>
+              </p-table>
+            </div>
+          </div>
+
+          <div class="form-card">
+            <div class="card-header-action">
+              <h3 class="section-header"><i class="pi pi-map-marker"></i>Addresses</h3>
+              <button pButton type="button" label="Add Address" icon="pi pi-plus" class="p-button-sm p-button-outlined"
+                (click)="showAddressDialog()"></button>
+            </div>
+            <div class="table-wrapper">
+              <p-table [value]="customer.addresses" styleClass="p-datatable-sm modern-table">
+                <ng-template pTemplate="header">
+                  <tr>
+                    <th>Address</th>
+                    <th>Type</th>
+                    <th>Default</th>
+                    <th>Actions</th>
+                  </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-address let-i="rowIndex">
+                  <tr>
+                    <td>
+                      <div class="address-line-1">{{ address.street }}</div>
+                      <div class="address-line-2">{{ address.city }}, {{ address.state }} {{ address.zipCode }}</div>
+                    </td>
+                    <td><p-tag [value]="address.type | titlecase" [severity]="getSeverityForType(address.type)"></p-tag>
+                    </td>
+                    <td><i class="pi status-icon"
+                        [ngClass]="address.isDefault ? 'pi-check-circle icon-success' : 'pi-circle icon-muted'"></i>
+                    </td>
+                    <td>
+                      <div class="action-buttons">
+                        <button pButton pRipple type="button" icon="pi pi-pencil"
+                          class="p-button-text p-button-rounded p-button-sm" (click)="showAddressDialog(i)"></button>
+                        <button pButton pRipple type="button" icon="pi pi-trash"
+                          class="p-button-text p-button-rounded p-button-sm p-button-danger"
+                          (click)="removeAddress(i)"></button>
+                      </div>
+                    </td>
+                  </tr>
+                </ng-template>
+                <ng-template pTemplate="emptymessage">
+                  <tr>
+                    <td colspan="4" class="empty-table-message">No addresses added</td>
+                  </tr>
+                </ng-template>
+              </p-table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+  </ng-container>
+
+  <ng-template #loadingState>
+  </ng-template>
+
+  <p-fileUpload #fileUploader name="profileImage" [customUpload]="true" (uploadHandler)="handleFileUpload($event)"
+    [multiple]="false" accept="image/*" [showUploadButton]="false" [showCancelButton]="false"
+    class="hidden"></p-fileUpload>
+
+  <p-dialog [header]="editingPhoneIndex > -1 ? 'Edit Phone Number' : 'Add Phone Number'"
+    [(visible)]="phoneDialogVisible" [modal]="true" [draggable]="false" [resizable]="false" styleClass="themed-dialog">
+  </p-dialog>
+  <p-dialog [header]="editingAddressIndex > -1 ? 'Edit Address' : 'Add New Address'" [(visible)]="addressDialogVisible"
+    [modal]="true" [draggable]="false" [resizable]="false" styleClass="themed-dialog">
+  </p-dialog>
+</div>
+<!-- 
+<div class="customer-detail-container">
+  <p-toast></p-toast>
+
+  Content
   <ng-container *ngIf="!isLoading; else loadingState">
     <form #customerForm="ngForm" (ngSubmit)="saveCustomer()">
       
-      <!-- Header Card -->
+      Header Card
       <div class="card header-card">
         <div class="flex flex-col sm:flex-row items-center gap-6">
-          <!-- Profile -->
+          Profile
           <div class="relative">
             <p-avatar 
               [image]="customer.profileImg" 
@@ -28,7 +220,7 @@
             </button>
           </div>
 
-          <!-- Customer Info -->
+          Customer Info
           <div class="flex-1 text-center sm:text-left">
             <h1 class="text-3xl font-bold text-[var(--theme-text-primary)]">
               {{ customer.fullname || 'New Customer' }}
@@ -38,7 +230,7 @@
             </p>
           </div>
 
-          <!-- Actions -->
+          Actions
           <div class="flex items-center gap-2">
             <p-select 
               appendTo="body" 
@@ -58,13 +250,13 @@
         </div>
       </div>
 
-      <!-- Main Grid -->
+      Main Grid
       <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
         
-        <!-- Left Column -->
+        Left Column
         <div class="lg:col-span-1 flex flex-col gap-6">
           
-          <!-- Personal Info -->
+          Personal Info
           <div class="card">
             <h3 class="section-header">
               <i class="pi pi-user mr-2"></i>Personal Information
@@ -81,7 +273,7 @@
             </div>
           </div>
 
-          <!-- Status & Guarantor -->
+          Status & Guarantor
           <div class="card">
             <h3 class="section-header">
               <i class="pi pi-shield-check mr-2"></i>Status & Guarantor
@@ -117,10 +309,10 @@
           </div>
         </div>
 
-        <!-- Right Column -->
+        Right Column
         <div class="lg:col-span-2 flex flex-col gap-6">
           
-          <!-- Phone Numbers -->
+          Phone Numbers
           <div class="card">
             <h3 class="section-header">
               <i class="pi pi-phone mr-2"></i>Phone Numbers
@@ -156,7 +348,7 @@
             <button pButton type="button" label="Add Phone" icon="pi pi-plus" class="p-button-text mt-2" (click)="showPhoneDialog()"></button>
           </div>
 
-          <!-- Addresses -->
+          Addresses
           <div class="card">
             <h3 class="section-header">
               <i class="pi pi-map-marker mr-2"></i>Addresses
@@ -196,7 +388,7 @@
     </form>
   </ng-container>
 
-  <!-- Skeleton Loader -->
+  Skeleton Loader
   <ng-template #loadingState>
     <div class="card header-card">
       <div class="flex items-center gap-6">
@@ -213,7 +405,7 @@
     </div>
   </ng-template>
 
-  <!-- Hidden File Uploader -->
+  Hidden File Uploader
   <p-fileUpload 
     #fileUploader 
     name="profileImage" 
@@ -226,7 +418,7 @@
     class="hidden">
   </p-fileUpload>
 
-  <!-- Phone Dialog -->
+  Phone Dialog
   <p-dialog 
     [header]="editingPhoneIndex > -1 ? 'Edit Phone' : 'Add Phone'" 
     [(visible)]="phoneDialogVisible"
@@ -260,7 +452,7 @@
     </ng-template>
   </p-dialog>
 
-  <!-- Address Dialog -->
+  Address Dialog
   <p-dialog 
     [header]="editingAddressIndex > -1 ? 'Edit Address' : 'Add Address'" 
     [(visible)]="addressDialogVisible"
@@ -270,13 +462,13 @@
     styleClass="modern-dialog">
 
     <div class="p-fluid px-6 py-4 space-y-5">
-      <!-- Street -->
+      Street
       <div class="field">
         <label for="street" class="block text-sm font-semibold mb-2">Street</label>
         <input id="street" type="text" pInputText [(ngModel)]="newAddress.street" required class="w-full rounded-lg" />
       </div>
 
-      <!-- City / State -->
+      City / State
       <div class="grid grid-cols-2 gap-5">
         <div class="field">
           <label for="city" class="block text-sm font-semibold mb-2">City</label>
@@ -288,7 +480,7 @@
         </div>
       </div>
 
-      <!-- ZIP / Country -->
+      ZIP / Country
       <div class="grid grid-cols-2 gap-5">
         <div class="field">
           <label for="zipCode" class="block text-sm font-semibold mb-2">ZIP Code</label>
@@ -300,7 +492,7 @@
         </div>
       </div>
 
-      <!-- Geolocation -->
+      Geolocation
       <div class="grid grid-cols-2 gap-5">
         <div class="field">
           <label for="longitude" class="block text-sm font-semibold mb-2">Longitude</label>
@@ -312,13 +504,13 @@
         </div>
       </div>
 
-      <!-- Address Type -->
+      Address Type
       <div class="field">
         <label for="addressType" class="block text-sm font-semibold mb-2">Address Type</label>
         <p-select id="addressType" [options]="addressTypes" [(ngModel)]="newAddress.type" required styleClass="w-full rounded-lg"></p-select>
       </div>
 
-      <!-- Default -->
+      Default
       <div class="flex items-center gap-2 mt-2">
         <p-checkbox [(ngModel)]="newAddress.isDefault" inputId="defaultAddress" [binary]="true"></p-checkbox>
         <label for="defaultAddress">Set as Default</label>
@@ -618,4 +810,4 @@
       </div>
     </ng-template>
   </p-dialog>
-</div> -->
+</div> --> -->

@@ -155,7 +155,7 @@ export class CustomerListComponent implements OnInit {
 
             if (field) {
                 dataItem[field] = newValue;
-                this.InvoiceService.updateinvoice(dataItem.id, dataItem).subscribe({
+                this.InvoiceService.updateInvoice(dataItem.id, dataItem).subscribe({
                     next: (res: any) => { },
                     error: (err: any) => { console.error('❌ Error updating invoice:', err) }
                 });

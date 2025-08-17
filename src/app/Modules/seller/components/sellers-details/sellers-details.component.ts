@@ -42,7 +42,7 @@ export class SellersDetailsComponent {
         else {
           dataItem[field] = newValue;
         }
-        this.SellerService.updateSellersdata(dataItem.id, dataItem).subscribe({
+        this.SellerService.updateSeller(dataItem.id, dataItem).subscribe({
           next: (res: any) => {
           },
           error: (err: any) => {

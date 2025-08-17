@@ -33,7 +33,7 @@ export class InvoicePrintComponent implements OnInit, OnChanges {
   }
 
   private getInvoiceWithId() {
-    this.invoiceService.getinvoiceDataWithId(this.Id).subscribe({
+    this.invoiceService.getInvoiceById(this.Id).subscribe({
       next: (res: any) => {
         this.invoiceData = res.data;
         console.log(res.data);

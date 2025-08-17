@@ -97,7 +97,7 @@ export class InvoiceDetailCardComponent implements OnInit {
     // console.log(this.Id);
     if (this.Id) {
       this.loading = true;
-      this.InvoiceService.getinvoiceDataWithId(this.Id).subscribe({
+      this.InvoiceService.getInvoiceById(this.Id).subscribe({
         next: (res: any) => {
           this.invoiceData = res.data;
           this.loading = false;

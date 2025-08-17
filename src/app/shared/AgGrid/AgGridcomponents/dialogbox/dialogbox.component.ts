@@ -19,7 +19,7 @@ interface CustomCellRendererParams extends ICellRendererParams {
   selector: 'app-dialogbox',
   templateUrl: './dialogbox.component.html',
   styleUrls: ['./dialogbox.component.css'],
-  imports: [Dialog, CommonModule, FormsModule, Button],
+  imports: [ CommonModule, FormsModule, Button],
   standalone: true
 })
 export class DialogboxComponent implements ICellRendererAngularComp {

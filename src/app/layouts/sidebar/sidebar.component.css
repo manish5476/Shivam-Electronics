@@ -1,26 +1,151 @@
-.hide-scrollbar {
-  scrollbar-width: none;
-}
-.hide-scrollbar::-webkit-scrollbar {
-  display: none;
-}
-
-.gradient-card {
-  background: var(--theme-gradient-bg);
-  transition: box-shadow 0.3s ease;
-}
-
-.gradient-card:hover {
-  box-shadow: 0 4px 12px var(--theme-shadow-color);
-}
+/* ---
+  Themed Sidebar Styles
+  - Fully integrated with the dynamic theme palette.
+  - Handles expanded and collapsed states smoothly.
+  - Includes active link highlighting.
+--- */
 
 :host {
   display: block;
-  min-height: 100vh;
+  height: 100%;
 }
 
-/* Adjust sidebar to fit within container */
-app-sidebar {
-  min-height: 100%;
-  transition: width 0.3s ease;
+.sidebar-container {
+  position: fixed;
+  top: 1rem;
+  bottom: 1rem;
+  left: 1rem;
+  z-index: 100;
+  width: 4rem; /* Collapsed width */
+  transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  overflow: hidden;
+}
+
+.sidebar-container.is-expanded {
+  width: 15rem; /* Expanded width */
+}
+
+.sidebar-content {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 15rem; /* Fixed inner width */
+  background-color: var(--theme-bg-secondary);
+  border: 1px solid var(--theme-border-primary);
+  border-radius: 0.75rem;
+  box-shadow: 0 8px 24px var(--theme-shadow-color);
+}
+
+.menu-list {
+  flex-grow: 1;
+  overflow-y: auto;
+  padding: 0.5rem;
+}
+
+/* --- Menu Links --- */
+.menu-link, .sub-menu-link {
+  display: flex;
+  align-items: center;
+  padding: 0.75rem;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  text-decoration: none;
+  color: var(--theme-text-secondary);
+  transition: background-color 0.2s, color 0.2s;
+  white-space: nowrap;
+}
+
+.menu-link:hover, .sub-menu-link:hover {
+  background-color: var(--theme-hover-bg);
+  color: var(--theme-text-primary);
+}
+
+.menu-icon {
+  font-size: 1.25rem;
+  width: 2rem; /* Fixed width for alignment */
+  flex-shrink: 0;
+  text-align: center;
+}
+
+.menu-label {
+  margin-left: 0.75rem;
+  font-weight: 500;
+  transition: opacity 0.2s ease, max-width 0.3s ease;
+  overflow: hidden;
+  max-width: 100px;
+  opacity: 1;
+}
+
+/* --- Active Link Highlighting --- */
+.active-link {
+  background-color: var(--theme-accent-primary-light);
+  color: var(--theme-accent-primary);
+  font-weight: 600;
+}
+.active-link .menu-icon {
+  color: var(--theme-accent-primary);
+}
+
+/* --- Sub-menu Styling --- */
+.expand-icon {
+  margin-left: auto;
+  font-size: 0.8rem;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.expand-icon.is-rotated {
+  transform: rotate(180deg);
+}
+
+.sub-menu {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease-in-out;
+  padding-left: 1.5rem;
+  margin-top: 0.25rem;
+}
+
+.sub-menu.is-expanded {
+  max-height: 500px; /* Adjust as needed for more items */
+}
+
+.sub-menu-link {
+  padding: 0.6rem 0.75rem;
+}
+
+.sub-menu-icon {
+  font-size: 1rem;
+}
+
+/* --- Collapsed State --- */
+.sidebar-container:not(.is-expanded) .menu-label,
+.sidebar-container:not(.is-expanded) .expand-icon {
+  opacity: 0;
+  max-width: 0;
+  margin-left: 0;
+}
+
+/* --- Footer --- */
+.sidebar-footer {
+  border-top: 1px solid var(--theme-border-primary);
+  padding: 0.5rem;
+  flex-shrink: 0;
+}
+
+:host ::ng-deep .logout-button {
+  width: 100%;
+  justify-content: flex-start;
+}
+:host ::ng-deep .logout-button .p-button-label {
+  margin-left: 0.75rem;
+}
+
+/* --- Hover Trigger Zone --- */
+.sidebar-trigger-zone {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 1rem;
+  z-index: 99;
 }
