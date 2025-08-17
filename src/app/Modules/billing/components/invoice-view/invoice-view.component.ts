@@ -18,9 +18,11 @@ import { AppMessageService } from '../../../../core/services/message.service';
 import { SelectModule } from 'primeng/select';
 import { IftaLabel } from 'primeng/iftalabel';
 import { FormsModule } from '@angular/forms';
+import { DynamicAgGridColumn, DynamicAgGridColumnsComponent } from '../../../../shared/AgGrid/AgGridcomponents/dynamic-ag-grid-columns/dynamic-ag-grid-columns.component';
+import { Dialog } from 'primeng/dialog';
 @Component({
   selector: 'app-invoice-view',
-  imports: [SharedGridComponent, FormsModule, SelectModule, ReactiveFormsModule,],
+  imports: [SharedGridComponent, FormsModule, SelectModule, Dialog, ReactiveFormsModule, InvoicePrintComponent],
   templateUrl: './invoice-view.component.html',
   styleUrl: './invoice-view.component.css'
 })
@@ -31,7 +33,7 @@ export class InvoiceViewComponent {
   public customerService = inject(CustomerService)
   public sellerService = inject(SellerService)
   public productService = inject(ProductService)
-  @Input() invoiceId:any
+  // @Input() invoiceId: any
   filterForm!: FormGroup;
   data: any;
   column: any
@@ -48,8 +50,9 @@ export class InvoiceViewComponent {
     maxRemainingAmount: null
   };
 
+  showpdf: any;
+  invoiceId: any
   constructor(private cdr: ChangeDetectorRef, private fb: FormBuilder, private InvoiceService: InvoiceService) { }
-
   ngOnInit(): void {
     this.rowSelectionMode = 'singleRow';
     this.getColumn();
@@ -93,11 +96,19 @@ export class InvoiceViewComponent {
         console.error('❌ Error: Field is undefined in cellValueChangedEvent.colDef');
       }
     }
-
   }
 
   getColumn(): void {
     this.column = [
+      {
+        headerName: 'Status',
+        field: 'status',
+        cellRenderer: DynamicAgGridColumnsComponent,
+        cellRendererParams: {
+          typeOfCol: 'text',
+          handleAction: (event: any) => this.eventFromTheAgGrid(event)  // 👈 binding event
+        }
+      },
       {
         field: 'invoiceNumber',
         headerName: 'Invoice Number',
@@ -106,9 +117,17 @@ export class InvoiceViewComponent {
         resizable: true,
         cellRenderer: DialogboxComponent,
         cellRendererParams: (params: any) => ({
-          dynamicComponent: InvoiceDetailCardComponent, id: params.data.id,
+          dynamicComponent: InvoiceDetailCardComponent,
+          id: params.data.id,
+          rowData: params.data,
+          icon: 'pi pi-print',
+          tooltip: 'Print Invoice',
+          eventName: 'printDetail',
+          dialogEvent: (event: any) => this.eventFromTheAgGrid(event)  // 👈 binding event
+
         })
       },
+
       {
         headerName: 'buyerDetails.fullname',
         field: 'buyerDetails.fullname',
@@ -183,29 +202,23 @@ export class InvoiceViewComponent {
         cellRendererParams: (params: any) => ({
           dynamicComponent: InvoicePrintComponent,
           id: params.data.id,
+          rowData: params.data,
+          icon: 'pi pi-print',
+          tooltip: 'Print Invoice',
+          eventName: 'printDownload',
+          dialogEvent: (event: any) => this.eventFromTheAgGrid(event)  // 👈 binding event
+
         }), headerName: 'View'
       }
     ];
-
     this.cdr.detectChanges();
   }
 
-
-
-  // applyFilters(): void {
-  //   const rawFilters = this.filterForm.value;
-
-  //   // Clean up: remove empty/null/undefined fields
-  //   const filters: any = {};
-  //   Object.keys(rawFilters).forEach(key => {
-  //     const value = rawFilters[key];
-  //     if (value !== null && value !== '' && value !== undefined) {
-  //       filters[key] = value;
-  //     }
-  //   });
-
-  //   this.getData();
-  // }
+  eventFromTheAgGrid(event: any) {
+    console.log(event);
+    this.showpdf = true
+    this.invoiceId = event.id
+  }
 
   getData(): void {
     const filterParams: any = {};
@@ -221,28 +234,6 @@ export class InvoiceViewComponent {
       this.cdr.markForCheck();
     });
   }
-
-  // getData(): void {
-  //   // const filterParams: any = {
-  //   //   filter: {}
-  //   // };
-  //   const { minRemainingAmount, maxRemainingAmount, ...rest } = this.invoiceFilter;
-  //   for (const [key, value] of Object.entries(rest)) {
-  //     if (value !== '' && value !== null && value !== undefined) {
-  //       filterParams[key] = value;
-  //     }
-  //   }
-  // if (minRemainingAmount || maxRemainingAmount) {
-  //   filterParams.filter.totalAmount = {};
-  //   if (minRemainingAmount) filterParams.filter.totalAmount.gt = minRemainingAmount;
-  //   if (maxRemainingAmount) filterParams.filter.totalAmount.lt = maxRemainingAmount;
-  // }
-  //   this.InvoiceService.getAllinvoiceData(filterParams).subscribe((res: any) => {
-  //     this.data = res.data;
-  //     this.cdr.markForCheck();
-  //   });
-  // }
-
 
   resetFilters(): void {
     this.invoiceFilter = {

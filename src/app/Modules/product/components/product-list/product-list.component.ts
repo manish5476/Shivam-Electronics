@@ -76,6 +76,7 @@ export class ProductListComponent implements OnInit {
         ];
 
         this.cols = [
+            { field: '_id', header: 'ID', customExportHeader: 'Product Code' },
             { field: 'code', header: 'Code', customExportHeader: 'Product Code' },
             { field: 'name', header: 'Name' },
             { field: 'image', header: 'Image' },

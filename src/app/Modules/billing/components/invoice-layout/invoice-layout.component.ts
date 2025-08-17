@@ -1,15 +1,3 @@
-// import { Component } from '@angular/core';
-
-// @Component({
-//   selector: 'app-invoice-layout',
-//   imports: [],
-//   templateUrl: './invoice-layout.component.html',
-//   styleUrl: './invoice-layout.component.css'
-// })
-// export class InvoiceLayoutComponent {
-
-// }
-
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
@@ -18,6 +6,8 @@ import { SelectButtonModule } from 'primeng/selectbutton';
 import { FormsModule } from '@angular/forms';
 import { GstInvoiceComponent } from '../gst-invoice/gst-invoice.component';
 import { InvoiceViewComponent } from '../invoice-view/invoice-view.component';
+import { InvoiceDetailCardComponent } from '../invoice-detailsview/invoice-detailsview.component';
+import { InvoicePrintComponent } from '../invoice-print/invoice-print.component';
 @Component({
   selector: 'app-invoice-layout',
   imports: [CommonModule, RouterModule, SelectButtonModule, FormsModule],
@@ -26,11 +16,12 @@ import { InvoiceViewComponent } from '../invoice-view/invoice-view.component';
 })
 
 export class InvoiceLayoutComponent {
-
   activeComponent: any = InvoiceViewComponent;
   componentNavItems: any[] = [
-    { label: 'get all Invoice', component: InvoiceViewComponent },
-    { label: 'Create Invoice', component: GstInvoiceComponent },
+    { label: 'Create Bill', component: GstInvoiceComponent },
+    { label: 'Detailed Bill View', component: InvoiceDetailCardComponent },
+    { label: 'All Bill Details', component: InvoiceViewComponent },
+    { label: 'Print Bill Details', component: InvoicePrintComponent },
     // { label: 'customerDetails', component: CustomerdetailsComponent }
   ];
 

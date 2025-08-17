@@ -1,1 +1,31 @@
-/* @import "tailwindcss"; */
+.card-details {
+  background-color: var(--theme-bg-ternary);
+  width: auto;
+  border: 1.5px dashed var(--theme-border-dark);
+  border-radius: .5rem;
+  box-shadow: 0 4px 6px -1px var(--theme-shadow-color);
+  padding: 0rem;
+  margin-bottom: .8rem;
+}
+:host {
+  display: block;
+  height: 100%;
+}
+
+.p-ripple p-togglebutton p-component .p-button {
+  border-radius: 0.5rem !important; /* rounded buttons */
+  padding: 0.6rem 1.2rem;
+  font-weight: 500;
+  transition: all 0.2s ease-in-out;
+}
+
+.p-ripple p-togglebutton p-component .p-button.p-highlight {
+  background-color: #2563eb !important; /* Tailwind blue-600 */
+  border-color: #2563eb !important;
+  color: white !important;
+  box-shadow: 0 4px 6px rgba(37, 99, 235, 0.2);
+}
+
+.p-ripple p-togglebutton p-component .p-button:not(.p-highlight):hover {
+  background-color: #f3f4f6 !important; /* Tailwind gray-100 */
+}

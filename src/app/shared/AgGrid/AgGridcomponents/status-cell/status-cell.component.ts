@@ -6,6 +6,7 @@ import { CommonModule } from '@angular/common';
 import { TagModule } from 'primeng/tag';
 
 export interface StatusColumnConfig extends ICellRendererParams {
+  field: string | undefined;
   severityMap: (value: any) => 'success' | 'warning' | 'danger' | 'info' | 'secondary';
 }
 

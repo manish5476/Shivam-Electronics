@@ -60,7 +60,13 @@
 
   <div class="card mt-1">
     <app-shared-grid [gridHeight]="'210px'" [headerFilter]="false" [data]="data" [GridName]="'Invoice Details'"
-      [rowSelectionMode]="rowSelectionMode" [rowClassRules]="rowClassrules" [column]="column"
+      [showActions]="true" [rowSelectionMode]="rowSelectionMode" [rowClassRules]="rowClassrules" [column]="column"
       (eventFromGrid)="eventFromGrid($event)"></app-shared-grid>
   </div>
 </div>
+
+
+<p-dialog header="Invoice" [(visible)]="showpdf" [modal]="true" [style]="{ width: '90vw', maxWidth: '1200px' }"
+  class="bg-[var(--theme-dialog-bg)] text-[var(--theme-text-primary)] rounded-xl">
+  <app-invoice-print [Id]="invoiceId"></app-invoice-print>
+</p-dialog>

@@ -11,7 +11,7 @@
           [style]="{'width': '2.25rem', 'height': '2.25rem'}" class="rounded-full overflow-hidden"></p-colorPicker>
       </div>
       <div class="flex items-center flex-1 min-w-[16rem] rounded-lg shadow-inner focus-within:ring-2"
-        [style.backgroundColor]="'var(--theme-bg-tertiary)'" [style.color]="'var(--theme-text-primary)'"
+        [style.backgroundColor]="'var(--theme-bg-ternary)'" [style.color]="'var(--theme-text-primary)'"
         [style.boxShadow]="'inset 0 1px 2px var(--theme-shadow-color)'"
         [style.outlineColor]="'var(--theme-accent-focus-ring)'">
         <i class="pi pi-search text-base p-2" [style.color]="'var(--theme-text-secondary)'"></i>
@@ -38,7 +38,7 @@
 
   <div class="relative w-full ag-grid-main-area" [style.height]="mainGridHeight">
     <ag-grid-angular style="height: 100%; width: 100%;" [rowData]="rowData" [columnDefs]="columnDefs" [theme]="theme"
-      [defaultColDef]="defaultColDef" [pagination]="true" [rowSelection]="rowSelection"
+      [defaultColDef]="defaultColDef" [pagination]="true" [rowSelection]="rowSelection" editType ='fullRow'
       [rowClassRules]="mergedRowClassRules" [paginationPageSize]="paginationPageSize" [getRowId]="getRowId"
       (cellValueChanged)="onCellValueChanged($event)" (rowSelected)="onRowSelected($event)"
       (cellClicked)="onCellClicked($event)" (gridReady)="onGridReady($event)">
