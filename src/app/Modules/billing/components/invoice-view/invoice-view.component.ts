@@ -54,7 +54,7 @@ export class InvoiceViewComponent {
   invoiceId: any
   constructor(private cdr: ChangeDetectorRef, private fb: FormBuilder, private InvoiceService: InvoiceService) { }
   ngOnInit(): void {
-    this.rowSelectionMode = 'singleRow';
+    this.rowSelectionMode = ' ';
     this.getColumn();
     this.getData();
 
@@ -85,7 +85,7 @@ export class InvoiceViewComponent {
 
       if (field) {
         dataItem[field] = newValue;
-        this.InvoiceService.updateinvoice(dataItem.id, dataItem).subscribe({
+        this.InvoiceService.updateInvoice(dataItem.id, dataItem).subscribe({
           next: (res: any) => {
           },
           error: (err: any) => {
@@ -229,7 +229,7 @@ export class InvoiceViewComponent {
     });
 
 
-    this.InvoiceService.getAllinvoiceData(filterParams).subscribe((res: any) => {
+    this.InvoiceService.getAllInvoices(filterParams).subscribe((res: any) => {
       this.data = res.data;
       this.cdr.markForCheck();
     });

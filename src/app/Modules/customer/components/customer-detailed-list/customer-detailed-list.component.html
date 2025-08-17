@@ -1,8 +1,282 @@
+<div class="customer-dashboard w-full">
+  <p-toast></p-toast>
 
+  <!-- Header Section -->
+  <div class="dashboard-header">
+    <div class="header-content">
+      <div class="header-title">
+        <h1>Customer Dashboard</h1>
+        <p>Comprehensive customer overview and analytics</p>
+      </div>
+      <div class="header-actions">
+        <p-select appendTo="body" [(ngModel)]="customerId" (onChange)="getCustomerDetail()"
+          [options]="customerIDDropdown" optionLabel="fullname" optionValue="_id" placeholder="Select a Customer"
+          [filter]="true" filterBy="fullname" styleClass="filter-input filter-input-lg">
+        </p-select>
+        <p-button icon="pi pi-refresh" label="Refresh" styleClass="p-button-outlined" (onClick)="getCustomerDetail()">
+        </p-button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Loading State -->
+  <div *ngIf="isLoading" class="loading-container">
+    <p-skeleton height="200px" styleClass="mb-3"></p-skeleton>
+    <p-skeleton height="300px"></p-skeleton>
+  </div>
+
+  <!-- Main Content -->
+  <div *ngIf="!isLoading && customer" class="dashboard-content">
+
+ <div class="profile-hero-v2">
+
+  <div class="profile-main-v2">
+    <p-avatar [image]="customer.profileImg" [label]="getInitials(customer.fullname)" shape="circle" styleClass="profile-avatar-v2"></p-avatar>
+    <div class="profile-info">
+      <h2 class="customer-name">{{ customer.fullname }}</h2>
+      <p class="customer-email">{{ customer.email }}</p>
+      <p-tag [value]="customer.status" [severity]="getStatusSeverity(customer.status)" styleClass="status-badge"></p-tag>
+    </div>
+  </div>
+
+  <div class="financial-overview-v2">
+    <h3 class="card-title">
+      <i class="pi pi-chart-bar"></i>
+      <span>Financial Overview</span>
+    </h3>
+
+    <div class="kpi-metrics">
+      <div class="kpi-card positive">
+        <div class="kpi-icon"><i class="pi pi-arrow-up"></i></div>
+        <div class="kpi-details">
+          <span class="kpi-value">{{ commonMethod.formatCurrency(customer.totalPurchasedAmount) }}</span>
+          <span class="kpi-label">Total Revenue</span>
+        </div>
+      </div>
+      <div class="kpi-card" [ngClass]="getTotalUnpaidAmount() > 0 ? 'negative' : 'neutral'">
+        <div class="kpi-icon">
+          <i class="pi" [ngClass]="getTotalUnpaidAmount() > 0 ? 'pi-exclamation-triangle' : 'pi-check'"></i>
+        </div>
+        <div class="kpi-details">
+          <span class="kpi-value">{{ commonMethod.formatCurrency(getTotalUnpaidAmount()) }}</span>
+          <span class="kpi-label">Outstanding Balance</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="payment-rate-section-v2">
+      <div class="rate-header">
+        <span>Payment Success Rate</span>
+        <span class="rate-percentage">{{ getPaymentSuccessRate() }}%</span>
+      </div>
+      <p-progressBar [value]="getPaymentSuccessRate()" styleClass="payment-progress"></p-progressBar>
+    </div>
+  </div>
+
+</div>
+
+    <!-- Tabbed Content -->
+    <p-tabView [(activeIndex)]="activeTab" styleClass="custom-tabview">
+
+      <!-- Overview Tab -->
+  <p-tabPanel header="Overview" leftIcon="pi pi-user">
+  <div class="tab-content">
+    <div class="overview-grid-v2">
+
+      <div class="overview-card-v2">
+        <h3 class="card-title">
+          <i class="pi pi-phone"></i>
+          <span>Contact Information</span>
+        </h3>
+        <ul class="overview-list">
+          <li class="overview-list-item">
+            <div class="item-content">
+              <span class="item-label">Email Address</span>
+              <span class="item-value">{{ customer.email }}</span>
+            </div>
+            <div class="item-actions">
+              <button pButton pRipple type="button" icon="pi pi-copy" class="p-button-text p-button-rounded" pTooltip="Copy Email"></button>
+              <button pButton pRipple type="button" icon="pi pi-envelope" class="p-button-text p-button-rounded" pTooltip="Send Email"></button>
+            </div>
+          </li>
+          <li class="overview-list-item">
+            <div class="item-content">
+              <span class="item-label">Mobile Number</span>
+              <span class="item-value">{{ customer.mobileNumber || 'N/A' }}</span>
+            </div>
+            <div class="item-actions">
+              <button pButton pRipple type="button" icon="pi pi-copy" class="p-button-text p-button-rounded" pTooltip="Copy Number"></button>
+            </div>
+          </li>
+          <li class="overview-list-item" *ngIf="customer.phoneNumbers?.length">
+            <div class="item-content">
+              <span class="item-label">Additional Phone</span>
+              <span class="item-value">{{ customer.phoneNumbers[0].number }}</span>
+            </div>
+             <div class="item-actions">
+              <button pButton pRipple type="button" icon="pi pi-copy" class="p-button-text p-button-rounded" pTooltip="Copy Number"></button>
+            </div>
+          </li>
+          <li class="overview-list-item">
+            <div class="item-content">
+              <span class="item-label">Customer Since</span>
+              <span class="item-value">{{ customer.createdAt | date:'longDate' }}</span>
+            </div>
+          </li>
+        </ul>
+      </div>
+
+      <div class="overview-card-v2" *ngIf="customer.addresses?.length">
+        <h3 class="card-title">
+          <i class="pi pi-map-marker"></i>
+          <span>Primary Address</span>
+        </h3>
+        <div class="address-container">
+          <div class="address-visual">
+            <i class="pi pi-map"></i>
+          </div>
+          <div class="address-details">
+            <p class="address-text">
+              <strong>{{ customer.addresses[0].street }}</strong><br>
+              {{ customer.addresses[0].city }}, {{ customer.addresses[0].state }}<br>
+              {{ customer.addresses[0].zipCode }}, {{ customer.addresses[0].country }}
+            </p>
+            <p-chip [label]="customer.addresses[0].type" icon="pi pi-home" styleClass="address-type-chip"></p-chip>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</p-tabPanel>
+
+      <!-- Cart Items Tab -->
+      <p-tabPanel header="Cart Items" leftIcon="pi pi-shopping-cart">
+        <div class="tab-content">
+          <div class="items-grid-container" *ngIf="customer.cart?.items?.length; else noItems">
+
+            <div class="item-card-v2" *ngFor="let item of customer.cart.items; let i = index">
+
+              <div class="item-card-header">
+                <div class="item-visual">
+                  <i class="pi pi-box product-icon"></i>
+                </div>
+                <div class="item-details">
+                  <h4 class="item-title">{{ item.productId?.title }}</h4>
+                  <p class="item-description">{{ item.productId?.description | slice:0:100 }}{{
+                    (item.productId?.description.length > 100) ? '...' : '' }}</p>
+                </div>
+                <div class="item-price">
+                  <span class="price-label">Price</span>
+                  <span class="price-value">{{ commonMethod.formatCurrency(item.productId?.price) }}</span>
+                </div>
+              </div>
+
+              <div class="item-card-invoices" *ngIf="item.invoiceIds?.length">
+                <div class="invoice-list-header">
+                  <span>Invoice #</span>
+                  <span>Date</span>
+                  <span>Status</span>
+                  <span class="text-right">Amount</span>
+                </div>
+                <div class="invoice-list">
+                  <div class="invoice-row" *ngFor="let invoice of item.invoiceIds">
+                    <div class="invoice-cell">
+                      <span class="cell-label">Invoice #</span>
+                      <span class="invoice-number">{{ invoice.invoiceNumber }}</span>
+                    </div>
+                    <div class="invoice-cell">
+                      <span class="cell-label">Date</span>
+                      <span>{{ invoice.invoiceDate | date:'dd-MMM-yy' }}</span>
+                    </div>
+                    <div class="invoice-cell">
+                      <span class="cell-label">Status</span>
+                      <p-tag [value]="invoice.status" [severity]="getStatusSeverity(invoice.status)"
+                        styleClass="status-tag-compact"></p-tag>
+                    </div>
+                    <div class="invoice-cell text-right">
+                      <span class="cell-label">Amount</span>
+                      <span class="invoice-amount">{{ commonMethod.formatCurrency(invoice.totalAmount) }}</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+          <ng-template #noItems>
+            <div class="empty-state">
+              <i class="pi pi-shopping-cart empty-icon"></i>
+              <h3>No Items in Cart</h3>
+              <p>This customer hasn't added any items to their cart yet.</p>
+            </div>
+          </ng-template>
+        </div>
+      </p-tabPanel>
+
+      <!-- Payment History Tab -->
+ <p-tabPanel header="Payment History" leftIcon="pi pi-credit-card">
+  <div class="tab-content">
+    <div class="payments-container" *ngIf="customer.paymentHistory?.length; else noPayments">
+      <p-timeline [value]="customer.paymentHistory" layout="vertical" align="left">
+        
+        <ng-template pTemplate="marker" let-payment>
+          <div class="timeline-marker-v2" [ngClass]="'marker-' + getStatusSeverity(payment.status)">
+            <i class="pi" [ngClass]="{
+              'pi-check': payment.status === 'completed',
+              'pi-arrow-right-arrow-left': payment.status === 'refunded',
+              'pi-clock': payment.status === 'pending',
+              'pi-times-circle': payment.status === 'failed'
+            }"></i>
+          </div>
+        </ng-template>
+
+        <ng-template pTemplate="content" let-payment>
+          <div class="payment-card-v2" [ngClass]="'payment-' + getStatusSeverity(payment.status)">
+            
+            <div class="payment-header-v2">
+              <div class="payment-source">
+                <i class="pi pi-credit-card payment-method-icon"></i>
+                <span class="payment-amount">{{ commonMethod.formatCurrency(payment.amount) }}</span>
+              </div>
+              <p-tag [value]="payment.status" [severity]="getStatusSeverity(payment.status)"></p-tag>
+            </div>
+
+            <div class="payment-details-v2">
+              <div class="payment-info">
+                <span class="payment-label">Transaction ID</span>
+                <span class="payment-value">{{ payment.transactionId }}</span>
+              </div>
+              <div class="payment-info">
+                <span class="payment-label">Date & Time</span>
+                <span class="payment-value">{{ payment.createdAt | date:'dd MMM yyyy, h:mm a' }}</span>
+              </div>
+            </div>
+          </div>
+        </ng-template>
+
+      </p-timeline>
+    </div>
+
+    <ng-template #noPayments>
+      <div class="empty-state">
+        <i class="pi pi-credit-card empty-icon"></i>
+        <h3>No Payment History</h3>
+        <p>No payment transactions found for this customer.</p>
+      </div>
+    </ng-template>
+  </div>
+</p-tabPanel>
+    </p-tabView>
+  </div>
+</div>
+
+
+<!-- 
 <div class="customer-view-container">
   <p-toast></p-toast>
 
-  <!-- Header -->
+  
   <div class="card header-card">
     <div class="flex gap-6">
       <h2 class="page-title">Customer Details</h2>
@@ -15,12 +289,12 @@
     </div>
   </div>
 
-  <!-- Content -->
+  
   <ng-container *ngIf="!isLoading && customer">
 
-    <!-- Profile + Financials (side by side row) -->
+    
     <div class="row-grid">
-      <!-- Profile Card -->
+      
       <div class="card profile-card">
         <div class="profile-header">
           <p-avatar [image]="customer.profileImg" [label]="commonMethod.getInitials(customer.fullname)" shape="circle"
@@ -35,7 +309,7 @@
           </div>
         </div>
 
-        <!-- Contact Info -->
+        
         <div class="profile-details grid-2col">
           <div class="detail-box">
             <span class="label">📱 Phone</span>
@@ -60,7 +334,7 @@
         </div>
       </div>
 
-      <!-- Financial Overview Card -->
+      
       <div class="card financial-card">
         <h3 class="section-header">💰 Financial Overview</h3>
         <div class="financial-stats">
@@ -83,9 +357,9 @@
     </div>
 
 
-    <!-- Purchase & Payment History (side by side row) -->
+    
     <div class="row-grid">
-      <!-- Purchases -->
+      
       <div class="card">
         <h3 class="section-header">🛒 Purchase History</h3>
         <div class="timeline-container colorful-timeline card-container">
@@ -105,7 +379,7 @@
         </div>
       </div>
 
-      <!-- Payments -->
+      
       <div class="card">
         <h3 class="section-header">💳 Payment History</h3>
         <div class="timeline-container colorful-timeline card-container">
@@ -132,4 +406,4 @@
       </div>
     </div>
   </ng-container>
-</div>
+</div> -->

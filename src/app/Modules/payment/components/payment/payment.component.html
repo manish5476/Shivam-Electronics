@@ -1,7 +1,110 @@
-<div class="p-6 mx-auto w-full rounded-2xl shadow-xl border transition-all duration-500 ease-in-out"
+<div class="payment-container">
+  <div class="main-card-v2">
+    <header class="page-header">
+      <h1 class="page-title"><i class="pi pi-credit-card"></i> Customer Payment</h1>
+      <div class="header-controls">
+        <p-select [(ngModel)]="customerId" (onChange)="fetchCustomerData()" [options]="customerIDDropdown"
+          optionLabel="label" optionValue="_id" placeholder="Select a Customer"
+          styleClass="themed-select customer-selector" panelStyleClass="themed-panel" [filter]="true">
+        </p-select>
+      </div>
+    </header>
+
+    <div class="content-grid">
+      <section class="info-card">
+        <h2 class="section-header"><i class="pi pi-user"></i> Customer Information</h2>
+        <ng-container *ngIf="customer; else noCustomerSelected">
+          <dl class="detail-list">
+            <div class="detail-item">
+              <dt>Name</dt>
+              <dd>{{ customer.fullname }}</dd>
+            </div>
+            <div class="detail-item">
+              <dt>Email</dt>
+              <dd>{{ customer.email }}</dd>
+            </div>
+            <div class="detail-item">
+              <dt>Phone</dt>
+              <dd>{{ customer.phoneNumbers?.[0]?.number || 'N/A' }}</dd>
+            </div>
+            <div class="detail-item">
+              <dt>Status</dt>
+              <dd [ngClass]="customer.status === 'active' ? 'status-success' : 'status-danger'">{{ customer.status |
+                titlecase }}</dd>
+            </div>
+            <div class="detail-item col-span-2">
+              <dt>Address</dt>
+              <dd>{{ customer.addresses?.[0]?.street || 'N/A' }}, {{ customer.addresses?.[0]?.city || '' }}</dd>
+            </div>
+            <div class="detail-item highlight-success">
+              <dt>Total Purchased</dt>
+              <dd>{{ customer.totalPurchasedAmount | currency:'INR' }}</dd>
+            </div>
+            <div class="detail-item highlight-danger">
+              <dt>Remaining Amount</dt>
+              <dd>{{ customer.remainingAmount | currency:'INR' }}</dd>
+            </div>
+          </dl>
+        </ng-container>
+        <ng-template #noCustomerSelected>
+          <div class="placeholder-text">Select a customer to view their details.</div>
+        </ng-template>
+      </section>
+
+     <section class="form-card">
+  <h2 class="section-header"><i class="pi pi-dollar"></i> Process Payment</h2>
+
+  <form #paymentForm="ngForm" (ngSubmit)="onSubmit()" class="payment-form">
+
+    <div class="form-group amount-section">
+      <label for="amount">Enter Amount to Pay</label>
+      <p-inputNumber id="amount" [(ngModel)]="paymentData.amount" name="amount" mode="currency" currency="INR" locale="en-IN" required styleClass="themed-input w-full amount-input" inputStyleClass="p-3 text-3xl"></p-inputNumber>
+    </div>
+
+    <div class="form-group">
+      <label>Select Payment Method</label>
+      <div class="payment-method-selector">
+        <div *ngFor="let method of paymentMethods"
+             class="method-chip"
+             [ngClass]="{'active': paymentData.paymentMethod === method.value}"
+             (click)="selectPaymentMethod(method.value)">
+          <i class="pi {{method.icon}}"></i>
+          <span>{{ method.label }}</span>
+        </div>
+      </div>
+    </div>
+    
+    <div class="details-section">
+        <div class="form-group">
+            <label for="status">Payment Status</label>
+            <p-select id="status" [(ngModel)]="paymentData.status" name="status" [options]="statuses" required styleClass="themed-select" panelStyleClass="themed-panel"></p-select>
+        </div>
+        <div class="form-group">
+            <label for="description">Description / Notes</label>
+            <textarea id="description" pInputTextarea [(ngModel)]="paymentData.description" name="description" rows="2" placeholder="Payment description (optional)" class="themed-input" maxlength="200"></textarea>
+        </div>
+    </div>
+
+    <div class="form-actions">
+      <button pButton type="submit"
+              [disabled]="paymentForm.invalid || !customerId"
+              class="p-button-lg w-full submit-payment-button">
+        <div class="flex items-center justify-between w-full">
+            <span>Process Payment</span>
+            <span class="font-bold text-lg">{{ paymentData.amount | currency:'INR':'symbol':'1.2-2' }}</span>
+        </div>
+      </button>
+    </div>
+  </form>
+</section>
+    </div>
+  </div>
+  <p-toast></p-toast>
+</div>
+<!-- <div class="p-6 mx-auto w-full rounded-2xl shadow-xl border transition-all duration-500 ease-in-out"
   [style.backgroundColor]="'var(--theme-bg-main)'" [style.borderColor]="'var(--theme-border-secondary)'"
   [style.color]="'var(--theme-text-primary)'">
-  <!-- Header -->
+  Header
   <header class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-2">
     <h1 class="text-3xl font-bold text-center md:text-left flex-1" [style.color]="'var(--theme-text-heading)'">
       💳 Customer Payment
@@ -14,16 +117,16 @@
     </div>
   </header>
 
-  <!-- Content -->
+  Content
   <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-    <!-- Customer Info Card -->
+    Customer Info Card
     <section class="p-6 rounded-xl shadow-md border" [style.backgroundColor]="'var(--theme-bg-secondary)'"
       [style.borderColor]="'var(--theme-border-secondary)'">
       <h2 class="text-xl font-semibold mb-4 flex items-center gap-2" [style.color]="'var(--theme-text-heading)'">
         👤 Customer Information
       </h2>
       <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <!-- Detail Item -->
+        Detail Item
         <div class="p-3 rounded-lg border" [style.backgroundColor]="'var(--theme-bg-tertiary)'"
           [style.borderColor]="'var(--theme-border-secondary)'">
           <dt class="font-semibold" [style.color]="'var(--theme-text-label)'">Name</dt>
@@ -88,7 +191,7 @@
       </div>
     </section>
 
-    <!-- Payment Form Card -->
+    Payment Form Card
     <section class="p-6 rounded-xl shadow-md border flex flex-col" [style.backgroundColor]="'var(--theme-bg-secondary)'"
       [style.borderColor]="'var(--theme-border-secondary)'">
       <h2 class="text-2xl font-semibold mb-4 text-center flex items-center justify-center gap-2"
@@ -99,7 +202,7 @@
       <form (ngSubmit)="onSubmit()" class="flex flex-col flex-1">
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
 
-          <!-- Amount -->
+          Amount
           <div class="md:col-span-2">
             <label for="amount-input" class="block text-sm font-bold mb-1">Amount <span
                 class="text-red-500">*</span></label>
@@ -108,7 +211,7 @@
               class="w-full p-3 rounded-lg border shadow-sm focus:ring-2 focus:ring-blue-500" />
           </div>
 
-          <!-- Payment Method -->
+          Payment Method
           <div>
             <label for="payment-method" class="block text-sm font-bold mb-1">Method <span
                 class="text-red-500">*</span></label>
@@ -118,7 +221,7 @@
             </select>
           </div>
 
-          <!-- Status -->
+          Status
           <div>
             <label for="payment-status" class="block text-sm font-bold mb-1">Status <span
                 class="text-red-500">*</span></label>
@@ -129,7 +232,7 @@
           </div>
         </div>
 
-        <!-- Description -->
+        Description
         <div class="mt-4">
           <label class="block text-sm font-bold mb-1">Description</label>
           <textarea [(ngModel)]="paymentData.description" name="description" rows="2"
@@ -137,7 +240,7 @@
             class="w-full p-3 rounded-lg border shadow-sm focus:ring-2 focus:ring-blue-500"></textarea>
         </div>
 
-        <!-- Metadata -->
+        Metadata
         <div class="mt-4">
           <label class="block text-sm font-bold mb-1">Metadata (JSON)</label>
           <textarea [(ngModel)]="paymentData.metadata" name="metadata" rows="3"
@@ -148,7 +251,7 @@
           </p>
         </div>
 
-        <!-- Submit -->
+        Submit
         <div class="mt-6">
           <button type="submit"
             class="w-full py-3 px-6 rounded-lg font-bold shadow-md transition hover:opacity-90 disabled:opacity-50 disabled:cursor-not-allowed"
@@ -161,7 +264,7 @@
     </section>
   </div>
 </div>
-<p-toast></p-toast>
+<p-toast></p-toast> -->
 
 <!-- <div class="p-2 mx-auto max-full rounded-xl shadow-2xl border transition-all duration-500 ease-in-out"
   [style.backgroundColor]="'var(--theme-bg-main)'" [style.borderColor]="'var(--theme-border-secondary)'"

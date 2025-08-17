@@ -1,260 +1,117 @@
-<div class="flex flex-wrap md:-m-2 -m-1 w-full"
-    style="background: linear-gradient(to bottom, var(--theme-body-gradient-start), var(--theme-body-gradient-end));">
 
-    <div class="w-full p-1 md:p-2">
-        <div
-            class="card p-6 rounded-xl border border-[var(--theme-border-primary)] shadow-lg transition-all duration-300 hover:shadow-[0_4px_20px_var(--theme-shadow-color)]">
+<div class="product-form-container">
+  <div class="main-card-v2">
 
-            <h2
-                class="text-2xl font-bold text-[var(--theme-text-heading)] mb-1 border-b border-[var(--theme-border-secondary)] pb-0">
-                <i class="pi pi-box mr-2"></i>Manage Product
-            </h2>
-
-            <!-- Form Start -->
-            <form (ngSubmit)="submitProduct()">
-
-                <!-- Basic Information Section -->
-                <div class="gradient-card p-5 rounded-lg border border-[var(--theme-border-secondary)] mb-6">
-                    <h3
-                        class="text-lg font-semibold text-[var(--theme-text-heading)] mb-2 border-b border-[var(--theme-border-secondary)] pb-2">
-                        Basic Information
-                    </h3>
-
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                        <!-- Title -->
-                        <div class="form-group">
-                            <label for="title"
-                                class="block text-sm font-medium text-[var(--theme-text-secondary)] mb-1">
-                                Title <span class="text-[var(--theme-error-primary)]">*</span>
-                            </label>
-                            <input id="title" type="text" pInputText class="w-full h-10 px-3 py-2 bg-[var(--theme-bg-tertiary)] text-[var(--theme-text-primary)]
-                            border border-[var(--theme-border-secondary)] rounded-md
-                            focus:ring-2 focus:ring-[var(--theme-accent-primary)]
-                            focus:border-[var(--theme-accent-primary)] sm:text-sm" [(ngModel)]="product.title"
-                                name="title" required maxlength="200" />
-                        </div>
-
-                        <!-- Description -->
-                        <div class="form-group">
-                            <label for="description"
-                                class="block text-sm font-medium text-[var(--theme-text-secondary)] mb-1">
-                                Description <span class="text-[var(--theme-error-primary)]">*</span>
-                            </label>
-                            <textarea id="description" pInputTextarea rows="3" class="w-full px-3 py-2 bg-[var(--theme-bg-tertiary)] text-[var(--theme-text-primary)]
-                               border border-[var(--theme-border-secondary)] rounded-md
-                               focus:ring-2 focus:ring-[var(--theme-accent-primary)]
-                               focus:border-[var(--theme-accent-primary)] sm:text-sm resize-none"
-                                [(ngModel)]="product.description" name="description" required
-                                maxlength="500"></textarea>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Identification & Categorization Section -->
-                <div class="gradient-card p-5 rounded-lg border border-[var(--theme-border-secondary)] mb-6">
-                    <h3
-                        class="text-lg font-semibold text-[var(--theme-text-heading)] mb-2 border-b border-[var(--theme-border-secondary)] pb-2">
-                        Identification & Categorization
-                    </h3>
-
-                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                        <!-- Category -->
-                        <div class="form-group">
-                            <label for="category"
-                                class="block text-sm font-medium text-[var(--theme-text-secondary)] mb-1">
-                                Category <span class="text-[var(--theme-error-primary)]">*</span>
-                            </label>
-                            <input id="category" type="text" pInputText class="w-full h-10 px-3 py-2 bg-[var(--theme-bg-tertiary)] text-[var(--theme-text-primary)]
-                            border border-[var(--theme-border-secondary)] rounded-md
-                            focus:ring-2 focus:ring-[var(--theme-accent-primary)]
-                            focus:border-[var(--theme-accent-primary)] sm:text-sm" [(ngModel)]="product.category"
-                                name="category" required />
-                        </div>
-
-                        <!-- Brand -->
-                        <div class="form-group">
-                            <label for="brand"
-                                class="block text-sm font-medium text-[var(--theme-text-secondary)] mb-1">
-                                Brand <span class="text-[var(--theme-error-primary)]">*</span>
-                            </label>
-                            <input id="brand" type="text" pInputText class="w-full h-10 px-3 py-2 bg-[var(--theme-bg-tertiary)] text-[var(--theme-text-primary)]
-                            border border-[var(--theme-border-secondary)] rounded-md
-                            focus:ring-2 focus:ring-[var(--theme-accent-primary)]
-                            focus:border-[var(--theme-accent-primary)] sm:text-sm" [(ngModel)]="product.brand"
-                                name="brand" required />
-                        </div>
-
-                        <!-- SKU -->
-                        <div class="form-group">
-                            <label for="sku" class="block text-sm font-medium text-[var(--theme-text-secondary)] mb-1">
-                                SKU <span class="text-[var(--theme-error-primary)]">*</span>
-                            </label>
-                            <input id="sku" type="text" pInputText class="w-full h-10 px-3 py-2 bg-[var(--theme-bg-tertiary)] text-[var(--theme-text-primary)]
-                            border border-[var(--theme-border-secondary)] rounded-md
-                            focus:ring-2 focus:ring-[var(--theme-accent-primary)]
-                            focus:border-[var(--theme-accent-primary)] sm:text-sm" [(ngModel)]="product.sku" name="sku"
-                                required />
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Pricing Section -->
-                <div class="gradient-card p-5 rounded-lg border border-[var(--theme-border-secondary)] mb-6">
-                    <h3
-                        class="text-lg font-semibold text-[var(--theme-text-heading)] mb-2 border-b border-[var(--theme-border-secondary)] pb-2">
-                        Pricing
-                    </h3>
-
-                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                        <!-- Base Rate -->
-                        <div class="form-group">
-                            <label for="rate" class="block text-sm font-medium text-[var(--theme-text-secondary)] mb-1">
-                                Base Rate* (Pre‑GST)
-                            </label>
-                            <input id="rate" type="number" pInputText (change)="calculatePrice()" class="w-full h-10 px-3 py-2 bg-[var(--theme-bg-tertiary)] text-[var(--theme-text-primary)]
-                            border border-[var(--theme-border-secondary)] rounded-md
-                            focus:ring-2 focus:ring-[var(--theme-accent-primary)]
-                            focus:border-[var(--theme-accent-primary)] sm:text-sm" [(ngModel)]="product.rate"
-                                name="rate" required min="0" />
-                        </div>
-
-                        <!-- GST Rate -->
-                        <div class="form-group">
-                            <label for="gstRate"
-                                class="block text-sm font-medium text-[var(--theme-text-secondary)] mb-1">
-                                GST Rate (%)*
-                            </label>
-                            <input id="gstRate" type="number" pInputText (change)="calculatePrice()" class="w-full h-10 px-3 py-2 bg-[var(--theme-bg-tertiary)] text-[var(--theme-text-primary)]
-                            border border-[var(--theme-border-secondary)] rounded-md
-                            focus:ring-2 focus:ring-[var(--theme-accent-primary)]
-                            focus:border-[var(--theme-accent-primary)] sm:text-sm" [(ngModel)]="product.gstRate"
-                                name="gstRate" required min="0" max="100" />
-                        </div>
-
-                        <!-- Post‑GST Price -->
-                        <div class="form-group">
-                            <label for="price"
-                                class="block text-sm font-medium text-[var(--theme-text-secondary)] mb-1">
-                                Price (Post‑GST)
-                            </label>
-                            <input id="price" type="number" pInputText class="w-full h-10 px-3 py-2 bg-[var(--theme-bg-tertiary)] text-[var(--theme-text-primary)]
-                            border border-[var(--theme-border-secondary)] rounded-md
-                            focus:ring-2 focus:ring-[var(--theme-accent-primary)]
-                            focus:border-[var(--theme-accent-primary)] sm:text-sm" [(ngModel)]="product.price"
-                                name="price" min="0" readonly />
-                            <small class="text-xs text-[var(--theme-text-secondary)]">Auto-calculated on save if rate or
-                                GST changes.</small>
-                        </div>
-
-                        <!-- Discount -->
-                        <div class="form-group">
-                            <label for="discountPercentage"
-                                class="block text-sm font-medium text-[var(--theme-text-secondary)] mb-1">
-                                Discount (%)
-                            </label>
-                            <input id="discountPercentage" type="number" pInputText class="w-full h-10 px-3 py-2 bg-[var(--theme-bg-tertiary)] text-[var(--theme-text-primary)]
-                            border border-[var(--theme-border-secondary)] rounded-md
-                            focus:ring-2 focus:ring-[var(--theme-accent-primary)]
-                            focus:border-[var(--theme-accent-primary)] sm:text-sm"
-                                [(ngModel)]="product.discountPercentage" name="discountPercentage" min="0" max="100" />
-                        </div>
-                    </div>
-
-                    <!-- Final Price Display -->
-                    <div *ngIf="product.price != null && product.discountPercentage != null" class="mt-4">
-                        <p class="text-[var(--theme-text-primary)] text-sm">
-                            Final Price (after discount):
-                            <strong class="text-lg">
-                                {{ (product.price || 0) - ((product.price || 0) * (product.discountPercentage || 0) /
-                                100) | currency:'USD':'symbol':'1.2-2' }}
-                            </strong>
-                        </p>
-                        <small class="text-xs text-[var(--theme-text-secondary)]">
-                            Backend calculates finalPrice based on its logic.
-                        </small>
-                    </div>
-                </div>
-
-                <!-- Inventory & Media Section -->
-                <div class="gradient-card p-5 rounded-lg border border-[var(--theme-border-secondary)] mb-6">
-                    <h3
-                        class="text-lg font-semibold text-[var(--theme-text-heading)] mb-2 border-b border-[var(--theme-border-secondary)] pb-2">
-                        Inventory & Media
-                    </h3>
-
-                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                        <!-- Stock Quantity -->
-                        <div class="form-group">
-                            <label for="stock"
-                                class="block text-sm font-medium text-[var(--theme-text-secondary)] mb-1">
-                                Stock Quantity*
-                            </label>
-                            <input id="stock" type="number" pInputText class="w-full h-10 px-3 py-2 bg-[var(--theme-bg-tertiary)] text-[var(--theme-text-primary)]
-                            border border-[var(--theme-border-secondary)] rounded-md
-                            focus:ring-2 focus:ring-[var(--theme-accent-primary)]
-                            focus:border-[var(--theme-accent-primary)] sm:text-sm" [(ngModel)]="product.stock"
-                                name="stock" required min="0" />
-                        </div>
-
-                        <!-- Availability Status -->
-                        <div class="form-group">
-                            <label for="availabilityStatus"
-                                class="block text-sm font-medium text-[var(--theme-text-secondary)] mb-1">
-                                Availability Status*
-                            </label>
-                            <p-select id="availabilityStatus" [options]="availabilityOptions" class="w-full h-10 px-3 py-2 bg-[var(--theme-bg-tertiary)] text-[var(--theme-text-primary)]
-                               border border-[var(--theme-border-secondary)] rounded-md focus:ring-2 focus:ring-[var(--theme-accent-primary)]
-                               focus:border-[var(--theme-accent-primary)] sm:text-sm"
-                                [(ngModel)]="product.availabilityStatus" name="availabilityStatus" optionLabel="label"
-                                optionValue="value" required>
-                            </p-select>
-                        </div>
-
-                        <!-- Tags -->
-                        <div class="form-group">
-                            <label for="tags" class="block text-sm font-medium text-[var(--theme-text-secondary)] mb-1">
-                                Tags (comma‑separated)
-                            </label>
-                            <input id="tags" type="text" pInputText class="w-full h-10 px-3 py-2 bg-[var(--theme-bg-tertiary)] text-[var(--theme-text-primary)]
-                            border border-[var(--theme-border-secondary)] rounded-md
-                            focus:ring-2 focus:ring-[var(--theme-accent-primary)]
-                            focus:border-[var(--theme-accent-primary)] sm:text-sm" [(ngModel)]="product.tags"
-                                name="tags" />
-                        </div>
-
-                        <!-- Thumbnail URL -->
-                        <div class="form-group">
-                            <label for="thumbnail"
-                                class="block text-sm font-medium text-[var(--theme-text-secondary)] mb-1">
-                                Thumbnail Image URL*
-                            </label>
-                            <input id="thumbnail" type="text" pInputText class="w-full h-10 px-3 py-2 bg-[var(--theme-bg-tertiary)] text-[var(--theme-text-primary)]
-                            border border-[var(--theme-border-secondary)] rounded-md
-                            focus:ring-2 focus:ring-[var(--theme-accent-primary)]
-                            focus:border-[var(--theme-accent-primary)] sm:text-sm" [(ngModel)]="product.thumbnail"
-                                name="thumbnail" required />
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Action Buttons -->
-                <div class="mt-6 flex justify-end gap-4">
-                    <button pButton type="button" label="Cancel" icon="pi pi-times"
-                        class="p-button-text text-[var(--theme-text-secondary)] hover:bg-[var(--theme-border-secondary)]/20">
-                    </button>
-
-                    <button pButton type="submit"
-                        label="{{ selectedProductId ? 'Update Product' : 'Create New Product' }}" icon="pi pi-check"
-                        [disabled]="!product.title || !product.category || !product.brand || !product.sku" class="p-button bg-[var(--theme-button-bg-primary)] text-[var(--theme-button-text-primary-btn)]
-                             hover:bg-[var(--theme-button-hover-bg-primary)] rounded-md">
-                    </button>
-                </div>
-
-            </form>
-            <!-- Form End -->
-            <p-toast></p-toast>
-        </div>
+    <div class="form-header">
+      <h2 class="form-title"><i class="pi pi-box"></i> Manage Product</h2>
+      <div class="form-controls">
+        <p-select
+          [options]="productsForDropdown"
+          [(ngModel)]="selectedProductId"
+          optionLabel="title"
+          optionValue="_id"
+          placeholder="Select a Product to Edit"
+          [showClear]="true"
+          (onChange)="fetchProductDetails()"
+          styleClass="themed-select product-selector">
+        </p-select>
+        <button pButton type="button" icon="pi pi-search" (click)="fetchProductDetails()" [disabled]="!selectedProductId" pTooltip="Load Product" tooltipPosition="bottom"></button>
+        <button pButton type="button" label="New" icon="pi pi-plus" (click)="resetForm()" class="p-button-outlined"></button>
+      </div>
     </div>
+
+    <form (ngSubmit)="submitProduct()">
+      <div class="form-section-card">
+        <h3 class="section-header"><i class="pi pi-info-circle"></i> Basic Information</h3>
+        <div class="responsive-grid">
+          <div class="form-group">
+            <label for="title">Product Title <span class="required">*</span></label>
+            <input id="title" type="text" pInputText class="themed-input" [(ngModel)]="product.title" name="title" required maxlength="200" placeholder="Enter product title..." />
+          </div>
+          <div class="form-group">
+            <label for="description">Product Description <span class="required">*</span></label>
+            <textarea id="description" pInputTextarea rows="4" class="themed-input" [(ngModel)]="product.description" name="description" required maxlength="500" placeholder="Describe your product in detail..."></textarea>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-section-card">
+        <h3 class="section-header"><i class="pi pi-tags"></i> Identification & Categorization</h3>
+        <div class="responsive-grid">
+          <div class="form-group">
+            <label for="category">Category <span class="required">*</span></label>
+            <input id="category" type="text" pInputText class="themed-input" [(ngModel)]="product.category" name="category" required placeholder="e.g., Electronics, Clothing..." />
+          </div>
+          <div class="form-group">
+            <label for="brand">Brand <span class="required">*</span></label>
+            <input id="brand" type="text" pInputText class="themed-input" [(ngModel)]="product.brand" name="brand" required placeholder="Brand name..." />
+          </div>
+          <div class="form-group">
+            <label for="sku">SKU <span class="required">*</span></label>
+            <input id="sku" type="text" pInputText class="themed-input" [(ngModel)]="product.sku" name="sku" required placeholder="Unique product code..." />
+          </div>
+        </div>
+      </div>
+
+      <div class="form-section-card">
+        <h3 class="section-header"><i class="pi pi-dollar"></i> Pricing Configuration</h3>
+        <div class="responsive-grid">
+          <div class="form-group">
+            <label for="rate">Base Rate (Pre-GST) <span class="required">*</span></label>
+            <input id="rate" type="number" pInputText (change)="calculatePrice()" class="themed-input" [(ngModel)]="product.rate" name="rate" required min="0" placeholder="0.00" />
+          </div>
+          <div class="form-group">
+            <label for="gstRate">GST Rate (%) <span class="required">*</span></label>
+            <input id="gstRate" type="number" pInputText (change)="calculatePrice()" class="themed-input" [(ngModel)]="product.gstRate" name="gstRate" required min="0" max="100" placeholder="18" />
+          </div>
+          <div class="form-group">
+            <label for="price">Price (Post-GST)</label>
+            <input id="price" type="number" pInputText class="themed-input" [(ngModel)]="product.price" name="price" min="0" readonly placeholder="Auto-calculated" />
+            <small class="form-hint">Auto-calculated when rate or GST changes.</small>
+          </div>
+          <div class="form-group">
+            <label for="discountPercentage">Discount (%)</label>
+            <input id="discountPercentage" type="number" pInputText class="themed-input" [(ngModel)]="product.discountPercentage" name="discountPercentage" min="0" max="100" placeholder="0" />
+          </div>
+        </div>
+        <div *ngIf="product.price != null" class="price-display">
+          <span>Final Price (After Discount)</span>
+          <strong class="final-price-value">
+            {{ (product.price || 0) - ((product.price || 0) * (product.discountPercentage || 0) / 100) | currency:'INR':'symbol':'1.2-2' }}
+          </strong>
+        </div>
+      </div>
+
+      <div class="form-section-card">
+        <h3 class="section-header"><i class="pi pi-warehouse"></i> Inventory & Media</h3>
+        <div class="responsive-grid">
+          <div class="form-group">
+            <label for="stock">Stock Quantity <span class="required">*</span></label>
+            <input id="stock" type="number" pInputText class="themed-input" [(ngModel)]="product.stock" name="stock" required min="0" placeholder="Available quantity..." />
+          </div>
+          <div class="form-group">
+            <label for="availabilityStatus">Availability Status <span class="required">*</span></label>
+            <p-select id="availabilityStatus" [options]="availabilityOptions" styleClass="themed-select" [(ngModel)]="product.availabilityStatus" name="availabilityStatus" optionLabel="label" optionValue="value" required placeholder="Select availability status"></p-select>
+          </div>
+          <div class="form-group">
+            <label for="tags">Tags (comma-separated)</label>
+            <input id="tags" type="text" pInputText class="themed-input" [(ngModel)]="product.tags" name="tags" placeholder="tag1, tag2, tag3..." />
+          </div>
+          <div class="form-group">
+            <label for="thumbnail">Thumbnail Image URL <span class="required">*</span></label>
+            <input id="thumbnail" type="text" pInputText class="themed-input" [(ngModel)]="product.thumbnail" name="thumbnail" required placeholder="https://example.com/image.jpg" />
+          </div>
+        </div>
+      </div>
+
+      <div class="form-actions">
+        <button pButton type="button" label="Cancel" icon="pi pi-times" class="p-button-outlined"></button>
+        <button pButton type="submit" [label]="selectedProductId ? 'Update Product' : 'Create New Product'" [icon]="selectedProductId ? 'pi pi-refresh' : 'pi pi-plus'" [disabled]="!product.title || !product.category || !product.brand || !product.sku"></button>
+      </div>
+    </form>
+
+    <p-toast></p-toast>
+  </div>
 </div>
 
 <!-- <div class="bg-white text-gray-900 w-full mx-auto p-2 shadow-md rounded-lg font-roboto">

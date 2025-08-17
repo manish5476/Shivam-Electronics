@@ -1,211 +1,227 @@
-
-import { Component, OnInit, SimpleChanges, OnChanges, inject } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { InputTextModule } from 'primeng/inputtext';
 import { CommonModule } from '@angular/common';
-import { FormsModule, ReactiveFormsModule, FormGroup, FormBuilder, FormArray, FormControl } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule, FormGroup, FormBuilder, FormArray, Validators } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { CalendarModule } from 'primeng/calendar';
 import { CheckboxModule } from 'primeng/checkbox';
 import { TableModule } from 'primeng/table';
-import { SelectModule } from 'primeng/select';
-import { InvoiceService } from '../../../../core/services/invoice.service';
-import { SellerService } from '../../../../core/services/seller.service';
-import { ProductService } from '../../../../core/services/product.service';
-import { CustomerService } from '../../../../core/services/customer.service';
-import { AutopopulateService } from '../../../../core/services/autopopulate.service';
-import { AppMessageService } from '../../../../core/services/message.service';
+import { DropdownModule } from 'primeng/dropdown'; // FIXED: Was SelectModule
 import { DividerModule } from 'primeng/divider';
-interface InvoiceItem {
-  product: string;
-  quantity: number;
-  discount?: number;
-  rate: number;
-  taxableValue: number;
-  gstRate: number;
-  gstAmount: number;
-  amount: number;
-}
+import { ToastModule } from 'primeng/toast';
+import { MessageService } from 'primeng/api';
+import { Select } from 'primeng/select';
 
-interface Invoice {
-  invoiceNumber: string;
-  invoiceDate: Date;
-  dueDate?: Date;
-  seller: string;
-  fullname: string;
-  address: string;
-  buyer: string;
-  items: InvoiceItem[];
-  subTotal: number;
-  totalDiscount?: number;
-  gst?: number;
-  cess?: number;
-  totalAmount: number;
-  paymentTerms?: string;
-  notes?: string;
-  placeOfSupply: string;
-  status: 'paid' | 'unpaid' | 'partially paid' | 'cancelled';
-  metadata?: Record<string, any>;
-}
+// --- SERVICES ---
+import { InvoiceService } from '../../../../core/services/invoice.service';
+import { AutopopulateService } from '../../../../core/services/autopopulate.service';
+import { ProductService } from '../../../../core/services/product.service';
 
 @Component({
   selector: 'app-gst-invoice',
   standalone: true,
-  imports: [ReactiveFormsModule, TableModule, DividerModule, InputTextModule, SelectModule, ButtonModule, CommonModule, FormsModule, InputNumberModule, CalendarModule, CheckboxModule],
+  imports: [
+    ReactiveFormsModule,
+    TableModule,
+    DividerModule,
+    InputTextModule,
+    Select,
+    ButtonModule,
+    CommonModule,
+    FormsModule,
+    InputNumberModule,
+    CalendarModule,
+    CheckboxModule,
+    ToastModule
+  ],
+  providers: [MessageService], // Services are usually provided in root, but this works
   templateUrl: './gst-invoice.component.html',
   styleUrl: './gst-invoice.component.css'
 })
-export class GstInvoiceComponent implements OnInit, OnChanges {
-  public messageService = inject(AppMessageService)
-  public invoiceService = inject(InvoiceService)
-  public autoPopulate = inject(AutopopulateService)
-  public customerService = inject(CustomerService)
-  public sellerService = inject(SellerService)
-  public productService = inject(ProductService)
-  public invoiceForm: FormGroup;
+export class GstInvoiceComponent implements OnInit {
+  // --- Dependency Injection ---
+  private fb = inject(FormBuilder);
+  private messageService = inject(MessageService);
+  private invoiceService = inject(InvoiceService);
+  private autoPopulate = inject(AutopopulateService);
+  private productService = inject(ProductService);
 
+  public invoiceForm: FormGroup;
   public InvoiceObject = {
-    customerIDDropdown: [],
-    buyerdetailsdropdown: '',
-    productdrop: [],
-    sellersDrop: [],
-    sellersselec: '',
-    buyerselect: '',
-    selectedproduct: '',
-    invoiceData: '',
-  }
-  constructor(private fb: FormBuilder) {
+    customerIDDropdown: [] as any[],
+    productdrop: [] as any[],
+    sellersDrop: [] as any[],
+  };
+
+  constructor() {
+    // --- Form Initialization ---
     this.invoiceForm = this.fb.group({
-      invoiceNumber: [''],
-      invoiceDate: [new Date()],
-      dueDate: [new Date()],
-      seller: [''],
-      buyer: [''],
-      placeOfSupply: [{ value: '', disabled: true }],
-      items: this.fb.array([this.createItemFormGroup()]),
-      subTotal: [{ value: 0, disabled: true }],
+      invoiceNumber: [{ value: '', disabled: true }, Validators.required],
+      invoiceDate: [{ value: '', disabled: true }, Validators.required],
+      dueDate: [{ value: '', disabled: true }],
+      seller: ['', Validators.required],
+      buyer: ['', Validators.required],
+      placeOfSupply: [''], // This can be auto-filled based on buyer selection
+      items: this.fb.array([], [Validators.required, Validators.minLength(1)]),
+      // Calculation fields initialized
+      subTotal: [0],
       totalDiscount: [0],
-      gst: [{ value: 0, disabled: true }],
-      cess: [{ value: 0, disabled: true }],
-      totalAmount: [{ value: 0, disabled: true }],
+      gst: [0],
+      cess: [0],
+      totalAmount: [0],
       roundUp: [false],
       roundDown: [false]
     });
   }
 
   ngOnInit(): void {
-    this.calculateInvoiceTotals();
-    this.autopopulatedata();
+    this.initializeInvoice();
   }
 
-  ngOnChanges(changes: SimpleChanges): void {
-    this.autopopulatedata();
+  // --- FormArray Getters & Controls ---
+  get itemsFormArray(): FormArray {
+    return this.invoiceForm.get('items') as FormArray;
   }
 
   createItemFormGroup(): FormGroup {
     return this.fb.group({
-      product: [''],
-      quantity: [1],
-      discount: [0],
-      rate: [0],
+      product: ['', Validators.required],
+      quantity: [1, [Validators.required, Validators.min(1)]],
+      discount: [0, [Validators.min(0), Validators.max(100)]],
+      rate: [0, [Validators.required, Validators.min(0)]],
+      gstRate: [0, [Validators.required, Validators.min(0)]],
+      // Disabled fields that are calculated automatically
       taxableValue: [{ value: 0, disabled: true }],
-      gstRate: [0],
       gstAmount: [{ value: 0, disabled: true }],
       amount: [{ value: 0, disabled: true }]
     });
   }
 
-  get itemsFormArray(): FormArray {
-    return this.invoiceForm.get('items') as FormArray;
-  }
-
-  autopopulatedata() {
-    this.autoPopulate.getModuleData('products').subscribe((data: any) => {
-      this.InvoiceObject.productdrop = data;
-    });
-    this.autoPopulate.getModuleData('sellers').subscribe((data: any) => {
-      this.InvoiceObject.sellersDrop = data;
-    });
-    this.autoPopulate.getModuleData('customers').subscribe((data: any) => {
-      this.InvoiceObject.customerIDDropdown = data;
-    });
-  }
-
-createInvoice() {
-  const customerId: string = this.invoiceForm.get('buyer')?.value;
-
-  if (!customerId) {
-    this.messageService.showError('Buyer is required.');
-    return;
-  }
-
-  const now = new Date();
-  const datePart = `${now.getFullYear()}${String(now.getMonth() + 1).padStart(2, '0')}${String(now.getDate()).padStart(2, '0')}`;
-  const timePart = `${String(now.getHours()).padStart(2, '0')}${String(now.getMinutes()).padStart(2, '0')}${String(now.getSeconds()).padStart(2, '0')}`;
-  const invoiceNumber = `${customerId.substring(0, 5)}_${datePart}_${timePart}`;
-
-  this.invoiceForm.patchValue({ invoiceNumber });
-
-  this.invoiceService.createNewinvoice(this.invoiceForm.getRawValue()).subscribe({
-    next: (res: any) => {
-      if (res) {
-        this.messageService.showSuccessMessage('Invoice created successfully!');
-      } else {
-        this.messageService.showError('Failed to create invoice.');
-      }
-    },
-    error: (err) => {
-      console.error(err);
-      this.messageService.showError('Server error while creating invoice.');
-    }
-  });
-}
-
   addItem(): void {
     this.itemsFormArray.push(this.createItemFormGroup());
-    this.calculateInvoiceTotals();
   }
 
   removeItem(index: number): void {
-    this.itemsFormArray.length > 1 ? this.itemsFormArray.removeAt(index) : this.messageService.showInfo('info', 'one data require')
-    this.calculateInvoiceTotals();
+    if (this.itemsFormArray.length > 1) {
+      this.itemsFormArray.removeAt(index);
+      this.calculateInvoiceTotals(); // Recalculate after removing an item
+    } else {
+      // FIXED: PrimeNG MessageService requires an object
+      this.messageService.add({ severity: 'warn', summary: 'Action Denied', detail: 'An invoice must have at least one item.' });
+    }
   }
 
-  calculateItemAmount(itemForm: FormGroup): number {
-    let quantity = itemForm.get('quantity')?.value || 0;
-    let rate = itemForm.get('rate')?.value || 0;
-    let discount = itemForm.get('discount')?.value || 0;
-    let gstRate = itemForm.get('gstRate')?.value || 0;
-    let taxableValue = quantity * rate;
-    if (discount && discount > 0) {
-      taxableValue -= (taxableValue * discount) / 100;
+  // --- Initialization and Data Loading ---
+
+  initializeInvoice(): void {
+    this.loadDropdownData();
+    this.setInitialInvoiceData();
+    this.addItem(); // Start with one blank line item
+  }
+
+  loadDropdownData() {
+    this.autoPopulate.getModuleData('products').subscribe(data => this.InvoiceObject.productdrop = data);
+    this.autoPopulate.getModuleData('sellers').subscribe(data => this.InvoiceObject.sellersDrop = data);
+    this.autoPopulate.getModuleData('customers').subscribe(data => this.InvoiceObject.customerIDDropdown = data);
+  }
+
+  // ADDED: Automatic field generation logic
+  setInitialInvoiceData(): void {
+    const today = new Date();
+    const invoiceDate = today.toISOString().split('T')[0];
+    const dueDate = new Date(new Date().setDate(today.getDate() + 30)).toISOString().split('T')[0];
+
+    // This simulates getting the last count. Replace with a real API call.
+    const lastInvoiceCount = 0; // await this.invoiceService.getLatestInvoiceCount();
+    const newInvoiceNumber = this.generateInvoiceNumber();
+
+    this.invoiceForm.patchValue({
+      invoiceNumber: newInvoiceNumber,
+      invoiceDate: invoiceDate,
+      dueDate: dueDate,
+    });
+  }
+
+  // ADDED: Professional invoice number generator
+  generateInvoiceNumber(): string {
+    const prefix = 'INV';
+    const now = new Date();
+
+    // --- Financial Year (e.g., 2025-26) ---
+    const year = now.getFullYear();
+    const month = now.getMonth() + 1; // month is 0-indexed
+    const financialYear = month >= 4
+      ? `${year}-${(year + 1).toString().slice(-2)}`
+      : `${year - 1}-${year.toString().slice(-2)}`;
+
+    // --- Unique Timestamp (e.g., 1723920154812) ---
+    // This uses the number of milliseconds since 1970, ensuring uniqueness
+    const timestamp = now.getTime();
+
+    return `${prefix}/${financialYear}/${timestamp}`;
+  }
+  // --- Event Handlers & Calculations ---
+
+  onProductChange(event: any, index: number) {
+    const productId = event.value;
+    const itemFormGroup = this.itemsFormArray.at(index) as FormGroup;
+
+    if (productId) {
+      this.productService.getProductDataWithId(productId).subscribe((res: any) => {
+        const product = res.data;
+        if (product) {
+          itemFormGroup.patchValue({
+            rate: product.rate || 0,
+            gstRate: product.gstRate || 0
+          });
+          this.onItemValueChange(index); // Trigger calculation
+        }
+      });
+    } else {
+      // Reset if product is cleared
+      itemFormGroup.patchValue({ rate: 0, gstRate: 0 });
+      this.onItemValueChange(index);
     }
-    let gstAmount = (taxableValue * gstRate) / 100;
-    let amount = taxableValue + gstAmount;
+  }
+
+  onItemValueChange(itemIndex: number): void {
+    const itemForm = this.itemsFormArray.at(itemIndex) as FormGroup;
+    if (!itemForm) return;
+
+    const quantity = itemForm.get('quantity')?.value || 0;
+    const rate = itemForm.get('rate')?.value || 0;
+    const discount = itemForm.get('discount')?.value || 0;
+    const gstRate = itemForm.get('gstRate')?.value || 0;
+
+    const taxableValue = (quantity * rate) * (1 - (discount / 100));
+    const gstAmount = taxableValue * (gstRate / 100);
+    const amount = taxableValue + gstAmount;
+
+    // Patch the calculated values into the current item row
     itemForm.patchValue({
       taxableValue: taxableValue,
       gstAmount: gstAmount,
       amount: amount
-    });
-    return amount;
-  }
+    }, { emitEvent: false }); // Prevent infinite loops
 
+    this.calculateInvoiceTotals(); // Recalculate grand totals
+  }
 
   calculateInvoiceTotals(): void {
     let subTotal = 0;
-    let totalAmount = 0;
-    let gst = 0;
-    let totalDiscount = this.invoiceForm.get('totalDiscount')?.value || 0;
-    this.itemsFormArray.controls.forEach((itemFormGroup) => {
-      let itemAmount = this.calculateItemAmount(itemFormGroup as FormGroup);
-      subTotal += itemFormGroup.get('taxableValue')?.value || 0;
-      gst += itemFormGroup.get('gstAmount')?.value || 0;
-      totalAmount += itemAmount;
+    let totalDiscount = 0;
+    let totalGst = 0;
+
+    this.itemsFormArray.controls.forEach(control => {
+      const item = control.value;
+      const grossAmount = (item.quantity || 0) * (item.rate || 0);
+      subTotal += grossAmount;
+      totalDiscount += grossAmount * ((item.discount || 0) / 100);
+      totalGst += item.gstAmount || 0;
     });
 
-    if (totalDiscount && totalDiscount > 0) {
-      totalAmount -= totalDiscount;
-    }
+    let totalAmount = (subTotal - totalDiscount) + totalGst;
 
     if (this.invoiceForm.get('roundUp')?.value) {
       totalAmount = Math.ceil(totalAmount);
@@ -213,53 +229,40 @@ createInvoice() {
       totalAmount = Math.floor(totalAmount);
     }
 
-
     this.invoiceForm.patchValue({
       subTotal: subTotal,
-      gst: gst,
+      totalDiscount: totalDiscount,
+      gst: totalGst,
       totalAmount: totalAmount
     });
   }
 
-  onItemValueChange(itemIndex: number) {
-    const itemFormGroup = this.itemsFormArray.controls[itemIndex] as FormGroup;
-    if (itemFormGroup) {
-      this.calculateItemAmount(itemFormGroup);
-      this.calculateInvoiceTotals();
-    }
-  }
-
-  onProductChange(event: any, index: number) {
-    const productId = event.value;
-    if (productId) {
-      this.productService.getProductDataWithId(productId).subscribe((res: any) => {
-        if (res.data) {
-          const product = res.data;
-          const itemFormGroup = this.itemsFormArray.controls[index] as FormGroup;
-          itemFormGroup.patchValue({
-            product: productId,
-            rate: product.rate || 0,
-            gstRate: product.gstRate || 0
-          });
-          this.calculateItemAmount(itemFormGroup);
-          this.calculateInvoiceTotals();
-        } else {
-          this.messageService.showError('Product data not found for ID:', productId);
-        }
-      });
-    } else {
-      const itemFormGroup = this.itemsFormArray.controls[index] as FormGroup;
-      itemFormGroup.patchValue({
-        product: '',
-        rate: 0,
-        gstRate: 0
-      });
-      this.calculateItemAmount(itemFormGroup);
-      this.calculateInvoiceTotals();
-    }
-  }
-
+  // --- Form Submission ---
   saveInvoice(): void {
-    this.createInvoice();
+    if (this.invoiceForm.invalid) {
+      this.messageService.add({ severity: 'warn', summary: 'Invalid Form', detail: 'Please fill all required fields.' });
+      this.invoiceForm.markAllAsTouched();
+      return;
+    }
+
+    // Use getRawValue() to include disabled fields like invoiceNumber and calculated totals
+    const formData = this.invoiceForm.getRawValue();
+
+    this.invoiceService.createInvoice(formData).subscribe({
+      next: (res) => {
+        this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Invoice created successfully!' });
+        this.resetForm();
+      },
+      error: (err) => {
+        console.error(err);
+        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Failed to create invoice.' });
+      }
+    });
+  }
+
+  resetForm(): void {
+    this.invoiceForm.reset();
+    this.itemsFormArray.clear();
+    this.initializeInvoice();
   }
 }

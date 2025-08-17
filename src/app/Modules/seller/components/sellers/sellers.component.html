@@ -1,4 +1,156 @@
-<div class="flex flex-wrap md:-m-2 -m-1 w-full"
+<div class="seller-form-container">
+  <div class="main-card-v2">
+
+    <div class="form-header">
+      <h2 class="form-title"><i class="pi pi-user-plus"></i> Manage Seller</h2>
+      <div class="form-controls">
+        <p-select [options]="sellersForDropdown" [(ngModel)]="selectedSellerId" optionLabel="name" optionValue="_id"
+          placeholder="Select a Seller to Edit" [showClear]="true" (onChange)="fetchSellerDetails()"
+          styleClass="themed-select seller-selector">
+        </p-select>
+        <button pButton type="button" icon="pi pi-search" (click)="fetchSellerDetails()" [disabled]="!selectedSellerId"
+          pTooltip="Load Seller" tooltipPosition="bottom"></button>
+        <button pButton type="button" label="New" icon="pi pi-plus" (click)="resetForm()"
+          class="p-button-outlined"></button>
+      </div>
+    </div>
+
+    <form [formGroup]="sellerForm" (ngSubmit)="saveSeller()">
+
+      <div class="form-section-card">
+        <h3 class="section-header"><i class="pi pi-id-card"></i>Basic Information</h3>
+        <div class="responsive-grid grid-cols-4">
+          <div class="form-group">
+            <label for="name">Name <span class="required">*</span></label>
+            <input id="name" type="text" pInputText class="themed-input" formControlName="name" required />
+            <small *ngIf="sellerForm.controls['name'].invalid && sellerForm.controls['name'].touched"
+              class="validation-error">Name is required</small>
+          </div>
+          <div class="form-group">
+            <label for="shopName">Shop Name <span class="required">*</span></label>
+            <input id="shopName" type="text" pInputText class="themed-input" formControlName="shopName" required />
+            <small *ngIf="sellerForm.controls['shopName'].invalid && sellerForm.controls['shopName'].touched"
+              class="validation-error">Shop Name is required</small>
+          </div>
+          <div class="form-group">
+            <label for="status">Status <span class="required">*</span></label>
+            <p-select id="status" [options]="statuses" formControlName="status" placeholder="Select Status"
+              styleClass="themed-select" panelStyleClass="themed-panel" [required]="true"></p-select>
+            <small *ngIf="sellerForm.controls['status'].invalid && sellerForm.controls['status'].touched"
+              class="validation-error">Status is required</small>
+          </div>
+          <div class="form-group">
+            <label for="contactNumber">Contact Number <span class="required">*</span></label>
+            <input id="contactNumber" type="tel" pInputText class="themed-input" formControlName="contactNumber"
+              required />
+            <small *ngIf="sellerForm.controls['contactNumber'].invalid && sellerForm.controls['contactNumber'].touched"
+              class="validation-error">Must be a valid 10-digit number</small>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-section-card" formGroupName="address">
+        <h3 class="section-header"><i class="pi pi-map-marker"></i>Address Details</h3>
+        <div class="responsive-grid grid-cols-4">
+          <div class="form-group">
+            <label for="street">Street <span class="required">*</span></label>
+            <input id="street" type="text" pInputText class="themed-input" formControlName="street" required />
+            <small *ngIf="sellerForm.get('address.street')?.invalid && sellerForm.get('address.street')?.touched"
+              class="validation-error">Street is required</small>
+          </div>
+          <div class="form-group">
+            <label for="city">City <span class="required">*</span></label>
+            <input id="city" type="text" pInputText class="themed-input" formControlName="city" required />
+            <small *ngIf="sellerForm.get('address.city')?.invalid && sellerForm.get('address.city')?.touched"
+              class="validation-error">City is required</small>
+          </div>
+          <div class="form-group">
+            <label for="state">State <span class="required">*</span></label>
+            <input id="state" type="text" pInputText class="themed-input" formControlName="state" required />
+            <small *ngIf="sellerForm.get('address.state')?.invalid && sellerForm.get('address.state')?.touched"
+              class="validation-error">State is required</small>
+          </div>
+          <div class="form-group">
+            <label for="pincode">Pincode <span class="required">*</span></label>
+            <input id="pincode" type="text" pInputText class="themed-input" formControlName="pincode" required />
+            <small *ngIf="sellerForm.get('address.pincode')?.invalid && sellerForm.get('address.pincode')?.touched"
+              class="validation-error">Must be a valid 6-digit number</small>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-section-card">
+        <h3 class="section-header"><i class="pi pi-wallet"></i>Financial Information</h3>
+        <div class="responsive-grid grid-cols-2">
+          <div class="form-group">
+            <label for="pan">PAN <span class="required">*</span></label>
+            <input id="pan" type="text" pInputText class="themed-input" formControlName="pan" required />
+            <small *ngIf="sellerForm.controls['pan'].invalid && sellerForm.controls['pan'].touched"
+              class="validation-error">Invalid PAN format (e.g., ABCDE1234F)</small>
+          </div>
+          <div class="form-group">
+            <label for="gstin">GSTIN <span class="required">*</span></label>
+            <input id="gstin" type="text" pInputText class="themed-input" formControlName="gstin" required />
+            <small *ngIf="sellerForm.controls['gstin'].invalid && sellerForm.controls['gstin'].touched"
+              class="validation-error">Invalid GSTIN format</small>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-section-card" formGroupName="bankDetails">
+        <h3 class="section-header"><i class="pi pi-building"></i>Bank Details</h3>
+        <div class="responsive-grid grid-cols-4">
+          <div class="form-group">
+            <label for="accountHolderName">Account Holder Name <span class="required">*</span></label>
+            <input id="accountHolderName" type="text" pInputText class="themed-input"
+              formControlName="accountHolderName" required />
+            <small
+              *ngIf="sellerForm.get('bankDetails.accountHolderName')?.invalid && sellerForm.get('bankDetails.accountHolderName')?.touched"
+              class="validation-error">Field is required</small>
+          </div>
+          <div class="form-group">
+            <label for="accountNumber">Account Number <span class="required">*</span></label>
+            <input id="accountNumber" type="text" pInputText class="themed-input" formControlName="accountNumber"
+              required />
+            <small
+              *ngIf="sellerForm.get('bankDetails.accountNumber')?.invalid && sellerForm.get('bankDetails.accountNumber')?.touched"
+              class="validation-error">Must be a valid 9-18 digit number</small>
+          </div>
+          <div class="form-group">
+            <label for="ifscCode">IFSC Code <span class="required">*</span></label>
+            <input id="ifscCode" type="text" pInputText class="themed-input" formControlName="ifscCode" required />
+            <small
+              *ngIf="sellerForm.get('bankDetails.ifscCode')?.invalid && sellerForm.get('bankDetails.ifscCode')?.touched"
+              class="validation-error">Invalid IFSC format (e.g., SBIN0001234)</small>
+          </div>
+          <div class="form-group">
+            <label for="bankName">Bank Name <span class="required">*</span></label>
+            <input id="bankName" type="text" pInputText class="themed-input" formControlName="bankName" required />
+            <small
+              *ngIf="sellerForm.get('bankDetails.bankName')?.invalid && sellerForm.get('bankDetails.bankName')?.touched"
+              class="validation-error">Field is required</small>
+          </div>
+          <div class="form-group grid-col-full">
+            <label for="branch">Branch <span class="required">*</span></label>
+            <input id="branch" type="text" pInputText class="themed-input" formControlName="branch" required />
+            <small
+              *ngIf="sellerForm.get('bankDetails.branch')?.invalid && sellerForm.get('bankDetails.branch')?.touched"
+              class="validation-error">Field is required</small>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-actions">
+        <button pButton type="button" label="Cancel" icon="pi pi-times" class="p-button-text"></button>
+        <button pButton type="submit" [label]="selectedSellerId ? 'Update Seller' : 'Create Seller'"
+          [icon]="selectedSellerId ? 'pi pi-refresh' : 'pi pi-check'" [disabled]="sellerForm.invalid"></button>
+      </div>
+
+    </form>
+  </div>
+  <p-toast></p-toast>
+</div>
+<!-- <div class="flex flex-wrap md:-m-2 -m-1 w-full"
   style="background: linear-gradient(to bottom, var(--theme-body-gradient-start), var(--theme-body-gradient-end));">
   <div class="w-full p-1 md:p-2">
     <div
@@ -205,4 +357,4 @@
     </div>
   </div>
   <p-toast></p-toast>
-</div>
+</div> -->

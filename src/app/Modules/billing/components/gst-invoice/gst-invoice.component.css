@@ -1,0 +1,156 @@
+/* ---
+  GST Invoice Component - Themed Styles
+  - Fully integrated with the dynamic theme palette.
+  - Standardizes cards, forms, tables, and summaries.
+--- */
+
+:host {
+  display: block;
+  background-color: var(--theme-bg-primary);
+  min-height: 100vh;
+  padding: 1.5rem;
+}
+
+.main-card-v2 {
+  background-color: var(--theme-bg-secondary);
+  border: 1px solid var(--theme-border-primary);
+  border-radius: 1rem;
+  padding: 2rem;
+  box-shadow: 0 8px 24px var(--theme-shadow-color);
+  max-width: 100%;
+  margin: 0 auto;
+}
+
+.form-header, .section-header {
+  font-weight: 600;
+  color: var(--theme-text-primary);
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  /* padding-bottom: 1.5rem; */
+  margin-bottom: .5rem;
+  border-bottom: 1px solid var(--theme-border-primary);
+}
+.form-title { font-size: 1.75rem; }
+.section-header { font-size: 1.125rem; margin-bottom: 1rem; padding-bottom: 1rem; }
+.form-header i, .section-header i { color: var(--theme-accent-primary); }
+
+.form-section-card {
+  background-color: var(--theme-bg-primary);
+  border: 1px solid var(--theme-border-secondary);
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.responsive-grid {
+  display: grid;
+  gap: 1.5rem;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+}
+.responsive-grid.grid-cols-5 { grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); }
+
+.form-group label {
+  font-weight: 500;
+  color: var(--theme-text-label);
+  margin-bottom: 0.5rem;
+  display: block;
+  font-size: 0.875rem;
+}
+
+.themed-input,
+:host ::ng-deep .themed-select .p-dropdown {
+  width: 100%;
+  border-radius: 0.5rem !important;
+  border: 1px solid var(--theme-border-primary) !important;
+  background-color: var(--theme-bg-secondary) !important;
+  color: var(--theme-text-primary) !important;
+}
+:host ::ng-deep .themed-input[readonly] {
+    background-color: var(--theme-hover-bg) !important;
+    cursor: not-allowed;
+}
+
+.table-wrapper {
+  border: 1px solid var(--theme-border-primary);
+  border-radius: 0.5rem;
+  overflow-x: auto;
+}
+.items-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+.items-table th {
+  background-color: var(--theme-hover-bg);
+  color: var(--theme-text-secondary);
+  font-weight: 600;
+  font-size: 0.75rem;
+  padding: 0.75rem;
+  text-transform: uppercase;
+  text-align: left;
+  border-bottom: 1px solid var(--theme-border-primary);
+}
+.items-table td {
+  padding: 0.5rem;
+  border-bottom: 1px solid var(--theme-border-secondary);
+}
+.items-table tr:last-child td { border-bottom: none; }
+.actions-cell { text-align: center; }
+.actions-cell button { margin: 0 0.25rem; }
+
+
+.summary-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+  margin-top: 1.5rem;
+}
+@media (min-width: 768px) { .summary-grid { grid-template-columns: 1fr 1fr; } }
+
+
+.summary-options .form-group { margin-bottom: 1rem; }
+
+.checkbox-group {
+    display: flex;
+    gap: 1.5rem;
+    align-items: center;
+    margin-top: 0.5rem;
+}
+.checkbox-group label {
+    margin-left: 0.5rem;
+    color: var(--theme-text-primary);
+    font-weight: 500;
+}
+
+.summary-calculations {
+  background-color: var(--theme-bg-primary);
+  border: 1px solid var(--theme-border-secondary);
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+}
+.calc-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.75rem 0;
+  border-bottom: 1px solid var(--theme-border-secondary);
+}
+.calc-label { color: var(--theme-text-secondary); }
+.calc-value { color: var(--theme-text-primary); font-weight: 600; }
+.discount-value { color: var(--theme-error-primary); }
+.total-row {
+  border: none;
+  background-color: var(--theme-accent-primary-light);
+  border-radius: 0.5rem;
+  padding: 1rem;
+  margin-top: 1rem;
+}
+.total-label { font-size: 1.125rem; font-weight: 700; color: var(--theme-accent-primary); }
+.total-value { font-size: 1.25rem; font-weight: 700; color: var(--theme-accent-primary); }
+
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 2rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--theme-border-primary);
+}

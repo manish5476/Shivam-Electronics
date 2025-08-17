@@ -6,7 +6,8 @@
   /* --- Base Layout & Text (Light Mode) --- */
   --theme-bg-primary: #f9f7f3;
   /* Light beige for main content */
-  --theme-bg-secondary: #ffffff;
+  /* --theme-bg-secondary: #ffffff; */
+  --theme-bg-secondary: #BED7DC;
   /* White for cards, headers, etc. */
   --theme-bg-ternary: #c5cdd5;
   /* Light gray for input backgrounds */
@@ -598,6 +599,8 @@ h2 {
   background-color: var(--theme-scroll-thumb);
   border-radius: 3px;
 }
+
+
 
 
 /* @import "tailwindcss";

@@ -250,4 +250,15 @@ export class CustomerMasterComponent implements OnInit {
           this.fileUploader.clear();
       }
   }
+
+  getSeverityForType(status: string) {
+    switch (status?.toLowerCase()) {
+      case 'Home': return 'warn';
+      case 'Work':
+      case 'paid':
+        return 'success';
+      case 'cancelled': return 'danger';
+      default: return 'info';
+    }
+  }
 }

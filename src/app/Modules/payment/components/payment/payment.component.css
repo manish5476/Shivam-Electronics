@@ -1,12 +1,288 @@
-  .detail-box {
-    padding: 1rem;
-    border-radius: 0.5rem;
-    transition: all 300ms ease-in-out;
-    border: 1px solid;
-    position: relative; /* Needed for pseudo-elements if you want to add more effects */
-  }
+/* ---
+  Customer Payment - Themed Styles
+  - Fully integrated with the dynamic theme palette.
+  - Standardizes cards, headers, forms, and info sections.
+--- */
+:host {
+  display: block;
+  background-color: var(--theme-bg-primary);
+  min-height: 100vh;
+  padding: 1.5rem;
+}
 
-  .detail-box:hover {
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    transform: translateY(-2px);
-  }
+/* --- Main Layout & Card --- */
+.main-card-v2 {
+  background-color: var(--theme-bg-secondary);
+  border: 1px solid var(--theme-border-primary);
+  border-radius: 1rem;
+  padding: 2rem;
+  box-shadow: 0 8px 24px var(--theme-shadow-color);
+  max-width: 1600px;
+  margin: 0 auto;
+}
+
+.page-header {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1.5rem;
+  padding-bottom: 1.5rem;
+  margin-bottom: 1rem;
+  border-bottom: 1px solid var(--theme-border-primary);
+}
+
+.page-title {
+  font-size: 1.75rem;
+  font-weight: 600;
+  color: var(--theme-text-primary);
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin: 0;
+}
+.page-title i {
+  color: var(--theme-accent-primary);
+}
+
+.header-controls {
+  min-width: 250px;
+}
+:host ::ng-deep .customer-selector .p-dropdown { width: 100%; }
+
+.content-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+}
+@media (min-width: 1024px) { .content-grid { grid-template-columns: 1fr 1fr; } }
+
+
+/* --- Info & Form Cards --- */
+.info-card, .form-card {
+  background-color: var(--theme-bg-primary);
+  border: 1px solid var(--theme-border-secondary);
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+}
+
+.section-header {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--theme-text-primary);
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+.section-header i { color: var(--theme-accent-primary); }
+
+.placeholder-text {
+  text-align: center;
+  padding: 3rem 1rem;
+  color: var(--theme-text-secondary);
+  border: 2px dashed var(--theme-border-secondary);
+  border-radius: 0.5rem;
+}
+
+
+/* --- Detail List (Customer Info) --- */
+.detail-list {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+.detail-item {
+  background-color: var(--theme-bg-secondary);
+  border: 1px solid var(--theme-border-secondary);
+  border-radius: 0.5rem;
+  padding: 0.75rem 1rem;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.detail-item:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px var(--theme-shadow-color);
+}
+.detail-item dt {
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: var(--theme-text-secondary);
+  margin-bottom: 0.25rem;
+}
+.detail-item dd {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--theme-text-primary);
+}
+.col-span-2 { grid-column: span 2 / span 2; }
+.status-success { color: var(--theme-success-primary); }
+.status-danger { color: var(--theme-error-primary); }
+
+.detail-item.highlight-success { border-left: 4px solid var(--theme-success-primary); }
+.detail-item.highlight-danger { border-left: 4px solid var(--theme-error-primary); }
+.detail-item.highlight-success dd,
+.detail-item.highlight-danger dd {
+  font-size: 1.25rem;
+  font-weight: 700;
+}
+
+
+/* --- Payment Form --- */
+.payment-form {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+}
+.form-group {
+  margin-bottom: 0.5rem;
+}
+.form-group label {
+  font-weight: 500;
+  color: var(--theme-text-label);
+  margin-bottom: 0.5rem;
+  display: block;
+  font-size: 0.875rem;
+}
+.required { color: var(--theme-error-primary); margin-left: 0.25rem; }
+.validation-error { color: var(--theme-error-primary); font-size: 0.75rem; margin-top: 0.5rem; display: block; }
+.form-actions { margin-top: auto; padding-top: 1.5rem; }
+
+
+/* --- Themed Inputs --- */
+.themed-input,
+:host ::ng-deep .themed-select .p-dropdown,
+:host ::ng-deep .p-inputnumber.themed-input .p-inputnumber-input {
+  width: 100%;
+  border-radius: 0.5rem !important;
+  border: 1px solid var(--theme-border-primary) !important;
+  background-color: var(--theme-bg-secondary) !important;
+  color: var(--theme-text-primary) !important;
+}
+:host ::ng-deep .themed-select .p-dropdown:not(.p-disabled).p-focus {
+  border-color: var(--theme-accent-primary) !important;
+  box-shadow: 0 0 0 2px var(--theme-accent-focus-ring) !important;
+}
+
+/* ---
+  NEW: Redesigned Payment Form Styles
+--- */
+
+/* Emphasize the amount input */
+.amount-section label {
+  text-align: center;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--theme-text-primary);
+}
+:host ::ng-deep .amount-input .p-inputnumber-input {
+  text-align: center;
+  font-weight: 700;
+  color: var(--theme-accent-primary);
+}
+
+/* Payment Method Chips */
+.payment-method-selector {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 1rem;
+  margin-top: 0.5rem;
+}
+.method-chip {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 1rem;
+  border: 2px solid var(--theme-border-primary);
+  border-radius: 0.75rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-weight: 600;
+  color: var(--theme-text-secondary);
+}
+.method-chip:hover {
+  border-color: var(--theme-accent-primary);
+  color: var(--theme-accent-primary);
+  background-color: var(--theme-hover-bg);
+}
+.method-chip.active {
+  border-color: var(--theme-accent-primary);
+  background-color: var(--theme-accent-primary-light);
+  color: var(--theme-accent-primary);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px var(--theme-shadow-color);
+}
+.method-chip i {
+  font-size: 1.5rem;
+}
+
+/* Grouping for less important fields */
+.details-section {
+    background-color: var(--theme-bg-secondary);
+    border: 1px solid var(--theme-border-secondary);
+    border-radius: 0.75rem;
+    padding: 1.5rem;
+    margin-top: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+/* Large, confident submit button */
+:host ::ng-deep .submit-payment-button {
+    font-size: 1.1rem;
+}
+/* ---
+  FIXED: Payment Form Alignment
+--- */
+
+.payment-form {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1; /* Allows the form to fill the card's height */
+  gap: 1.5rem;   /* Consistent spacing between form sections */
+}
+
+.form-actions {
+  margin-top: auto; /* The key change: pushes this block to the bottom */
+  padding-top: 1.5rem;
+}
+/* ---
+  FIXED: Payment Form Alignment & Icon Size
+--- */
+
+/* ADD: Make the main card a flex container */
+.form-card {
+  background-color: var(--theme-bg-primary);
+  border: 1px solid var(--theme-border-secondary);
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+  /* Add these two lines */
+  display: flex;
+  flex-direction: column;
+}
+
+/* CHANGED: The form now grows to fill the card, and has a gap */
+.payment-form {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1; /* This makes the form fill the remaining space */
+  gap: 1rem;   /* This controls spacing between sections */
+}
+
+/* The margin-top: auto trick now works perfectly inside the form */
+.form-actions {
+  margin-top: auto; /* Pushes the button to the bottom of the form */
+  padding-top: 1rem;
+}
+
+/* CHANGED: Reduced the icon size */
+.method-chip i {
+  font-size: 1.25rem; /* Was 1.5rem */
+}
