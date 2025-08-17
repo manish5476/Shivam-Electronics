@@ -12,10 +12,10 @@
     <!-- Main user display area -->
     <ng-container *ngIf="currentUser$ | async as user; else loggedOutView">
       <button type="button"
-        class="flex h-10 items-center gap-3 group focus:outline-none focus:ring-2 focus:ring-[var(--theme-accent-primary)] focus:ring-opacity-75 rounded-full p-1 pr-3 hover:bg-[var(--theme-hover-bg)]"
+        class="flex h-10 items-center bg-[var(--theme-bg-ternary)] gap-3 group focus:outline-none focus:ring-2 focus:ring-[var(--theme-accent-primary)] focus:ring-opacity-75 rounded-full p-1 pr-3 hover:bg-[var(--theme-hover-bg)]"
         (click)="op.toggle($event)">
-        <p-avatar [label]="user.name ? getInitials(user.name) : 'U'" styleClass="mr-2" shape="circle"></p-avatar>
-        <span class="hidden md:inline-block font-medium text-sm">{{ user.name }}</span>
+        <p-avatar [label]="user.name ? getInitials(user.name) : 'U'" image="https://imgs.search.brave.com/E0qQWdzT8_8gkjaYBKZjg8zeuJWOxsPwlim2wn2WvW4/rs:fit:500:0:1:0/g:ce/aHR0cHM6Ly9pbWcu/ZnJlZXBpay5jb20v/cHJlbWl1bS1waG90/by9jdXRlLWxpdHRs/ZS1sb3JkLWtyaXNo/bmFfMzk0NDYyLTI5/MzYuanBnP3NlbXQ9/YWlzX2h5YnJpZCZ3/PTc0MCZxPTgw" styleClass="mr-2" shape="circle"></p-avatar>
+        <span class="hidden md:inline-block font-medium text-sm bg-[var(--theme-bg-ternary)]">{{ user.name }}</span>
         <i
           class="hidden md:inline-block pi pi-angle-down text-[var(--theme-text-secondary)] group-hover:text-[var(--theme-text-primary)] transition-colors duration-200"></i>
       </button>
@@ -23,7 +23,7 @@
       <!-- Popover content with theme controls -->
       <p-popover #op>
         <div
-          class="p-4 bg-[var(--theme-bg-secondary)] border border-[var(--theme-border-primary)] rounded-lg shadow-xl min-w-[250px]">
+          class="p-4 bg-[var(--theme-bg-ternary)] border border-[var(--theme-border-primary)] rounded-lg shadow-xl min-w-[250px]">
           <!-- User Info Section -->
           <div class="flex items-center gap-3 pb-3 mb-3 border-b border-[var(--theme-border-primary)]">
             <p-avatar [label]="user.name ? getInitials(user.name) : 'U'" shape="circle" size="large"></p-avatar>
@@ -153,7 +153,7 @@
     </ng-template>
 
     <button type="button"
-      class="md:hidden w-10 h-10 rounded-full bg-[var(--theme-bg-tertiary)] hover:bg-[var(--theme-hover-bg)] flex items-center justify-center transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-[var(--theme-accent-primary)] focus:ring-opacity-75"
+      class="md:hidden w-10 h-10 rounded-full bg-[var(--theme-bg-ternary)] hover:bg-[var(--theme-hover-bg)] flex items-center justify-center transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-[var(--theme-accent-primary)] focus:ring-opacity-75"
       (click)="mobileMenuToggle.emit()">
       <i class="pi pi-bars text-[var(--theme-accent-primary)] text-xl"></i>
     </button>

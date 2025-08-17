@@ -105,7 +105,6 @@ type ValueChangedCallback = (eventData: CellChangedEvent) => void;
 })
 export class DynamicCellComponent implements ICellRendererAngularComp {
   @Output() actionTriggered = new EventEmitter<{ action: 'edit' | 'save' | 'cancel' | 'delete', rowData: any }>();
-
   params!: ICellRendererParams;
   value: any;
   type: string = 'text';

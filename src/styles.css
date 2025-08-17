@@ -8,7 +8,7 @@
   /* Light beige for main content */
   --theme-bg-secondary: #ffffff;
   /* White for cards, headers, etc. */
-  --theme-bg-tertiary: #c5cdd5;
+  --theme-bg-ternary: #c5cdd5;
   /* Light gray for input backgrounds */
   --theme-text-primary: #1e293b;
   /* Dark slate for main text */
@@ -61,7 +61,7 @@
 body.dark-mode {
   --theme-bg-primary: #111827;
   --theme-bg-secondary: #1f2937;
-  --theme-bg-tertiary: #374151;
+  --theme-bg-ternary: #374151;
   --theme-text-primary: #f9fafb;
   --theme-text-secondary: #9ca3af;
   --theme-text-label: #d1d5db;
@@ -257,8 +257,8 @@ body {
 .p-inputnumber-input,
 .p-password-input,
 .p-textarea {
-  background-color: var(--theme-bg-tertiary) !important;
-  border: 1px solid var(--theme-border-ter--theme-bg-tertiary) !important;
+  background-color: var(--theme-bg-ternary) !important;
+  border: 1px solid var(--theme-border-ter--theme-bg-ternary) !important;
   color: var(--theme-text-primary) !important;
   border-radius: 6px !important;
 }
@@ -281,7 +281,7 @@ body {
 /* Dropdowns & Selects (p-dropdown, p-multiselect) */
 .p-dropdown,
 .p-multiselect {
-  background-color: var(--theme-bg-tertiary) !important;
+  background-color: var(--theme-bg-ternary) !important;
   border: 1px solid var(--theme-border-secondary) !important;
   color: var(--theme-text-primary) !important;
   border-radius: 6px !important;
@@ -321,6 +321,55 @@ body {
   color: var(--theme-accent-text-color) !important;
 }
 
+/* ---- Custom Styling for PrimeNG SelectButton ---- */
+:host ::ng-deep p-ripple p-togglebutton p-component {
+  background: var(--theme-bg-secondary) !important;
+  border: 1px solid var(--theme-border-primary) !important;
+  color: var(--theme-text-secondary) !important;
+  border-radius: 8px !important;
+  padding: 0.6rem 1.2rem !important;
+  font-size: 0.95rem !important;
+  font-weight: 500;
+  box-shadow: 0 1px 2px var(--theme-shadow-color);
+  transition: all 0.25s ease-in-out;
+}
+
+/* First & Last button rounding for nice pill shape */
+:host ::ng-deep p-ripple p-togglebutton p-component:first-child {
+  border-radius: 12px 0 0 12px !important;
+}
+
+:host ::ng-deep p-ripple p-togglebutton p-component:last-child {
+  border-radius: 0 12px 12px 0 !important;
+}
+
+/* Hover state */
+:host ::ng-deep p-ripple p-togglebutton p-component:not(.p-highlight):hover {
+  background: var(--theme-hover-bg) !important;
+  color: var(--theme-text-primary) !important;
+}
+
+/* Active / Selected button */
+:host ::ng-deep p-ripple p-togglebutton p-component.p-highlight {
+  background: var(--theme-accent-primary) !important;
+  border-color: var(--theme-accent-primary-hover) !important;
+  color: var(--theme-accent-text-color) !important;
+  font-weight: 600;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Focus ring */
+:host ::ng-deep p-ripple p-togglebutton p-component:focus {
+  outline: none !important;
+  box-shadow: 0 0 0 3px var(--theme-accent-focus-ring) !important;
+}
+
+/* Smooth transition for toggling */
+:host ::ng-deep p-ripple p-togglebutton p-component {
+  transition: background-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
+}
+
+
 /* Checkbox */
 .p-checkbox .p-checkbox-box {
   border: 1px solid var(--theme-border-secondary) !important;
@@ -354,7 +403,7 @@ body {
 }
 
 .p-button.p-button-secondary {
-  background-color: var(--theme-bg-tertiary) !important;
+  background-color: var(--theme-bg-ternary) !important;
   color: var(--theme-text-secondary) !important;
   border-color: var(--theme-border-secondary) !important;
 }
@@ -444,7 +493,7 @@ a:hover {
 }
 
 .card {
-  background-color: var(--theme-bg-tertiary);
+  background-color: var(--theme-bg-ternary);
   border: 1.5px dashed var(--theme-border-dark);
   border-radius: .5rem;
   box-shadow: 0 4px 6px -1px var(--theme-shadow-color);
@@ -453,7 +502,7 @@ a:hover {
 }
 
 .card-filter {
-  background-color: var(--theme-bg-tertiary);
+  background-color: var(--theme-bg-ternary);
   border: 1px dashed var(--theme-border-dark);
   border-radius: 1rem;
   box-shadow: 0 4px 6px -1px var(--theme-shadow-color);
@@ -558,7 +607,7 @@ h2 {
   Primary Backgrounds
   --theme-bg-primary: #f9f7f3; Light beige for main content
   --theme-bg-secondary: #ffffff; White for sidebar/header/cards
-  --theme-bg-tertiary: #B3C8CF; Lighter gray for input backgrounds
+  --theme-bg-ternary: #B3C8CF; Lighter gray for input backgrounds
   --theme-bg-main: #78B3CE; Lighter gray for input backgrounds
   --theme-bg-home: #003161; Lighter gray for input backgrounds
 
@@ -634,7 +683,7 @@ h2 {
 body.dark-mode {
   --theme-bg-primary: #111827;
   --theme-bg-secondary: #1f2937;
-  --theme-bg-tertiary: #374151;
+  --theme-bg-ternary: #374151;
   --theme-text-primary: #e2e8f0;
   --theme-text-secondary: #a0aec0;
   --theme-text-label: #d1d5db;
@@ -745,7 +794,7 @@ textarea {
   padding: 0.75rem;
   border: 1px solid var(--theme-border-secondary);
   border-radius: 0.375rem;
-  background-color: var(--theme-bg-tertiary);
+  background-color: var(--theme-bg-ternary);
   color: var(--theme-text-primary);
   font-size: 0.875rem;
   transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
@@ -852,7 +901,7 @@ h2 {
 
 .p-inputtext,
 .p-dropdown {
-  background-color: var(--theme-bg-tertiary) !important;
+  background-color: var(--theme-bg-ternary) !important;
   border-color: var(--theme-border-secondary) !important;
   color: var(--theme-text-primary) !important;
 }
@@ -908,7 +957,7 @@ h2 {
 }
 
 .theme-toggle-button .p-button {
-  background-color: var(--theme-bg-tertiary) !important;
+  background-color: var(--theme-bg-ternary) !important;
   color: var(--theme-text-secondary) !important;
   border-color: var(--theme-border-secondary) !important;
   font-size: 0.75rem;

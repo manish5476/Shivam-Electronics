@@ -83,7 +83,7 @@ export class SharedGridComponent implements OnInit, OnChanges {
     rangeSelectionBackgroundColor: 'var(--theme-accent-primary-light, #dbeafe)',
     rangeSelectionHighlightColor: 'var(--theme-accent-primary, #3b82f6)',
     inputBorder: { color: 'var(--theme-accent-primary, #3b82f6)', style: 'solid', width: 1 },
-    inputBackgroundColor: 'var(--theme-bg-tertiary, #f9fafb)',
+    inputBackgroundColor: 'var(--theme-bg-ternary, #f9fafb)',
     inputPlaceholderTextColor: 'var(--theme-text-secondary, #6b7280)',
     inputIconColor: 'var(--theme-accent-primary, #3b82f6)',
     selectedRowBackgroundColor: 'var(--theme-accent-primary-light, #dbeafe)'
@@ -388,7 +388,7 @@ export class SharedGridComponent implements OnInit, OnChanges {
 //     rangeSelectionBackgroundColor: 'var(--theme-accent-primary-light, #dbeafe)',
 //     rangeSelectionHighlightColor: 'var(--theme-accent-primary, #3b82f6)',
 //     inputBorder: { color: 'var(--theme-accent-primary, #3b82f6)', style: 'solid', width: 1 },
-//     inputBackgroundColor: 'var(--theme-bg-tertiary, #f9fafb)',
+//     inputBackgroundColor: 'var(--theme-bg-ternary, #f9fafb)',
 //     inputPlaceholderTextColor: 'var(--theme-text-secondary, #6b7280)',
 //     inputIconColor: 'var(--theme-accent-primary, #3b82f6)',
 //     selectedRowBackgroundColor: 'var(--theme-accent-primary-light, #dbeafe)'
