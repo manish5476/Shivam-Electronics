@@ -76,6 +76,7 @@ export class GstInvoiceComponent implements OnInit {
   }
 
   ngOnInit(): void {
+  this.itemsFormArray.clear()
     this.initializeInvoice();
   }
 
@@ -143,23 +144,28 @@ export class GstInvoiceComponent implements OnInit {
     });
   }
 
-  // ADDED: Professional invoice number generator
+  /**
+   * Generates a unique, time-based invoice number that is readable.
+   * Format: INV/YYYYMMDD-HHMMSS
+   */
   generateInvoiceNumber(): string {
     const prefix = 'INV';
     const now = new Date();
 
-    // --- Financial Year (e.g., 2025-26) ---
+    // --- Create Date and Time Parts ---
     const year = now.getFullYear();
-    const month = now.getMonth() + 1; // month is 0-indexed
-    const financialYear = month >= 4
-      ? `${year}-${(year + 1).toString().slice(-2)}`
-      : `${year - 1}-${year.toString().slice(-2)}`;
+    // Pad month, day, hours, etc., with a '0' if they are single-digit
+    const month = String(now.getMonth() + 1).padStart(2, '0');
+    const day = String(now.getDate()).padStart(2, '0');
+    const hours = String(now.getHours()).padStart(2, '0');
+    const minutes = String(now.getMinutes()).padStart(2, '0');
+    const seconds = String(now.getSeconds()).padStart(2, '0');
 
-    // --- Unique Timestamp (e.g., 1723920154812) ---
-    // This uses the number of milliseconds since 1970, ensuring uniqueness
-    const timestamp = now.getTime();
+    // --- Assemble the Unique ID ---
+    // This creates a format like "20250819-211430"
+    const uniqueId = `${year}${month}${day}-${hours}${minutes}${seconds}`;
 
-    return `${prefix}/${financialYear}/${timestamp}`;
+    return `${prefix}/${uniqueId}`;
   }
   // --- Event Handlers & Calculations ---
 
@@ -244,7 +250,6 @@ export class GstInvoiceComponent implements OnInit {
       this.invoiceForm.markAllAsTouched();
       return;
     }
-
     // Use getRawValue() to include disabled fields like invoiceNumber and calculated totals
     const formData = this.invoiceForm.getRawValue();
 
@@ -252,10 +257,11 @@ export class GstInvoiceComponent implements OnInit {
       next: (res) => {
         this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Invoice created successfully!' });
         this.resetForm();
+        this.setInitialInvoiceData();
       },
       error: (err) => {
-        console.error(err);
-        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Failed to create invoice.' });
+        this.setInitialInvoiceData();
+        this.messageService.add({ severity: 'error', summary: 'Error', detail: err});
       }
     });
   }
@@ -263,6 +269,7 @@ export class GstInvoiceComponent implements OnInit {
   resetForm(): void {
     this.invoiceForm.reset();
     this.itemsFormArray.clear();
+  
     this.initializeInvoice();
   }
 }

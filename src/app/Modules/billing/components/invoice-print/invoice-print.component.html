@@ -1,4 +1,166 @@
-<div class="invoice-container">
+<!-- invoice-print.component.html -->
+<div class="invoice doc-surface" id="invoiceRoot">
+
+  <!-- Top Bar / Branding -->
+  <header class="brandbar">
+    <div class="brand-left">
+      <!-- Optional logo -->
+      <!-- <img src="/assets/logo.svg" alt="Shivam Electronics" class="brand-logo" /> -->
+      <div>
+        <h1 class="brand-title">Shivam Electronics</h1>
+        <p class="brand-tag">Smart Appliances • Reliable Service • Best Price</p>
+        <p class="brand-contact">
+          GSTIN: {{ invoiceData?.seller?.gstin || '27ABCDE1234F1Z5' }} ·
+          +91 9876543210 · support"&#64;"shivam.com
+        </p>
+      </div>
+    </div>
+
+    <div class="brand-right invoice-pill">
+      <div class="pill-row">
+        <span class="pill-label">Invoice No</span>
+        <span class="pill-value">{{ invoiceData?.invoiceNumber }}</span>
+      </div>
+      <div class="pill-row">
+        <span class="pill-label">Date</span>
+        <span class="pill-value">{{ invoiceData?.invoiceDate | date:'mediumDate' }}</span>
+      </div>
+      <div class="pill-row">
+        <span class="pill-label">Due Date</span>
+        <span class="pill-value">{{ invoiceData?.dueDate | date:'mediumDate' }}</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- Parties -->
+  <section class="parties">
+    <div class="party-card">
+      <h3 class="card-head">From</h3>
+      <div class="card-body">
+        <div class="party-name">Shivam Electronics</div>
+        <div class="muted">F-8, JB Shopping Center, Jolwa</div>
+        <div class="muted">Phone: +91 9876543210</div>
+        <div class="muted">Email: support"&#64;"shivam.com</div>
+      </div>
+    </div>
+
+    <div class="party-card">
+      <h3 class="card-head">Billed To</h3>
+      <div class="card-body">
+        <div class="party-name">{{ invoiceData?.buyerDetails?.fullname }}</div>
+        <div class="muted">GSTIN: {{ invoiceData?.buyerDetails?.gstin || 'N/A' }}</div>
+        <div class="muted">
+          {{ invoiceData?.buyerDetails?.addresses?.[0]?.street }},
+          {{ invoiceData?.buyerDetails?.addresses?.[0]?.city }},
+          {{ invoiceData?.buyerDetails?.addresses?.[0]?.state }},
+          {{ invoiceData?.buyerDetails?.addresses?.[0]?.country }} -
+          {{ invoiceData?.buyerDetails?.addresses?.[0]?.zipCode }}
+        </div>
+        <div class="muted">Email: {{ invoiceData?.buyerDetails?.email || '—' }}</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Items Table -->
+  <section class="items">
+    <table class="items-table">
+      <thead>
+        <tr>
+          <th class="th-sm">Sr.</th>
+          <th>Item</th>
+          <th>Description</th>
+          <th class="th-sm">HSN/SAC</th>
+          <th class="th-sm right">Qty</th>
+          <th class="right">Rate</th>
+          <th class="right">Discount</th>
+          <th class="right">Taxable</th>
+          <th class="th-sm right">GST%</th>
+          <th class="right">GST Amt</th>
+          <th class="right">Line Total</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of invoiceData?.items; let i = index">
+          <td class="muted">{{ i + 1 }}</td>
+          <td class="strong">{{ invoiceData?.itemDetails?.[i]?.title || item.title }}</td>
+          <td class="wrap">{{ invoiceData?.itemDetails?.[i]?.description || '—' }}</td>
+          <td class="muted">{{ item.hsnSac || 'N/A' }}</td>
+          <td class="right">{{ item.quantity }}</td>
+          <td class="right">{{ item.rate | currency:'INR' }}</td>
+          <td class="right">{{ item.discount | currency:'INR' }}</td>
+          <td class="right">{{ item.taxableValue | currency:'INR' }}</td>
+          <td class="right">{{ item.gstRate }}%</td>
+          <td class="right">{{ item.gstAmount | currency:'INR' }}</td>
+          <td class="right strong">{{ item.amount | currency:'INR' }}</td>
+        </tr>
+      </tbody>
+      <tfoot>
+        <tr>
+          <td colspan="10" class="right strong">Sub Total</td>
+          <td class="right strong">{{ invoiceData?.subTotal | currency:'INR' }}</td>
+        </tr>
+        <tr>
+          <td colspan="10" class="right strong">Total Discount</td>
+          <td class="right strong">- {{ invoiceData?.totalDiscount | currency:'INR' }}</td>
+        </tr>
+        <tr>
+          <td colspan="10" class="right strong">IGST</td>
+          <td class="right strong">{{ invoiceData?.gst | currency:'INR' }}</td>
+        </tr>
+        <tr *ngIf="invoiceData?.cess">
+          <td colspan="10" class="right strong">CESS</td>
+          <td class="right strong">{{ invoiceData?.cess | currency:'INR' }}</td>
+        </tr>
+        <tr class="grand">
+          <td colspan="10" class="right">Grand Total</td>
+          <td class="right">{{ invoiceData?.totalAmount | currency:'INR' }}</td>
+        </tr>
+      </tfoot>
+    </table>
+  </section>
+
+  <!-- Amount in words -->
+  <section class="amount-words">
+    <span class="muted">Amount in Words:</span>
+    <span class="words">Rupees {{ convertNumberToWords(invoiceData?.totalAmount) }} Only</span>
+  </section>
+
+  <!-- Notes & Payment -->
+  <section class="notes-pay">
+    <div class="notes">
+      <h4 class="card-head">Notes</h4>
+      <p class="muted">
+        {{ invoiceData?.notes || 'Thank you for your business!' }}
+      </p>
+    </div>
+    <div class="pay">
+      <h4 class="card-head">Payment Details</h4>
+      <p>UPI:</p>
+      <canvas id="upi-qrcode" class="qr"></canvas>
+      <p class="muted mt-2">
+        Bank: YOUR_BANK_NAME · A/c: YOUR_ACCOUNT_NUMBER · IFSC: YOUR_IFSC_CODE
+      </p>
+      <p class="muted">Please make payment within 15 days of invoice date.</p>
+    </div>
+  </section>
+
+  <!-- Signature -->
+  <section class="signature">
+    <div class="sig-box">
+      <div class="sig-line"></div>
+      <div class="muted">Authorised Signatory</div>
+    </div>
+    <div class="issuer">For Shivam Electronics</div>
+  </section>
+</div>
+
+<!-- Actions (hidden in print) -->
+<div class="actions">
+  <button (click)="downloadPDF()" class="btn-primary">Download PDF</button>
+</div>
+
+<!-- <version 2 -->
+<!-- <div class="invoice-container">
   <div class="bg-white p-6 rounded-md shadow-md ">
     <div class="flex justify-between items-start mb-8">
       <div class="seller-info">
@@ -128,7 +290,13 @@
   <button (click)="downloadPDF()" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
     Download PDF
   </button>
-</div>
+</div> -->
+
+
+
+
+
+<!-- version1 -->
 <!-- 
 <div class="invoice-container max-w-4xl mx-auto p-10 bg-white font-sans print:bg-white">
   <div class="bg-white p-8 rounded-xl shadow-2xl border border-gray-100 print:shadow-none print:border-none">

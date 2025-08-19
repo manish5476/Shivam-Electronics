@@ -1,4 +1,163 @@
-.invoice-container {
+/* invoice-print.component.css */
+
+/* Surface */
+.invoice.doc-surface {
+  --bg: var(--theme-bg-secondary, #ffffff);
+  --ink: var(--theme-text-primary, #1e293b);
+  --ink-2: var(--theme-text-secondary, #4b5563);
+  --muted: var(--theme-text-secondary, #4b5563);
+  --border: var(--theme-border-secondary, #e5e7eb);
+  --ring: var(--theme-accent-primary, #3b82f6);
+  --ring-ghost: var(--theme-accent-primary-light, #bfdbfe);
+  --accent: var(--theme-accent-primary, #3b82f6);
+  --accent-ink: var(--theme-accent-text-color, #ffffff);
+
+  background: var(--bg);
+  color: var(--ink);
+  max-width: 210mm;           /* A4 width */
+  margin: 24px auto;
+  padding: 24px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  box-shadow: 0 10px 24px var(--theme-shadow-color, rgba(0,0,0,0.08));
+  font-family: Inter, Roboto, "Helvetica Neue", Arial, sans-serif;
+  line-height: 1.45;
+}
+
+/* Brand bar */
+.brandbar {
+  display: flex;
+  justify-content: space-between;
+  gap: 24px;
+  border-bottom: 2px solid var(--border);
+  padding-bottom: 16px;
+  margin-bottom: 20px;
+}
+
+.brand-left { display: flex; gap: 16px; align-items: flex-start; }
+.brand-logo { height: 48px; width: auto; }
+.brand-title { font-size: 24px; font-weight: 800; margin: 0; }
+.brand-tag { margin: 2px 0 4px; color: var(--ink-2); font-weight: 500; }
+.brand-contact { margin: 0; color: var(--muted); font-size: 12px; }
+
+.invoice-pill {
+  min-width: 230px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 12px 14px;
+  background: linear-gradient(180deg, #fff, var(--ring-ghost));
+}
+.pill-row { display: flex; justify-content: space-between; padding: 4px 0; }
+.pill-label { color: var(--muted); font-size: 12px; }
+.pill-value { font-weight: 700; }
+
+/* Parties */
+.parties {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+.party-card { border: 1px solid var(--border); border-radius: 10px; }
+.card-head {
+  margin: 0; padding: 10px 12px;
+  font-weight: 700; background: var(--ring-ghost);
+  border-bottom: 1px solid var(--border);
+}
+.card-body { padding: 12px; }
+.party-name { font-size: 16px; font-weight: 700; margin-bottom: 6px; }
+.muted { color: var(--muted); }
+
+/* Items Table */
+.items { margin-top: 8px; }
+.items-table {
+  width: 100%; border-collapse: separate; border-spacing: 0;
+  border: 1px solid var(--border); border-radius: 10px; overflow: hidden;
+}
+.items-table thead th {
+  background: var(--theme-bg-ternary, #f3f4f6);
+  color: var(--theme-text-label, #374151);
+  text-align: left; font-size: 12px; letter-spacing: .02em;
+  padding: 10px; border-bottom: 1px solid var(--border);
+  position: sticky; top: 0; /* sticky for on-screen scroll */
+}
+.items-table tbody td, .items-table tfoot td {
+  padding: 10px; border-top: 1px solid var(--border); vertical-align: top;
+  font-size: 13px; background: #fff;
+}
+.items-table tbody tr:nth-child(even) td { background: #fafafa; }
+.th-sm { width: 60px; }
+.right { text-align: right; }
+.strong { font-weight: 700; }
+.wrap { word-break: break-word; hyphens: auto; }
+
+/* Totals */
+.items-table tfoot td { background: #fbfdff; }
+.items-table tfoot tr.grand td {
+  background: var(--accent); color: var(--accent-ink);
+  font-weight: 800; font-size: 14px; border-top: 2px solid var(--accent);
+}
+
+/* Amount in words */
+.amount-words {
+  display: flex; gap: 8px; align-items: baseline;
+  padding: 12px; margin-top: 14px;
+  border: 1px dashed var(--border); border-radius: 10px; background: #fff;
+}
+.amount-words .words { font-weight: 700; }
+
+/* Notes & Payment */
+.notes-pay {
+  display: grid; grid-template-columns: 1.4fr .6fr; gap: 16px; margin-top: 16px;
+}
+.notes, .pay { border: 1px solid var(--border); border-radius: 10px; background: #fff; }
+.notes .card-head, .pay .card-head { background: var(--ring-ghost); }
+.notes .card-head, .pay .card-head, .notes p, .pay p { padding: 10px 12px; margin: 0; }
+.qr { display: block; width: 120px; height: 120px; border: 1px solid var(--border); margin: 6px 12px; }
+
+/* Signature */
+.signature {
+  display: grid; grid-template-columns: 1fr auto; gap: 16px;
+  align-items: end; margin-top: 20px; page-break-inside: avoid;
+}
+.sig-box { text-align: right; }
+.sig-line { width: 180px; height: 2px; background: var(--ink); margin: 36px 0 6px auto; }
+.issuer { font-weight: 700; }
+
+/* Actions */
+.actions { display: flex; justify-content: center; gap: 8px; margin: 16px 0 32px; }
+.btn-primary {
+  border: none; border-radius: 10px; padding: 10px 16px; cursor: pointer;
+  color: var(--accent-ink); background: var(--accent); font-weight: 700;
+}
+.btn-primary:hover { filter: brightness(0.95); }
+
+/* PRINT (A4) */
+@media print {
+  @page { size: A4; margin: 12mm; }
+  .invoice.doc-surface {
+    margin: 0; padding: 0; border: none; box-shadow: none; max-width: none;
+  }
+  .actions { display: none !important; }
+
+  /* Make table header repeat on new pages */
+  table.items-table { page-break-inside: auto; }
+  thead { display: table-header-group; }
+  tfoot { display: table-row-group; }
+  tr { page-break-inside: avoid; page-break-after: auto; }
+
+  /* Keep totals/signature together */
+  .amount-words, .signature { page-break-inside: avoid; }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .brandbar { flex-direction: column; gap: 12px; }
+  .parties, .notes-pay { grid-template-columns: 1fr; }
+  .invoice-pill { width: 100%; }
+}
+
+/* .invoice-container {
   max-width: 800px;
   margin: 0 auto;
   font-family: Arial, sans-serif;
@@ -46,4 +205,4 @@ tfoot {
 .download-button button:disabled {
   background-color: #cccccc;
   cursor: not-allowed;
-}
+} */
