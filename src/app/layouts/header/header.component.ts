@@ -47,10 +47,13 @@ export class HeaderComponent implements OnInit {
   accentColor: string = '#3B82F6'; // Default accent
   themeOptions: any[];
 
-  // The 20 color palettes for the theme switcher
   colorThemes = [
     { name: 'Indigo', color: '#6366f1', class: 'theme-indigo' },
-    { name: 'Slate', color: '#64748b', class: 'theme-slate' },
+    { name: 'Slate', color: '#059669', class: 'theme-slate' },
+    { name: 'Forest', color: '#64748b', class: 'theme-forest' },
+    { name: 'Ocean', color: '#0ea5e9', class: 'theme-ocean' },
+    { name: 'sunset', color: '#f97316', class: 'theme-sunset' },
+    { name: 'Aurora', color: '#8b5cf6', class: 'theme-aurora' },
     { name: 'Red', color: '#ef4444', class: 'theme-red' },
     { name: 'Orange', color: '#f97316', class: 'theme-orange' },
     { name: 'Amber', color: '#f59e0b', class: 'theme-amber' },

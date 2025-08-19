@@ -1,6 +1,311 @@
-<div class="dashboard-main-container p-4 pt-2 md:p-6 rounded-sm"
+<!-- Enhanced dashboard with stunning visual effects and improved UX -->
+<div class="dashboard-main-container p-4 pt-2 md:p-6 rounded-sm">
+  <!-- Date Filter Section with Enhanced Styling -->
+  <div class="card p-6 mb-8 rounded-2xl transition-all duration-500 hover:shadow-[0_8px_40px_rgba(99,102,241,0.15)]">
+    <div class="flex items-center mb-4">
+      <div class="w-1 h-8 bg-gradient-to-b from-indigo-500 to-purple-600 rounded-full mr-4"></div>
+      <h2 class="text-xl font-bold text-gray-800">Date Range Filter</h2>
+    </div>
+    <div class="flex flex-wrap items-end -mx-2">
+      <div class="w-full md:w-1/4 px-2 mb-4 md:mb-0">
+        <label for="periodSelect" class="form-label">Predefined Period:</label>
+        <select id="periodSelect" [(ngModel)]="selectedPeriod" (ngModelChange)="onPeriodChange($event)"
+          class="p-inputtext w-full rounded-xl border bg-white/90 text-gray-800 focus:border-indigo-500 focus:ring-indigo-200">
+          <option value="today">Today</option>
+          <option value="yesterday">Yesterday</option>
+          <option value="week">This Week</option>
+          <option value="month">This Month</option>
+          <option value="last_month">Last Month</option>
+          <option value="year">This Year</option>
+        </select>
+      </div>
+      <div class="w-full md:w-1/4 px-2 mb-4 md:mb-0">
+        <label for="customStartDate" class="form-label">Start Date:</label>
+        <input type="date" id="customStartDate" [(ngModel)]="customStartDate"
+          class="p-inputtext w-full rounded-xl border bg-white/90 text-gray-800 focus:border-indigo-500 focus:ring-indigo-200">
+      </div>
+      <div class="w-full md:w-1/4 px-2 mb-4 md:mb-0">
+        <label for="customEndDate" class="form-label">End Date:</label>
+        <input type="date" id="customEndDate" [(ngModel)]="customEndDate"
+          class="p-inputtext w-full rounded-xl border bg-white/90 text-gray-800 focus:border-indigo-500 focus:ring-indigo-200">
+      </div>
+      <div class="w-full md:w-1/4 px-2">
+        <button pButton type="button" label="Apply Custom Range & Reload" icon="pi pi-refresh"
+          class="p-button w-full h-12 px-6 bg-gradient-to-r from-indigo-600 to-purple-600 text-white hover:from-indigo-700 hover:to-purple-700 rounded-xl transition-all duration-300 shadow-lg hover:shadow-xl">
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Enhanced Metrics Cards with Stunning Animations -->
+  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 gap-6 mb-10">
+    <div class="card p-6 flex items-center space-x-4 rounded-2xl transition-all duration-500 hover:shadow-[0_12px_40px_rgba(99,102,241,0.2)] hover:-translate-y-2 group">
+      <div class="bg-gradient-to-br from-indigo-100 to-purple-100 text-indigo-600 p-4 rounded-2xl group-hover:scale-110 transition-transform duration-300">
+        <i class="pi pi-user-plus text-2xl"></i>
+      </div>
+      <div>
+        <div class="text-3xl font-bold text-gray-800 mb-1">{{ newCustomersCountData || 0 }}</div>
+        <div class="text-gray-600 text-sm font-medium">New Customers</div>
+        <div class="w-full bg-gray-200 rounded-full h-1 mt-2">
+          <div class="bg-gradient-to-r from-indigo-500 to-purple-500 h-1 rounded-full" style="width: 75%"></div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="card p-6 flex items-center space-x-4 rounded-2xl transition-all duration-500 hover:shadow-[0_12px_40px_rgba(16,185,129,0.2)] hover:-translate-y-2 group">
+      <div class="bg-gradient-to-br from-emerald-100 to-green-100 text-emerald-600 p-4 rounded-2xl group-hover:scale-110 transition-transform duration-300">
+        <i class="pi pi-shopping-bag text-2xl"></i>
+      </div>
+      <div>
+        <div class="text-3xl font-bold text-gray-800 mb-1">{{ salesTrends[0].dailySalesCount?salesTrends[0].dailySalesCount: 0 }}</div>
+        <div class="text-gray-600 text-sm font-medium">Sales Count</div>
+        <div class="w-full bg-gray-200 rounded-full h-1 mt-2">
+          <div class="bg-gradient-to-r from-emerald-500 to-green-500 h-1 rounded-full" style="width: 85%"></div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="card p-6 flex items-center space-x-4 rounded-2xl transition-all duration-500 hover:shadow-[0_12px_40px_rgba(239,68,68,0.2)] hover:-translate-y-2 group">
+      <div class="bg-gradient-to-br from-red-100 to-pink-100 text-red-600 p-4 rounded-2xl group-hover:scale-110 transition-transform duration-300">
+        <i class="pi pi-cart-arrow-down text-2xl"></i>
+      </div>
+      <div>
+        <div class="text-3xl font-bold text-gray-800 mb-1">{{ salesTrends[0].dailyRevenue ? salesTrends[0].dailyRevenue:0 }}</div>
+        <div class="text-gray-600 text-sm font-medium">Daily Revenue</div>
+        <div class="w-full bg-gray-200 rounded-full h-1 mt-2">
+          <div class="bg-gradient-to-r from-red-500 to-pink-500 h-1 rounded-full" style="width: 65%"></div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="card p-6 flex items-center space-x-4 rounded-2xl transition-all duration-500 hover:shadow-[0_12px_40px_rgba(245,158,11,0.2)] hover:-translate-y-2 group">
+      <div class="bg-gradient-to-br from-amber-100 to-yellow-100 text-amber-600 p-4 rounded-2xl group-hover:scale-110 transition-transform duration-300">
+        <i class="pi pi-box text-2xl"></i>
+      </div>
+      <div>
+        <div class="text-3xl font-bold text-gray-800 mb-1">{{ totalInventoryValueData?.totalValue | number:'1.2-2' }}</div>
+        <div class="text-gray-600 text-sm font-medium">Inventory Total Value</div>
+        <div class="w-full bg-gray-200 rounded-full h-1 mt-2">
+          <div class="bg-gradient-to-r from-amber-500 to-yellow-500 h-1 rounded-full" style="width: 90%"></div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="card p-6 flex items-center space-x-4 rounded-2xl transition-all duration-500 hover:shadow-[0_12px_40px_rgba(245,158,11,0.2)] hover:-translate-y-2 group">
+      <div class="bg-gradient-to-br from-orange-100 to-amber-100 text-orange-600 p-4 rounded-2xl group-hover:scale-110 transition-transform duration-300">
+        <i class="pi pi-box text-2xl"></i>
+      </div>
+      <div>
+        <div class="text-3xl font-bold text-gray-800 mb-1">{{ totalInventoryValueData?.totalItemsInStock || 0 }}</div>
+        <div class="text-gray-600 text-sm font-medium">Inventory Total Stocks</div>
+        <div class="w-full bg-gray-200 rounded-full h-1 mt-2">
+          <div class="bg-gradient-to-r from-orange-500 to-amber-500 h-1 rounded-full" style="width: 70%"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Enhanced Charts Section -->
+  <div class="grid gap-6 mb-8">
+    <div class="card p-8 rounded-2xl transition-all duration-500 hover:shadow-[0_12px_40px_rgba(99,102,241,0.15)]">
+      <div class="flex items-center mb-6">
+        <div class="w-1 h-8 bg-gradient-to-b from-indigo-500 to-purple-600 rounded-full mr-4"></div>
+        <h3 class="text-2xl font-bold text-gray-800">Yearly Sales Chart</h3>
+      </div>
+      <app-dashboard-chart-component></app-dashboard-chart-component>
+    </div>
+    
+    <div class="card p-8 rounded-2xl transition-all duration-500 hover:shadow-[0_12px_40px_rgba(99,102,241,0.15)]">
+      <div class="flex items-center mb-6">
+        <div class="w-1 h-8 bg-gradient-to-b from-purple-500 to-pink-600 rounded-full mr-4"></div>
+        <h3 class="text-2xl font-bold text-gray-800">Combo Chart</h3>
+      </div>
+      <app-dashboard-chart-combo></app-dashboard-chart-combo>
+    </div>
+    
+    <div class="card p-8 rounded-2xl transition-all duration-500 hover:shadow-[0_12px_40px_rgba(99,102,241,0.15)]">
+      <div class="flex items-center mb-6">
+        <div class="w-1 h-8 bg-gradient-to-b from-emerald-500 to-teal-600 rounded-full mr-4"></div>
+        <h3 class="text-2xl font-bold text-gray-800">Summary</h3>
+      </div>
+      <app-dashboard-summary [params]="getDateParam"></app-dashboard-summary>
+    </div>
+    
+    <div class="card p-8 rounded-2xl transition-all duration-500 hover:shadow-[0_12px_40px_rgba(99,102,241,0.15)]">
+      <div class="flex items-center mb-6">
+        <div class="w-1 h-8 bg-gradient-to-b from-pink-500 to-rose-600 rounded-full mr-4"></div>
+        <h3 class="text-2xl font-bold text-gray-800">Top Customers</h3>
+      </div>
+      <app-dashboard-top-customer-view [params]="getDateParam"></app-dashboard-top-customer-view>
+    </div>
+  </div>
+
+  <!-- Enhanced Sales Trend and Quick Links -->
+  <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-10">
+    <div class="lg:col-span-2 flex flex-col gap-6">
+      <div class="card p-8 rounded-2xl transition-all duration-500 hover:shadow-[0_12px_40px_rgba(99,102,241,0.15)]">
+        <div class="flex items-center mb-6">
+          <div class="w-1 h-8 bg-gradient-to-b from-indigo-500 to-purple-600 rounded-full mr-4"></div>
+          <h3 class="text-2xl font-bold text-gray-800">Sales Trend</h3>
+        </div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-6">
+          <div class="gradient-card p-6 rounded-2xl transition-all duration-400 hover:-translate-y-2 hover:shadow-[0_16px_48px_rgba(99,102,241,0.2)] group">
+            <div class="flex items-center justify-between mb-4">
+              <div class="bg-gradient-to-br from-indigo-100 to-purple-100 p-3 rounded-xl group-hover:scale-110 transition-transform duration-300">
+                <i class="pi pi-box text-2xl text-indigo-600"></i>
+              </div>
+              <i class="pi pi-ellipsis-h text-xl text-gray-400 group-hover:text-indigo-500 transition-colors duration-300"></i>
+            </div>
+            <div class="text-3xl font-bold text-gray-800 mb-2">$11,250</div>
+            <div class="text-sm text-gray-600 mb-4">Royal Package Opportunity</div>
+            <div class="flex items-center space-x-2 text-xs text-gray-500">
+              <div class="w-6 h-6 bg-gradient-to-br from-indigo-400 to-purple-400 rounded-full flex items-center justify-center">
+                <i class="pi pi-user text-white text-xs"></i>
+              </div>
+              <span class="font-medium">David J.</span>
+            </div>
+          </div>
+          
+          <div class="gradient-card p-6 rounded-2xl transition-all duration-400 hover:-translate-y-2 hover:shadow-[0_16px_48px_rgba(139,92,246,0.2)] group">
+            <div class="flex items-center justify-between mb-4">
+              <div class="bg-gradient-to-br from-purple-100 to-pink-100 p-3 rounded-xl group-hover:scale-110 transition-transform duration-300">
+                <i class="pi pi-briefcase text-2xl text-purple-600"></i>
+              </div>
+              <i class="pi pi-ellipsis-h text-xl text-gray-400 group-hover:text-purple-500 transition-colors duration-300"></i>
+            </div>
+            <div class="text-3xl font-bold text-gray-800 mb-2">$21,300</div>
+            <div class="text-sm text-gray-600 mb-4">Front Deal Business Services</div>
+            <div class="flex items-center space-x-2 text-xs text-gray-500">
+              <div class="w-6 h-6 bg-gradient-to-br from-purple-400 to-pink-400 rounded-full flex items-center justify-center">
+                <i class="pi pi-user text-white text-xs"></i>
+              </div>
+              <span class="font-medium">Emily C.</span>
+            </div>
+          </div>
+          
+          <div class="gradient-card p-6 rounded-2xl transition-all duration-400 hover:-translate-y-2 hover:shadow-[0_16px_48px_rgba(16,185,129,0.2)] group">
+            <div class="flex items-center justify-between mb-4">
+              <div class="bg-gradient-to-br from-emerald-100 to-green-100 p-3 rounded-xl group-hover:scale-110 transition-transform duration-300">
+                <i class="pi pi-check-circle text-2xl text-emerald-600"></i>
+              </div>
+              <i class="pi pi-ellipsis-h text-xl text-gray-400 group-hover:text-emerald-500 transition-colors duration-300"></i>
+            </div>
+            <div class="text-3xl font-bold text-gray-800 mb-2">$2,100</div>
+            <div class="text-sm text-gray-600 mb-4">Absolute Success Deal CRM Service</div>
+            <div class="flex items-center space-x-2 text-xs text-gray-500">
+              <div class="w-6 h-6 bg-gradient-to-br from-emerald-400 to-green-400 rounded-full flex items-center justify-center">
+                <i class="pi pi-user text-white text-xs"></i>
+              </div>
+              <span class="font-medium">OVA'S</span>
+            </div>
+          </div>
+          
+          <div class="gradient-card p-6 rounded-2xl transition-all duration-400 hover:-translate-y-2 hover:shadow-[0_16px_48px_rgba(236,72,153,0.2)] group">
+            <div class="flex items-center justify-between mb-4">
+              <div class="bg-gradient-to-br from-pink-100 to-rose-100 p-3 rounded-xl group-hover:scale-110 transition-transform duration-300">
+                <i class="pi pi-dollar text-2xl text-pink-600"></i>
+              </div>
+              <i class="pi pi-ellipsis-h text-xl text-gray-400 group-hover:text-pink-500 transition-colors duration-300"></i>
+            </div>
+            <div class="text-3xl font-bold text-gray-800 mb-2">$4,160</div>
+            <div class="text-sm text-gray-600 mb-4">Royal Package Opportunity</div>
+            <div class="flex items-center space-x-2 text-xs text-gray-500">
+              <div class="w-6 h-6 bg-gradient-to-br from-pink-400 to-rose-400 rounded-full flex items-center justify-center">
+                <i class="pi pi-user text-white text-xs"></i>
+              </div>
+              <span class="font-medium">Jim P.</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Enhanced Quick Links -->
+    <div class="card p-8 rounded-2xl transition-all duration-500 hover:shadow-[0_12px_40px_rgba(99,102,241,0.15)] quick-links">
+      <div class="flex items-center mb-6">
+        <div class="w-1 h-8 bg-gradient-to-b from-indigo-500 to-purple-600 rounded-full mr-4"></div>
+        <h3 class="text-2xl font-bold text-gray-800">Quick Links</h3>
+      </div>
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div class="gradient-card p-6 rounded-2xl h-36 flex items-center justify-center transition-all duration-400 hover:bg-gradient-to-br hover:from-indigo-50 hover:to-purple-50 group cursor-pointer"
+          (click)="showcustomerGrid=true">
+          <div class="text-center">
+            <div class="bg-gradient-to-br from-indigo-100 to-purple-100 p-4 rounded-2xl mb-4 mx-auto w-fit group-hover:scale-110 transition-transform duration-300">
+              <i class="pi pi-users text-3xl text-indigo-600"></i>
+            </div>
+            <span class="text-lg font-semibold text-gray-800">View Customers</span>
+          </div>
+        </div>
+        
+        <div class="gradient-card p-6 rounded-2xl h-36 flex items-center justify-center transition-all duration-400 hover:bg-gradient-to-br hover:from-purple-50 hover:to-pink-50 group cursor-pointer"
+          (click)="showproductGrid=true">
+          <div class="text-center">
+            <div class="bg-gradient-to-br from-purple-100 to-pink-100 p-4 rounded-2xl mb-4 mx-auto w-fit group-hover:scale-110 transition-transform duration-300">
+              <i class="pi pi-mobile text-3xl text-purple-600"></i>
+            </div>
+            <span class="text-lg font-semibold text-gray-800">View Products</span>
+          </div>
+        </div>
+        
+        <div class="gradient-card p-6 rounded-2xl h-36 flex items-center justify-center transition-all duration-400 hover:bg-gradient-to-br hover:from-emerald-50 hover:to-green-50 group cursor-pointer"
+          (click)="showInvoiceGrid=true">
+          <div class="text-center">
+            <div class="bg-gradient-to-br from-emerald-100 to-green-100 p-4 rounded-2xl mb-4 mx-auto w-fit group-hover:scale-110 transition-transform duration-300">
+              <i class="pi pi-pen-to-square text-3xl text-emerald-600"></i>
+            </div>
+            <span class="text-lg font-semibold text-gray-800">View Invoices</span>
+          </div>
+        </div>
+        
+        <div class="gradient-card p-6 rounded-2xl h-36 flex items-center justify-center transition-all duration-400 hover:bg-gradient-to-br hover:from-pink-50 hover:to-rose-50 group cursor-pointer"
+          (click)="showPaymentGrid=true">
+          <div class="text-center">
+            <div class="bg-gradient-to-br from-pink-100 to-rose-100 p-4 rounded-2xl mb-4 mx-auto w-fit group-hover:scale-110 transition-transform duration-300">
+              <i class="pi pi-money-bill text-3xl text-pink-600"></i>
+            </div>
+            <span class="text-lg font-semibold text-gray-800">View Payments</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Enhanced PrimeNG Dialogs -->
+  <p-dialog header="Customers" [(visible)]="showcustomerGrid" [modal]="true"
+    [style]="{ width: '90vw', maxWidth: '1200px' }"
+    class="enhanced-dialog">
+    <app-customer-list></app-customer-list>
+  </p-dialog>
+  
+  <p-dialog header="Products" [(visible)]="showproductGrid" [modal]="true"
+    [style]="{ width: '90vw', maxWidth: '1200px' }"
+    class="enhanced-dialog">
+    <app-product-list></app-product-list>
+  </p-dialog>
+  
+  <p-dialog header="Invoices" [(visible)]="showInvoiceGrid" [modal]="true"
+    [style]="{ width: '80vw', maxWidth: '1200px' }"
+    class="enhanced-dialog">
+    <app-invoice-view></app-invoice-view>
+  </p-dialog>
+  
+  <p-dialog header="Payments" [(visible)]="showPaymentGrid" [modal]="true"
+    [style]="{ width: '90vw', maxWidth: '1200px' }"
+    class="enhanced-dialog">
+    <app-payment-list></app-payment-list>
+  </p-dialog>
+  
+  <p-dialog header="Invoice" [(visible)]="showpdf" [modal]="true" 
+    [style]="{ width: '90vw', maxWidth: '1200px' }"
+    class="enhanced-dialog">
+    <app-invoice-print [Id]="dashboard.invoiceId"></app-invoice-print>
+  </p-dialog>
+</div>
+
+
+<!-- <div class="dashboard-main-container p-4 pt-2 md:p-6 rounded-sm"
   style="background: linear-gradient(to bottom, var(--theme-body-gradient-start), var(--theme-body-gradient-end));">
-  <!-- Date Filter Section -->
+  Date Filter Section
   <div class="card p-4 mb-6 rounded-xl transition-all duration-300 hover:shadow-[0_4px_20px_var(--theme-shadow-color)]">
     <div class="flex flex-wrap items-end -mx-2">
       <div class="w-full md:w-1/4 px-2 mb-4 md:mb-0">
@@ -33,7 +338,7 @@
     </div>
   </div>
 
-  <!-- Metrics Cards -->
+  Metrics Cards
   <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 gap-4 mb-8">
     <div
       class="card p-4 flex items-center space-x-3 rounded-lg transition-all duration-300 hover:shadow-[0_4px_20px_var(--theme-shadow-color)] hover:-translate-y-1">
@@ -90,7 +395,7 @@
     </div>
   </div>
 
-  <!-- Charts Section -->
+  Charts Section
   <div class="grid gap-4 mb-2">
     <div
       class="card p-4 sm:p-6 rounded-xl transition-all duration-300 hover:shadow-[0_4px_20px_var(--theme-shadow-color)]">
@@ -112,7 +417,7 @@
     </div>
   </div>
 
-  <!-- Sales Trend and Quick Links -->
+  Sales Trend and Quick Links
   <div class="grid grid-cols-1 lg:grid-cols-3 gap-4 mb-8">
     <div class="lg:col-span-2 flex flex-col gap-4">
       <div class="card p-6 rounded-xl transition-all duration-300 hover:shadow-[0_4px_20px_var(--theme-shadow-color)]">
@@ -170,7 +475,7 @@
       </div>
     </div>
 
-    <!-- Quick Links -->
+    Quick Links
     <div class="card p-6 rounded-xl transition-all duration-300 hover:shadow-[0_4px_20px_var(--theme-shadow-color)]">
       <h3 class="text-lg font-semibold text-[var(--theme-text-heading)] mb-4">Quick Links</h3>
       <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
@@ -210,7 +515,7 @@
     </div>
   </div>
 
-  <!-- PrimeNG Dialogs -->
+  PrimeNG Dialogs
   <p-dialog header="Customers" [(visible)]="showcustomerGrid" [modal]="true"
     [style]="{ width: '90vw', maxWidth: '1200px' }"
     class="bg-[var(--theme-dialog-bg)] text-[var(--theme-text-primary)] rounded-xl">
@@ -235,4 +540,4 @@
     class="bg-[var(--theme-dialog-bg)] text-[var(--theme-text-primary)] rounded-xl">
     <app-invoice-print [Id]="dashboard.invoiceId"></app-invoice-print>
   </p-dialog>
-</div>
+</div> -->
