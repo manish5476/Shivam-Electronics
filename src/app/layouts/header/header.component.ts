@@ -48,12 +48,9 @@ export class HeaderComponent implements OnInit {
   themeOptions: any[];
 
   colorThemes = [
+    // Original Themes
     { name: 'Indigo', color: '#6366f1', class: 'theme-indigo' },
-    { name: 'Slate', color: '#059669', class: 'theme-slate' },
-    { name: 'Forest', color: '#64748b', class: 'theme-forest' },
-    { name: 'Ocean', color: '#0ea5e9', class: 'theme-ocean' },
-    { name: 'sunset', color: '#f97316', class: 'theme-sunset' },
-    { name: 'Aurora', color: '#8b5cf6', class: 'theme-aurora' },
+    { name: 'Slate', color: '#64748b', class: 'theme-slate' },
     { name: 'Red', color: '#ef4444', class: 'theme-red' },
     { name: 'Orange', color: '#f97316', class: 'theme-orange' },
     { name: 'Amber', color: '#f59e0b', class: 'theme-amber' },
@@ -70,7 +67,42 @@ export class HeaderComponent implements OnInit {
     { name: 'Fuchsia', color: '#d946ef', class: 'theme-fuchsia' },
     { name: 'Pink', color: '#ec4899', class: 'theme-pink' },
     { name: 'Rose', color: '#f43f5e', class: 'theme-rose' },
+    //  Retro Themes
+    { name: 'Retro Burgundy', color: '#8b2635', class: 'theme-retro-burgundy' },
+    { name: 'Retro Forest', color: '#2d5016', class: 'theme-retro-forest' },
+    { name: 'Retro Navy', color: '#1e3a5f', class: 'theme-retro-navy' },
+    { name: 'Retro Copper', color: '#b87333', class: 'theme-retro-copper' },
+    { name: 'Retro Plum', color: '#6b4c57', class: 'theme-retro-plum' },
+    { name: 'Retro Sage', color: '#87a96b', class: 'theme-retro-sage' },
+    { name: 'Retro Gold', color: '#b8860b', class: 'theme-retro-gold' },
+    { name: 'Retro Mahogany', color: '#c04000', class: 'theme-retro-mahogany' },
+    { name: 'Retro Teal', color: '#4a7c7e', class: 'theme-retro-teal' },
+    { name: 'Retro Lavender', color: '#8b7d9b', class: 'theme-retro-lavender' },
   ];
+  // colorThemes = [
+  //   { name: 'Indigo', color: '#6366f1', class: 'theme-indigo' },
+  //   { name: 'Slate', color: '#059669', class: 'theme-slate' },
+  //   { name: 'Forest', color: '#64748b', class: 'theme-forest' },
+  //   { name: 'Ocean', color: '#0ea5e9', class: 'theme-ocean' },
+  //   { name: 'sunset', color: '#f97316', class: 'theme-sunset' },
+  //   { name: 'Aurora', color: '#8b5cf6', class: 'theme-aurora' },
+  //   { name: 'Red', color: '#ef4444', class: 'theme-red' },
+  //   { name: 'Orange', color: '#f97316', class: 'theme-orange' },
+  //   { name: 'Amber', color: '#f59e0b', class: 'theme-amber' },
+  //   { name: 'Yellow', color: '#eab308', class: 'theme-yellow' },
+  //   { name: 'Lime', color: '#84cc16', class: 'theme-lime' },
+  //   { name: 'Green', color: '#22c55e', class: 'theme-green' },
+  //   { name: 'Emerald', color: '#10b981', class: 'theme-emerald' },
+  //   { name: 'Teal', color: '#14b8a6', class: 'theme-teal' },
+  //   { name: 'Cyan', color: '#06b6d4', class: 'theme-cyan' },
+  //   { name: 'Sky', color: '#0ea5e9', class: 'theme-sky' },
+  //   { name: 'Blue', color: '#3b82f6', class: 'theme-blue' },
+  //   { name: 'Violet', color: '#8b5cf6', class: 'theme-violet' },
+  //   { name: 'Purple', color: '#a855f7', class: 'theme-purple' },
+  //   { name: 'Fuchsia', color: '#d946ef', class: 'theme-fuchsia' },
+  //   { name: 'Pink', color: '#ec4899', class: 'theme-pink' },
+  //   { name: 'Rose', color: '#f43f5e', class: 'theme-rose' },
+  // ];
 
   constructor(
     private authService: AuthService,
@@ -107,7 +139,7 @@ export class HeaderComponent implements OnInit {
     // FIX: Call the new, more specific method
     this.themeService.setAccentColor(this.accentColor);
   }
-  
+
   // onThemeModeChange(isDark: boolean): void {
   //   this.isDarkMode = isDark;
   //   this.themeService.setTheme(this.accentColor, this.isDarkMode);

@@ -1,30 +1,33 @@
 @import "tailwindcss";
 @import "primeicons/primeicons.css";
+@import url("https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Crimson+Text:ital,wght@0,400;0,600;1,400&family=Merriweather:wght@300;400;700&family=Lora:wght@400;500;600&family=Source+Serif+Pro:wght@400;600;700&family=Cormorant+Garamond:wght@300;400;500;600&display=swap");
 
 /* --- 1. CORE THEME & COLOR PALETTE DEFINITIONS --- */
 :root {
   /* --- Base Layout & Text (Light Mode) --- */
-  --theme-bg-primary: #f9f7f3;
-  --theme-bg-secondary: #ffffff;
-  --theme-bg-ternary: #f8fafc;
-  --theme-text-primary: #1e293b;
-  --theme-text-secondary: #64748b;
-  --theme-text-label: #374151;
-  --theme-text-inverted: #ffffff;
-  --theme-border-primary: #e2e8f0;
-  --theme-border-secondary: #f1f5f9;
-  --theme-border-dark: #94a3b8;
-  --theme-shadow-color: rgba(0, 0, 0, 0.08);
-  --theme-hover-bg: #f8fafc;
-  --theme-scroll-track: #f1f5f9;
-  --theme-scroll-thumb: #cbd5e1;
+  /* Updated to retro warm cream and beige tones */
+  --theme-bg-primary: #faf8f5;
+  --theme-bg-secondary: #f5f1eb;
+  --theme-bg-ternary: #ede7dd;
+  --theme-text-primary: #2d1810;
+  --theme-text-secondary: #6b5b4f;
+  --theme-text-label: #4a3c2a;
+  --theme-text-inverted: #faf8f5;
+  --theme-border-primary: #d4c4b0;
+  --theme-border-secondary: #e8ddd0;
+  --theme-border-dark: #a08d7a;
+  --theme-shadow-color: rgba(45, 24, 16, 0.12);
+  --theme-hover-bg: #ede7dd;
+  --theme-scroll-track: #e8ddd0;
+  --theme-scroll-thumb: #c4b5a0;
 
-  /* --- Default Accent Color (Blue) --- */
-  --theme-accent-primary: #3b82f6;
-  --theme-accent-primary-light: #dbeafe;
-  --theme-accent-primary-hover: #2563eb;
-  --theme-accent-text-color: #ffffff;
-  --theme-accent-focus-ring: rgba(59, 130, 246, 0.2);
+  /* --- Default Accent Color (Retro Orange) --- */
+  /* Changed from blue to warm retro orange */
+  --theme-accent-primary: #d2691e;
+  --theme-accent-primary-light: #f4e4d0;
+  --theme-accent-primary-hover: #b8571a;
+  --theme-accent-text-color: #faf8f5;
+  --theme-accent-focus-ring: rgba(210, 105, 30, 0.25);
 
   /* --- Status Colors --- */
   --theme-success-primary: #10b981;
@@ -32,29 +35,152 @@
   --theme-warning-primary: #f59e0b;
 
   /* Body Background */
-  --theme-body-gradient-start: #f8fafc;
-  --theme-body-gradient-end: #f1f5f9;
+  /* Updated gradient to warm retro tones */
+  --theme-body-gradient-start: #faf8f5;
+  --theme-body-gradient-end: #f0e6d6;
+
+  /* Enhanced typography with retro font variables */
+  --font-primary: "Anton", serif;
+  --font-secondary: "Anton", serif;
+  --font-body: "Lora", serif;
+  --font-accent: "Merriweather", serif;
+  --font-elegant: "Cormorant Garamond", serif;
+
+  /* Enhanced retro effects */
+  --retro-text-shadow: 2px 2px 4px rgba(45, 24, 16, 0.3);
+  --retro-glow: 0 0 20px rgba(210, 105, 30, 0.4);
+  --retro-emboss: inset 0 1px 0 rgba(255, 255, 255, 0.2), inset 0 -1px 0 rgba(0, 0, 0, 0.1);
+  --retro-gradient-warm: linear-gradient(135deg, #f4e4d0 0%, #e8ddd0 50%, #d4c4b0 100%);
+  --retro-gradient-cool: linear-gradient(135deg, #2d1810 0%, #4a3c2a 50%, #6b5b4f 100%);
 }
 
 body.dark-mode {
-  --theme-bg-primary: #0f172a;
-  --theme-bg-secondary: #1e293b;
-  --theme-bg-ternary: #334155;
-  --theme-text-primary: #f8fafc;
-  --theme-text-secondary: #94a3b8;
-  --theme-text-label: #cbd5e1;
-  --theme-text-inverted: #0f172a;
-  --theme-border-primary: #334155;
-  --theme-border-secondary: #475569;
-  --theme-shadow-color: rgba(0, 0, 0, 0.3);
-  --theme-hover-bg: #334155;
-  --theme-scroll-track: #334155;
-  --theme-scroll-thumb: #64748b;
-  --theme-body-gradient-start: #0f172a;
-  --theme-body-gradient-end: #1e293b;
+  /* Updated dark mode to rich retro browns and warm grays */
+  --theme-bg-primary: #1a1611;
+  --theme-bg-secondary: #2d251e;
+  --theme-bg-ternary: #3d342a;
+  --theme-text-primary: #f5f1eb;
+  --theme-text-secondary: #c4b5a0;
+  --theme-text-label: #d4c4b0;
+  --theme-text-inverted: #1a1611;
+  --theme-border-primary: #3d342a;
+  --theme-border-secondary: #4a3c2a;
+  --theme-shadow-color: rgba(0, 0, 0, 0.4);
+  --theme-hover-bg: #3d342a;
+  --theme-scroll-track: #3d342a;
+  --theme-scroll-thumb: #6b5b4f;
+  --theme-body-gradient-start: #1a1611;
+  --theme-body-gradient-end: #2d251e;
+
+  /* Dark mode retro effects */
+  --retro-text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.6);
+  --retro-glow: 0 0 20px rgba(210, 105, 30, 0.6);
+  --retro-gradient-warm: linear-gradient(135deg, #3d342a 0%, #4a3c2a 50%, #6b5b4f 100%);
+  --retro-gradient-cool: linear-gradient(135deg, #1a1611 0%, #2d251e 50%, #3d342a 100%);
+}
+
+/* Advanced retro typography classes */
+.retro-heading {
+  font-family: var(--font-primary);
+  font-weight: 700;
+  text-shadow: var(--retro-text-shadow);
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+}
+
+.retro-subheading {
+  font-family: var(--font-secondary);
+  font-weight: 600;
+  font-style: italic;
+  letter-spacing: 0.01em;
+}
+
+.retro-body {
+  font-family: var(--font-body);
+  font-weight: 400;
+  line-height: 1.7;
+  letter-spacing: 0.005em;
+}
+
+.retro-accent {
+  font-family: var(--font-accent);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+.retro-elegant {
+  font-family: var(--font-elegant);
+  font-weight: 400;
+  font-style: italic;
+  letter-spacing: 0.02em;
+}
+
+.retro-glow-text {
+  text-shadow: var(--retro-glow);
+  color: var(--theme-accent-primary);
+}
+
+.retro-embossed {
+  text-shadow: 1px 1px 0 rgba(255, 255, 255, 0.3), -1px -1px 0 rgba(0, 0, 0, 0.3);
 }
 
 /* --- 2. CLEAN COLOR THEMES --- */
+/* Added new retro-inspired themes */
+.theme-retro-burgundy {
+  --theme-accent-primary: #8b2635;
+  --theme-accent-primary-light: #f2d7da;
+  --theme-accent-primary-hover: #6d1e2a;
+  --theme-accent-text-color: #ffffff;
+  --theme-accent-focus-ring: rgba(139, 38, 53, 0.25);
+  --retro-glow: 0 0 20px rgba(139, 38, 53, 0.4);
+}
+
+.theme-retro-forest {
+  --theme-accent-primary: #2d5016;
+  --theme-accent-primary-light: #e8f2e1;
+  --theme-accent-primary-hover: #1f3610;
+  --theme-accent-text-color: #ffffff;
+  --theme-accent-focus-ring: rgba(45, 80, 22, 0.25);
+  --retro-glow: 0 0 20px rgba(45, 80, 22, 0.4);
+}
+
+.theme-retro-navy {
+  --theme-accent-primary: #1e3a5f;
+  --theme-accent-primary-light: #d6e3f0;
+  --theme-accent-primary-hover: #152b47;
+  --theme-accent-text-color: #ffffff;
+  --theme-accent-focus-ring: rgba(30, 58, 95, 0.25);
+  --retro-glow: 0 0 20px rgba(30, 58, 95, 0.4);
+}
+
+.theme-retro-copper {
+  --theme-accent-primary: #b87333;
+  --theme-accent-primary-light: #f0e4d7;
+  --theme-accent-primary-hover: #9a5f2a;
+  --theme-accent-text-color: #ffffff;
+  --theme-accent-focus-ring: rgba(184, 115, 51, 0.25);
+  --retro-glow: 0 0 20px rgba(184, 115, 51, 0.4);
+}
+
+.theme-retro-plum {
+  --theme-accent-primary: #6b4c57;
+  --theme-accent-primary-light: #ede5e8;
+  --theme-accent-primary-hover: #533a43;
+  --theme-accent-text-color: #ffffff;
+  --theme-accent-focus-ring: rgba(107, 76, 87, 0.25);
+  --retro-glow: 0 0 20px rgba(107, 76, 87, 0.4);
+}
+
+.theme-retro-sage {
+  --theme-accent-primary: #87a96b;
+  --theme-accent-primary-light: #f0f4ec;
+  --theme-accent-primary-hover: #6d8a54;
+  --theme-accent-text-color: #ffffff;
+  --theme-accent-focus-ring: rgba(135, 169, 107, 0.25);
+  --retro-glow: 0 0 20px rgba(135, 169, 107, 0.4);
+}
+
 .theme-slate {
   --theme-accent-primary: #64748b;
   --theme-accent-primary-light: #f1f5f9;
@@ -199,11 +325,104 @@ body.dark-mode {
   --theme-accent-focus-ring: rgba(225, 29, 72, 0.2);
 }
 
+/* --- 2. ENHANCED COLOR THEMES --- */
+/* Added more sophisticated retro themes */
+.theme-retro-burgundy {
+  --theme-accent-primary: #8b2635;
+  --theme-accent-primary-light: #f2d7da;
+  --theme-accent-primary-hover: #6d1e2a;
+  --theme-accent-text-color: #ffffff;
+  --theme-accent-focus-ring: rgba(139, 38, 53, 0.25);
+  --retro-glow: 0 0 20px rgba(139, 38, 53, 0.4);
+}
+
+.theme-retro-forest {
+  --theme-accent-primary: #2d5016;
+  --theme-accent-primary-light: #e8f2e1;
+  --theme-accent-primary-hover: #1f3610;
+  --theme-accent-text-color: #ffffff;
+  --theme-accent-focus-ring: rgba(45, 80, 22, 0.25);
+  --retro-glow: 0 0 20px rgba(45, 80, 22, 0.4);
+}
+
+.theme-retro-navy {
+  --theme-accent-primary: #1e3a5f;
+  --theme-accent-primary-light: #d6e3f0;
+  --theme-accent-primary-hover: #152b47;
+  --theme-accent-text-color: #ffffff;
+  --theme-accent-focus-ring: rgba(30, 58, 95, 0.25);
+  --retro-glow: 0 0 20px rgba(30, 58, 95, 0.4);
+}
+
+.theme-retro-copper {
+  --theme-accent-primary: #b87333;
+  --theme-accent-primary-light: #f0e4d7;
+  --theme-accent-primary-hover: #9a5f2a;
+  --theme-accent-text-color: #ffffff;
+  --theme-accent-focus-ring: rgba(184, 115, 51, 0.25);
+  --retro-glow: 0 0 20px rgba(184, 115, 51, 0.4);
+}
+
+.theme-retro-plum {
+  --theme-accent-primary: #6b4c57;
+  --theme-accent-primary-light: #ede5e8;
+  --theme-accent-primary-hover: #533a43;
+  --theme-accent-text-color: #ffffff;
+  --theme-accent-focus-ring: rgba(107, 76, 87, 0.25);
+  --retro-glow: 0 0 20px rgba(107, 76, 87, 0.4);
+}
+
+.theme-retro-sage {
+  --theme-accent-primary: #87a96b;
+  --theme-accent-primary-light: #f0f4ec;
+  --theme-accent-primary-hover: #6d8a54;
+  --theme-accent-text-color: #ffffff;
+  --theme-accent-focus-ring: rgba(135, 169, 107, 0.25);
+  --retro-glow: 0 0 20px rgba(135, 169, 107, 0.4);
+}
+
+/* New advanced retro themes */
+.theme-retro-gold {
+  --theme-accent-primary: #b8860b;
+  --theme-accent-primary-light: #faf0e6;
+  --theme-accent-primary-hover: #9a7209;
+  --theme-accent-text-color: #1a1611;
+  --theme-accent-focus-ring: rgba(184, 134, 11, 0.25);
+  --retro-glow: 0 0 20px rgba(184, 134, 11, 0.6);
+}
+
+.theme-retro-mahogany {
+  --theme-accent-primary: #c04000;
+  --theme-accent-primary-light: #f4d7cc;
+  --theme-accent-primary-hover: #a03600;
+  --theme-accent-text-color: #ffffff;
+  --theme-accent-focus-ring: rgba(192, 64, 0, 0.25);
+  --retro-glow: 0 0 20px rgba(192, 64, 0, 0.4);
+}
+
+.theme-retro-teal {
+  --theme-accent-primary: #4a7c7e;
+  --theme-accent-primary-light: #e6f2f2;
+  --theme-accent-primary-hover: #3a6264;
+  --theme-accent-text-color: #ffffff;
+  --theme-accent-focus-ring: rgba(74, 124, 126, 0.25);
+  --retro-glow: 0 0 20px rgba(74, 124, 126, 0.4);
+}
+
+.theme-retro-lavender {
+  --theme-accent-primary: #8b7d9b;
+  --theme-accent-primary-light: #f0eef4;
+  --theme-accent-primary-hover: #6f6280;
+  --theme-accent-text-color: #ffffff;
+  --theme-accent-focus-ring: rgba(139, 125, 155, 0.25);
+  --retro-glow: 0 0 20px rgba(139, 125, 155, 0.4);
+}
+
 /* --- 3. GLOBAL STYLES & TRANSITIONS --- */
 html,
 body {
   height: 100%;
-  font-family: "Inter", sans-serif;
+  font-family: var(--font-body);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -387,8 +606,703 @@ body {
   background-color: var(--theme-bg-primary) !important;
 }
 
-/* --- 5. CUSTOM UTILITY CLASSES --- */
+/* --- 5. ENHANCED CUSTOM UTILITY CLASSES --- */
+/* Advanced retro utility classes */
+
+.retro-card {
+  background: var(--retro-gradient-warm);
+  border: 1px solid var(--theme-border-primary);
+  border-radius: 12px;
+  box-shadow: 0 8px 32px var(--theme-shadow-color), var(--retro-emboss);
+  padding: 1.5rem;
+  margin-bottom: 1rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.retro-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+}
+
+.retro-button {
+  background: var(--theme-accent-primary);
+  color: var(--theme-accent-text-color);
+  border: none;
+  border-radius: 8px;
+  padding: 0.75rem 1.5rem;
+  font-family: var(--font-accent);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2), var(--retro-emboss);
+  position: relative;
+  overflow: hidden;
+}
+
+.retro-button:hover {
+  background: var(--theme-accent-primary-hover);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3), var(--retro-glow);
+}
+
+.retro-button:active {
+  transform: translateY(0);
+}
+
+.retro-input {
+  background: var(--theme-bg-ternary);
+  border: 2px solid var(--theme-border-secondary);
+  border-radius: 8px;
+  padding: 0.75rem 1rem;
+  font-family: var(--font-body);
+  color: var(--theme-text-primary);
+  transition: all 0.3s ease;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.retro-input:focus {
+  border-color: var(--theme-accent-primary);
+  box-shadow: 0 0 0 3px var(--theme-accent-focus-ring), var(--retro-glow);
+  outline: none;
+}
+
+.retro-badge {
+  background: var(--theme-accent-primary);
+  color: var(--theme-accent-text-color);
+  padding: 0.25rem 0.75rem;
+  border-radius: 20px;
+  font-family: var(--font-accent);
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.retro-divider {
+  height: 2px;
+  background: var(--retro-gradient-warm);
+  border: none;
+  margin: 2rem 0;
+  border-radius: 1px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+/* --- 6. CUSTOM UTILITY CLASSES --- */
 /* Simplified utility classes without complex effects */
+
+.card {
+  background-color: var(--theme-bg-secondary);
+  border: 1px solid var(--theme-border-primary);
+  border-radius: 8px;
+  box-shadow: 0 2px 4px var(--theme-shadow-color);
+  padding: 1rem;
+  margin-bottom: 0.8rem;
+}
+
+.card-filter {
+  background-color: var(--theme-bg-secondary);
+  border: 1px solid var(--theme-border-primary);
+  border-radius: 8px;
+  box-shadow: 0 2px 4px var(--theme-shadow-color);
+  padding: 1rem;
+}
+
+.card-container {
+  background-color: var(--theme-bg-secondary);
+  border: 1px solid var(--theme-border-primary);
+  border-radius: 8px;
+  box-shadow: 0 2px 4px var(--theme-shadow-color);
+  padding: 1rem;
+  height: 95%;
+  overflow-x: auto;
+}
+
+.gradient-card {
+  background-color: var(--theme-bg-secondary);
+  border: 1px solid var(--theme-border-primary);
+  border-radius: 8px;
+  box-shadow: 0 2px 4px var(--theme-shadow-color);
+  padding: 1rem;
+}
+
+label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-size: 0.875rem;
+  color: var(--theme-text-label);
+  font-weight: 500;
+}
+
+.error-text {
+  color: var(--theme-error-primary);
+  font-size: 0.875rem;
+  margin-top: 0.25rem;
+}
+
+.success-text {
+  color: var(--theme-success-primary);
+  font-size: 0.875rem;
+  margin-top: 0.25rem;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  color: var(--theme-text-primary);
+}
+
+/* Enhanced heading styles with retro fonts */
+h1 {
+  font-family: var(--font-primary);
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  text-shadow: var(--retro-text-shadow);
+  letter-spacing: -0.02em;
+}
+
+h2 {
+  font-family: var(--font-primary);
+  font-size: 2rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  letter-spacing: -0.01em;
+}
+
+h3 {
+  font-family: var(--font-secondary);
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  font-style: italic;
+}
+
+h4 {
+  font-family: var(--font-accent);
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+h5 {
+  font-family: var(--font-body);
+  font-size: 1.125rem;
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+}
+
+h6 {
+  font-family: var(--font-body);
+  font-size: 1rem;
+  font-weight: 400;
+  margin-bottom: 0.5rem;
+}
+
+/* Custom Scrollbar */
+.custom-scroll::-webkit-scrollbar {
+  width: 6px;
+}
+
+.custom-scroll::-webkit-scrollbar-track {
+  background: var(--theme-scroll-track);
+}
+
+.custom-scroll::-webkit-scrollbar-thumb {
+  background-color: var(--theme-scroll-thumb);
+  border-radius: 3px;
+}
+
+a {
+  color: var(--theme-accent-primary);
+  text-decoration: none;
+}
+
+a:hover {
+  color: var(--theme-accent-primary-hover);
+  text-decoration: underline;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* //////////////////////////////////////////////////////////////  */
+/* @import "tailwindcss";
+@import "primeicons/primeicons.css";
+
+--- 1. CORE THEME & COLOR PALETTE DEFINITIONS ---
+:root {
+  --- Base Layout & Text (Light Mode) ---
+  Updated to retro warm cream and beige tones
+  --theme-bg-primary: #faf8f5;
+  --theme-bg-secondary: #f5f1eb;
+  --theme-bg-ternary: #ede7dd;
+  --theme-text-primary: #2d1810;
+  --theme-text-secondary: #6b5b4f;
+  --theme-text-label: #4a3c2a;
+  --theme-text-inverted: #faf8f5;
+  --theme-border-primary: #d4c4b0;
+  --theme-border-secondary: #e8ddd0;
+  --theme-border-dark: #a08d7a;
+  --theme-shadow-color: rgba(45, 24, 16, 0.12);
+  --theme-hover-bg: #ede7dd;
+  --theme-scroll-track: #e8ddd0;
+  --theme-scroll-thumb: #c4b5a0;
+
+  --- Default Accent Color (Retro Orange) ---
+  Changed from blue to warm retro orange
+  --theme-accent-primary: #d2691e;
+  --theme-accent-primary-light: #f4e4d0;
+  --theme-accent-primary-hover: #b8571a;
+  --theme-accent-text-color: #faf8f5;
+  --theme-accent-focus-ring: rgba(210, 105, 30, 0.25);
+
+  --- Status Colors ---
+  --theme-success-primary: #10b981;
+  --theme-error-primary: #ef4444;
+  --theme-warning-primary: #f59e0b;
+
+  Body Background
+  Updated gradient to warm retro tones
+  --theme-body-gradient-start: #faf8f5;
+  --theme-body-gradient-end: #f0e6d6;
+}
+
+body.dark-mode {
+  Updated dark mode to rich retro browns and warm grays
+  --theme-bg-primary: #1a1611;
+  --theme-bg-secondary: #2d251e;
+  --theme-bg-ternary: #3d342a;
+  --theme-text-primary: #f5f1eb;
+  --theme-text-secondary: #c4b5a0;
+  --theme-text-label: #d4c4b0;
+  --theme-text-inverted: #1a1611;
+  --theme-border-primary: #3d342a;
+  --theme-border-secondary: #4a3c2a;
+  --theme-shadow-color: rgba(0, 0, 0, 0.4);
+  --theme-hover-bg: #3d342a;
+  --theme-scroll-track: #3d342a;
+  --theme-scroll-thumb: #6b5b4f;
+  --theme-body-gradient-start: #1a1611;
+  --theme-body-gradient-end: #2d251e;
+}
+
+--- 2. CLEAN COLOR THEMES ---
+Added new retro-inspired themes
+.theme-retro-burgundy {
+  --theme-accent-primary: #8b2635;
+  --theme-accent-primary-light: #f2d7da;
+  --theme-accent-primary-hover: #6d1e2a;
+  --theme-accent-text-color: #ffffff;
+  --theme-accent-focus-ring: rgba(139, 38, 53, 0.25);
+}
+
+.theme-retro-forest {
+  --theme-accent-primary: #2d5016;
+  --theme-accent-primary-light: #e8f2e1;
+  --theme-accent-primary-hover: #1f3610;
+  --theme-accent-text-color: #ffffff;
+  --theme-accent-focus-ring: rgba(45, 80, 22, 0.25);
+}
+
+.theme-retro-navy {
+  --theme-accent-primary: #1e3a5f;
+  --theme-accent-primary-light: #d6e3f0;
+  --theme-accent-primary-hover: #152b47;
+  --theme-accent-text-color: #ffffff;
+  --theme-accent-focus-ring: rgba(30, 58, 95, 0.25);
+}
+
+.theme-retro-copper {
+  --theme-accent-primary: #b87333;
+  --theme-accent-primary-light: #f0e4d7;
+  --theme-accent-primary-hover: #9a5f2a;
+  --theme-accent-text-color: #ffffff;
+  --theme-accent-focus-ring: rgba(184, 115, 51, 0.25);
+}
+
+.theme-retro-plum {
+  --theme-accent-primary: #6b4c57;
+  --theme-accent-primary-light: #ede5e8;
+  --theme-accent-primary-hover: #533a43;
+  --theme-accent-text-color: #ffffff;
+  --theme-accent-focus-ring: rgba(107, 76, 87, 0.25);
+}
+
+.theme-retro-sage {
+  --theme-accent-primary: #87a96b;
+  --theme-accent-primary-light: #f0f4ec;
+  --theme-accent-primary-hover: #6d8a54;
+  --theme-accent-text-color: #ffffff;
+  --theme-accent-focus-ring: rgba(135, 169, 107, 0.25);
+}
+
+.theme-slate {
+  --theme-accent-primary: #64748b;
+  --theme-accent-primary-light: #f1f5f9;
+  --theme-accent-primary-hover: #475569;
+  --theme-accent-text-color: #ffffff;
+  --theme-accent-focus-ring: rgba(100, 116, 139, 0.2);
+}
+
+.theme-red {
+  --theme-accent-primary: #dc2626;
+  --theme-accent-primary-light: #fee2e2;
+  --theme-accent-primary-hover: #b91c1c;
+  --theme-accent-text-color: #ffffff;
+  --theme-accent-focus-ring: rgba(220, 38, 38, 0.2);
+}
+
+.theme-orange {
+  --theme-accent-primary: #ea580c;
+  --theme-accent-primary-light: #fed7aa;
+  --theme-accent-primary-hover: #c2410c;
+  --theme-accent-text-color: #ffffff;
+  --theme-accent-focus-ring: rgba(234, 88, 12, 0.2);
+}
+
+.theme-amber {
+  --theme-accent-primary: #d97706;
+  --theme-accent-primary-light: #fde68a;
+  --theme-accent-primary-hover: #b45309;
+  --theme-accent-text-color: #ffffff;
+  --theme-accent-focus-ring: rgba(217, 119, 6, 0.2);
+}
+
+.theme-yellow {
+  --theme-accent-primary: #ca8a04;
+  --theme-accent-primary-light: #fef08a;
+  --theme-accent-primary-hover: #a16207;
+  --theme-accent-text-color: #1f2937;
+  --theme-accent-focus-ring: rgba(202, 138, 4, 0.2);
+}
+
+.theme-lime {
+  --theme-accent-primary: #65a30d;
+  --theme-accent-primary-light: #d9f99d;
+  --theme-accent-primary-hover: #4d7c0f;
+  --theme-accent-text-color: #ffffff;
+  --theme-accent-focus-ring: rgba(101, 163, 13, 0.2);
+}
+
+.theme-green {
+  --theme-accent-primary: #16a34a;
+  --theme-accent-primary-light: #bbf7d0;
+  --theme-accent-primary-hover: #15803d;
+  --theme-accent-text-color: #ffffff;
+  --theme-accent-focus-ring: rgba(22, 163, 74, 0.2);
+}
+
+.theme-emerald {
+  --theme-accent-primary: #059669;
+  --theme-accent-primary-light: #a7f3d0;
+  --theme-accent-primary-hover: #047857;
+  --theme-accent-text-color: #ffffff;
+  --theme-accent-focus-ring: rgba(5, 150, 105, 0.2);
+}
+
+.theme-teal {
+  --theme-accent-primary: #0d9488;
+  --theme-accent-primary-light: #99f6e4;
+  --theme-accent-primary-hover: #0f766e;
+  --theme-accent-text-color: #ffffff;
+  --theme-accent-focus-ring: rgba(13, 148, 136, 0.2);
+}
+
+.theme-cyan {
+  --theme-accent-primary: #0891b2;
+  --theme-accent-primary-light: #a5f3fc;
+  --theme-accent-primary-hover: #0e7490;
+  --theme-accent-text-color: #ffffff;
+  --theme-accent-focus-ring: rgba(8, 145, 178, 0.2);
+}
+
+.theme-sky {
+  --theme-accent-primary: #0284c7;
+  --theme-accent-primary-light: #bae6fd;
+  --theme-accent-primary-hover: #0369a1;
+  --theme-accent-text-color: #ffffff;
+  --theme-accent-focus-ring: rgba(2, 132, 199, 0.2);
+}
+
+.theme-blue {
+  --theme-accent-primary: #2563eb;
+  --theme-accent-primary-light: #bfdbfe;
+  --theme-accent-primary-hover: #1d4ed8;
+  --theme-accent-text-color: #ffffff;
+  --theme-accent-focus-ring: rgba(37, 99, 235, 0.2);
+}
+
+.theme-indigo {
+  --theme-accent-primary: #4f46e5;
+  --theme-accent-primary-light: #c7d2fe;
+  --theme-accent-primary-hover: #4338ca;
+  --theme-accent-text-color: #ffffff;
+  --theme-accent-focus-ring: rgba(79, 70, 229, 0.2);
+}
+
+.theme-violet {
+  --theme-accent-primary: #7c3aed;
+  --theme-accent-primary-light: #ddd6fe;
+  --theme-accent-primary-hover: #6d28d9;
+  --theme-accent-text-color: #ffffff;
+  --theme-accent-focus-ring: rgba(124, 58, 237, 0.2);
+}
+
+.theme-purple {
+  --theme-accent-primary: #9333ea;
+  --theme-accent-primary-light: #e9d5ff;
+  --theme-accent-primary-hover: #7e22ce;
+  --theme-accent-text-color: #ffffff;
+  --theme-accent-focus-ring: rgba(147, 51, 234, 0.2);
+}
+
+.theme-fuchsia {
+  --theme-accent-primary: #c026d3;
+  --theme-accent-primary-light: #f5d0fe;
+  --theme-accent-primary-hover: #a21caf;
+  --theme-accent-text-color: #ffffff;
+  --theme-accent-focus-ring: rgba(192, 38, 211, 0.2);
+}
+
+.theme-pink {
+  --theme-accent-primary: #db2777;
+  --theme-accent-primary-light: #fbcfe8;
+  --theme-accent-primary-hover: #be185d;
+  --theme-accent-text-color: #ffffff;
+  --theme-accent-focus-ring: rgba(219, 39, 119, 0.2);
+}
+
+.theme-rose {
+  --theme-accent-primary: #e11d48;
+  --theme-accent-primary-light: #fecdd3;
+  --theme-accent-primary-hover: #be123c;
+  --theme-accent-text-color: #ffffff;
+  --theme-accent-focus-ring: rgba(225, 29, 72, 0.2);
+}
+
+--- 3. GLOBAL STYLES & TRANSITIONS ---
+html,
+body {
+  height: 100%;
+  font-family: "Inter", sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  background-color: var(--theme-bg-primary);
+  color: var(--theme-text-primary);
+  background-image: linear-gradient(to bottom, var(--theme-body-gradient-start), var(--theme-body-gradient-end));
+  background-attachment: fixed;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  margin: 0;
+}
+
+*,
+*::before,
+*::after {
+  transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+--- 4. PRIMENG COMPONENT STYLES ---
+Simplified PrimeNG styling without complex effects
+
+General Inputs
+.p-inputtext,
+.p-inputnumber-input,
+.p-password-input,
+.p-textarea {
+  background-color: var(--theme-bg-ternary) !important;
+  border: 1px solid var(--theme-border-secondary) !important;
+  color: var(--theme-text-primary) !important;
+  border-radius: 6px !important;
+}
+
+.p-inputtext:hover,
+.p-inputnumber:hover .p-inputnumber-input,
+.p-password:hover .p-password-input,
+.p-textarea:hover {
+  border-color: var(--theme-accent-primary) !important;
+}
+
+.p-inputtext:focus,
+.p-inputnumber-input:focus,
+.p-password-input:focus,
+.p-textarea:focus {
+  border-color: var(--theme-accent-primary) !important;
+  box-shadow: 0 0 0 1px var(--theme-accent-primary) !important;
+}
+
+Dropdowns & Selects
+.p-dropdown,
+.p-multiselect {
+  background-color: var(--theme-bg-ternary) !important;
+  border: 1px solid var(--theme-border-secondary) !important;
+  color: var(--theme-text-primary) !important;
+  border-radius: 6px !important;
+}
+
+.p-dropdown:hover,
+.p-multiselect:hover {
+  border-color: var(--theme-accent-primary) !important;
+}
+
+.p-dropdown.p-focus,
+.p-multiselect.p-focus {
+  border-color: var(--theme-accent-primary) !important;
+  box-shadow: 0 0 0 1px var(--theme-accent-primary) !important;
+}
+
+.p-dropdown-panel,
+.p-multiselect-panel {
+  background-color: var(--theme-bg-secondary) !important;
+  border: 1px solid var(--theme-border-primary) !important;
+  box-shadow: 0 4px 6px -1px var(--theme-shadow-color) !important;
+}
+
+.p-dropdown-item,
+.p-multiselect-item {
+  color: var(--theme-text-primary) !important;
+}
+
+.p-dropdown-item:hover,
+.p-multiselect-item:hover {
+  background-color: var(--theme-hover-bg) !important;
+}
+
+.p-dropdown-item.p-highlight,
+.p-multiselect-item.p-highlight {
+  background-color: var(--theme-accent-primary) !important;
+  color: var(--theme-accent-text-color) !important;
+}
+
+Checkbox
+.p-checkbox .p-checkbox-box {
+  border: 1px solid var(--theme-border-secondary) !important;
+  background-color: var(--theme-bg-secondary) !important;
+}
+
+.p-checkbox:not(.p-checkbox-disabled) .p-checkbox-box:hover {
+  border-color: var(--theme-accent-primary) !important;
+}
+
+.p-checkbox .p-checkbox-box.p-highlight {
+  background-color: var(--theme-accent-primary) !important;
+  border-color: var(--theme-accent-primary) !important;
+}
+
+.p-checkbox .p-checkbox-box.p-highlight .p-checkbox-icon {
+  color: var(--theme-accent-text-color) !important;
+}
+
+Buttons
+.p-button {
+  background-color: var(--theme-accent-primary) !important;
+  color: var(--theme-accent-text-color) !important;
+  border: 1px solid var(--theme-accent-primary) !important;
+  border-radius: 6px !important;
+}
+
+.p-button:hover {
+  background-color: var(--theme-accent-primary-hover) !important;
+  border-color: var(--theme-accent-primary-hover) !important;
+}
+
+.p-button.p-button-secondary {
+  background-color: var(--theme-bg-ternary) !important;
+  color: var(--theme-text-secondary) !important;
+  border-color: var(--theme-border-secondary) !important;
+}
+
+.p-button.p-button-secondary:hover {
+  background-color: var(--theme-border-primary) !important;
+  color: var(--theme-text-primary) !important;
+}
+
+.p-button-outlined {
+  border-color: var(--theme-accent-primary) !important;
+  color: var(--theme-accent-primary) !important;
+  background-color: transparent !important;
+}
+
+.p-button-outlined:hover {
+  background-color: var(--theme-accent-primary-light) !important;
+  color: var(--theme-accent-primary) !important;
+}
+
+Data Table
+.p-datatable .p-datatable-thead > tr > th {
+  background-color: var(--theme-bg-secondary) !important;
+  border-bottom: 2px solid var(--theme-border-primary) !important;
+  color: var(--theme-text-primary) !important;
+  font-weight: 600;
+}
+
+.p-datatable .p-datatable-tbody > tr {
+  background-color: var(--theme-bg-primary) !important;
+  color: var(--theme-text-secondary) !important;
+}
+
+.p-datatable .p-datatable-tbody > tr:hover {
+  background-color: var(--theme-hover-bg) !important;
+}
+
+.p-datatable .p-paginator {
+  background-color: var(--theme-bg-secondary) !important;
+  border-top: 1px solid var(--theme-border-primary) !important;
+}
+
+.p-paginator .p-paginator-page.p-highlight {
+  background-color: var(--theme-accent-primary) !important;
+  color: var(--theme-accent-text-color) !important;
+}
+
+Dialogs
+.p-dialog .p-dialog-header {
+  background-color: var(--theme-bg-secondary) !important;
+  color: var(--theme-text-primary) !important;
+  border-bottom: 1px solid var(--theme-border-primary) !important;
+}
+
+.p-dialog .p-dialog-content {
+  background-color: var(--theme-bg-primary) !important;
+}
+
+--- 5. CUSTOM UTILITY CLASSES ---
+Simplified utility classes without complex effects
 
 .card {
   background-color: var(--theme-bg-secondary);
@@ -466,7 +1380,7 @@ h2 {
   margin-bottom: 0.5rem;
 }
 
-/* Custom Scrollbar */
+Custom Scrollbar
 .custom-scroll::-webkit-scrollbar {
   width: 6px;
 }
@@ -499,6 +1413,17 @@ a:hover {
   scrollbar-width: none;
 }
 
+
+
+
+
+ */
+
+
+
+
+
+/* mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm */
 /* @import "tailwindcss";
 @import "primeicons/primeicons.css";
 
@@ -506,231 +1431,205 @@ a:hover {
 :root {
   --- Base Layout & Text (Light Mode) ---
   --theme-bg-primary: #f9f7f3;
-  Light beige for main content
   --theme-bg-secondary: #ffffff;
-  --theme-bg-secondary: #BED7DC;
-  White for cards, headers, etc.
-  --theme-bg-ternary: #c5cdd5;
-  Light gray for input backgrounds
+  --theme-bg-ternary: #f8fafc;
   --theme-text-primary: #1e293b;
-  Dark slate for main text
-  --theme-text-secondary: #4b5563;
-  Lighter slate for secondary text
+  --theme-text-secondary: #64748b;
   --theme-text-label: #374151;
-  A bit darker for labels
   --theme-text-inverted: #ffffff;
-  White text for dark backgrounds
-  --theme-border-primary: #d1d5db;
-  Main borders
-  --theme-border-secondary: #e5e7eb;
-  Lighter borders for inputs
-  --theme-border-dark: #5d7097;
-  Lighter borders for inputs
-  --theme-shadow-color: rgba(0, 0, 0, 0.1);
-  --theme-hover-bg: #f1f3f5;
-  --theme-scroll-track: #e9ecef;
-  --theme-scroll-thumb: #adb5bd;
+  --theme-border-primary: #e2e8f0;
+  --theme-border-secondary: #f1f5f9;
+  --theme-border-dark: #94a3b8;
+  --theme-shadow-color: rgba(0, 0, 0, 0.08);
+  --theme-hover-bg: #f8fafc;
+  --theme-scroll-track: #f1f5f9;
+  --theme-scroll-thumb: #cbd5e1;
 
   --- Default Accent Color (Blue) ---
   --theme-accent-primary: #3b82f6;
-  --theme-accent-primary1: #2dd4bf;
-
-  --theme-accent-primary-light: #bfdbfe;
+  --theme-accent-primary-light: #dbeafe;
   --theme-accent-primary-hover: #2563eb;
   --theme-accent-text-color: #ffffff;
-  Text color for solid accent backgrounds
-  --theme-accent-focus-ring: rgba(59, 130, 246, 0.25);
+  --theme-accent-focus-ring: rgba(59, 130, 246, 0.2);
 
   --- Status Colors ---
-  --theme-success-primary: #22c55e;
+  --theme-success-primary: #10b981;
   --theme-error-primary: #ef4444;
   --theme-warning-primary: #f59e0b;
 
-  Body Background Gradient (Light Mode)
-  --theme-body-gradient-start: #A4CCD9;
-  --theme-body-gradient-end: #578FCA;
-
-  --theme-border-primary: rgba(255, 255, 255, 0.1);
-  --theme-border-secondary: rgba(255, 255, 255, 0.05);
-  --theme-scroll-thumb: #526379;
-  --theme-accent-primary: #e94560;
-  --theme-accent-success: #4caf50;
-  --theme-accent-success-dark: #388e3c;
-  --theme-accent-danger: #f44336;
-  --theme-accent-danger-dark: #d32f2f;
+  Body Background
+  --theme-body-gradient-start: #f8fafc;
+  --theme-body-gradient-end: #f1f5f9;
 }
 
 body.dark-mode {
-  --theme-bg-primary: #111827;
-  --theme-bg-secondary: #1f2937;
-  --theme-bg-ternary: #374151;
-  --theme-text-primary: #f9fafb;
-  --theme-text-secondary: #9ca3af;
-  --theme-text-label: #d1d5db;
-  --theme-text-inverted: #111827;
-  --theme-border-primary: #374151;
-  --theme-border-secondary: #4b5563;
-  --theme-shadow-color: rgba(0, 0, 0, 0.25);
-  --theme-hover-bg: #374151;
-  --theme-scroll-track: #374151;
-  --theme-scroll-thumb: #6b7280;
-
-  Body Background Gradient (Dark Mode)
-  --theme-body-gradient-start: var(--theme-bg-primary);
-  --theme-body-gradient-end: var(--theme-bg-primary);
+  --theme-bg-primary: #0f172a;
+  --theme-bg-secondary: #1e293b;
+  --theme-bg-ternary: #334155;
+  --theme-text-primary: #f8fafc;
+  --theme-text-secondary: #94a3b8;
+  --theme-text-label: #cbd5e1;
+  --theme-text-inverted: #0f172a;
+  --theme-border-primary: #334155;
+  --theme-border-secondary: #475569;
+  --theme-shadow-color: rgba(0, 0, 0, 0.3);
+  --theme-hover-bg: #334155;
+  --theme-scroll-track: #334155;
+  --theme-scroll-thumb: #64748b;
+  --theme-body-gradient-start: #0f172a;
+  --theme-body-gradient-end: #1e293b;
 }
 
---- 2. DYNAMIC THEME PALETTE ---
-Add one of these classes to the <body> tag to change the theme
+--- 2. CLEAN COLOR THEMES ---
 .theme-slate {
   --theme-accent-primary: #64748b;
-  --theme-accent-primary-light: #cbd5e1;
+  --theme-accent-primary-light: #f1f5f9;
   --theme-accent-primary-hover: #475569;
   --theme-accent-text-color: #ffffff;
-  --theme-accent-focus-ring: rgba(100, 116, 139, 0.25);
+  --theme-accent-focus-ring: rgba(100, 116, 139, 0.2);
 }
 
 .theme-red {
-  --theme-accent-primary: #ef4444;
-  --theme-accent-primary-light: #fecaca;
-  --theme-accent-primary-hover: #dc2626;
+  --theme-accent-primary: #dc2626;
+  --theme-accent-primary-light: #fee2e2;
+  --theme-accent-primary-hover: #b91c1c;
   --theme-accent-text-color: #ffffff;
-  --theme-accent-focus-ring: rgba(239, 68, 68, 0.25);
+  --theme-accent-focus-ring: rgba(220, 38, 38, 0.2);
 }
 
 .theme-orange {
-  --theme-accent-primary: #f97316;
+  --theme-accent-primary: #ea580c;
   --theme-accent-primary-light: #fed7aa;
-  --theme-accent-primary-hover: #ea580c;
+  --theme-accent-primary-hover: #c2410c;
   --theme-accent-text-color: #ffffff;
-  --theme-accent-focus-ring: rgba(249, 115, 22, 0.25);
+  --theme-accent-focus-ring: rgba(234, 88, 12, 0.2);
 }
 
 .theme-amber {
-  --theme-accent-primary: #f59e0b;
+  --theme-accent-primary: #d97706;
   --theme-accent-primary-light: #fde68a;
-  --theme-accent-primary-hover: #d97706;
+  --theme-accent-primary-hover: #b45309;
   --theme-accent-text-color: #ffffff;
-  --theme-accent-focus-ring: rgba(245, 158, 11, 0.25);
+  --theme-accent-focus-ring: rgba(217, 119, 6, 0.2);
 }
 
 .theme-yellow {
-  --theme-accent-primary: #eab308;
+  --theme-accent-primary: #ca8a04;
   --theme-accent-primary-light: #fef08a;
-  --theme-accent-primary-hover: #ca8a04;
+  --theme-accent-primary-hover: #a16207;
   --theme-accent-text-color: #1f2937;
-  --theme-accent-focus-ring: rgba(234, 179, 8, 0.25);
+  --theme-accent-focus-ring: rgba(202, 138, 4, 0.2);
 }
 
 .theme-lime {
-  --theme-accent-primary: #84cc16;
+  --theme-accent-primary: #65a30d;
   --theme-accent-primary-light: #d9f99d;
-  --theme-accent-primary-hover: #65a30d;
-  --theme-accent-text-color: #1f2937;
-  --theme-accent-focus-ring: rgba(132, 204, 22, 0.25);
+  --theme-accent-primary-hover: #4d7c0f;
+  --theme-accent-text-color: #ffffff;
+  --theme-accent-focus-ring: rgba(101, 163, 13, 0.2);
 }
 
 .theme-green {
-  --theme-accent-primary: #22c55e;
+  --theme-accent-primary: #16a34a;
   --theme-accent-primary-light: #bbf7d0;
-  --theme-accent-primary-hover: #16a34a;
+  --theme-accent-primary-hover: #15803d;
   --theme-accent-text-color: #ffffff;
-  --theme-accent-focus-ring: rgba(34, 197, 94, 0.25);
+  --theme-accent-focus-ring: rgba(22, 163, 74, 0.2);
 }
 
 .theme-emerald {
-  --theme-accent-primary: #10b981;
+  --theme-accent-primary: #059669;
   --theme-accent-primary-light: #a7f3d0;
-  --theme-accent-primary-hover: #059669;
+  --theme-accent-primary-hover: #047857;
   --theme-accent-text-color: #ffffff;
-  --theme-accent-focus-ring: rgba(16, 185, 129, 0.25);
+  --theme-accent-focus-ring: rgba(5, 150, 105, 0.2);
 }
 
 .theme-teal {
-  --theme-accent-primary: #14b8a6;
+  --theme-accent-primary: #0d9488;
   --theme-accent-primary-light: #99f6e4;
-  --theme-accent-primary-hover: #0d9488;
+  --theme-accent-primary-hover: #0f766e;
   --theme-accent-text-color: #ffffff;
-  --theme-accent-focus-ring: rgba(20, 184, 166, 0.25);
+  --theme-accent-focus-ring: rgba(13, 148, 136, 0.2);
 }
 
 .theme-cyan {
-  --theme-accent-primary: #06b6d4;
+  --theme-accent-primary: #0891b2;
   --theme-accent-primary-light: #a5f3fc;
-  --theme-accent-primary-hover: #0891b2;
+  --theme-accent-primary-hover: #0e7490;
   --theme-accent-text-color: #ffffff;
-  --theme-accent-focus-ring: rgba(6, 182, 212, 0.25);
+  --theme-accent-focus-ring: rgba(8, 145, 178, 0.2);
 }
 
 .theme-sky {
-  --theme-accent-primary: #0ea5e9;
+  --theme-accent-primary: #0284c7;
   --theme-accent-primary-light: #bae6fd;
-  --theme-accent-primary-hover: #0284c7;
+  --theme-accent-primary-hover: #0369a1;
   --theme-accent-text-color: #ffffff;
-  --theme-accent-focus-ring: rgba(14, 165, 233, 0.25);
+  --theme-accent-focus-ring: rgba(2, 132, 199, 0.2);
 }
 
 .theme-blue {
-  --theme-accent-primary: #3b82f6;
+  --theme-accent-primary: #2563eb;
   --theme-accent-primary-light: #bfdbfe;
-  --theme-accent-primary-hover: #2563eb;
+  --theme-accent-primary-hover: #1d4ed8;
   --theme-accent-text-color: #ffffff;
-  --theme-accent-focus-ring: rgba(59, 130, 246, 0.25);
+  --theme-accent-focus-ring: rgba(37, 99, 235, 0.2);
 }
 
 .theme-indigo {
-  --theme-accent-primary: #6366f1;
+  --theme-accent-primary: #4f46e5;
   --theme-accent-primary-light: #c7d2fe;
-  --theme-accent-primary-hover: #4f46e5;
+  --theme-accent-primary-hover: #4338ca;
   --theme-accent-text-color: #ffffff;
-  --theme-accent-focus-ring: rgba(99, 102, 241, 0.25);
+  --theme-accent-focus-ring: rgba(79, 70, 229, 0.2);
 }
 
 .theme-violet {
-  --theme-accent-primary: #8b5cf6;
+  --theme-accent-primary: #7c3aed;
   --theme-accent-primary-light: #ddd6fe;
-  --theme-accent-primary-hover: #7c3aed;
+  --theme-accent-primary-hover: #6d28d9;
   --theme-accent-text-color: #ffffff;
-  --theme-accent-focus-ring: rgba(139, 92, 246, 0.25);
+  --theme-accent-focus-ring: rgba(124, 58, 237, 0.2);
 }
 
 .theme-purple {
-  --theme-accent-primary: #a855f7;
+  --theme-accent-primary: #9333ea;
   --theme-accent-primary-light: #e9d5ff;
-  --theme-accent-primary-hover: #9333ea;
+  --theme-accent-primary-hover: #7e22ce;
   --theme-accent-text-color: #ffffff;
-  --theme-accent-focus-ring: rgba(168, 85, 247, 0.25);
+  --theme-accent-focus-ring: rgba(147, 51, 234, 0.2);
 }
 
 .theme-fuchsia {
-  --theme-accent-primary: #d946ef;
+  --theme-accent-primary: #c026d3;
   --theme-accent-primary-light: #f5d0fe;
-  --theme-accent-primary-hover: #c026d3;
+  --theme-accent-primary-hover: #a21caf;
   --theme-accent-text-color: #ffffff;
-  --theme-accent-focus-ring: rgba(217, 70, 239, 0.25);
+  --theme-accent-focus-ring: rgba(192, 38, 211, 0.2);
 }
 
 .theme-pink {
-  --theme-accent-primary: #ec4899;
+  --theme-accent-primary: #db2777;
   --theme-accent-primary-light: #fbcfe8;
-  --theme-accent-primary-hover: #db2777;
+  --theme-accent-primary-hover: #be185d;
   --theme-accent-text-color: #ffffff;
-  --theme-accent-focus-ring: rgba(236, 72, 153, 0.25);
+  --theme-accent-focus-ring: rgba(219, 39, 119, 0.2);
 }
 
 .theme-rose {
-  --theme-accent-primary: #f43f5e;
+  --theme-accent-primary: #e11d48;
   --theme-accent-primary-light: #fecdd3;
-  --theme-accent-primary-hover: #e11d48;
+  --theme-accent-primary-hover: #be123c;
   --theme-accent-text-color: #ffffff;
-  --theme-accent-focus-ring: rgba(244, 63, 94, 0.25);
+  --theme-accent-focus-ring: rgba(225, 29, 72, 0.2);
 }
 
 --- 3. GLOBAL STYLES & TRANSITIONS ---
 html,
 body {
   height: 100%;
-  font-family: 'Inter', sans-serif;
+  font-family: "Inter", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -750,17 +1649,16 @@ body {
   transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
+--- 4. PRIMENG COMPONENT STYLES ---
+Simplified PrimeNG styling without complex effects
 
-
---- 4. PRIMENG COMPONENT STYLES (v18+) ---
-
-General Inputs (p-inputtext, p-password, p-inputnumber, p-textarea)
+General Inputs
 .p-inputtext,
 .p-inputnumber-input,
 .p-password-input,
 .p-textarea {
   background-color: var(--theme-bg-ternary) !important;
-  border: 1px solid var(--theme-border-ter--theme-bg-ternary) !important;
+  border: 1px solid var(--theme-border-secondary) !important;
   color: var(--theme-text-primary) !important;
   border-radius: 6px !important;
 }
@@ -780,7 +1678,7 @@ General Inputs (p-inputtext, p-password, p-inputnumber, p-textarea)
   box-shadow: 0 0 0 1px var(--theme-accent-primary) !important;
 }
 
-Dropdowns & Selects (p-dropdown, p-multiselect)
+Dropdowns & Selects
 .p-dropdown,
 .p-multiselect {
   background-color: var(--theme-bg-ternary) !important;
@@ -823,55 +1721,6 @@ Dropdowns & Selects (p-dropdown, p-multiselect)
   color: var(--theme-accent-text-color) !important;
 }
 
----- Custom Styling for PrimeNG SelectButton ----
-:host ::ng-deep p-ripple p-togglebutton p-component {
-  background: var(--theme-bg-secondary) !important;
-  border: 1px solid var(--theme-border-primary) !important;
-  color: var(--theme-text-secondary) !important;
-  border-radius: 8px !important;
-  padding: 0.6rem 1.2rem !important;
-  font-size: 0.95rem !important;
-  font-weight: 500;
-  box-shadow: 0 1px 2px var(--theme-shadow-color);
-  transition: all 0.25s ease-in-out;
-}
-
-First & Last button rounding for nice pill shape
-:host ::ng-deep p-ripple p-togglebutton p-component:first-child {
-  border-radius: 12px 0 0 12px !important;
-}
-
-:host ::ng-deep p-ripple p-togglebutton p-component:last-child {
-  border-radius: 0 12px 12px 0 !important;
-}
-
-Hover state
-:host ::ng-deep p-ripple p-togglebutton p-component:not(.p-highlight):hover {
-  background: var(--theme-hover-bg) !important;
-  color: var(--theme-text-primary) !important;
-}
-
-Active / Selected button
-:host ::ng-deep p-ripple p-togglebutton p-component.p-highlight {
-  background: var(--theme-accent-primary) !important;
-  border-color: var(--theme-accent-primary-hover) !important;
-  color: var(--theme-accent-text-color) !important;
-  font-weight: 600;
-  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.2);
-}
-
-Focus ring
-:host ::ng-deep p-ripple p-togglebutton p-component:focus {
-  outline: none !important;
-  box-shadow: 0 0 0 3px var(--theme-accent-focus-ring) !important;
-}
-
-Smooth transition for toggling
-:host ::ng-deep p-ripple p-togglebutton p-component {
-  transition: background-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
-}
-
-
 Checkbox
 .p-checkbox .p-checkbox-box {
   border: 1px solid var(--theme-border-secondary) !important;
@@ -891,7 +1740,7 @@ Checkbox
   color: var(--theme-accent-text-color) !important;
 }
 
-Buttons (p-button)
+Buttons
 .p-button {
   background-color: var(--theme-accent-primary) !important;
   color: var(--theme-accent-text-color) !important;
@@ -922,33 +1771,24 @@ Buttons (p-button)
 }
 
 .p-button-outlined:hover {
-  background-color: color-mix(in srgb, var(--theme-accent-primary) 10%, transparent) !important;
+  background-color: var(--theme-accent-primary-light) !important;
   color: var(--theme-accent-primary) !important;
 }
 
-.p-button-danger.p-button-text {
-  color: var(--theme-error-primary) !important;
-  background-color: transparent !important;
-}
-
-.p-button-danger.p-button-text:hover {
-  background-color: color-mix(in srgb, var(--theme-error-primary) 10%, transparent) !important;
-}
-
-Data Table (p-table)
-.p-datatable .p-datatable-thead>tr>th {
+Data Table
+.p-datatable .p-datatable-thead > tr > th {
   background-color: var(--theme-bg-secondary) !important;
   border-bottom: 2px solid var(--theme-border-primary) !important;
   color: var(--theme-text-primary) !important;
   font-weight: 600;
 }
 
-.p-datatable .p-datatable-tbody>tr {
+.p-datatable .p-datatable-tbody > tr {
   background-color: var(--theme-bg-primary) !important;
   color: var(--theme-text-secondary) !important;
 }
 
-.p-datatable .p-datatable-tbody>tr:hover {
+.p-datatable .p-datatable-tbody > tr:hover {
   background-color: var(--theme-hover-bg) !important;
 }
 
@@ -962,7 +1802,7 @@ Data Table (p-table)
   color: var(--theme-accent-text-color) !important;
 }
 
-Dialogs (p-dialog)
+Dialogs
 .p-dialog .p-dialog-header {
   background-color: var(--theme-bg-secondary) !important;
   color: var(--theme-text-primary) !important;
@@ -973,77 +1813,42 @@ Dialogs (p-dialog)
   background-color: var(--theme-bg-primary) !important;
 }
 
---- 5. YOUR CUSTOM UTILITY & LAYOUT CLASSES ---
-
-.no-scrollbar::-webkit-scrollbar {
-  display: none;
-}
-
-.no-scrollbar {
-  -ms-overflow-style: none;
-  scrollbar-width: none;
-}
-
-a {
-  color: var(--theme-accent-primary);
-  text-decoration: none;
-}
-
-a:hover {
-  color: var(--theme-accent-primary-hover);
-  text-decoration: underline;
-}
+--- 5. CUSTOM UTILITY CLASSES ---
+Simplified utility classes without complex effects
 
 .card {
-  background-color: var(--theme-bg-ternary);
-  border: 1.5px dashed var(--theme-border-dark);
-  border-radius: .5rem;
-  box-shadow: 0 4px 6px -1px var(--theme-shadow-color);
+  background-color: var(--theme-bg-secondary);
+  border: 1px solid var(--theme-border-primary);
+  border-radius: 8px;
+  box-shadow: 0 2px 4px var(--theme-shadow-color);
   padding: 1rem;
-  margin-bottom: .8rem;
+  margin-bottom: 0.8rem;
 }
 
 .card-filter {
-  background-color: var(--theme-bg-ternary);
-  border: 1px dashed var(--theme-border-dark);
-  border-radius: 1rem;
-  box-shadow: 0 4px 6px -1px var(--theme-shadow-color);
-  padding: 1px;
-  margin-bottom: .8rem;
+  background-color: var(--theme-bg-secondary);
+  border: 1px solid var(--theme-border-primary);
+  border-radius: 8px;
+  box-shadow: 0 2px 4px var(--theme-shadow-color);
+  padding: 1rem;
 }
 
 .card-container {
-  background-color: var(--theme-accent-primary-light);
-  border: 1px dashed var(--theme-border-dark);
-  border-radius: .5rem;
-  box-shadow: 0 4px 6px -1px var(--theme-shadow-color);
-  padding: 1px;
+  background-color: var(--theme-bg-secondary);
+  border: 1px solid var(--theme-border-primary);
+  border-radius: 8px;
+  box-shadow: 0 2px 4px var(--theme-shadow-color);
+  padding: 1rem;
   height: 95%;
-  padding-top: 3px;
-  padding-bottom: 3px;
-  overflow-x: auto
-  margin-bottom: .8rem;
-}
-
-.p-timeline-event-separator{
-  color:var(--theme-text-primary)
+  overflow-x: auto;
 }
 
 .gradient-card {
   background-color: var(--theme-bg-secondary);
   border: 1px solid var(--theme-border-primary);
-  border-radius: 0.75rem;
-  box-shadow: 0 4px 6px -1px var(--theme-shadow-color);
+  border-radius: 8px;
+  box-shadow: 0 2px 4px var(--theme-shadow-color);
   padding: 1rem;
-  background-image: linear-gradient(to bottom right, color-mix(in srgb, var(--theme-bg-secondary) 80%, white), white);
-}
-
-.dashed-border {
-  border: 2px dashed var(--theme-border-dark);
-}
-
-body.dark-mode .gradient-card {
-  background-image: linear-gradient(to bottom right, color-mix(in srgb, var(--theme-bg-secondary) 80%, black), var(--theme-bg-secondary));
 }
 
 label {
@@ -1078,13 +1883,13 @@ h6 {
 h1 {
   font-size: 2.25rem;
   font-weight: 700;
-  margin-bottom: .5rem;
+  margin-bottom: 0.5rem;
 }
 
 h2 {
   font-size: 1.875rem;
   font-weight: 600;
-  margin-bottom: .5rem;
+  margin-bottom: 0.5rem;
 }
 
 Custom Scrollbar
@@ -1100,164 +1905,15 @@ Custom Scrollbar
   background-color: var(--theme-scroll-thumb);
   border-radius: 3px;
 }
- */
 
-
-
-/* @import "tailwindcss";
-@import "primeicons/primeicons.css";
-
-:root {
-  Primary Backgrounds
-  --theme-bg-primary: #f9f7f3; Light beige for main content
-  --theme-bg-secondary: #ffffff; White for sidebar/header/cards
-  --theme-bg-ternary: #B3C8CF; Lighter gray for input backgrounds
-  --theme-bg-main: #78B3CE; Lighter gray for input backgrounds
-  --theme-bg-home: #003161; Lighter gray for input backgrounds
-
-  Text Colors
-  --theme-text-primary: #1e293b; Gray 800 for general content
-  --theme-text-secondary: #4b5563; Gray 600 for secondary text
-  --theme-text-label: #374151; Gray 800 for labels
-  --theme-text-heading: #1e293b; Gray 800 for headings (default to primary text)
-  --theme-text-error: #ef4444; Red 500 for errors
-  --theme-text-inverted: #ffffff; White text on dark/accent backgrounds
-
-  Border Colors
-  --theme-border-primary: #d1d5db; Gray 300 for main borders
-  --theme-border-secondary: #e5e7eb; Gray 200 for input borders
-
-  Brand/Accent Colors (Light Mode favors Indigo as primary brand color)
-  --theme-brand-primary: #6366f1; Indigo 500
-  --theme-brand-primary-light: #a5b4fc; Indigo 300
-  --theme-brand-primary-hover: #4f46e5; Indigo 600
-
-  --theme-accent-primary: #176B87; Pink 400 (original accent)
-  --theme-accent-secondary: #176B87; Pink 200 (original accent light)
-  --theme-accent-hover: #64CCC5; Pink 500 (original accent hover)
-  --theme-accent-focus-ring: rgba(99, 102, 241, 0.25); Primary light with opacity
-
-  --theme-secondary-accent-primary: #facc15; Yellow 400
-  --theme-secondary-accent-light: #fde047; Yellow 300
-  --theme-secondary-accent-hover: #eab308; Yellow 500
-
-  --theme-tertiary-accent-primary: #2dd4bf; Teal 400 (from previous dark theme, now tertiary)
-  --theme-tertiary-accent-light: #0d9488; Teal 600
-  --theme-tertiary-accent-hover: #14b8a6; Teal 500
-
-  Status Colors
-  --theme-success-primary: #22c55e; Green 500
-  --theme-success-light: #86efac; Green 300
-  --theme-success-hover: #16a34a; Green 600
-
-  --theme-error-primary: #ef4444; Red 500
-  --theme-error-light: #fca5a5; Red 300
-  --theme-error-hover: #dc2626; Red 600
-
-  --theme-warning-primary: #f59e0b; Amber 500
-  --theme-warning-light: #fcd34d; Amber 300
-  --theme-warning-hover: #d97706; Amber 600
-
-  Button Colors
-  --theme-button-bg-primary: var(--theme-brand-primary);
-  --theme-button-text-primary-btn: var(--theme-text-inverted);
-  --theme-button-hover-bg-primary: var(--theme-brand-primary-hover);
-  --theme-button-outlined-border: var(--theme-brand-primary);
-  --theme-button-outlined-text: var(--theme-brand-primary);
-  --theme-button-outlined-hover-bg: rgba(99, 102, 241, 0.1); Subtle indigo hover
-  --theme-button-outlined-hover-text: var(--theme-brand-primary);
-  --theme-button-danger-text: var(--theme-error-primary);
-  --theme-button-danger-hover-bg: rgba(239, 68, 68, 0.1); Subtle red hover
-  --theme-button-danger-hover-text: var(--theme-error-primary);
-
-  Other UI Elements
-  --theme-shadow-color: rgba(0, 0, 0, 0.1);
-  --theme-hover-bg: #f3f4f6; Sidebar menu item hover (gray-100)
-  --theme-dialog-bg: var(--theme-bg-secondary);
-  --theme-dialog-header-bg: var(--theme-bg-secondary);
-  --theme-dialog-border: var(--theme-border-primary);
-  --theme-scroll-track: #e5e7eb;
-  --theme-scroll-thumb: #9ca3af;
-
-  Body Background Gradient (Light Mode)
-  --theme-body-gradient-start: #A4CCD9;
-  --theme-body-gradient-end: #578FCA;
+a {
+  color: var(--theme-accent-primary);
+  text-decoration: none;
 }
 
-body.dark-mode {
-  --theme-bg-primary: #111827;
-  --theme-bg-secondary: #1f2937;
-  --theme-bg-ternary: #374151;
-  --theme-text-primary: #e2e8f0;
-  --theme-text-secondary: #a0aec0;
-  --theme-text-label: #d1d5db;
-  --theme-text-heading: #2dd4bf;
-  --theme-text-error: #ef4444;
-  --theme-text-inverted: #1f2937;
-  --theme-border-primary: #374151;
-  --theme-border-secondary: #4b5563;
-  --theme-brand-primary: #6366f1;
-  --theme-brand-primary-light: #a5b4fc;
-  --theme-brand-primary-hover: #4f46e5;
-  --theme-accent-primary: #2dd4bf;
-  --theme-accent-secondary: #0d9488;
-  --theme-accent-hover: #14b8a6;
-  --theme-accent-focus-ring: #2dd4bf;
-  --theme-secondary-accent-primary: #facc15;
-  --theme-secondary-accent-light: #fde047;
-  --theme-secondary-accent-hover: #eab308;
-  --theme-tertiary-accent-primary: #f472b6;
-  --theme-tertiary-accent-light: #f9a8d4;
-  --theme-tertiary-accent-hover: #ec489a;
-  --theme-success-primary: #22c55e;
-  --theme-success-light: #86efac;
-  --theme-success-hover: #16a34a;
-  --theme-error-primary: #ef4444;
-  --theme-error-light: #fca5a5;
-  --theme-error-hover: #dc2626;
-  --theme-warning-primary: #f59e0b;
-  --theme-warning-light: #fcd34d;
-  --theme-warning-hover: #d97706;
-  --theme-button-bg-primary: linear-gradient(135deg, var(--theme-accent-secondary), var(--theme-accent-primary));
-  --theme-button-text-primary-btn: #1f2937;
-  --theme-button-hover-bg-primary: linear-gradient(135deg, var(--theme-accent-primary), var(--theme-accent-secondary));
-  --theme-button-outlined-border: var(--theme-accent-primary);
-  --theme-button-outlined-text: var(--theme-accent-primary);
-  --theme-button-outlined-hover-bg: rgba(45, 212, 191, 0.1);
-  --theme-button-outlined-hover-text: #ffffff;
-  --theme-button-danger-text: #ef4444;
-  --theme-button-danger-hover-bg: rgba(239, 68, 68, 0.1);
-  --theme-button-danger-hover-text: #ffffff;
-  --theme-shadow-color: rgba(0, 0, 0, 0.1);
-  --theme-hover-bg: #1f2937;
-  --theme-dialog-bg: var(--theme-bg-secondary);
-  --theme-dialog-header-bg: var(--theme-bg-secondary);
-  --theme-dialog-border: var(--theme-border-primary);
-  --theme-scroll-track: #2d3748;
-  --theme-scroll-thumb: #718096;
-  --theme-body-gradient-start: var(--theme-bg-primary);
-  --theme-body-gradient-end: var(--theme-bg-primary);
-}
-
-html, body {
-  height: 100%;
-  font-family: Roboto, "Helvetica Neue", sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-body {
-  background-color: var(--theme-bg-primary);
-  color: var(--theme-text-primary);
-  background-image: linear-gradient(to bottom, var(--theme-body-gradient-start), var(--theme-body-gradient-end));
-  background-attachment: fixed;
-  margin: 0;
-  min-height: 100%;
-}
-
-.ag-theme-alpine {
-  width: 100% !important;
-  height: 100%;
+a:hover {
+  color: var(--theme-accent-primary-hover);
+  text-decoration: underline;
 }
 
 .no-scrollbar::-webkit-scrollbar {
@@ -1269,225 +1925,6 @@ body {
   scrollbar-width: none;
 }
 
-a {
-  color: var(--theme-brand-primary);
-  text-decoration: none;
-}
 
-a:hover {
-  color: var(--theme-brand-primary-hover);
-  text-decoration: underline;
-}
 
-.card {
-  background-color: var(--theme-bg-secondary);
-  border: 1px solid var(--theme-border-primary);
-  border-radius: 0.5rem;
-  box-shadow: 0 1px 3px 0 var(--theme-shadow-color), 0 1px 2px -1px var(--theme-shadow-color);
-  padding: 1.5rem;
-  margin-bottom: 1rem;
-}
-
-input[type="text"],
-input[type="number"],
-input[type="email"],
-input[type="password"],
-select,
-textarea {
-  width: 100%;
-  padding: 0.75rem;
-  border: 1px solid var(--theme-border-secondary);
-  border-radius: 0.375rem;
-  background-color: var(--theme-bg-ternary);
-  color: var(--theme-text-primary);
-  font-size: 0.875rem;
-  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
-}
-
-input:focus,
-select:focus,
-textarea:focus {
-  border-color: var(--theme-accent-primary);
-  outline: none;
-  box-shadow: 0 0 0 0.2rem var(--theme-accent-focus-ring);
-}
-
-button:not([pButton]) {
-  background-color: var(--theme-button-bg-primary);
-  color: var(--theme-button-text-primary-btn);
-  padding: 0.75rem 1.25rem;
-  border: none;
-  border-radius: 0.375rem;
-  font-weight: 500;
-  font-size: 0.875rem;
-  cursor: pointer;
-  transition: background-color 0.15s ease-in-out;
-}
-
-button:not([pButton]):hover {
-  background-color: var(--theme-button-hover-bg-primary);
-}
-
-button:not([pButton]):disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-}
-
-label {
-  display: block;
-  margin-bottom: 0.5rem;
-  font-size: 0.875rem;
-  color: var(--theme-text-label);
-  font-weight: 500;
-}
-
-.error-text {
-  color: var(--theme-text-error);
-  font-size: 0.875rem;
-  margin-top: 0.25rem;
-}
-
-.success-text {
-  color: var(--theme-success-primary);
-  font-size: 0.875rem;
-  margin-top: 0.25rem;
-}
-
-.container {
-  padding: 1rem;
-}
-
-.form-group {
-  margin-bottom: 1rem;
-}
-
-.grid-cols-2 {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 1rem;
-}
-
-h1 {
-  font-size: 2rem;
-  font-weight: 600;
-  color: var(--theme-text-primary);
-  margin-bottom: 1.5rem;
-}
-
-h2 {
-  font-size: 1.5rem;
-  font-weight: 500;
-  color: var(--theme-text-primary);
-  margin-bottom: 1rem;
-}
-
-.gradient-card {
-  background-color: var(--theme-bg-secondary);
-  border: 1px solid var(--theme-border-secondary);
-  border-radius: 0.5rem;
-  box-shadow: 0 2px 5px var(--theme-shadow-color);
-  padding: .5rem;
-  background-image: linear-gradient(to bottom right, color-mix(in srgb, var(--theme-bg-secondary) 80%, white), white);
-}
-
-.primary-button {
-  background-color: var(--theme-brand-primary);
-  color: var(--theme-text-inverted);
-  padding: 0.8rem 1.5rem;
-  border-radius: 0.4rem;
-  font-weight: 600;
-  transition: background-color 0.2s ease-in-out;
-}
-
-.primary-button:hover {
-  background-color: var(--theme-brand-primary-hover);
-}
-
-.p-inputtext,
-.p-dropdown {
-  background-color: var(--theme-bg-ternary) !important;
-  border-color: var(--theme-border-secondary) !important;
-  color: var(--theme-text-primary) !important;
-}
-
-.p-inputtext:focus,
-.p-dropdown.p-focus {
-  border-color: var(--theme-accent-primary) !important;
-  box-shadow: 0 0 0 0.2rem var(--theme-accent-focus-ring) !important;
-  outline: none;
-}
-
-.p-dialog .p-dialog-header {
-  background: var(--theme-dialog-header-bg) !important;
-  color: var(--theme-text-primary) !important;
-  border-bottom: 1px solid var(--theme-dialog-border) !important;
-}
-
-.p-dialog .p-dialog-content {
-  background: var(--theme-dialog-bg) !important;
-  color: var(--theme-text-primary) !important;
-}
-
-.p-button {
-  background-color: var(--theme-button-bg-primary);
-  color: var(--theme-button-text-primary-btn);
-  border: none;
-  transition: background-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
-}
-
-.p-button:hover {
-  background-color: var(--theme-button-hover-bg-primary);
-}
-
-.p-button-outlined {
-  border-color: var(--theme-button-outlined-border) !important;
-  color: var(--theme-button-outlined-text) !important;
-  background-color: transparent !important;
-}
-
-.p-button-outlined:hover {
-  background-color: var(--theme-button-outlined-hover-bg) !important;
-  color: var(--theme-button-outlined-hover-text) !important;
-}
-
-.p-button-danger.p-button-text {
-  color: var(--theme-button-danger-text) !important;
-  background-color: transparent !important;
-}
-
-.p-button-danger.p-button-text:hover {
-  background-color: var(--theme-button-danger-hover-bg) !important;
-  color: var(--theme-button-danger-hover-text) !important;
-}
-
-.theme-toggle-button .p-button {
-  background-color: var(--theme-bg-ternary) !important;
-  color: var(--theme-text-secondary) !important;
-  border-color: var(--theme-border-secondary) !important;
-  font-size: 0.75rem;
-  padding: 0.4rem 0.6rem;
-}
-
-.theme-toggle-button .p-button.p-highlight {
-  background-color: var(--theme-accent-primary) !important;
-  color: var(--theme-text-inverted) !important;
-  border-color: var(--theme-accent-primary) !important;
-}
-
-.theme-toggle-button .p-button:not(.p-highlight):hover {
-  background-color: var(--theme-hover-bg) !important;
-  color: var(--theme-text-primary) !important;
-}
-
-.custom-scroll::-webkit-scrollbar {
-  width: 6px;
-}
-
-.custom-scroll::-webkit-scrollbar-track {
-  background: var(--theme-scroll-track);
-}
-
-.custom-scroll::-webkit-scrollbar-thumb {
-  background-color: var(--theme-scroll-thumb);
-  border-radius: 3px;
-} */
+ */
