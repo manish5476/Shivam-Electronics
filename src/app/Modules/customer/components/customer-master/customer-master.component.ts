@@ -56,7 +56,7 @@ interface CustomerDropdownOption {
     FileUploadModule, ToastModule, DialogModule, TableModule, CheckboxModule,
     AvatarModule, CardModule, SkeletonModule, TooltipModule,
     Tag
-],
+  ],
   templateUrl: './customer-master.component.html',
   styleUrls: ['./customer-master.component.css'],
   providers: [MessageService]
@@ -67,18 +67,18 @@ export class CustomerMasterComponent implements OnInit {
 
   customer: Customer = this.getInitialCustomer();
   isLoading = true;
-  
+
   phoneDialogVisible = false;
   addressDialogVisible = false;
   newPhoneNumber: Phone = { number: '', type: 'mobile', primary: false };
   newAddress: Address = this.getInitialAddress();
   editingPhoneIndex = -1;
   editingAddressIndex = -1;
-  
-  statuses: DropdownOption[] = [ { label: 'Active', value: 'active' }, { label: 'Inactive', value: 'inactive' }, { label: 'Pending', value: 'pending' }, { label: 'Suspended', value: 'suspended' }, { label: 'Blocked', value: 'blocked' }];
-  phoneTypes: DropdownOption[] = [ { label: 'Mobile', value: 'mobile' }, { label: 'Work', value: 'work' }, { label: 'Home', value: 'home' }];
-  addressTypes: DropdownOption[] = [ { label: 'Shipping', value: 'shipping' }, { label: 'Billing', value: 'billing' }, { label: 'Work', value: 'work' }, { label: 'Home', value: 'home' }];
-  
+
+  statuses: DropdownOption[] = [{ label: 'Active', value: 'active' }, { label: 'Inactive', value: 'inactive' }, { label: 'Pending', value: 'pending' }, { label: 'Suspended', value: 'suspended' }, { label: 'Blocked', value: 'blocked' }];
+  phoneTypes: DropdownOption[] = [{ label: 'Mobile', value: 'mobile' }, { label: 'Work', value: 'work' }, { label: 'Home', value: 'home' }];
+  addressTypes: DropdownOption[] = [{ label: 'Shipping', value: 'shipping' }, { label: 'Billing', value: 'billing' }, { label: 'Work', value: 'work' }, { label: 'Home', value: 'home' }];
+
   customerIDDropdown: CustomerDropdownOption[] = [];
   selectedGuaranter: any;
   selectedCustomerId: string | null = null;
@@ -90,7 +90,7 @@ export class CustomerMasterComponent implements OnInit {
     private autoPopulate: AutopopulateService,
     private messageService: AppMessageService,
     public commonMethodService: CommonMethodService,
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.loadCustomerDropdown();
@@ -100,82 +100,84 @@ export class CustomerMasterComponent implements OnInit {
       this.isLoading = false;
     }
   }
-  
+
   getInitialCustomer(): Customer {
     return { fullname: '', profileImg: '', mobileNumber: '', email: '', status: 'active', phoneNumbers: [], addresses: [], cart: { items: [] }, totalPurchasedAmount: 0, remainingAmount: 0, paymentHistory: [], metadata: {} };
   }
-  
+
   getInitialAddress(): Address {
-    return { street: '', city: '', state: '', zipCode: '', country: '', type: 'home', isDefault: false, location: { type: 'Point', coordinates: [null, null] } };
+    return { street: '', city: '', state: '', zipCode: '', country: '', type: 'home', isDefault: false, location: { type: 'Point', coordinates: [0, 0] } };
   }
 
   loadCustomerData(): void {
     if (!this.customerId) {
-        this.customer = this.getInitialCustomer();
-        this.selectedGuaranter = null;
-        this.isLoading = false;
-        return;
+      this.customer = this.getInitialCustomer();
+      this.selectedGuaranter = null;
+      this.isLoading = false;
+      return;
     };
     this.isLoading = true;
     this.customerService.getCustomerDataWithId(this.customerId).subscribe({
-        next: (res) => {
-            // if (res.success) {
-                this.customer = res.data;
-                this.customer.fullname=res.data.fullname
-                this.setSelectedGuarantor();
-            // }
-            this.isLoading = false;
-        },
-        error: () => this.isLoading = false
+      next: (res) => {
+        // if (res.success) {
+        this.customer = res.data;
+        this.customer.fullname = res.data.fullname
+        this.setSelectedGuarantor();
+        // }
+        this.isLoading = false;
+      },
+      error: () => this.isLoading = false
     });
   }
 
   loadCustomerDropdown(): void {
-      this.autoPopulate.getModuleData('customers').subscribe((data: any) => {
-          this.customerIDDropdown = data;
-          if (this.customerId) {
-            this.loadCustomerData();
-          }
-      });
-  }
-  
-  private setSelectedGuarantor(): void {
-      if (this.customer && this.customer.guaranteerId && this.customerIDDropdown.length > 0) {
-          this.selectedGuaranter = this.customerIDDropdown.find(c => c._id === this.customer.guaranteerId);
-      }
-  }
-
- onCustomerSelect(event: any): void {
-      const selectedId = event.value; 
-      this.customerId = selectedId;
-      
+    this.autoPopulate.getModuleData('customers').subscribe((data: any) => {
+      this.customerIDDropdown = data;
       if (this.customerId) {
         this.loadCustomerData();
-      } else {
-        // Handle case where the user clears the selection
-        this.customer = this.getInitialCustomer();
-        this.selectedGuaranter = null;
       }
+    });
+  }
+
+  private setSelectedGuarantor(): void {
+    if (this.customer && this.customer.guaranteerId && this.customerIDDropdown.length > 0) {
+      this.selectedGuaranter = this.customerIDDropdown.find(c => c._id === this.customer.guaranteerId);
+    }
+  }
+
+  onCustomerSelect(event: any): void {
+    const selectedId = event.value;
+    this.customerId = selectedId;
+
+    if (this.customerId) {
+      this.loadCustomerData();
+    } else {
+      // Handle case where the user clears the selection
+      this.customer = this.getInitialCustomer();
+      this.selectedGuaranter = null;
+    }
   }
 
   saveCustomer(): void {
     if (this.customerForm.invalid) {
-        this.messageService.showError('Validation Error', 'Please fill in all required fields.');
-        return;
+      this.messageService.showError('Validation Error', 'Please fill in all required fields.');
+      return;
     }
     this.customer.guaranteerId = this.selectedGuaranter?._id;
-    const operation = this.customerId 
-        ? this.customerService.updateCustomer(this.customerId, this.customer)
-        : this.customerService.createNewCustomer(this.customer);
+    // this.customer.guaranteerId = this.selectedGuaranter._id;
+    this.customer.mobileNumber = this.customer.phoneNumbers[0].number // Convert string to number
+    const operation = this.customerId
+      ? this.customerService.updateCustomer(this.customerId, this.customer)
+      : this.customerService.createNewCustomer(this.customer);
 
     operation.subscribe(res => {
       if (res.success) {
         this.messageService.showSuccess('Success', `Customer ${this.customerId ? 'updated' : 'created'} successfully`);
         if (!this.customerId && res.data?._id) {
-            this.customerId = res.data._id;
-            this.selectedCustomerId = res.data._id;
+          this.customerId = res.data._id;
+          this.selectedCustomerId = res.data._id;
         }
-        this.loadCustomerDropdown(); // Refresh dropdown and then customer data
+        this.loadCustomerDropdown(); 
       }
     });
   }
@@ -233,22 +235,22 @@ export class CustomerMasterComponent implements OnInit {
   setDefaultAddress(index: number): void {
     this.customer.addresses.forEach((addr, i) => addr.isDefault = i === index);
   }
-  
+
   handleFileUpload(event: { files: File[] }): void {
-      const file = event.files[0];
-      if (file && this.customerId) {
-          const formData = new FormData();
-          formData.append('image', file);
-          this.customerService.uploadProfileImage(formData, this.customerId).subscribe(res => {
-              if(res.success) {
-                  this.customer.profileImg = res.data.imageUrl;
-                  this.messageService.showSuccess('Success', 'Profile image updated!');
-              }
-          });
-      } else if (!this.customerId) {
-          this.messageService.showWarn('Save Customer First', 'Please save the new customer before uploading an image.');
-          this.fileUploader.clear();
-      }
+    const file = event.files[0];
+    if (file && this.customerId) {
+      const formData = new FormData();
+      formData.append('image', file);
+      this.customerService.uploadProfileImage(formData, this.customerId).subscribe(res => {
+        if (res.success) {
+          this.customer.profileImg = res.data.imageUrl;
+          this.messageService.showSuccess('Success', 'Profile image updated!');
+        }
+      });
+    } else if (!this.customerId) {
+      this.messageService.showWarn('Save Customer First', 'Please save the new customer before uploading an image.');
+      this.fileUploader.clear();
+    }
   }
 
   getSeverityForType(status: string) {
