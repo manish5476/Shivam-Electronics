@@ -51,52 +51,54 @@
         </ng-template>
       </section>
 
-     <section class="form-card">
-  <h2 class="section-header"><i class="pi pi-dollar"></i> Process Payment</h2>
+      <section class="form-card">
+        <h2 class="section-header"><i class="pi pi-dollar"></i> Process Payment</h2>
 
-  <form #paymentForm="ngForm" (ngSubmit)="onSubmit()" class="payment-form">
+        <form #paymentForm="ngForm" (ngSubmit)="onSubmit()" class="payment-form">
 
-    <div class="form-group amount-section">
-      <label for="amount">Enter Amount to Pay</label>
-      <p-inputNumber id="amount" [(ngModel)]="paymentData.amount" name="amount" mode="currency" currency="INR" locale="en-IN" required styleClass="themed-input w-full amount-input" inputStyleClass="p-3 text-3xl"></p-inputNumber>
-    </div>
+          <div class="form-group amount-section">
+            <label for="amount">Enter Amount to Pay</label>
+            <p-inputNumber id="amount" [(ngModel)]="paymentData.amount" name="amount" mode="currency" currency="INR"
+              locale="en-IN" required styleClass="themed-input w-full amount-input"
+              inputStyleClass="p-3 text-3xl"></p-inputNumber>
+          </div>
 
-    <div class="form-group">
-      <label>Select Payment Method</label>
-      <div class="payment-method-selector">
-        <div *ngFor="let method of paymentMethods"
-             class="method-chip"
-             [ngClass]="{'active': paymentData.paymentMethod === method.value}"
-             (click)="selectPaymentMethod(method.value)">
-          <i class="pi {{method.icon}}"></i>
-          <span>{{ method.label }}</span>
-        </div>
-      </div>
-    </div>
-    
-    <div class="details-section">
-        <div class="form-group">
-            <label for="status">Payment Status</label>
-            <p-select id="status" [(ngModel)]="paymentData.status" name="status" [options]="statuses" required styleClass="themed-select" panelStyleClass="themed-panel"></p-select>
-        </div>
-        <div class="form-group">
-            <label for="description">Description / Notes</label>
-            <textarea id="description" pInputTextarea [(ngModel)]="paymentData.description" name="description" rows="2" placeholder="Payment description (optional)" class="themed-input" maxlength="200"></textarea>
-        </div>
-    </div>
+          <div class="form-group">
+            <label>Select Payment Method</label>
+            <div class="payment-method-selector">
+              <div *ngFor="let method of paymentMethods" class="method-chip"
+                [ngClass]="{'active': paymentData.paymentMethod === method.value}"
+                (click)="selectPaymentMethod(method.value)">
+                <i class="pi {{method.icon}}"></i>
+                <span>{{ method.label }}</span>
+              </div>
+            </div>
+          </div>
 
-    <div class="form-actions">
-      <button pButton type="submit"
-              [disabled]="paymentForm.invalid || !customerId"
+          <div class="details-section ">
+            <div class="form-group">
+              <label for="status">Payment Status</label>
+              <p-select id="status" [(ngModel)]="paymentData.status" name="status" [options]="statuses" required
+                styleClass="themed-select" panelStyleClass="themed-panel"></p-select>
+            </div>
+            <div class="form-group">
+              <label for="description">Description / Notes</label>
+              <textarea id="description" pInputTextarea [(ngModel)]="paymentData.description" name="description"
+                rows="2" placeholder="Payment description (optional)" class="themed-input" maxlength="200"></textarea>
+            </div>
+          </div>
+
+          <div class="form-actions">
+            <button pButton type="submit" [disabled]="paymentForm.invalid || !customerId"
               class="p-button-lg w-full submit-payment-button">
-        <div class="flex items-center justify-between w-full">
-            <span>Process Payment</span>
-            <span class="font-bold text-lg">{{ paymentData.amount | currency:'INR':'symbol':'1.2-2' }}</span>
-        </div>
-      </button>
-    </div>
-  </form>
-</section>
+              <div class="flex items-center justify-between w-full">
+                <span>Process Payment</span>
+                <span class="font-bold text-lg">{{ paymentData.amount | currency:'INR':'symbol':'1.2-2' }}</span>
+              </div>
+            </button>
+          </div>
+        </form>
+      </section>
     </div>
   </div>
   <p-toast></p-toast>
