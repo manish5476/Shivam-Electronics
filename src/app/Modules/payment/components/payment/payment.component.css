@@ -228,9 +228,10 @@
     border: 1px solid var(--theme-border-secondary);
     border-radius: 0.75rem;
     padding: 1.5rem;
+    width: 100%;
     margin-top: 1rem;
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     gap: 1.5rem;
 }
 
