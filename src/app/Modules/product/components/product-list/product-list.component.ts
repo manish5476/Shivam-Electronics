@@ -74,7 +74,6 @@ export class ProductListComponent implements OnInit {
             { label: 'LOWSTOCK', value: 'lowstock' },
             { label: 'OUTOFSTOCK', value: 'outofstock' }
         ];
-
         this.cols = [
             { field: '_id', header: 'ID', customExportHeader: 'Product Code' },
             { field: 'code', header: 'Code', customExportHeader: 'Product Code' },
@@ -202,22 +201,4 @@ export class ProductListComponent implements OnInit {
         }
     }
 
-    isFirstPage(): unknown {
-        throw new Error('Method not implemented.');
-    }
-    prev() {
-        throw new Error('Method not implemented.');
-    }
-    reset() {
-        throw new Error('Method not implemented.');
-    }
-    isLastPage(): unknown {
-        throw new Error('Method not implemented.');
-    }
-    next() {
-        throw new Error('Method not implemented.');
-    }
-    saveProduct() {
-        throw new Error('Method not implemented.');
-    }
 }

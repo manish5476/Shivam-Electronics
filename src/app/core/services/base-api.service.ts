@@ -1,4 +1,3 @@
-// src/app/core/services/base-api.service.ts
 import { HttpClient, HttpErrorResponse, HttpParams } from '@angular/common/http';
 import { inject } from '@angular/core';
 import { Observable, throwError } from 'rxjs';

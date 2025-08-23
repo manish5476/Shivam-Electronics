@@ -1,40 +1,62 @@
-<div>
-  <h1 class="text-4xl lg:text-6xl font-semibold text-surface-950 dark:text-surface-0 text-center mx-auto">
-      Everything you ever<br class="lg:block hidden">wanted to know about us
-  </h1>
-  <p class="lg:text-xl text-surface-500 dark:text-white/64 text-center mt-6 max-w-4xl mx-auto">
-      We are a team of passionate creators, designers, and developers dedicated to building meaningful and impactful experiences. Our mission is to combine innovation with functionality, ensuring that every project we work on exceeds expectations.
-  </p>
+<div class="about-us-container">
+    <!--  Enhanced hero section with gradient background and improved typography -->
+    <div class="hero-section">
+        <div class="hero-content">
+            <h1 class="hero-title">
+                Everything you ever<br class="lg:block hidden">wanted to know about us
+            </h1>
+            <p class="hero-description">
+                We are a team of passionate creators, designers, and developers dedicated to building meaningful and
+                impactful experiences. Our mission is to combine innovation with functionality, ensuring that every
+                project we work on exceeds expectations.
+            </p>
+        </div>
+    </div>
 
-  <img src="https://images.unsplash.com/photo-1744578413523-33596836891b?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxmZWF0dXJlZC1waG90b3MtZmVlZHw1fHx8ZW58MHx8fHx8" alt="About Us Image"
-       class="mx-auto w-3/4 !max-w-[900px] aspect-video object-cover rounded-2xl my-14 transition-opacity duration-700 ease-out delay-75">
+    <!--  Enhanced hero image with floating animation and better styling -->
+    <div class="hero-image-container">
+        <div class="hero-image-wrapper">
+            <img src="https://images.unsplash.com/photo-1744578413523-33596836891b?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxmZWF0dXJlZC1waG90b3MtZmVlZHw1fHx8ZW58MHx8fHx8"
+                alt="About Us Image" class="hero-image">
+            <div class="hero-image-glow"></div>
+        </div>
+    </div>
 
-  <p class="lg:text-xl text-surface-500 dark:text-white/64 text-center mt-6 max-w-4xl mx-auto">
-      Driven by our commitment to excellence, we take pride in crafting user-centric solutions that make a difference. Whether it’s product design, software development, or branding, we approach every challenge with creativity and a problem-solving mindset. Our journey is defined by growth, teamwork, and the pursuit of perfection.
-  </p>
+    <!--  Enhanced description section with better styling -->
+    <div class="description-section">
+        <p class="description-text">
+            Driven by our commitment to excellence, we take pride in crafting user-centric solutions that make a
+            difference. Whether it's product design, software development, or branding, we approach every challenge with
+            creativity and a problem-solving mindset. Our journey is defined by growth, teamwork, and the pursuit of
+            perfection.
+        </p>
+    </div>
 
-  <div class="flex flex-col gap-28 mt-28">
-      <div *ngFor="let member of teamMembers; let i = index"
-           class="flex flex-col items-center justify-center gap-16"
-           [class]="getFlexDirection(i)"> <div class="w-[20rem] h-[28rem] relative rounded-3xl">
-              <div class="absolute inset-0 z-[1] rounded-[inherit] bg-white/48 dark:bg-white/32 backdrop-blur-2xl -rotate-6 transform-origin-bottom-left scale-90"></div>
-              <div class="absolute inset-0 z-[2] rounded-[inherit] bg-white/48 dark:bg-white/32 backdrop-blur-2xl -rotate-3 transform-origin-bottom-left scale-95"></div>
-              <img [src]="member.imageUrl" [alt]="member.name"
-                   class="relative z-20 rounded-[inherit] w-full h-full object-cover shadow-[0px_10px_10px_-8px_rgba(18,18,23,0.02),0px_2px_2px_-1.5px_rgba(18,18,23,0.02),0px_1px_1px_-0.5px_rgba(18,18,23,0.02),0px_0px_0px_1px_rgba(18,18,23,0.02)] opacity-100 transition-opacity duration-700 ease-out delay-75">
-          </div>
+    <!--  Enhanced team section with improved animations and effects -->
+    <div class="team-section">
+        <div *ngFor="let member of teamMembers; let i = index" class="team-member" [class]="getFlexDirection(i)">
 
-          <div class="max-w-[24rem] lg:max-w-[28rem]">
-              <h2 class="text-4xl lg:text-6xl text-surface-950 dark:text-surface-0 font-semibold">{{ member.name }}</h2>
-              <p class="lg:text-xl text-surface-500 dark:text-white/64 mt-6">{{ member.description }}</p>
-              <ul class="flex items-center gap-2 mt-8">
-                  <li *ngFor="let social of member.socialLinks">
-                      <a [href]="social.url" target="_blank"
-                         class="h-8 w-14 flex items-center justify-center rounded-full bg-white/64 dark:bg-white/12 hover:bg-white dark:hover:bg-surface-950 transition-all">
-                          <i [class]="social.icon + ' text-surface-950 dark:text-surface-0'"></i>
-                      </a>
-                  </li>
-              </ul>
-          </div>
-      </div>
-  </div>
+            <!--  Enhanced member image with improved layered effects -->
+            <div class="member-image-container">
+                <div class="member-image-layer layer-1"></div>
+                <div class="member-image-layer layer-2"></div>
+                <div class="member-image-layer layer-3"></div>
+                <img [src]="member.imageUrl" [alt]="member.name" class="member-image">
+                <div class="member-image-glow"></div>
+            </div>
+
+            <!--  Enhanced member info with better typography and animations -->
+            <div class="member-info">
+                <h2 class="member-name">{{ member.name }}</h2>
+                <p class="member-description">{{ member.description }}</p>
+                <ul class="member-social-links">
+                    <li *ngFor="let social of member.socialLinks" class="social-link-item">
+                        <a [href]="social.url" target="_blank" class="social-link">
+                            <i [class]="social.icon + ' social-icon'"></i>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
 </div>

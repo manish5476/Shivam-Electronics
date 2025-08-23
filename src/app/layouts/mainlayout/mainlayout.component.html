@@ -1,15 +1,13 @@
 <div class="min-h-screen  no-scrollbar overflow-auto flex flex-col bg-[var(--theme-bg-ternary)] text-[var(--theme-text-primary)]" >
   <app-header class=" bg-[var(--theme-bg-secondary)] z-50 fixed top-0 left-0 right-0" (toggleSidebar)="toggleSidebar()"  (mobileMenuToggle)="toggleMobileMenu()"></app-header>
-  <!-- (colorChange)="onColorChange($event)"  (search)="onSearch($event)"-->
   <div class="flex h-[calc(100vh - 65px)] mt-13">
     <app-sidebar class="h-full no-scrollbar overflow-auto transition-all duration-300 fixed top-13" [ngClass]="{'w-64': isSidebarPinned || isSidebarHovered, 'w-0': !isSidebarPinned && !isSidebarHovered}"
      [isPinned]="isSidebarPinned" [isHovered]="isSidebarHovered" (pinToggle)="togglePin()" 
      (mouseEnter)="onMouseEnter()" (mouseEnterTriggerZone)="onMouseEnterTriggerZone()" 
      (mouseLeave)="onMouseLeave()"></app-sidebar>
     <main class="flex-1 p-2 no-scrollbar overflow-auto overflow-y-auto transition-all duration-300" [ngClass]="{'ml-64': isSidebarPinned || isSidebarHovered}" (mouseenter)="onMouseEnterMainContent()">
-      <div class="gradient-card  shadow-md overflow-x-auto bg-[var(--theme-bg-main)]  border border-[var(--theme-border-primary)] h-[calc(100vh-65px)] no-scrollbar overflow-auto">
+      <div class="gradient-card  shadow-md overflow-x-auto bg-[var(--theme-bg-primary)]  border border-[var(--theme-border-primary)] h-[calc(100vh-65px)] no-scrollbar overflow-auto">
         <router-outlet></router-outlet>
-        <div *ngIf="!isLoaded" class="text-center text-[var(--theme-text-secondary)]">Loading component...</div>
       </div>
     </main>
   </div>

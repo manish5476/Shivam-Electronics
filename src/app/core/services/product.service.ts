@@ -47,10 +47,6 @@ export class ProductService extends BaseApiService {
       .pipe(catchError((error: HttpErrorResponse) => this.errorhandler.handleError('deleteSingleProduct', error)));
   }
 
-  /**
-   * Deletes multiple products in a single bulk operation.
-   * @param productIds An array of product IDs to delete.
-   */
   deleteProduct(productIds: string[]): Observable<any> {
     // This now correctly calls the unified DELETE endpoint without an ID in the URL
     const url = `${this.baseUrl}${this.endpoint}`;

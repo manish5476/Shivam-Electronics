@@ -23,7 +23,7 @@ export class SidebarComponent implements OnInit {
 
   expandedItems: boolean[] = [];
   menuItems = [
-    { label: 'Dashboard', icon: 'pi pi-home', routerLink: ['/dashboard'] },
+    { label: 'Dashboard', icon: 'pi pi-home', routerLink: ['/admin/dashboard'] },
     {
       label: 'Admin', icon: 'pi pi-lock', items: [
         { label: 'Admin Dashboard', icon: 'pi pi-th-large', routerLink: ['/admin/dashboard'] },

@@ -130,7 +130,7 @@
 /* Specific styling for textarea */
 .themed-input[pinputtextarea] {
   resize: vertical;
-  min-height: 8rem;
+  /* min-height: 1rem; */
 }
 
 /* --- Price Display --- */

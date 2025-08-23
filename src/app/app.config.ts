@@ -9,8 +9,6 @@ import { AppMessageService } from './core/services/message.service';
 import Aura from "@primeng/themes/aura";
 import { definePreset } from "@primeng/themes";
 import { MessageService } from 'primeng/api';
-
-// Import all your interceptors
 import { AuthInterceptor } from './core/Interceptors/auth.interceptor';
 import { ErrorInterceptor } from './core/Interceptors/error.interceptor';
 import { LoadingInterceptor } from './core/Interceptors/loading.interceptor';

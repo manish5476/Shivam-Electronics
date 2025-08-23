@@ -1,11 +1,11 @@
 @import "tailwindcss";
 @import "primeicons/primeicons.css";
-/* @import url("https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Crimson+Text:ital,wght@0,400;0,600;1,400&family=Merriweather:wght@300;400;700&family=Lora:wght@400;500;600&family=Source+Serif+Pro:wght@400;600;700&family=Cormorant+Garamond:wght@300;400;500;600&display=swap"); */
+/*manish @import url("https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Crimson+Text:ital,wght@0,400;0,600;1,400&family=Merriweather:wght@300;400;700&family=Lora:wght@400;500;600&family=Source+Serif+Pro:wght@400;600;700&family=Cormorant+Garamond:wght@300;400;500;600&display=swap"); */
 
-/* --- 1. CORE THEME & COLOR PALETTE DEFINITIONS --- */
+/*manish --- 1. CORE THEME & COLOR PALETTE DEFINITIONS --- */
 :root {
-  /* --- Base Layout & Text (Light Mode) --- */
-  /* Updated to retro warm cream and beige tones */
+  /*manish --- Base Layout & Text (Light Mode) --- */
+  /*manish Updated to retro warm cream and beige tones */
   --theme-bg-primary: #faf8f5;
   --theme-bg-secondary: #f5f1eb;
   --theme-bg-ternary: #ede7dd;
@@ -21,32 +21,32 @@
   --theme-scroll-track: #e8ddd0;
   --theme-scroll-thumb: #c4b5a0;
 
-  /* --- Default Accent Color (Retro Orange) --- */
-  /* Changed from blue to warm retro orange */
+  /*manish --- Default Accent Color (Retro Orange) --- */
+  /*manish Changed from blue to warm retro orange */
   --theme-accent-primary: #d2691e;
   --theme-accent-primary-light: #f4e4d0;
   --theme-accent-primary-hover: #b8571a;
   --theme-accent-text-color: #faf8f5;
   --theme-accent-focus-ring: rgba(210, 105, 30, 0.25);
 
-  /* --- Status Colors --- */
+  /*manish --- Status Colors --- */
   --theme-success-primary: #10b981;
   --theme-error-primary: #ef4444;
   --theme-warning-primary: #f59e0b;
 
-  /* Body Background */
-  /* Updated gradient to warm retro tones */
+  /*manish Body Background */
+  /*manish Updated gradient to warm retro tones */
   --theme-body-gradient-start: #faf8f5;
   --theme-body-gradient-end: #f0e6d6;
 
-  /* Enhanced typography with retro font variables */
+  /*manish Enhanced typography with retro font variables */
   --font-primary: "Anton", serif;
   --font-secondary: "Anton", serif;
   --font-body: "Lora", serif;
   --font-accent: "Merriweather", serif;
   --font-elegant: "Cormorant Garamond", serif;
 
-  /* Enhanced retro effects */
+  /*manish Enhanced retro effects */
   --retro-text-shadow: 2px 2px 4px rgba(45, 24, 16, 0.3);
   --retro-glow: 0 0 20px rgba(210, 105, 30, 0.4);
   --retro-emboss: inset 0 1px 0 rgba(255, 255, 255, 0.2), inset 0 -1px 0 rgba(0, 0, 0, 0.1);
@@ -55,7 +55,7 @@
 }
 
 body.dark-mode {
-  /* Updated dark mode to rich retro browns and warm grays */
+  /*manish Updated dark mode to rich retro browns and warm grays */
   --theme-bg-primary: #1a1611;
   --theme-bg-secondary: #2d251e;
   --theme-bg-ternary: #3d342a;
@@ -72,14 +72,14 @@ body.dark-mode {
   --theme-body-gradient-start: #1a1611;
   --theme-body-gradient-end: #2d251e;
 
-  /* Dark mode retro effects */
+  /*manish Dark mode retro effects */
   --retro-text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.6);
   --retro-glow: 0 0 20px rgba(210, 105, 30, 0.6);
   --retro-gradient-warm: linear-gradient(135deg, #3d342a 0%, #4a3c2a 50%, #6b5b4f 100%);
   --retro-gradient-cool: linear-gradient(135deg, #1a1611 0%, #2d251e 50%, #3d342a 100%);
 }
 
-/* Advanced retro typography classes */
+/*manish Advanced retro typography classes */
 .retro-heading {
   font-family: var(--font-primary);
   font-weight: 700;
@@ -125,8 +125,8 @@ body.dark-mode {
   text-shadow: 1px 1px 0 rgba(255, 255, 255, 0.3), -1px -1px 0 rgba(0, 0, 0, 0.3);
 }
 
-/* --- 2. CLEAN COLOR THEMES --- */
-/* Added new retro-inspired themes */
+/*manish --- 2. CLEAN COLOR THEMES --- */
+/*manish Added new retro-inspired themes */
 .theme-retro-burgundy {
   --theme-accent-primary: #8b2635;
   --theme-accent-primary-light: #f2d7da;
@@ -325,8 +325,8 @@ body.dark-mode {
   --theme-accent-focus-ring: rgba(225, 29, 72, 0.2);
 }
 
-/* --- 2. ENHANCED COLOR THEMES --- */
-/* Added more sophisticated retro themes */
+/*manish --- 2. ENHANCED COLOR THEMES --- */
+/*manish Added more sophisticated retro themes */
 .theme-retro-burgundy {
   --theme-accent-primary: #8b2635;
   --theme-accent-primary-light: #f2d7da;
@@ -381,7 +381,7 @@ body.dark-mode {
   --retro-glow: 0 0 20px rgba(135, 169, 107, 0.4);
 }
 
-/* New advanced retro themes */
+/*manish New advanced retro themes */
 .theme-retro-gold {
   --theme-accent-primary: #b8860b;
   --theme-accent-primary-light: #faf0e6;
@@ -418,7 +418,7 @@ body.dark-mode {
   --retro-glow: 0 0 20px rgba(139, 125, 155, 0.4);
 }
 
-/* --- 3. GLOBAL STYLES & TRANSITIONS --- */
+/*manish --- 3. GLOBAL STYLES & TRANSITIONS --- */
 html,
 body {
   height: 100%;
@@ -442,10 +442,10 @@ body {
   transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
-/* --- 4. PRIMENG COMPONENT STYLES --- */
-/* Simplified PrimeNG styling without complex effects */
+/*manish --- 4. PRIMENG COMPONENT STYLES --- */
+/*manish Simplified PrimeNG styling without complex effects */
 
-/* General Inputs */
+/*manish General Inputs */
 .p-inputtext,
 .p-inputnumber-input,
 .p-password-input,
@@ -471,7 +471,7 @@ body {
   box-shadow: 0 0 0 1px var(--theme-accent-primary) !important;
 }
 
-/* Dropdowns & Selects */
+/*manish Dropdowns & Selects */
 .p-dropdown,
 .p-multiselect {
   background-color: var(--theme-bg-ternary) !important;
@@ -514,7 +514,7 @@ body {
   color: var(--theme-accent-text-color) !important;
 }
 
-/* Checkbox */
+/*manish Checkbox */
 .p-checkbox .p-checkbox-box {
   border: 1px solid var(--theme-border-secondary) !important;
   background-color: var(--theme-bg-secondary) !important;
@@ -533,7 +533,7 @@ body {
   color: var(--theme-accent-text-color) !important;
 }
 
-/* Buttons */
+/*manish Buttons */
 .p-button {
   background-color: var(--theme-accent-primary) !important;
   color: var(--theme-accent-text-color) !important;
@@ -568,7 +568,7 @@ body {
   color: var(--theme-accent-primary) !important;
 }
 
-/* Data Table */
+/*manish Data Table */
 .p-datatable .p-datatable-thead > tr > th {
   background-color: var(--theme-bg-secondary) !important;
   border-bottom: 2px solid var(--theme-border-primary) !important;
@@ -595,7 +595,7 @@ body {
   color: var(--theme-accent-text-color) !important;
 }
 
-/* Dialogs */
+/*manish Dialogs */
 .p-dialog .p-dialog-header {
   background-color: var(--theme-bg-secondary) !important;
   color: var(--theme-text-primary) !important;
@@ -606,8 +606,8 @@ body {
   background-color: var(--theme-bg-primary) !important;
 }
 
-/* --- 5. ENHANCED CUSTOM UTILITY CLASSES --- */
-/* Advanced retro utility classes */
+/*manish --- 5. ENHANCED CUSTOM UTILITY CLASSES --- */
+/*manish Advanced retro utility classes */
 
 .retro-card {
   background: var(--retro-gradient-warm);
@@ -696,8 +696,8 @@ body {
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
 }
 
-/* --- 6. CUSTOM UTILITY CLASSES --- */
-/* Simplified utility classes without complex effects */
+/*manish --- 6. CUSTOM UTILITY CLASSES --- */
+/*manish Simplified utility classes without complex effects */
 
 .card {
   background-color: var(--theme-bg-secondary);
@@ -763,7 +763,7 @@ h6 {
   color: var(--theme-text-primary);
 }
 
-/* Enhanced heading styles with retro fonts */
+/*manish Enhanced heading styles with retro fonts */
 h1 {
   font-family: var(--font-primary);
   font-size: 2.5rem;
@@ -812,7 +812,7 @@ h6 {
   margin-bottom: 0.5rem;
 }
 
-/* Custom Scrollbar */
+/*manish Custom Scrollbar */
 .custom-scroll::-webkit-scrollbar {
   width: 6px;
 }
