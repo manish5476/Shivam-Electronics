@@ -1,21 +1,30 @@
+
+// /** @type {import('tailwindcss').Config} */
 // module.exports = {
+//   content: [
+//     "./src/**/*.{html,ts,css}", // Include all Angular files
+//   ],
 //   theme: {
 //     extend: {},
-//     color: { mode: 'rgb' } // Force Tailwind to use RGB instead of OKLCH
-//   },
-//   corePlugins: {
-//     preflight: false, // Optional: If you face CSS reset issues
 //   },
 //   plugins: [],
 // };
 
-/** @type {import('tailwindcss').Config} */
+const colors = require('tailwindcss/colors');
+
 module.exports = {
-  content: [
-    "./src/**/*.{html,ts,css}", // Include all Angular files
-  ],
   theme: {
-    extend: {},
+    extend: {
+      colors: {
+        gray: colors.gray,
+        blue: colors.blue,
+        yellow: colors.yellow,
+        red: colors.red,
+        // ... add any colors you’re using
+      },
+    },
   },
-  plugins: [],
+  corePlugins: {
+    preflight: true,
+  }
 };
