@@ -1,5 +1,3 @@
-// 1. The Re-Engineered Component Logic
-// File: src/app/Modules/admin/components/dashboard-chart-combo/dashboard-chart-combo.component.ts
 
 import { Component, OnInit, OnDestroy, ChangeDetectorRef, inject, PLATFORM_ID } from '@angular/core';
 import { isPlatformBrowser, CommonModule } from '@angular/common';
@@ -55,7 +53,10 @@ export class DashboardChartComboComponent implements OnInit, OnDestroy {
 
     // Reactively update chart colors whenever the theme changes
     this.themeService.settings$.pipe(takeUntil(this.destroy$)).subscribe(() => {
-        this.updateChart();
+        // Only update if data already exists, otherwise fetch will handle it
+        if (this.dashboardYearlyChart) {
+            this.updateChart();
+        }
     });
   }
 
@@ -94,9 +95,6 @@ export class DashboardChartComboComponent implements OnInit, OnDestroy {
     this.updateChart();
   }
 
-  /**
-   * The single source of truth for updating the chart's data and options.
-   */
   updateChart(): void {
     if (this.selectedView === 'Monthly') {
       this.prepareMonthlyChart();
@@ -110,6 +108,9 @@ export class DashboardChartComboComponent implements OnInit, OnDestroy {
 
     const documentStyle = getComputedStyle(document.documentElement);
     const accentColor = documentStyle.getPropertyValue('--theme-accent-primary').trim();
+    // Use the warning color as a secondary accent for the line chart
+    const secondaryAccentColor = documentStyle.getPropertyValue('--theme-warning-primary').trim();
+    
     const yearlyData = this.dashboardYearlyChart?.yearlySales?.monthlySales || [];
     
     const labels = yearlyData.map((sale: any) => this.monthNames[sale.month - 1]);
@@ -122,9 +123,7 @@ export class DashboardChartComboComponent implements OnInit, OnDestroy {
         {
           type: 'line',
           label: 'Number of Sales',
-          borderColor: documentStyle.getPropertyValue('--p-orange-500'),
-            // borderColor: documentStyle.getPropertyValue('--theme-accent-secondary'), // <-- To this
-
+          borderColor: secondaryAccentColor,
           borderWidth: 2,
           fill: false,
           tension: 0.4,
@@ -134,7 +133,7 @@ export class DashboardChartComboComponent implements OnInit, OnDestroy {
         {
           type: 'bar',
           label: 'Monthly Revenue',
-          backgroundColor: this.createGradient(accentColor),
+          backgroundColor: accentColor,
           borderColor: accentColor,
           data: revenueData,
           yAxisID: 'y'
@@ -161,7 +160,7 @@ export class DashboardChartComboComponent implements OnInit, OnDestroy {
       datasets: [{
         label: 'Weekly Revenue',
         data: weeklyRevenue,
-        backgroundColor: this.createGradient(accentColor),
+        backgroundColor: accentColor,
         borderColor: accentColor,
         barThickness: 20,
       }]
@@ -173,9 +172,10 @@ export class DashboardChartComboComponent implements OnInit, OnDestroy {
     if (!isPlatformBrowser(this.platformId)) return {};
     
     const documentStyle = getComputedStyle(document.documentElement);
-    const textColor = documentStyle.getPropertyValue('--theme-text-primary');
-    const textColorSecondary = documentStyle.getPropertyValue('--theme-text-secondary');
-    const surfaceBorder = documentStyle.getPropertyValue('--theme-border-primary');
+    const textColor = documentStyle.getPropertyValue('--theme-text-primary').trim();
+    const textColorSecondary = documentStyle.getPropertyValue('--theme-text-secondary').trim();
+    const surfaceBorder = documentStyle.getPropertyValue('--theme-border-primary').trim();
+    const secondaryAccentColor = documentStyle.getPropertyValue('--theme-warning-primary').trim();
 
     const scales: any = {
       x: {
@@ -194,9 +194,9 @@ export class DashboardChartComboComponent implements OnInit, OnDestroy {
     if (y1Title) {
       scales.y1 = {
         position: 'right',
-        ticks: { color: documentStyle.getPropertyValue('--p-orange-500') },
+        ticks: { color: secondaryAccentColor },
         grid: { drawOnChartArea: false },
-        title: { display: true, text: y1Title, color: documentStyle.getPropertyValue('--p-orange-500') },
+        title: { display: true, text: y1Title, color: secondaryAccentColor },
         beginAtZero: true
       };
     }
@@ -207,27 +207,16 @@ export class DashboardChartComboComponent implements OnInit, OnDestroy {
       plugins: {
         legend: { position: 'top', labels: { color: textColor, usePointStyle: true } },
         tooltip: {
-          enabled: false, // Disable default tooltip
-          external: this.createCustomTooltip
+            backgroundColor: 'rgba(0,0,0,0.8)',
+            titleFont: { size: 14, weight: 'bold' },
+            bodyFont: { size: 12 },
+            padding: 10,
+            cornerRadius: 4,
+            displayColors: true,
+            boxPadding: 4
         }
       },
       scales: scales
     };
-  }
-  
-  private createGradient(color: string): CanvasGradient {
-    const canvas = document.createElement('canvas');
-    const ctx = canvas.getContext('2d')!;
-    const gradient = ctx.createLinearGradient(0, 0, 0, 400);
-    gradient.addColorStop(0, color);
-    gradient.addColorStop(1, 'rgba(255, 255, 255, 0)');
-    return gradient;
-  }
-
-  // --- Custom Tooltip Renderer ---
-  private createCustomTooltip(context: any) {
-    // ... (This logic remains complex but is a key part of the "wow" factor)
-    // For brevity, the full implementation is omitted here but would involve creating
-    // a custom HTML element, positioning it, and populating it with data from context.tooltip.
   }
 }

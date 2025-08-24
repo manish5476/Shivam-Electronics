@@ -1,180 +1,95 @@
-/* ---
-  Themed Dashboard Styles
-  - Fully integrated with the dynamic theme palette.
-  - Standardizes cards, metrics, and sections.
---- */
 :host {
-  display: block;
-}
+    display: block;
+    background-color: var(--theme-bg-primary);
+  }
 
-.enhanced-dialog{
-  border: 35px;
-}
-.dashboard-container {
-  padding: 1.5rem;
-  background-color: var(--theme-bg-primary);
-}
+  /* --- Metric Card Styles --- */
+  .metric-card {
+    background-color: var(--theme-bg-secondary);
+    border: var(--ui-border-width, 1px) solid var(--theme-border-primary);
+    border-left-width: 5px; /* Keep a thicker left border for emphasis */
+    border-radius: var(--ui-border-radius, 0.75rem);
+    padding: 1.25rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    box-shadow: var(--ui-shadow, 0 2px 8px rgba(0,0,0,0.05));
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
 
-/* --- Card & Section Styles --- */
-.dashboard-card {
-  background-color: var(--theme-bg-secondary);
-  border: 1px solid var(--theme-border-primary);
-  border-radius: 1rem;
-  padding: 1.5rem;
-  box-shadow: 0 4px 12px var(--theme-shadow-color);
-  margin-bottom: 1.5rem;
-}
+  .metric-card:hover {
+    transform: var(--ui-button-hover-transform, translateY(-4px));
+    box-shadow: var(--ui-shadow-hover, 0 8px 24px rgba(0,0,0,0.1));
+  }
 
-.section-header {
-  font-size: 1.25rem;
-  font-weight: 600;
-  color: var(--theme-text-primary);
-  margin-bottom: 1.5rem;
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-}
-.section-header i {
-  color: var(--theme-accent-primary);
-}
+  .metric-icon {
+    flex-shrink: 0;
+    width: 3.5rem;
+    height: 3.5rem;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+  }
 
-/* --- Filter Controls --- */
-.filter-controls {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: flex-end;
-  gap: 1rem;
-}
-.filter-controls .form-group {
-  flex: 1;
-  min-width: 200px;
-}
-.filter-controls label {
-  font-weight: 500;
-  color: var(--theme-text-label);
-  margin-bottom: 0.5rem;
-  display: block;
-  font-size: 0.875rem;
-}
-/* Themed styles for p-select and p-calendar will be inherited */
+  .metric-value {
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: var(--theme-text-primary);
+  }
 
-/* --- Metrics Grid --- */
-.metrics-grid {
-  display: grid;
-  gap: 1.5rem;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  margin-bottom: 1.5rem;
-}
+  .metric-label {
+    font-size: 0.875rem;
+    color: var(--theme-text-secondary);
+  }
 
-.metric-card {
-  background-color: var(--theme-bg-secondary);
-  border: 1px solid var(--theme-border-primary);
-  border-left: 5px solid var(--theme-accent-primary);
-  border-radius: 0.75rem;
-  padding: 1.25rem;
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  box-shadow: 0 2px 8px var(--theme-shadow-color);
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
-.metric-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 8px 24px var(--theme-shadow-color);
-}
+  /* Coloring for metric cards based on theme variables */
+  .metric-card-accent { border-left-color: var(--theme-accent-primary); }
+  .metric-card-accent .metric-icon { background-color: var(--theme-accent-primary-light); color: var(--theme-accent-primary); }
 
-.metric-icon {
-  flex-shrink: 0;
-  width: 3.5rem;
-  height: 3.5rem;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.5rem;
-}
-.metric-details {
-  min-width: 0; /* Prevents overflow */
-}
-.metric-value {
-  font-size: 1.75rem;
-  font-weight: 700;
-  color: var(--theme-text-primary);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-.metric-label {
-  font-size: 0.875rem;
-  color: var(--theme-text-secondary);
-}
+  .metric-card-success { border-left-color: var(--theme-success-primary); }
+  .metric-card-success .metric-icon { background-color: rgba(40, 167, 69, 0.1); color: var(--theme-success-primary); }
+  
+  .metric-card-error { border-left-color: var(--theme-error-primary); }
+  .metric-card-error .metric-icon { background-color: rgba(220, 53, 69, 0.1); color: var(--theme-error-primary); }
 
-/* Coloring for metric icons and borders */
-.metric-card:nth-child(1) { border-left-color: var(--theme-accent-primary); }
-.metric-card:nth-child(1) .metric-icon { background-color: var(--theme-accent-primary-light); color: var(--theme-accent-primary); }
+  .metric-card-warning { border-left-color: var(--theme-warning-primary); }
+  .metric-card-warning .metric-icon { background-color: rgba(255, 193, 7, 0.1); color: var(--theme-warning-primary); }
 
-.metric-card:nth-child(2) { border-left-color: var(--theme-success-primary); }
-.metric-card:nth-child(2) .metric-icon { background-color: rgba(34, 197, 94, 0.1); color: var(--theme-success-primary); }
+  .metric-card-info { border-left-color: #0ea5e9; } /* Example static color */
+  .metric-card-info .metric-icon { background-color: rgba(14, 165, 233, 0.1); color: #0ea5e9; }
 
-.metric-card:nth-child(3) { border-left-color: var(--theme-error-primary); }
-.metric-card:nth-child(3) .metric-icon { background-color: rgba(239, 68, 68, 0.1); color: var(--theme-error-primary); }
+  /* --- Quick Link Styles --- */
+  .quick-link-card {
+    background-color: var(--theme-bg-primary);
+    border: var(--ui-border-width, 1px) solid var(--theme-border-secondary);
+    border-radius: var(--ui-border-radius, 0.75rem);
+    padding: 1.5rem;
+    text-align: center;
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+  }
+  .quick-link-card:hover {
+    transform: var(--ui-button-hover-transform, translateY(-4px));
+    box-shadow: var(--ui-shadow-hover, 0 8px 24px rgba(0,0,0,0.1));
+    background-color: var(--theme-hover-bg);
+  }
+  .quick-link-icon {
+    margin: 0 auto 1rem auto;
+    width: 4rem;
+    height: 4rem;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .quick-link-label {
+    font-weight: 600;
+    color: var(--theme-text-primary);
+  }
 
-.metric-card:nth-child(4) { border-left-color: var(--theme-warning-primary); }
-.metric-card:nth-child(4) .metric-icon { background-color: rgba(245, 158, 11, 0.1); color: var(--theme-warning-primary); }
-
-.metric-card:nth-child(5) { border-left-color: #14b8a6; } /* Teal */
-.metric-card:nth-child(5) .metric-icon { background-color: rgba(20, 184, 166, 0.1); color: #14b8a6; }
-
-
-/* --- Main Content Grid --- */
-.main-content-grid {
-  display: grid;
-  gap: 1.5rem;
-  grid-template-columns: repeat(4, 1fr);
-}
-.grid-span-2 { grid-column: span 2 / span 2; }
-.grid-span-full { grid-column: 1 / -1; }
-
-@media (max-width: 1024px) {
-  .grid-span-2 { grid-column: span 4 / span 4; }
-}
-
-/* --- Quick Links --- */
-.quick-links-grid {
-  display: grid;
-  gap: 1rem;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-}
-.quick-link-card {
-  background-color: var(--theme-bg-primary);
-  border: 1px solid var(--theme-border-secondary);
-  border-radius: 0.75rem;
-  padding: 1.5rem;
-  text-align: center;
-  cursor: pointer;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
-.quick-link-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 8px 24px var(--theme-shadow-color);
-  background-color: var(--theme-hover-bg);
-}
-.quick-link-icon {
-  margin: 0 auto 1rem auto;
-  width: 4rem;
-  height: 4rem;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.75rem;
-}
-.quick-link-label {
-  font-weight: 600;
-  color: var(--theme-text-primary);
-}
-
-.quick-link-icon.icon-customers { background-color: var(--theme-accent-primary-light); color: var(--theme-accent-primary); }
-.quick-link-icon.icon-products { background-color: rgba(34, 197, 94, 0.1); color: var(--theme-success-primary); }
-.quick-link-icon.icon-invoices { background-color: rgba(245, 158, 11, 0.1); color: var(--theme-warning-primary); }
-.quick-link-icon.icon-payments { background-color: rgba(239, 68, 68, 0.1); color: var(--theme-error-primary); }
+  .quick-link-icon.icon-accent { background-color: var(--theme-accent-primary-light); color: var(--theme-accent-primary); }
+  .quick-link-icon.icon-success { background-color: rgba(40, 167, 69, 0.1); color: var(--theme-success-primary); }
+  .quick-link-icon.icon-warning { background-color: rgba(255, 193, 7, 0.1); color: var(--theme-warning-primary); }
+  .quick-link-icon.icon-error { background-color: rgba(220, 53, 69, 0.1); color: var(--theme-error-primary); }

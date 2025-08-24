@@ -156,53 +156,9 @@
   .parties, .notes-pay { grid-template-columns: 1fr; }
   .invoice-pill { width: 100%; }
 }
+@page { size: A4; margin: 12mm; }
+.invoice.doc-surface { max-width: 210mm; }
+thead { display: table-header-group; }
+tfoot { display: table-row-group; }
 
-/* .invoice-container {
-  max-width: 800px;
-  margin: 0 auto;
-  font-family: Arial, sans-serif;
-}
 
-table {
-  width: 100%;
-  border-collapse: collapse;
-}
-
-th,
-td {
-  padding: 8px;
-  text-align: left;
-  border: 1px solid #e5e7eb;
-}
-
-thead {
-  background-color: #f9fafb;
-}
-
-tfoot {
-  font-weight: 600;
-}
-
-.spinner {
-  border: 2px solid #f3f3f3;
-  border-top: 2px solid #3498db;
-  border-radius: 50%;
-  width: 16px;
-  height: 16px;
-  animation: spin 1s linear infinite;
-  vertical-align: middle;
-}
-
-@keyframes spin {
-  0% {
-    transform: rotate(0deg);
-  }
-  100% {
-    transform: rotate(360deg);
-  }
-}
-
-.download-button button:disabled {
-  background-color: #cccccc;
-  cursor: not-allowed;
-} */

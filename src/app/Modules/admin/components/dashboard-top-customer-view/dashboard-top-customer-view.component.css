@@ -1,5 +1,11 @@
+
 :host {
   display: block;
+  background-color: var(--theme-bg-secondary);
+  padding: 1.5rem;
+  border-radius: var(--ui-border-radius, 1rem);
+  border: var(--ui-border-width, 1px) solid var(--theme-border-primary);
+  box-shadow: var(--ui-shadow, none);
 }
 
 .table-header {
@@ -10,20 +16,20 @@
 }
 
 /* Main Table Styling */
-:host ::ng-deep .p-datatable .p-datatable-thead > tr > th {
+:host ::ng-deep .p-datatable.p-datatable-customers .p-datatable-thead > tr > th {
   background-color: var(--theme-bg-secondary);
   color: var(--theme-text-primary);
   font-weight: 600;
-  border-bottom: 3px dashed var(--theme-border-primary);
+  border-bottom: var(--ui-border-width, 1px) solid var(--theme-border-primary);
 }
 
-:host ::ng-deep .p-datatable .p-datatable-tbody > tr.main-row {
+:host ::ng-deep .p-datatable.p-datatable-customers .p-datatable-tbody > tr.main-row {
   background-color: var(--theme-bg-primary);
   color: var(--theme-text-secondary);
   transition: background-color 0.2s ease;
 }
 
-:host ::ng-deep .p-datatable .p-datatable-tbody > tr.main-row:hover {
+:host ::ng-deep .p-datatable.p-datatable-customers .p-datatable-tbody > tr.main-row:hover {
   background-color: var(--theme-hover-bg);
 }
 
@@ -35,10 +41,10 @@
 
 /* Expanded Row Styling */
 .expanded-content {
-  padding: 1rem; /* Adjusted padding */
-  background-color: var(--theme-hover-bg);
-  border: 1px dotted var(--theme-border-primary); /* Added dotted border */
-  border-radius: 0.5rem;
+  padding: 1rem;
+  background-color: var(--theme-bg-primary);
+  border: var(--ui-border-width, 1px) dashed var(--theme-border-secondary);
+  border-radius: var(--ui-border-radius, 0.5rem);
   margin: 0.5rem 0;
 }
 
@@ -50,20 +56,20 @@
 }
 
 /* Nested Table Styling */
-:host ::ng-deep .expanded-content .p-datatable .p-datatable-thead > tr > th {
-  /* Use a more prominent accent color for the nested header to differentiate it */
-  background-color: color-mix(in srgb, var(--theme-accent-primary) 15%, transparent);
+:host ::ng-deep .p-datatable.p-datatable-nested .p-datatable-thead > tr > th {
+  background-color: var(--theme-accent-primary-light, rgba(0,0,0,0.05));
   color: var(--theme-accent-primary);
   font-size: 0.875rem;
   padding: 0.5rem 0.75rem;
-  border-bottom: 1px solid color-mix(in srgb, var(--theme-accent-primary) 25%, transparent);
+  border-bottom: 1px solid var(--theme-accent-primary);
 }
 
-:host ::ng-deep .expanded-content .p-datatable .p-datatable-tbody > tr.nested-row {
+:host ::ng-deep .p-datatable.p-datatable-nested .p-datatable-tbody > tr.nested-row {
   font-size: 0.875rem;
-  background-color: var(--theme-bg-secondary);
+  background-color: transparent;
+  color: var(--theme-text-secondary);
 }
 
-:host ::ng-deep .expanded-content .p-datatable .p-datatable-tbody > tr.nested-row:hover {
-  background-color: color-mix(in srgb, var(--theme-bg-secondary) 95%, black);
+:host ::ng-deep .p-datatable.p-datatable-nested .p-datatable-tbody > tr.nested-row:hover {
+  background-color: var(--theme-hover-bg);
 }
