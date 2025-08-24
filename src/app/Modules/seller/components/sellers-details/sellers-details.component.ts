@@ -61,8 +61,7 @@ export class SellersDetailsComponent {
         { field: 'name', header: 'Name', sortable: true, filter: true, resizable: true, editable: true },
         { field: 'shopName', header: 'Shop Name', sortable: true, filter: true, resizable: true, editable: true },
         {
-          field: 'status', header: 'Status', sortable: true, filter: true, resizable: true, editable: true, cellEditor: 'agSelectCellEditor',
-          cellEditorParams: {
+          field: 'status', header: 'Status', sortable: true, filter: true, resizable: true, editable: true, cellEditor: 'agSelectCellEditor', cellEditorParams: {
             values: ['active', 'inactive', 'pending', 'suspended', 'blocked']
           }
         },

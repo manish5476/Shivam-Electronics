@@ -93,6 +93,7 @@ export class AdminDashboardComponent implements OnInit, OnDestroy {
     showpdf: false,
     invoiceId: ''
   };
+border: any;
 
   constructor(
     private dashboardService: DashboardService,

@@ -1,14 +1,3 @@
-// import { Component } from '@angular/core';
-
-// @Component({
-//   selector: 'app-main-dashboard',
-//   imports: [],
-//   templateUrl: './main-dashboard.component.html',
-//   styleUrl: './main-dashboard.component.css'
-// })
-// export class MainDashboardComponent {
-
-// }
 import { Component } from '@angular/core';
 import { HomePageComponent } from '../dashboard/home-page/home-page.component';
 import { Router, NavigationEnd } from '@angular/router';
@@ -20,9 +9,10 @@ import { AppNavigationComponent } from '../../shared/Components/common-layout/co
 import { GstInvoiceComponent } from '../../Modules/billing/components/gst-invoice/gst-invoice.component';
 import { ProductListComponent } from '../../Modules/product/components/product-list/product-list.component';
 import { ProductDetailComponent } from '../../Modules/product/components/product-detail/product-detail.component';
+import { AdminDashboardComponent } from "../../Modules/admin/admin-dashboard/admin-dashboard.component";
 @Component({
   selector: 'app-main-dashboard',
-  imports: [CommonModule, SelectButtonModule, FormsModule,AppNavigationComponent, RouterModule],
+  imports: [CommonModule, SelectButtonModule, FormsModule, RouterModule,  AdminDashboardComponent],
   templateUrl: './main-dashboard.component.html',
   styleUrl: './main-dashboard.component.css'
 })

@@ -1,35 +1,102 @@
-@keyframes fade-in {
-  from { opacity: 0; }
-  to { opacity: 1; }
-}
+       /* --- YOUR THEME (Condensed for this file) --- */
+        :root {
+            --theme-bg-primary: #faf8f5;
+            --theme-bg-secondary: #f5f1eb;
+            --theme-text-primary: #2d1810;
+            --theme-text-secondary: #6b5b4f;
+            --theme-text-inverted: #faf8f5;
+            --theme-border-primary: #d4c4b0;
+            --theme-accent-primary: #d2691e;
+            --theme-accent-primary-light: #f4e4d0;
+            --theme-accent-primary-hover: #b8571a;
+            --theme-accent-text-color: #faf8f5;
+            --theme-shadow-color: rgba(45, 24, 16, 0.12);
+            --font-primary: "Anton", sans-serif;
+            --font-secondary: "Lora", serif;
+            --font-body: "Merriweather", serif;
+            --retro-text-shadow: 1px 1px 3px rgba(45, 24, 16, 0.2);
+        }
+        body {
+            background-color: var(--theme-bg-primary);
+            color: var(--theme-text-primary);
+            font-family: var(--font-body);
+            overflow-x: hidden; /* Prevent horizontal scroll from animations */
+        }
 
-@keyframes slide-up {
-  from { transform: translateY(20px); opacity: 0; }
-  to { transform: translateY(0); opacity: 1; }
-}
+        /* --- NEW: ANIMATED SHADER BACKGROUND --- */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, 
+                var(--theme-bg-primary) 0%, 
+                var(--theme-accent-primary-light) 50%, 
+                var(--theme-bg-secondary) 100%);
+            background-size: 200% 200%;
+            animation: shader-flow 25s ease-in-out infinite;
+            z-index: -1;
+        }
 
-.animate-fade-in {
-  animation: fade-in 1s ease-out;
-}
+        @keyframes shader-flow {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
 
-.animate-slide-up {
-  animation: slide-up 1s ease-out;
-}
-
-/* Custom Scrollbar Styling */
-.scrollbar-thin::-webkit-scrollbar {
-  height: 8px;
-}
-
-.scrollbar-thin::-webkit-scrollbar-track {
-  background: #1f2937; /* gray-800 */
-}
-
-.scrollbar-thin::-webkit-scrollbar-thumb {
-  background: #3b82f6; /* blue-600 */
-  border-radius: 4px;
-}
-
-.scrollbar-thin::-webkit-scrollbar-thumb:hover {
-  background: #2563eb; /* blue-700 */
-}
+        /* --- LANDING PAGE STYLES --- */
+        .retro-heading {
+            font-family: var(--font-primary);
+            text-shadow: var(--retro-text-shadow);
+            letter-spacing: 0.02em;
+            line-height: 1.1;
+        }
+        .retro-subheading {
+            font-family: var(--font-secondary);
+            font-style: italic;
+        }
+        .retro-button {
+            background-color: var(--theme-accent-primary);
+            color: var(--theme-accent-text-color);
+            border: none;
+            border-radius: 9999px;
+            padding: 0.85rem 2.5rem;
+            font-family: var(--font-secondary);
+            font-weight: 700;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+        }
+        .retro-button:hover {
+            background-color: var(--theme-accent-primary-hover);
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+        }
+        .retro-button-outline {
+            background-color: transparent;
+            color: var(--theme-text-inverted);
+            border: 2px solid var(--theme-text-inverted);
+        }
+        .retro-button-outline:hover {
+            background-color: var(--theme-text-inverted);
+            color: var(--theme-accent-primary);
+        }
+        .retro-card {
+            background-color: var(--theme-bg-secondary);
+            border: 1px solid var(--theme-border-primary);
+            border-radius: 1rem;
+            box-shadow: 0 8px 32px var(--theme-shadow-color);
+            transition: all 0.4s ease;
+            overflow: hidden;
+        }
+        .retro-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 16px 45px var(--theme-shadow-color);
+        }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes slideUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+        .animate-fade-in { animation: fadeIn 1.5s ease-out forwards; }
+        .animate-slide-up { animation: slideUp 1.2s ease-out 0.4s forwards; opacity: 0; }
+    
