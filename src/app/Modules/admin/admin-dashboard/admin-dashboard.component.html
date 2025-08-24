@@ -1,16 +1,172 @@
-<!-- Enhanced dashboard with stunning visual effects and improved UX -->
+<div class="dashboard-main-container p-4 md:p-6">
+  <div class="card mb-6">
+    <div class="flex items-center mb-4">
+      <div class="w-1 h-8 bg-[var(--theme-accent-gradient,var(--theme-accent-primary))] rounded-full mr-4"></div>
+      <h4 class="text-xl font-bold text-[var(--theme-text-primary)]">Date Range Filter</h4>
+    </div>
+    <div class="flex flex-wrap items-end -mx-2">
+      <div class="w-full md:w-1/4 px-2 mb-4 md:mb-0">
+        <label for="periodSelect" class="text-[var(--theme-text-label)] font-medium mb-2 block">Predefined
+          Period:</label>
+        <select id="periodSelect" [(ngModel)]="selectedPeriod" (ngModelChange)="onPeriodChange($event)"
+          class="p-inputtext w-full">
+          <option value="today">Today</option>
+          <option value="yesterday">Yesterday</option>
+          <option value="week">This Week</option>
+          <option value="month">This Month</option>
+          <option value="last_month">Last Month</option>
+          <option value="year">This Year</option>
+        </select>
+      </div>
+      <div class="w-full md:w-1/4 px-2 mb-4 md:mb-0">
+        <label for="customStartDate" class="text-[var(--theme-text-label)] font-medium mb-2 block">Start Date:</label>
+        <input type="date" id="customStartDate" [(ngModel)]="customStartDate" class="p-inputtext w-full">
+      </div>
+      <div class="w-full md:w-1/4 px-2 mb-4 md:mb-0">
+        <label for="customEndDate" class="text-[var(--theme-text-label)] font-medium mb-2 block">End Date:</label>
+        <input type="date" id="customEndDate" [(ngModel)]="customEndDate" class="p-inputtext w-full">
+      </div>
+      <div class="w-full md:w-1/4 px-2">
+        <button pButton type="button" label="Apply & Reload" icon="pi pi-refresh" class="p-button w-full h-12"></button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Metrics Cards -->
+  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 gap-6 mb-6">
+    <div class="metric-card metric-card-accent">
+      <div class="metric-icon">
+        <i class="pi pi-user-plus text-2xl"></i>
+      </div>
+      <div>
+        <div class="metric-value">{{ newCustomersCountData || 0 }}</div>
+        <div class="metric-label">New Customers</div>
+      </div>
+    </div>
+    <!-- Sales Count -->
+    <div class="metric-card metric-card-success">
+      <div class="metric-icon">
+        <i class="pi pi-shopping-bag text-2xl"></i>
+      </div>
+      <div>
+        <div class="metric-value">{{ salesTrends[0].dailySalesCount || 0 }}</div>
+        <div class="metric-label">Sales Count</div>
+      </div>
+    </div>
+    <!-- Daily Revenue -->
+    <div class="metric-card metric-card-error">
+      <div class="metric-icon">
+        <i class="pi pi-dollar text-2xl"></i>
+      </div>
+      <div>
+        <div class="metric-value">{{ salesTrends[0].dailyRevenue || 0 | number:'1.2-2' }}</div>
+        <div class="metric-label">Daily Revenue</div>
+      </div>
+    </div>
+    <!-- Inventory Value -->
+    <div class="metric-card metric-card-warning">
+      <div class="metric-icon">
+        <i class="pi pi-box text-2xl"></i>
+      </div>
+      <div>
+        <div class="metric-value">{{ totalInventoryValueData?.totalValue || 0 | number:'1.2-2' }}</div>
+        <div class="metric-label">Inventory Value</div>
+      </div>
+    </div>
+    <!-- Inventory Stock -->
+    <div class="metric-card metric-card-info">
+      <div class="metric-icon">
+        <i class="pi pi-inbox text-2xl"></i>
+      </div>
+      <div>
+        <div class="metric-value">{{ totalInventoryValueData?.totalItemsInStock || 0 }}</div>
+        <div class="metric-label">Total Stock</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Charts & Data Section -->
+  <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+    <div class="card lg:col-span-2">
+      <h3 class="text-xl font-bold text-[var(--theme-text-primary)] mb-4">Summary</h3>
+      <app-dashboard-summary [params]="getDateParam"></app-dashboard-summary>
+    </div>
+    <div class="card lg:col-span-2">
+      <h3 class="text-xl font-bold text-[var(--theme-text-primary)] mb-4">Top Customers</h3>
+      <app-dashboard-top-customer-view [params]="getDateParam"></app-dashboard-top-customer-view>
+    </div>
+    <div class="card">
+      <h3 class="text-xl font-bold text-[var(--theme-text-primary)] mb-4">Yearly Sales</h3>
+      <app-dashboard-chart-component></app-dashboard-chart-component>
+    </div>
+    <div class="card">
+      <h3 class="text-xl font-bold text-[var(--theme-text-primary)] mb-4">Sales Combo</h3>
+      <app-dashboard-chart-combo></app-dashboard-chart-combo>
+    </div>
+
+  </div>
+
+  <!-- Quick Links -->
+  <div class="card">
+    <div class="flex items-center mb-4">
+      <div class="w-1 h-8 bg-[var(--theme-accent-gradient,var(--theme-accent-primary))] rounded-full mr-4"></div>
+      <h3 class="text-xl font-bold text-[var(--theme-text-primary)]">Quick Links</h3>
+    </div>
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      <div class="quick-link-card" (click)="showcustomerGrid=true">
+        <div class="quick-link-icon icon-accent"><i class="pi pi-users text-3xl"></i></div>
+        <span class="quick-link-label">View Customers</span>
+      </div>
+      <div class="quick-link-card" (click)="showproductGrid=true">
+        <div class="quick-link-icon icon-success"><i class="pi pi-mobile text-3xl"></i></div>
+        <span class="quick-link-label">View Products</span>
+      </div>
+      <div class="quick-link-card" (click)="showInvoiceGrid=true">
+        <div class="quick-link-icon icon-warning"><i class="pi pi-pen-to-square text-3xl"></i></div>
+        <span class="quick-link-label">View Invoices</span>
+      </div>
+      <div class="quick-link-card" (click)="showPaymentGrid=true">
+        <div class="quick-link-icon icon-error"><i class="pi pi-money-bill text-3xl"></i></div>
+        <span class="quick-link-label">View Payments</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- PrimeNG Dialogs -->
+  <p-dialog header="Customers" [(visible)]="showcustomerGrid" [modal]="true"
+    [style]="{ width: '95vw', maxWidth: '1400px' }">
+    <app-customer-list></app-customer-list>
+  </p-dialog>
+  <p-dialog header="Products" [(visible)]="showproductGrid" [modal]="true"
+    [style]="{ width: '95vw', maxWidth: '1400px' }">
+    <app-product-list></app-product-list>
+  </p-dialog>
+  <p-dialog header="Invoices" [(visible)]="showInvoiceGrid" [modal]="true"
+    [style]="{ width: '95vw', maxWidth: '1400px' }">
+    <app-invoice-view></app-invoice-view>
+  </p-dialog>
+  <p-dialog header="Payments" [(visible)]="showPaymentGrid" [modal]="true"
+    [style]="{ width: '95vw', maxWidth: '1400px' }">
+    <app-payment-list></app-payment-list>
+  </p-dialog>
+  <p-dialog header="Invoice" [(visible)]="showpdf" [modal]="true" [style]="{ width: '95vw', maxWidth: '1200px' }">
+    <app-invoice-print [Id]="dashboard.invoiceId"></app-invoice-print>
+  </p-dialog>
+</div>
+
+<!-- manish Enhanced dashboard with stunning visual effects and improved UX
 <div class="dashboard-main-container p-4 pt-2 md:p-6 rounded-sm">
-  <!-- Date Filter Section with Enhanced Styling -->
+  manish Date Filter Section with Enhanced Styling
   <div class="card p-6 mb-8 rounded-2xl transition-all duration-500 hover:shadow-[0_8px_40px_rgba(99,102,241,0.15)]">
     <div class="flex items-center mb-4">
       <div class="w-1 h-8 bg-gradient-to-b from-indigo-500 to-purple-600 rounded-full mr-4"></div>
-      <h4 class="text-xl font-bold text-gray-800">Date Range Filter</h4>
+      <h4 class="text-xl font-bold">Date Range Filter</h4>
     </div>
     <div class="flex flex-wrap items-end -mx-2">
       <div class="w-full md:w-1/4 px-2 mb-4 md:mb-0">
         <label for="periodSelect" class="form-label">Predefined Period:</label>
         <select id="periodSelect" [(ngModel)]="selectedPeriod" (ngModelChange)="onPeriodChange($event)"
-          class="p-inputtext w-full rounded-xl border bg-white/90 text-gray-800 focus:border-indigo-500 focus:ring-indigo-200">
+          class="p-inputtext w-full rounded-xl border bg-white/90 focus:border-indigo-500 focus:ring-indigo-200">
           <option value="today">Today</option>
           <option value="yesterday">Yesterday</option>
           <option value="week">This Week</option>
@@ -22,12 +178,12 @@
       <div class="w-full md:w-1/4 px-2 mb-4 md:mb-0">
         <label for="customStartDate" class="form-label">Start Date:</label>
         <input type="date" id="customStartDate" [(ngModel)]="customStartDate"
-          class="p-inputtext w-full rounded-xl border bg-white/90 text-gray-800 focus:border-indigo-500 focus:ring-indigo-200">
+          class="p-inputtext w-full rounded-xl border bg-white/90 focus:border-indigo-500 focus:ring-indigo-200">
       </div>
       <div class="w-full md:w-1/4 px-2 mb-4 md:mb-0">
         <label for="customEndDate" class="form-label">End Date:</label>
         <input type="date" id="customEndDate" [(ngModel)]="customEndDate"
-          class="p-inputtext w-full rounded-xl border bg-white/90 text-gray-800 focus:border-indigo-500 focus:ring-indigo-200">
+          class="p-inputtext w-full rounded-xl border bg-white/90 focus:border-indigo-500 focus:ring-indigo-200">
       </div>
       <div class="w-full md:w-1/4 px-2">
         <button pButton type="button" label="Apply Custom Range & Reload" icon="pi pi-refresh"
@@ -37,7 +193,7 @@
     </div>
   </div>
 
-  <!-- Enhanced Metrics Cards with Stunning Animations -->
+  manish Enhanced Metrics Cards with Stunning Animations
   <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 gap-6 mb-10">
     <div
       class="card p-6 flex items-center space-x-4 rounded-2xl transition-all duration-500 hover:shadow-[0_12px_40px_rgba(99,102,241,0.2)] hover:-translate-y-2 group">
@@ -46,7 +202,7 @@
         <i class="pi pi-user-plus text-2xl"></i>
       </div>
       <div>
-        <div class="text-3xl font-bold text-gray-800 mb-1">{{ newCustomersCountData || 0 }}</div>
+        <div class="text-3xl font-bold mb-1">{{ newCustomersCountData || 0 }}</div>
         <div class="text-gray-600 text-sm font-medium">New Customers</div>
         <div class="w-full bg-gray-200 rounded-full h-1 mt-2">
           <div class="bg-gradient-to-r from-indigo-500 to-purple-500 h-1 rounded-full" style="width: 75%"></div>
@@ -61,7 +217,7 @@
         <i class="pi pi-shopping-bag text-2xl"></i>
       </div>
       <div>
-        <div class="text-3xl font-bold text-gray-800 mb-1">{{ salesTrends[0].dailySalesCount?
+        <div class="text-3xl font-bold mb-1">{{ salesTrends[0].dailySalesCount?
           salesTrends[0].dailySalesCount: 0 }}</div>
         <div class="text-gray-600 text-sm font-medium">Sales Count</div>
         <div class="w-full bg-gray-200 rounded-full h-1 mt-2">
@@ -77,7 +233,7 @@
         <i class="pi pi-cart-arrow-down text-2xl"></i>
       </div>
       <div>
-        <div class="text-3xl font-bold text-gray-800 mb-1">{{ salesTrends[0].dailyRevenue ?
+        <div class="text-3xl font-bold mb-1">{{ salesTrends[0].dailyRevenue ?
           salesTrends[0].dailyRevenue:0 }}</div>
         <div class="text-gray-600 text-sm font-medium">Daily Revenue</div>
         <div class="w-full bg-gray-200 rounded-full h-1 mt-2">
@@ -93,7 +249,7 @@
         <i class="pi pi-box text-2xl"></i>
       </div>
       <div>
-        <div class="text-3xl font-bold text-gray-800 mb-1">{{ totalInventoryValueData?.totalValue | number:'1.2-2' }}
+        <div class="text-3xl font-bold mb-1">{{ totalInventoryValueData?.totalValue | number:'1.2-2' }}
         </div>
         <div class="text-gray-600 text-sm font-medium">Inventory Total Value</div>
         <div class="w-full bg-gray-200 rounded-full h-1 mt-2">
@@ -109,7 +265,7 @@
         <i class="pi pi-box text-2xl"></i>
       </div>
       <div>
-        <div class="text-3xl font-bold text-gray-800 mb-1">{{ totalInventoryValueData?.totalItemsInStock || 0 }}</div>
+        <div class="text-3xl font-bold mb-1">{{ totalInventoryValueData?.totalItemsInStock || 0 }}</div>
         <div class="text-gray-600 text-sm font-medium">Inventory Total Stocks</div>
         <div class="w-full bg-gray-200 rounded-full h-1 mt-2">
           <div class="bg-gradient-to-r from-orange-500 to-amber-500 h-1 rounded-full" style="width: 70%"></div>
@@ -118,12 +274,12 @@
     </div>
   </div>
 
-  <!-- Enhanced Charts Section -->
+  manish Enhanced Charts Section
   <div class="grid gap-6 mb-8">
     <div class="card p-8 rounded-2xl transition-all duration-500 hover:shadow-[0_12px_40px_rgba(99,102,241,0.15)]">
       <div class="flex items-center mb-6">
         <div class="w-1 h-8 bg-gradient-to-b from-indigo-500 to-purple-600 rounded-full mr-4"></div>
-        <h3 class="text-2xl font-bold text-gray-800">Yearly Sales Chart</h3>
+        <h3 class="text-2xl font-bold">Yearly Sales Chart</h3>
       </div>
       <app-dashboard-chart-component></app-dashboard-chart-component>
     </div>
@@ -131,7 +287,7 @@
     <div class="card p-8 rounded-2xl transition-all duration-500 hover:shadow-[0_12px_40px_rgba(99,102,241,0.15)]">
       <div class="flex items-center mb-6">
         <div class="w-1 h-8 bg-gradient-to-b from-purple-500 to-pink-600 rounded-full mr-4"></div>
-        <h3 class="text-2xl font-bold text-gray-800">Combo Chart</h3>
+        <h3 class="text-2xl font-bold">Combo Chart</h3>
       </div>
       <app-dashboard-chart-combo></app-dashboard-chart-combo>
     </div>
@@ -139,7 +295,7 @@
     <div class="card p-8 rounded-2xl transition-all duration-500 hover:shadow-[0_12px_40px_rgba(99,102,241,0.15)]">
       <div class="flex items-center mb-6">
         <div class="w-1 h-8 bg-gradient-to-b from-emerald-500 to-teal-600 rounded-full mr-4"></div>
-        <h3 class="text-2xl font-bold text-gray-800">Summary</h3>
+        <h3 class="text-2xl font-bold">Summary</h3>
       </div>
       <app-dashboard-summary [params]="getDateParam"></app-dashboard-summary>
     </div>
@@ -147,21 +303,21 @@
     <div class="card p-8 rounded-2xl transition-all duration-500 hover:shadow-[0_12px_40px_rgba(99,102,241,0.15)]">
       <div class="flex items-center mb-6">
         <div class="w-1 h-8 bg-gradient-to-b from-pink-500 to-rose-600 rounded-full mr-4"></div>
-        <h3 class="text-2xl font-bold text-gray-800">Top Customers</h3>
+        <h3 class="text-2xl font-bold">Top Customers</h3>
       </div>
       <app-dashboard-top-customer-view [params]="getDateParam"></app-dashboard-top-customer-view>
     </div>
   </div>
 
-  <!-- Enhanced Sales Trend and Quick Links -->
+  manish Enhanced Sales Trend and Quick Links
   <div class="grid gap-8 mb-10">
 
-    <!-- Enhanced Quick Links -->
+    manish Enhanced Quick Links
     <div
       class="card p-8 rounded-2xl transition-all duration-500 hover:shadow-[0_12px_40px_rgba(99,102,241,0.15)] quick-links">
       <div class="flex items-center mb-6">
         <div class="w-1 h-8 bg-gradient-to-b from-indigo-500 to-purple-600 rounded-full mr-4"></div>
-        <h3 class="text-2xl font-bold text-gray-800">Quick Links</h3>
+        <h3 class="text-2xl font-bold">Quick Links</h3>
       </div>
       <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div
@@ -172,7 +328,7 @@
               class="bg-gradient-to-br from-indigo-100 to-purple-100 p-4 rounded-2xl mb-4 mx-auto w-fit group-hover:scale-110 transition-transform duration-300">
               <i class="pi pi-users text-3xl text-indigo-600"></i>
             </div>
-            <span class="text-lg font-semibold text-gray-800">View Customers</span>
+            <span class="text-lg font-semibold">View Customers</span>
           </div>
         </div>
 
@@ -184,7 +340,7 @@
               class="bg-gradient-to-br from-purple-100 to-pink-100 p-4 rounded-2xl mb-4 mx-auto w-fit group-hover:scale-110 transition-transform duration-300">
               <i class="pi pi-mobile text-3xl text-purple-600"></i>
             </div>
-            <span class="text-lg font-semibold text-gray-800">View Products</span>
+            <span class="text-lg font-semibold">View Products</span>
           </div>
         </div>
 
@@ -196,7 +352,7 @@
               class="bg-gradient-to-br from-emerald-100 to-green-100 p-4 rounded-2xl mb-4 mx-auto w-fit group-hover:scale-110 transition-transform duration-300">
               <i class="pi pi-pen-to-square text-3xl text-emerald-600"></i>
             </div>
-            <span class="text-lg font-semibold text-gray-800">View Invoices</span>
+            <span class="text-lg font-semibold">View Invoices</span>
           </div>
         </div>
 
@@ -208,14 +364,14 @@
               class="bg-gradient-to-br from-pink-100 to-rose-100 p-4 rounded-2xl mb-4 mx-auto w-fit group-hover:scale-110 transition-transform duration-300">
               <i class="pi pi-money-bill text-3xl text-pink-600"></i>
             </div>
-            <span class="text-lg font-semibold text-gray-800">View Payments</span>
+            <span class="text-lg font-semibold">View Payments</span>
           </div>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- Enhanced PrimeNG Dialogs -->
+  manish Enhanced PrimeNG Dialogs
   <p-dialog header="Customers" [(visible)]="showcustomerGrid" [modal]="true"
     [style]="{ width: '99%', maxWidth: '98%' }" class="enhanced-dialog rounded-xl">
     <app-customer-list></app-customer-list>
@@ -241,4 +397,4 @@
     <app-invoice-print [Id]="dashboard.invoiceId"></app-invoice-print>
   </p-dialog>
 </div>
-
+ -->

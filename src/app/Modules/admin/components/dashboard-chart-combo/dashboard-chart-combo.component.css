@@ -1,7 +1,7 @@
+
 :host {
   display: block;
-  height: 500px;
-  /* Give the component a default height */
+  height: 500px; /* Give the component a default height */
 }
 
 .chart-panel {

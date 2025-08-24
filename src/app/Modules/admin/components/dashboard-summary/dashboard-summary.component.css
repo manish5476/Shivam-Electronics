@@ -1,213 +1,164 @@
-:host {
-  display: block;
-}
+ :host {
+    display: block;
+  }
 
-/* --- Metric Cards --- */
-.metric-card {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  padding: 1.25rem;
-  border-radius: 0.75rem;
-  background-color: color-mix(in srgb, var(--theme-bg-secondary) 50%, transparent);
-  border: 1px solid var(--theme-border-primary);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  transition: all 0.3s ease;
-  position: relative;
-  overflow: hidden;
-}
+  /* --- Metric Cards --- */
+  .metric-card {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1.25rem;
+    border-radius: var(--ui-border-radius, 0.75rem);
+    background-color: var(--theme-bg-secondary);
+    border: var(--ui-border-width, 1px) solid var(--theme-border-primary);
+    box-shadow: var(--ui-shadow, none);
+    transition: all 0.3s ease;
+  }
 
-.metric-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 8px 25px var(--theme-shadow-color);
-}
+  .metric-card:hover {
+    transform: var(--ui-button-hover-transform, translateY(-4px));
+    box-shadow: var(--ui-shadow-hover, 0 8px 25px rgba(0,0,0,0.1));
+  }
 
-.metric-icon {
-  flex-shrink: 0;
-  width: 3.5rem;
-  height: 3.5rem;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
+  .metric-icon {
+    flex-shrink: 0;
+    width: 3.5rem;
+    height: 3.5rem;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
 
-.metric-content {
-  min-width: 0;
-}
+  .metric-content {
+    min-width: 0;
+  }
 
-.metric-value {
-  font-size: 1.75rem;
-  font-weight: 700;
-  color: var(--theme-text-primary);
-  line-height: 1.2;
-}
+  .metric-value {
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: var(--theme-text-primary);
+    line-height: 1.2;
+  }
 
-.metric-label {
-  font-size: 0.875rem;
-  color: var(--theme-text-secondary);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
+  .metric-label {
+    font-size: 0.875rem;
+    color: var(--theme-text-secondary);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  
+  /* Coloring for metric icons */
+  .metric-icon.icon-accent { background-color: var(--theme-accent-primary-light); color: var(--theme-accent-primary); }
+  .metric-icon.icon-info { background-color: rgba(59, 130, 246, 0.1); color: #3b82f6; } /* Using a static blue for info */
+  .metric-icon.icon-success { background-color: rgba(40, 167, 69, 0.1); color: var(--theme-success-primary); }
+  .metric-icon.icon-warning { background-color: rgba(255, 193, 7, 0.1); color: var(--theme-warning-primary); }
+  .metric-icon.icon-error { background-color: rgba(220, 53, 69, 0.1); color: var(--theme-error-primary); }
 
-.metric-card-skeleton {
-  border-radius: 0.75rem;
-}
 
-/* --- Summary Cards (for lists) --- */
-.summary-card {
-  padding: 1.5rem;
-  border-radius: 0.75rem;
-  background-color: var(--theme-bg-secondary);
-  border: 1px solid var(--theme-border-primary);
-  transition: all 0.3s ease;
-  /* Add these properties 👇 */
-  max-height: 500px;
-  /* Or any height you prefer */
-  overflow-y: auto;
-  /* Enable vertical scrolling when content overflows */
-  /* Hide scrollbar for IE, Edge and Firefox */
-  -ms-overflow-style: none;
-  /* IE and Edge */
-  scrollbar-width: none;
-  /* Firefox */
-}
+  /* --- Summary Cards (for lists) --- */
+  .summary-card {
+    padding: 1.5rem;
+    border-radius: var(--ui-border-radius, 0.75rem);
+    background-color: var(--theme-bg-secondary);
+    border: var(--ui-border-width, 1px) solid var(--theme-border-primary);
+    box-shadow: var(--ui-shadow, none);
+    transition: all 0.3s ease;
+    max-height: 400px;
+    overflow-y: auto;
+    scrollbar-width: none; /* Firefox */
+  }
+  .summary-card::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Opera */
+  }
 
-.summary-card:hover {
-  box-shadow: 0 8px 25px var(--theme-shadow-color);
-}
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: var(--theme-text-primary);
+    margin: 0 0 1rem 0;
+    padding-bottom: 1rem;
+    border-bottom: var(--ui-border-width, 1px) solid var(--theme-border-primary);
+  }
+  
+  /* Coloring for section headers */
+  .section-header.header-error { color: var(--theme-error-primary); }
+  .section-header.header-warning { color: var(--theme-warning-primary); }
 
-/* Hide scrollbar for Chrome, Safari and Opera */
-.summary-card::-webkit-scrollbar {
-  display: none;
-}
 
-.section-header {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  font-size: 1.125rem;
-  font-weight: 600;
-  color: var(--theme-text-primary);
-  margin: 0 0 1rem 0;
-  padding-bottom: 1rem;
-  border-bottom: 1px solid var(--theme-border-primary);
-}
+  .content-list, .product-list-container {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
 
-.content-list {
-  display: flex;
-  flex-direction: column;
-  gap: 0.75rem;
-}
+  .list-item, .product-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.75rem;
+    border-radius: 0.5rem;
+    transition: background-color 0.2s ease;
+  }
 
-.list-item {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0.75rem;
-  border-radius: 0.5rem;
-  transition: background-color 0.2s ease;
-}
+  .list-item:hover, .product-item:hover {
+    background-color: var(--theme-hover-bg);
+  }
 
-.list-item:hover {
-  background-color: var(--theme-hover-bg);
-}
+  .item-content {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    min-width: 0;
+  }
 
-.item-content {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  min-width: 0;
-}
+  .item-value {
+    font-weight: 600;
+    white-space: nowrap;
+    margin-left: 1rem;
+  }
 
-.item-value {
-  font-weight: 600;
-  white-space: nowrap;
-  margin-left: 1rem;
-}
+  .empty-message {
+    text-align: center;
+    padding: 2rem 1rem;
+    color: var(--theme-text-secondary);
+    font-style: italic;
+  }
 
-.empty-message {
-  text-align: center;
-  padding: 2rem 1rem;
-  color: var(--theme-text-secondary);
-  font-style: italic;
-}
+  /* Low Stock Product List Specifics */
+  .product-image {
+    width: 40px;
+    height: 40px;
+    border-radius: 0.375rem;
+    object-fit: cover;
+    flex-shrink: 0;
+    border: 1px solid var(--theme-border-primary);
+  }
 
-/* --- NEW: Low Stock Product List --- */
-.product-list-container {
-  display: flex;
-  flex-direction: column;
-  gap: 0.75rem;
-  max-height: 300px;
-  /* Set a max height */
-  overflow-y: auto;
-  /* Enable vertical scroll */
-  padding-right: 0.5rem;
-  /* Space for scrollbar */
-}
+  .product-details {
+    flex-grow: 1;
+    min-width: 0;
+  }
 
-.product-item {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  padding: 0.75rem;
-  border-radius: 0.5rem;
-  transition: background-color 0.2s ease;
-}
+  .product-title {
+    font-weight: 600;
+    color: var(--theme-text-primary);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
 
-.product-item:hover {
-  background-color: var(--theme-hover-bg);
-}
+  .product-sku {
+    font-size: 0.75rem;
+    color: var(--theme-text-secondary);
+  }
 
-.product-image {
-  width: 40px;
-  height: 40px;
-  border-radius: 0.375rem;
-  object-fit: cover;
-  flex-shrink: 0;
-}
-
-.product-details {
-  flex-grow: 1;
-  min-width: 0;
-}
-
-.product-title {
-  font-weight: 600;
-  color: var(--theme-text-primary);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.product-sku {
-  font-size: 0.75rem;
-  color: var(--theme-text-secondary);
-}
-
-.product-stock {
-  font-weight: 600;
-  font-size: 0.875rem;
-  white-space: nowrap;
-}
-
-/* Custom Scrollbar for Product List */
-.product-list-container::-webkit-scrollbar {
-  width: 6px;
-}
-
-.product-list-container::-webkit-scrollbar-track {
-  background: var(--theme-bg-tertiary);
-  border-radius: 3px;
-}
-
-.product-list-container::-webkit-scrollbar-thumb {
-  background-color: var(--theme-scroll-thumb);
-  border-radius: 3px;
-}
-
-.product-list-container::-webkit-scrollbar-thumb:hover {
-  background-color: var(--theme-accent-primary);
-}
+  .product-stock {
+    font-weight: 600;
+    font-size: 0.875rem;
+    white-space: nowrap;
+  }
