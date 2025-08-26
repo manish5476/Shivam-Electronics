@@ -44,7 +44,6 @@ export class PaymentService extends BaseApiService {
    * @param paymentIds An array of payment IDs to delete.
    */
   deletepayments(paymentIds: string[]): Observable<any> {
-    // This now correctly calls the unified DELETE endpoint without an ID in the URL
     const url = `${this.baseUrl}${this.endpoint}`;
     const body = { ids: paymentIds };
     return this.http.delete(url, { body })

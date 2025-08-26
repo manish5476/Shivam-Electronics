@@ -1,164 +1,201 @@
  :host {
-    display: block;
-  }
+   display: block;
+ }
 
-  /* --- Metric Cards --- */
-  .metric-card {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    padding: 1.25rem;
-    border-radius: var(--ui-border-radius, 0.75rem);
-    background-color: var(--theme-bg-secondary);
-    border: var(--ui-border-width, 1px) solid var(--theme-border-primary);
-    box-shadow: var(--ui-shadow, none);
-    transition: all 0.3s ease;
-  }
+ /* --- Metric Cards --- */
+ .metric-card {
+   display: flex;
+   align-items: center;
+   gap: 1rem;
+   min-width: 0;
+   /* Allows the text container to shrink */
 
-  .metric-card:hover {
-    transform: var(--ui-button-hover-transform, translateY(-4px));
-    box-shadow: var(--ui-shadow-hover, 0 8px 25px rgba(0,0,0,0.1));
-  }
+   padding: 1.25rem;
+   border-radius: var(--ui-border-radius, 0.75rem);
+   background-color: var(--theme-bg-secondary);
+   border: var(--ui-border-width, 1px) solid var(--theme-border-primary);
+   box-shadow: var(--ui-shadow, none);
+   transition: all 0.3s ease;
+ }
 
-  .metric-icon {
-    flex-shrink: 0;
-    width: 3.5rem;
-    height: 3.5rem;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
+ .metric-card:hover {
+   transform: var(--ui-button-hover-transform, translateY(-4px));
+   box-shadow: var(--ui-shadow-hover, 0 8px 25px rgba(0, 0, 0, 0.1));
+ }
 
-  .metric-content {
-    min-width: 0;
-  }
+ .metric-icon {
+   flex-shrink: 0;
+   width: 3.5rem;
+   height: 3.5rem;
+   border-radius: 50%;
+   display: flex;
+   align-items: center;
+   justify-content: center;
+ }
 
-  .metric-value {
-    font-size: 1.75rem;
-    font-weight: 700;
-    color: var(--theme-text-primary);
-    line-height: 1.2;
-  }
+ .metric-content {
+   min-width: 0;
+ }
 
-  .metric-label {
-    font-size: 0.875rem;
-    color: var(--theme-text-secondary);
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-  
-  /* Coloring for metric icons */
-  .metric-icon.icon-accent { background-color: var(--theme-accent-primary-light); color: var(--theme-accent-primary); }
-  .metric-icon.icon-info { background-color: rgba(59, 130, 246, 0.1); color: #3b82f6; } /* Using a static blue for info */
-  .metric-icon.icon-success { background-color: rgba(40, 167, 69, 0.1); color: var(--theme-success-primary); }
-  .metric-icon.icon-warning { background-color: rgba(255, 193, 7, 0.1); color: var(--theme-warning-primary); }
-  .metric-icon.icon-error { background-color: rgba(220, 53, 69, 0.1); color: var(--theme-error-primary); }
+ .metric-value {
+   font-size: 1.75rem;
+   font-weight: 700;
+   color: var(--theme-text-primary);
+   line-height: 1.2;
+   overflow-wrap: break-word;
+   /* Allows long numbers to wrap */
 
+ }
 
-  /* --- Summary Cards (for lists) --- */
-  .summary-card {
-    padding: 1.5rem;
-    border-radius: var(--ui-border-radius, 0.75rem);
-    background-color: var(--theme-bg-secondary);
-    border: var(--ui-border-width, 1px) solid var(--theme-border-primary);
-    box-shadow: var(--ui-shadow, none);
-    transition: all 0.3s ease;
-    max-height: 400px;
-    overflow-y: auto;
-    scrollbar-width: none; /* Firefox */
-  }
-  .summary-card::-webkit-scrollbar {
-    display: none; /* Chrome, Safari, Opera */
-  }
+ .metric-label {
+   font-size: 0.875rem;
+   color: var(--theme-text-secondary);
+   white-space: nowrap;
+   overflow: hidden;
+   text-overflow: ellipsis;
+ }
 
-  .section-header {
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-    font-size: 1.125rem;
-    font-weight: 600;
-    color: var(--theme-text-primary);
-    margin: 0 0 1rem 0;
-    padding-bottom: 1rem;
-    border-bottom: var(--ui-border-width, 1px) solid var(--theme-border-primary);
-  }
-  
-  /* Coloring for section headers */
-  .section-header.header-error { color: var(--theme-error-primary); }
-  .section-header.header-warning { color: var(--theme-warning-primary); }
+ /* Coloring for metric icons */
+ .metric-icon.icon-accent {
+   background-color: var(--theme-accent-primary-light);
+   color: var(--theme-accent-primary);
+ }
+
+ .metric-icon.icon-info {
+   background-color: rgba(59, 130, 246, 0.1);
+   color: #3b82f6;
+ }
+
+ /* Using a static blue for info */
+ .metric-icon.icon-success {
+   background-color: rgba(40, 167, 69, 0.1);
+   color: var(--theme-success-primary);
+ }
+
+ .metric-icon.icon-warning {
+   background-color: rgba(255, 193, 7, 0.1);
+   color: var(--theme-warning-primary);
+ }
+
+ .metric-icon.icon-error {
+   background-color: rgba(220, 53, 69, 0.1);
+   color: var(--theme-error-primary);
+ }
 
 
-  .content-list, .product-list-container {
-    display: flex;
-    flex-direction: column;
-    gap: 0.75rem;
-  }
+ /* --- Summary Cards (for lists) --- */
+ .summary-card {
+   padding: 1.5rem;
+   border-radius: var(--ui-border-radius, 0.75rem);
+   background-color: var(--theme-bg-secondary);
+   border: var(--ui-border-width, 1px) solid var(--theme-border-primary);
+   box-shadow: var(--ui-shadow, none);
+   transition: all 0.3s ease;
+   max-height: 400px;
+   overflow-y: auto;
+   scrollbar-width: none;
+   /* Firefox */
+ }
 
-  .list-item, .product-item {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0.75rem;
-    border-radius: 0.5rem;
-    transition: background-color 0.2s ease;
-  }
+ .summary-card::-webkit-scrollbar {
+   display: none;
+   /* Chrome, Safari, Opera */
+ }
 
-  .list-item:hover, .product-item:hover {
-    background-color: var(--theme-hover-bg);
-  }
+ .section-header {
+   display: flex;
+   align-items: center;
+   gap: 0.75rem;
+   font-size: 1.125rem;
+   font-weight: 600;
+   color: var(--theme-text-primary);
+   margin: 0 0 1rem 0;
+   padding-bottom: 1rem;
+   border-bottom: var(--ui-border-width, 1px) solid var(--theme-border-primary);
+ }
 
-  .item-content {
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-    min-width: 0;
-  }
+ /* Coloring for section headers */
+ .section-header.header-error {
+   color: var(--theme-error-primary);
+ }
 
-  .item-value {
-    font-weight: 600;
-    white-space: nowrap;
-    margin-left: 1rem;
-  }
+ .section-header.header-warning {
+   color: var(--theme-warning-primary);
+ }
 
-  .empty-message {
-    text-align: center;
-    padding: 2rem 1rem;
-    color: var(--theme-text-secondary);
-    font-style: italic;
-  }
 
-  /* Low Stock Product List Specifics */
-  .product-image {
-    width: 40px;
-    height: 40px;
-    border-radius: 0.375rem;
-    object-fit: cover;
-    flex-shrink: 0;
-    border: 1px solid var(--theme-border-primary);
-  }
+ .content-list,
+ .product-list-container {
+   display: flex;
+   flex-direction: column;
+   gap: 0.75rem;
+ }
 
-  .product-details {
-    flex-grow: 1;
-    min-width: 0;
-  }
+ .list-item,
+ .product-item {
+   display: flex;
+   justify-content: space-between;
+   align-items: center;
+   padding: 0.75rem;
+   border-radius: 0.5rem;
+   transition: background-color 0.2s ease;
+ }
 
-  .product-title {
-    font-weight: 600;
-    color: var(--theme-text-primary);
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
+ .list-item:hover,
+ .product-item:hover {
+   background-color: var(--theme-hover-bg);
+ }
 
-  .product-sku {
-    font-size: 0.75rem;
-    color: var(--theme-text-secondary);
-  }
+ .item-content {
+   display: flex;
+   align-items: center;
+   gap: 0.75rem;
+   min-width: 0;
+ }
 
-  .product-stock {
-    font-weight: 600;
-    font-size: 0.875rem;
-    white-space: nowrap;
-  }
+ .item-value {
+   font-weight: 600;
+   white-space: nowrap;
+   margin-left: 1rem;
+ }
+
+ .empty-message {
+   text-align: center;
+   padding: 2rem 1rem;
+   color: var(--theme-text-secondary);
+   font-style: italic;
+ }
+
+ /* Low Stock Product List Specifics */
+ .product-image {
+   width: 40px;
+   height: 40px;
+   border-radius: 0.375rem;
+   object-fit: cover;
+   flex-shrink: 0;
+   border: 1px solid var(--theme-border-primary);
+ }
+
+ .product-details {
+   flex-grow: 1;
+   min-width: 0;
+ }
+
+ .product-title {
+   font-weight: 600;
+   color: var(--theme-text-primary);
+   white-space: nowrap;
+   overflow: hidden;
+   text-overflow: ellipsis;
+ }
+
+ .product-sku {
+   font-size: 0.75rem;
+   color: var(--theme-text-secondary);
+ }
+
+ .product-stock {
+   font-weight: 600;
+   font-size: 0.875rem;
+   white-space: nowrap;
+ }
