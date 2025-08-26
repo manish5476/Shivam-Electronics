@@ -3,6 +3,7 @@ import { AdminDashboardComponent } from './admin-dashboard/admin-dashboard.compo
 import { AdminUserComponent } from './components/admin-user/admin-user.component';
 import { AuthLogsComponent } from './components/Logs/auth-logs/auth-logs.component';
 import { RoleGuard } from '../../core/guards/role.guard';
+import { PermissionComponentComponent } from './components/permission-component/permission-component.component';
 
 export const ADMIN_ROUTES: Routes = [
   {
@@ -17,6 +18,11 @@ export const ADMIN_ROUTES: Routes = [
   },
   {
     path: 'logs', component: AuthLogsComponent,
+    canActivate: [RoleGuard],
+    data: { roles: ['admin', 'superAdmin'] }
+  },
+    {
+    path: 'permission', component: PermissionComponentComponent,
     canActivate: [RoleGuard],
     data: { roles: ['admin', 'superAdmin'] }
   },

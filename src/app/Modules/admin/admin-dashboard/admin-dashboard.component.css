@@ -35,9 +35,13 @@
 
   .metric-value {
     font-size: 1.75rem;
+    overflow-wrap: break-word;
     font-weight: 700;
     color: var(--theme-text-primary);
   }
+  .metric-card > div {
+    min-width: 0; /* Allows the text container to shrink */
+}
 
   .metric-label {
     font-size: 0.875rem;

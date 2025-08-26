@@ -1,0 +1,92 @@
+:host {
+  display: block;
+  background: linear-gradient(180deg, var(--theme-body-gradient-start), var(--theme-body-gradient-end));
+  min-height: 100vh;
+}
+
+/* Main content card styling */
+.main-card {
+  background-color: var(--theme-bg-primary);
+  border-radius: var(--ui-border-radius);
+  border: var(--ui-border-width) solid var(--theme-border-primary);
+  box-shadow: var(--ui-shadow);
+  overflow: hidden;
+  /* Important for rounded corners on the table */
+}
+
+/* --- PrimeNG Component Overrides --- */
+
+/* Table Header */
+:host ::ng-deep .p-datatable .p-datatable-thead>tr>th {
+  background-color: var(--theme-bg-secondary);
+  color: var(--theme-text-label);
+  border-bottom: var(--ui-border-width) solid var(--theme-border-primary);
+  font-weight: 600;
+  font-family: var(--font-primary);
+  padding: 1rem 1.25rem;
+}
+
+/* Frozen Column Styling */
+:host ::ng-deep .p-frozen-column {
+  font-weight: 600;
+}
+
+/* Table Body Rows */
+:host ::ng-deep .p-datatable .p-datatable-tbody>tr {
+  background-color: var(--theme-bg-primary);
+  color: var(--theme-text-secondary);
+}
+
+:host ::ng-deep .p-datatable .p-datatable-tbody>tr:hover {
+  background-color: var(--theme-hover-bg);
+}
+
+:host ::ng-deep .p-datatable .p-datatable-tbody>tr>td {
+  border-color: var(--theme-border-primary);
+  padding: 1rem 1.25rem;
+}
+
+/* Checkbox */
+:host ::ng-deep .p-checkbox .p-checkbox-box {
+  border: 2px solid var(--theme-border-secondary);
+  transition: all 0.2s ease;
+}
+
+:host ::ng-deep .p-checkbox:not(.p-checkbox-disabled) .p-checkbox-box:hover {
+  border-color: var(--theme-accent-primary);
+}
+
+:host ::ng-deep .p-checkbox .p-checkbox-box.p-highlight {
+  background: var(--theme-accent-primary);
+  border-color: var(--theme-accent-primary);
+}
+
+:host ::ng-deep .p-checkbox .p-checkbox-box.p-focus {
+  box-shadow: 0 0 0 0.2rem var(--theme-accent-focus-ring);
+}
+
+/* Button */
+:host ::ng-deep .p-button {
+  background: var(--theme-accent-gradient);
+  color: var(--theme-accent-text-color);
+  border: none;
+  border-radius: var(--ui-border-radius);
+  font-weight: 600;
+  transition: all 0.2s ease;
+  box-shadow: var(--ui-shadow);
+}
+
+:host ::ng-deep .p-button:enabled:hover {
+  background: var(--theme-accent-primary-hover);
+  transform: var(--ui-button-hover-transform);
+  box-shadow: var(--ui-shadow-hover);
+}
+
+:host ::ng-deep .p-button:enabled:active {
+  transform: var(--ui-button-active-transform);
+}
+
+/* Custom Spinner Color */
+:host ::ng-deep .custom-spinner.p-progress-spinner .p-progress-spinner-circle {
+  stroke: var(--theme-accent-primary);
+}
