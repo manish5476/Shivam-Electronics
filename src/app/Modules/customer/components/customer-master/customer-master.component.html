@@ -35,7 +35,7 @@
             </div>
           </div>
           <div class="header-actions-v2">
-            <p-select appendTo="body" [options]="customerIDDropdown" [(ngModel)]="selectedCustomerId"
+            <p-select appendTo="body" appendTo="body" [options]="customerIDDropdown" [(ngModel)]="selectedCustomerId"
               [ngModelOptions]="{standalone: true}" name="customerSelector" (onChange)="onCustomerSelect($event)"
               optionLabel="fullname" optionValue="_id" [filter]="true" filterBy="fullname" placeholder="Switch Customer"
               styleClass="customer-selector">
@@ -68,12 +68,12 @@
             <div class="form-fields">
               <div class="form-group">
                 <label for="status">Customer Status</label>
-                <p-select appendTo="body" id="status" formControlName="status" [options]="statuses"
+                <p-select appendTo="body" appendTo="body" id="status" formControlName="status" [options]="statuses"
                   placeholder="Select status"></p-select>
               </div>
               <div class="form-group">
                 <label for="guaranteer">Guarantor</label>
-                <p-select appendTo="body" id="guaranteer" formControlName="guaranteerId" [options]="customerIDDropdown"
+                <p-select appendTo="body" appendTo="body" id="guaranteer" formControlName="guaranteerId" [options]="customerIDDropdown"
                   optionLabel="fullname" optionValue="_id" [filter]="true" filterBy="fullname"
                   placeholder="Select a guarantor"></p-select>
               </div>
@@ -191,7 +191,7 @@
       </div>
       <div class="field">
         <label for="phoneType">Phone Type</label>
-        <p-select id="phoneType" [options]="phoneTypes" formControlName="type"></p-select>
+        <p-select appendTo="body" id="phoneType" [options]="phoneTypes" formControlName="type"></p-select>
       </div>
       <div class="field-checkbox">
         <p-checkbox formControlName="primary" inputId="primaryPhone" [binary]="true"></p-checkbox>
@@ -238,7 +238,7 @@
       </div>
       <div class="field">
         <label for="addressType">Address Type</label>
-        <p-select id="addressType" [options]="addressTypes" formControlName="type"></p-select>
+        <p-select appendTo="body" id="addressType" [options]="addressTypes" formControlName="type"></p-select>
       </div>
       <div class="field-checkbox">
         <p-checkbox formControlName="isDefault" inputId="defaultAddress" [binary]="true"></p-checkbox>
@@ -294,7 +294,7 @@
           </div>
 
           <div class="header-actions-v2">
-            <p-select appendTo="body" [options]="customerIDDropdown" [(ngModel)]="selectedCustomerId"
+            <p-select appendTo="body" appendTo="body" [options]="customerIDDropdown" [(ngModel)]="selectedCustomerId"
               [ngModelOptions]="{standalone: true}" name="customerSelector" (onChange)="onCustomerSelect($event)"
               optionLabel="fullname" optionValue="_id" [filter]="true" filterBy="fullname" placeholder="Switch Customer"
               styleClass="customer-selector">
@@ -326,12 +326,12 @@
             <div class="form-fields">
               <div class="form-group">
                 <label for="status">Customer Status</label>
-                <p-select appendTo="body" id="status" formControlName="status" [options]="statuses"
+                <p-select appendTo="body" appendTo="body" id="status" formControlName="status" [options]="statuses"
                   placeholder="Select status"></p-select>
               </div>
               <div class="form-group">
                 <label for="guaranteer">Guarantor</label>
-                <p-select appendTo="body" id="guaranteer" formControlName="guaranteerId" [options]="customerIDDropdown"
+                <p-select appendTo="body" appendTo="body" id="guaranteer" formControlName="guaranteerId" [options]="customerIDDropdown"
                   optionLabel="fullname" optionValue="_id" [filter]="true" filterBy="fullname"
                   placeholder="Select a guarantor"></p-select>
               </div>
@@ -452,7 +452,7 @@
       </div>
       <div class="field">
         <label for="phoneType">Phone Type</label>
-        <p-select id="phoneType" [options]="phoneTypes" formControlName="type"></p-select>
+        <p-select appendTo="body" id="phoneType" [options]="phoneTypes" formControlName="type"></p-select>
       </div>
       <div class="field-checkbox">
         <p-checkbox formControlName="primary" inputId="primaryPhone" [binary]="true"></p-checkbox>
@@ -499,7 +499,7 @@
       </div>
       <div class="field">
         <label for="addressType">Address Type</label>
-        <p-select id="addressType" [options]="addressTypes" formControlName="type"></p-select>
+        <p-select appendTo="body" id="addressType" [options]="addressTypes" formControlName="type"></p-select>
       </div>
       <div class="field-checkbox">
         <p-checkbox formControlName="isDefault" inputId="defaultAddress" [binary]="true"></p-checkbox>
@@ -561,7 +561,7 @@
           </div>
 
           <div class="header-actions-v2">
-            <p-select appendTo="body" [options]="customerIDDropdown" [(ngModel)]="selectedCustomerId"
+            <p-select appendTo="body" appendTo="body" [options]="customerIDDropdown" [(ngModel)]="selectedCustomerId"
               name="customerSelector" (onChange)="onCustomerSelect($event)" optionLabel="fullname" optionValue="_id"
               [filter]="true" filterBy="fullname" placeholder="Switch Customer" styleClass="customer-selector">
             </p-select>
@@ -593,12 +593,12 @@
             <div class="form-fields">
               <div class="form-group">
                 <label for="status">Customer Status</label>
-                <p-select appendTo="body" id="status" name="status" [options]="statuses" [(ngModel)]="customer.status"
+                <p-select appendTo="body" appendTo="body" id="status" name="status" [options]="statuses" [(ngModel)]="customer.status"
                   placeholder="Select status"></p-select>
               </div>
               <div class="form-group">
                 <label for="guaranteer">Guarantor</label>
-                <p-select appendTo="body" id="guaranteer" name="guaranteer" [options]="customerIDDropdown"
+                <p-select appendTo="body" appendTo="body" id="guaranteer" name="guaranteer" [options]="customerIDDropdown"
                   [(ngModel)]="selectedGuaranter" optionLabel="fullname" [filter]="true" filterBy="fullname"
                   placeholder="Select a guarantor"></p-select>
               </div>
@@ -721,7 +721,7 @@
 
       <div class="field">
         <label for="phoneType" class="block text-sm font-semibold mb-2">Phone Type</label>
-        <p-select id="phoneType" [options]="phoneTypes" [(ngModel)]="newPhoneNumber.type" required
+        <p-select appendTo="body" id="phoneType" [options]="phoneTypes" [(ngModel)]="newPhoneNumber.type" required
           styleClass="w-full rounded-lg"></p-select>
       </div>
 
@@ -791,7 +791,7 @@
 
       <div class="field">
         <label for="addressType" class="block text-sm font-semibold mb-2">Address Type</label>
-        <p-select id="addressType" [options]="addressTypes" [(ngModel)]="newAddress.type" required
+        <p-select appendTo="body" id="addressType" [options]="addressTypes" [(ngModel)]="newAddress.type" required
           styleClass="w-full rounded-lg"></p-select>
       </div>
 

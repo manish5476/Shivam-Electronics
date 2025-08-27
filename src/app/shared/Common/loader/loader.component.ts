@@ -143,28 +143,7 @@ export class LoadingComponent implements OnDestroy {
         this.rotationAngle += 0.005;
     }
 
-    // private animate(): void {
-    //     if (!isPlatformBrowser(this.platformId) || !this.ctx) return;
-
-    //     this.animationFrameId = requestAnimationFrame(() => this.animate());
-    //     this.frameCount++;
-
-    //     const canvas = this._canvasRef.nativeElement;
-    //     this.ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-    //     const centerX = canvas.width / 2;
-    //     const centerY = canvas.height / 2;
-
-    //     this.drawBackgroundStars(); // Draw the background stars first
-
-    //     this.drawEarth(centerX, centerY);
-    //     this.updateConnections();
-    //     this.drawConnections(centerX, centerY);
-    //     this.updateStars();
-    //     this.drawStars();
-
-    //     this.rotationAngle += 0.005;
-    // }
+ 
 
     private drawBackgroundStars(): void {
         this.ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
