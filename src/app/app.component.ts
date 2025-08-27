@@ -5,6 +5,7 @@ import { ButtonModule } from 'primeng/button';
 import { ToastModule } from 'primeng/toast';
 import { LoadingComponent } from "./shared/Common/loader/loader.component";
 import { LoadingService } from './core/services/loading.service';
+import { ThemeService } from './core/services/theme.service';
 @Component({
   selector: 'app-root',
   imports: [
@@ -20,8 +21,10 @@ export class AppComponent  implements OnInit,OnDestroy{
   loadingSubscription: any;
   isLoading: any;
 
-  constructor( @Inject(PLATFORM_ID) private platformId: Object ,private loadingService:LoadingService) { }
+  constructor(  private themeService :ThemeService,  @Inject(PLATFORM_ID) private platformId: Object ,private loadingService:LoadingService) { }
   ngOnInit(): void {
+        this.themeService.initTheme();
+
   }
 
   ngOnDestroy(): void {
