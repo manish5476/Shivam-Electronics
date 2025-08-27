@@ -1,4 +1,98 @@
 <div class="theme-blue p-4 sm:p-6 lg:p-8">
+    <p-toast position="top-right"></p-toast>
+
+    <header class="mb-8">
+        <h1 class="text-3xl font-bold flex items-center gap-3" style="color: var(--theme-text-primary);">
+            <i class="pi pi-shield" style="font-size: 2rem;"></i>
+            <span>User Permissions Management</span>
+        </h1>
+        <p class="mt-1" style="color: var(--theme-text-secondary);">
+            Assign API route permissions. Admins and Super Admins have full access by default.
+        </p>
+    </header>
+    
+    <p-divider></p-divider>
+
+    <div class="main-card mt-8">
+        <div *ngIf="isLoading" class="p-20 text-center">
+            <p-progressSpinner strokeWidth="4" animationDuration=".5s" styleClass="custom-spinner"></p-progressSpinner>
+            <p class="mt-4 font-medium" style="color: var(--theme-text-secondary);">Loading Users & Permissions...</p>
+        </div>
+
+        <div *ngIf="error && !isLoading" class="p-8 text-center rounded-lg error-panel">
+            <h3 class="font-bold text-lg">Failed to load data</h3>
+            <p class="mt-2 text-sm">{{ error }}</p>
+        </div>
+        
+        <p-table *ngIf="!isLoading && !error" [value]="users" [scrollable]="true" scrollHeight="600px" styleClass="p-datatable-striped">
+            <ng-template pTemplate="header">
+                <tr>
+                    <th pFrozenColumn style="min-width: 250px;">User</th>
+                    
+                    <ng-container *ngFor="let group of permissionGroups">
+                        <th [attr.colspan]="group.permissions.length" class="text-center group-header">
+                            {{ group.name }}
+                        </th>
+                    </ng-container>
+
+                    <th pFrozenColumn [frozen]="true" alignFrozen="right" class="text-right" style="min-width: 130px;">Actions</th>
+                </tr>
+                <tr>
+                    <th pFrozenColumn></th> <ng-container *ngFor="let group of permissionGroups">
+                        <th *ngFor="let p of group.permissions" class="text-center permission-header" style="min-width: 160px;">
+                            <span [pTooltip]="p.tag" tooltipPosition="top">{{ p.description }}</span>
+                        </th>
+                    </ng-container>
+
+                    <th pFrozenColumn [frozen]="true" alignFrozen="right"></th>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-user>
+                <tr>
+                    <td pFrozenColumn>
+                        <div class="font-bold" style="color: var(--theme-text-primary);">{{ user.name }}</div>
+                        <div class="text-sm" style="color: var(--theme-text-secondary);">{{ user.email }}</div>
+                        <div class="role-badge mt-1">{{ user.role }}</div>
+                    </td>
+
+                    <ng-container *ngFor="let group of permissionGroups">
+                        <td [attr.colspan]="group.permissions.length" class="permission-group-cell">
+                           <div class="switches-container">
+                                <div *ngFor="let p of group.permissions" class="switch-wrapper">
+                                    <p-inputSwitch 
+                                        [(ngModel)]="user.permissionMap[p.tag]"
+                                        [disabled]="user.role === 'superAdmin' || user.role === 'admin'">
+                                    </p-inputSwitch>
+                                </div>
+                            </div>
+                            <div class="group-actions-hover" *ngIf="user.role !== 'superAdmin' && user.role !== 'admin'">
+                                <button (click)="toggleGroupPermissions(user, group, true)" class="group-toggle-btn select">Select All</button>
+                                <button (click)="toggleGroupPermissions(user, group, false)" class="group-toggle-btn deselect">Deselect All</button>
+                            </div>
+                        </td>
+                    </ng-container>
+
+                    <td pFrozenColumn [frozen]="true" alignFrozen="right" class="text-right">
+                        <ng-container *ngIf="user.role !== 'superAdmin' && user.role !== 'admin'; else fullAccess">
+                            <p-button 
+                                label="{{ savingState[user._id] ? 'Saving...' : 'Save' }}" 
+                                icon="pi pi-check" 
+                                (click)="onSavePermissions(user)"
+                                [loading]="savingState[user._id]">
+                            </p-button>
+                        </ng-container>
+                        <ng-template #fullAccess>
+                            <span class="full-access-label">
+                                <i class="pi pi-lock mr-2"></i>Full Access
+                            </span>
+                        </ng-template>
+                    </td>
+                </tr>
+            </ng-template>
+        </p-table>
+    </div>
+</div>
+<!-- <div class="theme-blue p-4 sm:p-6 lg:p-8">
   <p-toast position="top-right"></p-toast>
 
   <header class="mb-8">
@@ -8,31 +102,48 @@
     </p>
   </header>
 
-  <!-- Main content card using theme variables -->
+  
   <div class="main-card">
-    <!-- Loading State -->
+    
     <div *ngIf="isLoading" class="p-20 text-center">
       <p-progressSpinner strokeWidth="4" animationDuration=".5s" styleClass="custom-spinner"></p-progressSpinner>
       <p class="mt-4 font-medium" style="color: var(--theme-text-secondary);">Loading Users & Permissions...</p>
     </div>
 
-    <!-- Error State -->
+    
     <div *ngIf="error && !isLoading" class="p-8 text-center rounded-lg"
       style="background-color: rgba(220, 53, 69, 0.1); color: var(--theme-error-primary);">
       <h3 class="font-bold text-lg">Failed to load data</h3>
       <p class="mt-2 text-sm">{{ error }}</p>
     </div>
 
-    <!-- Data Table -->
+    
     <p-table *ngIf="!isLoading && !error" [value]="users" [scrollable]="true" scrollHeight="600px"
       styleClass="p-datatable-gridlines p-datatable-striped">
       <ng-template pTemplate="header">
         <tr>
           <th pFrozenColumn style="min-width: 250px;">User</th>
-          <th *ngFor="let p of permissions" class="text-center" style="min-width: 160px;">
-            <span [pTooltip]="p.tag" tooltipPosition="top">{{ p.description }}</span>
-          </th>
+
+          
+          <ng-container *ngFor="let group of permissionGroups">
+            <th [attr.colspan]="group.permissions.length" class="text-center group-header">
+              {{ group.name }}
+            </th>
+          </ng-container>
+
           <th class="text-right" style="min-width: 120px;">Actions</th>
+        </tr>
+        <tr>
+          <th pFrozenColumn></th> 
+
+          
+          <ng-container *ngFor="let group of permissionGroups">
+            <th *ngFor="let p of group.permissions" class="text-center" style="min-width: 160px;">
+              <span [pTooltip]="p.tag" tooltipPosition="top">{{ p.description }}</span>
+            </th>
+          </ng-container>
+
+          <th class="text-right"></th> 
         </tr>
       </ng-template>
       <ng-template pTemplate="body" let-user>
@@ -44,13 +155,16 @@
               style="background-color: var(--theme-bg-ternary); color: var(--theme-text-label); display: inline-block;">
               {{ user.role }}</div>
           </td>
-          <td *ngFor="let p of permissions" class="text-center">
-            <p-checkbox [binary]="true"
-              [ngModel]="user.permissionMap[p.tag] || user.role === 'superAdmin' || user.role === 'admin'"
-              (ngModelChange)="onPermissionChange($event, user, p.tag)"
-              [disabled]="user.role === 'superAdmin' || user.role === 'admin'">
-            </p-checkbox>
-          </td>
+
+          
+          <ng-container *ngFor="let group of permissionGroups">
+            <td *ngFor="let p of group.permissions" class="text-center">
+              <p-inputSwitch [(ngModel)]="user.permissionMap[p.tag]"
+                [disabled]="user.role === 'superAdmin' || user.role === 'admin'">
+              </p-inputSwitch>
+            </td>
+          </ng-container>
+
           <td class="text-right">
             <ng-container *ngIf="user.role !== 'superAdmin' && user.role !== 'admin'; else fullAccess">
               <p-button label="{{ savingState[user._id] ? 'Saving...' : 'Save' }}" icon="pi pi-check"
@@ -62,180 +176,22 @@
             </ng-template>
           </td>
         </tr>
-      </ng-template>
-      <ng-template pTemplate="emptymessage">
-        <tr>
-          <td [attr.colspan]="permissions.length + 2" class="text-center p-4"
-            style="color: var(--theme-text-secondary);">
-            No users found.
-          </td>
+        
+        <tr *ngIf="user.role !== 'superAdmin' && user.role !== 'admin'">
+          <td pFrozenColumn></td>
+          <ng-container *ngFor="let group of permissionGroups">
+            <td [attr.colspan]="group.permissions.length" class="text-center group-action-cell">
+              <button (click)="toggleGroupPermissions(user, group, true)" class="group-action-btn select-all">Select
+                All</button>
+              <button (click)="toggleGroupPermissions(user, group, false)"
+                class="group-action-btn deselect-all">Deselect All</button>
+            </td>
+          </ng-container>
+          <td class="text-right"></td>
         </tr>
       </ng-template>
+      <ng-template pTemplate="emptymessage">
+      </ng-template>
     </p-table>
-  </div>
-</div>
-
-<!-- 
-<div class="theme-blue p-4 sm:p-6 lg:p-8">
-    <p-toast position="top-right"></p-toast>
-
-    <header class="mb-8">
-        <h1 class="text-3xl font-bold" style="color: var(--theme-text-primary);">User Permissions Management</h1>
-        <p class="mt-1" style="color: var(--theme-text-secondary);">
-            Assign API route permissions. Admins and Super Admins have full access by default.
-        </p>
-    </header>
-
-    <div class="main-card">
-        <div *ngIf="isLoading" class="p-20 text-center">
-            <p-progressSpinner strokeWidth="4" animationDuration=".5s" styleClass="custom-spinner"></p-progressSpinner>
-            <p class="mt-4 font-medium" style="color: var(--theme-text-secondary);">Loading Users & Permissions...</p>
-        </div>
-
-        <div *ngIf="error && !isLoading" class="p-8 text-center rounded-lg" style="background-color: rgba(220, 53, 69, 0.1); color: var(--theme-error-primary);">
-            <h3 class="font-bold text-lg">Failed to load data</h3>
-            <p class="mt-2 text-sm">{{ error }}</p>
-        </div>
-        
-        <p-table *ngIf="!isLoading && !error" [value]="users" [scrollable]="true" scrollHeight="600px" styleClass="p-datatable-gridlines p-datatable-striped">
-            <ng-template pTemplate="header">
-                <tr>
-                    <th pFrozenColumn style="min-width: 250px;">User</th>
-                    <th *ngFor="let p of permissions" class="text-center" style="min-width: 160px;">
-                        <span [pTooltip]="p.tag" tooltipPosition="top">{{ p.description }}</span>
-                    </th>
-                    <th class="text-right" style="min-width: 120px;">Actions</th>
-                </tr>
-            </ng-template>
-            <ng-template pTemplate="body" let-user>
-                <tr>
-                    <td pFrozenColumn>
-                        <div class="font-bold" style="color: var(--theme-text-primary);">{{ user.name }}</div>
-                        <div class="text-sm" style="color: var(--theme-text-secondary);">{{ user.email }}</div>
-                        <div class="mt-1 text-xs uppercase font-semibold p-1 px-2 rounded" style="background-color: var(--theme-bg-ternary); color: var(--theme-text-label); display: inline-block;">{{ user.role }}</div>
-                    </td>
-                    <td *ngFor="let p of permissions" class="text-center">
-                        <p-checkbox 
-                            [binary]="true"
-                            [ngModel]="hasPermission(user, p.tag) || user.role === 'superAdmin' || user.role === 'admin'"
-                            (ngModelChange)="onPermissionChange($event, user, p.tag)"
-                            [disabled]="user.role === 'superAdmin' || user.role === 'admin'">
-                        </p-checkbox>
-                    </td>
-                    <td class="text-right">
-                        <ng-container *ngIf="user.role !== 'superAdmin' && user.role !== 'admin'; else fullAccess">
-                            <p-button 
-                                label="{{ savingState[user._id] ? 'Saving...' : 'Save' }}" 
-                                icon="pi pi-check" 
-                                (click)="onSavePermissions(user)"
-                                [loading]="savingState[user._id]">
-                            </p-button>
-                        </ng-container>
-                        <ng-template #fullAccess>
-                            <span class="px-4 text-sm" style="color: var(--theme-text-label);">Full Access</span>
-                        </ng-template>
-                    </td>
-                </tr>
-            </ng-template>
-            <ng-template pTemplate="emptymessage">
-                <tr>
-                    <td [attr.colspan]="permissions.length + 2" class="text-center p-4" style="color: var(--theme-text-secondary);">
-                        No users found.
-                    </td>
-                </tr>
-            </ng-template>
-        </p-table>
-    </div>
-</div>
- -->
-
-<!-- <p-toast></p-toast>
-
-<div
-  class="theme-blue min-h-screen bg-gradient-to-b from-[var(--theme-body-gradient-start)] to-[var(--theme-body-gradient-end)]">
-  <div class="container mx-auto px-4 py-6 lg:py-10">
-
-    <header class="mb-10">
-      <h1 class="text-3xl font-bold text-[var(--theme-text-primary)] font-[var(--font-primary)]">
-        User Permissions Management
-      </h1>
-      <p class="mt-2 text-[var(--theme-text-secondary)] font-[var(--font-body)]">
-        Assign API route permissions using PrimeNG.
-        <span class="font-semibold">Admins</span> and <span class="font-semibold">Super Admins</span> have full access
-        by default.
-      </p>
-    </header>
-
-    <div
-      class="card shadow-md rounded-lg overflow-hidden border border-[var(--theme-border-primary)] bg-[var(--theme-bg-primary)]">
-
-      <div *ngIf="isLoading" class="p-16 text-center">
-        <p-progressSpinner></p-progressSpinner>
-        <p class="mt-4 text-[var(--theme-text-label)] font-medium">Loading Users & Permissions...</p>
-      </div>
-
-      <div *ngIf="error && !isLoading"
-        class="p-8 text-center bg-[var(--theme-error-primary)]/10 text-[var(--theme-error-primary)] rounded-lg">
-        <h3 class="font-bold text-lg">Failed to load data</h3>
-        <p class="mt-2 text-sm">{{ error }}</p>
-      </div>
-
-      <p-table *ngIf="!isLoading && !error" [value]="users" [scrollable]="true" scrollHeight="600px"
-        styleClass="p-datatable-gridlines p-datatable-striped w-full">
-        <ng-template pTemplate="header">
-          <tr>
-            <th pFrozenColumn style="min-width: 220px;" class="bg-[var(--theme-bg-secondary)] text-left">
-              User
-            </th>
-            <th *ngFor="let p of permissions" class="text-center bg-[var(--theme-bg-secondary)] text-sm px-3 py-2">
-              <span [pTooltip]="p.tag" tooltipPosition="top">{{ p.description }}</span>
-            </th>
-            <th class="text-right bg-[var(--theme-bg-secondary)]" style="min-width: 130px;">
-              Actions
-            </th>
-          </tr>
-        </ng-template>
-
-        <ng-template pTemplate="body" let-user>
-          <tr>
-            <td pFrozenColumn class="px-4 py-3">
-              <div class="font-semibold text-[var(--theme-text-primary)]">{{ user.name }}</div>
-              <div class="text-xs text-[var(--theme-text-secondary)]">{{ user.email }}</div>
-              <div class="mt-1 text-xs uppercase tracking-wide font-medium text-[var(--theme-text-label)]">
-                {{ user.role }}
-              </div>
-            </td>
-
-            <td *ngFor="let p of permissions" class="text-center">
-              <p-checkbox [binary]="true"
-                [ngModel]="hasPermission(user, p.tag) || user.role === 'superAdmin' || user.role === 'admin'"
-                (ngModelChange)="onPermissionChange($event, user, p.tag)"
-                [disabled]="user.role === 'superAdmin' || user.role === 'admin'">
-              </p-checkbox>
-            </td>
-
-            <td class="text-right pr-4">
-              <ng-container *ngIf="user.role !== 'superAdmin' && user.role !== 'admin'; else fullAccess">
-                <p-button [label]="savingState[user._id] ? 'Saving...' : 'Save'" icon="pi pi-check"
-                  (click)="onSavePermissions(user)" [loading]="savingState[user._id]"
-                  styleClass="p-button-sm p-button-rounded">
-                </p-button>
-              </ng-container>
-              <ng-template #fullAccess>
-                <span class="text-[var(--theme-text-label)] italic text-sm">Full Access</span>
-              </ng-template>
-            </td>
-          </tr>
-        </ng-template>
-
-        <ng-template pTemplate="emptymessage">
-          <tr>
-            <td [attr.colspan]="permissions.length + 2" class="text-center py-8 text-[var(--theme-text-secondary)]">
-              No users found.
-            </td>
-          </tr>
-        </ng-template>
-      </p-table>
-    </div>
   </div>
 </div> -->

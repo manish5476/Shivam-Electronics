@@ -35,7 +35,7 @@
             </div>
           </div>
           <div class="header-actions-v2">
-            <p-select appendTo="body" [options]="customerIDDropdown" [(ngModel)]="selectedCustomerId"
+            <p-select appendTo="body" appendTo="body" [options]="customerIDDropdown" [(ngModel)]="selectedCustomerId"
               [ngModelOptions]="{standalone: true}" name="customerSelector" (onChange)="onCustomerSelect($event)"
               optionLabel="fullname" optionValue="_id" [filter]="true" filterBy="fullname" placeholder="Switch Customer"
               styleClass="customer-selector">
@@ -68,12 +68,12 @@
             <div class="form-fields">
               <div class="form-group">
                 <label for="status">Customer Status</label>
-                <p-select appendTo="body" id="status" formControlName="status" [options]="statuses"
+                <p-select appendTo="body" appendTo="body" id="status" formControlName="status" [options]="statuses"
                   placeholder="Select status"></p-select>
               </div>
               <div class="form-group">
                 <label for="guaranteer">Guarantor</label>
-                <p-select appendTo="body" id="guaranteer" formControlName="guaranteerId" [options]="customerIDDropdown"
+                <p-select appendTo="body" appendTo="body" id="guaranteer" formControlName="guaranteerId" [options]="customerIDDropdown"
                   optionLabel="fullname" optionValue="_id" [filter]="true" filterBy="fullname"
                   placeholder="Select a guarantor"></p-select>
               </div>
@@ -181,11 +181,76 @@
   <p-fileUpload #fileUploader name="profileImage" [customUpload]="true" (uploadHandler)="handleFileUpload($event)"
     [multiple]="false" accept="image/*" [showUploadButton]="false" [showCancelButton]="false"
     class="hidden"></p-fileUpload>
-  <p-dialog [header]="editingPhoneIndex > -1 ? 'Edit Phone' : 'Add Phone'" [(visible)]="phoneDialogVisible"
-    [modal]="true" [style]="{width: '460px'}"></p-dialog>
-  <p-dialog [header]="editingAddressIndex > -1 ? 'Edit Address' : 'Add Address'" [(visible)]="addressDialogVisible"
-    [modal]="true" [style]="{width: '640px'}"></p-dialog>
 
+  <p-dialog [header]="editingPhoneIndex > -1 ? 'Edit Phone' : 'Add Phone'" [(visible)]="phoneDialogVisible"
+    [modal]="true" [style]="{width: '460px'}">
+    <div class="p-fluid" [formGroup]="phoneDialogForm">
+      <div class="field">
+        <label for="phoneNumber">Phone Number</label>
+        <input id="phoneNumber" type="tel" pInputText formControlName="number" />
+      </div>
+      <div class="field">
+        <label for="phoneType">Phone Type</label>
+        <p-select appendTo="body" id="phoneType" [options]="phoneTypes" formControlName="type"></p-select>
+      </div>
+      <div class="field-checkbox">
+        <p-checkbox formControlName="primary" inputId="primaryPhone" [binary]="true"></p-checkbox>
+        <label for="primaryPhone">Set as Primary</label>
+      </div>
+    </div>
+    <ng-template pTemplate="footer">
+      <button pButton type="button" label="Cancel" (click)="phoneDialogVisible=false" class="p-button-text"></button>
+      <button pButton type="button" [label]="editingPhoneIndex > -1 ? 'Update' : 'Add'" (click)="addPhoneNumber()"
+        [disabled]="phoneDialogForm.invalid"></button>
+    </ng-template>
+  </p-dialog>
+
+  <p-dialog [header]="editingAddressIndex > -1 ? 'Edit Address' : 'Add Address'" [(visible)]="addressDialogVisible"
+    [modal]="true" [style]="{width: '640px'}">
+    <div class="p-fluid" [formGroup]="addressDialogForm">
+      <div class="field">
+        <label for="street">Street</label>
+        <input id="street" type="text" pInputText formControlName="street" />
+      </div>
+      <div class="formgrid grid">
+        <div class="field col">
+          <label for="city">City</label>
+          <input id="city" type="text" pInputText formControlName="city" />
+        </div>
+        <div class="field col">
+          <label for="state">State</label>
+          <input id="state" type="text" pInputText formControlName="state" />
+        </div>
+      </div>
+      <div formGroupName="location">
+        <div formArrayName="coordinates">
+          <div class="formgrid grid">
+            <div class="field col">
+              <label for="longitude">Longitude</label>
+              <input type="number" pInputText [formControlName]="0">
+            </div>
+            <div class="field col">
+              <label for="latitude">Latitude</label>
+              <input type="number" pInputText [formControlName]="1">
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="field">
+        <label for="addressType">Address Type</label>
+        <p-select appendTo="body" id="addressType" [options]="addressTypes" formControlName="type"></p-select>
+      </div>
+      <div class="field-checkbox">
+        <p-checkbox formControlName="isDefault" inputId="defaultAddress" [binary]="true"></p-checkbox>
+        <label for="defaultAddress">Set as Default</label>
+      </div>
+    </div>
+    <ng-template pTemplate="footer">
+      <button pButton type="button" label="Cancel" (click)="addressDialogVisible=false" class="p-button-text"></button>
+      <button pButton type="button" [label]="editingAddressIndex > -1 ? 'Update' : 'Add'" (click)="addAddress()"
+        [disabled]="addressDialogForm.invalid"></button>
+    </ng-template>
+  </p-dialog>
 </div>
 
 
@@ -229,7 +294,7 @@
           </div>
 
           <div class="header-actions-v2">
-            <p-select appendTo="body" [options]="customerIDDropdown" [(ngModel)]="selectedCustomerId"
+            <p-select appendTo="body" appendTo="body" [options]="customerIDDropdown" [(ngModel)]="selectedCustomerId"
               [ngModelOptions]="{standalone: true}" name="customerSelector" (onChange)="onCustomerSelect($event)"
               optionLabel="fullname" optionValue="_id" [filter]="true" filterBy="fullname" placeholder="Switch Customer"
               styleClass="customer-selector">
@@ -261,12 +326,12 @@
             <div class="form-fields">
               <div class="form-group">
                 <label for="status">Customer Status</label>
-                <p-select appendTo="body" id="status" formControlName="status" [options]="statuses"
+                <p-select appendTo="body" appendTo="body" id="status" formControlName="status" [options]="statuses"
                   placeholder="Select status"></p-select>
               </div>
               <div class="form-group">
                 <label for="guaranteer">Guarantor</label>
-                <p-select appendTo="body" id="guaranteer" formControlName="guaranteerId" [options]="customerIDDropdown"
+                <p-select appendTo="body" appendTo="body" id="guaranteer" formControlName="guaranteerId" [options]="customerIDDropdown"
                   optionLabel="fullname" optionValue="_id" [filter]="true" filterBy="fullname"
                   placeholder="Select a guarantor"></p-select>
               </div>
@@ -387,7 +452,7 @@
       </div>
       <div class="field">
         <label for="phoneType">Phone Type</label>
-        <p-select id="phoneType" [options]="phoneTypes" formControlName="type"></p-select>
+        <p-select appendTo="body" id="phoneType" [options]="phoneTypes" formControlName="type"></p-select>
       </div>
       <div class="field-checkbox">
         <p-checkbox formControlName="primary" inputId="primaryPhone" [binary]="true"></p-checkbox>
@@ -434,7 +499,7 @@
       </div>
       <div class="field">
         <label for="addressType">Address Type</label>
-        <p-select id="addressType" [options]="addressTypes" formControlName="type"></p-select>
+        <p-select appendTo="body" id="addressType" [options]="addressTypes" formControlName="type"></p-select>
       </div>
       <div class="field-checkbox">
         <p-checkbox formControlName="isDefault" inputId="defaultAddress" [binary]="true"></p-checkbox>
@@ -496,7 +561,7 @@
           </div>
 
           <div class="header-actions-v2">
-            <p-select appendTo="body" [options]="customerIDDropdown" [(ngModel)]="selectedCustomerId"
+            <p-select appendTo="body" appendTo="body" [options]="customerIDDropdown" [(ngModel)]="selectedCustomerId"
               name="customerSelector" (onChange)="onCustomerSelect($event)" optionLabel="fullname" optionValue="_id"
               [filter]="true" filterBy="fullname" placeholder="Switch Customer" styleClass="customer-selector">
             </p-select>
@@ -528,12 +593,12 @@
             <div class="form-fields">
               <div class="form-group">
                 <label for="status">Customer Status</label>
-                <p-select appendTo="body" id="status" name="status" [options]="statuses" [(ngModel)]="customer.status"
+                <p-select appendTo="body" appendTo="body" id="status" name="status" [options]="statuses" [(ngModel)]="customer.status"
                   placeholder="Select status"></p-select>
               </div>
               <div class="form-group">
                 <label for="guaranteer">Guarantor</label>
-                <p-select appendTo="body" id="guaranteer" name="guaranteer" [options]="customerIDDropdown"
+                <p-select appendTo="body" appendTo="body" id="guaranteer" name="guaranteer" [options]="customerIDDropdown"
                   [(ngModel)]="selectedGuaranter" optionLabel="fullname" [filter]="true" filterBy="fullname"
                   placeholder="Select a guarantor"></p-select>
               </div>
@@ -656,7 +721,7 @@
 
       <div class="field">
         <label for="phoneType" class="block text-sm font-semibold mb-2">Phone Type</label>
-        <p-select id="phoneType" [options]="phoneTypes" [(ngModel)]="newPhoneNumber.type" required
+        <p-select appendTo="body" id="phoneType" [options]="phoneTypes" [(ngModel)]="newPhoneNumber.type" required
           styleClass="w-full rounded-lg"></p-select>
       </div>
 
@@ -726,7 +791,7 @@
 
       <div class="field">
         <label for="addressType" class="block text-sm font-semibold mb-2">Address Type</label>
-        <p-select id="addressType" [options]="addressTypes" [(ngModel)]="newAddress.type" required
+        <p-select appendTo="body" id="addressType" [options]="addressTypes" [(ngModel)]="newAddress.type" required
           styleClass="w-full rounded-lg"></p-select>
       </div>
 
