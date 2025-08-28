@@ -14,7 +14,7 @@ import { SelectModule } from 'primeng/select';
 import { AccordionModule } from 'primeng/accordion';
 import { PanelModule } from 'primeng/panel';
 import { AvatarModule } from 'primeng/avatar';
-import { DialogModule } from 'primeng/dialog';
+import { Dialog, DialogModule } from 'primeng/dialog';
 import { TagModule } from 'primeng/tag';
 import { TimelineModule } from 'primeng/timeline';
 import { SkeletonModule } from 'primeng/skeleton';
@@ -29,6 +29,7 @@ import { CommonMethodService } from '../../../../core/Utils/common-method.servic
 import { TabViewModule } from "primeng/tabview"
 import { ChipModule } from "primeng/chip"
 import { ProgressBarModule } from "primeng/progressbar"
+import { CustomerSnapshotComponent } from "../../customer-snapshot/customer-snapshot.component";
 @Component({
   selector: 'app-customer-detailed-list',
   standalone: true,
@@ -39,6 +40,7 @@ import { ProgressBarModule } from "primeng/progressbar"
     CardModule,
     ToastModule,
     SelectModule,
+    Dialog,
     AvatarModule,
     TagModule,
     TimelineModule,
@@ -46,7 +48,8 @@ import { ProgressBarModule } from "primeng/progressbar"
     TabViewModule,
     ChipModule,
     ProgressBarModule,
-  ],
+    CustomerSnapshotComponent
+],
   // imports: [
   //   CommonModule, FormsModule, ButtonModule, CardModule, ToastModule,
   //   SelectModule, AccordionModule, PanelModule, AvatarModule, DialogModule,
@@ -61,12 +64,12 @@ export class CustomerDetailedListComponent implements OnInit {
   customer: any;
   customerId: string = '';
   customerIDDropdown: any[] = [];
-activeTab:any
+  activeTab: any
   // Dialog state
   displayInvoiceDialog: boolean = false;
   invoiceIdForDialog: any;
   dynamicComponent: any = InvoicePrintComponent;
-
+  showCustomer:any= false
   constructor(
     private customerService: CustomerService,
     private autoPopulate: AutopopulateService,
@@ -160,7 +163,7 @@ activeTab:any
       .toUpperCase()
   }
 
-  
+
   // getStatusSeverity(status: string): string {
   //   switch (status?.toLowerCase()) {
   //     case "active":

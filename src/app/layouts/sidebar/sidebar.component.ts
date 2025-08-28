@@ -28,7 +28,8 @@ export class SidebarComponent implements OnInit {
       label: 'Admin', icon: 'pi pi-lock', items: [
         { label: 'Admin Dashboard', icon: 'pi pi-th-large', routerLink: ['/admin/dashboard'] },
         { label: 'Users', icon: 'pi pi-user', routerLink: ['/admin/users'] },
-        { label: 'Logs', icon: 'pi pi-database', routerLink: ['/admin/logs'] }
+        { label: 'Logs', icon: 'pi pi-database', routerLink: ['/admin/logs'] },
+        { label: 'transaction', icon: 'pi pi-database', routerLink: ['/admin/transaction'] }
       ]
     },
     {

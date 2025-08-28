@@ -4,6 +4,7 @@ import { AdminUserComponent } from './components/admin-user/admin-user.component
 import { AuthLogsComponent } from './components/Logs/auth-logs/auth-logs.component';
 import { RoleGuard } from '../../core/guards/role.guard';
 import { PermissionComponentComponent } from './components/permission-component/permission-component.component';
+import { TransactionsComponent } from './components/transactions/transactions.component';
 
 export const ADMIN_ROUTES: Routes = [
   {
@@ -21,8 +22,13 @@ export const ADMIN_ROUTES: Routes = [
     canActivate: [RoleGuard],
     data: { roles: ['admin', 'superAdmin'] }
   },
-    {
+  {
     path: 'permission', component: PermissionComponentComponent,
+    canActivate: [RoleGuard],
+    data: { roles: ['admin', 'superAdmin'] }
+  },
+  {
+    path: 'transaction', component: TransactionsComponent,
     canActivate: [RoleGuard],
     data: { roles: ['admin', 'superAdmin'] }
   },

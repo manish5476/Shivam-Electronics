@@ -5,9 +5,12 @@
     </div>
 </div> -->
 
-<div class="flex items-center justify-center  bg-white" *ngIf="isLoading$ | async">
+<div *ngIf="isLoading$ | async"
+  class="fixed inset-0 z-50 flex items-center justify-center bg-white/80 backdrop-blur-sm">
+
   <div class="relative w-20 h-20">
-    <div class="absolute border-4 border-blue-400 rounded-full animate-ping w-full h-full"></div>
-    <div class="absolute border-4 border-blue-500 rounded-full w-full h-full"></div>
+    <div class="absolute w-full h-full border-4 border-blue-400 rounded-full animate-ping"></div>
+    <div class="absolute w-full h-full border-4 border-blue-500 rounded-full"></div>
   </div>
+
 </div>
