@@ -29,7 +29,9 @@ export class SidebarComponent implements OnInit {
         { label: 'Admin Dashboard', icon: 'pi pi-th-large', routerLink: ['/admin/dashboard'] },
         { label: 'Users', icon: 'pi pi-user', routerLink: ['/admin/users'] },
         { label: 'Logs', icon: 'pi pi-database', routerLink: ['/admin/logs'] },
-        { label: 'transaction', icon: 'pi pi-database', routerLink: ['/admin/transaction'] }
+        { label: 'transaction', icon: 'pi pi-database', routerLink: ['/admin/transaction'] },
+        { label: 'permission', icon: 'pi pi-database', routerLink: ['/admin/permission'] },
+        { label: 'purchase', icon: 'pi pi-database', routerLink: ['/admin/purchase'] },
       ]
     },
     {
@@ -37,6 +39,7 @@ export class SidebarComponent implements OnInit {
         { label: 'List', icon: 'pi pi-list', routerLink: ['/customers/list'] },
         { label: 'Master', icon: 'pi pi-cog', routerLink: ['/customers/master'] },
         { label: 'Details', icon: 'pi pi-info-circle', routerLink: ['/customers/detailed'] },
+        { label: 'segment', icon: 'pi pi-info-circle', routerLink: ['/customers/segment'] },
       ]
     },
     {

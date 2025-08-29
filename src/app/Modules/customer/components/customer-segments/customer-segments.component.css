@@ -1,0 +1,108 @@
+/* --- 5. PRIMENG COMPONENT STYLES --- */
+
+/* Data Table (Improved Readability & Sizing) */
+.p-datatable-wrapper {
+  border: var(--ui-border-width) solid var(--theme-border-primary);
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: var(--ui-shadow);
+}
+
+.p-datatable {
+  font-family: var(--font-body);
+  font-size: 0.95rem; /* slightly smaller, modern */
+  line-height: 1.5;
+}
+
+.p-datatable .p-datatable-thead > tr > th {
+  background-color: var(--theme-bg-secondary) !important;
+  color: var(--theme-text-primary) !important;
+  font-weight: 600;
+  font-size: 0.9rem;
+  padding: 0.85rem 1rem; /* consistent spacing */
+  text-align: left;
+  border-bottom: var(--ui-border-width) solid var(--theme-border-primary) !important;
+}
+
+.p-datatable .p-datatable-tbody > tr {
+  background-color: var(--theme-bg-primary) !important;
+  color: var(--theme-text-secondary) !important;
+  transition: background 0.2s ease;
+}
+
+.p-datatable .p-datatable-tbody > tr:hover {
+  background-color: var(--theme-hover-bg) !important;
+}
+
+.p-datatable .p-datatable-tbody > tr > td {
+  padding: 0.85rem 1rem;
+  border-bottom: var(--ui-border-width) solid var(--theme-border-primary) !important;
+  vertical-align: middle;
+}
+
+.p-datatable .p-datatable-tbody > tr:last-child > td {
+  border-bottom: none !important;
+}
+
+/* Compact Mode (for dashboard tables) */
+.p-datatable.table-compact .p-datatable-thead > tr > th,
+.p-datatable.table-compact .p-datatable-tbody > tr > td {
+  padding: 0.65rem 0.75rem;
+  font-size: 0.85rem;
+}
+
+/* Alternate row striping */
+.p-datatable-striped .p-datatable-tbody > tr:nth-child(even) {
+  background-color: var(--theme-bg-secondary) !important;
+}
+
+/* Paginator */
+.p-datatable .p-paginator {
+  background-color: var(--theme-bg-secondary) !important;
+  border-top: var(--ui-border-width) solid var(--theme-border-primary) !important;
+  padding: 0.5rem 1rem;
+}
+
+.p-paginator .p-paginator-page {
+  border-radius: 50% !important;
+  width: 2rem;
+  height: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.p-paginator .p-paginator-page.p-highlight {
+  background: var(--theme-accent-gradient, var(--theme-accent-primary)) !important;
+  color: var(--theme-accent-text-color) !important;
+  font-weight: 600;
+}
+
+/* Tags (more polished, aligned with theme) */
+.p-tag {
+  border-radius: 8px !important;
+  font-size: 0.8rem;
+  font-weight: 500;
+  padding: 0.35rem 0.65rem !important;
+}
+
+/* Tag severity overrides with theme */
+.p-tag-success {
+  background-color: var(--theme-success-primary) !important;
+  color: var(--theme-text-inverted) !important;
+}
+
+.p-tag-info {
+  background-color: var(--theme-accent-primary) !important;
+  color: var(--theme-text-inverted) !important;
+}
+
+.p-tag-warn {
+  background-color: var(--theme-warning-primary) !important;
+  color: var(--theme-text-primary) !important;
+}
+
+.p-tag-danger {
+  background-color: var(--theme-error-primary) !important;
+  color: var(--theme-text-inverted) !important;
+}
