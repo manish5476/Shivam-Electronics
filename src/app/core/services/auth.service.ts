@@ -90,7 +90,6 @@ export class AuthService {
   }
 
   // --- Password Management ---
-
   forgotPassword(email: string): Observable<any> {
     return this.http.post(`${this.baseUrl}/v1/users/forgotPassword`, { email });
   }
