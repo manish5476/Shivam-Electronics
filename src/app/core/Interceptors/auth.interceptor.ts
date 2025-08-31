@@ -1,83 +1,38 @@
+import { HttpHandlerFn, HttpRequest } from '@angular/common/http';
 import { inject } from '@angular/core';
-import {
-  HttpRequest,
-  HttpHandlerFn,
-  HttpEvent,
-} from '@angular/common/http';
-import { Observable } from 'rxjs';
-import { AuthService } from '../services/auth.service'; // Correct path to your service
+import { AuthService } from '../services/auth.service';
 
-export function AuthInterceptor(req: HttpRequest<unknown>, next: HttpHandlerFn): Observable<HttpEvent<unknown>> {
+export const AuthInterceptor = (req: HttpRequest<unknown>, next: HttpHandlerFn) => {
   const authService = inject(AuthService);
-  const token = authService.getToken(); // Use the simple getter from the service
+  const authToken = authService.getToken();
 
-  // If the request is for login/signup, or if there's no token, pass it through without changes.
-  if (!token || req.url.includes('/users/login') || req.url.includes('/users/signup')) {
-    return next(req);
+  // If the token exists, clone the request and add the authorization header
+  if (authToken) {
+    const authReq = req.clone({
+      headers: req.headers.set('Authorization', `Bearer ${authToken}`),
+    });
+    return next(authReq);
   }
 
-  // Clone the request to add the Authorization header.
-  const clonedReq = req.clone({
-    headers: req.headers.set('Authorization', `Bearer ${token}`)
-  });
-
-  // Pass the cloned request to the next handler.
-  return next(clonedReq);
-}
-
+  // If no token, pass the original request along
+  return next(req);
+};
+// import { HttpHandlerFn, HttpRequest } from '@angular/common/http';
 // import { inject } from '@angular/core';
-// import {
-//   HttpRequest,
-//   HttpHandlerFn,
-//   HttpEvent,
-//   HttpInterceptorFn,
-//   HttpErrorResponse,
-//   HttpEventType
-// } from '@angular/common/http';
-// import { Observable, throwError } from 'rxjs';
-// import { catchError, tap } from 'rxjs/operators';
 // import { AuthService } from '../services/auth.service';
 
-// // Auth Interceptor
-// export function AuthInterceptor(req: HttpRequest<unknown>, next: HttpHandlerFn): Observable<HttpEvent<unknown>> {
+// export const AuthInterceptor = (req: HttpRequest<unknown>, next: HttpHandlerFn) => {
 //   const authService = inject(AuthService);
-//   const authKey = authService.getItem('authToken') as string | null;
-//   const user = authService.getItem('userKey') as string | null;
+//   const authToken = authService.getToken();
 
-//   // Skip adding headers for login or signup requests
-//   if (req.url.includes('/auth/login') || req.url.includes('/signup')) {
-//     return next(req);
+//   // If the token exists, clone the request and add the authorization header
+//   if (authToken) {
+//     const authReq = req.clone({
+//       headers: req.headers.set('Authorization', `Bearer ${authToken}`),
+//     });
+//     return next(authReq);
 //   }
 
-//   let headers = req.headers;
-//   if (authKey) {
-//     headers = headers.append('Authorization', `Bearer ${authKey}`);
-//   }
-//   if (user) {
-//     headers = headers.append('User', user);
-//   }
-
-//   const clonedReq = req.clone({ headers });
-
-//   return next(clonedReq).pipe(
-//     catchError((error: HttpErrorResponse) => {
-//       console.error('Auth Interceptor Error:', error);
-//       return throwError(() => error);
-//     })
-//   );
-// }
-
-// // Logging Interceptor
-// export function loggingInterceptor(req: HttpRequest<unknown>, next: HttpHandlerFn): Observable<HttpEvent<unknown>> {
-//   return next(req).pipe(
-//     tap({
-//       next: (event: HttpEvent<any>) => {
-//         if (event.type === HttpEventType.Response) {
-//         }
-//       },
-//       error: (error: HttpErrorResponse) => {
-//         console.error(`${req.url} failed with status ${error.status}`, error);
-//       }
-//     })
-//   );
-// }
+//   // If no token, pass the original request along
+//   return next(req);
+// };

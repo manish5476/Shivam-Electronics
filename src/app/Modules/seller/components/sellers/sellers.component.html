@@ -4,7 +4,7 @@
     <div class="form-header">
       <h2 class="form-title"><i class="pi pi-user-plus"></i> Manage Seller</h2>
       <div class="form-controls">
-        <p-select [options]="sellersForDropdown" [(ngModel)]="selectedSellerId" optionLabel="name" optionValue="_id"
+        <p-select [options]="sellersForDropdown" [(ngModel)]="selectedSellerId" optionLabel="name" optionValue="_id" name="seller"
           placeholder="Select a Seller to Edit" [showClear]="true" (onChange)="fetchSellerDetails()"
           styleClass="themed-select seller-selector">
         </p-select>
