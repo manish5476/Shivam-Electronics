@@ -14,7 +14,9 @@
       <button type="button"
         class="flex h-10 items-center bg-[var(--theme-bg-ternary)] gap-3 group focus:outline-none focus:ring-2 focus:ring-[var(--theme-accent-primary)] focus:ring-opacity-75 rounded-full p-1 pr-3 hover:bg-[var(--theme-hover-bg)]"
         (click)="op.toggle($event)">
-        <p-avatar [label]="user.name ? getInitials(user.name) : 'U'" image="https://imgs.search.brave.com/E0qQWdzT8_8gkjaYBKZjg8zeuJWOxsPwlim2wn2WvW4/rs:fit:500:0:1:0/g:ce/aHR0cHM6Ly9pbWcu/ZnJlZXBpay5jb20v/cHJlbWl1bS1waG90/by9jdXRlLWxpdHRs/ZS1sb3JkLWtyaXNo/bmFfMzk0NDYyLTI5/MzYuanBnP3NlbXQ9/YWlzX2h5YnJpZCZ3/PTc0MCZxPTgw" styleClass="mr-2" shape="circle"></p-avatar>
+        <p-avatar [label]="user.name ? getInitials(user.name) : 'U'"
+          image="https://imgs.search.brave.com/E0qQWdzT8_8gkjaYBKZjg8zeuJWOxsPwlim2wn2WvW4/rs:fit:500:0:1:0/g:ce/aHR0cHM6Ly9pbWcu/ZnJlZXBpay5jb20v/cHJlbWl1bS1waG90/by9jdXRlLWxpdHRs/ZS1sb3JkLWtyaXNo/bmFfMzk0NDYyLTI5/MzYuanBnP3NlbXQ9/YWlzX2h5YnJpZCZ3/PTc0MCZxPTgw"
+          styleClass="mr-2" shape="circle"></p-avatar>
         <span class="hidden md:inline-block font-medium text-sm bg-[var(--theme-bg-ternary)]">{{ user.name }}</span>
         <i
           class="hidden md:inline-block pi pi-angle-down text-[var(--theme-text-secondary)] group-hover:text-[var(--theme-text-primary)] transition-colors duration-200"></i>
@@ -66,6 +68,12 @@
               <i class="pi pi-sign-out text-base"></i>
               <span class="text-sm">Logout</span>
             </a>
+
+            <a routerLink="/auth/update-password"
+              class="flex items-center gap-2 py-2 px-3 rounded-md text-red-500 hover:bg-red-500/10 transition-colors duration-200 cursor-pointer">
+              <i class="pi pi-sign-out text-base"></i>
+              <span class="text-sm">Update Passoword </span>
+            </a>
           </div>
         </div>
       </p-popover>
@@ -86,76 +94,3 @@
     </button>
   </div>
 </div>
-
-<!-- 
-<div class="w-full mx-auto flex h-12 items-center justify-between px-3 sm:px-4 lg:px-6">
-  <div class="flex items-center gap-4">
-    <button type="button"
-      class="flex items-center justify-center w-10 h-8 rounded-lg bg-[var(--theme-bg-primary)] hover:bg-[var(--theme-hover-bg)] transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-[var(--theme-accent-primary)] focus:ring-opacity-75"
-      (click)="toggleSidebar.emit()">
-      <i class="pi pi-bars text-[var(--theme-bg-primary)] text-xl"></i>
-    </button>
-    <a href="/" class="text-[var(--theme-accent-primary)] text-2xl font-bold tracking-tight">Shivam Electronics</a>
-  </div>
-
-  <div class="flex items-center gap-4">
-    <ng-container *ngIf="currentUser$ | async as user; else loggedOutView">
-      <button type="button"
-        class="flex h-9 items-center gap-2 group focus:outline-none focus:ring-2 focus:ring-[var(--theme-accent-primary)] focus:ring-opacity-75 rounded-full"
-        (click)="op.toggle($event)">
-        <p-avatar [label]="user.name ? user.name.charAt(0).toUpperCase() : 'U'" styleClass="mr-2" 
-          shape="circle"></p-avatar>
-        <span class="hidden md:inline-block">Welcome, {{ user.name }}</span>
-        <i
-          class="hidden md:inline-block pi pi-angle-down text-[var(--theme-text-secondary)] group-hover:text-[var(--theme-accent-primary)] transition-colors duration-200"></i>
-      </button>
-
-      <p-popover #op>
-        <div
-          class="p-4 bg-[var(--theme-bg-secondary)] border border-[var(--theme-border-primary)] rounded-lg shadow-xl min-w-[200px]">
-          <div class="flex flex-col items-center gap-3 pb-3 mb-3 border-b border-[var(--theme-border-primary)]">
-            <p-avatar [image]="'https://primefaces.org/cdn/primeng/images/demo/avatar/amyelsner.png'"
-              shape="circle" class="w-12 h-12 border-2 border-[var(--theme-accent-primary)]"></p-avatar>
-            <div class="text-center">
-              <div class="font-bold text-lg text-[var(--theme-text-primary)]">{{ user.name }}</div>
-              <div class="text-[var(--theme-text-secondary)] text-sm">{{ user.email }}</div>
-              <div class="text-[var(--theme-accent-primary)] text-xs font-semibold uppercase tracking-wide mt-1">{{
-                user.role }}</div>
-            </div>
-          </div>
-          <div class="flex flex-col gap-2">
-            <a routerLink="/user/profile" (click)="op.hide()"
-              class="flex items-center gap-2 py-2 px-3 rounded-md text-[var(--theme-text-secondary)] hover:text-[var(--theme-accent-primary)] hover:bg-[var(--theme-hover-bg)] transition-colors duration-200">
-              <i class="pi pi-user text-base"></i>
-              <span>My Profile</span>
-            </a>
-            <a routerLink="/user/settings" (click)="op.hide()"
-              class="flex items-center gap-2 py-2 px-3 rounded-md text-[var(--theme-text-secondary)] hover:text-[var(--theme-accent-primary)] hover:bg-[var(--theme-hover-bg)] transition-colors duration-200">
-              <i class="pi pi-cog text-base"></i>
-              <span>Settings</span>
-            </a>
-            <a (click)="logout(); op.hide()"
-              class="flex items-center gap-2 py-2 px-3 rounded-md text-red-500 hover:bg-red-100 hover:text-red-700 transition-colors duration-200 mt-2 cursor-pointer">
-              <i class="pi pi-sign-out text-base"></i>
-              <span>Logout</span>
-            </a>
-          </div>
-        </div>
-      </p-popover>
-    </ng-container>
-
-    <ng-template #loggedOutView>
-      <a routerLink="/auth/login"
-        class="flex items-center gap-2 py-2 px-3 rounded-md text-[var(--theme-text-secondary)] hover:text-[var(--theme-accent-primary)] hover:bg-[var(--theme-hover-bg)] transition-colors duration-200">
-        <i class="pi pi-sign-in text-base"></i>
-        <span>Login</span>
-      </a>
-    </ng-template>
-
-    <button type="button"
-      class="md:hidden w-10 h-10 rounded-full bg-[var(--theme-bg-ternary)] hover:bg-[var(--theme-hover-bg)] flex items-center justify-center transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-[var(--theme-accent-primary)] focus:ring-opacity-75"
-      (click)="mobileMenuToggle.emit()">
-      <i class="pi pi-bars text-[var(--theme-accent-primary)] text-xl"></i>
-    </button>
-  </div>
-</div> -->
