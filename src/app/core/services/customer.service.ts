@@ -91,17 +91,15 @@ export class CustomerService extends BaseApiService {
       );
   }
 
-  // --- Custom, Non-Standard Methods ---
-  uploadProfileImage(formData: FormData, customerId: string): Observable<any> {
-    const apiUrl = `${this.baseUrl}${this.endpoint}/${customerId}/profile-image`;
-    return this.http
-      .post(apiUrl, formData)
-      .pipe(
-        catchError((error: any) =>
-          this.errorhandler.handleError('uploadProfileImage', error),
-        ),
-      );
-  }
+uploadProfileImage(formData: FormData, customerId: string): Observable<any> {
+  const apiUrl = `${this.baseUrl}${this.endpoint}/${customerId}/profile-image`;
+  return this.http.post(apiUrl, formData).pipe(
+    catchError((error: any) =>
+      this.errorhandler.handleError("uploadProfileImage", error)
+    )
+  );
+}
+
 
   getCustomerDropDown(): Observable<any[]> {
     return this.http

@@ -4,57 +4,29 @@
   <ng-container *ngIf="!isLoading; else loadingState">
     <div class="header-card-v2">
       <div class="header-content-v2">
-        <!-- <div class="profile-avatar-wrapper">
-          <p-avatar [image]="displayCustomer.profileImg"
-            [label]="commonMethodService.getInitials(displayCustomer.fullname || '')" shape="circle"
-            styleClass="profile-avatar-large">
+        <div class="profile-avatar-wrapper">
+          <p-avatar *ngIf="displayCustomer.profileImg; else initials" [image]="displayCustomer.profileImg"
+            shape="circle" styleClass="profile-avatar-large">
           </p-avatar>
+
+          <ng-template #initials>
+            <p-avatar [label]="commonMethodService.getInitials(displayCustomer.fullname || '')" shape="circle"
+              styleClass="profile-avatar-large">
+            </p-avatar>
+          </ng-template>
+
+
           <button pButton pRipple type="button" icon="pi pi-camera"
             class="p-button-rounded p-button-sm avatar-edit-button" (click)="fileUploader.choose()"
             pTooltip="Change Profile Image" tooltipPosition="top">
           </button>
-        </div>
-        -->
-        <div class="profile-avatar-wrapper">
-          <p-avatar
-            [image]="displayCustomer.profileImg"
-            [label]="
-              commonMethodService.getInitials(displayCustomer.fullname || '')
-            "
-            shape="circle"
-            styleClass="profile-avatar-large"
-          >
-          </p-avatar>
-          <button
-            pButton
-            pRipple
-            type="button"
-            icon="pi pi-camera"
-            class="p-button-rounded p-button-sm avatar-edit-button"
-            (click)="fileUploader.choose()"
-            pTooltip="Change Profile Image"
-            tooltipPosition="top"
-          ></button>
-
-          <!-- 
-            STEP 1: ADD THE PRIMENG FILE UPLOAD COMPONENT
-            - We hide this component visually and trigger it with the camera button.
-            - `name="profileImg"` is CRITICAL. It must match the key your backend expects.
-            - `(onUpload)` calls our component's method when the upload is successful.
-            - `customUpload="true"` and `(uploadHandler)` give us full control over the upload process.
-          -->
-          <p-fileUpload
-            #fileUploader
-            name="profileImg"
-            [hidden]="true"
-            [customUpload]="true"
-            (uploadHandler)="handleFileUpload($event)"
-            accept="image/png,image/jpeg"
-            [maxFileSize]="2000000"
-            chooseLabel="Browse"
-          >
+          <p-fileUpload #fileUploader name="profileImg" [hidden]="true" [customUpload]="true"
+            (onSelect)="handleFileUpload($event)" accept="image/png,image/jpeg" [maxFileSize]="2000000"
+            [multiple]="false" [showUploadButton]="false" [showCancelButton]="false">
           </p-fileUpload>
+
         </div>
+
         <div class="header-info">
           <h1 class="customer-title">
             {{ displayCustomer.fullname || "New Customer" }}
@@ -77,41 +49,20 @@
         </div>
         <div class="header-actions-v2">
           <!-- MOVED THIS DROPDOWN OUTSIDE THE FORM -->
-          <p-select
-            [options]="customerIDDropdown"
-            [(ngModel)]="selectedCustomerId"
-            [ngModelOptions]="{ standalone: true }"
-            name="customerSelector"
-            (onChange)="onCustomerSelect($event)"
-            optionLabel="fullname"
-            optionValue="_id"
-            [filter]="true"
-            filterBy="fullname"
-            placeholder="Switch Customer"
-            styleClass="customer-selector"
-          >
+          <p-select [options]="customerIDDropdown" [(ngModel)]="selectedCustomerId"
+            [ngModelOptions]="{ standalone: true }" name="customerSelector" (onChange)="onCustomerSelect($event)"
+            optionLabel="fullname" optionValue="_id" [filter]="true" filterBy="fullname" placeholder="Switch Customer"
+            styleClass="customer-selector">
           </p-select>
           <!-- The Save button stays inside the form -->
-          <button
-            pButton
-            pRipple
-            label="Save Changes"
-            icon="pi pi-check"
-            type="submit"
-            form="customerFormId"
-            class="save-button"
-            [disabled]="customerForm.invalid"
-          ></button>
+          <button pButton pRipple label="Save Changes" icon="pi pi-check" type="submit" form="customerFormId"
+            class="save-button" [disabled]="customerForm.invalid"></button>
         </div>
       </div>
     </div>
 
     <!-- The form now has an ID so the external button can target it -->
-    <form
-      [formGroup]="customerForm"
-      (ngSubmit)="saveCustomer()"
-      id="customerFormId"
-    >
+    <form [formGroup]="customerForm" (ngSubmit)="saveCustomer()" id="customerFormId">
       <div class="main-grid">
         <div class="form-row-flex">
           <div class="form-card">
@@ -121,23 +72,11 @@
             <div class="form-fields">
               <div class="form-group">
                 <label for="fullname">Full Name</label>
-                <input
-                  id="fullname"
-                  formControlName="fullname"
-                  type="text"
-                  pInputText
-                  placeholder="Enter full name"
-                />
+                <input id="fullname" formControlName="fullname" type="text" pInputText placeholder="Enter full name" />
               </div>
               <div class="form-group">
                 <label for="email">Email Address</label>
-                <input
-                  id="email"
-                  formControlName="email"
-                  type="email"
-                  pInputText
-                  placeholder="Enter email address"
-                />
+                <input id="email" formControlName="email" type="email" pInputText placeholder="Enter email address" />
               </div>
             </div>
           </div>
@@ -149,27 +88,14 @@
             <div class="form-fields">
               <div class="form-group">
                 <label for="status">Customer Status</label>
-                <p-select
-                  appendTo="body"
-                  id="status"
-                  formControlName="status"
-                  [options]="statuses"
-                  placeholder="Select status"
-                ></p-select>
+                <p-select appendTo="body" id="status" formControlName="status" [options]="statuses"
+                  placeholder="Select status"></p-select>
               </div>
               <div class="form-group">
                 <label for="guaranteer">Guarantor</label>
-                <p-select
-                  appendTo="body"
-                  id="guaranteer"
-                  formControlName="guaranteerId"
-                  [options]="customerIDDropdown"
-                  optionLabel="fullname"
-                  optionValue="_id"
-                  [filter]="true"
-                  filterBy="fullname"
-                  placeholder="Select a guarantor"
-                ></p-select>
+                <p-select appendTo="body" id="guaranteer" formControlName="guaranteerId" [options]="customerIDDropdown"
+                  optionLabel="fullname" optionValue="_id" [filter]="true" filterBy="fullname"
+                  placeholder="Select a guarantor"></p-select>
               </div>
             </div>
           </div>
@@ -180,20 +106,11 @@
             <h3 class="section-header">
               <i class="pi pi-phone"></i>Phone Numbers
             </h3>
-            <button
-              pButton
-              type="button"
-              label="Add Phone"
-              icon="pi pi-plus"
-              class="p-button-sm p-button-outlined"
-              (click)="showPhoneDialog()"
-            ></button>
+            <button pButton type="button" label="Add Phone" icon="pi pi-plus" class="p-button-sm p-button-outlined"
+              (click)="showPhoneDialog()"></button>
           </div>
           <div class="table-wrapper">
-            <p-table
-              [value]="phoneNumbers.controls"
-              styleClass="p-datatable-sm modern-table"
-            >
+            <p-table [value]="phoneNumbers.controls" styleClass="p-datatable-sm modern-table">
               <ng-template pTemplate="header">
                 <tr>
                   <th>Number</th>
@@ -206,39 +123,23 @@
                 <tr>
                   <td>{{ phoneControl.value.number }}</td>
                   <td>
-                    <p-tag
-                      [value]="phoneControl.value.type | titlecase"
-                      [severity]="getSeverityForType(phoneControl.value.type)"
-                    ></p-tag>
+                    <p-tag [value]="phoneControl.value.type | titlecase"
+                      [severity]="getSeverityForType(phoneControl.value.type)"></p-tag>
                   </td>
                   <td>
-                    <i
-                      class="pi status-icon"
-                      [ngClass]="
+                    <i class="pi status-icon" [ngClass]="
                         phoneControl.value.primary
                           ? 'pi-check-circle icon-success'
                           : 'pi-circle icon-muted'
-                      "
-                    ></i>
+                      "></i>
                   </td>
                   <td>
                     <div class="action-buttons">
-                      <button
-                        pButton
-                        pRipple
-                        type="button"
-                        icon="pi pi-pencil"
-                        class="p-button-text p-button-rounded p-button-sm"
-                        (click)="showPhoneDialog(i)"
-                      ></button>
-                      <button
-                        pButton
-                        pRipple
-                        type="button"
-                        icon="pi pi-trash"
+                      <button pButton pRipple type="button" icon="pi pi-pencil"
+                        class="p-button-text p-button-rounded p-button-sm" (click)="showPhoneDialog(i)"></button>
+                      <button pButton pRipple type="button" icon="pi pi-trash"
                         class="p-button-text p-button-rounded p-button-sm p-button-danger"
-                        (click)="deletePhone(i)"
-                      ></button>
+                        (click)="deletePhone(i)"></button>
                     </div>
                   </td>
                 </tr>
@@ -259,20 +160,11 @@
             <h3 class="section-header">
               <i class="pi pi-map-marker"></i>Addresses
             </h3>
-            <button
-              pButton
-              type="button"
-              label="Add Address"
-              icon="pi pi-plus"
-              class="p-button-sm p-button-outlined"
-              (click)="showAddressDialog()"
-            ></button>
+            <button pButton type="button" label="Add Address" icon="pi pi-plus" class="p-button-sm p-button-outlined"
+              (click)="showAddressDialog()"></button>
           </div>
           <div class="table-wrapper">
-            <p-table
-              [value]="addresses.controls"
-              styleClass="p-datatable-sm modern-table"
-            >
+            <p-table [value]="addresses.controls" styleClass="p-datatable-sm modern-table">
               <ng-template pTemplate="header">
                 <tr>
                   <th>Address</th>
@@ -294,39 +186,23 @@
                     </div>
                   </td>
                   <td>
-                    <p-tag
-                      [value]="addressControl.value.type | titlecase"
-                      [severity]="getSeverityForType(addressControl.value.type)"
-                    ></p-tag>
+                    <p-tag [value]="addressControl.value.type | titlecase"
+                      [severity]="getSeverityForType(addressControl.value.type)"></p-tag>
                   </td>
                   <td>
-                    <i
-                      class="pi status-icon"
-                      [ngClass]="
+                    <i class="pi status-icon" [ngClass]="
                         addressControl.value.isDefault
                           ? 'pi-check-circle icon-success'
                           : 'pi-circle icon-muted'
-                      "
-                    ></i>
+                      "></i>
                   </td>
                   <td>
                     <div class="action-buttons">
-                      <button
-                        pButton
-                        pRipple
-                        type="button"
-                        icon="pi pi-pencil"
-                        class="p-button-text p-button-rounded p-button-sm"
-                        (click)="showAddressDialog(i)"
-                      ></button>
-                      <button
-                        pButton
-                        pRipple
-                        type="button"
-                        icon="pi pi-trash"
+                      <button pButton pRipple type="button" icon="pi pi-pencil"
+                        class="p-button-text p-button-rounded p-button-sm" (click)="showAddressDialog(i)"></button>
+                      <button pButton pRipple type="button" icon="pi pi-trash"
                         class="p-button-text p-button-rounded p-button-sm p-button-danger"
-                        (click)="removeAddress(i)"
-                      ></button>
+                        (click)="removeAddress(i)"></button>
                     </div>
                   </td>
                 </tr>
@@ -346,76 +222,32 @@
   </ng-container>
 
   <ng-template #loadingState></ng-template>
-  <p-fileUpload
-    #fileUploader
-    name="profileImage"
-    [customUpload]="true"
-    (uploadHandler)="handleFileUpload($event)"
-    [multiple]="false"
-    accept="image/*"
-    [showUploadButton]="false"
-    [showCancelButton]="false"
-    class="hidden"
-  ></p-fileUpload>
 
-  <p-dialog
-    [header]="editingPhoneIndex !== null ? 'Edit Phone' : 'Add Phone'"
-    [(visible)]="phoneDialogVisible"
-    [modal]="true"
-    [style]="{ width: '460px' }"
-  >
+  <p-dialog [header]="editingPhoneIndex !== null ? 'Edit Phone' : 'Add Phone'" [(visible)]="phoneDialogVisible"
+    [modal]="true" [style]="{ width: '460px' }">
     <div class="p-fluid" [formGroup]="phoneDialogForm">
       <div class="field">
         <label for="phoneNumber">Phone Number</label>
-        <input
-          id="phoneNumber"
-          type="tel"
-          pInputText
-          formControlName="number"
-        />
+        <input id="phoneNumber" type="tel" pInputText formControlName="number" />
       </div>
       <div class="field">
         <label for="phoneType">Phone Type</label>
-        <p-select
-          appendTo="body"
-          id="phoneType"
-          [options]="phoneTypes"
-          formControlName="type"
-        ></p-select>
+        <p-select appendTo="body" id="phoneType" [options]="phoneTypes" formControlName="type"></p-select>
       </div>
       <div class="field-checkbox">
-        <p-checkbox
-          formControlName="primary"
-          inputId="primaryPhone"
-          [binary]="true"
-        ></p-checkbox>
+        <p-checkbox formControlName="primary" inputId="primaryPhone" [binary]="true"></p-checkbox>
         <label for="primaryPhone">Set as Primary</label>
       </div>
     </div>
     <ng-template pTemplate="footer">
-      <button
-        pButton
-        type="button"
-        label="Cancel"
-        (click)="phoneDialogVisible = false"
-        class="p-button-text"
-      ></button>
-      <button
-        pButton
-        type="button"
-        [label]="editingPhoneIndex !== null ? 'Update' : 'Add'"
-        (click)="savePhone()"
-        [disabled]="phoneDialogForm.invalid"
-      ></button>
+      <button pButton type="button" label="Cancel" (click)="phoneDialogVisible = false" class="p-button-text"></button>
+      <button pButton type="button" [label]="editingPhoneIndex !== null ? 'Update' : 'Add'" (click)="savePhone()"
+        [disabled]="phoneDialogForm.invalid"></button>
     </ng-template>
   </p-dialog>
 
-  <p-dialog
-    [header]="editingAddressIndex !== null ? 'Edit Address' : 'Add Address'"
-    [(visible)]="addressDialogVisible"
-    [modal]="true"
-    [style]="{ width: '640px' }"
-  >
+  <p-dialog [header]="editingAddressIndex !== null ? 'Edit Address' : 'Add Address'" [(visible)]="addressDialogVisible"
+    [modal]="true" [style]="{ width: '640px' }">
     <div class="p-fluid" [formGroup]="addressDialogForm">
       <div class="field">
         <label for="street">Street</label>
@@ -447,557 +279,6 @@
       </div>
       <div class="field">
         <label for="addressType">Address Type</label>
-        <p-select
-          appendTo="body"
-          id="addressType"
-          [options]="addressTypes"
-          formControlName="type"
-        ></p-select>
-      </div>
-      <div class="field-checkbox">
-        <p-checkbox
-          formControlName="isDefault"
-          inputId="defaultAddress"
-          [binary]="true"
-        ></p-checkbox>
-        <label for="defaultAddress">Set as Default</label>
-      </div>
-    </div>
-    <ng-template pTemplate="footer">
-      <button
-        pButton
-        type="button"
-        label="Cancel"
-        (click)="addressDialogVisible = false"
-        class="p-button-text"
-      ></button>
-      <button
-        pButton
-        type="button"
-        [label]="editingAddressIndex !== null ? 'Update' : 'Add'"
-        (click)="saveAddress()"
-        [disabled]="addressDialogForm.invalid"
-      ></button>
-    </ng-template>
-  </p-dialog>
-</div>
-
-<!-- <div class="customer-detail-container">
-  <p-toast></p-toast>
-
-  <ng-container *ngIf="!isLoading; else loadingState">
-    <form [formGroup]="customerForm" (ngSubmit)="saveCustomer()">
-
-      <div class="header-card-v2">
-        <div class="header-content-v2">
-          <div class="profile-avatar-wrapper">
-            <p-avatar [image]="displayCustomer.profileImg"
-              [label]="commonMethodService.getInitials(displayCustomer.fullname || '')" shape="circle"
-              styleClass="profile-avatar-large">
-            </p-avatar>
-            <button pButton pRipple type="button" icon="pi pi-camera"
-              class="p-button-rounded p-button-sm avatar-edit-button" (click)="fileUploader.choose()"
-              pTooltip="Change Profile Image" tooltipPosition="top">
-            </button>
-          </div>
-          <div class="header-info">
-            <h1 class="customer-title">{{ displayCustomer.fullname || 'New Customer' }}</h1>
-            <p class="customer-subtitle">{{ displayCustomer.email }}</p>
-            <div class="info-tags">
-              <span class="info-tag tag-status">
-                <i class="pi pi-user"></i>
-                <span>{{ displayCustomer.status | titlecase }}</span>
-              </span>
-              <span class="info-tag tag-phone">
-                <i class="pi pi-phone"></i>
-                <span>{{ phoneNumbers.length }} Phone(s)</span>
-              </span>
-              <span class="info-tag tag-address">
-                <i class="pi pi-map-marker"></i>
-                <span>{{ addresses.length }} Address(es)</span>
-              </span>
-            </div>
-          </div>
-          <div class="header-actions-v2">
-            <p-select [options]="customerIDDropdown" [(ngModel)]="selectedCustomerId"
-              [ngModelOptions]="{standalone: true}" name="customerSelector" (onChange)="onCustomerSelect($event)"
-              optionLabel="fullname" optionValue="_id" [filter]="true" filterBy="fullname" placeholder="Switch Customer"
-              styleClass="customer-selector">
-            </p-select>
-            <button pButton pRipple label="Save Changes" icon="pi pi-check" type="submit" class="save-button"
-              [disabled]="customerForm.invalid"></button>
-          </div>
-        </div>
-      </div>
-
-      <div class="main-grid">
-
-        <div class="form-row-flex">
-          <div class="form-card">
-            <h3 class="section-header"><i class="pi pi-user"></i>Personal Information</h3>
-            <div class="form-fields">
-              <div class="form-group">
-                <label for="fullname">Full Name</label>
-                <input id="fullname" formControlName="fullname" type="text" pInputText placeholder="Enter full name" />
-              </div>
-              <div class="form-group">
-                <label for="email">Email Address</label>
-                <input id="email" formControlName="email" type="email" pInputText placeholder="Enter email address" />
-              </div>
-            </div>
-          </div>
-
-          <div class="form-card">
-            <h3 class="section-header"><i class="pi pi-shield-check"></i>Status & Guarantor</h3>
-            <div class="form-fields">
-              <div class="form-group">
-                <label for="status">Customer Status</label>
-                <p-select id="status" formControlName="status" [options]="statuses"
-                  placeholder="Select status"></p-select>
-              </div>
-              <div class="form-group">
-                <label for="guaranteer">Guarantor</label>
-                <p-select id="guaranteer" formControlName="guaranteerId" [options]="customerIDDropdown"
-                  optionLabel="fullname" optionValue="_id" [filter]="true" filterBy="fullname"
-                  placeholder="Select a guarantor"></p-select>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="form-card" formArrayName="phoneNumbers">
-          <div class="card-header-action">
-            <h3 class="section-header"><i class="pi pi-phone"></i>Phone Numbers</h3>
-            <button pButton type="button" label="Add Phone" icon="pi pi-plus" class="p-button-sm p-button-outlined"
-              (click)="showPhoneDialog()"></button>
-          </div>
-          <div class="table-wrapper">
-            <p-table [value]="phoneNumbers.controls" styleClass="p-datatable-sm modern-table">
-              <ng-template pTemplate="header">
-                <tr>
-                  <th>Number</th>
-                  <th>Type</th>
-                  <th>Primary</th>
-                  <th>Actions</th>
-                </tr>
-              </ng-template>
-              <ng-template pTemplate="body" let-phoneControl let-i="rowIndex">
-                <tr>
-                  <td>{{ phoneControl.value.number }}</td>
-                  <td><p-tag [value]="phoneControl.value.type | titlecase"
-                      [severity]="getSeverityForType(phoneControl.value.type)"></p-tag></td>
-                  <td><i class="pi status-icon"
-                      [ngClass]="phoneControl.value.primary ? 'pi-check-circle icon-success' : 'pi-circle icon-muted'"></i>
-                  </td>
-                  <td>
-                    <div class="action-buttons">
-                      <button pButton pRipple type="button" icon="pi pi-pencil"
-                        class="p-button-text p-button-rounded p-button-sm" (click)="showPhoneDialog(i)"></button>
-                      <button pButton pRipple type="button" icon="pi pi-trash"
-                        class="p-button-text p-button-rounded p-button-sm p-button-danger"
-                        (click)="deletePhone(i)"></button>
-                    </div>
-                  </td>
-                </tr>
-              </ng-template>
-              <ng-template pTemplate="emptymessage">
-                <tr>
-                  <td colspan="4" class="empty-table-message">No phone numbers added</td>
-                </tr>
-              </ng-template>
-            </p-table>
-          </div>
-        </div>
-
-        <div class="form-card" formArrayName="addresses">
-          <div class="card-header-action">
-            <h3 class="section-header"><i class="pi pi-map-marker"></i>Addresses</h3>
-            <button pButton type="button" label="Add Address" icon="pi pi-plus" class="p-button-sm p-button-outlined"
-              (click)="showAddressDialog()"></button>
-          </div>
-          <div class="table-wrapper">
-            <p-table [value]="addresses.controls" styleClass="p-datatable-sm modern-table">
-              <ng-template pTemplate="header">
-                <tr>
-                  <th>Address</th>
-                  <th>Type</th>
-                  <th>Default</th>
-                  <th>Actions</th>
-                </tr>
-              </ng-template>
-              <ng-template pTemplate="body" let-addressControl let-i="rowIndex">
-                <tr>
-                  <td>
-                    <div class="address-line-1">{{ addressControl.value.street }}</div>
-                    <div class="address-line-2">{{ addressControl.value.city }}, {{ addressControl.value.state }} {{
-                      addressControl.value.zipCode }}</div>
-                  </td>
-                  <td><p-tag [value]="addressControl.value.type | titlecase"
-                      [severity]="getSeverityForType(addressControl.value.type)"></p-tag></td>
-                  <td><i class="pi status-icon"
-                      [ngClass]="addressControl.value.isDefault ? 'pi-check-circle icon-success' : 'pi-circle icon-muted'"></i>
-                  </td>
-                  <td>
-                    <div class="action-buttons">
-                      <button pButton pRipple type="button" icon="pi pi-pencil"
-                        class="p-button-text p-button-rounded p-button-sm" (click)="showAddressDialog(i)"></button>
-                      <button pButton pRipple type="button" icon="pi pi-trash"
-                        class="p-button-text p-button-rounded p-button-sm p-button-danger"
-                        (click)="removeAddress(i)"></button>
-                    </div>
-                  </td>
-                </tr>
-              </ng-template>
-              <ng-template pTemplate="emptymessage">
-                <tr>
-                  <td colspan="4" class="empty-table-message">No addresses added</td>
-                </tr>
-              </ng-template>
-            </p-table>
-          </div>
-        </div>
-
-      </div>
-    </form>
-  </ng-container>
-
-  <ng-template #loadingState>
-    <div class="p-grid">
-      <div class="p-col-12">
-        <p-skeleton height="6rem" styleClass="p-mb-2"></p-skeleton>
-      </div>
-      <div class="p-col-12 p-md-6">
-        <p-skeleton height="12rem" styleClass="p-mb-2"></p-skeleton>
-      </div>
-      <div class="p-col-12 p-md-6">
-        <p-skeleton height="12rem" styleClass="p-mb-2"></p-skeleton>
-      </div>
-      <div class="p-col-12">
-        <p-skeleton height="20rem"></p-skeleton>
-      </div>
-    </div>
-  </ng-template>
-
-  <p-fileUpload #fileUploader name="profileImage" [customUpload]="true" (uploadHandler)="handleFileUpload($event)"
-    [multiple]="false" accept="image/*" [showUploadButton]="false" [showCancelButton]="false"
-    class="hidden"></p-fileUpload>
-
-  <p-dialog [header]="editingPhoneIndex !== null ? 'Edit Phone' : 'Add Phone'" [(visible)]="phoneDialogVisible"
-    [modal]="true" [style]="{width: '460px'}">
-    <div class="p-fluid" [formGroup]="phoneDialogForm">
-      <div class="field">
-        <label for="phoneNumber">Phone Number</label>
-        <input id="phoneNumber" type="tel" pInputText formControlName="number" />
-      </div>
-      <div class="field">
-        <label for="phoneType">Phone Type</label>
-        <p-select id="phoneType" [options]="phoneTypes" formControlName="type"></p-select>
-      </div>
-      <div class="field-checkbox">
-        <p-checkbox formControlName="primary" inputId="primaryPhone" [binary]="true"></p-checkbox>
-        <label for="primaryPhone">Set as Primary</label>
-      </div>
-    </div>
-    <ng-template pTemplate="footer">
-      <button pButton type="button" label="Cancel" (click)="phoneDialogVisible=false" class="p-button-text"></button>
-      <button pButton type="button" [label]="editingPhoneIndex !== null ? 'Update' : 'Add'" (click)="savePhone()"
-        [disabled]="phoneDialogForm.invalid"></button>
-    </ng-template>
-  </p-dialog>
-
-  <p-dialog [header]="editingAddressIndex !== null ? 'Edit Address' : 'Add Address'" [(visible)]="addressDialogVisible"
-    [modal]="true" [style]="{width: '640px'}">
-    <div class="p-fluid" [formGroup]="addressDialogForm">
-      <div class="field">
-        <label for="street">Street</label>
-        <input id="street" type="text" pInputText formControlName="street" />
-      </div>
-      <div class="formgrid grid">
-        <div class="field col">
-          <label for="city">City</label>
-          <input id="city" type="text" pInputText formControlName="city" />
-        </div>
-        <div class="field col">
-          <label for="state">State</label>
-          <input id="state" type="text" pInputText formControlName="state" />
-        </div>
-        <div class="field col">
-          <label for="zipCode">Zip Code</label>
-          <input id="zipCode" type="text" pInputText formControlName="zipCode" />
-        </div>
-      </div>
-      <div formGroupName="location">
-        <div formArrayName="coordinates">
-          <div class="formgrid grid">
-            <div class="field col">
-              <label for="longitude">Longitude</label>
-              <input type="number" pInputText formControlName="0">
-            </div>
-            <div class="field col">
-              <label for="latitude">Latitude</label>
-              <input type="number" pInputText formControlName="1">
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="field">
-        <label for="addressType">Address Type</label>
-        <p-select id="addressType" [options]="addressTypes" formControlName="type"></p-select>
-      </div>
-      <div class="field-checkbox">
-        <p-checkbox formControlName="isDefault" inputId="defaultAddress" [binary]="true"></p-checkbox>
-        <label for="defaultAddress">Set as Default</label>
-      </div>
-    </div>
-    <ng-template pTemplate="footer">
-      <button pButton type="button" label="Cancel" (click)="addressDialogVisible=false" class="p-button-text"></button>
-      <button pButton type="button" [label]="editingAddressIndex !== null ? 'Update' : 'Add'" (click)="saveAddress()"
-        [disabled]="addressDialogForm.invalid"></button>
-    </ng-template>
-  </p-dialog>
-
-</div> -->
-
-<!-- <div class="customer-detail-container">
-  <p-toast></p-toast>
-
-  <ng-container *ngIf="!isLoading; else loadingState">
-    <form [formGroup]="customerForm" (ngSubmit)="saveCustomer()">
-
-      <div class="header-card-v2">
-        <div class="header-content-v2">
-          <div class="profile-avatar-wrapper">
-            <p-avatar [image]="displayCustomer.profileImg"
-              [label]="commonMethodService.getInitials(displayCustomer.fullname || '')" shape="circle"
-              styleClass="profile-avatar-large">
-            </p-avatar>
-            <button pButton pRipple type="button" icon="pi pi-camera"
-              class="p-button-rounded p-button-sm avatar-edit-button" (click)="fileUploader.choose()"
-              pTooltip="Change Profile Image" tooltipPosition="top">
-            </button>
-          </div>
-          <div class="header-info">
-            <h1 class="customer-title">{{ displayCustomer.fullname || 'New Customer' }}</h1>
-            <p class="customer-subtitle">{{ displayCustomer.email }}</p>
-            <div class="info-tags">
-              <span class="info-tag tag-status">
-                <i class="pi pi-user"></i>
-                <span>{{ displayCustomer.status | titlecase }}</span>
-              </span>
-              <span class="info-tag tag-phone">
-                <i class="pi pi-phone"></i>
-                <span>{{ phoneNumbers.length }} Phone(s)</span>
-              </span>
-              <span class="info-tag tag-address">
-                <i class="pi pi-map-marker"></i>
-                <span>{{ addresses.length }} Address(es)</span>
-              </span>
-            </div>
-          </div>
-          <div class="header-actions-v2">
-            <p-select appendTo="body" appendTo="body" [options]="customerIDDropdown" [(ngModel)]="selectedCustomerId"
-              [ngModelOptions]="{standalone: true}" name="customerSelector" (onChange)="onCustomerSelect($event)"
-              optionLabel="fullname" optionValue="_id" [filter]="true" filterBy="fullname" placeholder="Switch Customer"
-              styleClass="customer-selector">
-            </p-select>
-            <button pButton pRipple label="Save Changes" icon="pi pi-check" type="submit" class="save-button"
-              [disabled]="customerForm.invalid"></button>
-          </div>
-        </div>
-      </div>
-
-      <div class="main-grid">
-
-        <div class="form-row-flex">
-          <div class="form-card">
-            <h3 class="section-header"><i class="pi pi-user"></i>Personal Information</h3>
-            <div class="form-fields">
-              <div class="form-group">
-                <label for="fullname">Full Name</label>
-                <input id="fullname" formControlName="fullname" type="text" pInputText placeholder="Enter full name" />
-              </div>
-              <div class="form-group">
-                <label for="email">Email Address</label>
-                <input id="email" formControlName="email" type="email" pInputText placeholder="Enter email address" />
-              </div>
-            </div>
-          </div>
-
-          <div class="form-card">
-            <h3 class="section-header"><i class="pi pi-shield-check"></i>Status & Guarantor</h3>
-            <div class="form-fields">
-              <div class="form-group">
-                <label for="status">Customer Status</label>
-                <p-select appendTo="body" appendTo="body" id="status" formControlName="status" [options]="statuses"
-                  placeholder="Select status"></p-select>
-              </div>
-              <div class="form-group">
-                <label for="guaranteer">Guarantor</label>
-                <p-select appendTo="body" appendTo="body" id="guaranteer" formControlName="guaranteerId" [options]="customerIDDropdown"
-                  optionLabel="fullname" optionValue="_id" [filter]="true" filterBy="fullname"
-                  placeholder="Select a guarantor"></p-select>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="form-card" formArrayName="phoneNumbers">
-          <div class="card-header-action">
-            <h3 class="section-header"><i class="pi pi-phone"></i>Phone Numbers</h3>
-            <button pButton type="button" label="Add Phone" icon="pi pi-plus" class="p-button-sm p-button-outlined"
-              (click)="showPhoneDialog()"></button>
-          </div>
-          <div class="table-wrapper">
-            <p-table [value]="phoneNumbers.controls" styleClass="p-datatable-sm modern-table">
-              <ng-template pTemplate="header">
-                <tr>
-                  <th>Number</th>
-                  <th>Type</th>
-                  <th>Primary</th>
-                  <th>Actions</th>
-                </tr>
-              </ng-template>
-              <ng-template pTemplate="body" let-phoneControl let-i="rowIndex">
-                <tr>
-                  <td>{{ phoneControl.value.number }}</td>
-                  <td><p-tag [value]="phoneControl.value.type | titlecase"
-                      [severity]="getSeverityForType(phoneControl.value.type)"></p-tag></td>
-                  <td><i class="pi status-icon"
-                      [ngClass]="phoneControl.value.primary ? 'pi-check-circle icon-success' : 'pi-circle icon-muted'"></i>
-                  </td>
-                  <td>
-                    <div class="action-buttons">
-                      <button pButton pRipple type="button" icon="pi pi-pencil"
-                        class="p-button-text p-button-rounded p-button-sm" (click)="showPhoneDialog(i)"></button>
-                      <button pButton pRipple type="button" icon="pi pi-trash"
-                        class="p-button-text p-button-rounded p-button-sm p-button-danger"
-                        (click)="deletePhone(i)"></button>
-                    </div>
-                  </td>
-                </tr>
-              </ng-template>
-              <ng-template pTemplate="emptymessage">
-                <tr>
-                  <td colspan="4" class="empty-table-message">No phone numbers added</td>
-                </tr>
-              </ng-template>
-            </p-table>
-          </div>
-        </div>
-
-        <div class="form-card" formArrayName="addresses">
-          <div class="card-header-action">
-            <h3 class="section-header"><i class="pi pi-map-marker"></i>Addresses</h3>
-            <button pButton type="button" label="Add Address" icon="pi pi-plus" class="p-button-sm p-button-outlined"
-              (click)="showAddressDialog()"></button>
-          </div>
-          <div class="table-wrapper">
-            <p-table [value]="addresses.controls" styleClass="p-datatable-sm modern-table">
-              <ng-template pTemplate="header">
-                <tr>
-                  <th>Address</th>
-                  <th>Type</th>
-                  <th>Default</th>
-                  <th>Actions</th>
-                </tr>
-              </ng-template>
-              <ng-template pTemplate="body" let-addressControl let-i="rowIndex">
-                <tr>
-                  <td>
-                    <div class="address-line-1">{{ addressControl.value.street }}</div>
-                    <div class="address-line-2">{{ addressControl.value.city }}, {{ addressControl.value.state }} {{
-                      addressControl.value.zipCode }}</div>
-                  </td>
-                  <td><p-tag [value]="addressControl.value.type | titlecase"
-                      [severity]="getSeverityForType(addressControl.value.type)"></p-tag></td>
-                  <td><i class="pi status-icon"
-                      [ngClass]="addressControl.value.isDefault ? 'pi-check-circle icon-success' : 'pi-circle icon-muted'"></i>
-                  </td>
-                  <td>
-                    <div class="action-buttons">
-                      <button pButton pRipple type="button" icon="pi pi-pencil"
-                        class="p-button-text p-button-rounded p-button-sm" (click)="showAddressDialog(i)"></button>
-                      <button pButton pRipple type="button" icon="pi pi-trash"
-                        class="p-button-text p-button-rounded p-button-sm p-button-danger"
-                        (click)="removeAddress(i)"></button>
-                    </div>
-                  </td>
-                </tr>
-              </ng-template>
-              <ng-template pTemplate="emptymessage">
-                <tr>
-                  <td colspan="4" class="empty-table-message">No addresses added</td>
-                </tr>
-              </ng-template>
-            </p-table>
-          </div>
-        </div>
-
-      </div>
-      </form>
-  </ng-container>
-
-  <ng-template #loadingState></ng-template>
-  <p-fileUpload #fileUploader name="profileImage" [customUpload]="true" (uploadHandler)="handleFileUpload($event)"
-    [multiple]="false" accept="image/*" [showUploadButton]="false" [showCancelButton]="false"
-    class="hidden"></p-fileUpload>
-
-  <p-dialog [header]="editingPhoneIndex > -1 ? 'Edit Phone' : 'Add Phone'" [(visible)]="phoneDialogVisible"
-    [modal]="true" [style]="{width: '460px'}">
-    <div class="p-fluid" [formGroup]="phoneDialogForm">
-      <div class="field">
-        <label for="phoneNumber">Phone Number</label>
-        <input id="phoneNumber" type="tel" pInputText formControlName="number" />
-      </div>
-      <div class="field">
-        <label for="phoneType">Phone Type</label>
-        <p-select appendTo="body" id="phoneType" [options]="phoneTypes" formControlName="type"></p-select>
-      </div>
-      <div class="field-checkbox">
-        <p-checkbox formControlName="primary" inputId="primaryPhone" [binary]="true"></p-checkbox>
-        <label for="primaryPhone">Set as Primary</label>
-      </div>
-    </div>
-    <ng-template pTemplate="footer">
-      <button pButton type="button" label="Cancel" (click)="phoneDialogVisible=false" class="p-button-text"></button>
-      <button pButton type="button" [label]="editingPhoneIndex > -1 ? 'Update' : 'Add'" (click)="addPhoneNumber()"
-        [disabled]="phoneDialogForm.invalid"></button>
-    </ng-template>
-  </p-dialog>
-
-  <p-dialog [header]="editingAddressIndex > -1 ? 'Edit Address' : 'Add Address'" [(visible)]="addressDialogVisible"
-    [modal]="true" [style]="{width: '640px'}">
-    <div class="p-fluid" [formGroup]="addressDialogForm">
-      <div class="field">
-        <label for="street">Street</label>
-        <input id="street" type="text" pInputText formControlName="street" />
-      </div>
-      <div class="formgrid grid">
-        <div class="field col">
-          <label for="city">City</label>
-          <input id="city" type="text" pInputText formControlName="city" />
-        </div>
-        <div class="field col">
-          <label for="state">State</label>
-          <input id="state" type="text" pInputText formControlName="state" />
-        </div>
-      </div>
-      <div formGroupName="location">
-        <div formArrayName="coordinates">
-          <div class="formgrid grid">
-            <div class="field col">
-              <label for="longitude">Longitude</label>
-              <input type="number" pInputText [formControlName]="0">
-            </div>
-            <div class="field col">
-              <label for="latitude">Latitude</label>
-              <input type="number" pInputText [formControlName]="1">
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="field">
-        <label for="addressType">Address Type</label>
         <p-select appendTo="body" id="addressType" [options]="addressTypes" formControlName="type"></p-select>
       </div>
       <div class="field-checkbox">
@@ -1006,9 +287,10 @@
       </div>
     </div>
     <ng-template pTemplate="footer">
-      <button pButton type="button" label="Cancel" (click)="addressDialogVisible=false" class="p-button-text"></button>
-      <button pButton type="button" [label]="editingAddressIndex > -1 ? 'Update' : 'Add'" (click)="addAddress()"
+      <button pButton type="button" label="Cancel" (click)="addressDialogVisible = false"
+        class="p-button-text"></button>
+      <button pButton type="button" [label]="editingAddressIndex !== null ? 'Update' : 'Add'" (click)="saveAddress()"
         [disabled]="addressDialogForm.invalid"></button>
     </ng-template>
   </p-dialog>
-</div> -->
+</div>

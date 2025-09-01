@@ -85,24 +85,7 @@ interface CustomerDropdownOption {
 @Component({
   selector: 'app-customer-master',
   standalone: true,
-  imports: [
-    CommonModule,
-    FormsModule,
-    ReactiveFormsModule,
-    ButtonModule,
-    InputTextModule,
-    SelectModule,
-    FileUploadModule,
-    ToastModule,
-    DialogModule,
-    TableModule,
-    CheckboxModule,
-    AvatarModule,
-    CardModule,
-    SkeletonModule,
-    TooltipModule,
-    TagModule,
-  ],
+  imports: [CommonModule,FormsModule,ReactiveFormsModule,ButtonModule,InputTextModule,SelectModule,FileUploadModule,ToastModule,DialogModule,TableModule,CheckboxModule,AvatarModule,CardModule,SkeletonModule,TooltipModule,TagModule,],
   templateUrl: './customer-master.component.html',
   styleUrls: ['./customer-master.component.css'],
   providers: [MessageService],
@@ -111,15 +94,12 @@ export class CustomerMasterComponent implements OnInit {
   @Input() customerId!: string;
   customerForm!: FormGroup;
   isLoading = true;
-
   phoneDialogForm!: FormGroup;
   addressDialogForm!: FormGroup;
-
   phoneDialogVisible = false;
   addressDialogVisible = false;
   editingPhoneIndex: number | null = null;
   editingAddressIndex: number | null = null;
-
   statuses: DropdownOption[] = [
     { label: 'Active', value: 'active' },
     { label: 'Inactive', value: 'inactive' },
@@ -141,22 +121,19 @@ export class CustomerMasterComponent implements OnInit {
   customerIDDropdown: CustomerDropdownOption[] = [];
   selectedCustomerId: string | null = null;
   displayCustomer: Partial<Customer> = {};
-
   @ViewChild('fileUploader') fileUploader!: FileUpload;
-
   constructor(
     private fb: FormBuilder,
     private customerService: CustomerService,
     private autoPopulate: AutopopulateService,
     private messageService: AppMessageService,
     public commonMethodService: CommonMethodService,
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.initCustomerForm();
     this.initDialogForms();
     this.loadCustomerDropdown();
-
     if (this.customerId) {
       this.selectedCustomerId = this.customerId;
     } else {
@@ -226,7 +203,7 @@ export class CustomerMasterComponent implements OnInit {
   createAddressGroup(address: Partial<Address> = {}): FormGroup {
     const coordinates =
       Array.isArray(address.location?.coordinates) &&
-      address.location.coordinates.length === 2
+        address.location.coordinates.length === 2
         ? address.location.coordinates
         : [0, 0];
 
@@ -421,73 +398,63 @@ export class CustomerMasterComponent implements OnInit {
     this.addresses.removeAt(index);
   }
 
-  handleFileUpload(event: { files: File[] }): void {
-    const file = event.files[0];
-    if (file && this.customerId) {
-      const formData = new FormData();
-      formData.append('profileImg', file);
+  handleFileUpload(event: any): void {
+  console.log('Selected:', event);
 
-      // 3. Call the method from the INJECTED service
-      this.customerService
-        .uploadProfileImage(formData, this.customerId)
-        .subscribe((res) => {
-          if (res.status === 'success') {
-            const newImageUrl = res.data.customer.profileImg;
-            this.customerForm.patchValue({ profileImg: newImageUrl });
-            this.messageService.showSuccess(
-              'Success',
-              'Profile image updated!',
-            );
-          }
-        });
-    }
-    // ...
-  }
+  const file = event.files[0];
+  if (!file || !this.customerId) return;
+
+  const formData = new FormData();
+  formData.append('profileImg', file);
+
+  this.customerService.uploadProfileImage(formData, this.customerId).subscribe({
+    next: (res) => {
+      if (res.status === 'success') {
+        const newImageUrl = res.data.customer.profileImg;
+        this.displayCustomer.profileImg = newImageUrl + '?t=' + new Date().getTime(); // avoid cache
+        this.customerForm.patchValue({ profileImg: newImageUrl });
+        this.messageService.showSuccess('Success', 'Profile image updated!');
+      }
+    },
+    error: () => {
+      this.messageService.showError('Error', 'Failed to upload profile image.');
+    },
+  });
+}
 
   // handleFileUpload(event: { files: File[] }): void {
+  //   console.log(event);
   //   const file = event.files[0];
+  //   if (!file || !this.customerId) return;
 
-  //   // Ensure we have a file and a customerId before proceeding
-  //   if (file && this.customerId) {
-  //     const formData = new FormData();
-
-  //     // *** FIX 1: The key must match the backend's multer configuration ***
-  //     // Backend expects 'profileImg', so we use that here.
-  //     formData.append('profileImg', file);
-
-  //     this.customerService.uploadProfileImage(formData, this.customerId).subscribe(res => {
-  //       if (res.status === 'success') {
-
-  //         // *** FIX 2: The response structure from the backend has changed ***
-  //         // The URL is now located at res.data.customer.profileImg
+  //   const formData = new FormData();
+  //   formData.append("profileImg", file);
+  //   this.customerService.uploadProfileImage(formData, this.customerId).subscribe({
+  //     next: (res) => {
+  //       if (res.status === "success") {
   //         const newImageUrl = res.data.customer.profileImg;
-
-  //         // Patch the form with the new URL returned from the server
+  //         this.displayCustomer.profileImg = newImageUrl;
   //         this.customerForm.patchValue({ profileImg: newImageUrl });
-
-  //         // Notify the user of the success
-  //         this.messageService.showSuccess('Success', 'Profile image updated!');
+  //         this.messageService.showSuccess("Success", "Profile image updated!");
   //       }
-  //     });
-  //   } else if (!this.customerId) {
-  //     // Handle case where a customer hasn't been saved yet
-  //     this.messageService.showWarn('Save Customer First', 'Please save the new customer before uploading an image.');
-  //     if (this.fileUploader) {
-  //       this.fileUploader.clear();
+  //     },
+  //     error: () => {
+  //       this.messageService.showError("Error", "Failed to upload profile image.");
   //     }
-  //   }
+  //   });
   // }
 
-  getSeverityForType(type: string): string {
+
+  getSeverityForType(type: string): "success" | "secondary" | "info" | "warn" | "danger" | "contrast" {
     switch (type?.toLowerCase()) {
       case 'home':
-        return 'warning';
+        return 'warn';       // ✅ instead of 'warning'
       case 'work':
         return 'success';
       case 'billing':
         return 'info';
       case 'shipping':
-        return 'primary';
+        return 'contrast';   // ✅ instead of 'primary'
       default:
         return 'secondary';
     }
