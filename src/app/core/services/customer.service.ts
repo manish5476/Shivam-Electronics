@@ -15,28 +15,49 @@ import { HttpErrorResponse } from '@angular/common/http';
 
 @Injectable({ providedIn: 'root' })
 export class CustomerService extends BaseApiService {
-
   private endpoint = '/v1/customers';
 
   getAllCustomerData(filterParams?: any): Observable<any> {
-    return this.http.get<any>(`${this.baseUrl}${this.endpoint}`, { params: this.createHttpParams(filterParams) })
-      .pipe(catchError((error: HttpErrorResponse) => this.errorhandler.handleError('getAllCustomerData', error)));
+    return this.http
+      .get<any>(`${this.baseUrl}${this.endpoint}`, {
+        params: this.createHttpParams(filterParams),
+      })
+      .pipe(
+        catchError((error: HttpErrorResponse) =>
+          this.errorhandler.handleError('getAllCustomerData', error),
+        ),
+      );
   }
 
   getCustomerDataWithId(id: string): Observable<any> {
-    return this.http.get<any>(`${this.baseUrl}${this.endpoint}/${id}`)
-      .pipe(catchError((error: HttpErrorResponse) => this.errorhandler.handleError('getCustomerDataWithId', error)));
+    return this.http
+      .get<any>(`${this.baseUrl}${this.endpoint}/${id}`)
+      .pipe(
+        catchError((error: HttpErrorResponse) =>
+          this.errorhandler.handleError('getCustomerDataWithId', error),
+        ),
+      );
   }
 
   // This function now supports sending a single object or an array of objects
   createNewCustomer(data: any | any): Observable<any> {
-    return this.http.post(`${this.baseUrl}${this.endpoint}`, data)
-      .pipe(catchError((error: HttpErrorResponse) => this.errorhandler.handleError('createNewCustomer', error)));
+    return this.http
+      .post(`${this.baseUrl}${this.endpoint}`, data)
+      .pipe(
+        catchError((error: HttpErrorResponse) =>
+          this.errorhandler.handleError('createNewCustomer', error),
+        ),
+      );
   }
 
   updateCustomer(customerId: string, data: any): Observable<any> {
-    return this.http.patch(`${this.baseUrl}${this.endpoint}/${customerId}`, data)
-      .pipe(catchError((error: HttpErrorResponse) => this.errorhandler.handleError('updateCustomer', error)));
+    return this.http
+      .patch(`${this.baseUrl}${this.endpoint}/${customerId}`, data)
+      .pipe(
+        catchError((error: HttpErrorResponse) =>
+          this.errorhandler.handleError('updateCustomer', error),
+        ),
+      );
   }
   /**
    * Deletes a single customer by their ID.
@@ -44,8 +65,13 @@ export class CustomerService extends BaseApiService {
    */
   deleteCustomerID(customerId: string): Observable<any> {
     const url = `${this.baseUrl}${this.endpoint}/${customerId}`;
-    return this.http.delete(url)
-      .pipe(catchError((error: HttpErrorResponse) => this.errorhandler.handleError('deleteCustomerID', error)));
+    return this.http
+      .delete(url)
+      .pipe(
+        catchError((error: HttpErrorResponse) =>
+          this.errorhandler.handleError('deleteCustomerID', error),
+        ),
+      );
   }
 
   /**
@@ -56,25 +82,44 @@ export class CustomerService extends BaseApiService {
     // This now correctly calls the unified DELETE endpoint without an ID in the URL
     const url = `${this.baseUrl}${this.endpoint}`;
     const body = { ids: customerIds };
-    return this.http.delete(url, { body })
-      .pipe(catchError((error: HttpErrorResponse) => this.errorhandler.handleError('deleteCustomers', error)));
+    return this.http
+      .delete(url, { body })
+      .pipe(
+        catchError((error: HttpErrorResponse) =>
+          this.errorhandler.handleError('deleteCustomers', error),
+        ),
+      );
   }
 
   // --- Custom, Non-Standard Methods ---
   uploadProfileImage(formData: FormData, customerId: string): Observable<any> {
-    const apiUrl = `${this.baseUrl}/v1/image/postImages`;
-    return this.http.post(apiUrl, formData).pipe(
-      catchError((error: any) => this.errorhandler.handleError('uploadProfileImage', error))
-    );
+    const apiUrl = `${this.baseUrl}${this.endpoint}/${customerId}/profile-image`;
+    return this.http
+      .post(apiUrl, formData)
+      .pipe(
+        catchError((error: any) =>
+          this.errorhandler.handleError('uploadProfileImage', error),
+        ),
+      );
   }
 
   getCustomerDropDown(): Observable<any[]> {
-    return this.http.get<any[]>(`${this.baseUrl}${this.endpoint}/customerDropDown`)
-      .pipe(catchError((error: HttpErrorResponse) => this.errorhandler.handleError('getCustomerDropDown', error)));
+    return this.http
+      .get<any[]>(`${this.baseUrl}${this.endpoint}/customerDropDown`)
+      .pipe(
+        catchError((error: HttpErrorResponse) =>
+          this.errorhandler.handleError('getCustomerDropDown', error),
+        ),
+      );
   }
-  
-  getCustomerSnapShot(id:any): Observable<any[]> {
-    return this.http.get<any[]>(`${this.baseUrl}${this.endpoint}/${id}/snapshot`)
-      .pipe(catchError((error: HttpErrorResponse) => this.errorhandler.handleError('getCustomerSnapShot', error)));
+
+  getCustomerSnapShot(id: any): Observable<any[]> {
+    return this.http
+      .get<any[]>(`${this.baseUrl}${this.endpoint}/${id}/snapshot`)
+      .pipe(
+        catchError((error: HttpErrorResponse) =>
+          this.errorhandler.handleError('getCustomerSnapShot', error),
+        ),
+      );
   }
 }

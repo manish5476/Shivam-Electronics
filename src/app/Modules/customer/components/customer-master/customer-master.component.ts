@@ -830,23 +830,58 @@ export class CustomerMasterComponent implements OnInit {
     this.addresses.removeAt(index);
   }
 
-  // --- File Upload ---
-  handleFileUpload(event: { files: File[] }): void {
-    const file = event.files[0];
-    if (file && this.customerId) {
-      const formData = new FormData();
-      formData.append('image', file);
-      this.customerService.uploadProfileImage(formData, this.customerId).subscribe(res => {
-        if (res.success) {
-          this.customerForm.patchValue({ profileImg: res.data.imageUrl });
-          this.messageService.showSuccess('Success', 'Profile image updated!');
-        }
-      });
-    } else if (!this.customerId) {
-      this.messageService.showWarn('Save Customer First', 'Please save the new customer before uploading an image.');
-      this.fileUploader.clear();
+
+    handleFileUpload(event: { files: File[] }): void {
+      const file = event.files[0];
+      if (file && this.customerId) {
+        const formData = new FormData();
+        formData.append('profileImg', file);
+
+        // 3. Call the method from the INJECTED service
+        this.customerService.uploadProfileImage(formData, this.customerId).subscribe(res => {
+          if (res.status === 'success') {
+            const newImageUrl = res.data.customer.profileImg;
+            this.customerForm.patchValue({ profileImg: newImageUrl });
+            this.messageService.showSuccess('Success', 'Profile image updated!');
+          }
+        });
+      }
+      // ...
     }
   }
+  // handleFileUpload(event: { files: File[] }): void {
+  //   const file = event.files[0];
+
+  //   // Ensure we have a file and a customerId before proceeding
+  //   if (file && this.customerId) {
+  //     const formData = new FormData();
+
+  //     // *** FIX 1: The key must match the backend's multer configuration ***
+  //     // Backend expects 'profileImg', so we use that here.
+  //     formData.append('profileImg', file);
+
+  //     this.customerService.uploadProfileImage(formData, this.customerId).subscribe(res => {
+  //       if (res.status === 'success') {
+
+  //         // *** FIX 2: The response structure from the backend has changed ***
+  //         // The URL is now located at res.data.customer.profileImg
+  //         const newImageUrl = res.data.customer.profileImg;
+
+  //         // Patch the form with the new URL returned from the server
+  //         this.customerForm.patchValue({ profileImg: newImageUrl });
+
+  //         // Notify the user of the success
+  //         this.messageService.showSuccess('Success', 'Profile image updated!');
+  //       }
+  //     });
+  //   } else if (!this.customerId) {
+  //     // Handle case where a customer hasn't been saved yet
+  //     this.messageService.showWarn('Save Customer First', 'Please save the new customer before uploading an image.');
+  //     if (this.fileUploader) {
+  //       this.fileUploader.clear();
+  //     }
+  //   }
+  // }
   
   getSeverityForType(status: string) {
     switch (status?.toLowerCase()) {
