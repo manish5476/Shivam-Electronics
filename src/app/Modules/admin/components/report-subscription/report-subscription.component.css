@@ -1,0 +1,9 @@
+/* Ensures PrimeNG components within AG Grid cells are fully visible */
+:host ::ng-deep .ag-cell {
+  overflow: visible !important;
+}
+
+/* Adds some vertical spacing between form fields for better readability */
+.field {
+  margin-bottom: 1.5rem;
+}

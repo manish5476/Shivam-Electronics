@@ -39,7 +39,7 @@ export class SharedGridComponent implements OnInit, OnChanges {
 
   @Input() rowClassRules: any = {};
   @Input() usertheme: string = 'ag-theme-quartz';
-  @Input() data: any[] = [];
+  @Input() data: any 
   @Input() rowSelectionMode: string = 'single';
   @Input() column: ColDef[] = [];
   @Input() gridHeight: string = '162px';

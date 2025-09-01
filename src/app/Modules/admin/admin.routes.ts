@@ -7,6 +7,7 @@ import { PermissionComponentComponent } from './components/permission-component/
 import { TransactionsComponent } from './components/transactions/transactions.component';
 import { PurchaseorderService } from '../../core/services/purchaseorder.service';
 import { PurchaseOrderDashboardComponent } from './purchase/product-incoming/product-incoming.component';
+import { ReportSubscriptionComponent } from './components/report-subscription/report-subscription.component';
 
 export const ADMIN_ROUTES: Routes = [
   {
@@ -38,6 +39,11 @@ export const ADMIN_ROUTES: Routes = [
     path: 'purchase', component: PurchaseOrderDashboardComponent,
     canActivate: [RoleGuard],
     data: { roles: ['admin', 'superAdmin'] }
+  },
+  {
+    path: 'subscribe', component: ReportSubscriptionComponent,
+    // canActivate: [RoleGuard],
+    // data: { roles: ['admin', 'superAdmin'] }
   },
 ];
 

@@ -422,28 +422,6 @@ export class CustomerMasterComponent implements OnInit {
   });
 }
 
-  // handleFileUpload(event: { files: File[] }): void {
-  //   console.log(event);
-  //   const file = event.files[0];
-  //   if (!file || !this.customerId) return;
-
-  //   const formData = new FormData();
-  //   formData.append("profileImg", file);
-  //   this.customerService.uploadProfileImage(formData, this.customerId).subscribe({
-  //     next: (res) => {
-  //       if (res.status === "success") {
-  //         const newImageUrl = res.data.customer.profileImg;
-  //         this.displayCustomer.profileImg = newImageUrl;
-  //         this.customerForm.patchValue({ profileImg: newImageUrl });
-  //         this.messageService.showSuccess("Success", "Profile image updated!");
-  //       }
-  //     },
-  //     error: () => {
-  //       this.messageService.showError("Error", "Failed to upload profile image.");
-  //     }
-  //   });
-  // }
-
 
   getSeverityForType(type: string): "success" | "secondary" | "info" | "warn" | "danger" | "contrast" {
     switch (type?.toLowerCase()) {

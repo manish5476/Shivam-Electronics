@@ -1,0 +1,47 @@
+<p-toast></p-toast>
+<div class="grid p-3 gap-3">
+  <!-- Subscription Form Card -->
+  <div class="col-12 md:col-4">
+    <p-card header="Subscribe to a Report">
+      <form [formGroup]="subscriptionForm" (ngSubmit)="onSubmit()">
+        <div class="field">
+          <label for="reportType" class="block text-sm font-medium text-gray-700 mb-2">Report Type</label>
+          <p-dropdown id="reportType" [options]="reportTypes" formControlName="reportType"
+            placeholder="Select a Report Type" optionLabel="label" optionValue="value" styleClass="w-full">
+          </p-dropdown>
+        </div>
+
+        <div class="field">
+          <label for="schedule" class="block text-sm font-medium text-gray-700 mb-2">Schedule</label>
+          <p-dropdown id="schedule" [options]="schedules" formControlName="schedule" placeholder="Select a Schedule"
+            optionLabel="label" optionValue="value" styleClass="w-full">
+          </p-dropdown>
+        </div>
+
+        <div class="field">
+          <label for="recipients" class="block text-sm font-medium text-gray-700 mb-2">Recipient Emails</label>
+          <input id="recipients" formControlName="recipients" placeholder="Add email and press Enter"
+            styleClass="w-full" separator="," />
+          <small class="p-error"
+            *ngIf="subscriptionForm.get('recipients')?.hasError('required') && subscriptionForm.get('recipients')?.touched">
+            At least one recipient is required.
+          </small>
+        </div>
+
+        <p-button type="submit" label="Subscribe" icon="pi pi-check" [disabled]="subscriptionForm.invalid">
+        </p-button>
+      </form>
+    </p-card>
+  </div>
+
+  <!-- Subscriptions Grid Card -->
+  <div class="col-12 md:col">
+    <p-card header="My Subscriptions">
+      <!-- <app-shared-grid [columnDefs]="colDefs" [rowData$]="subscriptions$" [context]="this" gridHeight="60vh">
+      </app-shared-grid> -->
+      <app-shared-grid [data]="subscriptions$" [gridHeight]="'220px'" [headerFilter]="false" [rowSelectionMode]="'none'"
+        [GridName]="'Customer Details'" [column]="colDefs" (eventFromGrid)="eventFromGrid($event)">
+      </app-shared-grid>
+    </p-card>
+  </div>
+</div>
