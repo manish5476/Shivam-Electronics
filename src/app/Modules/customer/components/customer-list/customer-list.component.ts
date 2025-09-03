@@ -8,6 +8,9 @@ import { IftaLabelModule } from 'primeng/iftalabel';
 import { FormsModule } from '@angular/forms';
 import { AutopopulateService } from '../../../../core/services/autopopulate.service';
 import { AppMessageService } from '../../../../core/services/message.service';
+// Add this import to the top of your component file
+import { ImageCellRendererComponent } from '../../../../shared/AgGrid/AgGridcomponents/image-cell-renderer/image-cell-renderer.component';
+
 @Component({
     selector: 'app-customer-list',
     standalone: true,
@@ -26,7 +29,7 @@ export class CustomerListComponent implements OnInit {
         this.getData();
     }
     data: any = [];
-    customer:any
+    customer: any
     column: any = [];
     rowSelectionMode: any = 'singleRow';
     customerFilter: any = {
@@ -38,7 +41,7 @@ export class CustomerListComponent implements OnInit {
         limit: '',
         customerIDDropdown: [],
     }
-    constructor(private cdr: ChangeDetectorRef, private autoPopulate: AutopopulateService, private InvoiceService: InvoiceService, private CustomerService: CustomerService,private messageService:AppMessageService) { }
+    constructor(private cdr: ChangeDetectorRef, private autoPopulate: AutopopulateService, private InvoiceService: InvoiceService, private CustomerService: CustomerService, private messageService: AppMessageService) { }
 
     ngOnInit(): void {
         this.autopopulatedata()
@@ -68,7 +71,7 @@ export class CustomerListComponent implements OnInit {
                     }
                 },
             },
-            { field: 'profileImg', headerName: 'Profile Image', sortable: true, filter: true, resizable: true },
+            { headerName: 'Profile Photo', field: 'profileImg', cellRenderer: ImageCellRendererComponent, width: 120, autoHeight: true, filter: false, sortable: false},
             { field: 'email', headerName: 'Email', sortable: true, filter: true, resizable: true },
             { field: 'fullname', headerName: 'Full Name', sortable: true, filter: true, resizable: true },
             { field: 'phoneNumbers[0].number', headerName: 'Contact Number', sortable: true, filter: true, resizable: true, valueGetter: (params: any) => params.data.phoneNumbers?.[0]?.number },
@@ -148,7 +151,7 @@ export class CustomerListComponent implements OnInit {
             const cellValueChangedEvent = event.event as CellValueChangedEvent;
             const rowNode = cellValueChangedEvent.node;
             const dataItem = rowNode.data;
-            this.customer=dataItem
+            this.customer = dataItem
             const field = cellValueChangedEvent.colDef.field;
             const newValue = cellValueChangedEvent.newValue;
 
@@ -177,28 +180,28 @@ export class CustomerListComponent implements OnInit {
     }
 
     saveCustomer() {
-    if (this.validateCustomer()) {
-    //   this.customer.guaranteerId = this.selectedGuaranter._id;
-      this.customer.mobileNumber = Number(this.customer.phoneNumbers[0].number); // Convert string to number
-      this.CustomerService.createNewCustomer(this.customer).subscribe(
-        (response: any) => {
-          if (response.status === 'success') {
-            const customerId = response.data._id;
-            // this.customerId = customerId;
-          } else {
-            this.messageService.showError('Error', response.message || 'Failed to create customer.');
-          }
-        },
-        (error) => {
-          // Handle HTTP errors
-          const errorMessage = error.error?.message || 'An unexpected error occurred.';
-          this.messageService.showError('Error', errorMessage);
+        if (this.validateCustomer()) {
+            //   this.customer.guaranteerId = this.selectedGuaranter._id;
+            this.customer.mobileNumber = Number(this.customer.phoneNumbers[0].number); // Convert string to number
+            this.CustomerService.createNewCustomer(this.customer).subscribe(
+                (response: any) => {
+                    if (response.status === 'success') {
+                        const customerId = response.data._id;
+                        // this.customerId = customerId;
+                    } else {
+                        this.messageService.showError('Error', response.message || 'Failed to create customer.');
+                    }
+                },
+                (error) => {
+                    // Handle HTTP errors
+                    const errorMessage = error.error?.message || 'An unexpected error occurred.';
+                    this.messageService.showError('Error', errorMessage);
+                }
+            );
+        } else {
+            this.messageService.showError('Validation Error', 'Please fill in all required fields.');
         }
-      );
-    } else {
-      this.messageService.showError('Validation Error', 'Please fill in all required fields.');
     }
-  }
 
 
 }
