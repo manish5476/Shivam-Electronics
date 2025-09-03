@@ -182,15 +182,9 @@ export class AdminUserComponent implements OnInit {
         }
     }
 
-    /**
-     * Handles hover effects for buttons by directly manipulating their style properties.
-     * @param event The mouse event (mouseenter or mouseleave).
-     * @param isHovering True if mouseenter, false if mouseleave.
-     * @param type The type of button to apply specific hover styles.
-     */
+  
     onButtonHover(event: MouseEvent, isHovering: boolean, type: 'primary' | 'danger-outlined' | 'secondary-accent') {
         const button = event.currentTarget as HTMLElement;
-
         if (type === 'primary') {
             if (isHovering) {
                 button.style.backgroundColor = 'var(--theme-button-hover-bg-primary)';

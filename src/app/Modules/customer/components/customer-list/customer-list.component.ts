@@ -11,11 +11,11 @@ import { AppMessageService } from '../../../../core/services/message.service';
 // Add this import to the top of your component file
 import { ImageCellRendererComponent } from '../../../../shared/AgGrid/AgGridcomponents/image-cell-renderer/image-cell-renderer.component';
 import { Button } from "primeng/button";
-
+import { AutoCompleteCompleteEvent,AutoCompleteModule } from 'primeng/autocomplete';
 @Component({
     selector: 'app-customer-list',
     standalone: true,
-    imports: [SharedGridComponent, SelectModule, FormsModule, IftaLabelModule, Button],
+    imports: [SharedGridComponent, SelectModule,AutoCompleteModule, FormsModule, IftaLabelModule, Button],
     providers: [CustomerService],
     templateUrl: './customer-list.component.html',
     styleUrl: './customer-list.component.css'
@@ -49,6 +49,32 @@ export class CustomerListComponent implements OnInit {
         this.getColumn();
         this.getData();
     }
+
+  emailSuggestions: string[] = [];
+
+  private readonly domains: string[] = [
+    '@gmail.com',
+    '@yahoo.com',
+    '@outlook.com',
+    '@hotmail.com',
+    '@protonmail.com'
+  ];
+
+  filterEmails(event: AutoCompleteCompleteEvent) {
+    const query = event.query;
+
+    if (!query) {
+      this.emailSuggestions = [];
+      return;
+    }
+
+    // If user already typed '@', don’t prepend again
+    if (query.includes('@')) {
+      this.emailSuggestions = [];
+    } else {
+      this.emailSuggestions = this.domains.map(domain => query + domain);
+    }
+  }
 
     autopopulatedata() {
         this.autoPopulate.getModuleData('customers').subscribe((data: any) => {

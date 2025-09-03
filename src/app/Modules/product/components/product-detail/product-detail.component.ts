@@ -8,14 +8,15 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { SelectModule } from 'primeng/select';
 import { Button } from "primeng/button";
+import { ImageCellRendererComponent } from '../../../../shared/AgGrid/AgGridcomponents/image-cell-renderer/image-cell-renderer.component';
 
 @Component({
-    selector: 'app-product-detail',
-    imports: [SharedGridComponent, SelectModule, CommonModule, FormsModule, ProductMasterComponent, Dialog, Button],
-    templateUrl: './product-detail.component.html',
-    styleUrl: './product-detail.component.css'
+  selector: 'app-product-detail',
+  imports: [SharedGridComponent, SelectModule, CommonModule, FormsModule, ProductMasterComponent, Dialog, Button],
+  templateUrl: './product-detail.component.html',
+  styleUrl: './product-detail.component.css'
 })
-export  class ProductDetailComponent {
+export class ProductDetailComponent {
   data: any;
   column: any
   rowSelectionMode: any
@@ -78,6 +79,8 @@ export  class ProductDetailComponent {
       [
         { field: 'title', sortable: true, filter: true, resizable: true, editable: true },
         { field: 'description', sortable: true, filter: true, resizable: true, editable: true },
+        { headerName: 'Photo', field: 'thumbnail', cellRenderer: ImageCellRendererComponent, width: 120, autoHeight: true, filter: false, sortable: false },
+        { field: 'thumbnail', sortable: true, filter: true, resizable: true, editable: true },
         { field: 'rate', sortable: true, filter: true, resizable: true, editable: true },
         { field: 'price', sortable: true, filter: true, resizable: true, editable: true },
         { field: 'stock', sortable: true, filter: true, resizable: true, editable: true },

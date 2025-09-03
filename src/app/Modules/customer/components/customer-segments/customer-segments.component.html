@@ -1,150 +1,72 @@
-<div class="theme-blue p-6 md:p-8">
-  <h1 class="text-2xl font-bold mb-6">Customer Segments</h1>
+<p-toast></p-toast>
+<div class="card">
+  <div class="flex justify-between items-center mb-4">
+    <h1 class="text-xl font-bold text-[var(--theme-text-primary)]">Customer Segments & Analytics</h1>
+  </div>
 
-  <p-tabView>
+  <p-tabView styleClass="modern-tabview">
     <!-- High Value Customers -->
-    <p-tabPanel header="High Value Customers">
-      <p-table #dt1 [value]="customerSegments?.highValue" [paginator]="true" [rows]="5" [rowsPerPageOptions]="[5,10,20]"
-        [globalFilterFields]="['fullname','email']" [tableStyle]="{'min-width': '50rem'}" responsiveLayout="scroll">
-
-        <!-- Global Filter -->
-        <ng-template pTemplate="caption">
-          <div class="flex justify-between items-center">
-            <span class="text-lg font-semibold">High Value Customers</span>
-            <span class="p-input-icon-left">
-              <i class="pi pi-search"></i>
-              <input pInputText type="text" (input)="dt1.filterGlobal($any($event.target).value, 'contains')"
-                placeholder="Search..." />
-            </span>
-          </div>
-        </ng-template>
-
-        <!-- Header with column filters -->
-        <ng-template pTemplate="header">
-          <tr class="bg-blue-100 text-blue-800">
-            <th pSortableColumn="fullname">Full Name <p-columnFilter field="fullname" display="menu"></p-columnFilter>
-            </th>
-            <th pSortableColumn="email">Email <p-columnFilter field="email" display="menu"></p-columnFilter></th>
-            <th class="text-right" pSortableColumn="totalSpent">Total Spent <p-columnFilter field="totalSpent"
-                display="menu" type="numeric"></p-columnFilter></th>
-            <th pSortableColumn="lastPurchaseDate">Last Purchase <p-columnFilter field="lastPurchaseDate" display="menu"
-                type="date"></p-columnFilter></th>
-          </tr>
-        </ng-template>
-
-        <ng-template pTemplate="body" let-customer>
-          <tr>
-            <td class="font-semibold">{{ customer.fullname | titlecase }}</td>
-            <td>{{ customer.email }}</td>
-            <td class="text-right">
-              <p-tag [value]="formatCurrency(customer.totalSpent)"
-                [severity]="getSpendingSeverity(customer.totalSpent)"></p-tag>
-            </td>
-            <td>{{ customer.lastPurchaseDate | date:'mediumDate' }}</td>
-          </tr>
-        </ng-template>
-      </p-table>
+    <p-tabPanel header="High Value">
+      <app-shared-grid
+        [rowSelectionMode]="'multiple'"
+        gridHeight="55vh"
+        [data]="customerSegments?.highValue"
+        [column]="highValueColumns"
+        (eventFromGrid)="eventFromGrid($event)">
+      </app-shared-grid>
     </p-tabPanel>
 
     <!-- Recent Customers -->
-    <p-tabPanel header="Recent Customers">
-      <p-table #dt2 [value]="customerSegments?.recentCustomers" [paginator]="true" [rows]="5"
-        [rowsPerPageOptions]="[5,10,20]" [globalFilterFields]="['fullname','email']" responsiveLayout="scroll">
-        <ng-template pTemplate="caption">
-          <div class="flex justify-between items-center">
-            <span class="text-lg font-semibold">Recent Customers</span>
-            <span class="p-input-icon-left">
-              <i class="pi pi-search"></i>
-              <input pInputText type="text" (input)="dt2.filterGlobal($any($event.target).value, 'contains')"
-                placeholder="Search..." />
-            </span>
-          </div>
-        </ng-template>
-
-        <ng-template pTemplate="header">
-          <tr class="bg-green-100 text-green-800">
-            <th>Full Name</th>
-            <th>Email</th>
-            <th class="text-right">Total Spent</th>
-            <th>Last Purchase</th>
-          </tr>
-        </ng-template>
-
-        <ng-template pTemplate="body" let-customer>
-          <tr>
-            <td class="font-semibold">{{ customer.fullname | titlecase }}</td>
-            <td>{{ customer.email }}</td>
-            <td class="text-right">{{ customer.totalSpent | currency:'INR':'symbol':'1.0-0' }}</td>
-            <td>{{ customer.lastPurchaseDate | date:'mediumDate' }}</td>
-          </tr>
-        </ng-template>
-      </p-table>
+    <p-tabPanel header="Recent">
+      <app-shared-grid
+        [rowSelectionMode]="'multiple'"
+        gridHeight="55vh"
+        [data]="customerSegments?.recentCustomers"
+        [column]="recentColumns"
+        (eventFromGrid)="eventFromGrid($event)">
+      </app-shared-grid>
     </p-tabPanel>
 
     <!-- At Risk Customers -->
     <p-tabPanel>
       <ng-template pTemplate="header">
-        <i class="pi pi-exclamation-triangle mr-2 text-red-500"></i>
-        <span class="font-bold text-red-500">At Risk Customers</span>
-        <p-tag [value]="customerSegments?.atRisk?.length || 0" severity="danger" class="ml-2"></p-tag>
+        <div class="flex items-center gap-2">
+          <i class="pi pi-exclamation-triangle text-orange-500"></i>
+          <span class="font-semibold text-orange-500">At Risk</span>
+          <p-tag [value]="customerSegments?.atRisk?.length || 0" [severity]="'danger'"></p-tag>
+        </div>
       </ng-template>
 
-      <div *ngIf="customerSegments?.atRisk?.length; else noRiskTpl">
-        <p-table [value]="customerSegments?.atRisk" [paginator]="true" [rows]="5" [rowsPerPageOptions]="[5,10,20]"
-          responsiveLayout="scroll">
-          <ng-template pTemplate="header">
-            <tr class="bg-red-100 text-red-800">
-              <th>Full Name</th>
-              <th>Email</th>
-              <th class="text-right">Total Spent</th>
-              <th>Last Purchase</th>
-            </tr>
-          </ng-template>
-          <ng-template pTemplate="body" let-customer>
-            <tr>
-              <td class="font-semibold">{{ customer.fullname | titlecase }}</td>
-              <td>{{ customer.email }}</td>
-              <td class="text-right">{{ customer.totalSpent | currency:'INR':'symbol':'1.0-0' }}</td>
-              <td>{{ customer.lastPurchaseDate | date:'mediumDate' }}</td>
-            </tr>
-          </ng-template>
-        </p-table>
-      </div>
+      <ng-container *ngIf="customerSegments?.atRisk?.length; else noRiskTpl">
+        <app-shared-grid
+          [rowSelectionMode]="'multiple'"
+          gridHeight="55vh"
+          [data]="customerSegments?.atRisk"
+          [column]="atRiskColumns"
+          (eventFromGrid)="eventFromGrid($event)">
+        </app-shared-grid>
+      </ng-container>
 
       <ng-template #noRiskTpl>
-        <div class="flex items-center justify-center h-32 text-gray-500 italic border rounded-md">
-          🎉 No customers are currently at risk!
+        <div class="no-data-template">
+          <i class="pi pi-shield text-4xl text-green-500"></i>
+          <h3 class="text-lg font-semibold mt-4">All Good!</h3>
+          <p class="text-sm text-[var(--theme-text-secondary)]">No customers are currently at risk.</p>
         </div>
       </ng-template>
     </p-tabPanel>
 
-    <!-- 📊 Sales Forecast -->
+    <!-- Sales Forecast -->
     <p-tabPanel header="Sales Forecast">
-      <p-table [value]="salesForecast?.historicalData" [paginator]="true" [rows]="5" [rowsPerPageOptions]="[5,10]"
-        responsiveLayout="scroll">
-
-        <ng-template pTemplate="header">
-          <tr class="bg-purple-100 text-purple-800">
-            <th>Month</th>
-            <th>Year</th>
-            <th class="text-right">Total Sales</th>
-          </tr>
-        </ng-template>
-
-        <ng-template pTemplate="body" let-row>
-          <tr>
-            <td>{{ row._id.month }}/{{ row._id.year }}</td>
-            <td>{{ row._id.year }}</td>
-            <td class="text-right">{{ row.totalSales | currency:'INR':'symbol':'1.0-0' }}</td>
-          </tr>
-        </ng-template>
-      </p-table>
-
-      <div class="mt-4 flex items-center gap-2">
-        <p-tag severity="info"
-          [value]="'📈 Forecast Next Month: ' + (salesForecast?.forecast?.nextMonth | currency:'INR':'symbol':'1.0-0')">
-        </p-tag>
+      <div class="mb-4">
+        <p-tag severity="info" styleClass="text-lg" [value]="'📈 Forecast Next Month: ' + (salesForecast?.forecast?.nextMonth | currency:'INR':'symbol':'1.0-0')"></p-tag>
       </div>
+      <app-shared-grid
+        [rowSelectionMode]="'none'"
+        gridHeight="48vh"
+        [data]="salesForecast?.historicalData"
+        [column]="salesColumns">
+      </app-shared-grid>
     </p-tabPanel>
   </p-tabView>
 </div>

@@ -10,12 +10,15 @@
       </p-select>
     </div>
 
-    <!-- Email Input -->
+    <!-- Email Input with AutoComplete -->
     <div class="se-filter-field">
       <label for="email">Email</label>
-      <input id="email" [(ngModel)]="customerFilter.email" (input)="getData()" placeholder="email" type="text"
-        pInputText min="1" />
+      <p-autoComplete id="email" [(ngModel)]="customerFilter.email" [suggestions]="emailSuggestions"
+        (completeMethod)="filterEmails($event)" [forceSelection]="false" placeholder="Enter email" [minLength]="1"
+        class="w-full" pInputText>
+      </p-autoComplete>
     </div>
+
 
     <!-- Phone Input -->
     <div class="se-filter-field">

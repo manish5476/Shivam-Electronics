@@ -1,69 +1,71 @@
 /* ==========================================================================
-   Purchase Order Management Component Styles
+   Purchase Order Management - Enhanced Premium UI
    ========================================================================== */
 
 /* --- 1. Toast & Confirmation Dialogs --- */
 
-/* Animated Toast Notification */
 .toast {
   position: fixed;
-  top: 1.25rem; /* 20px */
-  right: 1.25rem; /* 20px */
+  top: 1.25rem;
+  right: 1.25rem;
   padding: 1rem 1.5rem;
-  border-radius: var(--ui-border-radius);
+  border-radius: 12px;
   color: var(--theme-text-inverted);
-  box-shadow: var(--ui-shadow-hover);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
   z-index: 1000;
-  min-width: 300px;
-  animation: slideInDown 0.4s ease-out;
+  min-width: 320px;
+  font-family: var(--font-primary);
+  font-weight: 500;
+  animation: slideInDown 0.4s ease-out, fadeIn 0.4s ease-out;
+  backdrop-filter: blur(6px);
 }
 
-.toast-success { background: linear-gradient(135deg, var(--theme-success-primary), #1e7e34); }
-.toast-error { background: linear-gradient(135deg, var(--theme-error-primary), #a71d2a); }
-.toast-warn { background: linear-gradient(135deg, var(--theme-warning-primary), #d39e00); color: var(--theme-bg-primary); }
+.toast-success { background: linear-gradient(135deg, #28a745, #218838); }
+.toast-error { background: linear-gradient(135deg, #dc3545, #a71d2a); }
+.toast-warn { background: linear-gradient(135deg, #ffc107, #d39e00); color: #2c2c2c; }
 
-/* Confirmation Dialog Backdrop and Box */
+/* Confirmation Dialog */
 .confirmation-backdrop {
   position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.55);
   display: flex;
   align-items: center;
   justify-content: center;
   z-index: 999;
-  backdrop-filter: blur(4px);
-  animation: fadeIn 0.3s ease;
+  backdrop-filter: blur(6px);
+  animation: fadeIn 0.35s ease;
 }
 
 .confirmation-dialog {
   width: 90%;
-  max-width: 500px;
+  max-width: 480px;
+  padding: 2rem;
+  border-radius: 16px;
+  background: var(--theme-bg-primary);
+  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.25);
   transform-origin: center;
-  animation: scaleIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  animation: scaleIn 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
-
-/* --- 2. Main Layout & Tabs --- */
-
+/* --- 2. Tabs --- */
 .tab-button {
-  padding: 0.75rem 1.5rem;
+  padding: 0.85rem 1.75rem;
   font-family: var(--font-primary);
   font-weight: 600;
   color: var(--theme-text-secondary);
   border: none;
   background-color: transparent;
   cursor: pointer;
-  position: relative;
   border-bottom: 3px solid transparent;
-  margin-bottom: -1px; /* Overlaps the container's border */
-  transition: color 0.2s ease, border-color 0.2s ease;
+  margin-bottom: -1px;
+  transition: all 0.25s ease;
+  position: relative;
 }
 
 .tab-button:hover {
   color: var(--theme-accent-primary-hover);
+  transform: translateY(-2px);
 }
 
 .tab-button.active {
@@ -71,18 +73,16 @@
   border-color: var(--theme-accent-primary);
 }
 
-
-/* --- 3. Form Specific Styles --- */
-
-/* Themed Inputs for consistency */
+/* --- 3. Inputs & Selects --- */
 .themed-input {
   width: 100%;
-  padding: 0.75rem;
+  padding: 0.8rem 1rem;
   background-color: var(--theme-bg-secondary);
-  border: var(--ui-border-width) solid var(--theme-border-primary);
+  border: 1px solid var(--theme-border-primary);
+  border-radius: 10px;
+  font-size: 0.95rem;
   color: var(--theme-text-primary);
-  border-radius: var(--ui-border-radius);
-  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  transition: border-color 0.25s ease, box-shadow 0.25s ease;
 }
 
 .themed-input:hover {
@@ -92,15 +92,16 @@
 .themed-input:focus {
   outline: none;
   border-color: var(--theme-accent-primary);
-  box-shadow: 0 0 0 3px var(--theme-accent-focus-ring);
+  box-shadow: 0 0 0 4px var(--theme-accent-focus-ring);
 }
 
-/* Style PrimeNG Dropdown to match themed inputs */
-/* We use ::ng-deep to pierce component encapsulation for PrimeNG */
+/* PrimeNG Select overrides */
 :host ::ng-deep .themed-select .p-dropdown {
-  border: var(--ui-border-width) solid var(--theme-border-primary) !important;
+  border: 1px solid var(--theme-border-primary) !important;
   background: var(--theme-bg-secondary) !important;
-  border-radius: var(--ui-border-radius) !important;
+  border-radius: 10px !important;
+  min-height: 44px;
+  transition: all 0.25s ease;
 }
 
 :host ::ng-deep .themed-select .p-dropdown:not(.p-disabled):hover {
@@ -108,65 +109,63 @@
 }
 
 :host ::ng-deep .themed-select .p-dropdown.p-focus {
-  box-shadow: 0 0 0 3px var(--theme-accent-focus-ring) !important;
   border-color: var(--theme-accent-primary) !important;
+  box-shadow: 0 0 0 4px var(--theme-accent-focus-ring) !important;
 }
 
-/* --- 4. Table Styles --- */
-
-/* Table Header */
+/* --- 4. Tables --- */
 table thead tr th {
   font-family: var(--font-primary);
   color: var(--theme-text-label);
-  font-weight: 600;
+  font-weight: 700;
   text-transform: uppercase;
-  font-size: 0.75rem;
-  letter-spacing: 0.05em;
+  font-size: 0.8rem;
+  letter-spacing: 0.06em;
+  padding-bottom: 0.5rem;
 }
 
-/* Table Body */
 table tbody tr {
-  transition: background-color 0.2s ease;
+  transition: background-color 0.25s ease;
 }
 
-table tbody tr:last-child {
-  border-bottom: none;
-}
-
-table tbody tr td {
-  color: var(--theme-text-secondary);
-  vertical-align: middle;
-}
-
-/* Match the hover effect from your common styles */
 table tbody tr:hover {
   background-color: var(--theme-hover-bg);
 }
 
-/* --- 5. PrimeNG Action Button Overrides --- */
+table tbody td {
+  padding: 0.85rem;
+  font-size: 0.95rem;
+  color: var(--theme-text-secondary);
+}
 
-/* We use ::ng-deep to style the PrimeNG buttons inside this component */
+/* --- 5. PrimeNG Action Buttons --- */
 :host ::ng-deep .p-button.p-button-sm {
-  width: 2.25rem;
-  height: 2.25rem;
+  width: 2.4rem;
+  height: 2.4rem;
+  border-radius: 10px;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+:host ::ng-deep .p-button.p-button-sm:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
 }
 
 :host ::ng-deep .p-button.p-button-info {
   background: linear-gradient(135deg, #17a2b8, #117a8b) !important;
 }
 :host ::ng-deep .p-button.p-button-success {
-  background: linear-gradient(135deg, var(--theme-success-primary), #1e7e34) !important;
+  background: linear-gradient(135deg, #28a745, #218838) !important;
 }
 :host ::ng-deep .p-button.p-button-warning {
-  background: linear-gradient(135deg, var(--theme-warning-primary), #d39e00) !important;
-  color: var(--theme-bg-primary) !important;
+  background: linear-gradient(135deg, #ffc107, #d39e00) !important;
+  color: #2c2c2c !important;
 }
 :host ::ng-deep .p-button.p-button-danger {
-  background: linear-gradient(135deg, var(--theme-error-primary), #a71d2a) !important;
+  background: linear-gradient(135deg, #dc3545, #a71d2a) !important;
 }
 
 /* --- 6. Animations --- */
-
 .animate-fade-in {
   animation: fadeIn 0.5s ease-in-out forwards;
 }
@@ -177,11 +176,11 @@ table tbody tr:hover {
 }
 
 @keyframes slideInDown {
-  from { opacity: 0; transform: translateY(-20px); }
+  from { opacity: 0; transform: translateY(-25px); }
   to { opacity: 1; transform: translateY(0); }
 }
 
 @keyframes scaleIn {
-  from { opacity: 0; transform: scale(0.95); }
+  from { opacity: 0; transform: scale(0.92); }
   to { opacity: 1; transform: scale(1); }
 }
