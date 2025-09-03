@@ -1,10 +1,9 @@
-/* Header Filter Area */
+/* 
 .ag-grid-header-filter-area {
   flex-shrink: 0;
   margin-bottom: 6px;
 }
 
-/* Glass Container for Header Controls */
 .header-controls-glass-container {
   display: flex;
   align-items: center;
@@ -130,7 +129,6 @@
   box-shadow: 0 4px 12px var(--theme-shadow-color);
 }
 
-/* Dark Mode Adjustments */
 @media (prefers-color-scheme: dark) {
   .header-controls-glass-container {
     background: var(--theme-glass-bg);
@@ -146,4 +144,4 @@
     background: var(--theme-bg-secondary);
     border-color: var(--theme-border-primary);
   }
-}
+} */

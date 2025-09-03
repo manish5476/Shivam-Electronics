@@ -141,51 +141,97 @@ a:hover { color: var(--theme-accent-primary-hover); text-decoration: underline; 
   border-color: #f44336 !important;
 }
 
+/* ==========================================================================
+   Shivam-Electronics - Themed Filter Bar
+   ========================================================================== */
 
-/* The main container for the filter section. Uses flexbox for alignment. */
 .se-filter-bar {
   display: flex;
-  flex-wrap: wrap; /* Allows filters to wrap onto the next line on smaller screens */
-  align-items: flex-end; /* Aligns items to the bottom, useful for buttons */
-  gap: 1.5rem; /* Consistent spacing between all filter items */
-  padding: 1rem 1.25rem;
-  background-color: var(--surface-card);
-  border-bottom: 1px solid var(--surface-border);
-  border-radius: var(--border-radius);
-  margin-bottom: 1rem;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 1.25rem;
+  padding: 1.25rem;
+
+  background-color: var(--theme-bg-secondary);
+  border: var(--ui-border-width) solid var(--theme-border-primary);
+  border-radius: var(--ui-border-radius);
+  margin-bottom: 1.5rem;
+  box-shadow: var(--ui-shadow);
 }
 
-/* A wrapper for each individual filter field (label + input) */
+/* Each filter field: label + input */
 .se-filter-field {
   display: flex;
   flex-direction: column;
-  gap: 0.5rem; /* Space between label and input */
-  flex: 1 1 200px; /* Flex-grow, flex-shrink, and base width */
+  gap: 0.5rem;
+  flex: 1 1 220px;
   min-width: 200px;
 }
 
 .se-filter-field label {
-  font-size: 0.875rem;
+  font-size: 0.85rem;
   font-weight: 500;
-  color: var(--text-color-secondary);
+  color: var(--theme-text-label);
+  padding-left: 0.25rem;
 }
 
-/* Styling for the action buttons container (e.g., Apply, Clear) */
+/* Action buttons */
 .se-filter-actions {
   display: flex;
-  gap: 0.75rem; /* Space between buttons */
-  padding-bottom: 2px; /* Small adjustment for perfect alignment with inputs */
+  gap: 0.75rem;
+  align-items: flex-end;
 }
 
-/*
- * Specific overrides for PrimeNG components within the filter bar
- * to ensure they are consistent in size and appearance.
-*/
+/* ==========================================================================
+   Unified Input Sizing (Native + PrimeNG)
+   ========================================================================== */
+
+.se-filter-bar .p-inputtext,
 .se-filter-bar .p-dropdown,
 .se-filter-bar .p-multiselect,
-.se-filter-bar .p-calendar .p-inputtext,
-.se-filter-bar input[pInputText] {
-  width: 100%; /* Make all input components take the full width of their container */
+.se-filter-bar .p-calendar,
+.se-filter-bar input[type="text"],
+.se-filter-bar input[type="number"],
+.se-filter-bar select {
+  width: 100%;
+  height: 2.75rem;              
+  min-height: 2.75rem;
+  font-size: 0.9rem;
+  font-family: var(--font-body);
+  background-color: var(--surface-section, var(--theme-bg-ternary)); /* A distinct but theme-friendly background */
+  border: 1px solid var(--surface-border, var(--theme-border-primary));
+  border-radius: var(--ui-border-radius);
+  box-sizing: border-box;
+}
+
+/* Fix vertical alignment inside dropdowns and multiselects */
+.se-filter-bar .p-dropdown .p-dropdown-label,
+.se-filter-bar .p-multiselect .p-multiselect-label,
+.se-filter-bar .p-calendar .p-inputtext {
+  display: flex;
+  align-items: center;
+  height: 100%;
+  padding-top: 0;
+  padding-bottom: 0;
+}
+
+/* Input paddings for consistency */
+.se-filter-bar .p-inputtext,
+.se-filter-bar input[type="text"],
+.se-filter-bar input[type="number"] {
+  padding: 0 0.75rem;
+}
+
+/* ==========================================================================
+   Optional: Align Action Buttons Height with Inputs
+   ========================================================================== */
+.se-filter-actions .p-button {
+  height: 2.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.9rem;
+  border-radius: var(--ui-border-radius);
 }
 
 /* /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////*/

@@ -13,6 +13,9 @@ import { ConfirmationService, MessageService } from 'primeng/api';
 import lodash from 'lodash';
 import { AutopopulateService } from '../../../../core/services/autopopulate.service';
 import { Toast } from "primeng/toast";
+import {
+  PRODUCT_TYPES, PRODUCT_BRANDS, PRODUCT_STATUS, PAYMENT_STATUS, ORDER_STATUS, DELIVERY_STATUS, STOCK_STATUS, CUSTOMER_TYPES, USER_ROLES, SHIPPING_METHODS, RATINGS
+} from '../../../../interfaces/master-list.component'; 
 
 // Updated Product Interface based on Mongoose Schema
 interface Product {
@@ -51,7 +54,7 @@ interface Product {
     TextareaModule,
     ButtonModule,
     Toast
-],
+  ],
   templateUrl: './product-master.component.html',
   styleUrl: './product-master.component.css',
   providers: [ConfirmationService, MessageService]
@@ -80,20 +83,13 @@ export class ProductMasterComponent implements OnInit {
   public productdropdwn: any[] = [];
   public selectedProductId: any;
 
-  availabilityOptions = [
-    { label: 'In Stock', value: 'In Stock' },
-    { label: 'Low Stock', value: 'Low Stock' },
-    { label: 'Out of Stock', value: 'Out of Stock' }
-  ];
+  availabilityOptions = STOCK_STATUS
 
-  // Consolidating variable names for clarity
   public productsForDropdown: any[] = [];
-
-
   constructor(
     private productService: ProductService,
     private autoPopulate: AutopopulateService,
-  
+
     private messageService: MessageService,
     @Inject(PLATFORM_ID) private platformId: Object
   ) { }
@@ -105,7 +101,7 @@ export class ProductMasterComponent implements OnInit {
     this.autopopulatedata();
   }
 
-    autopopulatedata() {
+  autopopulatedata() {
     // this.autoPopulate.getModuleData('products').subscribe((data:any) => {
     //   this.productdrop = data;
     // });
@@ -116,12 +112,12 @@ export class ProductMasterComponent implements OnInit {
       this.productsForDropdown = data;
     });
   }
-  
+
   calculatePrice() {
-  if (this.product?.rate != null && this.product?.gstRate != null) {
-    this.product.price = this.product.rate + (this.product.rate * this.product.gstRate) / 100;
+    if (this.product?.rate != null && this.product?.gstRate != null) {
+      this.product.price = this.product.rate + (this.product.rate * this.product.gstRate) / 100;
+    }
   }
-}
 
 
   // loadProductDropdownData() {

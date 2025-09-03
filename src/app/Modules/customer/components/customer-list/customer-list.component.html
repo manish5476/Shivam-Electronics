@@ -1,104 +1,55 @@
 <div class="flex flex-col rounded-md overflow-hidden bg-[var(--theme-bg-primary)] text-[var(--theme-text-primary)]">
 
-  <!-- Header Filter Area -->
-  <div
-    class="card">
-    <div class="header-controls flex flex-wrap items-center gap-4 sm:gap-6">
-
-      <!-- Customer Dropdown -->
+  <div class="se-filter-bar">
+    <!-- Customer Dropdown -->
+    <div class="se-filter-field">
+      <label for="customer">Customer</label>
       <p-select id="customer" appendTo="body" [options]="customerFilter.customerIDDropdown"
         [(ngModel)]="customerFilter.name" (onChange)="getData()" [filter]="true" filterBy="fullname"
-        optionLabel="fullname" optionValue="_id" [showClear]="true" placeholder="Customer"
-        styleClass="filter-input filter-input-lg">
+        optionLabel="fullname" optionValue="_id" [showClear]="true" placeholder="Select a Customer">
       </p-select>
+    </div>
 
-      <!-- Email Input -->
-      <input  id="email" [(ngModel)]="customerFilter.email" (input)="getData()" placeholder="Email" pInputText  />
+    <!-- Email Input -->
+    <div class="se-filter-field">
+      <label for="email">Email</label>
+      <input id="email" [(ngModel)]="customerFilter.email" (input)="getData()" placeholder="email" type="text"
+        pInputText min="1" />
+    </div>
 
-      <!-- Phone Input -->
-      <input  id="phone" [(ngModel)]="customerFilter.phone" (input)="getData()" placeholder="Phone" pInputText  />
+    <!-- Phone Input -->
+    <div class="se-filter-field">
+      <label for="phone">Phone</label>
+      <input id="phone" [(ngModel)]="customerFilter.phone" (input)="getData()" placeholder="Phone" type="number"
+        pInputText min="1" />
 
-      <!-- Page Input -->
-      <input  id="page" [(ngModel)]="customerFilter.page" (input)="getData()" placeholder="Page" type="number" pInputText
-        min="1" class="pInputtext" />
+    </div>
 
-      <!-- Limit Input -->
-      <input  id="limit" [(ngModel)]="customerFilter.limit" (input)="getData()" placeholder="Limit" pInputText
-        type="number" min="1" class="pInputtext" />
+    <!-- Page Input -->
+    <div class="se-filter-field">
+      <label for="page">Page</label>
+      <input id="page" [(ngModel)]="customerFilter.page" (input)="getData()" placeholder="Page" type="number" pInputText
+        min="1" />
+    </div>
 
-      <!-- Action Buttons -->
-      <div class="filter-actions">
-        <button pButton type="button" (click)="getData()" label="Apply" icon="pi pi-check" class="p-button-sm"
-          [style.backgroundColor]="'var(--theme-brand-primary)'" [style.color]="'var(--theme-text-inverted)'">Apply</button>
-        <button pButton type="button" (click)="resetFilters()" label="Reset" icon="pi pi-times"
-          class="p-button-sm p-button-outlined p-button-secondary" [style.color]="'var(--theme-text-secondary)'"
-          [style.borderColor]="'var(--theme-border-primary)'">Reset</button>
-      </div>
+    <!-- Limit Input -->
+    <div class="se-filter-field">
+      <label for="limit">Limit</label>
+      <input id="limit" [(ngModel)]="customerFilter.limit" (input)="getData()" placeholder="Limit" pInputText
+        type="number" min="1" />
+    </div>
 
+    <!-- Action Buttons -->
+    <div class="se-filter-actions">
+      <p-button (click)="getData()" label="Apply" icon="pi pi-check"></p-button>
+      <p-button (click)="resetFilters()" label="Reset" icon="pi pi-refresh" styleClass="p-button-outlined"></p-button>
     </div>
   </div>
 
-  <!-- Grid Area -->
+  <!-- Grid Area (remains unchanged) -->
   <div class="mt-1 card">
     <app-shared-grid [data]="data" [gridHeight]="'220px'" [headerFilter]="false" [rowSelectionMode]="rowSelectionMode"
       [GridName]="'Customer Details'" [column]="column" (eventFromGrid)="eventFromGrid($event)">
     </app-shared-grid>
   </div>
-
 </div>
-
-
-
-
-
-<!-- <div class="flex flex-col rounded-md overflow-hidden bg-[var(--theme-bg-primary)] text-[var(--theme-text-primary)]">
-
-  
-  <div class="ag-grid-header-filter-area px-4 py-3 rounded-md shadow-sm bg-[var(--theme-bg-secondary)] border-b border-[var(--theme-border-primary)]">
-    
-    <div class="header-controls flex flex-wrap items-center gap-4 sm:gap-6">
-      
-      
-      <p-select id="customer" appendTo="body" [options]="customerFilter.customerIDDropdown"
-        [(ngModel)]="customerFilter.name" (onChange)="getData()" [filter]="true" filterBy="fullname"
-        optionLabel="fullname" optionValue="_id" [showClear]="true" placeholder="Customer"
-        styleClass="p-inputtext-sm w-full sm:w-auto flex-1 min-w-[10rem] border border-[var(--theme-border-primary)] rounded-md"></p-select>
-
-      
-      <input  id="email" [(ngModel)]="customerFilter.email" (input)="getData()" placeholder="Email" pInputText
-        class="p-inputtext-sm w-full sm:w-auto flex-1 min-w-[10rem] border border-[var(--theme-border-primary)] rounded-md" />
-
-      
-      <input pInputText id="phone" [(ngModel)]="customerFilter.phone" (input)="getData()" placeholder="Phone"
-        class="p-inputtext-sm w-full sm:w-auto flex-1 min-w-[8rem] border border-[var(--theme-border-primary)] rounded-md" />
-        
-      
-      <input pInputText id="page" [(ngModel)]="customerFilter.page" (input)="getData()" placeholder="Page"
-        type="number" min="1"
-        class="p-inputtext-sm w-full sm:w-auto flex-1 min-w-[5rem] border border-[var(--theme-border-primary)] rounded-md" />
-        
-      
-      <input pInputText id="limit" [(ngModel)]="customerFilter.limit" (input)="getData()" placeholder="Limit"
-        type="number" min="1"
-        class="p-inputtext-sm w-full sm:w-auto flex-1 min-w-[5rem] border border-[var(--theme-border-primary)] rounded-md" />
-        
-      
-      <div class="flex space-x-2 flex-grow-0">
-        <button pButton type="button" (click)="getData()" label="Apply" icon="pi pi-check"
-          class="p-button-sm"
-          [style.backgroundColor]="'var(--theme-brand-primary)'"
-          [style.color]="'var(--theme-text-inverted)'"></button>
-        <button pButton type="button" (click)="resetFilters()" label="Reset" icon="pi pi-times"
-          class="p-button-sm p-button-outlined p-button-secondary"
-          [style.color]="'var(--theme-text-secondary)'"
-          [style.borderColor]="'var(--theme-border-primary)'"></button>
-      </div>
-    </div>
-  </div>
-
-  
-  <div class="mt-4">
-    <app-shared-grid [data]="data" [gridHeight]="'200px'" [headerFilter]="false"  [rowSelectionMode]="rowSelectionMode" [GridName]="'Customer Details'"
-      [column]="column" (eventFromGrid)="eventFromGrid($event)"></app-shared-grid>
-  </div>
-</div> -->

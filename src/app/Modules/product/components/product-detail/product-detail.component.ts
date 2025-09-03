@@ -7,10 +7,11 @@ import { ProductMasterComponent } from '../product-master/product-master.compone
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { SelectModule } from 'primeng/select';
+import { Button } from "primeng/button";
 
 @Component({
     selector: 'app-product-detail',
-    imports: [SharedGridComponent,SelectModule,CommonModule,FormsModule, ProductMasterComponent, Dialog],
+    imports: [SharedGridComponent, SelectModule, CommonModule, FormsModule, ProductMasterComponent, Dialog, Button],
     templateUrl: './product-detail.component.html',
     styleUrl: './product-detail.component.css'
 })

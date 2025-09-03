@@ -1,47 +1,54 @@
-  <div class="flex flex-col rounded-md overflow-hidden bg-[var(--theme-bg-primary)] text-[var(--theme-text-primary)]">
-      <div class="card">
-        <!-- Controls Container: Uses flex-wrap for responsiveness -->
-        <div class="header-controls flex flex-wrap items-center gap-4 sm:gap-6">
-          
-          <input pInputText id="title" [(ngModel)]="productFilter.title" placeholder="Title"
-            class="p-inputtext-sm w-full sm:w-auto flex-1 min-w-[10rem] border border-[var(--theme-border-primary)] rounded-md" />
+<div class="flex flex-col rounded-md overflow-hidden bg-[var(--theme-bg-primary)] text-[var(--theme-text-primary)]">
 
-           <p-select id="category" [(ngModel)]="productFilter.category" [options]="categoryOptions" optionLabel="name" optionValue="value" 
-            placeholder="All Categories" (onChange)="getData()"
-            styleClass="p-inputtext-sm flex-1 min-w-[10rem]"></p-select>
+  <!-- Filter Bar -->
+  <div class="se-filter-bar">
 
-         <p-select id="brand" [(ngModel)]="productFilter.brand" [options]="brandOptions" optionLabel="name" optionValue="value" 
-            placeholder="All Brands" (onChange)="getData()"
-            styleClass="p-inputtext-sm flex-1 min-w-[10rem]"></p-select>
-          
-          <!-- Actions Buttons -->
-          <div class="flex space-x-2 flex-grow-0">
-            <button pButton type="button" (click)="getData()" label="Apply" icon="pi pi-check"
-              class="p-button-sm"
-              [style.backgroundColor]="'var(--theme-brand-primary)'"
-              [style.color]="'var(--theme-text-inverted)'">apply</button>
-            <button pButton type="button" (click)="resetFilters()" label="Reset" icon="pi pi-times"
-              class="p-button-sm p-button-outlined p-button-secondary"
-              [style.color]="'var(--theme-text-secondary)'"
-              [style.borderColor]="'var(--theme-border-primary)'">reset</button>
-          </div>
-        </div>
-      </div>
 
-      <!-- Grid Area -->
-      <div class="card ">
-        <app-shared-grid [data]="data"  [gridHeight]="'220px'" [showActions]="false" [headerFilter]="false" [rowSelectionMode]="rowSelectionMode" [column]="column"
-          (eventFromGrid)="eventFromGrid($event)">
-        </app-shared-grid>
-      </div>
-
-      <!-- Dialog for editing product details -->
-      <p-dialog [(visible)]="productDialog" [style]="{ width: '32rem' }" header="Product Details" [modal]="true"
-        styleClass="bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 rounded-lg shadow-lg">
-        <ng-template pTemplate="content">
-          <app-product-master [redirectedData]="redirectedProduct"></app-product-master>
-        </ng-template>
-        <ng-template pTemplate="footer">
-        </ng-template>
-      </p-dialog>
+    <!-- Email Input -->
+    <div class="se-filter-field">
+      <label for="email">Name</label>
+      <input id="email" [(ngModel)]="productFilter.title" placeholder="Title" type="text"
+        pInputText min="1" />
     </div>
+
+
+    <!-- Category Dropdown -->
+    <div class="se-filter-field">
+      <label for="category">Category</label>
+      <p-select id="category" [(ngModel)]="productFilter.category" [options]="categoryOptions" optionLabel="name"
+        optionValue="value" placeholder="All Categories" (onChange)="getData()">
+      </p-select>
+    </div>
+
+    <!-- Brand Dropdown -->
+    <div class="se-filter-field">
+      <label for="brand">Brand</label>
+      <p-select id="brand" [(ngModel)]="productFilter.brand" [options]="brandOptions" optionLabel="name"
+        optionValue="value" placeholder="All Brands" (onChange)="getData()">
+      </p-select>
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="se-filter-actions">
+      <p-button (click)="getData()" label="Apply" icon="pi pi-check"></p-button>
+      <p-button (click)="resetFilters()" label="Reset" icon="pi pi-times" styleClass="p-button-outlined"></p-button>
+    </div>
+
+  </div>
+
+  <!-- Grid Area -->
+  <div class="mt-1 card">
+    <app-shared-grid [data]="data" [gridHeight]="'220px'" [showActions]="false" [headerFilter]="false"
+      [rowSelectionMode]="rowSelectionMode" [column]="column" (eventFromGrid)="eventFromGrid($event)">
+    </app-shared-grid>
+  </div>
+
+  <!-- Dialog for editing product details -->
+  <p-dialog [(visible)]="productDialog" [style]="{ width: '32rem' }" header="Product Details" [modal]="true"
+    styleClass="rounded-lg shadow-lg">
+    <ng-template pTemplate="content">
+      <app-product-master [redirectedData]="redirectedProduct"></app-product-master>
+    </ng-template>
+  </p-dialog>
+
+</div>

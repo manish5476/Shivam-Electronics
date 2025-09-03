@@ -10,11 +10,12 @@ import { AutopopulateService } from '../../../../core/services/autopopulate.serv
 import { AppMessageService } from '../../../../core/services/message.service';
 // Add this import to the top of your component file
 import { ImageCellRendererComponent } from '../../../../shared/AgGrid/AgGridcomponents/image-cell-renderer/image-cell-renderer.component';
+import { Button } from "primeng/button";
 
 @Component({
     selector: 'app-customer-list',
     standalone: true,
-    imports: [SharedGridComponent, SelectModule, FormsModule, IftaLabelModule,],
+    imports: [SharedGridComponent, SelectModule, FormsModule, IftaLabelModule, Button],
     providers: [CustomerService],
     templateUrl: './customer-list.component.html',
     styleUrl: './customer-list.component.css'
