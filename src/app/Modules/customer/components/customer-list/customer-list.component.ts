@@ -168,8 +168,7 @@ export class CustomerListComponent implements OnInit {
         }
         this.CustomerService.getAllCustomerData(filterParams).subscribe((res: any) => {
             this.data = res.data;
-            console.log(this.data);
-            this.cdr.markForCheck();
+             this.cdr.markForCheck();
         });
     }
 
@@ -181,7 +180,6 @@ export class CustomerListComponent implements OnInit {
             this.customer = dataItem
             const field = cellValueChangedEvent.colDef.field;
             const newValue = cellValueChangedEvent.newValue;
-
             if (field) {
                 dataItem[field] = newValue;
                 this.InvoiceService.updateInvoice(dataItem.id, dataItem).subscribe({
@@ -196,13 +194,8 @@ export class CustomerListComponent implements OnInit {
 
 
     validateCustomer(): boolean {
-        if (!this.customer.fullname) {
-            return false;
-        }
-        if (!this.customer.email || !this.customer.email.match(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/)) {
-            return false;
-        }
-
+        if (!this.customer.fullname) { return false; }
+        if (!this.customer.email || !this.customer.email.match(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/)) { return false;}
         return true;
     }
 
@@ -214,13 +207,11 @@ export class CustomerListComponent implements OnInit {
                 (response: any) => {
                     if (response.status === 'success') {
                         const customerId = response.data._id;
-                        // this.customerId = customerId;
                     } else {
                         this.messageService.showError('Error', response.message || 'Failed to create customer.');
                     }
                 },
                 (error) => {
-                    // Handle HTTP errors
                     const errorMessage = error.error?.message || 'An unexpected error occurred.';
                     this.messageService.showError('Error', errorMessage);
                 }

@@ -23,12 +23,11 @@ export type DynamicAgGridColumn = ICellRendererParams & {
 @Component({
   selector: 'app-dynamic-ag-grid-columns',
   standalone: true, // Making it a standalone component is easier for imports
-  imports: [FormsModule, CommonModule,ButtonModule,SelectModule, CheckboxModule /*, ...other PrimeNG modules */],
+  imports: [FormsModule, CommonModule, ButtonModule, SelectModule, CheckboxModule /*, ...other PrimeNG modules */],
   templateUrl: './dynamic-ag-grid-columns.component.html',
   styleUrls: ['./dynamic-ag-grid-columns.component.css']
 })
 export class DynamicAgGridColumnsComponent implements ICellRendererAngularComp {
-  
   params!: DynamicAgGridColumn;
   cellValue: any;
 
@@ -47,36 +46,24 @@ export class DynamicAgGridColumnsComponent implements ICellRendererAngularComp {
     return this.params.field && this.params.data ? this.params.data[this.params.field] : null;
   }
 
-  // This is the function that will be called by your template (e.g., on change or click)
   onAction(actionType: string, payload?: any): void {
-    // 1. UPDATE THE GRID'S DATA MODEL
-    // This is the critical step to make sure the change is saved in the grid
     if (this.params.field && this.params.data && payload !== undefined) {
       this.params.data[this.params.field] = payload;
       this.cellValue = payload;
     }
-
-    // 2. CALL THE PARENT'S HANDLER FUNCTION
-    // Check if the handleAction function was passed in the params
     if (this.params.handleAction) {
       this.params.handleAction({
         action: actionType,
-        eventName: this.params.eventName, // Pass the eventName if it exists
+        eventName: this.params.eventName,
         rowData: this.params.data,
         value: payload ?? this.cellValue
       });
     }
   }
 
-  // Helper to evaluate if the cell should be in an editable state
   isEditable(): boolean {
-      if (typeof this.params.isEditable === 'function') {
-          return this.params.isEditable(this.params.data);
-      }
-      // For icons/buttons, we consider them "editable" to make them visible and clickable
-      if (this.params.typeOfCol === 'dialog' || this.params.typeOfCol === 'icon') {
-          return true;
-      }
-      return !!this.params.isEditable;
+    if (typeof this.params.isEditable === 'function') { return this.params.isEditable(this.params.data); }
+    if (this.params.typeOfCol === 'dialog' || this.params.typeOfCol === 'icon') { return true }
+    return !!this.params.isEditable;
   }
 }

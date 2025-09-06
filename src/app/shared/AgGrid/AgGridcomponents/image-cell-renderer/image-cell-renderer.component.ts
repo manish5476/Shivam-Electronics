@@ -89,129 +89,103 @@ export class ImageCellRendererComponent implements ICellRendererAngularComp {
   }
 }
 
-// import { Component } from '@angular/core';
-// import { CommonModule } from '@angular/common';
-// import { ICellRendererAngularComp } from 'ag-grid-angular';
-// import { ICellRendererParams } from 'ag-grid-community';
+/**import { Component, Input, HostListener } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { ICellRendererAngularComp } from 'ag-grid-angular';
+import { ICellRendererParams } from 'ag-grid-community';
 
-// // PrimeNG Imports for UI elements
-// import { AvatarModule } from 'primeng/avatar';
-// import { TooltipModule } from 'primeng/tooltip';
-// import { DialogModule } from 'primeng/dialog';
-// import { ButtonModule } from 'primeng/button';
+// PrimeNG
+import { AvatarModule } from 'primeng/avatar';
+import { TooltipModule } from 'primeng/tooltip';
+import { DialogModule } from 'primeng/dialog';
+import { ButtonModule } from 'primeng/button';
+import { SkeletonModule } from 'primeng/skeleton';
 
-// @Component({
-//   selector: 'app-image-cell-renderer',
-//   standalone: true,
-//   imports: [
-//     CommonModule,
-//     AvatarModule,
-//     TooltipModule,
-//     DialogModule,
-//     ButtonModule
-//   ],
-//   templateUrl: './image-cell-renderer.component.html',
-//   styleUrls: ['./image-cell-renderer.component.css']
-// })
-// export class ImageCellRendererComponent implements ICellRendererAngularComp {
-//   public params!: ICellRendererParams;
-//   public imageUrl: string | null = null;
-//   public displayDialog = false;
-//   public zoomLevel = 1;
-//   private readonly ZOOM_STEP = 0.1;
+@Component({
+  selector: 'app-image-cell-renderer',
+  standalone: true,
+  imports: [CommonModule, AvatarModule, TooltipModule, DialogModule, ButtonModule, SkeletonModule],
+  templateUrl: './image-cell-renderer.component.html',
+  styleUrls: ['./image-cell-renderer.component.css']
+})
+export class ImagePreviewComponent {
+  imageUrl = 'https://picsum.photos/600/600'; // sample image
+  displayDialog = false;
+  loading = true;
 
-//   agInit(params: ICellRendererParams): void {
-//     this.params = params;
-//     this.imageUrl = params.value || 'https://www.primefaces.org/cdn/primeng/images/avatar/placeholder.png';
-//   }
+  zoomLevel = 1;
+  minZoom = 0.5;
+  maxZoom = 3;
 
-//   refresh(params: ICellRendererParams): boolean {
-//     this.params = params;
-//     this.imageUrl = params.value || 'https://www.primefaces.org/cdn/primeng/images/avatar/placeholder.png';
-//     return true;
-//   }
+  // Drag-to-pan
+  isDragging = false;
+  startX = 0;
+  startY = 0;
+  scrollLeft = 0;
+  scrollTop = 0;
 
-//   /**
-//    * Shows the dialog and resets the zoom level to default.
-//    */
-//   onImageClick(): void {
-//     if (this.params.value) {
-//       this.resetZoom();
-//       this.displayDialog = true;
-//     }
-//   }
+  onImageClick(): void {
+    this.displayDialog = true;
+    this.resetZoom();
+  }
 
-//   /**
-//    * Increases the image zoom level.
-//    */
-//   zoomIn(): void {
-//     this.zoomLevel += this.ZOOM_STEP;
-//   }
+  // --- Zoom Controls ---
+  zoomIn(): void {
+    if (this.zoomLevel < this.maxZoom) this.zoomLevel = +(this.zoomLevel + 0.1).toFixed(2);
+  }
 
-//   /**
-//    * Decreases the image zoom level, with a minimum threshold.
-//    */
-//   zoomOut(): void {
-//     if (this.zoomLevel > 0.2) { // Set a minimum zoom level
-//       this.zoomLevel -= this.ZOOM_STEP;
-//     }
-//   }
+  zoomOut(): void {
+    if (this.zoomLevel > this.minZoom) this.zoomLevel = +(this.zoomLevel - 0.1).toFixed(2);
+  }
 
+  resetZoom(): void {
+    this.zoomLevel = 1;
+  }
 
-//   resetZoom(): void {
-//     this.zoomLevel = 1;
-//   }
-// }
+  onImageLoad(): void {
+    this.loading = false;
+  }
 
+  // --- Scroll Wheel Zoom ---
+  onScrollZoom(event: WheelEvent): void {
+    event.preventDefault();
+    if (event.deltaY < 0) this.zoomIn();
+    else this.zoomOut();
+  }
 
-// import { Component } from '@angular/core';
-// import { CommonModule } from '@angular/common';
-// import { ICellRendererAngularComp } from 'ag-grid-angular';
-// import { ICellRendererParams } from 'ag-grid-community';
+  // --- Keyboard Shortcuts ---
+  @HostListener('window:keydown', ['$event'])
+  handleKeyboardEvent(event: KeyboardEvent): void {
+    if (!this.displayDialog) return;
+    if (event.ctrlKey && event.key === '=') this.zoomIn();
+    if (event.ctrlKey && event.key === '-') this.zoomOut();
+    if (event.ctrlKey && event.key.toLowerCase() === '0') this.resetZoom();
+  }
 
-// // PrimeNG Imports for UI elements
-// import { AvatarModule } from 'primeng/avatar';
-// import { TooltipModule } from 'primeng/tooltip';
-// import { DialogModule } from 'primeng/dialog';
-// import { ButtonModule } from 'primeng/button';
+  // --- Drag-to-pan ---
+  onMouseDown(event: MouseEvent, container: HTMLElement): void {
+    if (this.zoomLevel <= 1) return;
+    this.isDragging = true;
+    container.style.cursor = 'grabbing';
+    this.startX = event.pageX - container.offsetLeft;
+    this.startY = event.pageY - container.offsetTop;
+    this.scrollLeft = container.scrollLeft;
+    this.scrollTop = container.scrollTop;
+  }
 
-// @Component({
-//   selector: 'app-image-cell-renderer',
-//   standalone: true,
-//   imports: [
-//     CommonModule,
-//     AvatarModule,
-//     TooltipModule,
-//     DialogModule,
-//     ButtonModule
-//   ],
-//   templateUrl: './image-cell-renderer.component.html',
-//   styleUrls: ['./image-cell-renderer.component.css']
-// })
-// export class ImageCellRendererComponent implements ICellRendererAngularComp {
-//   public params!: ICellRendererParams;
-//   public imageUrl: string | null = null;
-//   public displayDialog = false;
+  onMouseMove(event: MouseEvent, container: HTMLElement): void {
+    if (!this.isDragging) return;
+    event.preventDefault();
+    const x = event.pageX - container.offsetLeft;
+    const y = event.pageY - container.offsetTop;
+    const walkX = x - this.startX;
+    const walkY = y - this.startY;
+    container.scrollLeft = this.scrollLeft - walkX;
+    container.scrollTop = this.scrollTop - walkY;
+  }
 
-//   // AG Grid's initialization method. It's called once for each cell.
-//   agInit(params: ICellRendererParams): void {
-//     this.params = params;
-//     // Set the image URL from the cell's value.
-//     // We also provide a fallback placeholder image in case the URL is null or invalid.
-//     this.imageUrl = params.value ? params.value : 'https://www.primefaces.org/cdn/primeng/images/avatar/placeholder.png';
-//   }
-
-//   // AG Grid's refresh method. It's called when data is updated.
-//   refresh(params: ICellRendererParams): boolean {
-//     this.params = params;
-//     this.imageUrl = params.value ? params.value : 'https://www.primefaces.org/cdn/primeng/images/avatar/placeholder.png';
-//     // Return true to tell AG Grid the refresh was successful.
-//     return true;
-//   }
-
-//   onImageClick(): void {
-//     if (this.params.value) {
-//       this.displayDialog = true;
-//     }
-//   }
-// }
+  onMouseUp(container: HTMLElement): void {
+    this.isDragging = false;
+    container.style.cursor = 'grab';
+  }
+} */

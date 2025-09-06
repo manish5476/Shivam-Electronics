@@ -54,6 +54,18 @@ export class ProductService extends BaseApiService {
     return this.http.delete(url, { body })
       .pipe(catchError((error: HttpErrorResponse) => this.errorhandler.handleError('deleteProduct', error)));
   }
+
+
+
+  uploadProductImage(formData: FormData, productId: string): Observable<any> {
+    const apiUrl = `${this.baseUrl}${this.endpoint}/${productId}/image`;
+    return this.http.post(apiUrl, formData).pipe(
+      catchError((error: any) =>
+        this.errorhandler.handleError("uploadProductImage", error)
+      )
+    );
+  }
+
 }
 
 // // src/app/core/services/product.service.ts (or product module)

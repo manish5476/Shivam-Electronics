@@ -1,7 +1,7 @@
 <div class="h-[calc(100vh-56px)] flex flex-col overflow-hidden">
-  <div class="flex items-center justify-between flex-wrap gap-4  rounded-sm order-b border-gray-200 bg-white shadow-sm">
+  <div class="flex items-center justify-between flex-wrap gap-4 mb-3 rounded-sm order-b border-gray-200 bg-white shadow-sm">
     <h4 class="text-xl font-semibold text-gray-800">
-      Customer List
+      Log List
     </h4>
     <div class="flex items-center flex-wrap gap-4">
       <div class="flex items-center gap-2">
@@ -24,6 +24,8 @@
       </div>
     </div>
   </div>
-  <app-shared-grid [data]="data" [gridHeight]="'520px'" [rowSelectionMode]="rowSelectionMode" [column]="column"
-    [paginationPageSize]="itemsPerPage" (eventFromGrid)="eventFromGrid($event)"></app-shared-grid>
+  <div class="pt-3">
+    <app-shared-grid [data]="data" [gridHeight]="'250px'" [rowSelectionMode]="rowSelectionMode" [column]="column"
+      [paginationPageSize]="itemsPerPage" (eventFromGrid)="eventFromGrid($event)"></app-shared-grid>
+  </div>
 </div>

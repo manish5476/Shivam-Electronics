@@ -16,10 +16,8 @@
         <p-button icon="pi pi-refresh" label="Refresh" styleClass="p-button-outlined" (onClick)="getCustomerDetail()">
         </p-button>
             <p-button icon="pi pi-eye" label="show" styleClass="p-button-outlined"  (click)="showCustomer=true"></p-button>
-
       </div>
     </div>
-    
   </div>
 
   <!-- Loading State -->
@@ -30,11 +28,11 @@
 
   <!-- Main Content -->
   <div *ngIf="!isLoading && customer" class="dashboard-content">
-
  <div class="profile-hero-v2">
-
   <div class="profile-main-v2">
-    <p-avatar [image]="customer.profileImg" [label]="getInitials(customer.fullname)" shape="circle" styleClass="profile-avatar-v2"></p-avatar>
+
+    <p-avatar *ngIf="customer.profileImg" [image]="customer.profileImg" shape="square" styleClass="profile-avatar-v2"></p-avatar>
+    <p-avatar *ngIf="!customer.profileImg" [image]="customer.profileImg" [label]="getInitials(customer.fullname)" shape="circle" styleClass="profile-avatar-v2"></p-avatar>
     <div class="profile-info">
       <h2 class="customer-name">{{ customer.fullname }}</h2>
       <p class="customer-email">{{ customer.email }}</p>

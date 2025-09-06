@@ -7,24 +7,27 @@
 }
 
 .image-container {
-    overflow: auto;
-    max-height: 70vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background-color: var(--surface-b);
-    border-radius: var(--border-radius);
-    padding: 0.5rem;
+  overflow: auto;
+  max-height: 70vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--surface-b);
+  border-radius: var(--border-radius);
+  padding: 0.5rem;
+  cursor: grab;
 }
 
 .preview-image {
-    max-width: 100%;
-    height: auto;
-    border-radius: var(--border-radius);
-    transition: transform 0.2s ease-in-out;
-    transform-origin: center center;
-    cursor: grab;
+  max-width: 100%;
+  height: auto;
+  border-radius: var(--border-radius);
+  transition: transform 0.2s ease-in-out;
+  transform-origin: center center;
 }
+
+
+
 
 /* :host {
     display: flex;

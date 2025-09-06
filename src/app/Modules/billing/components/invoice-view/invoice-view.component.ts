@@ -99,15 +99,15 @@ export class InvoiceViewComponent {
 
   getColumn(): void {
     this.column = [
-      {
-        headerName: 'Status',
-        field: 'status',
-        cellRenderer: DynamicAgGridColumnsComponent,
-        cellRendererParams: {
-          typeOfCol: 'text',
-          handleAction: (event: any) => this.eventFromTheAgGrid(event)  // 👈 binding event
-        }
-      },
+      // {
+      //   headerName: 'Status',
+      //   field: 'status',
+      //   cellRenderer: DynamicAgGridColumnsComponent,
+      //   cellRendererParams: {
+      //     typeOfCol: 'text',
+      //     handleAction: (event: any) => this.eventFromTheAgGrid(event)  // 👈 binding event
+      //   }
+      // },
       {
         field: 'invoiceNumber',
         headerName: 'Invoice Number',
@@ -214,7 +214,6 @@ export class InvoiceViewComponent {
   }
 
   eventFromTheAgGrid(event: any) {
-    console.log(event);
     this.showpdf = true
     this.invoiceId = event.id
   }
