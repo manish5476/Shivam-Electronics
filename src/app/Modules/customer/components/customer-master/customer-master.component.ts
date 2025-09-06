@@ -170,7 +170,7 @@ export class CustomerMasterComponent implements OnInit {
       city: ['', Validators.required],
       state: ['', Validators.required],
       zipCode: ['', Validators.required],
-      country: [''],
+      country: ['',Validators.required],
       type: ['home', Validators.required],
       isDefault: [false],
       location: this.fb.group({
@@ -309,7 +309,7 @@ export class CustomerMasterComponent implements OnInit {
       : this.customerService.createNewCustomer(finalData);
 
     operation.subscribe((res) => {
-      if (res.success) {
+      if (res.status==='success') {
         this.messageService.showSuccess(
           'Success',
           `Customer ${this.customerId ? 'updated' : 'created'} successfully`,
@@ -358,40 +358,101 @@ export class CustomerMasterComponent implements OnInit {
   }
 
   // --- Address Management ---
-  showAddressDialog(index?: number): void {
-    if (index !== undefined && index !== null) {
-      this.editingAddressIndex = index;
-      this.addressDialogForm.patchValue(this.addresses.at(index).value);
-    } else {
-      this.editingAddressIndex = null;
-      this.addressDialogForm.reset({
-        street: '',
-        city: '',
-        state: '',
-        zipCode: '',
-        country: '',
-        type: 'home',
-        isDefault: false,
-        location: { type: 'Point', coordinates: [0, 0] },
-      });
-    }
-    this.addressDialogVisible = true;
+  // showAddressDialog(index?: number): void {
+  //   if (index !== undefined && index !== null) {
+  //     this.editingAddressIndex = index;
+  //     this.addressDialogForm.patchValue(this.addresses.at(index).value);
+  //   } else {
+  //     this.editingAddressIndex = null;
+  //     this.addressDialogForm.reset({
+  //       street: '',
+  //       city: '',
+  //       state: '',
+  //       zipCode: '',
+  //       country: '',
+  //       type: 'home',
+  //       isDefault: false,
+  //       location: { type: 'Point', coordinates: [0, 0] },
+  //     });
+  //   }
+  //   this.addressDialogVisible = true;
+  // }
+
+  // saveAddress(): void {
+  //   if (this.addressDialogForm.invalid) return;
+
+  //   if (this.editingAddressIndex !== null) {
+  //     this.addresses
+  //       .at(this.editingAddressIndex)
+  //       .patchValue(this.addressDialogForm.value);
+  //   } else {
+  //     this.addresses.push(
+  //       this.createAddressGroup(this.addressDialogForm.value),
+  //     );
+  //   }
+  //   this.addressDialogVisible = false;
+  // }
+
+// --- Address Management ---
+showAddressDialog(index?: number): void {
+  if (index !== undefined && index !== null) {
+    this.editingAddressIndex = index;
+    const address = this.addresses.at(index).value;
+
+    // Patch main form fields
+    this.addressDialogForm.patchValue({
+      street: address.street,
+      city: address.city,
+      state: address.state,
+      zipCode: address.zipCode,
+      country: address.country,
+      type: address.type,
+      isDefault: address.isDefault,
+    });
+
+    // Reset coordinates FormArray
+    const coords = this.addressDialogForm.get('location')?.get('coordinates') as FormArray;
+    coords.setValue(address.location?.coordinates || [0, 0]);
+  } else {
+    this.editingAddressIndex = null;
+    this.addressDialogForm.reset({
+      street: '',
+      city: '',
+      state: '',
+      zipCode: '',
+      country: '',
+      type: 'home',
+      isDefault: false,
+    });
+    const coords = this.addressDialogForm.get('location')?.get('coordinates') as FormArray;
+    coords.setValue([0, 0]);
+  }
+  this.addressDialogVisible = true;
+}
+
+get coordinates(): FormArray {
+  return this.addressDialogForm.get('location')?.get('coordinates') as FormArray;
+}
+
+
+saveAddress(): void {
+  if (this.addressDialogForm.invalid) return;
+
+  const formValue = this.addressDialogForm.value;
+
+  // Ensure coordinates are numeric
+  if (formValue.location && Array.isArray(formValue.location.coordinates)) {
+    formValue.location.coordinates = formValue.location.coordinates.map((c: any) => Number(c) || 0);
   }
 
-  saveAddress(): void {
-    if (this.addressDialogForm.invalid) return;
-
-    if (this.editingAddressIndex !== null) {
-      this.addresses
-        .at(this.editingAddressIndex)
-        .patchValue(this.addressDialogForm.value);
-    } else {
-      this.addresses.push(
-        this.createAddressGroup(this.addressDialogForm.value),
-      );
-    }
-    this.addressDialogVisible = false;
+  if (this.editingAddressIndex !== null) {
+    this.addresses.at(this.editingAddressIndex).patchValue(formValue);
+  } else {
+    this.addresses.push(this.createAddressGroup(formValue));
   }
+
+  this.addressDialogVisible = false;
+}
 
   removeAddress(index: number): void {
     this.addresses.removeAt(index);
