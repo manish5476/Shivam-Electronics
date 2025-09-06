@@ -60,7 +60,7 @@
                            <div class="switches-container">
                                 <div *ngFor="let p of group.permissions" class="switch-wrapper">
                                     <p-inputSwitch 
-                                        [(ngModel)]="user.permissionMap[p.tag]"
+                                        [(ngModel)]="user.permissionMap[p.tag]" 
                                         [disabled]="user.role === 'superAdmin' || user.role === 'admin'">
                                     </p-inputSwitch>
                                 </div>

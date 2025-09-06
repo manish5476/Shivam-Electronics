@@ -3,7 +3,7 @@
   <div class="chart-header">
     <h3 class="section-header">Yearly Sales</h3>
     <div class="flex items-center gap-2">
-      <p-dropdown [options]="chartTypeOptions" [(ngModel)]="selectedChartType" (onChange)="onChartTypeChange()" optionLabel="label" optionValue="value" styleClass="p-dropdown-sm w-48">
+      <p-dropdown [options]="chartTypeOptions" [(ngModel)]="selectedChartType" name="charttype" (onChange)="onChartTypeChange()" optionLabel="label" optionValue="value" styleClass="p-dropdown-sm w-48">
           <ng-template let-item pTemplate="selectedItem">
               <i [class]="item.icon" class="mr-2"></i>
               <span>{{item.label}}</span>
@@ -15,7 +15,7 @@
               </div>
           </ng-template>
       </p-dropdown>
-      <input pInputText [(ngModel)]="yearInput" placeholder="Year" class="p-inputtext-sm w-28" />
+      <input pInputText [(ngModel)]="yearInput" name="yearInput" placeholder="Year" class="p-inputtext-sm w-28" />
       <button pButton label="Fetch" icon="pi pi-refresh" class="p-button-sm" (click)="fetchSalesData()"></button>
     </div>
   </div>

@@ -48,7 +48,7 @@
       </div>
     </div>
     <!-- Sales Count -->
-    <div class="metric-card metric-card-success">
+    <div  *ngIf="salesTrends.length > 0" class="metric-card metric-card-success">
       <div class="metric-icon">
         <i class="pi pi-shopping-bag text-2xl"></i>
       </div>
@@ -58,12 +58,12 @@
       </div>
     </div>
     <!-- Daily Revenue -->
-    <div class="metric-card metric-card-error">
+    <div *ngIf="salesTrends.length > 0" class="metric-card metric-card-error">
       <div class="metric-icon">
         <i class="pi pi-dollar text-2xl"></i>
       </div>
       <div>
-        <div class="metric-value">{{ salesTrends[0].dailyRevenue  | number:'1.2-2' }}</div>
+        <div class="metric-value">{{ salesTrends[0].dailyRevenue | number:'1.2-2' }}</div>
         <div class="metric-label">Daily Revenue</div>
       </div>
     </div>

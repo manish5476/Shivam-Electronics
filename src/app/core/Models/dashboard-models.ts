@@ -61,8 +61,8 @@ export interface SalesSummaryData {
 // Sales trends per day
 export interface SalesTrendData {
   _id: string; // YYYY-MM-DD
-  dailyRevenue: number;
-  dailySalesCount: number;
+  dailyRevenue: any;
+  dailySalesCount: any;
 }
 
 // Product insights (used for low stock, top-selling, etc.)

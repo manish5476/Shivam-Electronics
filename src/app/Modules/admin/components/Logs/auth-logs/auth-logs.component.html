@@ -6,7 +6,7 @@
     <div class="flex items-center flex-wrap gap-4">
       <div class="flex items-center gap-2">
         <label for="logFileSelect" class="text-sm text-gray-700 whitespace-nowrap">Select Log File:</label>
-        <p-select id="logFileSelect" [options]="logFileOptions" [(ngModel)]="selectedLogFile"
+        <p-select id="logFileSelect" [options]="logFileOptions" [(ngModel)]="selectedLogFile" name="logFileOptions"
           (onChange)="onFileSelect($event)" placeholder="Select a log file" [filter]="true" filterBy="label"
           optionLabel="label" optionValue="value" [showClear]="true" styleClass="w-56"></p-select>
       </div>

@@ -1,23 +1,21 @@
 <div class="top-customers-container">
   <p-toast />
-  <!-- Header with Search and Expand/Collapse Controls -->
   <div class="table-header">
     <span class="p-input-icon-left">
       <i class="pi pi-search"></i>
-      <input pInputText type="text" [(ngModel)]="searchTerm" (input)="filterCustomers()"
-             placeholder="Search customers..." class="p-inputtext-sm" />
+      <input pInputText type="text" [(ngModel)]="searchTerm" (input)="filterCustomers()" name="searchterm"
+        placeholder="Search customers..." class="p-inputtext-sm" />
     </span>
     <div class="flex items-center gap-2">
       <button pButton pRipple type="button" label="Expand All" icon="pi pi-plus" class="p-button-text p-button-sm"
-              (click)="expandAll()"></button>
+        (click)="expandAll()"></button>
       <button pButton pRipple type="button" label="Collapse All" icon="pi pi-minus" class="p-button-text p-button-sm"
-              (click)="collapseAll()"></button>
+        (click)="collapseAll()"></button>
     </div>
   </div>
 
-  <!-- Main Customer Table -->
   <p-table [value]="filteredCustomers" dataKey="_id" [tableStyle]="{'min-width': '50rem'}"
-           [expandedRowKeys]="expandedRows" styleClass="p-datatable-customers">
+    [expandedRowKeys]="expandedRows" styleClass="p-datatable-customers">
     <ng-template pTemplate="header">
       <tr>
         <th style="width: 5rem;"></th>
@@ -31,25 +29,29 @@
       <tr class="main-row">
         <td>
           <button pButton pRipple type="button" [pRowToggler]="customer"
-                  class="p-button-text p-button-rounded p-button-plain"
-                  [icon]="expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'"></button>
+            class="p-button-text p-button-rounded p-button-plain"
+            [icon]="expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'">
+          </button>
         </td>
+
         <td>
           <div class="customer-cell">
             <p-avatar [label]="CommonMethodService.getInitials(customer.fullname)"
-                      [style]="{'background-color': CommonMethodService.generateHexColorFromString(customer.fullname), 'color': '#ffffff'}"
-                      shape="circle"></p-avatar>
+              [style]="{'background-color': CommonMethodService.generateHexColorFromString(customer.fullname), 'color': '#ffffff'}"
+              shape="circle">
+            </p-avatar>
             <div>
               <div class="font-bold text-[var(--theme-text-primary)]">{{ customer.fullname }}</div>
               <div class="text-sm text-[var(--theme-text-secondary)]">{{ customer.email }}</div>
             </div>
           </div>
         </td>
-        <td class="text-[var(--theme-text-secondary)]">{{ CommonMethodService.formatCurrency(customer.periodPurchasedAmount) }}</td>
-        <td class="font-semibold text-[var(--theme-text-primary)]">{{ CommonMethodService.formatCurrency(customer.totalPurchasedAmountGlobal) }}</td>
-        <td>
-          <button pButton pRipple type="button" icon="pi pi-user-edit" class="p-button-text p-button-rounded"></button>
-        </td>
+        <td class="text-[var(--theme-text-secondary)]">{{
+          CommonMethodService.formatCurrency(customer.periodPurchasedAmount) }}</td>
+        <td class="font-semibold text-[var(--theme-text-primary)]">{{
+          CommonMethodService.formatCurrency(customer.totalPurchasedAmountGlobal) }}</td>
+        <td><button pButton pRipple type="button" icon="pi pi-user-edit"
+            class="p-button-text p-button-rounded"></button></td>
       </tr>
     </ng-template>
     <ng-template pTemplate="emptymessage">
@@ -57,44 +59,44 @@
         <td colspan="5" class="text-center py-4 text-[var(--theme-text-secondary)]">No customers found.</td>
       </tr>
     </ng-template>
-
-    <!-- Expanded Row Template for Purchased Products -->
     <ng-template pTemplate="expandedrow" let-customer>
       <tr>
         <td colspan="5">
           <div class="expanded-content">
             <h5 class="expanded-header">Products Purchased by {{ customer.fullname }}</h5>
-            <p-table [value]="customer.cart?.items" dataKey="productId._id" styleClass="p-datatable-sm p-datatable-nested">
+            <p-table [value]="customer.cart?.items" dataKey="productId._id"
+              styleClass="p-datatable-sm p-datatable-nested">
               <ng-template pTemplate="header">
-                <tr>
-                  <th>Product Name</th>
-                  <th>Price</th>
-                  <th>Invoices</th>
-                  <th style="width: 6rem;">View</th>
-                </tr>
-              </ng-template>
-              <ng-template pTemplate="body" let-cartItem>
-                <tr class="nested-row">
-                  <td>{{ cartItem.productId?.title || 'N/A' }}</td>
-                  <td>{{ CommonMethodService.formatCurrency(cartItem.productId?.price) }}</td>
-                  <td>{{ cartItem.invoiceIds?.length || 0 }}</td>
-                  <td>
-                    <button pButton pRipple type="button" icon="pi pi-file-pdf" class="p-button-text p-button-sm"
-                            (click)="showInvoicePdf(cartItem.invoiceIds[0])"></button>
-                  </td>
-                </tr>
-              </ng-template>
-              <ng-template pTemplate="emptymessage">
-                <tr>
-                  <td colspan="4" class="text-center py-3 text-sm text-[var(--theme-text-secondary)]">No products found for this period.</td>
-                </tr>
-              </ng-template>
-            </p-table>
-          </div>
+      <tr>
+        <th>Product Name</th>
+        <th>Price</th>
+        <th>Invoices</th>
+        <th style="width: 6rem;">View</th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-cartItem>
+      <tr class="nested-row">
+        <td>{{ cartItem.productId?.title || 'N/A' }}</td>
+        <td>{{ CommonMethodService.formatCurrency(cartItem.productId?.price) }}</td>
+        <td>{{ cartItem.invoiceIds?.length || 0 }}</td>
+        <td>
+          <button pButton pRipple type="button" icon="pi pi-file-pdf" class="p-button-text p-button-sm"
+            (click)="showInvoicePdf(cartItem.invoiceIds[0])"></button>
         </td>
       </tr>
     </ng-template>
+    <ng-template pTemplate="emptymessage">
+      <tr>
+        <td colspan="4" class="text-center py-3 text-sm text-[var(--theme-text-secondary)]">No products found for this
+          period.</td>
+      </tr>
+    </ng-template>
   </p-table>
+</div>
+</td>
+</tr>
+</ng-template>
+</p-table>
 </div>
 
 <!-- Dialog for Invoice PDF -->

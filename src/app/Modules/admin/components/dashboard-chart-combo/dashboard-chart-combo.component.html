@@ -3,10 +3,10 @@
   <div class="chart-header">
     <div class="flex items-center gap-4">
       <h3 class="section-header">Sales Overview</h3>
-      <p-selectButton [options]="viewOptions" [(ngModel)]="selectedView" (onChange)="onViewChange($event.value)" optionLabel="label" optionValue="value"></p-selectButton>
+      <p-selectButton [options]="viewOptions" name="selectedview" [(ngModel)]="selectedView" (onChange)="onViewChange($event.value)" optionLabel="label" optionValue="value"></p-selectButton>
     </div>
     <div class="flex items-center gap-2">
-      <input pInputText [(ngModel)]="yearInput" placeholder="Enter year" class="p-inputtext-sm w-28" />
+      <input pInputText [(ngModel)]="yearInput" name="selectedyear" placeholder="Enter year" class="p-inputtext-sm w-28" />
       <button pButton label="Fetch" icon="pi pi-refresh" class="p-button-sm" (click)="fetchSalesData()"></button>
     </div>
   </div>
