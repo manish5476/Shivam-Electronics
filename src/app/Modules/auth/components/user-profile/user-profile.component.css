@@ -1,0 +1,218 @@
+:root {
+  /* Enhanced Color Palette */
+  --theme-bg-secondary: #F0F2F5; /* A light, soft gray */
+  --theme-bg-primary: #FFFFFF;
+  --theme-border-primary: #E0E0E0;
+  --theme-border-secondary: #CFCFCF;
+
+  /* Vibrant Accents */
+  --theme-accent-primary: #3498db; /* A strong blue for main accents */
+  --theme-accent-secondary: #f39c12; /* A warm orange for highlights */
+  --theme-text-primary: #2c3e50; /* A dark, professional blue-gray */
+  --theme-text-secondary: #7f8c8d; /* A soft gray for secondary text */
+  --theme-text-label: #34495e; /* A slightly darker gray for labels */
+
+  /* Specific colors for a richer look */
+  --perm-bg-color: #ecf0f1;
+  --perm-border-color: #bdc3c7;
+  --perm-text-color: #2980b9;
+}
+
+:host {
+  display: block;
+  background-color: var(--theme-bg-secondary);
+  min-height: 100vh;
+  font-family: 'Poppins', sans-serif;
+}
+
+.page-container {
+  width: 100%;
+}
+
+/* --- Full-Width Profile Banner with Gradient Background --- */
+.profile-banner {
+  background: linear-gradient(to right, #3498db, #2980b9); /* Deeper blue gradient */
+  padding: 4rem 2rem;
+  color: white;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+.banner-content {
+  max-width: 100%;
+  margin: auto;
+  display: flex;
+  align-items: center;
+  gap: 3rem;
+  position: relative;
+}
+
+.avatar-section {
+  position: relative;
+  flex-shrink: 0;
+}
+
+.avatar-section p-avatar::ng-deep .p-avatar {
+  border: 5px solid var(--theme-accent-secondary);
+  box-shadow: 0 0 10px rgba(0,0,0,0.2);
+}
+
+.info-section h1 {
+  font-size: 3.5rem;
+  font-weight: 700;
+  margin: 0;
+  text-shadow: 1px 1px 3px rgba(0,0,0,0.1);
+}
+
+.info-section .meta-info {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 2rem;
+  margin-top: 1.5rem;
+}
+
+.meta-info .meta-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-size: 1rem;
+  font-weight: 500;
+  color: rgba(255,255,255,0.9);
+}
+
+.meta-info .meta-item i {
+  font-size: 1.25rem;
+  color: var(--theme-accent-secondary);
+}
+
+/* --- Main Content Area --- */
+.profile-content {
+  padding: 2.5rem;
+  max-width: 100%;
+  margin: auto;
+  position: relative;
+  z-index: 1;
+  margin-top: -3rem;
+}
+
+/* Changed from grid to flex column to stack cards */
+.content-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 2.5rem; /* Space between the two main cards */
+}
+
+/* Enhanced Card Styles for a more premium look */
+.card {
+  background-color: var(--theme-bg-primary);
+  border-radius: var(--ui-border-radius);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+  padding: 2.5rem;
+  border: 1px solid var(--theme-border-primary);
+  transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+}
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 40px rgba(0,0,0,0.1);
+}
+
+.section-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--theme-text-primary);
+  margin-bottom: 2rem;
+  border-bottom: 2px solid var(--theme-accent-primary);
+  padding-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+.section-title i {
+  font-size: 1.5rem;
+  color: var(--theme-accent-primary);
+}
+
+.details-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: 1rem;
+}
+
+.details-list li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem 0;
+  border-bottom: 1px solid var(--theme-border-primary);
+}
+.details-list li:last-child {
+  border-bottom: none;
+}
+
+.details-list strong {
+  color: var(--theme-text-label);
+  font-weight: 500;
+}
+
+.details-list span {
+  color: var(--theme-text-secondary);
+  font-family: 'Fira Code', monospace; /* Using a more modern monospace font */
+  font-size: 0.95rem;
+}
+
+/* Permissions Grid */
+.permissions-card {
+  margin-top: 0; /* No margin as it's part of the flex column */
+}
+
+.permissions-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1.5rem;
+}
+
+.permission-group {
+  background-color: var(--perm-bg-color);
+  border: 1px solid var(--perm-border-color);
+  border-radius: var(--ui-border-radius);
+  padding: 1.5rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+
+.permission-module-title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--perm-text-color);
+  padding-bottom: 0.75rem;
+  margin-bottom: 1rem;
+  border-bottom: 2px dashed var(--perm-border-color);
+}
+
+.permissions-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+}
+
+/* Custom Chip and Tag Styles */
+:host ::ng-deep .p-chip {
+  background-color: var(--theme-accent-primary);
+  color: white;
+  font-weight: 500;
+  padding: 0.3rem 0.8rem;
+  border-radius: 20px;
+}
+:host ::ng-deep .p-tag {
+  font-size: 1rem;
+  padding: 0.4rem 1rem;
+}
+
+/* Loading State */
+.loading-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 80vh;
+}
