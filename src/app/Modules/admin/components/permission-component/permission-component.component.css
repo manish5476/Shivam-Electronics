@@ -1,15 +1,156 @@
-/*
-================================================================================
-File: /app/features/components/permissions/permission-component.component.css
-================================================================================
-*/
+/* --- 1. DYNAMIC 'FIT-TO-SCREEN' LAYOUT --- */
+
+:host {
+    display: block;
+    height: 100vh;
+}
+
+.permission-page-container {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    padding: 1.5rem;
+    gap: 1rem;
+    background-color: var(--theme-body-gradient-start);
+}
+
+.page-header {
+    flex-shrink: 0;
+}
+
+.main-card {
+    flex-grow: 1;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+    background-color: var(--theme-bg-primary);
+    border-radius: var(--ui-border-radius);
+    border: 1px solid var(--theme-border-primary);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    overflow: hidden;
+}
+
+.state-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    height: 100%;
+    padding: 2rem;
+}
+
+/* --- 2. PRIME-NG TABLE STYLING FOR DYNAMIC HEIGHT --- */
+:host ::ng-deep .p-datatable {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+:host ::ng-deep .p-datatable-scrollable-view {
+    flex-grow: 1;
+    min-height: 0;
+}
+
+/* --- 3. UI POLISH & REFINEMENTS --- */
+
+/* Table Header */
+:host ::ng-deep .p-datatable .p-datatable-thead > tr > th {
+    background-color: var(--theme-bg-secondary);
+    border-bottom: 2px solid var(--theme-border-primary);
+    font-size: 0.8rem;
+    font-weight: 600;
+    padding: 0.75rem 1rem;
+    color: var(--theme-text-primary);
+}
+
+:host ::ng-deep .p-datatable .p-datatable-thead > tr > th.group-header {
+    background-color: var(--theme-bg-ternary);
+    border-right: 1px solid var(--theme-border-primary);
+}
+
+.group-header-content { display: flex; align-items: center; justify-content: center; gap: 1rem; }
+.group-actions .group-toggle-btn {
+    font-size: 0.7rem; font-weight: 600; padding: 2px 8px;
+    border-radius: 6px; cursor: pointer; border: 1px solid var(--theme-border-secondary);
+    background-color: var(--theme-bg-primary);
+    transition: all 0.2s ease;
+}
+.group-actions .group-toggle-btn.select:hover { background-color: #28a74520; }
+.group-actions .group-toggle-btn.deselect:hover { background-color: #dc354520; }
+
+:host ::ng-deep .p-datatable .p-datatable-thead > tr > th.permission-header {
+    font-weight: 500; font-size: 0.75rem; text-align: center; color: var(--theme-text-secondary);
+}
+
+/* Table Body Cells */
+:host ::ng-deep .p-datatable .p-datatable-tbody > tr > td {
+    padding: 0.6rem 1rem; vertical-align: middle;
+}
+.actions-cell { text-align: right; }
+
+/* --- ENHANCEMENT: User Cell with Avatar --- */
+.user-cell { display: flex; align-items: center; gap: 0.75rem; }
+.user-avatar {
+    width: 36px; height: 36px;
+    border-radius: 50%;
+    color: white; /* Make initials text white */
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    font-size: 0.85rem;
+    flex-shrink: 0;
+}
+
+/* Dirty State Row */
+:host ::ng-deep .p-datatable .p-datatable-tbody > tr.row-dirty {
+    background: color-mix(in srgb, var(--theme-accent-primary) 4%, transparent) !important;
+}
+:host ::ng-deep .p-datatable .p-datatable-tbody > tr.row-dirty > td:first-child {
+    box-shadow: inset 4px 0 0 0 var(--theme-accent-primary);
+}
+
+/* Pulsating Save Button */
+@keyframes pulse-shadow {
+    0% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--theme-accent-primary) 30%, transparent); }
+    70% { box-shadow: 0 0 0 10px transparent; }
+    100% { box-shadow: 0 0 0 0 transparent; }
+}
+
+:host ::ng-deep .p-datatable .p-datatable-tbody > tr.row-dirty .actions-cell .p-button:not(:disabled) {
+    animation: pulse-shadow 2s infinite;
+}
+
+/* Full Access Chip */
+.full-access-chip {
+    display: inline-flex; align-items: center; font-size: 0.8rem; font-weight: 600;
+    color: var(--theme-text-label); padding: 0.5rem 0.75rem;
+    border-radius: 6px; background-color: var(--theme-bg-secondary);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* 
 :host {
   display: block;
   background: linear-gradient(180deg, var(--theme-body-gradient-start), var(--theme-body-gradient-end));
   min-height: 100vh;
 }
 
-/* --- General Layout & Typography --- */
+
 .main-card {
   background-color: var(--theme-bg-primary);
   border-radius: var(--ui-border-radius);
@@ -27,7 +168,7 @@ File: /app/features/components/permissions/permission-component.component.css
     color: var(--theme-text-label);
 }
 
-/* --- Role Badges --- */
+
 .role-badge {
     display: inline-block;
     font-size: 0.7rem;
@@ -38,15 +179,15 @@ File: /app/features/components/permissions/permission-component.component.css
     background-color: var(--theme-bg-ternary); 
     color: var(--theme-text-label);
 }
-/* Role-specific colors */
+
 .role--superAdmin { background-color: #ffc107; color: #342400; }
 .role--admin { background-color: #0d6efd; color: #ffffff; }
 .role--user { background-color: #6c757d; color: #ffffff; }
 
 
-/* --- PrimeNG Table Overrides --- */
 
-/* Table Header */
+
+
 :host ::ng-deep .p-datatable .p-datatable-thead > tr > th {
   background-color: var(--theme-bg-secondary);
   color: var(--theme-text-primary);
@@ -63,7 +204,7 @@ File: /app/features/components/permissions/permission-component.component.css
     color: var(--theme-text-secondary);
 }
 
-/* Frozen Columns - Use a crisp border instead of a shadow */
+
 :host ::ng-deep .p-datatable .p-frozen-column {
   font-weight: 600;
 }
@@ -74,9 +215,9 @@ File: /app/features/components/permissions/permission-component.component.css
   border-left: 1px solid var(--theme-border-primary) !important;
 }
 
-/* --- Table Row States --- */
 
-/* Base Row Style */
+
+
 :host ::ng-deep .p-datatable .p-datatable-tbody > tr {
   background-color: var(--theme-bg-primary);
   transition: background-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
@@ -92,9 +233,9 @@ File: /app/features/components/permissions/permission-component.component.css
   transition: background-color 0.2s ease;
 }
 
-/* Hover State */
+
 :host ::ng-deep .p-datatable .p-datatable-tbody > tr:hover {
-  background-color: var(--theme-hover-bg) !important; /* Use important to override striped table */
+  background-color: var(--theme-hover-bg) !important; 
   transform: translateY(-2px);
   box-shadow: 0 4px 12px rgba(0,0,0,0.08);
 }
@@ -102,20 +243,20 @@ File: /app/features/components/permissions/permission-component.component.css
     background-color: transparent !important;
 }
 
-/* NEW: Dirty / Unsaved State */
+
 :host ::ng-deep .p-datatable .p-datatable-tbody > tr.row-dirty > td {
     background-color: color-mix(in srgb, var(--theme-accent-primary) 8%, transparent);
 }
 :host ::ng-deep .p-datatable .p-datatable-tbody > tr.row-dirty > td:first-child {
     border-left: 3px solid var(--theme-accent-primary);
-    padding-left: calc(1.25rem - 3px); /* Adjust padding to keep content aligned */
+    padding-left: calc(1.25rem - 3px); 
 }
 :host ::ng-deep .p-datatable .p-datatable-tbody > tr.row-dirty .actions-cell .p-button {
     box-shadow: 0 0 12px 2px color-mix(in srgb, var(--theme-accent-primary) 40%, transparent);
 }
 
 
-/* --- Permission Group Cell & Hover Actions --- */
+
 .permission-group-cell {
     position: relative;
     text-align: left !important;
@@ -137,14 +278,14 @@ File: /app/features/components/permissions/permission-component.component.css
     left: 50%;
     display: flex;
     gap: 0.5rem;
-    /* REFINED: Animation starts slightly down and invisible */
+    
     opacity: 0;
     transform: translate(-50%, 8px);
     transition: opacity 0.2s ease-out, transform 0.2s ease-out;
     pointer-events: none;
 }
 .permission-group-cell:hover .group-actions-hover {
-    /* REFINED: Animation ends in position and visible */
+    
     opacity: 1;
     transform: translate(-50%, 0);
     pointer-events: auto;
@@ -194,205 +335,4 @@ File: /app/features/components/permissions/permission-component.component.css
 
 :host ::ng-deep .p-divider.p-divider-horizontal:before {
     border-top-color: var(--theme-border-primary);
-} 
-
-/* 
-:host {
-  display: block;
-  background: linear-gradient(180deg, var(--theme-body-gradient-start), var(--theme-body-gradient-end));
-  min-height: 100vh;
-}
-
-
-.main-card {
-  background-color: var(--theme-bg-primary);
-  border-radius: var(--ui-border-radius);
-  border: var(--ui-border-width) solid var(--theme-border-primary);
-  box-shadow: var(--ui-shadow);
-  overflow: hidden;
-}
-
-.error-panel {
-    background-color: rgba(220, 53, 69, 0.1); 
-    color: var(--theme-error-primary);
-}
-
-.role-badge {
-    display: inline-block;
-    font-size: 0.7rem;
-    text-transform: uppercase;
-    font-weight: 700;
-    padding: 0.2rem 0.6rem;
-    border-radius: 99px;
-    background-color: var(--theme-bg-ternary); 
-    color: var(--theme-text-label);
-}
-
-.full-access-label {
-    display: flex;
-    align-items: center;
-    justify-content: flex-end;
-    font-size: 0.9rem;
-    font-weight: 600;
-    color: var(--theme-text-label);
-}
-
-
-
-
-
-:host ::ng-deep .p-datatable .p-datatable-thead > tr > th {
-  background-color: var(--theme-bg-secondary);
-  color: var(--theme-text-primary);
-  border-bottom: 2px solid var(--theme-border-primary);
-  font-weight: 600;
-  font-family: var(--font-primary);
-  padding: 1rem 1.25rem;
-  white-space: nowrap;
-}
-
-:host ::ng-deep .p-datatable .p-datatable-thead > tr > th.group-header {
-    background-color: var(--theme-bg-ternary);
-    color: var(--theme-text-primary);
-    font-weight: 700;
-    border-bottom-width: 2px;
-}
-
-:host ::ng-deep .p-datatable .p-datatable-thead > tr > th.permission-header {
-    font-weight: 500;
-    color: var(--theme-text-secondary);
-}
-
-
-:host ::ng-deep .p-datatable .p-frozen-column {
-  font-weight: 600;
-  box-shadow: 2px 0 8px rgba(0,0,0,0.05);
-}
-:host ::ng-deep .p-datatable .p-frozen-column[alignfrozen="right"] {
-  box-shadow: -2px 0 8px rgba(0,0,0,0.05);
-}
-
-
-:host ::ng-deep .p-datatable .p-datatable-tbody > tr {
-  background-color: var(--theme-bg-primary);
-  color: var(--theme-text-secondary);
-  transition: all 0.2s ease-out;
-}
-
-:host ::ng-deep .p-datatable.p-datatable-striped .p-datatable-tbody > tr:nth-child(even) {
-    background-color: var(--theme-bg-secondary);
-}
-
-:host ::ng-deep .p-datatable .p-datatable-tbody > tr:hover {
-  background-color: var(--theme-hover-bg);
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-}
-
-:host ::ng-deep .p-datatable .p-datatable-tbody > tr > td {
-  border: none; 
-  border-bottom: 1px solid var(--theme-border-primary);
-  padding: 1rem 1.25rem;
-  vertical-align: middle;
-}
-
-
-
-
-.permission-group-cell {
-    position: relative; 
-    text-align: left !important;
-}
-
-.switches-container {
-    display: flex;
-    justify-content: center;
-    gap: 1rem; 
-}
-
-.switch-wrapper {
-    flex: 1;
-    display: flex;
-    justify-content: center;
-    min-width: 160px; 
-}
-
-.group-actions-hover {
-    position: absolute;
-    bottom: 6px;
-    left: 50%;
-    transform: translateX(-50%);
-    display: flex;
-    gap: 0.5rem;
-    opacity: 0;
-    transition: opacity 0.2s ease-in-out;
-    pointer-events: none;
-}
-
-.permission-group-cell:hover .group-actions-hover {
-    opacity: 1;
-    pointer-events: auto;
-}
-
-.group-toggle-btn {
-    font-size: 0.7rem;
-    font-weight: 600;
-    padding: 0.15rem 0.5rem;
-    border-radius: 4px;
-    cursor: pointer;
-    border: 1px solid transparent;
-    background: transparent;
-}
-.group-toggle-btn.select {
-    color: var(--theme-success-primary);
-}
-.group-toggle-btn.select:hover {
-    background-color: rgba(40, 167, 69, 0.1);
-    border-color: rgba(40, 167, 69, 0.3);
-}
-.group-toggle-btn.deselect {
-    color: var(--theme-error-primary);
-}
-.group-toggle-btn.deselect:hover {
-    background-color: rgba(220, 53, 69, 0.1);
-    border-color: rgba(220, 53, 69, 0.3);
-}
-
-
-
-
-
-:host ::ng-deep .p-inputswitch.p-inputswitch-checked .p-inputswitch-slider {
-    background: var(--theme-accent-primary) !important;
-}
-:host ::ng-deep .p-inputswitch.p-inputswitch-checked:not(.p-disabled):hover .p-inputswitch-slider {
-    background: var(--theme-accent-primary-hover) !important;
-}
-
-
-:host ::ng-deep .p-button {
-  background: var(--theme-accent-gradient);
-  color: var(--theme-accent-text-color);
-  border: none;
-  border-radius: var(--ui-border-radius);
-  font-weight: 600;
-  transition: all 0.2s ease;
-  box-shadow: var(--ui-shadow);
-}
-:host ::ng-deep .p-button:enabled:hover {
-  background: var(--theme-accent-primary-hover);
-  transform: var(--ui-button-hover-transform);
-  box-shadow: var(--ui-shadow-hover);
-}
-:host ::ng-deep .p-button:enabled:active {
-  transform: var(--ui-button-active-transform);
-}
-
-
-:host ::ng-deep .custom-spinner.p-progress-spinner .p-progress-spinner-circle {
-    stroke: var(--theme-accent-primary);
-}
-
-:host ::ng-deep .p-divider.p-divider-horizontal:before {
-    border-top-color: var(--theme-border-primary);
-} */
+}  */
