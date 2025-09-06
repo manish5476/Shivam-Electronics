@@ -8,8 +8,13 @@ import { TransactionsComponent } from './components/transactions/transactions.co
 import { PurchaseorderService } from '../../core/services/purchaseorder.service';
 import { PurchaseOrderDashboardComponent } from './purchase/product-incoming/product-incoming.component';
 import { ReportSubscriptionComponent } from './components/report-subscription/report-subscription.component';
+import { UserProfileComponent } from '../auth/components/user-profile/user-profile.component';
 
 export const ADMIN_ROUTES: Routes = [
+    {
+    path: 'profile',
+    component: UserProfileComponent,
+  },
   {
     path: 'users', component: AdminUserComponent,
     canActivate: [RoleGuard],
