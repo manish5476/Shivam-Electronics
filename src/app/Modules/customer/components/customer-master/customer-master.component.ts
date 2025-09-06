@@ -84,7 +84,7 @@ interface CustomerDropdownOption {
 @Component({
   selector: 'app-customer-master',
   standalone: true,
-  imports: [CommonModule,FormsModule,ReactiveFormsModule,ButtonModule,InputTextModule,SelectModule,FileUploadModule,ToastModule,DialogModule,TableModule,CheckboxModule,AvatarModule,CardModule,SkeletonModule,TooltipModule,TagModule,],
+  imports: [CommonModule, FormsModule, ReactiveFormsModule, ButtonModule, InputTextModule, SelectModule, FileUploadModule, ToastModule, DialogModule, TableModule, CheckboxModule, AvatarModule, CardModule, SkeletonModule, TooltipModule, TagModule,],
   templateUrl: './customer-master.component.html',
   styleUrls: ['./customer-master.component.css'],
   providers: [MessageService],
@@ -398,25 +398,25 @@ export class CustomerMasterComponent implements OnInit {
   }
 
   handleFileUpload(event: any): void {
-  console.log('Selected:', event);
-  const file = event.files[0];
-  if (!file || !this.customerId) return;
-  const formData = new FormData();
-  formData.append('profileImg', file);
-  this.customerService.uploadProfileImage(formData, this.customerId).subscribe({
-    next: (res) => {
-      if (res.status === 'success') {
-        const newImageUrl = res.data.customer.profileImg;
-        this.displayCustomer.profileImg = newImageUrl + '?t=' + new Date().getTime(); // avoid cache
-        this.customerForm.patchValue({ profileImg: newImageUrl });
-        this.messageService.showSuccess('Success', 'Profile image updated!');
-      }
-    },
-    error: () => {
-      this.messageService.showError('Error', 'Failed to upload profile image.');
-    },
-  });
-}
+    console.log('Selected:', event);
+    const file = event.files[0];
+    if (!file || !this.customerId) return;
+    const formData = new FormData();
+    formData.append('profileImg', file);
+    this.customerService.uploadProfileImage(formData, this.customerId).subscribe({
+      next: (res) => {
+        if (res.status === 'success') {
+          const newImageUrl = res.data.customer.profileImg;
+          this.displayCustomer.profileImg = newImageUrl + '?t=' + new Date().getTime(); // avoid cache
+          this.customerForm.patchValue({ profileImg: newImageUrl });
+          this.messageService.showSuccess('Success', 'Profile image updated!');
+        }
+      },
+      error: () => {
+        this.messageService.showError('Error', 'Failed to upload profile image.');
+      },
+    });
+  }
 
 
   getSeverityForType(type: string): "success" | "secondary" | "info" | "warn" | "danger" | "contrast" {

@@ -13,8 +13,21 @@ export class profileService extends BaseApiService {
       .get<any>(`${this.baseUrl}${this.endpoint}/me`)
       .pipe(
         catchError((error: HttpErrorResponse) =>
-          this.errorhandler.handleError('getAllCustomerData', error),
+          this.errorhandler.handleError('getUserProfile', error),
         ),
       );
   }
+
+  uploadProfilePhoto(file: File): Observable<any> {
+    const formData = new FormData();
+    formData.append('photo', file, file.name);
+
+    return this.http.patch<any>(`${this.baseUrl}${this.endpoint}/me/photo`, formData)
+      .pipe(
+        catchError((error: HttpErrorResponse) =>
+          this.errorhandler.handleError('uploadProfilePhoto', error)
+        )
+      );
+  }
+
 }

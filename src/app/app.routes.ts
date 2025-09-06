@@ -5,6 +5,7 @@ import { MainLayoutComponent } from './layouts/mainlayout/mainlayout.component';
 import { MainDashboardComponent } from './layouts/main-dashboard/main-dashboard.component';
 import { AuthResolver } from './core/auth.resolver';
 import { HomePageComponent } from './layouts/dashboard/home-page/home-page.component';
+import { UserProfileComponent } from './Modules/auth/components/user-profile/user-profile.component';
 
 
 export const routes: Routes = [
@@ -12,6 +13,7 @@ export const routes: Routes = [
     path: 'auth',
     loadChildren: () => import('./Modules/auth/auth.routes').then(m => m.AUTH_ROUTES),
   },
+
   {
     path: '',
     component: MainLayoutComponent,

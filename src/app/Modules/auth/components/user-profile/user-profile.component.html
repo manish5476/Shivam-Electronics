@@ -1,64 +1,94 @@
+
 <p-toast></p-toast>
 <div class="page-container" *ngIf="(user$ | async) as user; else loadingTemplate">
-  
   <div class="profile-banner">
     <div class="banner-content">
+
+      <!-- Avatar Section -->
       <div class="avatar-section">
-        <p-avatar 
-          [image]="user.profilePhoto || 'assets/no-data.png'" 
-          styleClass="w-32 h-32 text-6xl ring-4 ring-offset-4 ring-offset-[var(--theme-bg-secondary)] ring-[var(--theme-accent-secondary)]" 
-          size="xlarge" 
-          shape="circle">
+        <p-avatar [image]="user.profilePhoto || 'assets/no-data.png'"
+          styleClass="avatar-lg ring-4 ring-offset-4 ring-offset-[var(--bg-card)] ring-[var(--accent-secondary)]"
+          size="xlarge" shape="circle">
         </p-avatar>
-        <p-fileUpload #uploader mode="basic" name="profilePhoto" [auto]="true" [customUpload]="true"
-          (uploadHandler)="handleProfilePhotoUpload($event, uploader)" [disabled]="(isUploading$ | async)"
-          accept="image/*" maxFileSize="2000000" chooseIcon="pi pi-camera"
-          styleClass="p-button-rounded p-button-secondary absolute bottom-2 right-2">
-        </p-fileUpload>
+
+        <!-- Upload button -->
+        <div class="upload-btn-wrapper">
+          <p-fileUpload #uploader mode="basic" name="profilePhoto" [auto]="true" [customUpload]="true"
+            (uploadHandler)="handleProfilePhotoUpload($event, uploader)" [disabled]="(isUploading$ | async)"
+            accept="image/*" maxFileSize="2000000" chooseIcon="pi pi-camera"
+            styleClass="p-button-rounded p-button-secondary upload-btn">
+          </p-fileUpload>
+        </div>
       </div>
+
+      <!-- Info + Account Details -->
       <div class="info-section">
-        <h1 class="text-[var(--theme-text-primary)]">{{ user.name }}</h1>
-        <p class="text-lg text-[var(--theme-text-secondary)] mt-1">{{ user.email }}</p>
+        <h1>{{ user.name }}</h1>
+        <p class="email-text">{{ user.email }}</p>
+
         <div class="meta-info">
-          <p-tag [value]="user.role" [severity]="roleSeverityMap[user.role] || 'info'" styleClass="font-semibold"></p-tag>
+          <p-tag [value]="user.role" [severity]="roleSeverityMap[user.role] || 'info'"></p-tag>
           <div class="meta-item">
             <i class="pi pi-calendar-plus"></i>
             <span>Member since {{ user.createdAt | date:'longDate' }}</span>
           </div>
         </div>
+
+        <!-- Account Details Card Inline -->
+        <div class="account-details-card">
+          <h2><i class="pi pi-user-edit"></i> Account Details</h2>
+          <ul>
+            <li><strong>User ID:</strong><span>{{ user._id }}</span></li>
+            <li><strong>Last Update:</strong><span>{{ user.updatedAt | date:'longDate' }}</span></li>
+            <li><strong>Password Changed:</strong>
+              <span>{{ user.passwordChangedAt ? (user.passwordChangedAt | date:'longDate') : 'Never' }}</span>
+            </li>
+          </ul>
+        </div>
       </div>
+
     </div>
   </div>
 
+  <!-- Profile Content -->
   <div class="profile-content">
     <div class="content-grid">
-      <div class="card">
+
+      <!-- Account Info -->
+      <!-- <div class="card">
         <h2 class="section-title"><i class="pi pi-user-edit"></i>Account Details</h2>
         <ul class="details-list">
           <li><strong>User ID:</strong><span>{{ user._id }}</span></li>
           <li><strong>Last Update:</strong><span>{{ user.updatedAt | date:'longDate' }}</span></li>
-          <li><strong>Last Password Change:</strong><span>{{ user.passwordChangedAt ? (user.passwordChangedAt | date:'longDate') : 'Never' }}</span></li>
+          <li><strong>Password Changed:</strong>
+            <span>{{ user.passwordChangedAt ? (user.passwordChangedAt | date:'longDate') : 'Never' }}</span>
+          </li>
         </ul>
-      </div>
+      </div> -->
 
-      <div class="card permissions-card" *ngIf="(groupedPermissions$ | async) as permissions">
-        <h2 class="section-title"><i class="pi pi-lock"></i>Assigned Permissions</h2>
+
+      <!-- Grouped Permissions -->
+      <div class="card permissions-card" *ngIf="(groupedPermissions$ | async) as grouped">
+        <h2 class="section-title"><i class="pi pi-lock"></i>Allowed Permissions</h2>
         <div class="permissions-grid">
-          <div class="permission-group" *ngFor="let group of permissions">
-            <h3 class="permission-module-title">{{ group.module | titlecase }}</h3>
-            <div class="permissions-list">
-              <p-chip *ngFor="let action of group.actions" [label]="action" styleClass="text-xs"></p-chip>
+          <div class="permission-group" *ngFor="let group of grouped">
+            <h3 class="group-title">{{ group.module | titlecase }}</h3>
+            <div class="actions">
+              <p-chip *ngFor="let action of group.actions" [label]="action" styleClass="perm-chip">
+              </p-chip>
             </div>
           </div>
         </div>
       </div>
+
     </div>
   </div>
 
 </div>
 
+<!-- Loader -->
 <ng-template #loadingTemplate>
   <div class="loading-container">
-    <i class="pi pi-spin pi-spinner text-4xl text-[var(--theme-accent-primary)]"></i>
+    <i class="pi pi-spin pi-spinner text-4xl text-[var(--accent-primary)]"></i>
   </div>
 </ng-template>
