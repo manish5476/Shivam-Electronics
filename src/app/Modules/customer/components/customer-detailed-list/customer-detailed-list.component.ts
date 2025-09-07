@@ -11,14 +11,12 @@ import { MessageService } from 'primeng/api';
 import { CardModule } from 'primeng/card';
 import { ToastModule } from 'primeng/toast';
 import { SelectModule } from 'primeng/select';
-import { AccordionModule } from 'primeng/accordion';
-import { PanelModule } from 'primeng/panel';
 import { AvatarModule } from 'primeng/avatar';
-import { Dialog, DialogModule } from 'primeng/dialog';
+import {  DialogModule } from 'primeng/dialog';
 import { TagModule } from 'primeng/tag';
 import { TimelineModule } from 'primeng/timeline';
 import { SkeletonModule } from 'primeng/skeleton';
-import { TabsModule } from 'primeng/tabs';
+import { TabsModule, Tabs, TabList, Tab, TabPanels } from 'primeng/tabs';
 // App Components & Services
 import { InvoicePrintComponent } from "../../../billing/components/invoice-print/invoice-print.component";
 import { CustomerService } from '../../../../core/services/customer.service';
@@ -26,39 +24,45 @@ import { LoadingService } from '../../../../core/services/loading.service';
 import { AutopopulateService } from '../../../../core/services/autopopulate.service';
 import { CommonMethodService } from '../../../../core/Utils/common-method.service';
 // PrimeNG Modules
-import { TabViewModule } from "primeng/tabview"
 import { ChipModule } from "primeng/chip"
 import { ProgressBarModule } from "primeng/progressbar"
 import { CustomerSnapshotComponent } from "../../customer-snapshot/customer-snapshot.component";
+import { BadgeModule } from 'primeng/badge';
+
 @Component({
   selector: 'app-customer-detailed-list',
   standalone: true,
   imports: [
     CommonModule,
     FormsModule,
+
+    // PrimeNG
     ButtonModule,
     CardModule,
     ToastModule,
     SelectModule,
-    Dialog,
     AvatarModule,
     TagModule,
     TimelineModule,
     SkeletonModule,
-    TabViewModule,
     ChipModule,
     ProgressBarModule,
+    BadgeModule,
+
+    // ✅ Use only the new Tabs API (remove TabViewModule completely)
+    TabsModule,
+
+    // ✅ Dialog should be imported as a module
+    DialogModule,
+
+    // Your own components
     CustomerSnapshotComponent
-],
-  // imports: [
-  //   CommonModule, FormsModule, ButtonModule, CardModule, ToastModule,
-  //   SelectModule, AccordionModule, PanelModule, AvatarModule, DialogModule,
-  //   TagModule, TimelineModule, SkeletonModule, TabsModule
-  // ],
+  ],
   templateUrl: './customer-detailed-list.component.html',
   styleUrls: ['./customer-detailed-list.component.css'],
   providers: [MessageService]
 })
+
 export class CustomerDetailedListComponent implements OnInit {
   isLoading: boolean = true;
   customer: any;
@@ -123,31 +127,6 @@ export class CustomerDetailedListComponent implements OnInit {
     this.displayInvoiceDialog = true;
   }
 
-  // getStatusSeverity(status: string) {
-  //   switch (status?.toLowerCase()) {
-  //     case 'pending': return 'warn';
-  //     case 'delivered':
-  //     case 'paid':
-  //       return 'success';
-  //     case 'cancelled': return 'danger';
-  //     default: return 'info';
-  //   }
-  // }
-  // getTotalUnpaidAmount(): number {
-  //   if (!this.customer?.cart?.items) return 0
-  //   return this.customer.cart.items.reduce((total: number, item: any) => {
-  //     const unpaidInvoices = item.invoiceIds?.filter((invoice: any) => invoice.status === "unpaid") || []
-  //     return total + unpaidInvoices.reduce((sum: number, invoice: any) => sum + invoice.totalAmount, 0)
-  //   }, 0)
-  // }
-
-  // getPaymentSuccessRate(): number {
-  //   if (!this.customer?.paymentHistory?.length) return 0
-  //   const completedPayments = this.customer.paymentHistory.filter((p: any) => p.status === "completed").length
-  //   return Math.round((completedPayments / this.customer.paymentHistory.length) * 100)
-  // }
-
-
   formatCurrency(amount: number): string {
     return new Intl.NumberFormat("en-US", {
       style: "currency",
@@ -162,24 +141,6 @@ export class CustomerDetailedListComponent implements OnInit {
       .join("")
       .toUpperCase()
   }
-
-
-  // getStatusSeverity(status: string): string {
-  //   switch (status?.toLowerCase()) {
-  //     case "active":
-  //       return "success"
-  //     case "completed":
-  //       return "success"
-  //     case "pending":
-  //       return "warning"
-  //     case "unpaid":
-  //       return "danger"
-  //     case "inactive":
-  //       return "secondary"
-  //     default:
-  //       return "info"
-  //   }
-  // }
   getStatusSeverity(status: string) {
     switch (status?.toLowerCase()) {
       case 'pending': return 'warn';

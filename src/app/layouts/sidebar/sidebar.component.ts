@@ -40,6 +40,7 @@ export class SidebarComponent implements OnInit {
         { label: 'List', icon: 'pi pi-list', routerLink: ['/customers/list'] },
         { label: 'Master', icon: 'pi pi-cog', routerLink: ['/customers/master'] },
         { label: 'Details', icon: 'pi pi-info-circle', routerLink: ['/customers/detailed'] },
+        // { label: 'snapshot', icon: 'pi pi-info-circle', routerLink: ['/customers/snapshot'] },
         { label: 'segment', icon: 'pi pi-info-circle', routerLink: ['/customers/segment'] },
       ]
     },

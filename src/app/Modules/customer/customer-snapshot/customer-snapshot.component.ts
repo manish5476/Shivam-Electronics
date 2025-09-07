@@ -31,13 +31,11 @@ export class CustomerSnapshotComponent implements OnInit, OnChanges {
       this.fetchCustomer();
     }
   }
-
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['customerID'] && !changes['customerID'].firstChange) {
       this.fetchCustomer();
     }
   }
-
   selectTab(tabName: 'activity' | 'overdue' | 'details'): void {
     this.activeTab = tabName;
   }

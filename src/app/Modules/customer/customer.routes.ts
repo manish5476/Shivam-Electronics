@@ -9,6 +9,6 @@ export const CUSTOMER_ROUTES: Routes = [
   { path: 'list', component: CustomerListComponent },
   { path: 'master', component: CustomerMasterComponent },
   { path: 'detailed', component: CustomerDetailedListComponent },
-  { path: 'det', component: CustomerSnapshotComponent },
+  { path: 'snapshot', component: CustomerSnapshotComponent },
   { path: 'segment', component: CustomerSegmentsComponent },
 ];
