@@ -48,6 +48,10 @@ export const routes: Routes = [
         loadChildren: () => import('./Modules/product/product.routes').then(m => m.PRODUCT_ROUTES),
       },
       {
+        path: 'master',
+        loadChildren: () => import('./Modules/MasterList/master.routes').then(m => m.MASTER_ROUTES),
+      },
+      {
         path: 'personalInfo',
         loadChildren: () => import('./Modules/PersonalInfo/personalinfo.routes').then(m => m.PERSONAL_INFO),
       },

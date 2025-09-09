@@ -40,6 +40,7 @@ export const ErrorInterceptor = (req: HttpRequest<unknown>, next: HttpHandlerFn)
           case 400: errorSummary = 'Bad Request'; break;
           case 403: errorSummary = 'Forbidden'; break;
           case 404: errorSummary = 'Not Found'; break;
+          case 304: errorSummary = 'not Modified'; break;
           case 500: errorSummary = 'Server Error'; break;
         }
       }

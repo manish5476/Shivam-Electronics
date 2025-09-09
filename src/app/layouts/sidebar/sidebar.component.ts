@@ -23,7 +23,13 @@ export class SidebarComponent implements OnInit {
 
   expandedItems: boolean[] = [];
   menuItems = [
-    { label: 'Dashboard', icon: 'pi pi-home', routerLink: ['/admin/dashboard'] },
+    {
+      label: 'Master', icon: 'pi pi-home', items: [
+        { label: 'MasterList Manager', icon: 'pi pi-th-large', routerLink: ['/master/masterLists'] },
+        { label: 'MasterList Type', icon: 'pi pi-th-large', routerLink: ['/master/masterListsType'] },
+        { label: 'MasterList Item', icon: 'pi pi-th-large', routerLink: ['/master/masterListsItem'] },
+      ]
+    },
     {
       label: 'Admin', icon: 'pi pi-lock', items: [
         { label: 'Admin Dashboard', icon: 'pi pi-th-large', routerLink: ['/admin/dashboard'] },

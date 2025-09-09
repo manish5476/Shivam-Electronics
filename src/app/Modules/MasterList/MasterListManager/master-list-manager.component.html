@@ -1,0 +1,70 @@
+<div class="p-6 space-y-6 bg-white shadow rounded-md">
+  <h2 class="text-xl font-bold mb-4">Master List Manager</h2>
+
+  <!-- Create new Master Type -->
+  <div class="border p-4 rounded-md bg-gray-50">
+    <h3 class="text-lg font-semibold mb-3">Create Master Type</h3>
+    <form [formGroup]="createForm" (ngSubmit)="createMasterType()" class="flex gap-4">
+      <div class="flex-1">
+        <label class="block text-sm font-medium">Display Name</label>
+        <input pInputText formControlName="name" class="w-full" placeholder="e.g. Customer Types" />
+      </div>
+      <div class="flex-1">
+        <label class="block text-sm font-medium">System Key</label>
+        <input pInputText formControlName="type" class="w-full" placeholder="e.g. customerTypes" />
+      </div>
+      <div class="flex items-end">
+        <button pButton type="submit" label="Create" class="p-button-success"></button>
+      </div>
+    </form>
+  </div>
+
+  <!-- Select existing Master Type -->
+  <div class="border p-4 rounded-md bg-gray-50">
+    <h3 class="text-lg font-semibold mb-3">Manage Items</h3>
+    <div class="flex items-center gap-4 mb-4">
+      <p-select [options]="typeOptions" optionLabel="label" optionValue="value" [(ngModel)]="selectedType"
+        placeholder="Select a Master Type" (onChange)="loadItems()" class="w-1/2"></p-select>
+
+      <button *ngIf="selectedType" pButton label="Delete Type" class="p-button-danger" (click)="deleteType()"></button>
+    </div>
+
+    <!-- Items Table -->
+    <p-table *ngIf="items && items.length > 0" [value]="items" dataKey="id" editable="true" class="w-full">
+      <ng-template pTemplate="header">
+        <tr>
+          <th>Name</th>
+          <th>Value</th>
+          <th style="width: 120px">Actions</th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-item let-editing="editing">
+        <tr>
+          <td>
+            <input *ngIf="editing" pInputText [(ngModel)]="item.name" class="w-full" />
+            <span *ngIf="!editing">{{ item.name }}</span>
+          </td>
+          <td>
+            <input *ngIf="editing" pInputText [(ngModel)]="item.value" class="w-full" />
+            <span *ngIf="!editing">{{ item.value }}</span>
+          </td>
+          <td>
+            <button *ngIf="!editing" pButton icon="pi pi-pencil" class="p-button-rounded p-button-text"
+              (click)="item.editing = true"></button>
+            <button *ngIf="editing" pButton icon="pi pi-check" class="p-button-rounded p-button-success p-button-text"
+              (click)="updateItem(item)"></button>
+            <button pButton icon="pi pi-trash" class="p-button-rounded p-button-danger p-button-text"
+              (click)="deleteItem(item)"></button>
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+
+    <!-- Add New Item -->
+    <div *ngIf="selectedType" class="flex gap-4 mt-4">
+      <input pInputText [(ngModel)]="newItem.name" placeholder="Item Name" class="flex-1" />
+      <input pInputText [(ngModel)]="newItem.value" placeholder="Item Value" class="flex-1" />
+      <button pButton label="Add Item" class="p-button-primary" (click)="addItem()"></button>
+    </div>
+  </div>
+</div>
