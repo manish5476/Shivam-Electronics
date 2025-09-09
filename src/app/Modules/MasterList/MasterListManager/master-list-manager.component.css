@@ -1,0 +1,64 @@
+/* Using :host and ::ng-deep to apply styles directly to the PrimeNG components */
+:host ::ng-deep {
+
+  /* 1. Main Table Container Styling */
+  .modern-grid .p-datatable-wrapper {
+    border: none; /* Remove the default border */
+    border-radius: var(--ui-border-radius);
+    box-shadow: var(--ui-shadow); /* Use the shadow from your theme */
+    overflow: hidden; /* Ensures the border-radius is respected by inner elements */
+  }
+
+  /* 2. Table Header Styling */
+  .modern-grid .p-datatable-thead > tr > th {
+    background-color: var(--theme-bg-secondary) !important;
+    color: var(--theme-text-label) !important;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.75rem; /* Smaller, cleaner header text */
+    padding: 0.75rem 1rem;
+    border-bottom: 2px solid var(--theme-border-primary) !important;
+  }
+  
+  /* 3. Table Body & Row Styling */
+  .modern-grid .p-datatable-tbody > tr {
+    transition: background-color 0.2s ease;
+    border-bottom: 1px solid var(--theme-border-primary) !important;
+  }
+
+  /* Subtle hover effect for better interactivity */
+  .modern-grid .p-datatable-tbody > tr:not(.p-datatable-emptymessage):hover {
+    background-color: var(--theme-hover-bg) !important;
+  }
+
+  /* 4. Cell Styling for Smaller Height */
+  .modern-grid .p-datatable-tbody > tr > td {
+    padding: 0.6rem 1rem; /* REDUCED PADDING for smaller rows */
+    vertical-align: middle;
+    color: var(--theme-text-secondary);
+  }
+
+  /* Make the input fields in edit mode match the row height */
+  .modern-grid .p-datatable-tbody > tr > td .p-inputtext {
+    height: 2rem;
+  }
+
+  /* 5. Action Buttons Styling */
+  .modern-grid .p-button.p-button-text {
+    color: var(--theme-text-label); /* Softer icon color */
+    transition: all 0.2s ease;
+  }
+  
+  .modern-grid .p-button.p-button-text:hover {
+    transform: scale(1.1);
+    background-color: var(--theme-accent-primary-light) !important;
+    color: var(--theme-accent-primary-hover) !important;
+  }
+
+  /* 6. Caption Styling */
+  .modern-grid .p-datatable-caption {
+    background-color: var(--theme-bg-primary);
+    border: none;
+    padding: 0.75rem 0.25rem; /* Less vertical padding */
+  }
+}
