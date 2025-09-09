@@ -33,7 +33,7 @@ interface Product {
   gstRate: number;
   discountPercentage?: number;
   stock: number;
-  availabilityStatus: 'In Stock' | 'Low Stock' | 'Out of Stock';
+  availabilityStatus: 'In Stock'| 'Low Stock'| 'Out of Stock';
   finalPrice?: number;
   reviews?: any[];
   createdAt?: Date;

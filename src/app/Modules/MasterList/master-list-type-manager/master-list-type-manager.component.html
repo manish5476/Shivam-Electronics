@@ -1,0 +1,48 @@
+<div class="p-m-3">
+  <h3>Master List Types</h3>
+  <p-table [value]="types" [paginator]="true" [rows]="5">
+    <ng-template pTemplate="header">
+      <tr>
+        <th>Label</th>
+        <th>Value</th>
+        <th>Description</th>
+        <th>Actions</th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-type>
+      <tr>
+        <td>{{ type.label }}</td>
+        <td>{{ type.value }}</td>
+        <td>{{ type.description }}</td>
+        <td>
+          <button pButton icon="pi pi-trash" class="p-button-text p-button-danger"
+                  (click)="deleteType(type)"></button>
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+
+  <button pButton label="Add Type" icon="pi pi-plus" class="p-mt-3" (click)="openNew()"></button>
+
+  <!-- Add/Edit Dialog -->
+  <p-dialog [(visible)]="typeDialog" [modal]="true" [style]="{width:'400px'}" header="New Master List Type">
+    <div class="p-fluid">
+      <div class="p-field">
+        <label>Label</label>
+        <input pInputText [(ngModel)]="editingType.label" />
+      </div>
+      <div class="p-field">
+        <label>Value</label>
+        <input pInputText [(ngModel)]="editingType.value" />
+      </div>
+      <div class="p-field">
+        <label>Description</label>
+        <textarea pInputTextarea [(ngModel)]="editingType.description"></textarea>
+      </div>
+    </div>
+    <p-footer>
+      <button pButton label="Cancel" class="p-button-text" (click)="typeDialog=false"></button>
+      <button pButton label="Save" (click)="saveType()"></button>
+    </p-footer>
+  </p-dialog>
+</div>
