@@ -11,7 +11,7 @@ import { Dialog } from "primeng/dialog";
   templateUrl: './master-list-type-manager.component.html',
   styleUrls: ['./master-list-type-manager.component.css'],
   providers: [MessageService, ConfirmationService],
-  imports: [Select, FormsModule, CommonModule, TableModule, Dialog],
+  imports: [ FormsModule, CommonModule, TableModule, Dialog],
 })
 export class MasterListTypeManagerComponent implements OnInit {
   types: any[] = [];
