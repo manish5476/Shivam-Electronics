@@ -1,60 +1,101 @@
-<div class="p-m-3">
-  <h3>Master List Items</h3>
+<p-toast></p-toast>
+<p-confirmDialog [style]="{ width: '30vw' }"></p-confirmDialog>
 
-  <!-- Type Selector -->
-  <p-select
-    [options]="types"
-    [(ngModel)]="selectedType"
-    optionLabel="label"
-    optionValue="value"
-    placeholder="Select a type"
-    (onChange)="onTypeChange()">
-  </p-select>
+<div class="card p-6">
+  <div
+    class="flex flex-col sm:flex-row justify-between sm:items-center gap-4 mb-4"
+  >
+    <h2 class="text-2xl font-bold">Manage Master List Items</h2>
+    <div class="flex gap-2">
+      <p-select
+        [options]="types"
+        [(ngModel)]="selectedType"
+        optionLabel="name"
+        optionValue="type"
+        placeholder="Select a Master List Type..."
+        (onChange)="onTypeChange()"
+        [showClear]="true"
+        styleClass="w-full sm:w-auto min-w-[250px]"
+      ></p-select>
+      <button
+        *ngIf="selectedType"
+        pButton
+        label="Add New Item"
+        icon="pi pi-plus"
+        class="p-button-success"
+        (click)="openNew()"
+      ></button>
+    </div>
+  </div>
 
-  <!-- Items Table -->
-  <p-table *ngIf="selectedType" [value]="items" [paginator]="true" [rows]="5" class="p-mt-3">
+  <p-table
+    *ngIf="selectedType"
+    [value]="items"
+    [paginator]="true"
+    [rows]="10"
+    styleClass="p-datatable-sm modern-grid"
+  >
     <ng-template pTemplate="header">
       <tr>
         <th>Label</th>
         <th>Value</th>
-        <th>Status</th>
-        <th>Actions</th>
+        <th style="width: 10rem">Status</th>
+        <th style="width: 8rem" class="text-center">Actions</th>
       </tr>
     </ng-template>
     <ng-template pTemplate="body" let-item>
       <tr>
         <td>{{ item.label }}</td>
-        <td>{{ item.value }}</td>
-        <td>{{ item.isActive ? 'Active' : 'Inactive' }}</td>
         <td>
-          <button pButton icon="pi pi-pencil" class="p-button-text" (click)="editItem(item)"></button>
-          <button pButton icon="pi pi-trash" class="p-button-text p-button-danger" (click)="deleteItem(item)"></button>
+          <span class="p-1 bg-gray-200 rounded text-xs font-mono">{{
+            item.value
+          }}</span>
+        </td>
+        <td>
+          <span
+            [class]="
+              'p-2 text-xs rounded-full font-semibold ' +
+              (item.isActive
+                ? 'bg-green-100 text-green-800'
+                : 'bg-gray-200 text-gray-700')
+            "
+          >
+            {{ item.isActive ? "ACTIVE" : "INACTIVE" }}
+          </span>
+        </td>
+        <td class="text-center">
+          <button
+            pButton
+            icon="pi pi-pencil"
+            class="p-button-rounded p-button-text"
+            (click)="editItem(item)"
+          ></button>
+          <button
+            pButton
+            icon="pi pi-trash"
+            class="p-button-rounded p-button-text p-button-danger"
+            (click)="deleteItem(item)"
+          ></button>
+        </td>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="emptymessage">
+      <tr>
+        <td colspan="4" class="text-center p-4">
+          No items found for this type. Click "Add New Item" to start.
         </td>
       </tr>
     </ng-template>
   </p-table>
 
-  <button *ngIf="selectedType" pButton label="Add New Item" icon="pi pi-plus" class="p-mt-3" (click)="openNew()"></button>
-
-  <!-- Add/Edit Dialog -->
-  <p-dialog [(visible)]="itemDialog" [modal]="true" [style]="{width:'400px'}"
-            [header]="editingItem?.id ? 'Edit Item' : 'New Item'">
-    <div class="p-fluid">
-      <div class="p-field">
-        <label>Label</label>
-        <input pInputText [(ngModel)]="editingItem.label" />
-      </div>
-      <div class="p-field">
-        <label>Value</label>
-        <input pInputText [(ngModel)]="editingItem.value" />
-      </div>
-      <div class="p-field-checkbox">
-        <p-checkbox [(ngModel)]="editingItem.isActive" binary="true" label="Active"></p-checkbox>
-      </div>
-    </div>
-    <p-footer>
-      <button pButton label="Cancel" class="p-button-text" (click)="itemDialog=false"></button>
-      <button pButton label="Save" (click)="saveItem()"></button>
-    </p-footer>
-  </p-dialog>
+  <div
+    *ngIf="!selectedType"
+    class="text-center p-8 mt-4 rounded-md"
+    style="background-color: var(--theme-bg-ternary)"
+  >
+    <i class="pi pi-list text-4xl" style="color: var(--theme-text-label)"></i>
+    <p class="mt-2 font-semibold" style="color: var(--theme-text-secondary)">
+      Please select a master type to view
+    </p>
+  </div>
 </div>
