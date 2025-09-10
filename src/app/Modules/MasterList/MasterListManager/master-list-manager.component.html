@@ -1,4 +1,445 @@
-<p-toast></p-toast>
+<p-toast key="mainToast"></p-toast>
+<p-confirmDialog [style]="{ width: '30vw' }"></p-confirmDialog>
+
+<div class="card p-6">
+  <h2 class="text-2xl font-bold mb-4">Master List Manager</h2>
+
+  <div class="flex flex-col lg:flex-row gap-4 mb-4">
+    <div class="w-full lg:w-2/3">
+      <h3 class="text-lg font-semibold mb-3">Create New Type</h3>
+      <form
+        class="se-filter-bar h-full"
+        [formGroup]="createForm"
+        (ngSubmit)="createMasterType()"
+      >
+        <div class="flex-grow min-w-[200px]">
+          <label for="name">Display Name</label>
+          <input
+            id="name"
+            pInputText
+            formControlName="name"
+            class="w-full"
+            placeholder="e.g. Customer Types"
+          />
+        </div>
+        <div class="flex-grow min-w-[200px]">
+          <label for="type">System Key (no spaces)</label>
+          <input
+            id="type"
+            pInputText
+            formControlName="type"
+            class="w-full"
+            placeholder="e.g. customerTypes"
+          />
+        </div>
+        <div class="se-filter-actions">
+          <button
+            pButton
+            type="submit"
+            label="Create"
+            icon="pi pi-plus"
+            [disabled]="createForm.invalid"
+          ></button>
+        </div>
+      </form>
+    </div>
+
+    <div class="w-full lg:w-1/3">
+      <h3 class="text-lg font-semibold mb-3">Manage Existing Items</h3>
+      <div class="se-filter-bar h-full">
+        <div class="flex-grow">
+          <label>Select Master Type</label>
+          <div class="flex gap-2">
+            <p-select
+              [options]="typeOptions"
+              optionLabel="name"
+              optionValue="type"
+              [(ngModel)]="selectedType"
+              placeholder="Select a Master Type..."
+              (onChange)="loadItems()"
+              [showClear]="true"
+              class="w-full"
+              name="selectType"
+            ></p-select>
+            <button
+              *ngIf="selectedType"
+              pButton
+              icon="pi pi-trash"
+              class="p-button-danger"
+              (click)="deleteType()"
+              pTooltip="Delete Selected Type"
+              tooltipPosition="top"
+            ></button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="selectedType" class="mt-4">
+    <p-table
+      #dt
+      [value]="items"
+      dataKey="_id"
+      editMode="row"
+      styleClass="p-datatable-sm modern-grid"
+    >
+      <ng-template pTemplate="caption">
+        <div class="flex justify-between items-center">
+          <span class="font-bold text-lg"
+            >Editing Items for:
+            <span style="color: var(--theme-accent-primary)">{{
+              selectedType
+            }}</span></span
+          >
+          <button
+            pButton
+            label="Add Item"
+            icon="pi pi-plus"
+            (click)="onAddNewRow(dt)"
+            class="p-button-sm p-button-success"
+          ></button>
+        </div>
+      </ng-template>
+      <ng-template pTemplate="header">
+        <tr>
+          <th>Label</th>
+          <th>Value</th>
+          <th style="width: 8rem" class="text-center">Actions</th>
+        </tr>
+      </ng-template>
+      <ng-template
+        pTemplate="body"
+        let-item
+        let-editing="editing"
+        let-ri="rowIndex"
+      >
+        <tr [pEditableRow]="item">
+          <td>
+            <p-cellEditor>
+              <ng-template pTemplate="input">
+                <input
+                  pInputText
+                  type="text"
+                  [(ngModel)]="item.label"
+                  class="w-full"
+                  required
+                />
+              </ng-template>
+              <ng-template pTemplate="output">
+                {{ item.label }}
+              </ng-template>
+            </p-cellEditor>
+          </td>
+          <td>
+            <p-cellEditor>
+              <ng-template pTemplate="input">
+                <input
+                  pInputText
+                  type="text"
+                  [(ngModel)]="item.value"
+                  class="w-full"
+                  required
+                />
+              </ng-template>
+              <ng-template pTemplate="output">
+                {{ item.value }}
+              </ng-template>
+            </p-cellEditor>
+          </td>
+          <td class="text-center">
+            <div
+              class="flex items-center justify-center gap-2"
+              *ngIf="!editing"
+            >
+              <button
+                pButton
+                pInitEditableRow
+                icon="pi pi-pencil"
+                (click)="onRowEditInit(item)"
+                class="p-button-rounded p-button-text"
+              ></button>
+              <button
+                pButton
+                icon="pi pi-trash"
+                (click)="deleteItem(item)"
+                class="p-button-rounded p-button-text p-button-danger"
+              ></button>
+            </div>
+            <div class="flex items-center justify-center gap-2" *ngIf="editing">
+              <button
+                pButton
+                pSaveEditableRow
+                icon="pi pi-check"
+                (click)="onRowEditSave(item)"
+                class="p-button-rounded p-button-text p-button-success"
+              ></button>
+              <button
+                pButton
+                pCancelEditableRow
+                icon="pi pi-times"
+                (click)="onRowEditCancel(item, ri)"
+                class="p-button-rounded p-button-text p-button-danger"
+              ></button>
+            </div>
+          </td>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="emptymessage">
+        <tr>
+          <td colspan="3" class="text-center py-4">
+            No items found for this type. <br />Click 'Add Item' to start.
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </div>
+
+  <div
+    *ngIf="!selectedType"
+    class="text-center p-8 mt-4 rounded-md"
+    style="background-color: var(--theme-bg-ternary)"
+  >
+    <i class="pi pi-list text-4xl" style="color: var(--theme-text-label)"></i>
+    <p class="mt-2 font-semibold" style="color: var(--theme-text-secondary)">
+      Please select a master type to view and manage its items.
+    </p>
+  </div>
+</div>
+<!-- <p-toast></p-toast>
+<p-confirmDialog [style]="{ width: '30vw' }"></p-confirmDialog>
+
+<div class="card p-6">
+  <h2 class="text-2xl font-bold mb-4">Master List Manager</h2>
+
+  <div class="flex flex-col lg:flex-row gap-4 mb-4">
+    <div class="w-full lg:w-2/3">
+      <h3 class="text-lg font-semibold mb-3">Create New Type</h3>
+      <form
+        class="se-filter-bar h-full"
+        [formGroup]="createForm"
+        (ngSubmit)="createMasterType()"
+      >
+        <div class="flex-grow min-w-[200px]">
+          <label for="name">Display Name</label>
+          <input
+            id="name"
+            pInputText
+            formControlName="name"
+            class="w-full"
+            placeholder="e.g. Customer Types"
+          />
+        </div>
+        <div class="flex-grow min-w-[200px]">
+          <label for="type">System Key (no spaces)</label>
+          <input
+            id="type"
+            pInputText
+            formControlName="type"
+            class="w-full"
+            placeholder="e.g. customerTypes"
+          />
+        </div>
+        <div class="se-filter-actions">
+          <button
+            pButton
+            type="submit"
+            label="Create"
+            icon="pi pi-plus"
+            [disabled]="createForm.invalid"
+          ></button>
+        </div>
+      </form>
+    </div>
+
+    <div class="w-full lg:w-1/3">
+      <h3 class="text-lg font-semibold mb-3">Manage Existing Items</h3>
+      <div class="se-filter-bar h-full">
+        <div class.flex-grow>
+          <label>Select Master Type</label>
+          <div class="flex gap-2">
+            <p-select
+              [options]="typeOptions"
+              optionLabel="name"
+              optionValue="type"
+              [(ngModel)]="selectedType"
+              placeholder="Select a Master Type..."
+              (onChange)="loadItems()"
+              [showClear]="true"
+              class="w-full"
+              name="selectType"
+            ></p-select>
+            <button
+              *ngIf="selectedType"
+              pButton
+              icon="pi pi-trash"
+              class="p-button-danger"
+              (click)="deleteType()"
+              pTooltip="Delete Selected Type"
+              tooltipPosition="top"
+            ></button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="selectedType" class="mt-4">
+    <p-table
+      #dt
+      [value]="items"
+      dataKey="id"
+      editMode="row"
+      styleClass="p-datatable-sm modern-grid"
+    >
+      <ng-template pTemplate="caption">
+        <div class="flex justify-between items-center">
+          <span class="font-bold text-lg"
+            >Editing Items for:
+            <span style="color: var(--theme-accent-primary)">{{
+              selectedType
+            }}</span></span
+          >
+        </div>
+      </ng-template>
+      <ng-template pTemplate="header">
+        <tr>
+          <th>Label</th>
+          <th>Value</th>
+          <th style="width: 8rem">Actions</th>
+        </tr>
+      </ng-template>
+      <ng-template
+        pTemplate="body"
+        let-item
+        let-editing="editing"
+        let-ri="rowIndex"
+      >
+        <tr [pEditableRow]="item">
+          <td>
+            <p-cellEditor>
+              <ng-template pTemplate="input">
+                <input
+                  pInputText
+                  type="text"
+                  [(ngModel)]="item.label"
+                  class="w-full"
+                  required
+                />
+              </ng-template>
+              <ng-template pTemplate="output">
+                {{ item.label }}
+              </ng-template>
+            </p-cellEditor>
+          </td>
+          <td>
+            <p-cellEditor>
+              <ng-template pTemplate="input">
+                <input
+                  pInputText
+                  type="text"
+                  [(ngModel)]="item.value"
+                  class="w-full"
+                  required
+                />
+              </ng-template>
+              <ng-template pTemplate="output">
+                {{ item.value }}
+              </ng-template>
+            </p-cellEditor>
+          </td>
+          <td>
+            <div
+              class="flex items-center justify-center gap-2"
+              *ngIf="!editing"
+            >
+              <button
+                pButton
+                pInitEditableRow
+                icon="pi pi-pencil"
+                (click)="onRowEditInit(item)"
+                class="p-button-rounded p-button-text"
+              ></button>
+              <button
+                pButton
+                icon="pi pi-trash"
+                (click)="deleteItem(item)"
+                class="p-button-rounded p-button-text p-button-danger"
+              ></button>
+            </div>
+            <div class="flex items-center justify-center gap-2" *ngIf="editing">
+              <button
+                pButton
+                pSaveEditableRow
+                icon="pi pi-check"
+                (click)="onRowEditSave(item)"
+                class="p-button-rounded p-button-text p-button-success"
+              ></button>
+              <button
+                pButton
+                pCancelEditableRow
+                icon="pi pi-times"
+                (click)="onRowEditCancel(item, ri)"
+                class="p-button-rounded p-button-text p-button-danger"
+              ></button>
+            </div>
+          </td>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="emptymessage">
+        <tr>
+          <td colspan="3" class="text-center py-4">
+            No items found for this type. Add one below.
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </div>
+
+  <div *ngIf="selectedType" class="se-filter-bar mt-6">
+    <div class="flex-grow min-w-[200px]">
+      <label for="newLabel">New Item Label</label>
+      <input
+        id="newLabel"
+        pInputText
+        [(ngModel)]="newItem.label"
+        placeholder="e.g. Wholesale"
+        class="w-full"
+      />
+    </div>
+    <div class="flex-grow min-w-[200px]">
+      <label for="newValue">New Item Value</label>
+      <input
+        id="newValue"
+        pInputText
+        [(ngModel)]="newItem.value"
+        placeholder="e.g. wholesale"
+        class="w-full"
+      />
+    </div>
+    <div class="se-filter-actions">
+      <button
+        pButton
+        label="Add Item"
+        icon="pi pi-plus"
+        class="p-button-success"
+        (click)="addItem()"
+      ></button>
+    </div>
+  </div>
+
+  <div
+    *ngIf="!selectedType"
+    class="text-center p-8 mt-4 rounded-md"
+    style="background-color: var(--theme-bg-ternary)"
+  >
+    <i class="pi pi-list text-4xl" style="color: var(--theme-text-label)"></i>
+    <p class="mt-2 font-semibold" style="color: var(--theme-text-secondary)">
+      Please select a master type to view and manage its items.
+    </p>
+  </div>
+</div> -->
+<!-- <p-toast></p-toast>
 <p-confirmDialog></p-confirmDialog>
 
 <div class="card p-6">
@@ -113,7 +554,7 @@
     <p class="mt-2 font-semibold" style="color: var(--theme-text-secondary);">Please select a master type to view and
       manage its items.</p>
   </div>
-</div>
+</div> -->
 <!-- <p-toast></p-toast>
 <p-confirmDialog></p-confirmDialog>
 
