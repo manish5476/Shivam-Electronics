@@ -138,6 +138,7 @@ export class MasterListManagerComponent implements OnInit {
       return;
     }
     this.masterListService.getType(this.selectedType).subscribe((res: any) => {
+      // CORRECTED: Access the nested items array via res.data.items
       this.items = res.data?.items || [];
     });
   }
