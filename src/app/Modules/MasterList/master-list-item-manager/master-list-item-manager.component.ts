@@ -27,7 +27,7 @@ export class MasterListItemManagerComponent implements OnInit {
     private masterListService: MasterListService,
     private messageService: MessageService,
     private confirmationService: ConfirmationService
-  ) {}
+  ) {} 
 
   ngOnInit(): void {
     this.loadTypes();
