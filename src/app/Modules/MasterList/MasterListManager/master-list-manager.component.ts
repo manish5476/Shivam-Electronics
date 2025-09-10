@@ -27,7 +27,6 @@ import { MasterListService } from '../../../core/services/masterLists.service';
     ReactiveFormsModule,
     TableModule,
     Select,
-    Dialog,
     ToastModule,
     InputTextModule,
     ButtonModule,

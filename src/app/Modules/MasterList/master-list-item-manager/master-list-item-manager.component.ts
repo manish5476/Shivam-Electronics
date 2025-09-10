@@ -11,7 +11,7 @@ import { Select } from 'primeng/select';
 @Component({
   selector: 'app-master-list-item-manager',
   templateUrl: './master-list-item-manager.component.html',
-  styleUrls: ['./master-list-item-manager.component.scss'],
+  styleUrls: ['./master-list-item-manager.component.css'],
   providers: [MessageService, ConfirmationService,Footer],
   imports: [Checkbox, CommonModule, FormsModule, TableModule,Select, Dialog]
 })
