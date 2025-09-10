@@ -52,8 +52,8 @@
           <div class="flex gap-2">
             <p-select
               [options]="typeOptions"
-              optionLabel="name"
-              optionValue="type"
+              optionLabel="label"
+              optionValue="value"
               [(ngModel)]="selectedType"
               placeholder="Select a Master Type..."
               (onChange)="loadItems()"
