@@ -1,119 +1,48 @@
-<p-toast></p-toast>
-<p-confirmDialog [style]="{ width: '30vw' }"></p-confirmDialog>
-
-<div class="card p-6">
-  <div class="flex justify-between items-center mb-4">
-    <h2 class="text-2xl font-bold">Master List Types</h2>
-    <button
-      pButton
-      label="Add Type"
-      icon="pi pi-plus"
-      class="p-button-success"
-      (click)="openNew()"
-    ></button>
-  </div>
-
-  <p-table
-    [value]="types"
-    [paginator]="true"
-    [rows]="10"
-    styleClass="p-datatable-sm modern-grid"
-  >
+<div class="p-m-3">
+  <h3>Master List Types</h3>
+  <p-table [value]="types" [paginator]="true" [rows]="5">
     <ng-template pTemplate="header">
       <tr>
-        <th>Display Name</th>
-        <th>System Key (Type)</th>
+        <th>Label</th>
+        <th>Value</th>
         <th>Description</th>
-        <th style="width: 8rem" class="text-center">Actions</th>
+        <th>Actions</th>
       </tr>
     </ng-template>
     <ng-template pTemplate="body" let-type>
       <tr>
-        <td>{{ type.name }}</td>
-        <td>
-          <span class="p-1 bg-gray-200 rounded text-xs font-mono">{{
-            type.type
-          }}</span>
-        </td>
+        <td>{{ type.label }}</td>
+        <td>{{ type.value }}</td>
         <td>{{ type.description }}</td>
-        <td class="text-center">
-          <button
-            pButton
-            icon="pi pi-trash"
-            class="p-button-rounded p-button-text p-button-danger"
-            (click)="deleteType(type)"
-          ></button>
-        </td>
-      </tr>
-    </ng-template>
-    <ng-template pTemplate="emptymessage">
-      <tr>
-        <td colspan="4" class="text-center p-4">
-          No master list types found. Click "Add Type" to create one.
+        <td>
+          <button pButton icon="pi pi-trash" class="p-button-text p-button-danger"
+                  (click)="deleteType(type)"></button>
         </td>
       </tr>
     </ng-template>
   </p-table>
-</div>
 
-<p-dialog
-  [(visible)]="typeDialog"
-  [modal]="true"
-  [style]="{ width: '450px' }"
-  header="Master List Type Details"
-  (onHide)="hideDialog()"
->
-  <div class="p-fluid flex flex-col gap-4 pt-4">
-    <div>
-      <label for="name">Display Name</label>
-      <input
-        id="name"
-        pInputText
-        [(ngModel)]="editingType.name"
-        required
-        autofocus
-        [ngClass]="{ 'ng-invalid ng-dirty': submitted && !editingType.name }"
-      />
-      <small class="p-error" *ngIf="submitted && !editingType.name"
-        >Name is required.</small
-      >
+  <button pButton label="Add Type" icon="pi pi-plus" class="p-mt-3" (click)="openNew()"></button>
+
+  <!-- Add/Edit Dialog -->
+  <p-dialog [(visible)]="typeDialog" [modal]="true" [style]="{width:'400px'}" header="New Master List Type">
+    <div class="p-fluid">
+      <div class="p-field">
+        <label>Label</label>
+        <input pInputText [(ngModel)]="editingType.label" />
+      </div>
+      <div class="p-field">
+        <label>Value</label>
+        <input pInputText [(ngModel)]="editingType.value" />
+      </div>
+      <div class="p-field">
+        <label>Description</label>
+        <textarea pInputTextarea [(ngModel)]="editingType.description"></textarea>
+      </div>
     </div>
-    <div>
-      <label for="type">System Key (e.g., customerTypes)</label>
-      <input
-        id="type"
-        pInputText
-        [(ngModel)]="editingType.type"
-        required
-        [ngClass]="{ 'ng-invalid ng-dirty': submitted && !editingType.type }"
-      />
-      <small class="p-error" *ngIf="submitted && !editingType.type"
-        >System Key is required.</small
-      >
-    </div>
-    <div>
-      <label for="description">Description</label>
-      <textarea
-        id="description"
-        pInputTextarea
-        [(ngModel)]="editingType.description"
-        rows="3"
-      ></textarea>
-    </div>
-  </div>
-  <ng-template pTemplate="footer">
-    <button
-      pButton
-      label="Cancel"
-      icon="pi pi-times"
-      class="p-button-text"
-      (click)="hideDialog()"
-    ></button>
-    <button
-      pButton
-      label="Save"
-      icon="pi pi-check"
-      (click)="saveType()"
-    ></button>
-  </ng-template>
-</p-dialog>
+    <p-footer>
+      <button pButton label="Cancel" class="p-button-text" (click)="typeDialog=false"></button>
+      <button pButton label="Save" (click)="saveType()"></button>
+    </p-footer>
+  </p-dialog>
+</div>
