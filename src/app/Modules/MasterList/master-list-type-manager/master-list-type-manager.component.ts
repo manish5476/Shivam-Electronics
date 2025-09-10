@@ -11,7 +11,7 @@ import { TableModule } from "primeng/table";
 @Component({
   selector: 'app-master-list-type-manager',
   templateUrl: './master-list-type-manager.component.html',
-  styleUrls: ['./master-list-type-manager.component.scss'],
+  styleUrls: ['./master-list-type-manager.component.css'],
   providers: [MessageService, ConfirmationService,Footer],
   imports: [Dialog, FormsModule, CommonModule, ButtonModule, TableModule]
 })
