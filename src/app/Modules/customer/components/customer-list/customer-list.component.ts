@@ -1,6 +1,6 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { SharedGridComponent } from '../../../../shared/AgGrid/grid/shared-grid/shared-grid.component';
-import { CellValueChangedEvent } from 'ag-grid-community';
+import { CellClickedEvent, CellValueChangedEvent, PaginationChangedEvent } from 'ag-grid-community';
 import { CustomerService } from '../../../../core/services/customer.service';
 import { InvoiceService } from '../../../../core/services/invoice.service';
 import { SelectModule } from 'primeng/select';
@@ -11,11 +11,11 @@ import { AppMessageService } from '../../../../core/services/message.service';
 // Add this import to the top of your component file
 import { ImageCellRendererComponent } from '../../../../shared/AgGrid/AgGridcomponents/image-cell-renderer/image-cell-renderer.component';
 import { Button } from "primeng/button";
-import { AutoCompleteCompleteEvent,AutoCompleteModule } from 'primeng/autocomplete';
+import { AutoCompleteCompleteEvent, AutoCompleteModule } from 'primeng/autocomplete';
 @Component({
     selector: 'app-customer-list',
     standalone: true,
-    imports: [SharedGridComponent, SelectModule,AutoCompleteModule, FormsModule, IftaLabelModule, Button],
+    imports: [SharedGridComponent, SelectModule, AutoCompleteModule, FormsModule, IftaLabelModule, Button],
     providers: [CustomerService],
     templateUrl: './customer-list.component.html',
     styleUrl: './customer-list.component.css'
@@ -50,31 +50,31 @@ export class CustomerListComponent implements OnInit {
         this.getData();
     }
 
-  emailSuggestions: string[] = [];
+    emailSuggestions: string[] = [];
 
-  private readonly domains: string[] = [
-    '@gmail.com',
-    '@yahoo.com',
-    '@outlook.com',
-    '@hotmail.com',
-    '@protonmail.com'
-  ];
+    private readonly domains: string[] = [
+        '@gmail.com',
+        '@yahoo.com',
+        '@outlook.com',
+        '@hotmail.com',
+        '@protonmail.com'
+    ];
 
-  filterEmails(event: AutoCompleteCompleteEvent) {
-    const query = event.query;
+    filterEmails(event: AutoCompleteCompleteEvent) {
+        const query = event.query;
 
-    if (!query) {
-      this.emailSuggestions = [];
-      return;
+        if (!query) {
+            this.emailSuggestions = [];
+            return;
+        }
+
+        // If user already typed '@', don’t prepend again
+        if (query.includes('@')) {
+            this.emailSuggestions = [];
+        } else {
+            this.emailSuggestions = this.domains.map(domain => query + domain);
+        }
     }
-
-    // If user already typed '@', don’t prepend again
-    if (query.includes('@')) {
-      this.emailSuggestions = [];
-    } else {
-      this.emailSuggestions = this.domains.map(domain => query + domain);
-    }
-  }
 
     autopopulatedata() {
         this.autoPopulate.getModuleData('customers').subscribe((data: any) => {
@@ -98,7 +98,7 @@ export class CustomerListComponent implements OnInit {
                     }
                 },
             },
-            { headerName: 'Profile Photo', field: 'profileImg', cellRenderer: ImageCellRendererComponent, width: 120, autoHeight: true, filter: false, sortable: false},
+            { headerName: 'Profile Photo', field: 'profileImg', cellRenderer: ImageCellRendererComponent, width: 120, autoHeight: true, filter: false, sortable: false },
             { field: 'email', headerName: 'Email', sortable: true, filter: true, resizable: true },
             { field: 'fullname', headerName: 'Full Name', sortable: true, filter: true, resizable: true },
             { field: 'phoneNumbers[0].number', headerName: 'Contact Number', sortable: true, filter: true, resizable: true, valueGetter: (params: any) => params.data.phoneNumbers?.[0]?.number },
@@ -168,34 +168,62 @@ export class CustomerListComponent implements OnInit {
         }
         this.CustomerService.getAllCustomerData(filterParams).subscribe((res: any) => {
             this.data = res.data;
-             this.cdr.markForCheck();
+            this.cdr.markForCheck();
         });
     }
 
-    eventFromGrid(event: any) {
-        if (event.eventType === 'onCellValueChanged') {
-            const cellValueChangedEvent = event.event as CellValueChangedEvent;
-            const rowNode = cellValueChangedEvent.node;
-            const dataItem = rowNode.data;
-            this.customer = dataItem
-            const field = cellValueChangedEvent.colDef.field;
-            const newValue = cellValueChangedEvent.newValue;
-            if (field) {
-                dataItem[field] = newValue;
-                this.InvoiceService.updateInvoice(dataItem.id, dataItem).subscribe({
-                    next: (res: any) => { },
-                    error: (err: any) => { console.error('❌ Error updating invoice:', err) }
-                });
-            } else {
-                console.error('❌ Error: Field is undefined in cellValueChangedEvent.colDef');
-            }
-        }
+    // ADD THIS NEW METHOD for pagination
+    handlePaginationChanges(event: PaginationChangedEvent) {
+        console.log('Pagination Changed!', event);
+        const currentPage = event.api.paginationGetCurrentPage();
+        console.log('Current Page is:', currentPage + 1);
     }
 
 
+    eventFromGrid(event: any) {
+        switch (event.type) {
+            // case 'cellClick':
+            //     const cellEvent = event.payload as CellClickedEvent;
+            //     console.log(cellEvent);
+            //     break;
+
+            case 'pagination':
+                const paginationEvent = event.payload as PaginationChangedEvent;
+                console.log('Pagination Changed!', paginationEvent);
+                const currentPage = paginationEvent.api.paginationGetCurrentPage();
+                console.log('Current Page is:', currentPage + 1);
+                const pageSize = event.api.paginationGetPageSize();
+                const totalPages = event.api.paginationGetTotalPages();
+                const totalRecords = event.api.paginationGetRowCount();
+
+
+                this.customerFilter.page = paginationEvent.api.paginationGetCurrentPage();
+                this.customerFilter.limit = paginationEvent.api.paginationGetPageSize();
+                this.getData()
+                break;
+        }
+
+        // if (event.eventType === 'onCellValueChanged') {
+        //     const cellValueChangedEvent = event.event as CellValueChangedEvent;
+        //     const rowNode = cellValueChangedEvent.node;
+        //     const dataItem = rowNode.data;
+        //     this.customer = dataItem
+        //     const field = cellValueChangedEvent.colDef.field;
+        //     const newValue = cellValueChangedEvent.newValue;
+        //     if (field) {
+        //         dataItem[field] = newValue;
+        //         this.InvoiceService.updateInvoice(dataItem.id, dataItem).subscribe({
+        //             next: (res: any) => { },
+        //             error: (err: any) => { console.error('❌ Error updating invoice:', err) }
+        //         });
+        //     } else {
+        //         console.error('❌ Error: Field is undefined in cellValueChangedEvent.colDef');
+        //     }
+        // }
+    }
     validateCustomer(): boolean {
         if (!this.customer.fullname) { return false; }
-        if (!this.customer.email || !this.customer.email.match(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/)) { return false;}
+        if (!this.customer.email || !this.customer.email.match(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/)) { return false; }
         return true;
     }
 

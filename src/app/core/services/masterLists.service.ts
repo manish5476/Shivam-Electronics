@@ -9,10 +9,6 @@ export class MasterListService extends BaseApiService {
   // CORRECTED: This now matches your backend router's base path for this resource.
   private endpoint = '/v1/masterlists';
 
-  /** ---------------------------
-   * 🔹 Master List Type CRUD
-   * --------------------------- */
-
   // Create new master list type
   createType(data: any): Observable<any> {
     return this.http

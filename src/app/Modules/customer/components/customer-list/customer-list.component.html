@@ -52,7 +52,7 @@
   <!-- Grid Area (remains unchanged) -->
   <div class="mt-1 card">
     <app-shared-grid [data]="data" [gridHeight]="'280px'" [headerFilter]="false" [rowSelectionMode]="rowSelectionMode"
-      [GridName]="'Customer Details'" [column]="column" (eventFromGrid)="eventFromGrid($event)">
+      [GridName]="'Customer Details'" [column]="column" (eventFromGrid)="eventFromGrid($event)" (paginationChanged)="handlePaginationChanges($event)">
     </app-shared-grid>
   </div>
 </div>

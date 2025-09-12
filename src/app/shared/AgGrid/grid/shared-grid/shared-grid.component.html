@@ -38,8 +38,8 @@
 
   <div class="relative w-full ag-grid-main-area" [style.height]="mainGridHeight">
     <ag-grid-angular style="height: 100%; width: 100%;" [rowData]="rowData" [columnDefs]="columnDefs" [theme]="theme"
-      [defaultColDef]="defaultColDef" [pagination]="true" [rowSelection]="rowSelection" editType ='fullRow'
-      [rowClassRules]="mergedRowClassRules" [paginationPageSize]="paginationPageSize" [getRowId]="getRowId"
+      [defaultColDef]="defaultColDef" [pagination]="true" [rowSelection]="rowSelection" editType ='fullRow' (paginationChanged)="onPaginationChanged($event)"
+      [rowClassRules]="mergedRowClassRules" [paginationPageSize]="paginationPageSize" [getRowId]="getRowId" (sortChanged)="handleSort($event)"
       (cellValueChanged)="onCellValueChanged($event)" (rowSelected)="onRowSelected($event)"
       (cellClicked)="onCellClicked($event)" (gridReady)="onGridReady($event)">
     </ag-grid-angular>
