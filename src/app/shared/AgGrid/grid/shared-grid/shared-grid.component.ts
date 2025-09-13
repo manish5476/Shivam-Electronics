@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import { AgGridAngular } from 'ag-grid-angular';
-import { ColDef, GridApi, GridReadyEvent, CellValueChangedEvent, RowSelectedEvent, CellClickedEvent, GetRowIdParams } from 'ag-grid-community';
+import { ColDef, GridApi, GridReadyEvent, CellValueChangedEvent, RowSelectedEvent, CellClickedEvent, GetRowIdParams, PaginationChangedEvent, IServerSideDatasource } from 'ag-grid-community';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { SelectModule } from 'primeng/select';
@@ -13,6 +13,7 @@ import { DynamicCellComponent } from '../../AgGridcomponents/dynamic-cell/dynami
 import { ThemeService } from '../../../../core/services/theme.service';
 import { themeQuartz } from 'ag-grid-community';
 import { StatusCellComponent, StatusColumnConfig } from '../../AgGridcomponents/status-cell/status-cell.component';
+import { SortEvent } from 'primeng/api';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
@@ -32,14 +33,15 @@ export interface SharedGridOptions {
   styleUrls: ['./shared-grid.component.css']
 })
 export class SharedGridComponent implements OnInit, OnChanges {
+  @Output() paginationChanged = new EventEmitter<PaginationChangedEvent>();
 
   // --- Inputs ---
   @Input() gridOptions!: SharedGridOptions;
   @Input() isLoading: boolean = false;
-
+  @Input() totalRecords: number = 0;
   @Input() rowClassRules: any = {};
   @Input() usertheme: string = 'ag-theme-quartz';
-  @Input() data: any 
+  @Input() data: any
   @Input() rowSelectionMode: string = 'single';
   @Input() column: ColDef[] = [];
   @Input() gridHeight: string = '162px';
@@ -50,6 +52,7 @@ export class SharedGridComponent implements OnInit, OnChanges {
   @Output() dataChanged = new EventEmitter<any>();
   @Output() eventFromGrid = new EventEmitter<any>();
   @Output() gridReady = new EventEmitter<GridReadyEvent>();
+  @Output() onDataRequest = new EventEmitter<any>();
 
   private gridApi!: GridApi;
   public rowData: any[] = [];
@@ -88,6 +91,9 @@ export class SharedGridComponent implements OnInit, OnChanges {
     inputIconColor: 'var(--theme-accent-primary, #3b82f6)',
     selectedRowBackgroundColor: 'var(--theme-accent-primary-light, #dbeafe)'
   });
+  // This is the key property for server-side data
+  public rowModelType = 'serverSide';
+  public serverSideDatasource!: IServerSideDatasource;
 
   public defaultColDef: ColDef = {
     sortable: true,
@@ -97,6 +103,7 @@ export class SharedGridComponent implements OnInit, OnChanges {
     minWidth: 120,
     editable: (params) => this.editingRowId === (params.data?._id || params.data?.id)
   };
+
   getRowId: (params: GetRowIdParams) => string = (params: GetRowIdParams) => {
     return params.data._id || String(params.data.id);
   };
@@ -268,6 +275,15 @@ export class SharedGridComponent implements OnInit, OnChanges {
     this.eventFromGrid.emit({ eventType: 'RowSelectedEvent', event });
   }
 
+  handleSort(event: any) {
+    this.eventFromGrid.emit({ eventType: 'sorting', event });
+
+  }
+  onPaginationChanged(event: PaginationChangedEvent) {
+    this.eventFromGrid.emit({ type: 'pagination', payload: event });
+    // this.paginationChanged.emit(event);
+  }
+
   onCellClicked(event: CellClickedEvent): void {
     this.eventFromGrid.emit({ eventType: 'CellClickedEvent', event });
   }
@@ -275,7 +291,38 @@ export class SharedGridComponent implements OnInit, OnChanges {
   onGridReady(event: GridReadyEvent): void {
     this.gridApi = event.api;
     this.gridReady.emit(event);
+    this.serverSideDatasource = this.createDatasource();
   }
+
+  createDatasource(): IServerSideDatasource {
+    return {
+      getRows: (params) => {
+        console.log('Grid is asking for rows:', params.request);
+        // When the grid needs data, we emit an event to the parent.
+        // The parent will fetch the data and then call a method on this component
+        // to pass the data back.
+        this.onDataRequest.emit(params);
+      },
+    };
+  }
+
+  // public setData(rows: any[], totalRecords: number) {
+  //     const lastRow = totalRecords; // or -1 for infinite scrolling
+  //     // Find the original request params from the gridApi and succeed it
+  //     const successParams = { rowData: rows, rowCount: lastRow };
+  //     this.gridApi.setServerSideDatasource(this.serverSideDatasource) // Re-register the datasource
+  //     this.gridApi.getServerSideDataSource()?.getRows({
+  //       ...this.gridApi.getServerSideDataSource()!,
+  //       success: (successParams:any)=>{
+  //         this.rowData = successParams.rowData;
+  //       },
+  //       fail: ()=>{},
+  //       request: this.gridApi.getServerSideDataSource()!.getRows!.prototype,
+  //       parentNode:this.gridApi.getServerSideDataSource()!.getRows!.prototype,
+  //       api:this.gridApi,
+  //       columnApi:this.gridApi.getColumns()!
+  //     })
+  // }
 
   exportToCSV(): void {
     this.gridApi.exportDataAsCsv();
