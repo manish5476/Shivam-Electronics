@@ -11,11 +11,11 @@ import { AppMessageService } from '../../../../core/services/message.service';
 // Add this import to the top of your component file
 import { ImageCellRendererComponent } from '../../../../shared/AgGrid/AgGridcomponents/image-cell-renderer/image-cell-renderer.component';
 import { Button } from "primeng/button";
-import { AutoCompleteCompleteEvent,AutoCompleteModule } from 'primeng/autocomplete';
+import { AutoCompleteCompleteEvent, AutoCompleteModule } from 'primeng/autocomplete';
 @Component({
     selector: 'app-customer-list',
     standalone: true,
-    imports: [SharedGridComponent, SelectModule,AutoCompleteModule, FormsModule, IftaLabelModule, Button],
+    imports: [SharedGridComponent, SelectModule, AutoCompleteModule, FormsModule, IftaLabelModule, Button],
     providers: [CustomerService],
     templateUrl: './customer-list.component.html',
     styleUrl: './customer-list.component.css'
@@ -50,31 +50,31 @@ export class CustomerListComponent implements OnInit {
         this.getData();
     }
 
-  emailSuggestions: string[] = [];
+    emailSuggestions: string[] = [];
 
-  private readonly domains: string[] = [
-    '@gmail.com',
-    '@yahoo.com',
-    '@outlook.com',
-    '@hotmail.com',
-    '@protonmail.com'
-  ];
+    private readonly domains: string[] = [
+        '@gmail.com',
+        '@yahoo.com',
+        '@outlook.com',
+        '@hotmail.com',
+        '@protonmail.com'
+    ];
 
-  filterEmails(event: AutoCompleteCompleteEvent) {
-    const query = event.query;
+    filterEmails(event: AutoCompleteCompleteEvent) {
+        const query = event.query;
 
-    if (!query) {
-      this.emailSuggestions = [];
-      return;
+        if (!query) {
+            this.emailSuggestions = [];
+            return;
+        }
+
+        // If user already typed '@', don’t prepend again
+        if (query.includes('@')) {
+            this.emailSuggestions = [];
+        } else {
+            this.emailSuggestions = this.domains.map(domain => query + domain);
+        }
     }
-
-    // If user already typed '@', don’t prepend again
-    if (query.includes('@')) {
-      this.emailSuggestions = [];
-    } else {
-      this.emailSuggestions = this.domains.map(domain => query + domain);
-    }
-  }
 
     autopopulatedata() {
         this.autoPopulate.getModuleData('customers').subscribe((data: any) => {
@@ -84,7 +84,7 @@ export class CustomerListComponent implements OnInit {
 
     getColumn(): void {
         this.column = [
-            { field: '_id', headerName: 'ID', sortable: true, filter: true, resizable: true },
+            { field: '_id', headerName: 'ID', sortable: true, filter: true, resizable: true, tooltipField: '_id' },
             {
                 field: 'status', headerName: 'Status', sortable: true, filter: true, resizable: true,
                 cellStyle: (params: any) => {
@@ -98,18 +98,18 @@ export class CustomerListComponent implements OnInit {
                     }
                 },
             },
-            { headerName: 'Profile Photo', field: 'profileImg', cellRenderer: ImageCellRendererComponent, width: 120, autoHeight: true, filter: false, sortable: false},
-            { field: 'email', headerName: 'Email', sortable: true, filter: true, resizable: true },
-            { field: 'fullname', headerName: 'Full Name', sortable: true, filter: true, resizable: true },
-            { field: 'phoneNumbers[0].number', headerName: 'Contact Number', sortable: true, filter: true, resizable: true, valueGetter: (params: any) => params.data.phoneNumbers?.[0]?.number },
-            { field: 'addresses[0].street', headerName: 'Street', sortable: true, filter: true, resizable: true, valueGetter: (params: any) => params.data.addresses?.[0]?.street },
-            { field: 'addresses[0].city', headerName: 'City', sortable: true, filter: true, resizable: true, valueGetter: (params: any) => params.data.addresses?.[0]?.city },
-            { field: 'addresses[0].state', headerName: 'State', sortable: true, filter: true, resizable: true, valueGetter: (params: any) => params.data.addresses?.[0]?.state },
-            { field: 'addresses[0].zipCode', headerName: 'Zip Code', sortable: true, filter: true, resizable: true, valueGetter: (params: any) => params.data.addresses?.[0]?.zipCode },
-            { field: 'addresses[0].country', headerName: 'Country', sortable: true, filter: true, resizable: true, valueGetter: (params: any) => params.data.addresses?.[0]?.country },
-            { field: 'totalPurchasedAmount', headerName: 'Total Purchased Amount', sortable: true, filter: true, resizable: true },
+            { headerName: 'Profile Photo', tooltipField: 'profileImg', field: 'profileImg', cellRenderer: ImageCellRendererComponent, width: 120, autoHeight: true, filter: false, sortable: false },
+            { tooltipField: 'email', field: 'email', headerName: 'Email', sortable: true, filter: true, resizable: true, tooltiptooltipField: 'profileImg', Field: 'name' },
+            { tooltipField: 'fullname', field: 'fullname', headerName: 'Full Name', sortable: true, filter: true, resizable: true, tooltiptooltipField: 'profileImg', Field: 'name' },
+            {                field: 'phoneNumbers[0].number', headerName: 'Contact Number', sortable: true, filter: true, resizable: true, valueGetter: (params: any) => params.data.phoneNumbers?.[0]?.number, tooltipValueGetter: (params: any) => params.data.phoneNumbers?.[0]?.number,},
+            {                field: 'addresses[0].street', headerName: 'Street', sortable: true, filter: true, resizable: true, valueGetter: (params: any) => params.data.addresses?.[0]?.street, tooltipValueGetter: (params: any) => params.data.addresses?.[0]?.street,},
+            {                field: 'addresses[0].city', headerName: 'City', sortable: true, filter: true, resizable: true, valueGetter: (params: any) => params.data.addresses?.[0]?.city, tooltipValueGetter: (params: any) => params.data.addresses?.[0]?.city,},
+            {                field: 'addresses[0].state', headerName: 'State', sortable: true, filter: true, resizable: true, valueGetter: (params: any) => params.data.addresses?.[0]?.state, tooltipValueGetter: (params: any) => params.data.addresses?.[0]?.state,},
+            {                field: 'addresses[0].zipCode', headerName: 'Zip Code', sortable: true, filter: true, resizable: true, valueGetter: (params: any) => params.data.addresses?.[0]?.zipCode, tooltipValueGetter: (params: any) => params.data.addresses?.[0]?.zipCode,},
+            {                field: 'addresses[0].country', headerName: 'Country', sortable: true, filter: true, resizable: true, valueGetter: (params: any) => params.data.addresses?.[0]?.country, tooltipValueGetter: (params: any) => params.data.addresses?.[0]?.country,},
+            { tooltipField: 'totalPurchasedAmount', field: 'totalPurchasedAmount', headerName: 'Total Purchased Amount', sortable: true, filter: true, resizable: true, tooltiptooltipField: 'profileImg', Field: 'name' },
             {
-                field: 'remainingAmount', headerName: 'Remaining Amount', sortable: true, filter: true, resizable: true, cellStyle: (params: any) => {
+                tooltipField: 'remainingAmount', field: 'remainingAmount', headerName: 'Remaining Amount', sortable: true, filter: true, resizable: true, cellStyle: (params: any) => {
                     const remaining = params.data.remainingAmount;
                     if (typeof remaining !== 'number' || isNaN(remaining)) {
                         return {}; // Return default style if not a valid number
@@ -130,7 +130,7 @@ export class CustomerListComponent implements OnInit {
                 }
             },
             {
-                field: 'paymentHistory',
+                tooltipField: 'paymentHistory', field: 'paymentHistory',
                 headerName: 'Payment History',
                 sortable: true,
                 filter: true,
@@ -147,11 +147,11 @@ export class CustomerListComponent implements OnInit {
                     }
                 },
             },
-            { field: 'metadata', headerName: 'Metadata', sortable: true, filter: true, resizable: true, valueGetter: (params: any) => JSON.stringify(params.data.metadata) },
-            { field: 'createdAt', headerName: 'Created At', sortable: true, filter: true, resizable: true, valueFormatter: (params: any) => new Date(params.value).toLocaleString() },
-            { field: 'updatedAt', headerName: 'Updated At', sortable: true, filter: true, resizable: true, valueFormatter: (params: any) => new Date(params.value).toLocaleString() },
-            { field: '__v', headerName: 'Version', sortable: true, filter: true, resizable: true },
-            { field: 'cart', headerName: 'Cart Items', sortable: true, filter: true, resizable: true, valueGetter: (params: any) => params.data.cart?.items?.length }
+            { tooltipField: 'paymentHistory', field: 'metadata', headerName: 'Metadata', sortable: true, filter: true, resizable: true, valueGetter: (params: any) => JSON.stringify(params.data.metadata) },
+            { tooltipField: 'createdAt', field: 'createdAt', headerName: 'Created At', sortable: true, filter: true, resizable: true, valueFormatter: (params: any) => new Date(params.value).toLocaleString() },
+            { tooltipField: 'updatedAt', field: 'updatedAt', headerName: 'Updated At', sortable: true, filter: true, resizable: true, valueFormatter: (params: any) => new Date(params.value).toLocaleString() },
+            { tooltipField: '__v', field: '__v', headerName: 'Version', sortable: true, filter: true, resizable: true, tooltiptooltipField: 'profileImg', Field: 'name' },
+            { tooltipField: 'cart', field: 'cart', headerName: 'Cart Items', sortable: true, filter: true, resizable: true, valueGetter: (params: any) => params.data.cart?.items?.length }
         ];
         this.cdr.detectChanges();
     }
@@ -168,7 +168,7 @@ export class CustomerListComponent implements OnInit {
         }
         this.CustomerService.getAllCustomerData(filterParams).subscribe((res: any) => {
             this.data = res.data;
-             this.cdr.markForCheck();
+            this.cdr.markForCheck();
         });
     }
 
@@ -195,7 +195,7 @@ export class CustomerListComponent implements OnInit {
 
     validateCustomer(): boolean {
         if (!this.customer.fullname) { return false; }
-        if (!this.customer.email || !this.customer.email.match(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/)) { return false;}
+        if (!this.customer.email || !this.customer.email.match(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/)) { return false; }
         return true;
     }
 
@@ -220,6 +220,4 @@ export class CustomerListComponent implements OnInit {
             this.messageService.showError('Validation Error', 'Please fill in all required fields.');
         }
     }
-
-
 }
