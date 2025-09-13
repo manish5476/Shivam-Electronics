@@ -1,6 +1,24 @@
-import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnChanges,
+  OnInit,
+  Output,
+  SimpleChanges,
+} from '@angular/core';
 import { AgGridAngular } from 'ag-grid-angular';
-import { ColDef, GridApi, GridReadyEvent, CellValueChangedEvent, RowSelectedEvent, CellClickedEvent, GetRowIdParams, PaginationChangedEvent, IServerSideDatasource } from 'ag-grid-community';
+import {
+  ColDef,
+  GridApi,
+  GridReadyEvent,
+  CellValueChangedEvent,
+  RowSelectedEvent,
+  CellClickedEvent,
+  GetRowIdParams,
+  PaginationChangedEvent,
+  IServerSideDatasource,
+} from 'ag-grid-community';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { SelectModule } from 'primeng/select';
@@ -12,8 +30,7 @@ import { ActionbuttonsComponent } from '../../AgGridcomponents/actionbuttons/act
 import { DynamicCellComponent } from '../../AgGridcomponents/dynamic-cell/dynamic-cell.component';
 import { ThemeService } from '../../../../core/services/theme.service';
 import { themeQuartz } from 'ag-grid-community';
-import { StatusCellComponent, StatusColumnConfig } from '../../AgGridcomponents/status-cell/status-cell.component';
-import { SortEvent } from 'primeng/api';
+import { StatusColumnConfig } from '../../AgGridcomponents/status-cell/status-cell.component';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
@@ -28,9 +45,15 @@ export interface SharedGridOptions {
 @Component({
   selector: 'app-shared-grid',
   standalone: true,
-  imports: [AgGridAngular, FormsModule, ToolbarModule, CommonModule, SelectModule],
+  imports: [
+    AgGridAngular,
+    FormsModule,
+    ToolbarModule,
+    CommonModule,
+    SelectModule,
+  ],
   templateUrl: './shared-grid.component.html',
-  styleUrls: ['./shared-grid.component.css']
+  styleUrls: ['./shared-grid.component.css'],
 })
 export class SharedGridComponent implements OnInit, OnChanges {
   @Output() paginationChanged = new EventEmitter<PaginationChangedEvent>();
@@ -41,7 +64,7 @@ export class SharedGridComponent implements OnInit, OnChanges {
   @Input() totalRecords: number = 0;
   @Input() rowClassRules: any = {};
   @Input() usertheme: string = 'ag-theme-quartz';
-  @Input() data: any
+  @Input() data: any;
   @Input() rowSelectionMode: string = 'single';
   @Input() column: ColDef[] = [];
   @Input() gridHeight: string = '162px';
@@ -52,7 +75,6 @@ export class SharedGridComponent implements OnInit, OnChanges {
   @Output() dataChanged = new EventEmitter<any>();
   @Output() eventFromGrid = new EventEmitter<any>();
   @Output() gridReady = new EventEmitter<GridReadyEvent>();
-  @Output() onDataRequest = new EventEmitter<any>();
 
   private gridApi!: GridApi;
   public rowData: any[] = [];
@@ -63,10 +85,14 @@ export class SharedGridComponent implements OnInit, OnChanges {
   public mainGridHeight: string = 'calc(100vh - 162px)';
   public rowSelection: any = { mode: 'single' };
   public defaultRowClassRules = {
-    'bg-blue-100 dark:bg-blue-900': (params: any) => this.editingRowId === (params.data?._id || params.data?.id),
-    'bg-gray-50 dark:bg-gray-700': (params: any) => params.node.rowIndex % 2 === 0,
-    'bg-red-100 dark:bg-red-900': (params: any) => params.data.availabilityStatus === 'OutOfStock',
-    'bg-green-100 dark:bg-green-900': (params: any) => params.data.availabilityStatus === 'InStock'
+    'bg-blue-100 dark:bg-blue-900': (params: any) =>
+      this.editingRowId === (params.data?._id || params.data?.id),
+    'bg-gray-50 dark:bg-gray-700': (params: any) =>
+      params.node.rowIndex % 2 === 0,
+    'bg-red-100 dark:bg-red-900': (params: any) =>
+      params.data.availabilityStatus === 'OutOfStock',
+    'bg-green-100 dark:bg-green-900': (params: any) =>
+      params.data.availabilityStatus === 'InStock',
   };
   public mergedRowClassRules: any = {};
   public theme = themeQuartz.withParams({
@@ -85,11 +111,15 @@ export class SharedGridComponent implements OnInit, OnChanges {
     rangeSelectionBorderStyle: 'dashed',
     rangeSelectionBackgroundColor: 'var(--theme-accent-primary-light, #dbeafe)',
     rangeSelectionHighlightColor: 'var(--theme-accent-primary, #3b82f6)',
-    inputBorder: { color: 'var(--theme-accent-primary, #3b82f6)', style: 'solid', width: 1 },
+    inputBorder: {
+      color: 'var(--theme-accent-primary, #3b82f6)',
+      style: 'solid',
+      width: 1,
+    },
     inputBackgroundColor: 'var(--theme-bg-ternary, #f9fafb)',
     inputPlaceholderTextColor: 'var(--theme-text-secondary, #6b7280)',
     inputIconColor: 'var(--theme-accent-primary, #3b82f6)',
-    selectedRowBackgroundColor: 'var(--theme-accent-primary-light, #dbeafe)'
+    selectedRowBackgroundColor: 'var(--theme-accent-primary-light, #dbeafe)',
   });
   // This is the key property for server-side data
   public rowModelType = 'serverSide';
@@ -101,14 +131,15 @@ export class SharedGridComponent implements OnInit, OnChanges {
     resizable: true,
     flex: 1,
     minWidth: 120,
-    editable: (params) => this.editingRowId === (params.data?._id || params.data?.id)
+    editable: (params) =>
+      this.editingRowId === (params.data?._id || params.data?.id),
   };
 
   getRowId: (params: GetRowIdParams) => string = (params: GetRowIdParams) => {
     return params.data._id || String(params.data.id);
   };
 
-  constructor(private themeService: ThemeService) { }
+  constructor(private themeService: ThemeService) {}
 
   ngOnInit(): void {
     this.rowSelection = { mode: this.rowSelectionMode };
@@ -116,14 +147,17 @@ export class SharedGridComponent implements OnInit, OnChanges {
     this.rowData = Array.isArray(this.data) ? this.data : [];
     this.updateColumnDefs();
     this.updateRowClassRules();
-    this.accentColor = getComputedStyle(document.documentElement)
-      .getPropertyValue('--theme-accent-primary')
-      .trim() || '#3b82f6';
+    this.accentColor =
+      getComputedStyle(document.documentElement)
+        .getPropertyValue('--theme-accent-primary')
+        .trim() || '#3b82f6';
   }
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['data'] && changes['data'].currentValue) {
-      this.rowData = Array.isArray(changes['data'].currentValue) ? changes['data'].currentValue : [];
+      this.rowData = Array.isArray(changes['data'].currentValue)
+        ? changes['data'].currentValue
+        : [];
     }
     if (changes['column'] || changes['showActions']) {
       this.updateColumnDefs();
@@ -142,7 +176,9 @@ export class SharedGridComponent implements OnInit, OnChanges {
   computeGridHeight(): void {
     const isValidLength = (value: string): boolean => {
       if (!/^\d+(\.\d+)?(\w+|%)$/.test(value)) {
-        console.warn(`Invalid CSS length for gridHeight: ${value}. Using default '162px'.`);
+        console.warn(
+          `Invalid CSS length for gridHeight: ${value}. Using default '162px'.`,
+        );
         return false;
       }
       return true;
@@ -154,14 +190,19 @@ export class SharedGridComponent implements OnInit, OnChanges {
   updateRowClassRules(): void {
     this.mergedRowClassRules = {
       ...this.defaultRowClassRules,
-      ...this.rowClassRules
+      ...this.rowClassRules,
     };
   }
 
   updateColumnDefs(): void {
-    const baseColumns = this.column && this.column.length > 0 ? [...this.column] : this.generateDefaultColumns(this.rowData);
+    const baseColumns =
+      this.column && this.column.length > 0
+        ? [...this.column]
+        : this.generateDefaultColumns(this.rowData);
     if (this.showActions) {
-      const actionColumnExists = baseColumns.some(col => col.colId === 'actionButtons');
+      const actionColumnExists = baseColumns.some(
+        (col) => col.colId === 'actionButtons',
+      );
       if (!actionColumnExists) {
         baseColumns.push({
           headerName: 'Actions',
@@ -170,8 +211,9 @@ export class SharedGridComponent implements OnInit, OnChanges {
           editable: false,
           colId: 'actionButtons',
           cellRendererParams: {
-            actionHandler: (action: string, data: any) => this.handleCellAction(action, data),
-            isRowEditing: (id: string) => this.editingRowId === id
+            actionHandler: (action: string, data: any) =>
+              this.handleCellAction(action, data),
+            isRowEditing: (id: string) => this.editingRowId === id,
           },
           pinned: 'right',
           width: 120,
@@ -206,8 +248,12 @@ export class SharedGridComponent implements OnInit, OnChanges {
     this.editingRowId = rowData._id || rowData.id;
     this.originalRowData = { ...rowData };
     this.gridApi.refreshCells({ force: true });
-    const firstEditableField = this.columnDefs.find(col => col.editable !== false)?.field || 'email';
-    this.gridApi.startEditingCell({ rowIndex: this.getRowIndex(rowData), colKey: firstEditableField });
+    const firstEditableField =
+      this.columnDefs.find((col) => col.editable !== false)?.field || 'email';
+    this.gridApi.startEditingCell({
+      rowIndex: this.getRowIndex(rowData),
+      colKey: firstEditableField,
+    });
   }
 
   saveRow(rowData: any): void {
@@ -234,13 +280,15 @@ export class SharedGridComponent implements OnInit, OnChanges {
 
   deleteRow(rowData: any): void {
     if (!this.gridApi) return;
-    this.rowData = this.rowData.filter(row => row._id !== rowData._id);
+    this.rowData = this.rowData.filter((row) => row._id !== rowData._id);
     this.gridApi.applyTransaction({ remove: [rowData] });
     this.dataChanged.emit({ type: 'delete', data: rowData });
   }
 
   getRowIndex(rowData: any): number {
-    return this.rowData.findIndex(row => (row._id || row.id) === (rowData._id || rowData.id));
+    return this.rowData.findIndex(
+      (row) => (row._id || row.id) === (rowData._id || rowData.id),
+    );
   }
 
   generateDefaultColumns(data: any[]): ColDef[] {
@@ -250,19 +298,28 @@ export class SharedGridComponent implements OnInit, OnChanges {
           headerName: 'No Data',
           field: 'noData',
           valueGetter: () => 'No data available',
-          editable: false
-        }
+          editable: false,
+        },
       ];
     }
-    return Object.keys(data[0]).map(key => {
-      const isNumeric = data.every(row => typeof row[key] === 'number' || row[key] == null);
-      const isBoolean = data.every(row => typeof row[key] === 'boolean' || row[key] == null);
+    return Object.keys(data[0]).map((key) => {
+      const isNumeric = data.every(
+        (row) => typeof row[key] === 'number' || row[key] == null,
+      );
+      const isBoolean = data.every(
+        (row) => typeof row[key] === 'boolean' || row[key] == null,
+      );
       return {
         headerName: key.charAt(0).toUpperCase() + key.slice(1),
         field: key,
         cellRenderer: isNumeric || isBoolean ? undefined : DynamicCellComponent,
-        cellRendererParams: isNumeric || isBoolean ? undefined : { type: 'text' },
-        filter: isNumeric ? 'agNumberColumnFilter' : isBoolean ? 'agSetColumnFilter' : 'agTextColumnFilter'
+        cellRendererParams:
+          isNumeric || isBoolean ? undefined : { type: 'text' },
+        filter: isNumeric
+          ? 'agNumberColumnFilter'
+          : isBoolean
+            ? 'agSetColumnFilter'
+            : 'agTextColumnFilter',
       };
     });
   }
@@ -277,7 +334,6 @@ export class SharedGridComponent implements OnInit, OnChanges {
 
   handleSort(event: any) {
     this.eventFromGrid.emit({ eventType: 'sorting', event });
-
   }
   onPaginationChanged(event: PaginationChangedEvent) {
     this.eventFromGrid.emit({ type: 'pagination', payload: event });
@@ -288,11 +344,58 @@ export class SharedGridComponent implements OnInit, OnChanges {
     this.eventFromGrid.emit({ eventType: 'CellClickedEvent', event });
   }
 
+  // onGridReady(event: GridReadyEvent): void {
+  //   this.gridApi = event.api;
+  //   this.gridReady.emit(event);
+  //   this.serverSideDatasource = this.createDatasource();
+  // }
+  // In your shared-grid.component.ts
+
+  // ------------------------------
+  private serverSideRequestParams: any; // <-- ADD THIS LINE
+
   onGridReady(event: GridReadyEvent): void {
     this.gridApi = event.api;
     this.gridReady.emit(event);
-    this.serverSideDatasource = this.createDatasource();
+
+    const datasource: IServerSideDatasource = {
+      getRows: (params) => {
+        this.serverSideRequestParams = params;
+        this.eventFromGrid.emit(params);
+      },
+    };
+
+    // Replace the old line with this more reliable one:
+    this.gridApi.setGridOption('serverSideDatasource', datasource);
   }
+  /**
+   * This is the "reply" method. The parent component will call this
+   * after its API call successfully returns data.
+   */
+  public supplyServerSideData(rows: any[], totalCount: number): void {
+    if (this.serverSideRequestParams) {
+      // This uses the saved request to give the data AND the total count to the grid.
+      this.serverSideRequestParams.success({
+        rowData: rows,
+        rowCount: totalCount, // This is how the grid calculates the total number of pages.
+      });
+      // Reset for the next time the user changes pages.
+      this.serverSideRequestParams = null;
+    }
+  }
+
+  /**
+   * The parent component will call this method if its API call fails.
+   */
+  public serverDataFetchFailed(): void {
+    if (this.serverSideRequestParams) {
+      // This tells the grid that the data could not be loaded.
+      this.serverSideRequestParams.fail();
+      this.serverSideRequestParams = null;
+    }
+  }
+
+  // ---------------------------------------
 
   createDatasource(): IServerSideDatasource {
     return {
@@ -301,28 +404,10 @@ export class SharedGridComponent implements OnInit, OnChanges {
         // When the grid needs data, we emit an event to the parent.
         // The parent will fetch the data and then call a method on this component
         // to pass the data back.
-        this.onDataRequest.emit(params);
+        this.eventFromGrid.emit(params);
       },
     };
   }
-
-  // public setData(rows: any[], totalRecords: number) {
-  //     const lastRow = totalRecords; // or -1 for infinite scrolling
-  //     // Find the original request params from the gridApi and succeed it
-  //     const successParams = { rowData: rows, rowCount: lastRow };
-  //     this.gridApi.setServerSideDatasource(this.serverSideDatasource) // Re-register the datasource
-  //     this.gridApi.getServerSideDataSource()?.getRows({
-  //       ...this.gridApi.getServerSideDataSource()!,
-  //       success: (successParams:any)=>{
-  //         this.rowData = successParams.rowData;
-  //       },
-  //       fail: ()=>{},
-  //       request: this.gridApi.getServerSideDataSource()!.getRows!.prototype,
-  //       parentNode:this.gridApi.getServerSideDataSource()!.getRows!.prototype,
-  //       api:this.gridApi,
-  //       columnApi:this.gridApi.getColumns()!
-  //     })
-  // }
 
   exportToCSV(): void {
     this.gridApi.exportDataAsCsv();
@@ -349,10 +434,31 @@ export class SharedGridComponent implements OnInit, OnChanges {
 
   onActionClicked(event: { action: string; data: any }): void {
     console.log(event);
-    this.eventFromGrid.emit({ eventType: 'actionClicked', action: event.action, data: event.data });
+    this.eventFromGrid.emit({
+      eventType: 'actionClicked',
+      action: event.action,
+      data: event.data,
+    });
   }
 }
 
+// public setData(rows: any[], totalRecords: number) {
+//     const lastRow = totalRecords; // or -1 for infinite scrolling
+//     // Find the original request params from the gridApi and succeed it
+//     const successParams = { rowData: rows, rowCount: lastRow };
+//     this.gridApi.setServerSideDatasource(this.serverSideDatasource) // Re-register the datasource
+//     this.gridApi.getServerSideDataSource()?.getRows({
+//       ...this.gridApi.getServerSideDataSource()!,
+//       success: (successParams:any)=>{
+//         this.rowData = successParams.rowData;
+//       },
+//       fail: ()=>{},
+//       request: this.gridApi.getServerSideDataSource()!.getRows!.prototype,
+//       parentNode:this.gridApi.getServerSideDataSource()!.getRows!.prototype,
+//       api:this.gridApi,
+//       columnApi:this.gridApi.getColumns()!
+//     })
+// }
 // import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 // import { AgGridAngular } from 'ag-grid-angular';
 // import { ColDef, GridApi, GridReadyEvent, CellValueChangedEvent, RowSelectedEvent, CellClickedEvent, GetRowIdParams } from 'ag-grid-community';

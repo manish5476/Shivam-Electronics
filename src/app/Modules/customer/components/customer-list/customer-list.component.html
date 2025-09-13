@@ -1,58 +1,109 @@
-<div class="flex flex-col rounded-md overflow-hidden bg-[var(--theme-bg-primary)] text-[var(--theme-text-primary)]">
-
+<div
+  class="flex flex-col rounded-md overflow-hidden bg-[var(--theme-bg-primary)] text-[var(--theme-text-primary)]"
+>
   <div class="se-filter-bar">
     <!-- Customer Dropdown -->
     <div class="se-filter-field">
       <label for="customer">Customer</label>
-      <p-select id="customer" appendTo="body" [options]="customerFilter.customerIDDropdown"
-        [(ngModel)]="customerFilter.name" (onChange)="getData()" [filter]="true" filterBy="fullname"
-        optionLabel="fullname" optionValue="_id" [showClear]="true" placeholder="Select a Customer">
+      <p-select
+        id="customer"
+        appendTo="body"
+        [options]="customerFilter.customerIDDropdown"
+        [(ngModel)]="customerFilter.name"
+        (onChange)="getData()"
+        [filter]="true"
+        filterBy="fullname"
+        optionLabel="fullname"
+        optionValue="_id"
+        [showClear]="true"
+        placeholder="Select a Customer"
+      >
       </p-select>
     </div>
 
     <!-- Email Input with AutoComplete -->
     <div class="se-filter-field">
       <label for="email">Email</label>
-      <p-autoComplete id="email" [(ngModel)]="customerFilter.email" [suggestions]="emailSuggestions"
-        (completeMethod)="filterEmails($event)" [forceSelection]="false" placeholder="Enter email" [minLength]="1"
-        class="w-full" pInputText>
+      <p-autoComplete
+        id="email"
+        [(ngModel)]="customerFilter.email"
+        [suggestions]="emailSuggestions"
+        (completeMethod)="filterEmails($event)"
+        [forceSelection]="false"
+        placeholder="Enter email"
+        [minLength]="1"
+        class="w-full"
+        pInputText
+      >
       </p-autoComplete>
     </div>
-
 
     <!-- Phone Input -->
     <div class="se-filter-field">
       <label for="phone">Phone</label>
-      <input id="phone" [(ngModel)]="customerFilter.phone" (input)="getData()" placeholder="Phone" type="number"
-        pInputText min="1" />
-
+      <input
+        id="phone"
+        [(ngModel)]="customerFilter.phone"
+        (input)="getData()"
+        placeholder="Phone"
+        type="number"
+        pInputText
+        min="1"
+      />
     </div>
 
     <!-- Page Input -->
     <div class="se-filter-field">
       <label for="page">Page</label>
-      <input id="page" [(ngModel)]="customerFilter.page" (input)="getData()" placeholder="Page" type="number" pInputText
-        min="1" />
+      <input
+        id="page"
+        [(ngModel)]="customerFilter.page"
+        (input)="getData()"
+        placeholder="Page"
+        type="number"
+        pInputText
+        min="1"
+      />
     </div>
 
     <!-- Limit Input -->
     <div class="se-filter-field">
       <label for="limit">Limit</label>
-      <input id="limit" [(ngModel)]="customerFilter.limit" (input)="getData()" placeholder="Limit" pInputText
-        type="number" min="1" />
+      <input
+        id="limit"
+        [(ngModel)]="customerFilter.limit"
+        (input)="getData()"
+        placeholder="Limit"
+        pInputText
+        type="number"
+        min="1"
+      />
     </div>
 
     <!-- Action Buttons -->
     <div class="se-filter-actions">
       <p-button (click)="getData()" label="Apply" icon="pi pi-check"></p-button>
-      <p-button (click)="resetFilters()" label="Reset" icon="pi pi-refresh" styleClass="p-button-outlined"></p-button>
+      <p-button
+        (click)="resetFilters()"
+        label="Reset"
+        icon="pi pi-refresh"
+        styleClass="p-button-outlined"
+      ></p-button>
     </div>
   </div>
 
   <!-- Grid Area (remains unchanged) -->
   <div class="mt-1 card">
-    <app-shared-grid [data]="data" [gridHeight]="'280px'" [headerFilter]="false" [rowSelectionMode]="rowSelectionMode"
-      [GridName]="'Customer Details'" [column]="column" (eventFromGrid)="eventFromGrid($event)" (paginationChanged)="handlePaginationChanges($event)">
+    <app-shared-grid
+      [data]="data"
+      [gridHeight]="'280px'"
+      [headerFilter]="false"
+      [rowSelectionMode]="rowSelectionMode"
+      [GridName]="'Customer Details'"
+      [column]="column"
+      (eventFromGrid)="getData($event)"
+      (paginationChanged)="handlePaginationChanges($event)"
+    >
     </app-shared-grid>
   </div>
 </div>
