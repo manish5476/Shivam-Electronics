@@ -3,7 +3,7 @@
   [style.boxShadow]="'0 2px 5px var(--theme-shadow-color)'">
 
   <div *ngIf="headerFilter" class="p-4 border-b" [style.borderColor]="'var(--theme-border-primary)'">
-    <div class="flex flex-wrap items-center justify-between gap-4 "  [style.backgroundColor]="'var(--theme-bg-light)'">
+    <div class="flex flex-wrap items-center justify-between gap-4 " [style.backgroundColor]="'var(--theme-bg-light)'">
       <div class="flex items-center gap-2">
         <label for="colorPicker" class="text-sm font-medium" [style.color]="'var(--theme-text-label)'">Accent
           Color</label>
@@ -45,11 +45,20 @@
     </ag-grid-angular>
   </div> -->
   <div class="relative w-full ag-grid-main-area" [style.height]="mainGridHeight">
+    <ag-grid-angular style="height: 100%; width: 100%;" [columnDefs]="columnDefs" [theme]="theme"
+      [defaultColDef]="defaultColDef" [rowModelType]="options.rowModelType" [cacheBlockSize]="options.cacheBlockSize"
+      [maxBlocksInCache]="options.maxBlocksInCache" [infiniteInitialRowCount]="options.infiniteInitialRowCount || 1"
+      [pagination]="false" [rowSelection]="rowSelectionMode" editType="fullRow" [rowClassRules]="mergedRowClassRules"
+      [getRowId]="getRowId" (cellValueChanged)="onCellValueChanged($event)" (rowSelected)="onRowSelected($event)"
+      (cellClicked)="onCellClicked($event)" (gridReady)="onGridReady($event)" (bodyScrollEnd)="onBodyScrollEnd($event)">
+    </ag-grid-angular>
+  </div>
+  <!-- <div class="relative w-full ag-grid-main-area" [style.height]="mainGridHeight">
     <ag-grid-angular style="height: 100%; width: 100%;" [rowData]="rowData" [columnDefs]="columnDefs" [theme]="theme"
       [defaultColDef]="defaultColDef" [pagination]="false" [rowSelection]="rowSelectionMode" editType ='fullRow'
-      [rowClassRules]="mergedRowClassRules"  [getRowId]="getRowId"
+      [rowClassRules]="mergedRowClassRules"  [getRowId]="getRowId" (bodyScrollEnd)="onBodyScrollEnd($event)"
       (cellValueChanged)="onCellValueChanged($event)" (rowSelected)="onRowSelected($event)"
       (cellClicked)="onCellClicked($event)" (gridReady)="onGridReady($event)">
     </ag-grid-angular>
-  </div>
+  </div> -->
 </div>

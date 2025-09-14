@@ -4,14 +4,6 @@ import { catchError } from 'rxjs/operators';
 import { BaseApiService } from './base-api.service';
 import { HttpErrorResponse } from '@angular/common/http';
 
-// Define an interface for the Customer for type safety
-// export interface Customer {
-//   _id: string;
-//   fullname: string;
-//   email: string;
-//   mobileNumber: string;
-//   // ... add other customer fields as needed
-// }
 
 @Injectable({ providedIn: 'root' })
 export class CustomerService extends BaseApiService {

@@ -1,24 +1,82 @@
-<div class="p-6 md:p-10 space-y-8">
+<div class="flex flex-col h-full p-4 gap-4 bg-[var(--theme-bg-secondary)]">
 
-  <!-- 🔍 Filters Card -->
+  <!-- 🔹 Combined Header & Filters Card -->
+  <div class="card-filter p-4 bg-[var(--theme-bg-primary)] shadow-md rounded-lg">
+    <!-- Flex container for title and filters -->
+    <div class="flex flex-wrap items-center justify-between gap-4">
+
+      <!-- Title -->
+      <h2 class="text-lg font-semibold text-[var(--theme-text-heading)]">
+        Filter Transactions
+      </h2>
+
+      <!-- All Filter Controls in a single row -->
+      <div class="flex flex-wrap items-center gap-3">
+        <!-- Description Search -->
+        <input pInputText id="description" [(ngModel)]="transactionFilter.description" (input)="applyFiltersAndReset()"
+          placeholder="Search description..." class="p-inputtext-sm" />
+
+        <!-- Type Dropdown -->
+        <p-select id="type" [options]="typeOptions" [(ngModel)]="transactionFilter.type"
+          (onChange)="applyFiltersAndReset()" placeholder="All Types" [showClear]="true"></p-select>
+
+        <!-- Status Dropdown -->
+        <p-select id="status" [options]="statusOptions" [(ngModel)]="transactionFilter.status"
+          (onChange)="applyFiltersAndReset()" placeholder="All Statuses" [showClear]="true"></p-select>
+
+        <!-- Date Range -->
+        <div class="flex items-center gap-2">
+          <input pInputText type="date" [(ngModel)]="transactionFilter.startDate" (change)="applyFiltersAndReset()"
+            class="p-inputtext-sm" placeholder="Start Date" />
+          <span class="text-sm text-[var(--theme-text-secondary)]">to</span>
+          <input pInputText type="date" [(ngModel)]="transactionFilter.endDate" (change)="applyFiltersAndReset()"
+            class="p-inputtext-sm" placeholder="End Date" />
+        </div>
+
+        <!-- Actions -->
+        <div class="flex items-center gap-2">
+          <button pButton type="button" (click)="applyFiltersAndReset()" label="Apply" icon="pi pi-check"
+            class="p-button-sm"></button>
+          <button pButton type="button" (click)="resetFilters()" label="Reset" icon="pi pi-refresh"
+            class="p-button-sm p-button-outlined"></button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 🔹 AG-Grid Card -->
+  <div class="flex-grow card p-4 bg-[var(--theme-bg-primary)] rounded-lg shadow-md">
+    <app-shared-grid [data]="data" [gridHeight]="'280px'" [headerFilter]="false" [GridName]="'Transaction Details'"
+      [column]="column" (eventFromGrid)="eventFromGrid($event)" (gridReady)="onGridReady($event)"
+      (scrolledToBottom)="onScrolledToBottom($event)">
+    </app-shared-grid>
+  </div>
+
+</div>
+
+
+
+<!-- <div class="p-6 md:p-10 space-y-8">
+
+
   <div class="modern-card">
-    <!-- <h2 class="text-xl font-semibold mb-6 text-[var(--theme-text-primary)]">Filters</h2> -->
+  
     
     <div class="grid grid-cols-1 md:grid-cols-4 gap-6 items-end">
       
-      <!-- Start Date -->
+    
       <div class="flex flex-col gap-2">
         <label class="text-sm font-medium text-[var(--theme-text-label)]">Start Date</label>
         <input type="date" [(ngModel)]="filters.startDate" class="p-inputtext w-full" />
       </div>
 
-      <!-- End Date -->
+    
       <div class="flex flex-col gap-2">
         <label class="text-sm font-medium text-[var(--theme-text-label)]">End Date</label>
         <input type="date" [(ngModel)]="filters.endDate" class="p-inputtext w-full" />
       </div>
 
-      <!-- Type -->
+    
       <div class="flex flex-col gap-2">
         <label class="text-sm font-medium text-[var(--theme-text-label)]">Type</label>
         <p-select 
@@ -30,7 +88,7 @@
         </p-select>
       </div>
 
-      <!-- Action Buttons -->
+    
       <div class="flex gap-3">
         <button (click)="fetchTransactions()" 
           class="modern-button flex-1">Apply</button>
@@ -43,11 +101,11 @@
     </div>
   </div>
 
-  <!-- 📊 Transactions Table Card -->
+
   <div class="modern-card">
     <h2 class="text-xl font-semibold mb-6 text-[var(--theme-text-primary)]">Transaction Records</h2>
     
-    <!-- Data Table Wrapper -->
+  
     <div class="overflow-auto custom-scroll rounded-xl border border-[var(--theme-border-primary)]" style="max-height: 480px;">
       <table class="min-w-full border-collapse">
         <thead class="sticky top-0 bg-[var(--theme-bg-secondary)] z-10">
@@ -64,12 +122,12 @@
           <tr *ngFor="let tx of transactions" 
               class="border-b border-[var(--theme-border-primary)] hover:bg-[var(--theme-hover-bg)] transition-colors">
             
-            <!-- Date -->
+          
             <td class="px-6 py-4 text-sm text-[var(--theme-text-primary)]">
               {{ tx.date | date:'medium' }}
             </td>
 
-            <!-- Type Chip -->
+          
             <td class="px-6 py-4">
               <p-tag 
                 [value]="tx.type" 
@@ -78,18 +136,18 @@
               </p-tag>
             </td>
             
-            <!-- Description -->
+          
             <td class="px-6 py-4 text-sm text-[var(--theme-text-secondary)]">{{ tx.description }}</td>
             
-            <!-- Customer -->
+          
             <td class="px-6 py-4 text-sm text-[var(--theme-text-primary)]">{{ tx.customer }}</td>
             
-            <!-- Amount -->
+          
             <td class="px-6 py-4 text-sm font-medium text-[var(--theme-accent-primary)]">
               {{ tx.amount | currency:'INR' }}
             </td>
 
-            <!-- Status Chip -->
+          
             <td class="px-6 py-4">
               <p-tag 
                 [value]="tx.status" 
@@ -102,4 +160,4 @@
       </table>
     </div>
   </div>
-</div>
+</div> -->
