@@ -43,7 +43,7 @@
   <!-- 🔹 AG-Grid Card -->
   <div class="flex-grow card p-4 bg-white rounded-lg shadow-md">
     <app-shared-grid [gridHeight]="'250px'" [data]="data" [GridName]="'User Details'" [column]="column"
-      (gridReady)="onGridReady($event)" (scrolledToBottom)="onScrolledToBottom($event)"
+      (gridReady)="onGridReady($event)" (scrolledToBottom)="onScrolledToBottom($event)" [rowSelectionMode]="'single'"
       (eventFromGrid)="eventFromGrid($event)">
     </app-shared-grid>
   </div>

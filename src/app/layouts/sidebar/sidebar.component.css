@@ -1,151 +1,109 @@
-/* ---
-  Themed Sidebar Styles
-  - Fully integrated with the dynamic theme palette.
-  - Handles expanded and collapsed states smoothly.
-  - Includes active link highlighting.
---- */
+/*
+  IMPROVED SIDEBAR STYLES
+
+  Instructions for best results:
+  - To enable active link highlighting, add `routerLinkActive="active-link"` 
+    to the sub-menu `<a>` tags in your sidebar.component.html.
+    Example: <a ... [routerLink]="subItem.routerLink" routerLinkActive="active-link">
+*/
 
 :host {
   display: block;
-  height: 100%;
 }
 
-.sidebar-container {
-  position: fixed;
-  top: 1rem;
-  bottom: 1rem;
-  left: 1rem;
-  z-index: 100;
-  width: 4rem; /* Collapsed width */
-  transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  overflow: hidden;
+/* --- General Menu Item Enhancement --- */
+/* Targets the main clickable menu item */
+.mb-2 > div:first-child {
+  transition: background-color 0.2s, border-left-color 0.3s, padding-left 0.2s;
+  border-left: 4px solid transparent;
+  border-radius: 0.375rem;
 }
 
-.sidebar-container.is-expanded {
-  width: 15rem; /* Expanded width */
-}
-
-.sidebar-content {
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-  width: 15rem; /* Fixed inner width */
-  background-color: var(--theme-bg-secondary);
-  border: 1px solid var(--theme-border-primary);
-  border-radius: 0.75rem;
-  box-shadow: 0 8px 24px var(--theme-shadow-color);
-}
-
-.menu-list {
-  flex-grow: 1;
-  overflow-y: auto;
-  padding: 0.5rem;
-}
-
-/* --- Menu Links --- */
-.menu-link, .sub-menu-link {
-  display: flex;
-  align-items: center;
-  padding: 0.75rem;
-  border-radius: 0.5rem;
-  cursor: pointer;
-  text-decoration: none;
-  color: var(--theme-text-secondary);
-  transition: background-color 0.2s, color 0.2s;
-  white-space: nowrap;
-}
-
-.menu-link:hover, .sub-menu-link:hover {
+.mb-2 > div:first-child:hover {
   background-color: var(--theme-hover-bg);
+  border-left-color: var(--theme-accent-primary);
+  padding-left: 1rem; /* Slight indent on hover */
+}
+
+/* --- Colorful Main Menu Icons --- */
+/* These colors provide better visual separation for each category */
+/* A subtle shadow is added to make icons pop */
+.mb-2 > div:first-child .pi {
+  text-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.pi-home { color: #4f46e5 !important; } /* Royal Blue - Master */
+.pi-lock { color: #be123c !important; } /* Ruby Red - Admin */
+.pi-users { color: #059669 !important; } /* Emerald Green - Customers */
+.pi-shopping-bag { color: #7e22ce !important; } /* Amethyst Purple - Products */
+.pi-briefcase { color: #0e7490 !important; } /* Sapphire Blue - Sellers */
+.pi-file { color: #d97706 !important; } /* Amber Orange - Invoices */
+.pi-wallet { color: #c026d3 !important; } /* Fuchsia Pink - Payments */
+
+
+/* --- Sub-menu Styling --- */
+/* The container for the sub-menu links */
+.ml-6 {
+  padding-left: 1.25rem;
+  margin-top: 0.5rem !important;
+  margin-bottom: 0.5rem;
+  margin-left: 0.75rem; /* Aligns with the main icon */
+  border-left: 1px solid var(--theme-border-primary);
+}
+
+/* Individual sub-menu links */
+.ml-6 a {
+  position: relative;
+  color: var(--theme-text-secondary);
+}
+
+/* Small line marker for each sub-item */
+.ml-6 a::before {
+  content: '';
+  position: absolute;
+  left: -1.28rem; /* Positions it over the border-left */
+  top: 50%;
+  transform: translateY(-50%);
+  width: 0.75rem;
+  height: 1px;
+  background-color: var(--theme-border-primary);
+  transition: background-color 0.2s;
+}
+
+.ml-6 a:hover {
   color: var(--theme-text-primary);
 }
 
-.menu-icon {
-  font-size: 1.25rem;
-  width: 2rem; /* Fixed width for alignment */
-  flex-shrink: 0;
-  text-align: center;
+.ml-6 a:hover::before {
+  background-color: var(--theme-accent-primary);
 }
 
-.menu-label {
-  margin-left: 0.75rem;
-  font-weight: 500;
-  transition: opacity 0.2s ease, max-width 0.3s ease;
-  overflow: hidden;
-  max-width: 100px;
-  opacity: 1;
-}
 
 /* --- Active Link Highlighting --- */
+/* Add routerLinkActive="active-link" to your <a> tags for this to work */
 .active-link {
-  background-color: var(--theme-accent-primary-light);
-  color: var(--theme-accent-primary);
+  color: var(--theme-accent-primary) !important;
   font-weight: 600;
 }
-.active-link .menu-icon {
-  color: var(--theme-accent-primary);
+
+/* Make the icon and line marker of the active link also colored */
+.active-link i {
+  color: var(--theme-accent-primary) !important;
 }
 
-/* --- Sub-menu Styling --- */
-.expand-icon {
-  margin-left: auto;
-  font-size: 0.8rem;
-  transition: transform 0.3s ease, opacity 0.3s ease;
+.active-link::before {
+  background-color: var(--theme-accent-primary) !important;
 }
 
-.expand-icon.is-rotated {
-  transform: rotate(180deg);
-}
 
-.sub-menu {
-  max-height: 0;
-  overflow: hidden;
-  transition: max-height 0.3s ease-in-out;
-  padding-left: 1.5rem;
-  margin-top: 0.25rem;
-}
-
-.sub-menu.is-expanded {
-  max-height: 500px; /* Adjust as needed for more items */
-}
-
-.sub-menu-link {
-  padding: 0.6rem 0.75rem;
-}
-
-.sub-menu-icon {
-  font-size: 1rem;
-}
-
-/* --- Collapsed State --- */
-.sidebar-container:not(.is-expanded) .menu-label,
-.sidebar-container:not(.is-expanded) .expand-icon {
-  opacity: 0;
-  max-width: 0;
-  margin-left: 0;
-}
-
-/* --- Footer --- */
-.sidebar-footer {
-  border-top: 1px solid var(--theme-border-primary);
+/* --- Logout Button in Footer --- */
+.border-t { /* Targets the footer */
   padding: 0.5rem;
-  flex-shrink: 0;
 }
 
-:host ::ng-deep .logout-button {
+.logout-button {
+  border-radius: 0.5rem !important; /* Ensure rounded corners */
   width: 100%;
-  justify-content: flex-start;
-}
-:host ::ng-deep .logout-button .p-button-label {
-  margin-left: 0.75rem;
+  justify-content: center;
 }
 
-/* --- Hover Trigger Zone --- */
-.sidebar-trigger-zone {
-  position: fixed;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  width: 1rem;
-  z-index: 99;
-}

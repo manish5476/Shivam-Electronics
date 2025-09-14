@@ -10,6 +10,7 @@ import { ToastModule } from 'primeng/toast';
 import { SelectModule } from 'primeng/select';
 import { InputTextModule } from 'primeng/inputtext';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { TagCellRendererComponent } from '../../../../shared/AgGrid/AgGridcomponents/tagCellRenderer/tagcellRenderer.component';
 
 @Component({
     selector: 'app-admin-user',
@@ -162,7 +163,8 @@ export class AdminUserComponent implements OnInit {
             { headerName: 'Email', field: 'email', sortable: true, filter: true, resizable: true, flex: 1 },
             {
                 headerName: 'Role', field: 'role', sortable: true, filter: true, resizable: true,
-                editable: true, // Role is the only editable field
+                editable: true,
+                cellRenderer: TagCellRendererComponent,
                 cellEditor: 'agSelectCellEditor',
                 cellEditorParams: {
                     values: ['user', 'staff', 'admin', 'superAdmin']
@@ -191,13 +193,16 @@ export class AdminUserComponent implements OnInit {
             icon: 'pi pi-exclamation-triangle',
             accept: () => {
                 const idsToDelete = selectedNodes.map(node => node.data._id).toString();
-                // ✅ FIX: Assumes a 'deleteUsers' method that accepts an array of IDs
                 this.userService.deleteUser(idsToDelete).subscribe({
-                    next: () => {
+                    next: (res:any) => {
+                        console.log(res);
+                        this.getData(false)
+
                         this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Users deleted successfully' });
                         this.gridApi.applyTransaction({ remove: selectedNodes.map(node => node.data) });
                     },
                     error: err => {
+                        this.getData(false)
                         this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Failed to delete users' });
                         console.error('Error deleting users:', err);
                     }
