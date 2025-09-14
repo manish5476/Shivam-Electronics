@@ -2,33 +2,34 @@
 
   <!-- 🔹 Filter Bar -->
   <div class="card-filter p-4 bg-[var(--theme-bg-primary)] shadow-md">
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-6 gap-4 items-end">
+    <!-- MODIFIED: Replaced Grid with Flexbox for a responsive single-row layout -->
+    <div class="flex flex-wrap items-end gap-x-6 gap-y-4">
 
       <!-- Transaction ID -->
-      <div class="flex flex-col">
+      <div class="flex flex-col flex-grow min-w-[160px]">
         <label for="transactionId" class="text-sm font-medium text-[var(--theme-text-secondary)] mb-1">Transaction
           ID</label>
         <input pInputText id="transactionId" [(ngModel)]="paymentFilter.transactionId" (input)="applyFiltersAndReset()"
-          placeholder="Search Transaction ID" />
+          placeholder="Search ID..." />
       </div>
 
       <!-- Customer Name -->
-      <div class="flex flex-col">
+      <div class="flex flex-col flex-grow min-w-[160px]">
         <label for="customerName" class="text-sm font-medium text-[var(--theme-text-secondary)] mb-1">Customer
           Name</label>
         <input pInputText id="customerName" [(ngModel)]="paymentFilter.customerName" (input)="applyFiltersAndReset()"
-          placeholder="Search Customer" />
+          placeholder="Search Customer..." />
       </div>
 
       <!-- Status Dropdown -->
-      <div class="flex flex-col">
+      <div class="flex flex-col flex-grow min-w-[150px]">
         <label for="status" class="text-sm font-medium text-[var(--theme-text-secondary)] mb-1">Status</label>
         <p-select id="status" [options]="statusOptions" [(ngModel)]="paymentFilter.status"
           (onChange)="applyFiltersAndReset()" placeholder="All Statuses" [showClear]="true"></p-select>
       </div>
 
       <!-- Method Dropdown -->
-      <div class="flex flex-col">
+      <div class="flex flex-col flex-grow min-w-[150px]">
         <label for="paymentMethod" class="text-sm font-medium text-[var(--theme-text-secondary)] mb-1">Payment
           Method</label>
         <p-select id="paymentMethod" [options]="methodOptions" [(ngModel)]="paymentFilter.paymentMethod"
@@ -36,7 +37,7 @@
       </div>
 
       <!-- Date Range -->
-      <div class="flex flex-col lg:col-span-2">
+      <div class="flex flex-col flex-grow min-w-[300px]">
         <label class="text-sm font-medium text-[var(--theme-text-secondary)] mb-1">Payment Date Range</label>
         <div class="flex items-center gap-2">
           <input pInputText type="date" id="createdFrom" [(ngModel)]="paymentFilter.createdFrom"
@@ -48,23 +49,21 @@
       </div>
 
       <!-- Actions -->
-      <div class="flex items-end gap-2 xl:col-start-6">
-        <p-button (click)="applyFiltersAndReset()" label="Apply" icon="pi pi-check"
-          styleClass="p-button-sm w-full"></p-button>
+      <!-- MODIFIED: Pushed to the right with ml-auto -->
+      <div class="flex items-end gap-2 ml-auto">
+        <p-button (click)="applyFiltersAndReset()" label="Apply" icon="pi pi-check" styleClass="p-button-sm"></p-button>
         <p-button (click)="resetFilters()" label="Reset" icon="pi pi-refresh"
-          styleClass="p-button-sm p-button-outlined w-full"></p-button>
+          styleClass="p-button-sm p-button-outlined"></p-button>
       </div>
     </div>
   </div>
 
-  <!-- 🔹 Grid Area -->
-  <div class="flex-grow card mt-1 p-4 bg-[var(--theme-bg-primary)]">
-
+  <!-- 🔹 Grid Area (Unchanged) -->
     <div class="mt-1 card">
-      <app-shared-grid [data]="data" [gridHeight]="'280px'" [headerFilter]="false" [GridName]="'Customer Details'"
+      <app-shared-grid [data]="data" [gridHeight]="'240px'" [headerFilter]="false" [GridName]="'Customer Details'"
         [column]="column" (eventFromGrid)="eventFromGrid($event)" (gridReady)="onGridReady($event)"
         (scrolledToBottom)="onScrolledToBottom($event)">
       </app-shared-grid>
     </div>
-  </div>
+  
 </div>

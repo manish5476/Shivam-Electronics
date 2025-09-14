@@ -66,7 +66,7 @@ export class SharedGridComponent implements OnInit, OnChanges {
   @Input() column: ColDef[] | undefined;
   @Input() data: any[] | undefined;
   @Input() rowSelectionMode: 'single' | 'multiple' | undefined;
-  @Input() gridHeight: string | undefined;
+  @Input() gridHeight: string | undefined='80vh';
   @Input() paginationPageSize: number | undefined;
   @Input() GridName: string | undefined;
   @Input() headerFilter: boolean | undefined;
