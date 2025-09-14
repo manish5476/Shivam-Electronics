@@ -174,7 +174,6 @@ export class CustomerListComponent implements OnInit {
             this.CustomerService.createNewCustomer(this.customer).subscribe(
                 (response: any) => {
                     if (response.status === 'success') {
-                        console.log('✅ Customer created with ID:', response.data._id);
                     } else {
                         this.messageService.showError('Error', response.message || 'Failed to create customer.');
                     }
@@ -410,7 +409,6 @@ export class CustomerListComponent implements OnInit {
 //     }
 
 //     onScrolledToBottom(event:any) {
-//         console.log(event);
 //         if (!this.isLoading && this.hasMoreData) {
 //             this.getData(false);
 //         }

@@ -24,14 +24,14 @@ export class SidebarComponent implements OnInit {
   expandedItems: boolean[] = [];
 
 menuItems = [
-    {
-      label: 'Master', icon: 'pi pi-database',
-      items: [
-        { label: 'Manager', icon: 'pi pi-sitemap', routerLink: ['/master/masterLists'] },
-        { label: 'Type', icon: 'pi pi-tags', routerLink: ['/master/masterListsType'] },
-        { label: 'Item', icon: 'pi pi-list', routerLink: ['/master/masterListsItem'] },
-      ]
-    },
+    // {
+    //   label: 'Master', icon: 'pi pi-database',
+    //   items: [
+    //     { label: 'Manager', icon: 'pi pi-sitemap', routerLink: ['/master/masterLists'] },
+    //     { label: 'Type', icon: 'pi pi-tags', routerLink: ['/master/masterListsType'] },
+    //     { label: 'Item', icon: 'pi pi-list', routerLink: ['/master/masterListsItem'] },
+    //   ]
+    // },
     {
       label: 'Admin', icon: 'pi pi-shield',
       items: [

@@ -86,7 +86,6 @@ export class AuthLogsComponent implements OnInit {
   }
 
   eventFromGrid(event: any) {
-    console.log(event);
     // handle grid row events if needed
   }
 

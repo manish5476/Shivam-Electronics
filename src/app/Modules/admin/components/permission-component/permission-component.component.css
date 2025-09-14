@@ -133,6 +133,27 @@
 
 
 
+/* --- Fix action cell wrapping & height --- */
+.actions-cell {
+    text-align: right;
+    white-space: nowrap; /* Prevents wrapping */
+    height: 64px;        /* Match row height */
+    display: flex;
+    align-items: center; /* Vertically center buttons */
+    justify-content: flex-end;
+    gap: 0.25rem;
+    padding: 0 0.5rem;
+}
+
+.actions-cell .p-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.75rem;
+    padding: 0.25rem 0.75rem;
+    line-height: 1;        /* Prevents extra spacing */
+    height: 32px;          /* Uniform button height */
+}
 
 
 
@@ -142,3 +163,197 @@
 
 
 
+
+/* 
+:host {
+  display: block;
+  background: linear-gradient(180deg, var(--theme-body-gradient-start), var(--theme-body-gradient-end));
+  min-height: 100vh;
+}
+
+
+.main-card {
+  background-color: var(--theme-bg-primary);
+  border-radius: var(--ui-border-radius);
+  border: var(--ui-border-width) solid var(--theme-border-primary);
+  box-shadow: var(--ui-shadow);
+  overflow: hidden;
+}
+
+.full-access-label {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--theme-text-label);
+}
+
+
+.role-badge {
+    display: inline-block;
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    font-weight: 700;
+    padding: 0.2rem 0.6rem;
+    border-radius: 99px;
+    background-color: var(--theme-bg-ternary); 
+    color: var(--theme-text-label);
+}
+
+.role--superAdmin { background-color: #ffc107; color: #342400; }
+.role--admin { background-color: #0d6efd; color: #ffffff; }
+.role--user { background-color: #6c757d; color: #ffffff; }
+
+
+
+
+
+:host ::ng-deep .p-datatable .p-datatable-thead > tr > th {
+  background-color: var(--theme-bg-secondary);
+  color: var(--theme-text-primary);
+  border-bottom: 2px solid var(--theme-border-primary);
+  font-weight: 600;
+  padding: 1rem 1.25rem;
+  white-space: nowrap;
+}
+:host ::ng-deep .p-datatable .p-datatable-thead > tr > th.group-header {
+    background-color: var(--theme-bg-ternary);
+}
+:host ::ng-deep .p-datatable .p-datatable-thead > tr > th.permission-header {
+    font-weight: 500;
+    color: var(--theme-text-secondary);
+}
+
+
+:host ::ng-deep .p-datatable .p-frozen-column {
+  font-weight: 600;
+}
+:host ::ng-deep .p-datatable-tbody .p-frozen-column:not([alignfrozen="right"]) {
+  border-right: 1px solid var(--theme-border-primary) !important;
+}
+:host ::ng-deep .p-datatable .p-frozen-column[alignfrozen="right"] {
+  border-left: 1px solid var(--theme-border-primary) !important;
+}
+
+
+
+
+:host ::ng-deep .p-datatable .p-datatable-tbody > tr {
+  background-color: var(--theme-bg-primary);
+  transition: background-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+}
+:host ::ng-deep .p-datatable.p-datatable-striped .p-datatable-tbody > tr:nth-child(even) {
+    background-color: var(--theme-bg-secondary);
+}
+:host ::ng-deep .p-datatable .p-datatable-tbody > tr > td {
+  border: none;
+  border-bottom: 1px solid var(--theme-border-primary);
+  padding: 1rem 1.25rem;
+  vertical-align: middle;
+  transition: background-color 0.2s ease;
+}
+
+
+:host ::ng-deep .p-datatable .p-datatable-tbody > tr:hover {
+  background-color: var(--theme-hover-bg) !important; 
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+}
+:host ::ng-deep .p-datatable .p-datatable-tbody > tr:hover > td {
+    background-color: transparent !important;
+}
+
+
+:host ::ng-deep .p-datatable .p-datatable-tbody > tr.row-dirty > td {
+    background-color: color-mix(in srgb, var(--theme-accent-primary) 8%, transparent);
+}
+:host ::ng-deep .p-datatable .p-datatable-tbody > tr.row-dirty > td:first-child {
+    border-left: 3px solid var(--theme-accent-primary);
+    padding-left: calc(1.25rem - 3px); 
+}
+:host ::ng-deep .p-datatable .p-datatable-tbody > tr.row-dirty .actions-cell .p-button {
+    box-shadow: 0 0 12px 2px color-mix(in srgb, var(--theme-accent-primary) 40%, transparent);
+}
+
+
+
+.permission-group-cell {
+    position: relative;
+    text-align: left !important;
+}
+.switches-container {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+}
+.switch-wrapper {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    min-width: 160px;
+}
+.group-actions-hover {
+    position: absolute;
+    bottom: 6px;
+    left: 50%;
+    display: flex;
+    gap: 0.5rem;
+    
+    opacity: 0;
+    transform: translate(-50%, 8px);
+    transition: opacity 0.2s ease-out, transform 0.2s ease-out;
+    pointer-events: none;
+}
+.permission-group-cell:hover .group-actions-hover {
+    
+    opacity: 1;
+    transform: translate(-50%, 0);
+    pointer-events: auto;
+}
+.group-toggle-btn {
+    font-size: 0.7rem; font-weight: 600; padding: 0.15rem 0.5rem;
+    border-radius: 4px; cursor: pointer; border: 1px solid transparent;
+    background-color: var(--theme-bg-secondary);
+    box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+}
+.group-toggle-btn.select { color: var(--theme-success-primary); }
+.group-toggle-btn.select:hover { background-color: rgba(40, 167, 69, 0.1); }
+.group-toggle-btn.deselect { color: var(--theme-error-primary); }
+.group-toggle-btn.deselect:hover { background-color: rgba(220, 53, 69, 0.1); }
+
+
+:host ::ng-deep .p-inputswitch.p-inputswitch-checked .p-inputswitch-slider {
+    background: var(--theme-accent-primary) !important;
+}
+:host ::ng-deep .p-inputswitch.p-inputswitch-checked:not(.p-disabled):hover .p-inputswitch-slider {
+    background: var(--theme-accent-primary-hover) !important;
+}
+
+
+:host ::ng-deep .p-button {
+  background: var(--theme-accent-gradient);
+  color: var(--theme-accent-text-color);
+  border: none;
+  border-radius: var(--ui-border-radius);
+  font-weight: 600;
+  transition: all 0.2s ease;
+  box-shadow: var(--ui-shadow);
+}
+:host ::ng-deep .p-button:enabled:hover {
+  background: var(--theme-accent-primary-hover);
+  transform: var(--ui-button-hover-transform);
+  box-shadow: var(--ui-shadow-hover);
+}
+:host ::ng-deep .p-button:enabled:active {
+  transform: var(--ui-button-active-transform);
+}
+
+
+:host ::ng-deep .custom-spinner.p-progress-spinner .p-progress-spinner-circle {
+    stroke: var(--theme-accent-primary);
+}
+
+:host ::ng-deep .p-divider.p-divider-horizontal:before {
+    border-top-color: var(--theme-border-primary);
+}  */

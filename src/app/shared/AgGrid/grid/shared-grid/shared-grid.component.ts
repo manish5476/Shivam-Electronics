@@ -149,6 +149,7 @@ export class SharedGridComponent implements OnInit, OnChanges {
 
   ngOnChanges(changes: SimpleChanges): void {
     this.processGridOptions();
+
   }
 
   public processGridOptions(): void {
@@ -177,7 +178,7 @@ export class SharedGridComponent implements OnInit, OnChanges {
     if (this.options.rowModelType === 'clientSide') {
       this.rowData = Array.isArray(this.options.data) ? this.options.data : [];
       this.updateColumnDefs();
-    } // For infinite, rowData is ignored
+    } 
 
     this.computeGridHeight();
     this.updateRowClassRules();
@@ -423,7 +424,6 @@ export class SharedGridComponent implements OnInit, OnChanges {
 
     const threshold = 1;
     if (viewport.scrollTop + viewport.clientHeight >= viewport.scrollHeight - threshold) {
-      console.log('Scrolled to bottom!');
       this.scrolledToBottom.emit(event);
     }
   }
@@ -701,7 +701,6 @@ export class SharedGridComponent implements OnInit, OnChanges {
 //   }
 
 //   handleCellAction(action: string, data: any): void {
-//     console.log('Action received:', action, data);
 //     switch (action) {
 //       case 'edit': this.startEditingRow(data); break;
 //       case 'save': this.saveRow(data); break;
@@ -813,7 +812,6 @@ export class SharedGridComponent implements OnInit, OnChanges {
 //   }
 
 //   onActionClicked(event: { action: string; data: any }): void {
-//     console.log(event);
 //     this.eventFromGrid.emit({ eventType: 'actionClicked', action: event.action, data: event.data });
 //   }
 
@@ -1023,7 +1021,6 @@ export class SharedGridComponent implements OnInit, OnChanges {
 // //   }
 
 // //   handleCellAction(action: string, data: any): void {
-// //     console.log('Action received:', action, data);
 // //     switch (action) {
 // //       case 'edit':
 // //         this.startEditingRow(data);
@@ -1147,7 +1144,6 @@ export class SharedGridComponent implements OnInit, OnChanges {
 // //   }
 
 // //   onActionClicked(event: { action: string; data: any }): void {
-// //     console.log(event);
 // //     this.eventFromGrid.emit({ eventType: 'actionClicked', action: event.action, data: event.data });
 // //   }
 // //   // -------------------------------------------------------------------- Theme Section -------------------------------------------------------------
@@ -1480,6 +1476,5 @@ export class SharedGridComponent implements OnInit, OnChanges {
 // //   }
 
 // //   onActionClicked(event: { action: string; data: any }): void {
-// //     console.log(event);
 // //     this.eventFromGrid.emit({ eventType: 'actionClicked', action: event.action, data: event.data });
 // //   }

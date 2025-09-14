@@ -9,7 +9,7 @@
     <p-tabPanel header="High Value">
       <app-shared-grid
         [rowSelectionMode]="'multiple'"
-        gridHeight="55vh"
+        gridHeight="35vh"
         [data]="customerSegments?.highValue"
         [column]="highValueColumns"
         (eventFromGrid)="eventFromGrid($event)">
@@ -20,7 +20,7 @@
     <p-tabPanel header="Recent">
       <app-shared-grid
         [rowSelectionMode]="'multiple'"
-        gridHeight="55vh"
+        gridHeight="35vh"
         [data]="customerSegments?.recentCustomers"
         [column]="recentColumns"
         (eventFromGrid)="eventFromGrid($event)">
@@ -40,7 +40,7 @@
       <ng-container *ngIf="customerSegments?.atRisk?.length; else noRiskTpl">
         <app-shared-grid
           [rowSelectionMode]="'multiple'"
-          gridHeight="55vh"
+          gridHeight="35vh"
           [data]="customerSegments?.atRisk"
           [column]="atRiskColumns"
           (eventFromGrid)="eventFromGrid($event)">
@@ -62,8 +62,7 @@
         <p-tag severity="info" styleClass="text-lg" [value]="'📈 Forecast Next Month: ' + (salesForecast?.forecast?.nextMonth | currency:'INR':'symbol':'1.0-0')"></p-tag>
       </div>
       <app-shared-grid
-        [rowSelectionMode]="'single'"
-        gridHeight="48vh"
+        gridHeight="35vh"
         [data]="salesForecast?.historicalData"
         [column]="salesColumns">
       </app-shared-grid>

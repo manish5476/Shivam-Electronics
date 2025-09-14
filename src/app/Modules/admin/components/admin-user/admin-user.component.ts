@@ -195,7 +195,6 @@ export class AdminUserComponent implements OnInit {
                 const idsToDelete = selectedNodes.map(node => node.data._id).toString();
                 this.userService.deleteUser(idsToDelete).subscribe({
                     next: (res:any) => {
-                        console.log(res);
                         this.getData(false)
 
                         this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Users deleted successfully' });

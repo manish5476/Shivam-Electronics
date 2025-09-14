@@ -329,7 +329,7 @@ export class DynamicCellComponent implements ICellRendererAngularComp {
 // //         // Store the callback function if provided
 // //         this.valueChangedCallback = cellParams.valueChangedCallback;
 
-// //         // console.log("DynamicCell Initialized:", { params: this.params, value: this.value, type: this.type, config: this.inputConfig });
+// //         //
 // //     }
 
 // //     /**
@@ -352,7 +352,7 @@ export class DynamicCellComponent implements ICellRendererAngularComp {
 // //     // These methods emit events to the parent (SharedGridComponent)
 
 // //     onEditClick(): void {
-// //         console.log("Action Button Click: Edit", this.params.data);
+// //        
 // //         // Emit the edit action event with the current row data
 // //         if (this.params.data) {
 // //             this.actionTriggered.emit({ action: 'edit', rowData: this.params.data });
@@ -363,7 +363,7 @@ export class DynamicCellComponent implements ICellRendererAngularComp {
 // //     }
 
 // //     onSaveClick(): void {
-// //          console.log("Action Button Click: Save", this.params.data);
+// //         
 // //         // Emit the save action event with the current row data from the grid's editor
 // //         // When save is clicked in edit mode, params.data contains the latest values from the editors.
 // //         if (this.params.data) {
@@ -376,7 +376,7 @@ export class DynamicCellComponent implements ICellRendererAngularComp {
 // //     }
 
 // //     onCancelClick(): void {
-// //         console.log("Action Button Click: Cancel", this.params.data);
+// //        
 // //         // Emit the cancel action event with the current row data
 // //         if (this.params.data) {
 // //             this.actionTriggered.emit({ action: 'cancel', rowData: this.params.data });
@@ -388,7 +388,7 @@ export class DynamicCellComponent implements ICellRendererAngularComp {
 // //     }
 
 // //     onDeleteClick(): void {
-// //         console.log("Action Button Click: Delete", this.params.data);
+// //        
 // //         // Emit the delete action event with the row data
 // //         if (this.params.data) {
 // //             this.actionTriggered.emit({ action: 'delete', rowData: this.params.data });
@@ -466,7 +466,7 @@ export class DynamicCellComponent implements ICellRendererAngularComp {
 
 // //     // Optional: If you need specific keyup logic beyond just value change
 // //     // textBoxKeyUpEvent(field: string, event: KeyboardEvent) {
-// //     //   console.log(`Key up on field ${field}`, event.key);
+// //     //  
 // //     //   // Potentially emit a different event or call another callback
 // //     // }
 // // }
@@ -520,7 +520,7 @@ export class DynamicCellComponent implements ICellRendererAngularComp {
 // //     this.params = params;
 // //     this.value = params.value;
 // //     this.type = params.colDef.cellRendererParams?.type || 'text';
-// //     console.log(this.params, this.value, this.type);
+// //    
 // //   }
 
 // //   isEditing(): boolean {
