@@ -39,9 +39,11 @@
     <p-card header="My Subscriptions">
       <!-- <app-shared-grid [columnDefs]="colDefs" [rowData$]="subscriptions$" [context]="this" gridHeight="60vh">
       </app-shared-grid> -->
-      <app-shared-grid [data]="subscriptions$" [gridHeight]="'220px'" [headerFilter]="false" [rowSelectionMode]="'none'"
-        [GridName]="'Customer Details'" [column]="colDefs" (eventFromGrid)="eventFromGrid($event)">
+      <app-shared-grid [data]="subscriptions$ | async" [gridHeight]="'220px'" [headerFilter]="false"
+        [rowSelectionMode]="'single'" [GridName]="'Customer Details'" [column]="colDefs"
+        (eventFromGrid)="eventFromGrid($event)">
       </app-shared-grid>
+ 
     </p-card>
   </div>
 </div>

@@ -28,7 +28,7 @@ export interface ReportSubscription {
 export interface SubscriptionApiResponse {
     status: string;
     results: number;
-    data: any[];
+    data: any;
 }
 
 // Interface for a single subscription API response

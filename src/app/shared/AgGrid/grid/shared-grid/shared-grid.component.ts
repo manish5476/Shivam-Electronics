@@ -12,14 +12,8 @@ import { DynamicCellComponent } from '../../AgGridcomponents/dynamic-cell/dynami
 import { ThemeService } from '../../../../core/services/theme.service';
 // FIX: Import the new, cleaner types from the status cell component.
 import { StatusCellComponent, StatusCellParams, Severity } from '../../AgGridcomponents/status-cell/status-cell.component';
-
 ModuleRegistry.registerModules([AllCommunityModule, TooltipModule]);
 
-/**
- * Defines the complete, type-safe configuration for a status column.
- * It extends the standard AgGrid ColDef and adds the specific parameters
- * required by our custom StatusCellComponent.
- */
 export interface StatusColumnOptions extends ColDef {
   field: string; // The 'field' is mandatory for a status column.
   cellRendererParams: {
@@ -27,9 +21,7 @@ export interface StatusColumnOptions extends ColDef {
   };
 }
 
-/**
- * Defines the configuration options for the SharedGridComponent.
- */
+
 export interface SharedGridOptions {
   columnDefs?: ColDef[];
   data?: any[];
@@ -63,7 +55,6 @@ type InternalGridOptions = Required<Omit<SharedGridOptions, 'statusColumn'>> & {
 })
 export class SharedGridComponent implements OnInit, OnChanges {
   @Input() GridOptions: SharedGridOptions = {};
-
   // DEPRECATED Inputs
   @Input() column: ColDef[] | undefined;
   @Input() data: any[] | undefined;
@@ -88,7 +79,6 @@ export class SharedGridComponent implements OnInit, OnChanges {
   public accentColor: string = '#3b82f6';
   public mainGridHeight: string = 'calc(100vh - 162px)';
   public mergedRowClassRules: any = {};
-
   public options: InternalGridOptions = this.getDefaultOptions();
   public defaultColDef: ColDef = {
     sortable: true,
@@ -100,7 +90,6 @@ export class SharedGridComponent implements OnInit, OnChanges {
     valueFormatter: (params) => {
       const value = params.value;
       if (value == null) return '';
-      // Case: Array
       if (Array.isArray(value)) {
         if (value.length === 0) return '[]';
         if (typeof value[0] !== 'object') {
@@ -122,12 +111,8 @@ export class SharedGridComponent implements OnInit, OnChanges {
         }
         return '{}';
       }
-
-      // Case: Primitive
       return String(value);
     },
-
-    // Tooltip: Always show full detail (pretty JSON)
     tooltipValueGetter: (params) => {
       const value = params.value;
       if (value == null) return '';
@@ -139,19 +124,6 @@ export class SharedGridComponent implements OnInit, OnChanges {
       }
     },
   };
-
-
-
-  // public defaultColDef: ColDef = {
-  //   sortable: true,
-  //   filter: 'agTextColumnFilter',
-  //   resizable: true, 
-  //   flex: 1,
-  //   minWidth: 120,
-  //   editable: (params) => this.editingRowId === (params.data?._id || params.data?.id),
-  //   // NEW: Automatically add a tooltip to every cell based on its value.
-  // tooltipValueGetter: (params) => params.value
-  // };
 
   getRowId: (params: GetRowIdParams) => string = (params: GetRowIdParams) => {
     return params.data._id || String(params.data.id);
@@ -170,7 +142,7 @@ export class SharedGridComponent implements OnInit, OnChanges {
     this.processGridOptions();
   }
 
-  private processGridOptions(): void {
+  public processGridOptions(): void {
     const defaults = this.getDefaultOptions();
     this.options = {
       ...defaults,
@@ -197,7 +169,7 @@ export class SharedGridComponent implements OnInit, OnChanges {
     this.updateRowClassRules();
   }
 
-  private getDefaultOptions(): InternalGridOptions {
+  public getDefaultOptions(): InternalGridOptions {
     return {
       columnDefs: [],
       data: [],

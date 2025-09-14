@@ -62,7 +62,7 @@
         <p-tag severity="info" styleClass="text-lg" [value]="'📈 Forecast Next Month: ' + (salesForecast?.forecast?.nextMonth | currency:'INR':'symbol':'1.0-0')"></p-tag>
       </div>
       <app-shared-grid
-        [rowSelectionMode]="'none'"
+        [rowSelectionMode]="'single'"
         gridHeight="48vh"
         [data]="salesForecast?.historicalData"
         [column]="salesColumns">

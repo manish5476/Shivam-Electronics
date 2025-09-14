@@ -36,6 +36,14 @@
     </div>
   </div>
 
+  <!-- <div class="relative w-full ag-grid-main-area" [style.height]="mainGridHeight">
+    <ag-grid-angular style="height: 100%; width: 100%;" [rowData]="rowData" [columnDefs]="columnDefs" [theme]="theme"
+      [defaultColDef]="defaultColDef" [pagination]="false" [rowSelection]="rowSelectionMode" editType ='fullRow'
+      [rowClassRules]="mergedRowClassRules"  [getRowId]="getRowId"
+      (cellValueChanged)="onCellValueChanged($event)" (rowSelected)="onRowSelected($event)"
+      (cellClicked)="onCellClicked($event)" (gridReady)="onGridReady($event)">
+    </ag-grid-angular>
+  </div> -->
   <div class="relative w-full ag-grid-main-area" [style.height]="mainGridHeight">
     <ag-grid-angular style="height: 100%; width: 100%;" [rowData]="rowData" [columnDefs]="columnDefs" [theme]="theme"
       [defaultColDef]="defaultColDef" [pagination]="false" [rowSelection]="rowSelectionMode" editType ='fullRow'
