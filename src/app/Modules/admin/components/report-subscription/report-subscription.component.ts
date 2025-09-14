@@ -21,16 +21,7 @@ import { ToastModule } from 'primeng/toast';
 @Component({
   selector: 'app-report-subscription',
   standalone: true,
-  imports: [
-    CommonModule,
-    ReactiveFormsModule,
-    SharedGridComponent,
-    CardModule,
-    DropdownModule,
-    ButtonModule,
-    TagModule,
-    ToastModule
-  ],
+  imports: [CommonModule, ReactiveFormsModule,  CardModule, DropdownModule, ButtonModule, TagModule, ToastModule],
   templateUrl: './report-subscription.component.html',
   styleUrl: './report-subscription.component.css',
   providers: [MessageService]

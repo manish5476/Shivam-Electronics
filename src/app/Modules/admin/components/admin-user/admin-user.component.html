@@ -1,5 +1,50 @@
-<!-- Shared Grid Section -->
-<app-shared-grid [rowSelectionMode]="rowSelectionMode" [gridHeight]="'170px'"
-  [GridName]="'Users Details'" [data]="users" [column]="columnDefs"
-  (eventFromGrid)="eventFromGrid($event)">
-</app-shared-grid>
+<div class="flex flex-col h-full p-4 gap-4 bg-gray-50">
+  <p-toast></p-toast>
+  <p-confirmDialog [style]="{width: '450px'}"></p-confirmDialog>
+
+  <!-- 🔹 Header and Action Bar -->
+  <div class="card-filter p-4 bg-white shadow-md rounded-lg">
+    <div class="flex flex-wrap items-center justify-between gap-4">
+      <h2 class="text-xl font-semibold text-gray-800">User Management</h2>
+      <div class="flex items-center gap-2">
+        <button pButton type="button" label="New User" icon="pi pi-plus" class="p-button-sm"
+          (click)="openNew()"></button>
+        <button pButton type="button" label="Delete Selected" icon="pi pi-trash" class="p-button-sm p-button-danger"
+          (click)="deleteSelectedProducts()"></button>
+        <button pButton type="button" label="Export" icon="pi pi-file-export" class="p-button-sm p-button-outlined"
+          (click)="exportCSV()"></button>
+      </div>
+    </div>
+
+    <!-- 🔹 Filter Section -->
+    <div class="mt-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 items-end">
+      <div class="flex flex-col">
+        <label for="name" class="text-sm font-medium text-gray-600 mb-1">Name</label>
+        <input pInputText id="name" [(ngModel)]="userFilter.name" (input)="applyFiltersAndReset()"
+          placeholder="Search by name..." />
+      </div>
+      <div class="flex flex-col">
+        <label for="email" class="text-sm font-medium text-gray-600 mb-1">Email</label>
+        <input pInputText id="email" [(ngModel)]="userFilter.email" (input)="applyFiltersAndReset()"
+          placeholder="Search by email..." />
+      </div>
+      <div class="flex flex-col">
+        <label for="role" class="text-sm font-medium text-gray-600 mb-1">Role</label>
+        <p-select id="role" [options]="roleOptions" [(ngModel)]="userFilter.role" (onChange)="applyFiltersAndReset()"
+          placeholder="All Roles" [showClear]="true"></p-select>
+      </div>
+      <div class="flex items-end gap-2">
+        <button pButton type="button" (click)="resetFilters()" label="Reset Filters" icon="pi pi-refresh"
+          class="p-button-sm p-button-outlined w-full"></button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 🔹 AG-Grid Card -->
+  <div class="flex-grow card p-4 bg-white rounded-lg shadow-md">
+    <app-shared-grid [gridHeight]="'250px'" [data]="data" [GridName]="'User Details'" [column]="column"
+      (gridReady)="onGridReady($event)" (scrolledToBottom)="onScrolledToBottom($event)"
+      (eventFromGrid)="eventFromGrid($event)">
+    </app-shared-grid>
+  </div>
+</div>
