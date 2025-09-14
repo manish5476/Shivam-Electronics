@@ -45,7 +45,7 @@
     </ag-grid-angular>
   </div> -->
   <div class="relative w-full ag-grid-main-area" [style.height]="mainGridHeight">
-    <ag-grid-angular style="height: 100%; width: 100%;" [columnDefs]="columnDefs" [theme]="theme"
+    <ag-grid-angular style="height: 100%; width: 100%;" [columnDefs]="columnDefs" [theme]="theme"  [rowData]="rowData"
       [defaultColDef]="defaultColDef" [rowModelType]="options.rowModelType" [cacheBlockSize]="options.cacheBlockSize"
       [maxBlocksInCache]="options.maxBlocksInCache" [infiniteInitialRowCount]="options.infiniteInitialRowCount || 1"
       [pagination]="false" [rowSelection]="rowSelectionMode" editType="fullRow" [rowClassRules]="mergedRowClassRules"

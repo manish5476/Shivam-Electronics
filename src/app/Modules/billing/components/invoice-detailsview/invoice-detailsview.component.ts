@@ -94,7 +94,6 @@ export class InvoiceDetailCardComponent implements OnInit {
 
   getCustomerdata() {
     this.cdr.detectChanges();
-    // console.log(this.Id);
     if (this.Id) {
       this.loading = true;
       this.InvoiceService.getInvoiceById(this.Id).subscribe({

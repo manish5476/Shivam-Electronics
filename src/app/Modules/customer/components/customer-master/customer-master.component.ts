@@ -459,7 +459,6 @@ saveAddress(): void {
   }
 
   handleFileUpload(event: any): void {
-    console.log('Selected:', event);
     const file = event.files[0];
     if (!file || !this.customerId) return;
     const formData = new FormData();

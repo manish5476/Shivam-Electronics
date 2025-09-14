@@ -66,7 +66,6 @@ export class DashboardTopCustomerViewComponent {
       .pipe(takeUntil(this.ngUnsubscribe), catchError(this.CommonMethodService.handleError<ApiResponse<CustomerInsightData[]>>()))
       .subscribe(response => {
         if (response) {
-          console.log(response);
           this.topCustomers = response.data
           this.filteredCustomers = response.data
         }
@@ -121,7 +120,6 @@ export class DashboardTopCustomerViewComponent {
 
 
   showInvoicePdf(id: any) {
-    console.log(id,"id");
     this.invoiceId = id
     this.showpdf = true
   }

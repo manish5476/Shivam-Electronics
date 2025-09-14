@@ -269,7 +269,7 @@ export class PaymentListComponent implements OnInit {
 //       const e: CellValueChangedEvent = event.event;
 //       const updated = { ...e.data, [e.colDef.field!]: e.newValue };
 //       this.apiService.updatepayment(updated._id, updated).subscribe({
-//         next: () => console.log('Payment updated'),
+//         next: () =>
 //         error: err => console.error('Error updating payment', err)
 //       });
 //     }
