@@ -51,22 +51,22 @@ export class AuthLogsComponent implements OnInit {
       limit: this.itemsPerPage,
     };
 
-    this.dashboardService.getDashboardLogsDetails(params).subscribe(
-      (res: any) => {
-        const logs =
-          Array.isArray(res.data) && res.data.length > 0
-            ? res.data
-            : res.data;
+    // this.dashboardService.getDashboardLogsDetails(params).subscribe(
+    //   (res: any) => {
+    //     const logs =
+    //       Array.isArray(res.data) && res.data.length > 0
+    //         ? res.data
+    //         : res.data;
 
-        this.data = Array.isArray(logs) ? logs : [];
-        this.totalLogs = res.totalLogs || 0;
-        this.cdr.markForCheck(); // triggers UI update if using OnPush
-      },
-      (error) => {
-        console.error('Error fetching logs:', error);
-        this.data = [];
-      }
-    );
+    //     this.data = Array.isArray(logs) ? logs : [];
+    //     this.totalLogs = res.totalLogs || 0;
+    //     this.cdr.markForCheck(); // triggers UI update if using OnPush
+    //   },
+    //   (error) => {
+    //     console.error('Error fetching logs:', error);
+    //     this.data = [];
+    //   }
+    // );
   }
 
 

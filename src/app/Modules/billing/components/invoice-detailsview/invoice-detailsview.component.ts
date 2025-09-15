@@ -12,6 +12,7 @@ import { AutopopulateService } from '../../../../core/services/autopopulate.serv
 import { SelectModule } from 'primeng/select';
 import { FormsModule } from '@angular/forms';
 // import { ToolbarComponent } from "../../../../shared/Components/toolbar/toolbar.component";
+import { EmiService } from '../../../../core/services/emi.service';
 @Component({
   selector: 'app-invoice-detail-card',
   standalone: true,
@@ -26,7 +27,7 @@ export class InvoiceDetailCardComponent implements OnInit {
   invoiceData: any;
   loading: boolean = true;
   invoiceDropDown: any;
-  constructor(private InvoiceService: InvoiceService, private messageService: AppMessageService, private cdr: ChangeDetectorRef) { }
+  constructor(private InvoiceService: InvoiceService, public EmiService: EmiService, private messageService: AppMessageService, private cdr: ChangeDetectorRef) { }
   ngOnInit(): void {
     this.autoPopulate.getModuleData('invoices').subscribe((data: any) => {
       this.invoiceDropDown = data;
@@ -114,6 +115,33 @@ export class InvoiceDetailCardComponent implements OnInit {
       this.messageService.showError('Invoice ID is missing!')
       this.loading = false;
     }
+  }
+
+
+  convertToEmi() {
+    const emiPlan: any = { // You can replace 'any' with the EmiCreationPayload interface we defined
+      numberOfInstallments: 12,
+      startDate: '2025-10-01',
+      downPayment: 5000
+    };
+    if (!this.Id) {
+      console.error('Cannot create EMI plan: Invoice ID is missing.');
+      return; 
+    }
+    const invoiceIdAsString = this.Id.toString();
+
+    // 3. Now, call the service with a guaranteed string value.
+    this.EmiService.createEmiFromInvoice(invoiceIdAsString, emiPlan)
+      .subscribe({
+        next: (response) => {
+          console.log('EMI Plan Created Successfully!', response);
+          // Add success notification for the user
+        },
+        error: (err) => {
+          console.error('Failed to create EMI plan', err);
+          // Add error notification for the user
+        }
+      });
   }
 }
 

@@ -21,7 +21,6 @@ import { TagCellRendererComponent } from '../../../../shared/AgGrid/AgGridcompon
     SelectModule,
     ButtonModule,
     InputTextModule,
-    TagCellRendererComponent // ✅ Import the custom renderer
   ],
   providers: [TransactionService],
   templateUrl: './transactions.component.html',

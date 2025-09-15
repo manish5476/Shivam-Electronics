@@ -29,8 +29,8 @@ export class CustomerSegmentsComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.fetchCustomerSegments();
-    this.getSalesForecast();
+    // this.fetchCustomerSegments();
+    // this.getSalesForecast();
   }
 
   formatCurrency(amount: number | null | undefined): string {
@@ -94,33 +94,33 @@ export class CustomerSegmentsComponent implements OnInit {
     }
   ];
 
-  fetchCustomerSegments(): void {
-    this.loading = true;
-    this.analyticsService.getcustomerSegment().subscribe({
-      next: (res: any) => {
-        this.customerSegments = res.data;
-        this.loading = false;
-      },
-      error: (err) => {
-        this.loading = false;
-        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Failed to fetch customer segments.' });
-      },
-    });
-  }
+  // fetchCustomerSegments(): void {
+  //   this.loading = true;
+  //   this.analyticsService.getcustomerSegment().subscribe({
+  //     next: (res: any) => {
+  //       this.customerSegments = res.data;
+  //       this.loading = false;
+  //     },
+  //     error: (err) => {
+  //       this.loading = false;
+  //       this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Failed to fetch customer segments.' });
+  //     },
+  //   });
+  // }
 
-  getSalesForecast(): void {
-    this.loading = true;
-    this.analyticsService.getsalesForcast().subscribe({
-      next: (res: any) => {
-        this.salesForecast = res.data;
-        this.loading = false;
-      },
-      error: (err) => {
-        this.loading = false;
-        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Failed to fetch sales forecast.' });
-      },
-    });
-  }
+  // getSalesForecast(): void {
+  //   this.loading = true;
+  //   this.analyticsService.getsalesForcast().subscribe({
+  //     next: (res: any) => {
+  //       this.salesForecast = res.data;
+  //       this.loading = false;
+  //     },
+  //     error: (err) => {
+  //       this.loading = false;
+  //       this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Failed to fetch sales forecast.' });
+  //     },
+  //   });
+  // }
 
   eventFromGrid(event: any) {
     // Handle grid events if necessary
