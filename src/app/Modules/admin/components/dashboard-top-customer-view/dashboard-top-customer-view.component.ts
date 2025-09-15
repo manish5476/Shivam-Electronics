@@ -57,20 +57,20 @@ export class DashboardTopCustomerViewComponent {
   ngOnChanges(changes: SimpleChanges): void {
 
     // if (changes && changes['currenValue']) {
-    this.fetchTopCustomersByPurchase(this.params)
+    // this.fetchTopCustomersByPurchase(this.params)
     // }
   }
 
-  fetchTopCustomersByPurchase(params: any): void {
-    this.dashboardService.getTopCustomersByPurchase(params)
-      .pipe(takeUntil(this.ngUnsubscribe), catchError(this.CommonMethodService.handleError<ApiResponse<CustomerInsightData[]>>()))
-      .subscribe(response => {
-        if (response) {
-          this.topCustomers = response.data
-          this.filteredCustomers = response.data
-        }
-      });
-  }
+  // fetchTopCustomersByPurchase(params: any): void {
+  //   this.dashboardService.getTopCustomersByPurchase(params)
+  //     .pipe(takeUntil(this.ngUnsubscribe), catchError(this.CommonMethodService.handleError<ApiResponse<CustomerInsightData[]>>()))
+  //     .subscribe(response => {
+  //       if (response) {
+  //         this.topCustomers = response.data
+  //         this.filteredCustomers = response.data
+  //       }
+  //     });
+  // }
 
 
 

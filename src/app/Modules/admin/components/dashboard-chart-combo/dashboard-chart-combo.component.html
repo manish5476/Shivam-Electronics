@@ -1,23 +1,29 @@
 <div class="chart-panel card">
-  <!-- Chart Header -->
   <div class="chart-header">
+    <h3 class="section-header">{{ chartTitle }}</h3>
+
     <div class="flex items-center gap-4">
-      <h3 class="section-header">Sales Overview</h3>
-      <p-selectButton [options]="viewOptions" name="selectedview" [(ngModel)]="selectedView" (onChange)="onViewChange($event.value)" optionLabel="label" optionValue="value"></p-selectButton>
-    </div>
-    <div class="flex items-center gap-2">
-      <input pInputText [(ngModel)]="yearInput" name="selectedyear" placeholder="Enter year" class="p-inputtext-sm w-28" />
-      <button pButton label="Fetch" icon="pi pi-refresh" class="p-button-sm" (click)="fetchSalesData()"></button>
+      <p-dropdown [options]="(chartOptions$ | async) || []" [(ngModel)]="selectedChart" name="selectedChart"
+        placeholder="Select a Chart" optionLabel="label" optionValue="value" styleClass="p-inputtext-sm"
+        (onChange)="fetchChartData()">
+      </p-dropdown>
+
+      <p-dropdown [options]="periodOptions" [(ngModel)]="selectedPeriod" name="selectedPeriod"
+        placeholder="Select a Period" optionLabel="label" optionValue="value" styleClass="p-inputtext-sm"
+        (onChange)="fetchChartData()">
+      </p-dropdown>
     </div>
   </div>
 
-  <!-- Chart Body -->
   <div class="chart-body">
     <ng-container *ngIf="isLoading; else chartView">
       <p-skeleton width="100%" height="100%"></p-skeleton>
     </ng-container>
     <ng-template #chartView>
-      <p-chart *ngIf="chartData" type="bar" [data]="chartData" [options]="chartOptions" height="100%"></p-chart>
+      <p-chart *ngIf="chartData" [type]="chartType" [data]="chartData" [options]="chartOptions" height="100%"></p-chart>
+      <div *ngIf="!chartData" class="flex items-center justify-center h-full text-gray-500">
+        <p>No data to display for the selected criteria.</p>
+      </div>
     </ng-template>
   </div>
 </div>

@@ -79,21 +79,21 @@ export class DashboardChartComponentComponent implements OnInit, OnDestroy {
       return;
     }
 
-    // Using the specific yearly endpoint as per your original component
-    this.dashboardService.getSalesDataForChartsYearly({ year })
-      .pipe(takeUntil(this.destroy$))
-      .subscribe(res => {
-        if (res?.success && res.data) {
-          this.dashboardChartData = res.data;
-          this.updateChart();
-        } else {
-          this.messageService.showWarn('No Data', 'No sales data found for the selected year.');
-          this.dashboardChartData = null;
-          this.updateChart();
-        }
-        this.isLoading = false;
-        this.cd.markForCheck();
-      });
+    // // Using the specific yearly endpoint as per your original component
+    // this.dashboardService.getSalesDataForChartsYearly({ year })
+    //   .pipe(takeUntil(this.destroy$))
+    //   .subscribe(res => {
+    //     if (res?.success && res.data) {
+    //       this.dashboardChartData = res.data;
+    //       this.updateChart();
+    //     } else {
+    //       this.messageService.showWarn('No Data', 'No sales data found for the selected year.');
+    //       this.dashboardChartData = null;
+    //       this.updateChart();
+    //     }
+    //     this.isLoading = false;
+    //     this.cd.markForCheck();
+    //   });
   }
 
   onChartTypeChange(): void {

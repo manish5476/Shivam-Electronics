@@ -1,4 +1,33 @@
-<div class="dashboard-main-container p-4 md:p-6">
+<div class="admin-dashboard">
+
+  <div class="dashboard-header card">
+    <h2 class="page-title">Dashboard</h2>
+    <div class="filters">
+      <p-dropdown [options]="periodOptions" [(ngModel)]="selectedPeriod" name="selectedPeriod"
+        placeholder="Select a Period" optionLabel="label" optionValue="value" styleClass="p-inputtext-sm"
+        (onChange)="onPeriodChange()">
+      </p-dropdown>
+    </div>
+  </div>
+
+  <div class="dashboard-body">
+    <ng-container *ngIf="dashboardData$ | async as data; else loadingState">
+      <!-- <app-dashboard-summary [summaryData]="data.overview"></app-dashboard-summary> -->
+      <app-dashboard-chart-combo></app-dashboard-chart-combo>
+    </ng-container>
+
+    <ng-template #loadingState>
+      <div class="loading-grid">
+        <p-skeleton width="100%" height="150px"></p-skeleton>
+        <p-skeleton width="100%" height="150px"></p-skeleton>
+        <p-skeleton width="100%" height="150px"></p-skeleton>
+        <p-skeleton width="100%" height="150px"></p-skeleton>
+        <p-skeleton width="100%" height="400px" styleClass="p-mt-4"></p-skeleton>
+      </div>
+    </ng-template>
+  </div>
+</div>
+<!-- <div class="dashboard-main-container p-4 md:p-6">
   <div class="card mb-6">
     <div class="flex items-center mb-4">
       <div class="w-1 h-8 bg-[var(--theme-accent-gradient,var(--theme-accent-primary))] rounded-full mr-4"></div>
@@ -29,14 +58,11 @@
       <div class="w-full md:w-1/4 px-2">
         <button pButton type="button" label="Apply & Reload" icon="pi pi-refresh" class="p-button w-full h-12"></button>
       </div>
-      <!-- <div class="w-full md:w-1/4 px-2">
-        <button pButton type="button" label="permission" (click)="showPermission=true" icon="pi pi-refresh"
-          class="p-button w-full h-12">Permission</button>
-      </div> -->
+ 
     </div>
   </div>
 
-  <!-- Metrics Cards -->
+  Metrics Cards
   <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 gap-6 mb-6">
     <div class="metric-card metric-card-accent">
       <div class="metric-icon">
@@ -47,7 +73,7 @@
         <div class="metric-label">New Customers</div>
       </div>
     </div>
-    <!-- Sales Count -->
+    Sales Count
     <div  *ngIf="salesTrends.length > 0" class="metric-card metric-card-success">
       <div class="metric-icon">
         <i class="pi pi-shopping-bag text-2xl"></i>
@@ -57,7 +83,7 @@
         <div class="metric-label">Sales Count</div>
       </div>
     </div>
-    <!-- Daily Revenue -->
+    Daily Revenue
     <div *ngIf="salesTrends.length > 0" class="metric-card metric-card-error">
       <div class="metric-icon">
         <i class="pi pi-dollar text-2xl"></i>
@@ -67,7 +93,7 @@
         <div class="metric-label">Daily Revenue</div>
       </div>
     </div>
-    <!-- Inventory Value -->
+    Inventory Value
     <div class="metric-card metric-card-warning">
       <div class="metric-icon">
         <i class="pi pi-box text-2xl"></i>
@@ -77,7 +103,7 @@
         <div class="metric-label">Inventory Value</div>
       </div>
     </div>
-    <!-- Inventory Stock -->
+    Inventory Stock
     <div class="metric-card metric-card-info">
       <div class="metric-icon">
         <i class="pi pi-inbox text-2xl"></i>
@@ -89,7 +115,7 @@
     </div>
   </div>
 
-  <!-- Charts & Data Section -->
+  Charts & Data Section
   <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
     <div class="card lg:col-span-2">
       <h3 class="text-xl font-bold text-[var(--theme-text-primary)] mb-4">Summary</h3>
@@ -110,7 +136,7 @@
 
   </div>
 
-  <!-- Quick Links -->
+  Quick Links
   <div class="card">
     <div class="flex items-center mb-4">
       <div class="w-1 h-8 bg-[var(--theme-accent-gradient,var(--theme-accent-primary))] rounded-full mr-4"></div>
@@ -136,7 +162,7 @@
     </div>
   </div>
 
-  <!-- PrimeNG Dialogs -->
+  PrimeNG Dialogs
   <p-dialog header="Customers" [(visible)]="showcustomerGrid" [modal]="true"
     [style]="{ width: '95vw', maxWidth: '1400px' }">
     <app-customer-list></app-customer-list>
@@ -158,6 +184,6 @@
   </p-dialog>
   <p-dialog header="Permission" [(visible)]="showPermission" [modal]="true"
     [style]="{ width: '95vw', maxWidth: '1200px' }">
-    <!-- <app-permissions></app-permissions> -->
+    <app-permissions></app-permissions>
   </p-dialog>
-</div>
+</div> -->
