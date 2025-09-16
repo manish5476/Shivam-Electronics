@@ -6,16 +6,16 @@
       <form [formGroup]="subscriptionForm" (ngSubmit)="onSubmit()">
         <div class="field">
           <label for="reportType" class="block text-sm font-medium text-gray-700 mb-2">Report Type</label>
-          <p-dropdown id="reportType" [options]="reportTypes" formControlName="reportType"
+          <p-select id="reportType" [options]="reportTypes" formControlName="reportType"
             placeholder="Select a Report Type" optionLabel="label" optionValue="value" styleClass="w-full">
-          </p-dropdown>
+          </p-select>
         </div>
 
         <div class="field">
           <label for="schedule" class="block text-sm font-medium text-gray-700 mb-2">Schedule</label>
-          <p-dropdown id="schedule" [options]="schedules" formControlName="schedule" placeholder="Select a Schedule"
+          <p-select id="schedule" [options]="schedules" formControlName="schedule" placeholder="Select a Schedule"
             optionLabel="label" optionValue="value" styleClass="w-full">
-          </p-dropdown>
+          </p-select>
         </div>
 
         <div class="field">

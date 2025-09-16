@@ -222,7 +222,7 @@
 
 /* --- Themed Input & Select Styles (No changes) --- */
 :host ::ng-deep .p-inputtext,
-:host ::ng-deep .p-dropdown {
+:host ::ng-deep .p-select {
   width: 100%;
   border-radius: 0.5rem !important;
   border: 1px solid var(--theme-border-primary) !important;
@@ -231,7 +231,7 @@
 }
 
 :host ::ng-deep .p-inputtext:enabled:focus,
-:host ::ng-deep .p-dropdown:not(.p-disabled).p-focus {
+:host ::ng-deep .p-select:not(.p-disabled).p-focus {
   border-color: var(--theme-accent-primary) !important;
   box-shadow: 0 0 0 2px var(--theme-accent-focus-ring) !important;
 }
@@ -488,7 +488,7 @@
 
 --- Themed Input & Select Styles ---
 :host ::ng-deep .p-inputtext,
-:host ::ng-deep .p-dropdown {
+:host ::ng-deep .p-select {
   width: 100%;
   border-radius: 0.5rem !important;
   border: 1px solid var(--theme-border-primary) !important;
@@ -496,7 +496,7 @@
   background-color: var(--theme-bg-primary) !important;
 }
 :host ::ng-deep .p-inputtext:enabled:focus,
-:host ::ng-deep .p-dropdown:not(.p-disabled).p-focus {
+:host ::ng-deep .p-select:not(.p-disabled).p-focus {
   border-color: var(--theme-accent-primary) !important;
   box-shadow: 0 0 0 2px var(--theme-accent-focus-ring) !important;
 }

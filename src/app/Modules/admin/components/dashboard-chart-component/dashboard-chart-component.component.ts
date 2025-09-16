@@ -17,13 +17,14 @@ import { DashboardService } from '../../../../core/services/dashboard.service';
 import { AppMessageService } from '../../../../core/services/message.service';
 import { ThemeService } from '../../../../core/services/theme.service';
 import { CommonMethodService } from '../../../../core/Utils/common-method.service';
+import { Select } from 'primeng/select';
 
 type ChartType = 'bar' | 'line' | 'combo';
 
 @Component({
   selector: 'app-dashboard-chart-component',
   standalone: true,
-  imports: [CommonModule, ChartModule, FormsModule, InputTextModule, ButtonModule, SkeletonModule, DropdownModule],
+  imports: [CommonModule, ChartModule,Select, FormsModule, InputTextModule, ButtonModule, SkeletonModule, DropdownModule],
   templateUrl: './dashboard-chart-component.component.html',
   styleUrls: ['./dashboard-chart-component.component.css']
 })

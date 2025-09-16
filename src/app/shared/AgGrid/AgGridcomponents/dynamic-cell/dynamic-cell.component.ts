@@ -181,7 +181,7 @@ export class DynamicCellComponent implements ICellRendererAngularComp {
 // // PrimeNG Modules
 // import { InputTextModule } from 'primeng/inputtext';
 // import { InputNumberModule } from 'primeng/inputnumber';
-// import { DropdownModule } from 'primeng/dropdown'; // Correct module for p-dropdown
+// import { DropdownModule } from 'primeng/dropdown'; // Correct module for p-select
 // import { ColorPickerModule } from 'primeng/colorpicker';
 // import { TooltipModule } from 'primeng/tooltip';
 // import { CascadeSelectModule } from 'primeng/cascadeselect';

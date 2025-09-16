@@ -3,10 +3,10 @@
   <div class="dashboard-header card">
     <h2 class="page-title">Dashboard</h2>
     <div class="filters">
-      <p-dropdown [options]="periodOptions" [(ngModel)]="selectedPeriod" name="selectedPeriod"
+      <p-select [options]="periodOptions" [(ngModel)]="selectedPeriod" name="selectedPeriod"
         placeholder="Select a Period" optionLabel="label" optionValue="value" styleClass="p-inputtext-sm"
         (onChange)="onPeriodChange()">
-      </p-dropdown>
+      </p-select>
     </div>
   </div>
 

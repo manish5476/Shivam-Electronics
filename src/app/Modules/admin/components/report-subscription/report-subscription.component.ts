@@ -17,11 +17,12 @@ import { DropdownModule } from 'primeng/dropdown';
 import { ButtonModule } from 'primeng/button';
 import { TagModule } from 'primeng/tag';
 import { ToastModule } from 'primeng/toast';
+import { Select } from 'primeng/select';
 
 @Component({
   selector: 'app-report-subscription',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule,  CardModule, DropdownModule, ButtonModule, TagModule, ToastModule],
+  imports: [CommonModule, ReactiveFormsModule, Select, CardModule, DropdownModule, ButtonModule, TagModule, ToastModule],
   templateUrl: './report-subscription.component.html',
   styleUrl: './report-subscription.component.css',
   providers: [MessageService]

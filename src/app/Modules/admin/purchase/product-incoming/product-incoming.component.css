@@ -96,7 +96,7 @@
 }
 
 /* PrimeNG Select overrides */
-:host ::ng-deep .themed-select .p-dropdown {
+:host ::ng-deep .themed-select .p-select {
   border: 1px solid var(--theme-border-primary) !important;
   background: var(--theme-bg-secondary) !important;
   border-radius: 10px !important;
@@ -104,11 +104,11 @@
   transition: all 0.25s ease;
 }
 
-:host ::ng-deep .themed-select .p-dropdown:not(.p-disabled):hover {
+:host ::ng-deep .themed-select .p-select:not(.p-disabled):hover {
   border-color: var(--theme-accent-primary) !important;
 }
 
-:host ::ng-deep .themed-select .p-dropdown.p-focus {
+:host ::ng-deep .themed-select .p-select.p-focus {
   border-color: var(--theme-accent-primary) !important;
   box-shadow: 0 0 0 4px var(--theme-accent-focus-ring) !important;
 }

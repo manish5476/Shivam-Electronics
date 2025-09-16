@@ -41,7 +41,7 @@
   box-shadow: inset 0 0 2px var(--theme-shadow-color);
 }
 
-.header-control-item :is(input, .p-inputtext, .p-dropdown) {
+.header-control-item :is(input, .p-inputtext, .p-select) {
   background: transparent !important;
   border: none !important;
   font-size: 0.75rem;
@@ -51,12 +51,12 @@
   color: var(--theme-text-primary);
 }
 
-.header-control-item .p-dropdown {
+.header-control-item .p-select {
   border: none !important;
   background: transparent !important;
 }
 
-.header-control-item .p-dropdown .p-dropdown-label {
+.header-control-item .p-select .p-select-label {
   padding: 0 !important;
   color: var(--theme-text-primary);
 }

@@ -114,7 +114,7 @@
 
 /* --- Themed Inputs & Selects --- */
 .themed-input,
-:host ::ng-deep .themed-select .p-dropdown {
+:host ::ng-deep .themed-select .p-select {
   width: 100%;
   border-radius: 0.5rem !important;
   border: 1px solid var(--theme-border-primary) !important;
@@ -124,19 +124,19 @@
 }
 
 :host ::ng-deep .themed-input:enabled:focus,
-:host ::ng-deep .themed-select .p-dropdown:not(.p-disabled).p-focus {
+:host ::ng-deep .themed-select .p-select:not(.p-disabled).p-focus {
   border-color: var(--theme-accent-primary) !important;
   box-shadow: 0 0 0 2px var(--theme-accent-focus-ring) !important;
 }
 
-:host ::ng-deep .themed-panel .p-dropdown-panel {
+:host ::ng-deep .themed-panel .p-select-panel {
   background-color: var(--theme-bg-secondary);
   border: 1px solid var(--theme-border-primary);
 }
-:host ::ng-deep .themed-panel .p-dropdown-item {
+:host ::ng-deep .themed-panel .p-select-item {
   color: var(--theme-text-primary);
 }
-:host ::ng-deep .themed-panel .p-dropdown-item:hover {
+:host ::ng-deep .themed-panel .p-select-item:hover {
   background-color: var(--theme-hover-bg);
 }
 

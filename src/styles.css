@@ -143,7 +143,7 @@ a:hover { color: var(--theme-accent-primary-hover); text-decoration: underline; 
 /* Add to styles.css */
 .ng-invalid.ng-dirty .p-inputtext,
 .ng-invalid.ng-dirty .p-inputnumber,
-.ng-invalid.ng-dirty .p-dropdown {
+.ng-invalid.ng-dirty .p-select {
   border-color: #f44336 !important;
 }
 
@@ -193,7 +193,7 @@ a:hover { color: var(--theme-accent-primary-hover); text-decoration: underline; 
    ========================================================================== */
 
 .se-filter-bar .p-inputtext,
-.se-filter-bar .p-dropdown,
+.se-filter-bar .p-select,
 .se-filter-bar .p-multiselect,
 .se-filter-bar .p-calendar,
 .se-filter-bar input[type="text"],
@@ -211,7 +211,7 @@ a:hover { color: var(--theme-accent-primary-hover); text-decoration: underline; 
 }
 
 /* Fix vertical alignment inside dropdowns and multiselects */
-.se-filter-bar .p-dropdown .p-dropdown-label,
+.se-filter-bar .p-select .p-select-label,
 .se-filter-bar .p-multiselect .p-multiselect-label,
 .se-filter-bar .p-calendar .p-inputtext {
   display: flex;

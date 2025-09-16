@@ -26,13 +26,14 @@ export interface DashboardData {
   customerAnalytics: any;
   paymentAnalytics: any;
 }
+import { Select } from 'primeng/select';
 
 @Component({
   selector: 'app-admin-dashboard',
   standalone: true,
   imports: [
     CommonModule,
-    FormsModule,
+    FormsModule,Select,
     ButtonModule,
     DropdownModule,
     SkeletonModule,

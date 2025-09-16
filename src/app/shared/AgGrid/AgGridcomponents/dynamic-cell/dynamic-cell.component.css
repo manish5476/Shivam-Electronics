@@ -12,7 +12,7 @@
 /* You might need to adjust these based on your theme and grid row height */
 :host ::ng-deep .p-inputtext,
 :host ::ng-deep .p-inputnumber-input,
-:host ::ng-deep .p-dropdown,
+:host ::ng-deep .p-select,
 :host ::ng-deep .p-colorpicker {
     width: 100%;
     height: auto; /* Allow height to adjust or set fixed height */
@@ -31,7 +31,7 @@
 }
 
 /* Adjust dropdown overlay panel width if needed */
-/* body .p-dropdown-panel { */
+/* body .p-select-panel { */
     /* min-width: 150px; */ /* Example */
 /* } */
 

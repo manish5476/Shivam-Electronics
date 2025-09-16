@@ -3,15 +3,15 @@
     <h3 class="section-header">{{ chartTitle }}</h3>
 
     <div class="flex items-center gap-4">
-      <p-dropdown [options]="(chartOptions$ | async) || []" [(ngModel)]="selectedChart" name="selectedChart"
+      <p-select [options]="(chartOptions$ | async) || []" [(ngModel)]="selectedChart" name="selectedChart"
         placeholder="Select a Chart" optionLabel="label" optionValue="value" styleClass="p-inputtext-sm"
         (onChange)="fetchChartData()">
-      </p-dropdown>
+      </p-select>
 
-      <p-dropdown [options]="periodOptions" [(ngModel)]="selectedPeriod" name="selectedPeriod"
+      <p-select [options]="periodOptions" [(ngModel)]="selectedPeriod" name="selectedPeriod"
         placeholder="Select a Period" optionLabel="label" optionValue="value" styleClass="p-inputtext-sm"
         (onChange)="fetchChartData()">
-      </p-dropdown>
+      </p-select>
     </div>
   </div>
 

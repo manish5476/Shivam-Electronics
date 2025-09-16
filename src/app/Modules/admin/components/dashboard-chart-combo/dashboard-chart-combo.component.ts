@@ -3,6 +3,7 @@ import { isPlatformBrowser, CommonModule } from '@angular/common';
 import { Subject, Observable } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { FormsModule } from '@angular/forms';
+import { Select } from 'primeng/select';
 
 // PrimeNG Modules
 import { ChartModule } from 'primeng/chart';
@@ -21,7 +22,7 @@ type PrimeNgChartType = 'bar' | 'line' | 'scatter' | 'bubble' | 'pie' | 'doughnu
 @Component({
   selector: 'app-dashboard-chart-combo',
   standalone: true,
-  imports: [CommonModule, ChartModule, FormsModule, ButtonModule, SkeletonModule, DropdownModule],
+  imports: [CommonModule, ChartModule,Select, FormsModule, ButtonModule, SkeletonModule, DropdownModule],
   templateUrl: './dashboard-chart-combo.component.html',
   styleUrls: ['./dashboard-chart-combo.component.css']
 })
