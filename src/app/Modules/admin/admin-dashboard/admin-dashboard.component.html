@@ -1,4 +1,143 @@
+<p-toast></p-toast>
 <div class="admin-dashboard">
+
+  <!-- =============================================================== -->
+  <!-- TOP-LEVEL HEADER WITH FILTER BAR (COMMON FOR ALL SECTIONS)      -->
+  <!-- =============================================================== -->
+  <div class="dashboard-header card">
+    <h2 class="page-title">Admin Dashboard</h2>
+    <div class="filters">
+      <p-select [options]="periodOptions" [(ngModel)]="selectedPeriod" name="selectedPeriod" optionLabel="label"
+        optionValue="value" styleClass="p-inputtext-sm" (onChange)="onFilterChange()">
+      </p-select>
+
+      <div *ngIf="selectedPeriod === 'custom'" class="custom-date-filter">
+        <p-calendar [(ngModel)]="customDateRange" selectionMode="range" [readonlyInput]="true"
+          placeholder="Select a date range" dateFormat="dd/mm/yy" styleClass="p-inputtext-sm">
+        </p-calendar>
+        <button pButton type="button" label="Apply" icon="pi pi-check" class="p-button-sm"
+          (click)="onApplyCustomRange()"></button>
+      </div>
+    </div>
+  </div>
+        <app-dashboard-chart-combo></app-dashboard-chart-combo>
+
+
+  <div class="dashboard-body">
+    <!-- Overview Section -->
+    <p-panel header="Dashboard Overview" [toggleable]="true">
+      <ng-container *ngIf="dashboardData$ | async as data; else loadingState">
+        <app-dashboard-summary [summaryData]="data" [isLoading]="isLoading"></app-dashboard-summary>
+        <app-dashboard-chart-combo></app-dashboard-chart-combo>
+      </ng-container>
+      <ng-template #loadingState>
+        <p-skeleton width="100%" height="180px"></p-skeleton>
+      </ng-template>
+    </p-panel>
+
+    <!-- Product Analytics Section -->
+    <p-panel header="Product Analytics" [toggleable]="true">
+      <ng-container *ngIf="productAnalytics$ | async as data; else loadingState">
+        <!-- Placeholder for product data display (e.g., table or charts) -->
+        <pre>{{ data | json }}</pre>
+      </ng-container>
+      <ng-template #loadingState>
+        <p-skeleton width="100%" height="180px"></p-skeleton>
+      </ng-template>
+    </p-panel>
+
+    <!-- Customer Analytics Section -->
+    <p-panel header="Customer Analytics" [toggleable]="true">
+      <ng-container *ngIf="customerAnalytics$ | async as data; else loadingState">
+        <!-- Placeholder for customer data display -->
+        <pre>{{ data | json }}</pre>
+      </ng-container>
+      <ng-template #loadingState>
+        <p-skeleton width="100%" height="180px"></p-skeleton>
+      </ng-template>
+    </p-panel>
+
+    <!-- Payment Analytics Section -->
+    <p-panel header="Payment Analytics" [toggleable]="true">
+      <ng-container *ngIf="paymentAnalytics$ | async as data; else loadingState">
+        <pre>{{ data | json }}</pre>
+      </ng-container>
+      <ng-template #loadingState>
+        <p-skeleton width="100%" height="180px"></p-skeleton>
+      </ng-template>
+    </p-panel>
+
+    <!-- Sales Analytics Section -->
+    <p-panel header="Sales Analytics" [toggleable]="true">
+      <ng-container *ngIf="salesAnalytics$ | async as data; else loadingState">
+        <!-- Placeholder for sales data display -->
+        <pre>{{ data | json }}</pre>
+      </ng-container>
+      <ng-template #loadingState>
+        <p-skeleton width="100%" height="180px"></p-skeleton>
+      </ng-template>
+    </p-panel>
+
+    <!-- Inventory Turnover Section -->
+    <p-panel header="Inventory Turnover" [toggleable]="true">
+      <ng-container *ngIf="inventoryTurnover$ | async as data; else loadingState">
+        <!-- Placeholder for inventory data display -->
+        <pre>{{ data | json }}</pre>
+      </ng-container>
+      <ng-template #loadingState>
+        <p-skeleton width="100%" height="180px"></p-skeleton>
+      </ng-template>
+    </p-panel>
+
+    <!-- Sales Forecast Section -->
+    <p-panel header="Sales Forecast" [toggleable]="true">
+      <ng-container *ngIf="salesForecast$ | async as data; else loadingState">
+        <!-- Placeholder for forecast data display -->
+        <pre>{{ data | json }}</pre>
+      </ng-container>
+      <ng-template #loadingState>
+        <p-skeleton width="100%" height="180px"></p-skeleton>
+      </ng-template>
+    </p-panel>
+  </div>
+</div>
+<!-- <p-toast></p-toast>
+<div class="admin-dashboard">
+
+  <div class="dashboard-header card">
+    <h2 class="page-title">Dashboard Overview</h2>
+    <div class="filters">
+      <p-dropdown [options]="periodOptions" [(ngModel)]="selectedPeriod" name="selectedPeriod" optionLabel="label"
+        optionValue="value" styleClass="p-inputtext-sm" (onChange)="onFilterChange()">
+      </p-dropdown>
+
+      <div *ngIf="selectedPeriod === 'custom'" class="custom-date-filter">
+        <p-calendar [(ngModel)]="customDateRange" selectionMode="range" [readonlyInput]="true"
+          placeholder="Select a date range" dateFormat="dd/mm/yy" styleClass="p-inputtext-sm">
+        </p-calendar>
+        <button pButton type="button" label="Apply" icon="pi pi-check" class="p-button-sm"
+          (click)="onApplyCustomRange()"></button>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="dashboard-body">
+    <ng-container *ngIf="dashboardData$ | async as data; else loadingState">
+      <app-dashboard-summary [summaryData]="data" [isLoading]="isLoading"></app-dashboard-summary>
+      <app-dashboard-chart-combo></app-dashboard-chart-combo>
+    </ng-container>
+
+    <ng-template #loadingState>
+      <div class="loading-grid">
+        <p-skeleton width="100%" height="180px"></p-skeleton>
+        <p-skeleton width="100%" height="400px"></p-skeleton>
+      </div>
+    </ng-template>
+  </div>
+</div> -->
+
+<!-- <div class="admin-dashboard">
 
   <div class="dashboard-header card">
     <h2 class="page-title">Dashboard</h2>
@@ -11,9 +150,12 @@
   </div>
 
   <div class="dashboard-body">
-    <ng-container *ngIf="dashboardData$ | async as data; else loadingState">
-      <!-- <app-dashboard-summary [summaryData]="data.overview"></app-dashboard-summary> -->
+    <ng-container>
+      <app-dashboard-summary [summaryData]="data.overview"></app-dashboard-summary>
       <app-dashboard-chart-combo></app-dashboard-chart-combo>
+
+      <app-dashboard-summary [params]="selectedPeriod"></app-dashboard-summary>
+
     </ng-container>
 
     <ng-template #loadingState>
@@ -26,7 +168,8 @@
       </div>
     </ng-template>
   </div>
-</div>
+</div> -->
+
 <!-- <div class="dashboard-main-container p-4 md:p-6">
   <div class="card mb-6">
     <div class="flex items-center mb-4">
@@ -119,7 +262,6 @@
   <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
     <div class="card lg:col-span-2">
       <h3 class="text-xl font-bold text-[var(--theme-text-primary)] mb-4">Summary</h3>
-      <app-dashboard-summary [params]="getDateParam"></app-dashboard-summary>
     </div>
     <div class="card lg:col-span-2">
       <h3 class="text-xl font-bold text-[var(--theme-text-primary)] mb-4">Top Customers</h3>

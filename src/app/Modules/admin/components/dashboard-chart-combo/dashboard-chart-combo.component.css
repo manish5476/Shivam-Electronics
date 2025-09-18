@@ -1,35 +1,95 @@
-
 :host {
   display: block;
-  height: 500px; /* Give the component a default height */
+  height: auto; /* Flexible height based on content */
+  padding: 1rem;
+}
+
+.chart-combo-container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.filter-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 1.5rem;
+  background: var(--surface-card);
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  margin-bottom: 2rem;
+}
+
+.section-header {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--text-color);
+  margin: 0;
+}
+
+.flex.items-center.gap-4 {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.charts-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* Bento-like responsive grid */
+  gap: 1.5rem;
 }
 
 .chart-panel {
   display: flex;
   flex-direction: column;
-  height: 100%;
+  height: 350px; /* Fixed height for smaller containers */
   padding: 1.5rem;
-  overflow-x: auto;
-  overflow-y: hidden;
+  background: var(--surface-card);
+  border-radius: 12px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  cursor: pointer; /* Indicate clickable */
+  overflow: hidden;
+}
+
+.chart-panel:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
 }
 
 .chart-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  flex-wrap: wrap;
-  gap: 1rem;
-  margin-bottom: 1.5rem;
+  margin-bottom: 1rem;
 }
 
-.section-header {
-  font-size: 1.25rem;
-  font-weight: 600;
-  color: var(--theme-text-primary);
+.chart-title {
+  font-size: 1.1rem;
+  font-weight: 500;
+  color: var(--text-color);
   margin: 0;
 }
 
 .chart-body {
   flex-grow: 1;
   position: relative;
+  overflow: hidden;
+}
+
+.dialog-chart-body {
+  height: 100%;
+  width: 100%;
+  padding: 1rem;
+}
+
+.loading-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1.5rem;
+}
+
+.loading-grid p-skeleton {
+  border-radius: 12px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }

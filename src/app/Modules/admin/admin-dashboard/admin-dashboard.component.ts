@@ -1,490 +1,116 @@
 import { Component, OnInit, inject } from '@angular/core';
-// CORRECTED: 'of' is now imported directly from 'rxjs'
-import { Observable, forkJoin, of } from 'rxjs';
-// CORRECTED: 'of' has been removed from this line
-import { map, catchError } from 'rxjs/operators';
-
-// Import our new, powerful services
-import { DashboardService } from '../../../core/services/dashboard.service';
-import { ChartService, ChartOption } from '../../../core/services/chart.service';
-
-// Import PrimeNG Modules for the UI
+import { Observable, BehaviorSubject, of } from 'rxjs';
+import { switchMap, catchError, finalize, map } from 'rxjs/operators';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+
+// Import our powerful services
+import { DashboardService } from '../../../core/services/dashboard.service';
+
+// Import PrimeNG Modules for the advanced UI
 import { ButtonModule } from 'primeng/button';
 import { DropdownModule } from 'primeng/dropdown';
 import { SkeletonModule } from 'primeng/skeleton';
+import { CalendarModule } from 'primeng/calendar';
+import { MessageService } from 'primeng/api';
+import { ToastModule } from 'primeng/toast';
+import { CardModule } from 'primeng/card';
+import { PanelModule } from 'primeng/panel';
 
-// Import our child components
+// Import our child components (assuming they exist; you can create placeholders if needed)
 import { DashboardSummaryComponent } from '../components/dashboard-summary/dashboard-summary.component';
 import { DashboardChartComboComponent } from '../components/dashboard-chart-combo/dashboard-chart-combo.component';
-
-// Define a single, clean interface for all our dashboard data
-export interface DashboardData {
-  overview: any;
-  productAnalytics: any;
-  customerAnalytics: any;
-  paymentAnalytics: any;
-}
 import { Select } from 'primeng/select';
 
 @Component({
   selector: 'app-admin-dashboard',
   standalone: true,
   imports: [
-    CommonModule,
-    FormsModule,Select,
-    ButtonModule,
-    DropdownModule,
-    SkeletonModule,
-    // DashboardSummaryComponent,
-    DashboardChartComboComponent,
+    CommonModule, FormsModule, ButtonModule, DropdownModule, SkeletonModule, Select,
+    CalendarModule, ToastModule, CardModule, PanelModule,
+    DashboardSummaryComponent, DashboardChartComboComponent,
   ],
   templateUrl: './admin-dashboard.component.html',
   styleUrls: ['./admin-dashboard.component.css'],
+  providers: [MessageService]
 })
 export class AdminDashboardComponent implements OnInit {
-  // --- Dependency Injection ---
   private dashboardService = inject(DashboardService);
+  private messageService = inject(MessageService);
 
-  // --- State Management ---
   isLoading = true;
-  dashboardData$!: Observable<DashboardData>;
 
-  // --- Filter Controls ---
+  // Observables for each section
+  dashboardData$!: Observable<any>;
+  productAnalytics$!: Observable<any>;
+  customerAnalytics$!: Observable<any>;
+  paymentAnalytics$!: Observable<any>;
+  salesAnalytics$!: Observable<any>;
+  inventoryTurnover$!: Observable<any>;
+  salesForecast$!: Observable<any>; // Note: Forecast might not use period/dates, but we can pass if needed
+
   periodOptions: any[] = [
+    { label: 'Today', value: 'today' },
     { label: 'Last 7 Days', value: 'last7days' },
     { label: 'Last 30 Days', value: 'last30days' },
-    { label: 'Last 90 Days', value: 'last90days' },
     { label: 'This Month', value: 'thismonth' },
     { label: 'This Year', value: 'thisyear' },
+    { label: 'Custom Range', value: 'custom' }
   ];
   selectedPeriod: string = 'last30days';
+  customDateRange: Date[] | undefined;
+
+  private refreshTrigger = new BehaviorSubject<{ period?: string, startDate?: string, endDate?: string }>({ period: this.selectedPeriod });
 
   ngOnInit(): void {
-    this.loadAllDashboardData();
+    // Common pipeline for all sections
+    const dataPipe = (serviceCall: (period?: string, startDate?: string, endDate?: string) => Observable<any>) =>
+      this.refreshTrigger.pipe(
+        switchMap(filters => {
+          this.isLoading = true;
+          return serviceCall(filters.period, filters.startDate, filters.endDate).pipe(
+            map(response => response?.data || response), // Extract data if wrapped
+            finalize(() => this.isLoading = false),
+            catchError(err => {
+              this.messageService.add({ severity: 'error', summary: 'Data Error', detail: 'Failed to load data.' });
+              console.error('Failed to load data', err);
+              return of({}); // Return empty object on error
+            })
+          );
+        })
+      );
+
+    this.dashboardData$ = dataPipe((p, s, e) => this.dashboardService.getDashboardOverview(p, s, e));
+    this.productAnalytics$ = dataPipe((p, s, e) => this.dashboardService.getProductAnalytics(p, 5, s, e));
+    this.customerAnalytics$ = dataPipe((p, s, e) => this.dashboardService.getCustomerAnalytics(p, 5, s, e));
+    this.paymentAnalytics$ = dataPipe((p, s, e) => this.dashboardService.getPaymentAnalytics(p, s, e));
+    // this.salesAnalytics$ = dataPipe((p, s, e) => this.dashboardService.getSalesAnalytics(undefined, p, s, e)); // Year can be added if needed
+    this.inventoryTurnover$ = dataPipe((p, s, e) => this.dashboardService.getInventoryTurnover(p, s, e));
+    this.salesForecast$ = dataPipe((p, s, e) => this.dashboardService.getSalesForecast()); // No params for forecast
   }
 
-  loadAllDashboardData(): void {
-    this.isLoading = true;
-    const period = this.selectedPeriod;
-
-    this.dashboardData$ = forkJoin({
-      overview: this.dashboardService.getDashboardOverview(period),
-      productAnalytics: this.dashboardService.getProductAnalytics(period),
-      customerAnalytics: this.dashboardService.getCustomerAnalytics(period),
-      paymentAnalytics: this.dashboardService.getPaymentAnalytics(period),
-    }).pipe(
-      map(response => {
-        this.isLoading = false;
-        return {
-          overview: response.overview.data,
-          productAnalytics: response.productAnalytics.data,
-          customerAnalytics: response.customerAnalytics.data,
-          paymentAnalytics: response.paymentAnalytics.data,
-        };
-      }),
-      catchError(err => {
-        this.isLoading = false;
-        console.error("Failed to load dashboard data", err);
-        // The 'of' operator will now work correctly
-        return of({ overview: {}, productAnalytics: {}, customerAnalytics: {}, paymentAnalytics: {} });
-      })
-    );
+  onFilterChange(): void {
+    if (this.selectedPeriod !== 'custom') {
+      this.customDateRange = undefined;
+      this.refreshTrigger.next({ period: this.selectedPeriod });
+    }
   }
 
-  onPeriodChange(): void {
-    this.loadAllDashboardData();
+  onApplyCustomRange(): void {
+    if (this.selectedPeriod === 'custom') {
+      if (!this.customDateRange || this.customDateRange.length !== 2 || !this.customDateRange[0] || !this.customDateRange[1]) {
+        this.messageService.add({ severity: 'warn', summary: 'Invalid Range', detail: 'Please select a valid start and end date.' });
+        return;
+      }
+      this.refreshTrigger.next({
+        period: 'custom',
+        startDate: this.formatDate(this.customDateRange[0]),
+        endDate: this.formatDate(this.customDateRange[1])
+      });
+    }
+  }
+
+  private formatDate(date: Date): string {
+    return date.toISOString().split('T')[0]; // Returns YYYY-MM-DD
   }
 }
-// import { Component, OnInit, inject } from '@angular/core';
-// import { Observable, forkJoin } from 'rxjs';
-// import { map, catchError, of } from 'rxjs/operators';
-
-// // Import our new, powerful services
-// import { DashboardService } from '../../../core/services/dashboard.service';
-// import { ChartService, ChartOption } from '../../../core/services/chart.service';
-
-// // Import PrimeNG Modules for the UI
-// import { CommonModule } from '@angular/common';
-// import { FormsModule } from '@angular/forms';
-// import { ButtonModule } from 'primeng/button';
-// import { DropdownModule } from 'primeng/dropdown';
-// import { SkeletonModule } from 'primeng/skeleton';
-
-// // Import our child components
-// import { DashboardSummaryComponent } from '../components/dashboard-summary/dashboard-summary.component';
-// import { DashboardChartComboComponent } from '../components/dashboard-chart-combo/dashboard-chart-combo.component';
-
-// // Define a single, clean interface for all our dashboard data
-// export interface DashboardData {
-//   overview: any;
-//   productAnalytics: any;
-//   customerAnalytics: any;
-//   paymentAnalytics: any;
-// }
-
-// @Component({
-//   selector: 'app-admin-dashboard',
-//   standalone: true,
-//   imports: [
-//     CommonModule,
-//     FormsModule,
-//     ButtonModule,
-//     DropdownModule,
-//     SkeletonModule,
-//     DashboardSummaryComponent,
-//     DashboardChartComboComponent,
-//   ],
-//   templateUrl: './admin-dashboard.component.html',
-//   styleUrls: ['./admin-dashboard.component.css'],
-// })
-// export class AdminDashboardComponent implements OnInit {
-//   // --- Dependency Injection ---
-//   private dashboardService = inject(DashboardService);
-
-//   // --- State Management ---
-//   isLoading = true;
-//   // A single observable to hold all our dashboard data!
-//   dashboardData$!: Observable<DashboardData>;
-
-//   // --- Filter Controls ---
-//   periodOptions: any[] = [
-//     { label: 'Last 7 Days', value: 'last7days' },
-//     { label: 'Last 30 Days', value: 'last30days' },
-//     { label: 'Last 90 Days', value: 'last90days' },
-//     { label: 'This Month', value: 'thismonth' },
-//     { label: 'This Year', value: 'thisyear' },
-//   ];
-//   selectedPeriod: string = 'last30days'; // Default period
-
-//   ngOnInit(): void {
-//     this.loadAllDashboardData();
-//   }
-
-//   /**
-//    * The single, powerful function to fetch ALL dashboard data in parallel.
-//    */
-//   loadAllDashboardData(): void {
-//     this.isLoading = true;
-//     const period = this.selectedPeriod;
-
-//     // Use forkJoin to run all our service calls in parallel for maximum speed
-//     this.dashboardData$ = forkJoin({
-//       overview: this.dashboardService.getDashboardOverview(period),
-//       productAnalytics: this.dashboardService.getProductAnalytics(period),
-//       customerAnalytics: this.dashboardService.getCustomerAnalytics(period),
-//       paymentAnalytics: this.dashboardService.getPaymentAnalytics(period),
-//     }).pipe(
-//       map(response => {
-//         this.isLoading = false;
-//         // The 'data' property is nested in the API response, so we extract it here.
-//         return {
-//           overview: response.overview.data,
-//           productAnalytics: response.productAnalytics.data,
-//           customerAnalytics: response.customerAnalytics.data,
-//           paymentAnalytics: response.paymentAnalytics.data,
-//         };
-//       }),
-//       catchError(err => {
-//         this.isLoading = false;
-//         console.error("Failed to load dashboard data", err);
-//         // Return an empty structure on error so the UI doesn't break
-//         return of({ overview: {}, productAnalytics: {}, customerAnalytics: {}, paymentAnalytics: {} });
-//       })
-//     );
-//   }
-
-//   /**
-//    * Called when the user changes the period filter.
-//    */
-//   onPeriodChange(): void {
-//     this.loadAllDashboardData();
-//   }
-// }
-
-// // import { Component, OnInit, OnDestroy } from '@angular/core';
-// // import { Observable, Subject } from 'rxjs';
-// // import { takeUntil, catchError } from 'rxjs/operators';
-// // import {
-// //   ConsolidatedSummaryData,
-// //   SalesTrendData,
-// //   ProductInsightData,
-// //   CustomerInsightData,
-// //   ReviewData,
-// //   PaymentMethodData,
-// //   InventoryValueData,
-// //   ApiResponse
-// // } from '../../../core/Models/dashboard-models';
-// // import { DashboardService } from '../../../core/services/dashboard.service';
-// // import { CommonMethodService } from '../../../core/Utils/common-method.service';
-// // import { MessageService } from 'primeng/api';
-// // import { CommonModule } from '@angular/common';
-// // import { FormsModule } from '@angular/forms';
-// // import { DialogModule } from 'primeng/dialog';
-// // import { ButtonModule } from 'primeng/button';
-// // import { InputTextModule } from 'primeng/inputtext';
-// // import { TagModule } from 'primeng/tag';
-// // import { ToastModule } from 'primeng/toast';
-// // import { CustomerListComponent } from '../../customer/components/customer-list/customer-list.component';
-// // import { ProductListComponent } from '../../product/components/product-list/product-list.component';
-// // import { InvoiceViewComponent } from '../../billing/components/invoice-view/invoice-view.component';
-// // import { PaymentListComponent } from '../../payment/components/payment-list/payment-list.component';
-// // import { InvoicePrintComponent } from '../../billing/components/invoice-print/invoice-print.component';
-// // import { DashboardTopCustomerViewComponent } from '../components/dashboard-top-customer-view/dashboard-top-customer-view.component';
-// // import { DashboardSummaryComponent } from '../components/dashboard-summary/dashboard-summary.component';
-// // import { DashboardChartComponentComponent } from '../components/dashboard-chart-component/dashboard-chart-component.component';
-// // import { DashboardChartComboComponent } from '../components/dashboard-chart-combo/dashboard-chart-combo.component';
-// // import { PermissionComponentComponent } from "../components/permission-component/permission-component.component";
-
-// // @Component({
-// //   selector: 'app-admin-dashboard',
-// //   standalone: true,
-// //   imports: [
-// //     CommonModule,
-// //     FormsModule,
-// //     DialogModule,
-// //     ButtonModule,
-// //     InputTextModule,
-// //     TagModule,
-// //     ToastModule,
-// //     CustomerListComponent,
-// //     ProductListComponent,
-// //     InvoiceViewComponent,
-// //     PaymentListComponent,
-// //     InvoicePrintComponent,
-// //     DashboardTopCustomerViewComponent,
-// //     DashboardSummaryComponent,
-// //     DashboardChartComponentComponent,
-// //     DashboardChartComboComponent,
-
-// //   ],
-// //   templateUrl: './admin-dashboard.component.html',
-// //   styleUrls: ['./admin-dashboard.component.css'],
-// //   providers: [MessageService]
-// // })
-// // export class AdminDashboardComponent implements OnInit, OnDestroy {
-// //   private ngUnsubscribe = new Subject<void>();
-// //   searchTerm: string = '';
-// //   expandedRows: { [key: string]: boolean } = {};
-// //   expandedProductRows: { [key: string]: boolean } = {};
-// //   getDateParam: any;
-// //   dashboardSummary: ConsolidatedSummaryData | {} = {};
-// //   salesTrends: SalesTrendData[] = [];
-// //   topSellingProducts: ProductInsightData[] = [];
-// //   lowStockProducts: ProductInsightData[] = [];
-// //   outOfStockProducts: ProductInsightData[] = [];
-// //   customersWithDues: CustomerInsightData[] = [];
-// //   topCustomers: CustomerInsightData[] = [];
-// //   newCustomersCountData: number | null = null;
-// //   totalPaymentsReceivedData: number | null = null;
-// //   paymentsByMethod: PaymentMethodData[] = [];
-// //   failedPaymentsCountData: number | null = null;
-// //   overallAverageRatingData: { overallAverage: number, totalReviewsConsidered: number } | null = null;
-// //   recentReviews: ReviewData[] = [];
-// //   totalInventoryValueData: InventoryValueData | null = null;
-// //   isLoadingSummary = false;
-// //   isLoadingSalesTrends = false;
-// //   errorMessage: string | null = null;
-// //   selectedPeriod: string = 'month';
-// //   customStartDate: string = '';
-// //   customEndDate: string = '';
-// //   getTotalRevenue: number | null = null;
-// //   SalesCount: any;
-// //   showcustomerGrid: boolean = false;
-// //   showproductGrid: boolean = false;
-// //   showInvoiceGrid: boolean = false;
-// //   showPaymentGrid: boolean = false;
-// //   showpdf: boolean = false;
-// //   dashboard = {
-// //     showpdf: false,
-// //     invoiceId: ''
-// //   };
-// //   border: any;
-// //   showPermission: any;
-
-// //   constructor(
-// //     private dashboardService: DashboardService,
-// //     public commonMethodService: CommonMethodService,
-// //     private messageService: MessageService
-// //   ) { }
-
-// //   ngOnInit(): void {
-// //     this.loadAllDashboardData();
-// //   }
-
-// //   hasProducts(): boolean {
-// //     return this.dashboardSummary && 'products' in this.dashboardSummary &&
-// //       this.dashboardSummary.products?.lowStock !== null &&
-// //       Array.isArray(this.dashboardSummary.products?.lowStock) &&
-// //       this.dashboardSummary.products?.lowStock.length > 0;
-// //   }
-
-// //   loadAllDashboardData(): void {
-// //     this.errorMessage = null;
-// //     const dateParams = this.getDateParams();
-// //     this.getDateParam = dateParams;
-// //     this.fetchDashBoardOverviewData(dateParams);
-// //     this.getProductAnalytics({ days: 30 });
-
-// //   }
-
-// //   getUniqueInvoices(cartItems: any[]): any[] {
-// //     const uniqueInvoiceMap = new Map<string, any>();
-// //     cartItems.forEach(item => {
-// //       item.invoiceIds.forEach((invoice: any) => {
-// //         uniqueInvoiceMap.set(invoice._id, invoice);
-// //       });
-// //     });
-// //     return Array.from(uniqueInvoiceMap.values());
-// //   }
-
-// //   getDateParams(): { period?: string, startDate?: string, endDate?: string } {
-// //     if (this.customStartDate && this.customEndDate) {
-// //       return { startDate: this.customStartDate, endDate: this.customEndDate };
-// //     }
-// //     return { period: this.selectedPeriod };
-// //   }
-
-// //   fetchDashBoardOverviewData(params?: any): void {
-// //     this.isLoadingSummary = true;
-// //     this.dashboardService.getDashboardOverview(params)
-// //       .pipe(takeUntil(this.ngUnsubscribe), catchError(this.commonMethodService.handleError()))
-// //       .subscribe((response: any) => {
-// //         if (response?.success) {
-// //           this.getTotalRevenue = response.data.totalRevenue;
-// //         }
-// //         this.isLoadingSummary = false;
-// //       });
-// //   }
-
-
-// //   getProductAnalytics(params: any, topItems: any = 10): void {
-// //     this.isLoadingSalesTrends = true;
-// //     this.dashboardService.getProductAnalytics(params, topItems)
-// //       .pipe(takeUntil(this.ngUnsubscribe), catchError(this.commonMethodService.handleError()))
-// //       .subscribe((response: any) => {
-// //         if (response?.success) {
-// //           this.salesTrends = response.data;
-// //         }
-// //         this.isLoadingSalesTrends = false;
-// //       });
-// //   }
-// //   getCustomerAnalytics(params: any, topItems: any = 10): void {
-// //     this.isLoadingSalesTrends = true;
-// //     this.dashboardService.getCustomerAnalytics(params, topItems)
-// //       .pipe(takeUntil(this.ngUnsubscribe), catchError(this.commonMethodService.handleError()))
-// //       .subscribe((response: any) => {
-// //         if (response?.success) {
-// //           this.salesTrends = response.data;
-// //         }
-// //         this.isLoadingSalesTrends = false;
-// //       });
-// //   }
-
-// //   getPaymentAnalytics(params: any, topItems: any = 10): void {
-// //     this.isLoadingSalesTrends = true;
-// //     this.dashboardService.getPaymentAnalytics(params)
-// //       .pipe(takeUntil(this.ngUnsubscribe), catchError(this.commonMethodService.handleError()))
-// //       .subscribe((response: any) => {
-// //         if (response?.success) {
-// //           this.salesTrends = response.data;
-// //         }
-// //         this.isLoadingSalesTrends = false;
-// //       });
-// //   }
-
-
-
-// //   onPeriodChange(newPeriod: string): void {
-// //     this.selectedPeriod = newPeriod;
-// //     this.customStartDate = '';
-// //     this.customEndDate = '';
-// //     this.loadAllDashboardData();
-// //   }
-
-// //   applyCustomDateRange(): void {
-// //     if (this.customStartDate && this.customEndDate) {
-// //       if (new Date(this.customEndDate) < new Date(this.customStartDate)) {
-// //         this.messageService.add({ severity: 'error', summary: 'Invalid Date Range', detail: 'End date cannot be before start date.', life: 3000 });
-// //         return;
-// //       }
-// //       this.selectedPeriod = 'custom';
-// //       this.loadAllDashboardData();
-// //     } else {
-// //       this.messageService.add({ severity: 'warn', summary: 'Missing Dates', detail: 'Please select both start and end dates.', life: 3000 });
-// //     }
-// //   }
-
-
-// //   ngOnDestroy(): void {
-// //     this.ngUnsubscribe.next();
-// //     this.ngUnsubscribe.complete();
-// //   }
-// // }
-
-// // // this.fetchTopSellingProducts({ ...dateParams, limit: 5, sortBy: 'revenue' });
-// // // this.fetchLowStockProducts({ threshold: 10, limit: 5 });
-// // // this.fetchOutOfStockProducts({ limit: 5 });
-// // // this.fetchNewCustomersCount(dateParams);
-// // // this.fetchTotalPaymentsReceived(dateParams);
-// // // this.fetchTotalInventoryValue();
-// // // fetchTopSellingProducts(params: any): void {
-// // //   this.dashboardService.getTopSellingProducts(params)
-// // //     .pipe(takeUntil(this.ngUnsubscribe), catchError(this.commonMethodService.handleError()))
-// // //     .subscribe((response: any) => {
-// // //       if (response?.success) {
-// // //         this.topSellingProducts = response.data;
-// // //       }
-// // //     });
-// // // }
-
-// // // fetchLowStockProducts(params: any): void {
-// // //   this.dashboardService.getLowStockProducts(params)
-// // //     .pipe(takeUntil(this.ngUnsubscribe), catchError(this.commonMethodService.handleError()))
-// // //     .subscribe((response: any) => {
-// // //       if (response?.success) {
-// // //         this.lowStockProducts = response.data;
-// // //       }
-// // //     });
-// // // }
-
-// // // fetchOutOfStockProducts(params: any): void {
-// // //   this.dashboardService.getOutOfStockProducts(params)
-// // //     .pipe(takeUntil(this.ngUnsubscribe), catchError(this.commonMethodService.handleError()))
-// // //     .subscribe((response: any) => {
-// // //       if (response?.success) {
-// // //         this.outOfStockProducts = response.data;
-// // //       }
-// // //     });
-// // // }
-
-// // // fetchNewCustomersCount(params: any): void {
-// // //   this.dashboardService.getNewCustomersCount(params)
-// // //     .pipe(takeUntil(this.ngUnsubscribe), catchError(this.commonMethodService.handleError()))
-// // //     .subscribe((response: any) => {
-// // //       if (response?.success) {
-// // //         this.newCustomersCountData = response.data.newCustomersCount;
-// // //       }
-// // //     });
-// // // }
-
-// // // fetchTotalPaymentsReceived(params: any): void {
-// // //   this.dashboardService.getTotalPaymentsReceived(params)
-// // //     .pipe(takeUntil(this.ngUnsubscribe), catchError(this.commonMethodService.handleError()))
-// // //     .subscribe((response: any) => {
-// // //       if (response?.success) {
-// // //         this.totalPaymentsReceivedData = response.data.totalPaymentsReceived;
-// // //       }
-// // //     });
-// // // }
-
-// // // fetchTotalInventoryValue(): void {
-// // //   this.dashboardService.getTotalInventoryValue()
-// // //     .pipe(takeUntil(this.ngUnsubscribe), catchError(this.commonMethodService.handleError()))
-// // //     .subscribe((response: any) => {
-// // //       if (response?.success) {
-// // //         this.totalInventoryValueData = response.data;
-// // //       }
-// // //     });
-// // // }
