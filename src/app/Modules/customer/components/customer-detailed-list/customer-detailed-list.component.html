@@ -31,9 +31,9 @@
     <div class="profile-hero-v2">
       <div class="profile-main-v2">
 
-        <p-avatar *ngIf="customer.profileImg" [image]="customer.profileImg" shape="square"
+        <p-avatar *ngIf="customer.profileImg" [image]="customer?.profileImg" shape="square"
           styleClass="profile-avatar-v2"></p-avatar>
-        <p-avatar *ngIf="!customer.profileImg" [image]="customer.profileImg" [label]="getInitials(customer.fullname)"
+        <p-avatar *ngIf="!customer.profileImg" [image]="customer?.profileImg" [label]="getInitials(customer.fullname)"
           shape="circle" styleClass="profile-avatar-v2"></p-avatar>
         <div class="profile-info">
           <h2 class="customer-name">{{ customer.fullname }}</h2>
@@ -177,7 +177,7 @@
             <div class="items-grid-container" *ngIf="customer.cart?.items?.length; else noItems">
               <div class="item-card-v2" *ngFor="let item of customer.cart.items">
                 <div class="item-card-header">
-                  <p-avatar class="item-visual"  [image]="item.productId.thumbnail"
+                  <p-avatar class="item-visual"  [image]="item?.productId?.thumbnail"
                     shape="square" styleClass="product-avatar-large">
                   </p-avatar>
                   <!-- <div ><i class="pi pi-box product-icon"></i></div> -->

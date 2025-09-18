@@ -1,0 +1,99 @@
+<div class="analytics-container" *ngIf="data">
+
+  <div class="kpi-grid">
+    <div class="kpi-card">
+      <div class="kpi-icon-wrapper-value"><i class="pi pi-wallet"></i></div>
+      <div class="kpi-info">
+        <p class="kpi-title">Total Inventory Value</p>
+        <p class="kpi-value">{{ formatCurrency(data.inventorySummary.totalValue) }}</p>
+      </div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-icon-wrapper-items"><i class="pi pi-box"></i></div>
+      <div class="kpi-info">
+        <p class="kpi-title">Total Items in Stock</p>
+        <p class="kpi-value">{{ formatNumber(data.inventorySummary.totalItems) }}</p>
+      </div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-icon-wrapper-low"><i class="pi pi-info-circle"></i></div>
+      <div class="kpi-info">
+        <p class="kpi-title">Low Stock SKUs</p>
+        <p class="kpi-value">{{ formatNumber(data.inventorySummary.lowStockCount) }}</p>
+      </div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-icon-wrapper-out"><i class="pi pi-times-circle"></i></div>
+      <div class="kpi-info">
+        <p class="kpi-title">Out of Stock SKUs</p>
+        <p class="kpi-value">{{ formatNumber(data.inventorySummary.outOfStockCount) }}</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="bento-grid">
+    
+    <div class="data-card card-span-4 card-row-span-2" *ngIf="data.topPerformingProducts?.topByProfit?.length > 0">
+      <div class="card-header">
+        <h3 class="card-title"><i class="pi pi-star"></i> Top Performing Product</h3>
+      </div>
+      <div class="hero-content">
+        <div class="hero-image-wrapper">
+          <img [src]="data.topPerformingProducts.topByProfit[0].thumbnail" (error)="onImageError($event)" [alt]="data.topPerformingProducts.topByProfit[0].title" class="hero-image" />
+        </div>
+        <div class="hero-info">
+          <h4 class="hero-title">{{ data.topPerformingProducts.topByProfit[0].title }}</h4>
+          <p class="hero-meta">{{ data.topPerformingProducts.topByProfit[0].brand }}</p>
+          <div class="hero-stats">
+            <div>
+              <span>Revenue</span>
+              <p>{{ formatCurrency(data.topPerformingProducts.topByProfit[0].totalRevenue) }}</p>
+            </div>
+            <div>
+              <span>Units Sold</span>
+              <p>{{ formatNumber(data.topPerformingProducts.topByProfit[0].totalQuantity) }}</p>
+            </div>
+            <div>
+              <span>Gross Profit</span>
+              <p class="profit">{{ formatCurrency(data.topPerformingProducts.topByProfit[0].grossProfit) }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="data-card card-span-2 card-row-span-3">
+      <div class="card-header">
+        <h3 class="card-title"><i class="pi pi-tag"></i> Top Categories</h3>
+      </div>
+      <ul class="item-list vertical-list">
+        <li *ngFor="let category of data.performanceByCategory.slice(0, 6)">
+          <img [src]="category.thumbnails[0]" (error)="onImageError($event)" [alt]="formatCategoryName(category._id)" class="item-image" />
+          <div class="item-details">
+            <p class="item-name">{{ formatCategoryName(category._id) }}</p>
+            <div class="value-bar-wrapper">
+              <div class="value-bar profit" [style.width.%]="calculatePercentage(category.grossProfit, maxCategoryProfit)"></div>
+            </div>
+          </div>
+          <p class="item-value profit">{{ formatCurrency(category.grossProfit) }}</p>
+        </li>
+      </ul>
+    </div>
+
+    <div class="data-card card-span-4">
+      <div class="card-header">
+        <h3 class="card-title"><i class="pi pi-bookmark"></i> Top Brands by Profit</h3>
+      </div>
+      <ul class="item-list">
+        <li *ngFor="let brand of data.performanceByBrand.slice(0, 4)">
+          <img [src]="brand.thumbnails[0]" (error)="onImageError($event)" [alt]="brand._id" class="item-image" />
+          <div class="item-details">
+            <p class="item-name">{{ brand._id }}</p>
+          </div>
+          <p class="item-value profit">{{ formatCurrency(brand.grossProfit) }}</p>
+        </li>
+      </ul>
+    </div>
+
+  </div>
+</div>

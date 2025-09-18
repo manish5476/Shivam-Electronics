@@ -1,218 +1,63 @@
-<!-- Main container for the summary cards -->
-<div class="summary-grid">
-  <!-- Card 1: Total Revenue -->
-  <div class="summary-card card">
-    <ng-container *ngIf="!isLoading; else loadingSkeleton">
-      <div class="card-header">
-        <i class="pi pi-chart-line icon text-green-500"></i>
-        <span class="card-title">Total Revenue</span>
-      </div>
-      <div class="card-body">
-        <p class="main-value">{{ summaryData?.totalRevenue | currency:'INR':'symbol':'1.0-0' }}</p>
-        <p class="sub-value">{{ summaryData?.totalSales }} sales in period</p>
-      </div>
-    </ng-container>
-  </div>
+<div class="summary-container">
+  <ng-container *ngIf="!isLoading && summaryData; else loadingState">
 
-  <!-- Card 2: Gross Profit -->
-  <div class="summary-card card">
-    <ng-container *ngIf="!isLoading; else loadingSkeleton">
-      <div class="card-header">
-        <i class="pi pi-dollar icon text-blue-500"></i>
-        <span class="card-title">Gross Profit</span>
-      </div>
-      <div class="card-body">
-        <p class="main-value">{{ summaryData?.grossProfit | currency:'INR':'symbol':'1.0-0' }}</p>
-        <p class="sub-value">After cost of goods</p>
-      </div>
-    </ng-container>
-  </div>
-
-  <!-- Card 3: Average Order Value -->
-  <div class="summary-card card">
-    <ng-container *ngIf="!isLoading; else loadingSkeleton">
-      <div class="card-header">
-        <i class="pi pi-shopping-cart icon text-orange-500"></i>
-        <span class="card-title">Avg. Order Value</span>
-      </div>
-      <div class="card-body">
-        <p class="main-value">{{ summaryData?.averageOrderValue | currency:'INR':'symbol':'1.0-0' }}</p>
-        <p class="sub-value">Per transaction</p>
-      </div>
-    </ng-container>
-  </div>
-
-  <!-- Card 4: New Customers -->
-  <div class="summary-card card">
-    <ng-container *ngIf="!isLoading; else loadingSkeleton">
-      <div class="card-header">
-        <i class="pi pi-users icon text-purple-500"></i>
-        <span class="card-title">New Customers</span>
-      </div>
-      <div class="card-body">
-        <p class="main-value">{{ summaryData?.newCustomers }}</p>
-        <p class="sub-value">Joined this period</p>
-      </div>
-    </ng-container>
-  </div>
-
-  <!-- Card 5: Top Selling Products with Images -->
-  <div class="summary-card card top-products-card">
-    <ng-container *ngIf="!isLoading; else loadingSkeletonList">
-      <div class="card-header">
-        <i class="pi pi-star icon text-yellow-500"></i>
-        <span class="card-title">Top Selling Products</span>
-      </div>
-      <div class="card-body">
-        <ul class="product-list">
-          <li *ngFor="let product of summaryData?.topSellingProducts">
-            <img [src]="product.thumbnail || 'https://placehold.co/40x40/E0E0E0/424242?text=P'" alt="{{ product.productName }}" class="product-image">
-            <span class="product-name">{{ product.productName }}</span>
-            <span class="product-quantity">{{ product.totalQuantity }} sold</span>
-          </li>
-          <li *ngIf="!summaryData?.topSellingProducts?.length" class="no-data-li">
-            <span class="no-data">No product sales in this period.</span>
-          </li>
-        </ul>
-      </div>
-    </ng-container>
-  </div>
-  
-  <!-- Card 6: Customers with Dues -->
-  <div class="summary-card card customers-due-card">
-    <ng-container *ngIf="!isLoading; else loadingSkeletonList">
-      <div class="card-header">
-        <i class="pi pi-exclamation-circle icon text-red-500"></i>
-        <span class="card-title">Outstanding Payments</span>
-      </div>
-      <div class="card-body">
-        <ul class="customer-list">
-           <li *ngFor="let customer of summaryData?.customersWithDues">
-            <span class="customer-name">{{ customer.fullname }}</span>
-            <span class="customer-due-amount">{{ customer.remainingAmount | currency:'INR':'symbol':'1.0-0' }}</span>
-          </li>
-          <li *ngIf="!summaryData?.customersWithDues?.length" class="no-data-li">
-            <span class="no-data">No outstanding payments.</span>
-          </li>
-        </ul>
-      </div>
-    </ng-container>
-  </div>
-
-</div>
-
-<!-- Reusable Skeleton Templates -->
-<ng-template #loadingSkeleton>
-  <div class="w-full h-full p-4 flex flex-col justify-between">
-    <p-skeleton width="60%" height="1.5rem"></p-skeleton>
-    <p-skeleton width="80%" height="2.5rem"></p-skeleton>
-    <p-skeleton width="40%" height="1rem"></p-skeleton>
-  </div>
-</ng-template>
-<ng-template #loadingSkeletonList>
-  <div class="w-full h-full p-4">
-    <p-skeleton width="70%" height="1.5rem" styleClass="mb-4"></p-skeleton>
-    <p-skeleton width="100%" height="1.2rem" styleClass="mb-2"></p-skeleton>
-    <p-skeleton width="100%" height="1.2rem" styleClass="mb-2"></p-skeleton>
-    <p-skeleton width="100%" height="1.2rem"></p-skeleton>
-  </div>
-</ng-template>
-
-<!-- <div class="summary-container">
-  <ng-container *ngIf="!isLoadingSummary && dashboardSummary; else loadingState">
-    Metrics Cards
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6 mb-8">
-      <div class="metric-card">
-        <div class="metric-icon icon-accent"><i class="pi pi-users text-2xl"></i></div>
-        <div class="metric-content">
-          <div class="metric-value">{{ newCustomersCountData | number }}</div>
-          <div class="metric-label">New Customers</div>
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6 mb-10">
+      <div class="metric-card" *ngFor="let metric of metrics">
+        <div class="metric-icon" [ngClass]="metric.iconClass">
+          <i [class]="metric.icon + ' text-2xl'"></i>
         </div>
-      </div>
-      <div class="metric-card">
-        <div class="metric-icon icon-info"><i class="pi pi-chart-line text-2xl"></i></div>
         <div class="metric-content">
-          <div class="metric-value">{{ dashboardSummary.sales.numberOfSales | number }}</div>
-          <div class="metric-label">Sales Count</div>
-        </div>
-      </div>
-      <div class="metric-card">
-        <div class="metric-icon icon-success"><i class="pi pi-dollar text-2xl"></i></div>
-        <div class="metric-content">
-          <div class="metric-value">{{ commonMethodService.formatCurrency(dashboardSummary.sales.totalRevenue) }}</div>
-          <div class="metric-label">Total Revenue</div>
-        </div>
-      </div>
-      <div class="metric-card">
-        <div class="metric-icon icon-warning"><i class="pi pi-box text-2xl"></i></div>
-        <div class="metric-content">
-          <div class="metric-value">{{ commonMethodService.formatCurrency(totalInventoryValueData?.totalValue) }}</div>
-          <div class="metric-label">Inventory Value</div>
-        </div>
-      </div>
-      <div class="metric-card">
-        <div class="metric-icon icon-error"><i class="pi pi-wallet text-2xl"></i></div>
-        <div class="metric-content">
-          <div class="metric-value">{{ totalInventoryValueData?.totalItemsInStock | number }}</div>
-          <div class="metric-label">Items in Stock</div>
+          <div class="metric-value">{{ metric.value }}</div>
+          <div class="metric-label">{{ metric.label }}</div>
         </div>
       </div>
     </div>
-
-    Customer & Product Sections
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-      Outstanding Payments Section
       <div class="summary-card">
-        <h3 class="section-header header-error"><i class="pi pi-wallet"></i><span>Outstanding Payments</span></h3>
+        <h3 class="section-header header-error">
+          <i class="pi pi-wallet"></i><span>Outstanding Payments</span>
+        </h3>
         <div class="content-list">
-          <div *ngFor="let customer of dashboardSummary.customers.outstandingPayments" class="list-item">
+          <div *ngFor="let customer of summaryData.customersWithDues" class="list-item">
             <div class="item-content">
-              <p-avatar [label]="commonMethodService.getInitials(customer.fullname)"
-                [style]="{'background-color': commonMethodService.generateHexColorFromString(customer.fullname), 'color': '#ffffff'}"
-                shape="circle"></p-avatar>
-              <div>
-                <div class="font-semibold text-[var(--theme-text-primary)]">{{ customer.fullname }}</div>
-                <div class="text-sm text-[var(--theme-text-secondary)]">{{ customer.mobileNumber }}</div>
-              </div>
+              <div class="font-semibold text-[var(--theme-text-primary)]">{{ customer.fullname }}</div>
             </div>
-            <div class="item-value text-[var(--theme-error-primary)]">{{ commonMethodService.formatCurrency(customer.remainingAmount) }}</div>
+            <div class="item-value text-[var(--theme-error-primary)]">
+              {{ customer.remainingAmount | currency:'INR':'symbol':'1.0-0' }}
+            </div>
           </div>
-          <div *ngIf="!dashboardSummary.customers.outstandingPayments?.length" class="empty-message">
-            No outstanding payments.
+          <div *ngIf="!summaryData.customersWithDues?.length" class="empty-message">
+            🎉 All clear, no outstanding payments!
           </div>
         </div>
       </div>
 
-      Low Stock Products Section
       <div class="summary-card">
-        <h3 class="section-header header-warning"><i class="pi pi-exclamation-triangle"></i><span>Low Stock Products</span></h3>
-        <div class="product-list-container">
-          <div *ngFor="let product of dashboardSummary.products.lowStock" class="product-item">
-            <img [src]="product.thumbnail || 'https://i.pinimg.com/736x/33/83/57/33835742acf6e7f58f6b33ce9f6f4836.jpg'"
-                 alt="{{product.title}}" class="product-image">
-            <div class="product-details">
-              <div class="product-title">{{ product.title }}</div>
-              <div class="product-sku">SKU: {{ product.sku }}</div>
-            </div>
-            <div class="product-stock">
-              <span [ngClass]="{ 'text-[var(--theme-error-primary)]': product.stock && product.stock <= 5, 'text-[var(--theme-warning-primary)]': product.stock && product.stock > 5 }">
-                {{ product.stock }}
-              </span>
-              units
+        <h3 class="section-header header-warning">
+          <i class="pi pi-star"></i><span>Top Selling Products</span>
+        </h3>
+
+        <div class="carousel-container">
+          <div class="carousel-track" [style.transform]="'translateX(-' + currentSlide * 100 + '%)'">
+            <div *ngFor="let product of summaryData.topSellingProducts" class="carousel-item">
+              <img [src]="product.thumbnail || 'https://placehold.co/120x120'" alt="{{ product.productName }}">
+              <div class="product-name">{{ product.productName }}</div>
+              <div class="product-quantity">{{ product.totalQuantity }} sold</div>
             </div>
           </div>
-          <div *ngIf="!hasProducts()" class="empty-message">
-            All products have sufficient stock.
+
+          <div class="carousel-controls">
+            <button (click)="prevSlide()"><i class="pi pi-chevron-left"></i></button>
+            <button (click)="nextSlide()"><i class="pi pi-chevron-right"></i></button>
           </div>
         </div>
       </div>
     </div>
   </ng-container>
 
-  Skeleton Loaders
   <ng-template #loadingState>
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6 mb-8">
-      <div *ngFor="let i of [1,2,3,4,5]" class="card metric-card-skeleton">
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6 mb-10">
+      <div *ngFor="let i of [1,2,3,4,5]" class="metric-card-skeleton">
         <p-skeleton width="100%" height="5rem"></p-skeleton>
       </div>
     </div>
@@ -221,4 +66,4 @@
       <div class="summary-card"><p-skeleton width="100%" height="15rem"></p-skeleton></div>
     </div>
   </ng-template>
-</div> -->
+</div>

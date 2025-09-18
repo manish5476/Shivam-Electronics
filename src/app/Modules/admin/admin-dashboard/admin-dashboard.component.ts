@@ -16,20 +16,23 @@ import { MessageService } from 'primeng/api';
 import { ToastModule } from 'primeng/toast';
 import { CardModule } from 'primeng/card';
 import { PanelModule } from 'primeng/panel';
+import { DatePickerModule } from 'primeng/datepicker';
 
 // Import our child components (assuming they exist; you can create placeholders if needed)
 import { DashboardSummaryComponent } from '../components/dashboard-summary/dashboard-summary.component';
 import { DashboardChartComboComponent } from '../components/dashboard-chart-combo/dashboard-chart-combo.component';
 import { Select } from 'primeng/select';
+import { AnalyticDashboardComponent } from "../components/analytic-dashboard/analytic-dashboard.component";
 
 @Component({
   selector: 'app-admin-dashboard',
   standalone: true,
   imports: [
-    CommonModule, FormsModule, ButtonModule, DropdownModule, SkeletonModule, Select,
+    CommonModule, FormsModule, DatePickerModule, ButtonModule, DropdownModule, SkeletonModule, Select,
     CalendarModule, ToastModule, CardModule, PanelModule,
     DashboardSummaryComponent, DashboardChartComboComponent,
-  ],
+    AnalyticDashboardComponent
+],
   templateUrl: './admin-dashboard.component.html',
   styleUrls: ['./admin-dashboard.component.css'],
   providers: [MessageService]

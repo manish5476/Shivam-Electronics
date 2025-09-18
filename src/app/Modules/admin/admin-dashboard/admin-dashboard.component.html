@@ -1,9 +1,5 @@
 <p-toast></p-toast>
 <div class="admin-dashboard">
-
-  <!-- =============================================================== -->
-  <!-- TOP-LEVEL HEADER WITH FILTER BAR (COMMON FOR ALL SECTIONS)      -->
-  <!-- =============================================================== -->
   <div class="dashboard-header card">
     <h2 class="page-title">Admin Dashboard</h2>
     <div class="filters">
@@ -12,22 +8,20 @@
       </p-select>
 
       <div *ngIf="selectedPeriod === 'custom'" class="custom-date-filter">
-        <p-calendar [(ngModel)]="customDateRange" selectionMode="range" [readonlyInput]="true"
+        <p-datepicker [(ngModel)]="customDateRange" selectionMode="range" [readonlyInput]="true"
           placeholder="Select a date range" dateFormat="dd/mm/yy" styleClass="p-inputtext-sm">
-        </p-calendar>
+        </p-datepicker>
         <button pButton type="button" label="Apply" icon="pi pi-check" class="p-button-sm"
           (click)="onApplyCustomRange()"></button>
       </div>
     </div>
   </div>
-        <app-dashboard-chart-combo></app-dashboard-chart-combo>
 
 
   <div class="dashboard-body">
-    <!-- Overview Section -->
-    <p-panel header="Dashboard Overview" [toggleable]="true">
-      <ng-container *ngIf="dashboardData$ | async as data; else loadingState">
-        <app-dashboard-summary [summaryData]="data" [isLoading]="isLoading"></app-dashboard-summary>
+    <p-panel header="Charts Overview" [toggleable]="true">
+      <ng-container>
+         <!-- *ngIf="dashboardData$ | async as data; else loadingState" -->
         <app-dashboard-chart-combo></app-dashboard-chart-combo>
       </ng-container>
       <ng-template #loadingState>
@@ -35,11 +29,20 @@
       </ng-template>
     </p-panel>
 
-    <!-- Product Analytics Section -->
+    <p-panel header="Dashboard Overview" [toggleable]="true">
+      <ng-container *ngIf="dashboardData$ | async as data; else loadingState">
+        <app-dashboard-summary [summaryData]="data" [isLoading]="isLoading"></app-dashboard-summary>
+      </ng-container>
+      <ng-template #loadingState>
+        <p-skeleton width="100%" height="180px"></p-skeleton>
+      </ng-template>
+    </p-panel>
+
+
     <p-panel header="Product Analytics" [toggleable]="true">
       <ng-container *ngIf="productAnalytics$ | async as data; else loadingState">
-        <!-- Placeholder for product data display (e.g., table or charts) -->
-        <pre>{{ data | json }}</pre>
+        <app-analytic-dashboard [data]="data"></app-analytic-dashboard>
+        <!-- <pre>{{ data | json }}</pre> -->
       </ng-container>
       <ng-template #loadingState>
         <p-skeleton width="100%" height="180px"></p-skeleton>
@@ -112,9 +115,9 @@
       </p-dropdown>
 
       <div *ngIf="selectedPeriod === 'custom'" class="custom-date-filter">
-        <p-calendar [(ngModel)]="customDateRange" selectionMode="range" [readonlyInput]="true"
+        <p-datepicker [(ngModel)]="customDateRange" selectionMode="range" [readonlyInput]="true"
           placeholder="Select a date range" dateFormat="dd/mm/yy" styleClass="p-inputtext-sm">
-        </p-calendar>
+        </p-datepicker>
         <button pButton type="button" label="Apply" icon="pi pi-check" class="p-button-sm"
           (click)="onApplyCustomRange()"></button>
       </div>

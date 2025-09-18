@@ -195,7 +195,7 @@ a:hover { color: var(--theme-accent-primary-hover); text-decoration: underline; 
 .se-filter-bar .p-inputtext,
 .se-filter-bar .p-select,
 .se-filter-bar .p-multiselect,
-.se-filter-bar .p-calendar,
+.se-filter-bar .p-datepicker,
 .se-filter-bar input[type="text"],
 .se-filter-bar input[type="number"],
 .se-filter-bar select {
@@ -213,7 +213,7 @@ a:hover { color: var(--theme-accent-primary-hover); text-decoration: underline; 
 /* Fix vertical alignment inside dropdowns and multiselects */
 .se-filter-bar .p-select .p-select-label,
 .se-filter-bar .p-multiselect .p-multiselect-label,
-.se-filter-bar .p-calendar .p-inputtext {
+.se-filter-bar .p-datepicker .p-inputtext {
   display: flex;
   align-items: center;
   height: 100%;

@@ -450,13 +450,13 @@ export class AgGridReferenceComponent {
 //      },
 
 
-//     // 9. Datepicker (p-calendar) Column
+//     // 9. Datepicker (p-datepicker) Column
 //     {
 //         headerName: 'Start Date',
 //         field: 'startDate', // Field stores the Date object
 //         cellRenderer: 'primeNgInputCellRenderer',
 //         cellRendererParams: {
-//             type: 'datepicker', // Use the 'datepicker' type (p-calendar)
+//             type: 'datepicker', // Use the 'datepicker' type (p-datepicker)
 //             inputConfig: {
 //                 placeholder: 'Select start date',
 //                 dateFormat: 'mm/dd/yy', // Date format

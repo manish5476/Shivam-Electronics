@@ -1,0 +1,127 @@
+/* --- Main Layout --- */
+.analytics-container {
+  padding: 2.5rem;
+  background-color: var(--theme-bg-secondary);
+  font-family: var(--font-body);
+}
+
+/* --- Redesigned KPI Cards --- */
+.kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.5rem;
+  margin-bottom: 2.5rem;
+}
+.kpi-card {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  background-color: var(--theme-bg-primary);
+  border: 1px solid var(--theme-border-primary);
+  border-radius: 1.25rem;
+  padding: 1.5rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.kpi-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 6px 16px rgba(0,0,0,0.06);
+}
+.kpi-icon-wrapper-value, .kpi-icon-wrapper-items, .kpi-icon-wrapper-low, .kpi-icon-wrapper-out {
+  display: flex; align-items: center; justify-content: center;
+  width: 3rem; height: 3rem; font-size: 1.5rem;
+  border-radius: 1rem; flex-shrink: 0;
+}
+.kpi-icon-wrapper-value { background-color: var(--theme-accent-primary-light); color: var(--theme-accent-primary); }
+.kpi-icon-wrapper-items { background-color: rgba(40, 167, 69, 0.1); color: var(--theme-success-primary); }
+.kpi-icon-wrapper-low { background-color: rgba(255, 193, 7, 0.1); color: var(--theme-warning-primary); }
+.kpi-icon-wrapper-out { background-color: rgba(220, 53, 69, 0.1); color: var(--theme-error-primary); }
+.kpi-info { flex-grow: 1; }
+.kpi-title { font-weight: 500; color: var(--theme-text-label); margin: 0 0 0.25rem 0; font-size: 0.9rem; }
+.kpi-value { font-family: var(--font-primary); font-size: 1.75rem; font-weight: 600; color: var(--theme-text-primary); margin: 0; }
+
+/* --- Bento Grid Layout --- */
+.bento-grid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  grid-auto-rows: minmax(140px, auto);
+  gap: 1.5rem;
+}
+.card-span-2 { grid-column: span 2; }
+.card-span-4 { grid-column: span 4; }
+.card-row-span-2 { grid-row: span 2; }
+.card-row-span-3 { grid-row: span 3; }
+
+/* --- NEW Aurora Card Style --- */
+.data-card {
+  position: relative;
+  background-color: var(--theme-bg-primary);
+  border-radius: 1.5rem; /* Larger radius */
+  padding: 2rem;
+  border: 1px solid var(--theme-border-primary);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.04);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+.data-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  border-radius: inherit;
+  padding: 1px; /* Border width */
+  background: linear-gradient(135deg, var(--theme-accent-primary), var(--theme-success-primary));
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+.data-card:hover::before {
+  opacity: 0.5;
+}
+
+/* --- Card Content --- */
+.card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; padding-bottom: 1rem; border-bottom: 1px solid var(--theme-border-primary); }
+.card-title { font-family: var(--font-primary); font-size: 1.25rem; font-weight: 600; color: var(--theme-text-primary); margin: 0; display: flex; align-items: center; gap: 0.75rem; }
+
+/* --- Hero Card --- */
+.hero-content { display: flex; flex-direction: column; flex-grow: 1; }
+.hero-image-wrapper { border-radius: 1rem; overflow: hidden; aspect-ratio: 16 / 10; margin-bottom: 1.5rem; }
+.hero-image { width: 100%; height: 100%; object-fit: cover; }
+.hero-info { flex-grow: 1; }
+.hero-title { font-family: var(--font-primary); font-size: 1.75rem; margin: 0; color: var(--theme-text-primary); }
+.hero-meta { color: var(--theme-text-label); margin: 0.25rem 0 1.5rem 0; }
+.hero-stats { display: flex; justify-content: space-between; gap: 1rem; background-color: var(--theme-bg-secondary); padding: 1rem; border-radius: 1rem; }
+.hero-stats > div { flex: 1; }
+.hero-stats span { font-size: 0.8rem; color: var(--theme-text-label); }
+.hero-stats p { font-size: 1.25rem; font-weight: 600; margin: 0.25rem 0 0 0; color: var(--theme-text-primary); }
+.hero-stats p.profit { color: var(--theme-success-primary); }
+
+/* --- Item Lists --- */
+.item-list { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; flex-grow: 1; }
+.item-list.vertical-list { gap: 0.5rem; }
+.item-list li { display: flex; align-items: center; gap: 1rem; padding: 0.75rem 0; border-bottom: 1px solid var(--theme-border-primary); }
+.item-list li:last-child { border-bottom: none; }
+.item-image { width: 40px; height: 40px; border-radius: 8px; object-fit: cover; background-color: var(--theme-bg-ternary); flex-shrink: 0; }
+.item-details { flex-grow: 1; }
+.item-name { font-weight: 500; color: var(--theme-text-primary); margin: 0; }
+.item-value { font-weight: 600; font-size: 0.9rem; margin: 0; flex-shrink: 0; }
+.value-bar-wrapper { height: 5px; flex-grow: 1; background-color: var(--theme-bg-ternary); border-radius: 3px; overflow: hidden; margin-top: 0.25rem; }
+.value-bar { height: 100%; border-radius: 3px; background: var(--theme-accent-primary); }
+.item-value.profit, .value-bar.profit { color: var(--theme-success-primary); background: var(--theme-success-primary); }
+
+/* --- Responsive Adjustments --- */
+@media (max-width: 1200px) {
+  .bento-grid { grid-template-columns: repeat(4, 1fr); }
+  .card-span-4 { grid-column: span 4; }
+  .card-span-2 { grid-column: span 2; }
+}
+@media (max-width: 992px) {
+  .kpi-grid { grid-template-columns: repeat(2, 1fr); }
+  .bento-grid, .card-span-4, .card-span-2 { grid-template-columns: 1fr; grid-column: span 1; }
+}
+@media (max-width: 768px) {
+  .analytics-container { padding: 1.5rem; }
+  .kpi-grid { grid-template-columns: 1fr; }
+}
