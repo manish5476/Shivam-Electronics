@@ -1,4 +1,70 @@
-<div class="top-customers-container">
+<div class="customer-dashboard-container" *ngIf="data">
+
+  <!-- KPIs -->
+  <div class="customer-kpi-grid">
+    <div class="customer-kpi-card">
+      <div class="customer-kpi-icon"><i class="pi pi-user-plus"></i></div>
+      <div>
+        <p class="customer-kpi-title">New Customers</p>
+        <p class="customer-kpi-value">{{ data.summary.newCustomers }}</p>
+      </div>
+    </div>
+    <div class="customer-kpi-card">
+      <div class="customer-kpi-icon"><i class="pi pi-refresh"></i></div>
+      <div>
+        <p class="customer-kpi-title">Repeat Customer Rate</p>
+        <p class="customer-kpi-value">{{ data.summary.repeatCustomerRate | percent }}</p>
+      </div>
+    </div>
+    <div class="customer-kpi-card">
+      <div class="customer-kpi-icon"><i class="pi pi-dollar"></i></div>
+      <div>
+        <p class="customer-kpi-title">Returning Revenue</p>
+        <p class="customer-kpi-value">{{ data.revenueBreakdown[0]?.totalRevenue | currency }}</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Dashboard Grid -->
+  <div class="customer-dashboard-grid">
+
+    <!-- Top Customers List -->
+    <div class="customer-list-card">
+      <h3 class="section-title"><i class="pi pi-users"></i> Top Customers Lifetime</h3>
+      <div class="customer-list-wrapper">
+        <div class="customer-card-header" *ngFor="let customer of data.topCustomersLifetime">
+          <img [src]="customer.profileImage || 'assets/default-profile.png'" alt="{{customer.fullname}}"
+            class="customer-profile-image" />
+          <div class="customer-info">
+            <span class="customer-name">{{ customer.fullname }}</span>
+            <span class="customer-email">{{ customer.email }}</span>
+            <span class="customer-total-purchase">Total Purchase: {{ customer.totalPurchasedAmount | currency }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Side / At Risk Customers -->
+    <div class="customer-side-grid">
+      <div class="customer-side-card" *ngIf="data.atRiskCustomers.length > 0">
+        <h3><i class="pi pi-exclamation-triangle"></i> At Risk Customers</h3>
+        <ul>
+          <li *ngFor="let customer of data.atRiskCustomers">{{ customer.fullname }}</li>
+        </ul>
+      </div>
+      <!-- Placeholder / Additional Cards -->
+      <div class="customer-side-card">
+        <h3><i class="pi pi-chart-line"></i> Additional Metrics</h3>
+        <p>Use this area for other customer insights, like churn rate, lifetime value, etc.</p>
+      </div>
+    </div>
+
+  </div>
+
+</div>
+
+
+<!-- <div class="top-customers-container">
   <p-toast />
   <div class="table-header">
     <span class="p-input-icon-left">
@@ -99,7 +165,6 @@
 </p-table>
 </div>
 
-<!-- Dialog for Invoice PDF -->
 <p-dialog header="Invoice" [modal]="true" [(visible)]="showpdf" [style]="{ width: '95vw', maxWidth: '1200px' }">
   <app-invoice-print [Id]="invoiceId"></app-invoice-print>
-</p-dialog>
+</p-dialog> -->

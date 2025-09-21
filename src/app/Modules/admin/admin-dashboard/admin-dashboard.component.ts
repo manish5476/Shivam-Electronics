@@ -1,4 +1,6 @@
+// admin-dashboard.component.ts
 import { Component, OnInit, inject } from '@angular/core';
+import { trigger, state, style, animate, transition } from '@angular/animations';
 import { Observable, BehaviorSubject, of } from 'rxjs';
 import { switchMap, catchError, finalize, map } from 'rxjs/operators';
 import { CommonModule } from '@angular/common';
@@ -17,25 +19,37 @@ import { ToastModule } from 'primeng/toast';
 import { CardModule } from 'primeng/card';
 import { PanelModule } from 'primeng/panel';
 import { DatePickerModule } from 'primeng/datepicker';
+import { DialogModule } from 'primeng/dialog'; // Added for dialog
 
 // Import our child components (assuming they exist; you can create placeholders if needed)
 import { DashboardSummaryComponent } from '../components/dashboard-summary/dashboard-summary.component';
 import { DashboardChartComboComponent } from '../components/dashboard-chart-combo/dashboard-chart-combo.component';
 import { Select } from 'primeng/select';
 import { AnalyticDashboardComponent } from "../components/analytic-dashboard/analytic-dashboard.component";
+import { DashboardTopCustomerViewComponent } from "../components/dashboard-top-customer-view/dashboard-top-customer-view.component";
 
 @Component({
   selector: 'app-admin-dashboard',
   standalone: true,
   imports: [
     CommonModule, FormsModule, DatePickerModule, ButtonModule, DropdownModule, SkeletonModule, Select,
-    CalendarModule, ToastModule, CardModule, PanelModule,
+    CalendarModule, ToastModule, CardModule, PanelModule, DialogModule,
     DashboardSummaryComponent, DashboardChartComboComponent,
-    AnalyticDashboardComponent
+    AnalyticDashboardComponent,
+    DashboardTopCustomerViewComponent
 ],
   templateUrl: './admin-dashboard.component.html',
   styleUrls: ['./admin-dashboard.component.css'],
-  providers: [MessageService]
+  providers: [MessageService],
+  animations: [
+    trigger('fadeIn', [
+      transition(':enter', [style({ opacity: 0 }), animate('0.5s ease', style({ opacity: 1 }))]),
+    ]),
+    trigger('panelAnimation', [
+      state('void', style({ opacity: 0, transform: 'translateY(20px)' })),
+      transition('void => *', animate('0.3s ease-out', style({ opacity: 1, transform: 'translateY(0)' }))),
+    ]),
+  ],
 })
 export class AdminDashboardComponent implements OnInit {
   private dashboardService = inject(DashboardService);
@@ -63,7 +77,15 @@ export class AdminDashboardComponent implements OnInit {
   selectedPeriod: string = 'last30days';
   customDateRange: Date[] | undefined;
 
+  startDate: string | undefined;
+  endDate: string | undefined;
+
   private refreshTrigger = new BehaviorSubject<{ period?: string, startDate?: string, endDate?: string }>({ period: this.selectedPeriod });
+
+  // For generic dialog
+  showDialog: boolean = false;
+  selectedPanelTitle: string = '';
+  selectedPanelData: any;
 
   ngOnInit(): void {
     // Common pipeline for all sections
@@ -87,7 +109,7 @@ export class AdminDashboardComponent implements OnInit {
     this.productAnalytics$ = dataPipe((p, s, e) => this.dashboardService.getProductAnalytics(p, 5, s, e));
     this.customerAnalytics$ = dataPipe((p, s, e) => this.dashboardService.getCustomerAnalytics(p, 5, s, e));
     this.paymentAnalytics$ = dataPipe((p, s, e) => this.dashboardService.getPaymentAnalytics(p, s, e));
-    // this.salesAnalytics$ = dataPipe((p, s, e) => this.dashboardService.getSalesAnalytics(undefined, p, s, e)); // Year can be added if needed
+    // this.salesAnalytics$ = dataPipe((p, s, e) => this.dashboardService.getSalesAnalytics(undefined, p, s, e)); // Uncommented and assumed params
     this.inventoryTurnover$ = dataPipe((p, s, e) => this.dashboardService.getInventoryTurnover(p, s, e));
     this.salesForecast$ = dataPipe((p, s, e) => this.dashboardService.getSalesForecast()); // No params for forecast
   }
@@ -95,6 +117,8 @@ export class AdminDashboardComponent implements OnInit {
   onFilterChange(): void {
     if (this.selectedPeriod !== 'custom') {
       this.customDateRange = undefined;
+      this.startDate = undefined;
+      this.endDate = undefined;
       this.refreshTrigger.next({ period: this.selectedPeriod });
     }
   }
@@ -105,15 +129,23 @@ export class AdminDashboardComponent implements OnInit {
         this.messageService.add({ severity: 'warn', summary: 'Invalid Range', detail: 'Please select a valid start and end date.' });
         return;
       }
+      this.startDate = this.formatDate(this.customDateRange[0]);
+      this.endDate = this.formatDate(this.customDateRange[1]);
       this.refreshTrigger.next({
         period: 'custom',
-        startDate: this.formatDate(this.customDateRange[0]),
-        endDate: this.formatDate(this.customDateRange[1])
+        startDate: this.startDate,
+        endDate: this.endDate
       });
     }
   }
 
   private formatDate(date: Date): string {
     return date.toISOString().split('T')[0]; // Returns YYYY-MM-DD
+  }
+
+  openDialog(title: string, data: any): void {
+    this.selectedPanelTitle = title;
+    this.selectedPanelData = data;
+    this.showDialog = true;
   }
 }

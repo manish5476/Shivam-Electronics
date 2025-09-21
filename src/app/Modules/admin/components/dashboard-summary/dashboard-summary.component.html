@@ -1,4 +1,75 @@
+<!-- dashboard-summary.component.html -->
 <div class="summary-container">
+  <ng-container *ngIf="!isLoading && summaryData; else loadingState">
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6 mb-10">
+      <div class="metric-card" *ngFor="let metric of metrics" [@fadeIn]>
+        <div class="metric-icon" [ngClass]="metric.iconClass">
+          <i [class]="metric.icon + ' text-2xl'"></i>
+        </div>
+        <div class="metric-content">
+          <div class="metric-value">{{ metric.value }}</div>
+          <div class="metric-label">{{ metric.label }}</div>
+        </div>
+      </div>
+    </div>
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <div class="summary-card">
+        <h3 class="section-header header-error">
+          <i class="pi pi-wallet"></i><span>Outstanding Payments</span>
+        </h3>
+        <div class="content-list">
+          <div *ngFor="let customer of summaryData.customersWithDues" class="list-item">
+            <div class="item-content">
+              <div class="font-semibold text-[var(--theme-text-primary)]">{{ customer.fullname }}</div>
+            </div>
+            <div class="item-value text-[var(--theme-error-primary)]">
+              {{ customer.remainingAmount | currency:'INR':'symbol':'1.0-0' }}
+            </div>
+          </div>
+          <div *ngIf="!summaryData.customersWithDues?.length" class="empty-message">
+            🎉 All clear, no outstanding payments!
+          </div>
+        </div>
+      </div>
+
+      <div class="summary-card">
+        <h3 class="section-header header-warning">
+          <i class="pi pi-star"></i><span>Top Selling Products</span>
+        </h3>
+
+        <div class="carousel-container">
+          <div class="carousel-track" [style.transform]="'translateX(-' + currentSlide * 100 + '%)'" [@carouselSlide]>
+            <div *ngFor="let product of summaryData.topSellingProducts" class="carousel-item" [@fadeIn]>
+              <img [src]="product.thumbnail || 'https://placehold.co/120x120'" alt="{{ product.productName }}">
+              <div class="product-name">{{ product.productName }}</div>
+              <div class="product-quantity">{{ product.totalQuantity }} sold</div>
+            </div>
+          </div>
+
+          <div class="carousel-controls">
+            <button (click)="prevSlide()"><i class="pi pi-chevron-left"></i></button>
+            <button (click)="nextSlide()"><i class="pi pi-chevron-right"></i></button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </ng-container>
+
+  <ng-template #loadingState>
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6 mb-10">
+      <div *ngFor="let i of [1,2,3,4,5]" class="metric-card-skeleton">
+        <p-skeleton width="100%" height="5rem"></p-skeleton>
+      </div>
+    </div>
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <div class="summary-card"><p-skeleton width="100%" height="15rem"></p-skeleton></div>
+      <div class="summary-card"><p-skeleton width="100%" height="15rem"></p-skeleton></div>
+    </div>
+  </ng-template>
+</div>
+
+<!-- <div class="summary-container">
   <ng-container *ngIf="!isLoading && summaryData; else loadingState">
 
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6 mb-10">
@@ -66,4 +137,4 @@
       <div class="summary-card"><p-skeleton width="100%" height="15rem"></p-skeleton></div>
     </div>
   </ng-template>
-</div>
+</div> -->

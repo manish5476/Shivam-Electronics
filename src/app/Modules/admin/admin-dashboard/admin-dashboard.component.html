@@ -1,4 +1,242 @@
+<!-- admin-dashboard.component.html -->
 <p-toast></p-toast>
+<div class="admin-dashboard" [@fadeIn]="true">
+  <div class="dashboard-header card modern-card">
+    <h2 class="page-title retro-heading">Admin Dashboard</h2>
+    <div class="filters se-filter-bar">
+      <p-select [options]="periodOptions" [(ngModel)]="selectedPeriod" name="selectedPeriod"
+        optionLabel="label" optionValue="value" styleClass="p-inputtext-sm"
+        (onChange)="onFilterChange()">
+      </p-select>
+      <div *ngIf="selectedPeriod === 'custom'" class="custom-date-filter">
+        <p-datepicker [(ngModel)]="customDateRange" selectionMode="range" [readonlyInput]="true"
+          placeholder="Select a date range" dateFormat="dd/mm/yy" styleClass="p-inputtext-sm">
+        </p-datepicker>
+        <button pButton type="button" label="Apply" icon="pi pi-check"
+          class="p-button-sm modern-button" (click)="onApplyCustomRange()"></button>
+      </div>
+    </div>
+  </div>
+
+  <div class="dashboard-body grid grid-cols-1 lg:grid-cols-2 gap-6">
+
+    <!-- Charts Overview -->
+    <p-panel [toggleable]="true" [@panelAnimation]>
+      <ng-template pTemplate="header">
+        <div class="flex justify-content-between align-items-center w-full">
+          <span>Charts Overview</span>
+          <ng-container *ngIf="dashboardData$ | async as data">
+            <button pButton icon="pi pi-search-plus" class="p-button-text"
+              (click)="openDialog('Charts Overview', data)"></button>
+          </ng-container>
+        </div>
+      </ng-template>
+      <ng-container *ngIf="dashboardData$ | async as data; else loadingState">
+        <app-dashboard-chart-combo
+          [selectedPeriod]="selectedPeriod"
+          [startDate]="startDate"
+          [endDate]="endDate">
+        </app-dashboard-chart-combo>
+      </ng-container>
+      <ng-template #loadingState>
+        <p-skeleton width="100%" height="180px"></p-skeleton>
+      </ng-template>
+    </p-panel>
+
+    <!-- Dashboard Overview -->
+    <p-panel [toggleable]="true" [@panelAnimation]>
+      <ng-template pTemplate="header">
+        <div class="flex justify-content-between align-items-center w-full">
+          <span>Dashboard Overview</span>
+          <ng-container *ngIf="dashboardData$ | async as data">
+            <button pButton icon="pi pi-search-plus" class="p-button-text"
+              (click)="openDialog('Dashboard Overview', data)"></button>
+          </ng-container>
+        </div>
+      </ng-template>
+      <ng-container *ngIf="dashboardData$ | async as data; else loadingState">
+        <app-dashboard-summary [summaryData]="data" [isLoading]="isLoading"></app-dashboard-summary>
+      </ng-container>
+      <ng-template #loadingState>
+        <p-skeleton width="100%" height="180px"></p-skeleton>
+      </ng-template>
+    </p-panel>
+
+    <!-- Quick Insights -->
+    <p-panel [toggleable]="true" [@panelAnimation] class="col-span-2">
+      <ng-template pTemplate="header">
+        <div class="flex justify-content-between align-items-center w-full">
+          <span>Quick Insights</span>
+          <ng-container *ngIf="dashboardData$ | async as data">
+            <button pButton icon="pi pi-search-plus" class="p-button-text"
+              (click)="openDialog('Quick Insights', data)"></button>
+          </ng-container>
+        </div>
+      </ng-template>
+      <ng-container *ngIf="dashboardData$ | async as data; else loadingState">
+        <div class="insights-grid grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div class="insight-card metric-card metric-card-success" [@fadeIn]>
+            <i class="pi pi-chart-line text-3xl"></i>
+            <div>Revenue Trend: {{ data.revenueTrend | json }} (Up 15%)</div>
+          </div>
+          <div class="insight-card metric-card metric-card-warning" [@fadeIn]>
+            <i class="pi pi-exclamation-triangle text-3xl"></i>
+            <div>Low Stock Alerts: {{ data.lowStock | json }}</div>
+          </div>
+          <div class="insight-card metric-card metric-card-info" [@fadeIn]>
+            <i class="pi pi-users text-3xl"></i>
+            <div>Customer Growth: {{ data.customerGrowth | json }} (New: 20%)</div>
+          </div>
+        </div>
+      </ng-container>
+      <ng-template #loadingState>
+        <p-skeleton width="100%" height="180px"></p-skeleton>
+      </ng-template>
+    </p-panel>
+
+    <!-- Product Analytics -->
+    <p-panel [toggleable]="true" [@panelAnimation] class="col-span-2">
+      <ng-template pTemplate="header">
+        <div class="flex justify-content-between align-items-center w-full">
+          <span>Product Analytics</span>
+          <ng-container *ngIf="productAnalytics$ | async as data">
+            <button pButton icon="pi pi-search-plus" class="p-button-text"
+              (click)="openDialog('Product Analytics', data)"></button>
+          </ng-container>
+        </div>
+      </ng-template>
+      <ng-container *ngIf="productAnalytics$ | async as data; else loadingState">
+        <app-analytic-dashboard [data]="data"></app-analytic-dashboard>
+      </ng-container>
+      <ng-template #loadingState>
+        <p-skeleton width="100%" height="180px"></p-skeleton>
+      </ng-template>
+    </p-panel>
+
+    <!-- Customer Analytics -->
+    <p-panel [toggleable]="true" [@panelAnimation] class="col-span-2">
+      <ng-template pTemplate="header">
+        <div class="flex justify-content-between align-items-center w-full">
+          <span>Customer Analytics</span>
+          <ng-container *ngIf="customerAnalytics$ | async as data">
+            <button pButton icon="pi pi-search-plus" class="p-button-text"
+              (click)="openDialog('Customer Analytics', data)"></button>
+          </ng-container>
+        </div>
+      </ng-template>
+      <ng-container *ngIf="customerAnalytics$ | async as data; else loadingState">
+              <app-dashboard-top-customer-view  [data]="data" ></app-dashboard-top-customer-view>
+      </ng-container>
+      <ng-template #loadingState>
+        <p-skeleton width="100%" height="180px"></p-skeleton>
+      </ng-template>
+    </p-panel>
+
+    <!-- Payment Analytics -->
+    <p-panel [toggleable]="true" [@panelAnimation]>
+      <ng-template pTemplate="header">
+        <div class="flex justify-content-between align-items-center w-full">
+          <span>Payment Analytics</span>
+          <ng-container *ngIf="paymentAnalytics$ | async as data">
+            <button pButton icon="pi pi-search-plus" class="p-button-text"
+              (click)="openDialog('Payment Analytics', data)"></button>
+          </ng-container>
+        </div>
+      </ng-template>
+      <ng-container *ngIf="paymentAnalytics$ | async as data; else loadingState">
+        <pre class="json-viewer">{{ data | json }}</pre>
+      </ng-container>
+      <ng-template #loadingState>
+        <p-skeleton width="100%" height="180px"></p-skeleton>
+      </ng-template>
+    </p-panel>
+
+    <!-- Inventory Turnover -->
+    <p-panel [toggleable]="true" [@panelAnimation]>
+      <ng-template pTemplate="header">
+        <div class="flex justify-content-between align-items-center w-full">
+          <span>Inventory Turnover</span>
+          <ng-container *ngIf="inventoryTurnover$ | async as data">
+            <button pButton icon="pi pi-search-plus" class="p-button-text"
+              (click)="openDialog('Inventory Turnover', data)"></button>
+          </ng-container>
+        </div>
+      </ng-template>
+      <ng-container *ngIf="inventoryTurnover$ | async as data; else loadingState">
+        <pre class="json-viewer">{{ data | json }}</pre>
+      </ng-container>
+      <ng-template #loadingState>
+        <p-skeleton width="100%" height="180px"></p-skeleton>
+      </ng-template>
+    </p-panel>
+
+    <!-- Sales Forecast -->
+    <p-panel [toggleable]="true" [@panelAnimation]>
+      <ng-template pTemplate="header">
+        <div class="flex justify-content-between align-items-center w-full">
+          <span>Sales Forecast</span>
+          <ng-container *ngIf="salesForecast$ | async as data">
+            <button pButton icon="pi pi-search-plus" class="p-button-text"
+              (click)="openDialog('Sales Forecast', data)"></button>
+          </ng-container>
+        </div>
+      </ng-template>
+      <ng-container *ngIf="salesForecast$ | async as data; else loadingState">
+        <pre class="json-viewer">{{ data | json }}</pre>
+      </ng-container>
+      <ng-template #loadingState>
+        <p-skeleton width="100%" height="180px"></p-skeleton>
+      </ng-template>
+    </p-panel>
+
+  </div>
+
+  <!-- Generic Zoom Dialog -->
+  <p-dialog [(visible)]="showDialog" [modal]="true"
+    [style]="{width: '80vw', height: '80vh'}"
+    header="{{ selectedPanelTitle }}" [draggable]="true" [resizable]="true"
+    class="perfect-dialog">
+    <div class="p-4 overflow-auto h-full dialog-content">
+      <ng-container [ngSwitch]="selectedPanelTitle">
+        <app-dashboard-chart-combo *ngSwitchCase="'Charts Overview'"
+          [selectedPeriod]="selectedPeriod"
+          [startDate]="startDate"
+          [endDate]="endDate">
+        </app-dashboard-chart-combo>
+
+        <app-dashboard-summary *ngSwitchCase="'Dashboard Overview'"
+          [summaryData]="selectedPanelData" [isLoading]="false">
+        </app-dashboard-summary>
+
+        <div *ngSwitchCase="'Quick Insights'" class="insights-grid grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div class="insight-card metric-card metric-card-success" [@fadeIn]>
+            <i class="pi pi-chart-line text-3xl"></i>
+            <div>Revenue Trend: {{ selectedPanelData.revenueTrend | json }} (Up 15%)</div>
+          </div>
+          <div class="insight-card metric-card metric-card-warning" [@fadeIn]>
+            <i class="pi pi-exclamation-triangle text-3xl"></i>
+            <div>Low Stock Alerts: {{ selectedPanelData.lowStock | json }}</div>
+          </div>
+          <div class="insight-card metric-card metric-card-info" [@fadeIn]>
+            <i class="pi pi-users text-3xl"></i>
+            <div>Customer Growth: {{ selectedPanelData.customerGrowth | json }} (New: 20%)</div>
+          </div>
+        </div>
+
+        <app-analytic-dashboard *ngSwitchCase="'Product Analytics'" [data]="selectedPanelData">
+        </app-analytic-dashboard>
+
+        <pre *ngSwitchDefault class="json-viewer">{{ selectedPanelData | json }}</pre>
+      </ng-container>
+    </div>
+  </p-dialog>
+</div>
+
+
+
+
+
+<!-- <p-toast></p-toast>
 <div class="admin-dashboard">
   <div class="dashboard-header card">
     <h2 class="page-title">Admin Dashboard</h2>
@@ -21,7 +259,7 @@
   <div class="dashboard-body">
     <p-panel header="Charts Overview" [toggleable]="true">
       <ng-container>
-         <!-- *ngIf="dashboardData$ | async as data; else loadingState" -->
+         *ngIf="dashboardData$ | async as data; else loadingState"
         <app-dashboard-chart-combo></app-dashboard-chart-combo>
       </ng-container>
       <ng-template #loadingState>
@@ -42,17 +280,6 @@
     <p-panel header="Product Analytics" [toggleable]="true">
       <ng-container *ngIf="productAnalytics$ | async as data; else loadingState">
         <app-analytic-dashboard [data]="data"></app-analytic-dashboard>
-        <!-- <pre>{{ data | json }}</pre> -->
-      </ng-container>
-      <ng-template #loadingState>
-        <p-skeleton width="100%" height="180px"></p-skeleton>
-      </ng-template>
-    </p-panel>
-
-    <!-- Customer Analytics Section -->
-    <p-panel header="Customer Analytics" [toggleable]="true">
-      <ng-container *ngIf="customerAnalytics$ | async as data; else loadingState">
-        <!-- Placeholder for customer data display -->
         <pre>{{ data | json }}</pre>
       </ng-container>
       <ng-template #loadingState>
@@ -60,7 +287,18 @@
       </ng-template>
     </p-panel>
 
-    <!-- Payment Analytics Section -->
+    Customer Analytics Section
+    <p-panel header="Customer Analytics" [toggleable]="true">
+      <ng-container *ngIf="customerAnalytics$ | async as data; else loadingState">
+        Placeholder for customer data display
+        <pre>{{ data | json }}</pre>
+      </ng-container>
+      <ng-template #loadingState>
+        <p-skeleton width="100%" height="180px"></p-skeleton>
+      </ng-template>
+    </p-panel>
+
+    Payment Analytics Section
     <p-panel header="Payment Analytics" [toggleable]="true">
       <ng-container *ngIf="paymentAnalytics$ | async as data; else loadingState">
         <pre>{{ data | json }}</pre>
@@ -70,10 +308,10 @@
       </ng-template>
     </p-panel>
 
-    <!-- Sales Analytics Section -->
+    Sales Analytics Section
     <p-panel header="Sales Analytics" [toggleable]="true">
       <ng-container *ngIf="salesAnalytics$ | async as data; else loadingState">
-        <!-- Placeholder for sales data display -->
+        Placeholder for sales data display
         <pre>{{ data | json }}</pre>
       </ng-container>
       <ng-template #loadingState>
@@ -81,10 +319,10 @@
       </ng-template>
     </p-panel>
 
-    <!-- Inventory Turnover Section -->
+    Inventory Turnover Section
     <p-panel header="Inventory Turnover" [toggleable]="true">
       <ng-container *ngIf="inventoryTurnover$ | async as data; else loadingState">
-        <!-- Placeholder for inventory data display -->
+        Placeholder for inventory data display
         <pre>{{ data | json }}</pre>
       </ng-container>
       <ng-template #loadingState>
@@ -92,10 +330,10 @@
       </ng-template>
     </p-panel>
 
-    <!-- Sales Forecast Section -->
+    Sales Forecast Section
     <p-panel header="Sales Forecast" [toggleable]="true">
       <ng-container *ngIf="salesForecast$ | async as data; else loadingState">
-        <!-- Placeholder for forecast data display -->
+        Placeholder for forecast data display
         <pre>{{ data | json }}</pre>
       </ng-container>
       <ng-template #loadingState>
@@ -103,7 +341,7 @@
       </ng-template>
     </p-panel>
   </div>
-</div>
+</div> -->
 <!-- <p-toast></p-toast>
 <div class="admin-dashboard">
 

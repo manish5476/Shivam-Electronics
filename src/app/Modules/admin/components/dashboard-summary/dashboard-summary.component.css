@@ -1,8 +1,117 @@
+/* dashboard-summary.component.css */
 :host {
   display: block;
 }
 
 /* Metric Cards */
+.metric-card {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1.5rem;
+  border-radius: 1rem;
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(12px);
+  border: 1px solid var(--theme-border-primary);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.06);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.metric-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 12px 25px rgba(0, 0, 0, 0.1);
+}
+
+.metric-icon {
+  width: 3.5rem;
+  height: 3.5rem;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.metric-content {
+  flex: 1;
+}
+
+.metric-value {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--theme-text-primary);
+}
+
+.metric-label {
+  font-size: 0.9rem;
+  color: var(--theme-text-secondary);
+}
+
+/* Carousel */
+.carousel-container {
+  position: relative;
+  overflow: hidden;
+}
+
+.carousel-track {
+  display: flex;
+  transition: transform 0.6s ease-in-out;
+}
+
+.carousel-item {
+  min-width: 100%;
+  padding: 1rem;
+  text-align: center;
+  background: var(--theme-bg-primary);
+  border: 1px solid var(--theme-border-primary);
+  border-radius: 1rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.carousel-item img {
+  width: 6rem;
+  height: 6rem;
+  object-fit: contain;
+  margin-bottom: 0.5rem;
+}
+
+.product-name {
+  font-weight: 600;
+  font-size: 1rem;
+  margin-bottom: 0.25rem;
+}
+
+.product-quantity {
+  font-size: 0.85rem;
+  color: var(--theme-text-secondary);
+}
+
+.carousel-controls {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 0.75rem;
+}
+
+.carousel-controls button {
+  padding: 0.5rem 1rem;
+  border-radius: 9999px;
+  background: var(--theme-bg-secondary);
+  border: 1px solid var(--theme-border-primary);
+  transition: background-color 0.2s;
+}
+
+.carousel-controls button:hover {
+  background-color: var(--theme-hover-bg);
+}
+
+.carousel-track {
+  transition: transform 0.5s ease-in-out;
+}
+
+/* :host {
+  display: block;
+}
+
+d
 .metric-card {
   display: flex;
   align-items: center;
@@ -38,7 +147,7 @@
   color: var(--theme-text-secondary);
 }
 
-/* Carousel */
+d
 .carousel-container {
   position: relative;
   overflow: hidden;
@@ -85,4 +194,4 @@
 }
 .carousel-controls button:hover {
   background-color: var(--theme-hover-bg);
-}
+} */

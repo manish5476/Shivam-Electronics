@@ -1,13 +1,10 @@
-
-/* --- 1. FONT IMPORTS & CORE SETUP --- */
+/* 
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Poppins:wght@400;500;600;700&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Crimson+Text:ital,wght@0,400;0,600;1,400&family=Merriweather:wght@300;400;700&family=Lora:wght@400;500;600&family=Source+Serif+Pro:wght@400;600;700&family=Cormorant+Garamond:wght@300;400;500;600&display=swap");
 @import "tailwindcss";
-@import "primeicons/primeicons.css";
+@import "primeicons/primeicons.css"; */
 
-/* --- 2. BASE THEME & COLOR PALETTE DEFINITIONS --- */
-:root {
-  /* --- Base Layout & Text (Default Modern Light) --- */
+/* :root {
   --theme-bg-primary: #ffffff;
   --theme-bg-secondary: #f8f9fa;
   --theme-bg-ternary: #e9ecef;
@@ -21,7 +18,6 @@
   --theme-scroll-track: #f1f3f5;
   --theme-scroll-thumb: #adb5bd;
 
-  /* --- Accent (Default Modern Blue) --- */
   --theme-accent-gradient: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
   --theme-accent-primary: #007bff;
   --theme-accent-primary-light: rgba(0, 123, 255, 0.1);
@@ -29,20 +25,222 @@
   --theme-accent-text-color: #ffffff;
   --theme-accent-focus-ring: rgba(0, 123, 255, 0.25);
 
-  /* --- Status Colors --- */
   --theme-success-primary: #28a745;
   --theme-error-primary: #dc3545;
   --theme-warning-primary: #ffc107;
 
-  /* --- Body Background --- */
   --theme-body-gradient-start: #f8f9fa;
   --theme-body-gradient-end: #ffffff;
 
-  /* --- Typography --- */
+  --font-primary: "Poppins", sans-serif;
+  --font-body: "Inter", sans-serif;
+  --ui-border-width: 1px;
+  --ui-border-radius: 8px;
+  --ui-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  --ui-shadow-hover: 0 6px 20px rgba(0, 0, 0, 0.12);
+  --ui-button-hover-transform: translateY(-2px);
+  --ui-button-active-transform: translateY(0);
+}
+
+body.dark-mode {
+  --theme-bg-primary: #121212;
+  --theme-bg-secondary: #1e1e1e;
+  --theme-bg-ternary: #2c2c2c;
+  --theme-text-primary: #e0e0e0;
+  --theme-text-secondary: #a0a0a0;
+  --theme-text-label: #808080;
+  --theme-text-inverted: #121212;
+  --theme-border-primary: #3a3a3a;
+  --theme-border-secondary: #4a4a4a;
+  --theme-shadow-color: rgba(0, 0, 0, 0.4);
+  --theme-hover-bg: #2c2c2c;
+  --theme-scroll-track: #2c2c2c;
+  --theme-scroll-thumb: #6c757d;
+  --theme-body-gradient-start: #121212;
+  --theme-body-gradient-end: #1e1e1e;
+}
+ 
+html, body { height: 100%; font-family: var(--font-body); -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+body { background-color: var(--theme-bg-primary); color: var(--theme-text-primary); background-image: linear-gradient(to bottom, var(--theme-body-gradient-start), var(--theme-body-gradient-end)); background-attachment: fixed; transition: background-color 0.3s ease, color 0.3s ease; margin: 0; }
+*, *::before, *::after { transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease; }
+
+.p-inputtext, .p-inputnumber-input, .p-password-input, .p-textarea { background-color: var(--theme-bg-secondary) !important; border: var(--ui-border-width) solid var(--theme-border-primary) !important; color: var(--theme-text-primary) !important; border-radius: var(--ui-border-radius) !important; }
+.p-inputtext:hover, .p-inputnumber:hover .p-inputnumber-input, .p-password:hover .p-password-input, .p-textarea:hover { border-color: var(--theme-accent-primary) !important; }
+.p-inputtext:focus, .p-inputnumber-input:focus, .p-password-input:focus, .p-textarea:focus { border-color: var(--theme-accent-primary) !important; box-shadow: var(--theme-accent-focus-ring) !important; }
+
+.p-checkbox .p-checkbox-box { border: var(--ui-border-width) solid var(--theme-border-primary) !important; background-color: var(--theme-bg-secondary) !important; border-radius: 4px !important; }
+.p-checkbox:not(.p-checkbox-disabled) .p-checkbox-box:hover { border-color: var(--theme-accent-primary) !important; }
+.p-checkbox .p-checkbox-box.p-highlight { background: var(--theme-accent-gradient, var(--theme-accent-primary)) !important; border-color: var(--theme-accent-primary) !important; }
+.p-checkbox .p-checkbox-box.p-highlight .p-checkbox-icon { color: var(--theme-accent-text-color) !important; }
+
+.p-button { background: var(--theme-accent-gradient, var(--theme-accent-primary)) !important; color: var(--theme-accent-text-color) !important; border: var(--ui-border-width) solid var(--theme-border-primary) !important; border-radius: var(--ui-border-radius) !important; transition: all 0.2s ease !important; box-shadow: var(--ui-shadow) !important; }
+.p-button:hover { transform: var(--ui-button-hover-transform) !important; box-shadow: var(--ui-shadow-hover) !important; }
+.p-button:active:not(:disabled) { box-shadow: none !important; transform: var(--ui-button-active-transform) !important; }
+.p-button.p-button-secondary { background: var(--theme-bg-ternary) !important; color: var(--theme-text-secondary) !important; }
+.p-button.p-button-secondary:hover { background: var(--theme-border-primary) !important; color: var(--theme-text-primary) !important; }
+
+.p-datatable-wrapper { border: var(--ui-border-width) solid var(--theme-border-primary); border-radius: 12px; }
+.p-datatable .p-datatable-thead > tr > th { background-color: var(--theme-bg-secondary) !important; border-bottom: var(--ui-border-width) solid var(--theme-border-primary) !important; color: var(--theme-text-primary) !important; font-weight: 600; }
+.p-datatable .p-datatable-tbody > tr { background-color: var(--theme-bg-primary) !important; color: var(--theme-text-secondary) !important; border-bottom: var(--ui-border-width) solid var(--theme-border-primary) !important; }
+.p-datatable .p-datatable-tbody > tr:last-child { border-bottom: none !important; }
+.p-datatable .p-paginator { background-color: var(--theme-bg-secondary) !important; border-top: var(--ui-border-width) solid var(--theme-border-primary) !important; }
+.p-paginator .p-paginator-page.p-highlight { background: var(--theme-accent-gradient, var(--theme-accent-primary)) !important; color: var(--theme-accent-text-color) !important; border-radius: 50% !important; }
+
+.p-dialog { border: var(--ui-border-width) solid var(--theme-border-primary) !important; border-radius: 12px !important; box-shadow: var(--ui-shadow) !important; }
+.p-dialog .p-dialog-header { background-color: var(--theme-bg-secondary) !important; color: var(--theme-text-primary) !important; border-bottom: var(--ui-border-width) solid var(--theme-border-primary) !important; }
+.card { background-color: var(--theme-bg-secondary); border: var(--ui-border-width) solid var(--theme-border-primary); border-radius: 12px; box-shadow: var(--ui-shadow); padding: 1.5rem; margin-bottom: 1rem; }
+.modern-card { background-color: var(--theme-bg-primary); border: 1px solid var(--theme-border-primary); border-radius: 12px; box-shadow: 0 8px 32px var(--theme-shadow-color); padding: 1.5rem; margin-bottom: 1rem; }
+.retro-card { background: var(--theme-bg-secondary); border: 1px solid var(--theme-border-primary); border-radius: 12px; box-shadow: 0 8px 32px var(--theme-shadow-color); padding: 1.5rem; margin-bottom: 1rem; }
+.modern-button { background: var(--theme-accent-gradient); color: var(--theme-accent-text-color); border: none; border-radius: 8px; padding: 0.75rem 1.5rem; font-family: var(--font-primary); font-weight: 600; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); }
+.modern-button:hover { transform: translateY(-2px); box-shadow: 0 6px 20px var(--theme-shadow-color), 0 0 20px rgba(0, 123, 255, 0.3); }
+
+label { display: block; margin-bottom: 0.5rem; font-size: 0.875rem; color: var(--theme-text-label); font-weight: 500; }
+.error-text { color: var(--theme-error-primary); font-size: 0.875rem; margin-top: 0.25rem; }
+
+h1, h2, h3, h4, h5, h6 { font-family: var(--font-primary); color: var(--theme-text-primary); }
+h1 { font-size: 2.5rem; font-weight: 700; }
+h2 { font-size: 2rem; font-weight: 600; }
+h3 { font-size: 1.75rem; font-weight: 600; }
+
+.retro-heading { font-family: "Playfair Display", serif; text-shadow: 2px 2px 4px rgba(45, 24, 16, 0.3); }
+.retro-subheading { font-family: "Lora", serif; }
+.retro-body { font-family: "Merriweather", serif; }
+
+.custom-scroll::-webkit-scrollbar { width: 8px; }
+.custom-scroll::-webkit-scrollbar-track { background: var(--theme-scroll-track); }
+.custom-scroll::-webkit-scrollbar-thumb { background-color: var(--theme-scroll-thumb); border-radius: 4px; }
+
+a { color: var(--theme-accent-primary); text-decoration: none; font-weight: 500; }
+a:hover { color: var(--theme-accent-primary-hover); text-decoration: underline; }
+
+.ng-invalid.ng-dirty .p-inputtext,
+.ng-invalid.ng-dirty .p-inputnumber,
+.ng-invalid.ng-dirty .p-select {
+  border-color: #f44336 !important;
+}
+
+
+.se-filter-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 1.25rem;
+  padding: 1.25rem;
+
+  background-color: var(--theme-bg-secondary);
+  border: var(--ui-border-width) solid var(--theme-border-primary);
+  border-radius: var(--ui-border-radius);
+  margin-bottom: 1.5rem;
+  box-shadow: var(--ui-shadow);
+}
+
+.se-filter-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  flex: 1 1 220px;
+  min-width: 200px;
+}
+
+.se-filter-field label {
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--theme-text-label);
+  padding-left: 0.25rem;
+}
+
+.se-filter-actions {
+  display: flex;
+  gap: 0.75rem;
+  align-items: flex-end;
+}
+
+
+.se-filter-bar .p-inputtext,
+.se-filter-bar .p-select,
+.se-filter-bar .p-multiselect,
+.se-filter-bar .p-datepicker,
+.se-filter-bar input[type="text"],
+.se-filter-bar input[type="number"],
+.se-filter-bar select {
+  width: 100%;
+  height: 2.75rem;              
+  min-height: 2.75rem;
+  font-size: 0.9rem;
+  font-family: var(--font-body);
+  background-color: var(--surface-section, var(--theme-bg-ternary)); 
+  border: 1px solid var(--surface-border, var(--theme-border-primary));
+  border-radius: var(--ui-border-radius);
+  box-sizing: border-box;
+}
+
+.se-filter-bar .p-select .p-select-label,
+.se-filter-bar .p-multiselect .p-multiselect-label,
+.se-filter-bar .p-datepicker .p-inputtext {
+  display: flex;
+  align-items: center;
+  height: 100%;
+  padding-top: 0;
+  padding-bottom: 0;
+}
+
+.se-filter-bar .p-inputtext,
+.se-filter-bar input[type="text"],
+.se-filter-bar input[type="number"] {
+  padding: 0 0.75rem;
+}
+
+
+.se-filter-actions .p-button {
+  height: 2.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.9rem;
+  border-radius: var(--ui-border-radius);
+} */
+
+/* /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////*/
+
+
+/* Your common CSS (styles.css or equivalent) */
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Poppins:wght@400;500;600;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Crimson+Text:ital,wght@0,400;0,600;1,400&family=Merriweather:wght@300;400;700&family=Lora:wght@400;500;600&family=Source+Serif+Pro:wght@400;600;700&family=Cormorant+Garamond:wght@300;400;500;600&display=swap");
+@import "tailwindcss";
+@import "primeicons/primeicons.css";
+
+/* --- 2. BASE THEME & COLOR PALETTE DEFINITIONS --- */
+:root {
+  --theme-bg-primary: #ffffff;
+  --theme-bg-secondary: #f8f9fa;
+  --theme-bg-ternary: #e9ecef;
+  --theme-text-primary: #212529;
+  --theme-text-secondary: #495057;
+  --theme-text-label: #6c757d;
+  --theme-text-inverted: #ffffff;
+  --theme-border-primary: #dee2e6;
+  --theme-border-secondary: #ced4da;
+  --theme-hover-bg: #e9ecef;
+  --theme-scroll-track: #f1f3f5;
+  --theme-scroll-thumb: #adb5bd;
+
+  --theme-accent-gradient: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
+  --theme-accent-primary: #007bff;
+  --theme-accent-primary-light: rgba(0, 123, 255, 0.1);
+  --theme-accent-primary-hover: #0056b3;
+  --theme-accent-text-color: #ffffff;
+  --theme-accent-focus-ring: rgba(0, 123, 255, 0.25);
+
+  --theme-success-primary: #28a745;
+  --theme-error-primary: #dc3545;
+  --theme-warning-primary: #ffc107;
+
+  --theme-body-gradient-start: #f8f9fa;
+  --theme-body-gradient-end: #ffffff;
+
   --font-primary: "Poppins", sans-serif;
   --font-body: "Inter", sans-serif;
 
-  /* --- THEMEABLE UI PROPERTIES --- */
   /* These variables are overridden by theme selectors */
   --ui-border-width: 1px;
   --ui-border-radius: 8px;
@@ -53,7 +251,6 @@
 }
 
 body.dark-mode {
-  /* --- Base Layout & Text (Dark Mode) --- */
   --theme-bg-primary: #121212;
   --theme-bg-secondary: #1e1e1e;
   --theme-bg-ternary: #2c2c2c;
@@ -240,7 +437,8 @@ a:hover { color: var(--theme-accent-primary-hover); text-decoration: underline; 
   border-radius: var(--ui-border-radius);
 }
 
-/* /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////*/
+/* //// and for reference this was my common css classes i created */
+
 
 /* --- 3. THEME SELECTORS --- */
 /*manish --- Modern Gradient Themes --- */

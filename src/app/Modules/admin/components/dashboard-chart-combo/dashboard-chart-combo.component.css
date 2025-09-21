@@ -1,3 +1,4 @@
+/* dashboard-chart-combo.component.css remains unchanged */
 :host {
   display: block;
   height: auto; /* Flexible height based on content */
@@ -47,13 +48,13 @@
   background: var(--surface-card);
   border-radius: 12px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
   cursor: pointer; /* Indicate clickable */
   overflow: hidden;
 }
 
 .chart-panel:hover {
-  transform: translateY(-4px);
+  transform: scale(1.02);
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
 }
 
