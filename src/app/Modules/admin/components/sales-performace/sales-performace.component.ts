@@ -1,214 +1,151 @@
-// import { Component, OnInit } from '@angular/core';
-// import { CommonModule } from '@angular/common';
-// import { MatCardModule } from '@angular/material/card';
-// import { MatGridListModule } from '@angular/material/grid-list';
-// import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-// import { MatFormFieldModule } from '@angular/material/form-field';
-// import { MatSelectModule } from '@angular/material/select';
-// import { FormsModule } from '@angular/forms';
-// import { CommonmethodsComponent } from '../../../../shared/Common/commonmethods/commonmethods.component';
-// import { CommonMethodServiceService } from '../../../../core/services/common-method-service.service';
-// import { AnalyticsService, SalesPerformance } from '../../../../core/services/analytics.service';
+import { Component, Input, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { ChartModule } from 'primeng/chart';
+import { CardModule } from 'primeng/card';
 
-// interface Product {
-//   _id: string;
-//   title: string;
-//   description: string;
-//   thumbnail: string;
-//   price: number;
-//   finalPrice: number | null;
-//   id: string;
-// }
+@Component({
+  selector: 'app-sales-performance',
+  standalone: true,
+  imports: [CommonModule, ChartModule, CardModule],
+  template: `
+    <div class="sales-performance">
+      <!-- Historical Sales Card -->
+      <p-card class="sales-card">
+        <h2 class="section-title">📊 Historical Sales</h2>
+        <p-chart type="line" [data]="chartData" [options]="chartOptions"></p-chart>
+      </p-card>
 
-// interface Invoice {
-//   _id: string;
-//   invoiceNumber: string;
-//   invoiceDate: string;
-//   totalAmount: number;
-//   status: string;
-//   sellerDetails: any;
-//   buyerDetails: any;
-//   itemDetails: any[];
-//   id: string;
-// }
+      <!-- Forecast Card -->
+      <p-card class="forecast-card">
+        <h2 class="section-title">🔮 Next Month Forecast</h2>
+        <div class="forecast-value" [ngClass]="trendClass">
+          {{ forecastValue | currency:'USD':'symbol':'1.0-0' }}
+          <span class="trend-indicator" *ngIf="trendArrow">
+            {{ trendArrow }}
+          </span>
+        </div>
+        <p class="forecast-label">Projected sales for next month</p>
+      </p-card>
+    </div>
+  `,
+  styles: [`
+    .sales-performance {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 2rem;
+      padding: 2rem;
+    }
 
-// interface CartItem {
-//   productId: Product;
-//   invoiceIds: Invoice[];
-//   _id: string;
-// }
+    .sales-card, .forecast-card {
+      border-radius: 1.6rem;
+      padding: 2rem;
+      box-shadow: 0 6px 22px rgba(0,0,0,0.1);
+      transition: all 0.3s ease;
+    }
 
-// interface Cart {
-//   items: CartItem[];
-// }
+    .sales-card:hover, .forecast-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 14px 40px rgba(0,0,0,0.15);
+    }
 
-// interface FilterOptions {
-//   productId?: string;
-//   invoiceStatus?: string;
-//   dateRange?: {
-//     startDate: string;
-//     endDate: string;
-//   };
-// }
+    .section-title {
+      font-size: 1.4rem;
+      font-weight: 700;
+      margin-bottom: 1.5rem;
+      color: var(--theme-text-primary, #222);
+    }
 
-// @Component({
-//   selector: 'app-sales-performace',
-//   standalone: true,
-//   imports: [
-//     CommonModule, 
-//     MatCardModule, 
-//     MatGridListModule, 
-//     MatProgressSpinnerModule,
-//     MatFormFieldModule,
-//     MatSelectModule,
-//     FormsModule
-//   ],
-//   template: `
-//     <mat-card>
-//       <mat-card-content>
-//         <h2>Sales Performance</h2>
-        
-//         <!-- Filter Section -->
-//         <div class="filter-section">
-//           <mat-form-field>
-//             <mat-label>Product</mat-label>
-//             <mat-select [(ngModel)]="selectedProduct" (selectionChange)="applyFilters()">
-//               <mat-option [value]="null">All Products</mat-option>
-//               <mat-option *ngFor="let product of products" [value]="product._id">
-//                 {{product.title}}
-//               </mat-option>
-//             </mat-select>
-//           </mat-form-field>
+    .forecast-card {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
 
-//           <mat-form-field>
-//             <mat-label>Invoice Status</mat-label>
-//             <mat-select [(ngModel)]="selectedStatus" (selectionChange)="applyFilters()">
-//               <mat-option [value]="null">All Status</mat-option>
-//               <mat-option value="paid">Paid</mat-option>
-//               <mat-option value="unpaid">Unpaid</mat-option>
-//             </mat-select>
-//           </mat-form-field>
-//         </div>
+    .forecast-value {
+      font-size: 2.4rem;
+      font-weight: 800;
+      margin: 0.5rem 0;
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
 
-//         <div *ngIf="loading" class="loading-container">
-//           <mat-spinner></mat-spinner>
-//         </div>
-//         <div *ngIf="!loading && data" class="grid-container">
-//           <div class="grid-item">
-//             <h3>Total Sales</h3>
-//             <p>{{ commonMethod.formatCurrency(data.totalSales) }}</p>
-//           </div>
-//           <div class="grid-item">
-//             <h3>Average Order Value</h3>
-//             <p>{{ commonMethod.formatCurrency(data.averageOrderValue) }}</p>
-//           </div>
-//           <div class="grid-item">
-//             <h3>Total Orders</h3>
-//             <p>{{ data.totalOrders }}</p>
-//           </div>
-//           <div class="grid-item">
-//             <h3>Unique Customers</h3>
-//             <p>{{ data.uniqueCustomerCount }}</p>
-//           </div>
-//         </div>
-//       </mat-card-content>
-//     </mat-card>
-//   `,
-//   styles: [`
-//     .loading-container {
-//       display: flex;
-//       justify-content: center;
-//       align-items: center;
-//       min-height: 200px;
-//     }
-//     .grid-container {
-//       display: grid;
-//       grid-template-columns: repeat(2, 1fr);
-//       gap: 1rem;
-//       padding: 1rem;
-//     }
-//     .grid-item {
-//       text-align: center;
-//       padding: 1rem;
-//       background-color: #f5f5f5;
-//       border-radius: 4px;
-//     }
-//     h2 {
-//       margin: 0;
-//       padding: 1rem;
-//       color: #333;
-//     }
-//     h3 {
-//       margin: 0;
-//       font-size: 1rem;
-//       color: #666;
-//     }
-//     p {
-//       margin: 0.5rem 0 0;
-//       font-size: 1.5rem;
-//       font-weight: bold;
-//       color: #333;
-//     }
-//     .filter-section {
-//       display: flex;
-//       gap: 1rem;
-//       padding: 1rem;
-//     }
-//     mat-form-field {
-//       min-width: 200px;
-//     }
-//   `]
-// })
-// export class SalesPerformaceComponent implements OnInit {
-//   data: SalesPerformance | null = null;
-//   loading = true;
-//   products: Product[] = [];
-//   selectedProduct: string | null = null;
-//   selectedStatus: string | null = null;
+    .forecast-label {
+      font-size: 1rem;
+      color: var(--theme-text-secondary, #666);
+    }
 
-//   constructor(
-//     private analyticsService: AnalyticsService,
-//     public commonMethod: CommonMethodServiceService
-//   ) {}
+    .forecast-value.up { color: #28a745; }
+    .forecast-value.down { color: #dc3545; }
+    .forecast-value.neutral { color: #42a5f5; }
 
-//   ngOnInit(): void {
-//     this.loadData();
-//   }
+    .trend-indicator {
+      font-size: 1.6rem;
+    }
 
-//   private loadData(): void {
-//     const today = new Date();
-//     const startOfMonth = new Date(today.getFullYear(), today.getMonth(), 1);
-//     const endOfMonth = new Date(today.getFullYear(), today.getMonth() + 1, 0);
+    @media (max-width: 992px) {
+      .sales-performance {
+        grid-template-columns: 1fr;
+      }
+    }
+  `]
+})
+export class SalesPerformanceComponent implements OnInit {
+  @Input() data: any;
 
-//     const filterOptions: FilterOptions = {
-//       dateRange: {
-//         startDate: startOfMonth.toISOString().split('T')[0],
-//         endDate: endOfMonth.toISOString().split('T')[0]
-//       }
-//     };
+  chartData: any;
+  chartOptions: any;
+  forecastValue: number = 0;
+  trendArrow: string = '';
+  trendClass: string = 'neutral';
 
-//     if (this.selectedProduct) {
-//       filterOptions.productId = this.selectedProduct;
-//     }
+  ngOnInit() {
+    if (this.data?.historicalData) {
+      const labels = this.data.historicalData.map((d: any) => `${d._id.month}/${d._id.year}`);
+      const sales = this.data.historicalData.map((d: any) => d.totalSales);
 
-//     if (this.selectedStatus) {
-//       filterOptions.invoiceStatus = this.selectedStatus;
-//     }
+      this.chartData = {
+        labels,
+        datasets: [
+          {
+            label: 'Sales',
+            data: sales,
+            fill: true,
+            borderColor: '#42a5f5',
+            backgroundColor: 'rgba(66,165,245,0.3)',
+            tension: 0.4,
+            pointRadius: 6,
+            pointBackgroundColor: '#1e88e5'
+          }
+        ]
+      };
 
-//     this.analyticsService.getSalesPerformance(filterOptions).subscribe({
-//       next: (response: { data: any; }) => {
-//         this.data = response.data;
-//         this.loading = false;
-//       },
-//       error: (error: any) => {
-//         console.error('Error fetching sales performance:', error);
-//         this.loading = false;
-//       }
-//     });
-//   }
+      this.chartOptions = {
+        responsive: true,
+        plugins: { legend: { display: false } },
+        scales: {
+          x: { ticks: { color: '#888' } },
+          y: { ticks: { color: '#888' } }
+        }
+      };
 
-//   applyFilters(): void {
-//     this.loading = true;
-//     this.loadData();
-//   }
-// } 
+      // Forecast logic
+      if (this.data?.forecast?.nextMonth) {
+        this.forecastValue = parseFloat(this.data.forecast.nextMonth);
+        const lastMonthSales = sales[sales.length - 1] || 0;
+
+        if (this.forecastValue > lastMonthSales) {
+          this.trendArrow = '↑';
+          this.trendClass = 'up';
+        } else if (this.forecastValue < lastMonthSales) {
+          this.trendArrow = '↓';
+          this.trendClass = 'down';
+        } else {
+          this.trendArrow = '→';
+          this.trendClass = 'neutral';
+        }
+      }
+    }
+  }
+}

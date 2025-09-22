@@ -27,6 +27,8 @@ import { DashboardChartComboComponent } from '../components/dashboard-chart-comb
 import { Select } from 'primeng/select';
 import { AnalyticDashboardComponent } from "../components/analytic-dashboard/analytic-dashboard.component";
 import { DashboardTopCustomerViewComponent } from "../components/dashboard-top-customer-view/dashboard-top-customer-view.component";
+import { PaymentanalyticsComponent } from "../components/paymentanalytics/paymentanalytics.component";
+import { SalesPerformanceComponent } from "../components/sales-performace/sales-performace.component";
 
 @Component({
   selector: 'app-admin-dashboard',
@@ -36,7 +38,9 @@ import { DashboardTopCustomerViewComponent } from "../components/dashboard-top-c
     CalendarModule, ToastModule, CardModule, PanelModule, DialogModule,
     DashboardSummaryComponent, DashboardChartComboComponent,
     AnalyticDashboardComponent,
-    DashboardTopCustomerViewComponent
+    DashboardTopCustomerViewComponent,
+    PaymentanalyticsComponent,
+    SalesPerformanceComponent
 ],
   templateUrl: './admin-dashboard.component.html',
   styleUrls: ['./admin-dashboard.component.css'],

@@ -1,0 +1,139 @@
+<div class="payment-analytics-container" *ngIf="data">
+
+  <div class="payment-dashboard-grid">
+
+    <!-- LEFT: Payment Methods + Collection Trends -->
+    <div class="payment-left">
+
+      <!-- Payment Methods -->
+      <div class="section-card">
+        <div class="section-header">
+          <div class="title"><i class="pi pi-credit-card"></i> Payment Methods</div>
+          <div class="sub small-muted">Total methods: {{ data.paymentMethods?.length || 0 }}</div>
+        </div>
+
+        <div *ngIf="data.paymentMethods?.length; else noMethods">
+          <ng-container *ngFor="let method of data.paymentMethods; let idx = index">
+            <div class="method-row">
+              <div class="method-icon">
+                <!-- a nicer icon per method could be mapped in TS; fallback to generic -->
+                <i class="pi" [ngClass]="{
+                  'pi-credit-card': method._id === 'credit_card',
+                  'pi-wallet': method._id === 'wallet',
+                  'pi-money-bill': method._id === 'cash'
+                }"></i>
+              </div>
+
+              <div class="method-content">
+                <div class="method-title">
+                  <div class="name">{{ method._id | titlecase }}</div>
+                  <div class="count">{{ method.count }} {{ method.count === 1 ? 'txn' : 'txns' }}</div>
+                </div>
+
+                <div class="method-amount">{{ method.totalAmount | currency }}</div>
+
+                <!-- progress: width computed in TS or approximate by ratio to overall collected -->
+                <div class="method-progress" aria-hidden="true">
+                  <div class="bar" [style.width.%]="computeMethodShare(method)"></div>
+                </div>
+              </div>
+            </div>
+          </ng-container>
+        </div>
+
+        <ng-template #noMethods>
+          <div class="small-muted">No payment methods recorded.</div>
+        </ng-template>
+      </div>
+
+      <!-- Collection Trends -->
+      <div class="section-card">
+        <div class="section-header">
+          <div class="title"><i class="pi pi-chart-line"></i> Collection Trends</div>
+          <div class="sub small-muted">Last {{ data.collectionTrends?.length || 0 }} day(s)</div>
+        </div>
+
+        <div *ngIf="data.collectionTrends?.length; else noTrends">
+          <div *ngFor="let trend of data.collectionTrends">
+            <div class="trend-row">
+              <div>
+                <div class="trend-date">{{ trend._id }}</div>
+                <div class="small-muted">Daily total</div>
+              </div>
+
+              <div class="center">
+                <div class="trend-amount">{{ trend.dailyTotal | currency }}</div>
+                <!-- small sparkline placeholder: you can inject real sparkline svg or Chart here -->
+                <span class="sparkline" aria-hidden="true">
+                  <!-- small inline sparkline SVG (simple polyline based on single value) -->
+                  <svg viewBox="0 0 100 24" preserveAspectRatio="none" role="img" aria-label="sparkline">
+                    <polyline
+                      fill="none"
+                      stroke="rgba(0,150,136,0.9)"
+                      stroke-width="2"
+                      points="0,18 25,12 50,8 75,6 100,4"
+                    />
+                  </svg>
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <ng-template #noTrends>
+          <div class="small-muted">No collection trend data available.</div>
+        </ng-template>
+
+      </div>
+    </div>
+
+    <!-- RIGHT: Failed Payments summary -->
+    <div class="payment-right">
+      <div class="section-card">
+        <div class="section-header">
+          <div class="title"><i class="pi pi-times-circle"></i> Failed Payments</div>
+          <div class="sub small-muted">Realtime status</div>
+        </div>
+
+        <div *ngIf="data.failedPayments?.count === 0; else hasFailed">
+          <div class="center">
+            <div class="status-badge">
+              <i class="pi pi-check"></i>
+              <span>All Good</span>
+            </div>
+
+            <div class="failed-value">{{ data.failedPayments?.count || 0 }}</div>
+            <div class="failed-note">No failed payments — everything collected successfully.</div>
+          </div>
+        </div>
+
+        <ng-template #hasFailed>
+          <div>
+            <div class="failed-value">{{ data.failedPayments.totalValue | currency }}</div>
+            <div class="small-muted">Total failed value</div>
+
+            <ul class="small-muted" style="margin-top:1rem;">
+              <li>Failed count: <strong>{{ data.failedPayments.count }}</strong></li>
+              <li>Total attempted: <strong>{{ data.financialHealth?.totalBilled | currency }}</strong></li>
+            </ul>
+          </div>
+        </ng-template>
+      </div>
+
+      <!-- Optional: quick small KPIs or actions -->
+      <div class="section-card">
+        <div class="section-header">
+          <div class="title"><i class="pi pi-wallet"></i> Quick Metrics</div>
+          <div class="sub small-muted">Snapshot</div>
+        </div>
+
+        <div style="display:flex;flex-direction:column;gap:0.6rem;">
+          <div class="small-muted">Total Billed <strong>{{ data.financialHealth?.totalBilled | currency }}</strong></div>
+          <div class="small-muted">Total Collected <strong>{{ data.financialHealth?.totalCollected | currency }}</strong></div>
+          <div class="small-muted">Collection Rate <strong>{{ data.financialHealth?.collectionRate | number:'1.1-2' }}%</strong></div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
