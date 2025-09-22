@@ -30,7 +30,7 @@ export class DashboardService extends BaseApiService {
       .pipe(catchError((error: HttpErrorResponse) => this.errorhandler.handleError('getDashboardOverview', error)));
   }
 
-  getProductAnalytics(period?: string, limit: number = 5, startDate?: string, endDate?: string): Observable<any> {
+  getProductAnalytics(period?: string, limit: number = 10, startDate?: string, endDate?: string): Observable<any> {
     let params = new HttpParams().set('limit', String(limit));
     if (period) {
       params = params.set('period', period);
@@ -45,7 +45,7 @@ export class DashboardService extends BaseApiService {
       .pipe(catchError((error: HttpErrorResponse) => this.errorhandler.handleError('getProductAnalytics', error)));
   }
 
-  getCustomerAnalytics(period?: string, limit: number = 5, startDate?: string, endDate?: string): Observable<any> {
+  getCustomerAnalytics(period?: string, limit: number = 10, startDate?: string, endDate?: string): Observable<any> {
     let params = new HttpParams().set('limit', String(limit));
     if (period) {
       params = params.set('period', period);

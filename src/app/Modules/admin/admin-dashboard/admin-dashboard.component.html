@@ -1,16 +1,16 @@
-<!-- admin-dashboard.component.html -->
+
 <p-toast></p-toast>
 <div class="admin-dashboard" [@fadeIn]="true">
   <div class="dashboard-header card modern-card">
     <h2 class="page-title retro-heading">Admin Dashboard</h2>
     <div class="filters se-filter-bar">
-      <p-select [options]="periodOptions" [(ngModel)]="selectedPeriod" name="selectedPeriod" optionLabel="label"
+      <p-select [options]="periodOptions" [(ngModel)]="selectedPeriod" optionLabel="label"
         optionValue="value" styleClass="p-inputtext-sm" (onChange)="onFilterChange()">
       </p-select>
       <div *ngIf="selectedPeriod === 'custom'" class="custom-date-filter">
-        <p-datepicker [(ngModel)]="customDateRange" selectionMode="range" [readonlyInput]="true"
+        <p-calendar [(ngModel)]="customDateRange" selectionMode="range" [readonlyInput]="true"
           placeholder="Select a date range" dateFormat="dd/mm/yy" styleClass="p-inputtext-sm">
-        </p-datepicker>
+        </p-calendar>
         <button pButton type="button" label="Apply" icon="pi pi-check" class="p-button-sm modern-button"
           (click)="onApplyCustomRange()"></button>
       </div>
@@ -37,7 +37,6 @@
       </ng-template>
     </p-panel>
 
-    <!-- Dashboard Overview -->
     <p-panel [toggleable]="true" [@panelAnimation] class="col-span-2">
       <ng-template pTemplate="header">
         <div class="flex justify-content-between align-items-center w-full">
@@ -56,8 +55,7 @@
       </ng-template>
     </p-panel>
 
-    <!-- Quick Insights -->
-    <p-panel [toggleable]="true" [@panelAnimation] class="col-span-2">
+    <!-- <p-panel [toggleable]="true" [@panelAnimation] class="col-span-2">
       <ng-template pTemplate="header">
         <div class="flex justify-content-between align-items-center w-full">
           <span>Quick Insights</span>
@@ -86,9 +84,8 @@
       <ng-template #loadingState>
         <p-skeleton width="100%" height="180px"></p-skeleton>
       </ng-template>
-    </p-panel>
+    </p-panel> -->
 
-    <!-- Product Analytics -->
     <p-panel [toggleable]="true" [@panelAnimation] class="col-span-2">
       <ng-template pTemplate="header">
         <div class="flex justify-content-between align-items-center w-full">
@@ -107,7 +104,6 @@
       </ng-template>
     </p-panel>
 
-    <!-- Customer Analytics -->
     <p-panel [toggleable]="true" [@panelAnimation] class="col-span-2">
       <ng-template pTemplate="header">
         <div class="flex justify-content-between align-items-center w-full">
@@ -126,7 +122,6 @@
       </ng-template>
     </p-panel>
 
-    <!-- Payment Analytics -->
     <p-panel [toggleable]="true" [@panelAnimation] class="col-span-2">
       <ng-template pTemplate="header">
         <div class="flex justify-content-between align-items-center w-full">
@@ -196,9 +191,578 @@
         <app-analytic-dashboard *ngSwitchCase="'Product Analytics'" [data]="selectedPanelData">
         </app-analytic-dashboard>
 
+        <app-dashboard-top-customer-view *ngSwitchCase="'Customer Analytics'" [data]="selectedPanelData">
+        </app-dashboard-top-customer-view>
+
+        <app-paymentanalytics *ngSwitchCase="'Payment Analytics'" [data]="selectedPanelData">
+        </app-paymentanalytics>
+
+        <app-sales-performance *ngSwitchCase="'Sales Forecast'" [data]="selectedPanelData">
+        </app-sales-performance>
+
         <pre *ngSwitchDefault class="json-viewer">{{ selectedPanelData | json }}</pre>
       </ng-container>
     </div>
   </p-dialog>
 </div>
 
+
+
+
+<!-- <p-toast></p-toast>
+<div class="admin-dashboard">
+  <div class="dashboard-header card">
+    <h2 class="page-title">Admin Dashboard</h2>
+    <div class="filters">
+      <p-select [options]="periodOptions" [(ngModel)]="selectedPeriod" name="selectedPeriod" optionLabel="label"
+        optionValue="value" styleClass="p-inputtext-sm" (onChange)="onFilterChange()">
+      </p-select>
+
+      <div *ngIf="selectedPeriod === 'custom'" class="custom-date-filter">
+        <p-datepicker [(ngModel)]="customDateRange" selectionMode="range" [readonlyInput]="true"
+          placeholder="Select a date range" dateFormat="dd/mm/yy" styleClass="p-inputtext-sm">
+        </p-datepicker>
+        <button pButton type="button" label="Apply" icon="pi pi-check" class="p-button-sm"
+          (click)="onApplyCustomRange()"></button>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="dashboard-body">
+    <p-panel header="Charts Overview" [toggleable]="true">
+      <ng-container>
+         *ngIf="dashboardData$ | async as data; else loadingState"
+        <app-dashboard-chart-combo></app-dashboard-chart-combo>
+      </ng-container>
+      <ng-template #loadingState>
+        <p-skeleton width="100%" height="180px"></p-skeleton>
+      </ng-template>
+    </p-panel>
+
+    <p-panel header="Dashboard Overview" [toggleable]="true">
+      <ng-container *ngIf="dashboardData$ | async as data; else loadingState">
+        <app-dashboard-summary [summaryData]="data" [isLoading]="isLoading"></app-dashboard-summary>
+      </ng-container>
+      <ng-template #loadingState>
+        <p-skeleton width="100%" height="180px"></p-skeleton>
+      </ng-template>
+    </p-panel>
+
+
+    <p-panel header="Product Analytics" [toggleable]="true">
+      <ng-container *ngIf="productAnalytics$ | async as data; else loadingState">
+        <app-analytic-dashboard [data]="data"></app-analytic-dashboard>
+        <pre>{{ data | json }}</pre>
+      </ng-container>
+      <ng-template #loadingState>
+        <p-skeleton width="100%" height="180px"></p-skeleton>
+      </ng-template>
+    </p-panel>
+
+    Customer Analytics Section
+    <p-panel header="Customer Analytics" [toggleable]="true">
+      <ng-container *ngIf="customerAnalytics$ | async as data; else loadingState">
+        Placeholder for customer data display
+        <pre>{{ data | json }}</pre>
+      </ng-container>
+      <ng-template #loadingState>
+        <p-skeleton width="100%" height="180px"></p-skeleton>
+      </ng-template>
+    </p-panel>
+
+    Payment Analytics Section
+    <p-panel header="Payment Analytics" [toggleable]="true">
+      <ng-container *ngIf="paymentAnalytics$ | async as data; else loadingState">
+        <pre>{{ data | json }}</pre>
+      </ng-container>
+      <ng-template #loadingState>
+        <p-skeleton width="100%" height="180px"></p-skeleton>
+      </ng-template>
+    </p-panel>
+
+    Sales Analytics Section
+    <p-panel header="Sales Analytics" [toggleable]="true">
+      <ng-container *ngIf="salesAnalytics$ | async as data; else loadingState">
+        Placeholder for sales data display
+        <pre>{{ data | json }}</pre>
+      </ng-container>
+      <ng-template #loadingState>
+        <p-skeleton width="100%" height="180px"></p-skeleton>
+      </ng-template>
+    </p-panel>
+
+    Inventory Turnover Section
+    <p-panel header="Inventory Turnover" [toggleable]="true">
+      <ng-container *ngIf="inventoryTurnover$ | async as data; else loadingState">
+        Placeholder for inventory data display
+        <pre>{{ data | json }}</pre>
+      </ng-container>
+      <ng-template #loadingState>
+        <p-skeleton width="100%" height="180px"></p-skeleton>
+      </ng-template>
+    </p-panel>
+
+    Sales Forecast Section
+    <p-panel header="Sales Forecast" [toggleable]="true">
+      <ng-container *ngIf="salesForecast$ | async as data; else loadingState">
+        Placeholder for forecast data display
+        <pre>{{ data | json }}</pre>
+      </ng-container>
+      <ng-template #loadingState>
+        <p-skeleton width="100%" height="180px"></p-skeleton>
+      </ng-template>
+    </p-panel>
+  </div>
+</div> -->
+<!-- <p-toast></p-toast>
+<div class="admin-dashboard">
+
+  <div class="dashboard-header card">
+    <h2 class="page-title">Dashboard Overview</h2>
+    <div class="filters">
+      <p-select [options]="periodOptions" [(ngModel)]="selectedPeriod" name="selectedPeriod" optionLabel="label"
+        optionValue="value" styleClass="p-inputtext-sm" (onChange)="onFilterChange()">
+      </p-select>
+
+      <div *ngIf="selectedPeriod === 'custom'" class="custom-date-filter">
+        <p-datepicker [(ngModel)]="customDateRange" selectionMode="range" [readonlyInput]="true"
+          placeholder="Select a date range" dateFormat="dd/mm/yy" styleClass="p-inputtext-sm">
+        </p-datepicker>
+        <button pButton type="button" label="Apply" icon="pi pi-check" class="p-button-sm"
+          (click)="onApplyCustomRange()"></button>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="dashboard-body">
+    <ng-container *ngIf="dashboardData$ | async as data; else loadingState">
+      <app-dashboard-summary [summaryData]="data" [isLoading]="isLoading"></app-dashboard-summary>
+      <app-dashboard-chart-combo></app-dashboard-chart-combo>
+    </ng-container>
+
+    <ng-template #loadingState>
+      <div class="loading-grid">
+        <p-skeleton width="100%" height="180px"></p-skeleton>
+        <p-skeleton width="100%" height="400px"></p-skeleton>
+      </div>
+    </ng-template>
+  </div>
+</div> -->
+
+<!-- <div class="admin-dashboard">
+
+  <div class="dashboard-header card">
+    <h2 class="page-title">Dashboard</h2>
+    <div class="filters">
+      <p-select [options]="periodOptions" [(ngModel)]="selectedPeriod" name="selectedPeriod"
+        placeholder="Select a Period" optionLabel="label" optionValue="value" styleClass="p-inputtext-sm"
+        (onChange)="onPeriodChange()">
+      </p-select>
+    </div>
+  </div>
+
+  <div class="dashboard-body">
+    <ng-container>
+      <app-dashboard-summary [summaryData]="data.overview"></app-dashboard-summary>
+      <app-dashboard-chart-combo></app-dashboard-chart-combo>
+
+      <app-dashboard-summary [params]="selectedPeriod"></app-dashboard-summary>
+
+    </ng-container>
+
+    <ng-template #loadingState>
+      <div class="loading-grid">
+        <p-skeleton width="100%" height="150px"></p-skeleton>
+        <p-skeleton width="100%" height="150px"></p-skeleton>
+        <p-skeleton width="100%" height="150px"></p-skeleton>
+        <p-skeleton width="100%" height="150px"></p-skeleton>
+        <p-skeleton width="100%" height="400px" styleClass="p-mt-4"></p-skeleton>
+      </div>
+    </ng-template>
+  </div>
+</div> -->
+
+<!-- <div class="dashboard-main-container p-4 md:p-6">
+  <div class="card mb-6">
+    <div class="flex items-center mb-4">
+      <div class="w-1 h-8 bg-[var(--theme-accent-gradient,var(--theme-accent-primary))] rounded-full mr-4"></div>
+      <h4 class="text-xl font-bold text-[var(--theme-text-primary)]">Date Range Filter</h4>
+    </div>
+    <div class="flex flex-wrap items-end -mx-2">
+      <div class="w-full md:w-1/4 px-2 mb-4 md:mb-0">
+        <label for="periodSelect" class="text-[var(--theme-text-label)] font-medium mb-2 block">Predefined
+          Period:</label>
+        <select id="periodSelect" [(ngModel)]="selectedPeriod" (ngModelChange)="onPeriodChange($event)"
+          class="p-inputtext w-full">
+          <option value="today">Today</option>
+          <option value="yesterday">Yesterday</option>
+          <option value="week">This Week</option>
+          <option value="month">This Month</option>
+          <option value="last_month">Last Month</option>
+          <option value="year">This Year</option>
+        </select>
+      </div>
+      <div class="w-full md:w-1/4 px-2 mb-4 md:mb-0">
+        <label for="customStartDate" class="text-[var(--theme-text-label)] font-medium mb-2 block">Start Date:</label>
+        <input type="date" id="customStartDate" [(ngModel)]="customStartDate" class="p-inputtext w-full">
+      </div>
+      <div class="w-full md:w-1/4 px-2 mb-4 md:mb-0">
+        <label for="customEndDate" class="text-[var(--theme-text-label)] font-medium mb-2 block">End Date:</label>
+        <input type="date" id="customEndDate" [(ngModel)]="customEndDate" class="p-inputtext w-full">
+      </div>
+      <div class="w-full md:w-1/4 px-2">
+        <button pButton type="button" label="Apply & Reload" icon="pi pi-refresh" class="p-button w-full h-12"></button>
+      </div>
+ 
+    </div>
+  </div>
+
+  Metrics Cards
+  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 gap-6 mb-6">
+    <div class="metric-card metric-card-accent">
+      <div class="metric-icon">
+        <i class="pi pi-user-plus text-2xl"></i>
+      </div>
+      <div>
+        <div class="metric-value">{{ newCustomersCountData || 0 }}</div>
+        <div class="metric-label">New Customers</div>
+      </div>
+    </div>
+    Sales Count
+    <div  *ngIf="salesTrends.length > 0" class="metric-card metric-card-success">
+      <div class="metric-icon">
+        <i class="pi pi-shopping-bag text-2xl"></i>
+      </div>
+      <div>
+        <div class="metric-value">{{ salesTrends[0].dailySalesCount || 0 }}</div>
+        <div class="metric-label">Sales Count</div>
+      </div>
+    </div>
+    Daily Revenue
+    <div *ngIf="salesTrends.length > 0" class="metric-card metric-card-error">
+      <div class="metric-icon">
+        <i class="pi pi-dollar text-2xl"></i>
+      </div>
+      <div>
+        <div class="metric-value">{{ salesTrends[0].dailyRevenue | number:'1.2-2' }}</div>
+        <div class="metric-label">Daily Revenue</div>
+      </div>
+    </div>
+    Inventory Value
+    <div class="metric-card metric-card-warning">
+      <div class="metric-icon">
+        <i class="pi pi-box text-2xl"></i>
+      </div>
+      <div>
+        <div class="metric-value">{{ totalInventoryValueData?.totalValue || 0 | number:'1.2-2' }}</div>
+        <div class="metric-label">Inventory Value</div>
+      </div>
+    </div>
+    Inventory Stock
+    <div class="metric-card metric-card-info">
+      <div class="metric-icon">
+        <i class="pi pi-inbox text-2xl"></i>
+      </div>
+      <div>
+        <div class="metric-value">{{ totalInventoryValueData?.totalItemsInStock || 0 }}</div>
+        <div class="metric-label">Total Stock</div>
+      </div>
+    </div>
+  </div>
+
+  Charts & Data Section
+  <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+    <div class="card lg:col-span-2">
+      <h3 class="text-xl font-bold text-[var(--theme-text-primary)] mb-4">Summary</h3>
+    </div>
+    <div class="card lg:col-span-2">
+      <h3 class="text-xl font-bold text-[var(--theme-text-primary)] mb-4">Top Customers</h3>
+      <app-dashboard-top-customer-view [params]="getDateParam"></app-dashboard-top-customer-view>
+    </div>
+    <div class="card">
+      <h3 class="text-xl font-bold text-[var(--theme-text-primary)] mb-4">Yearly Sales</h3>
+      <app-dashboard-chart-component></app-dashboard-chart-component>
+    </div>
+    <div class="card">
+      <h3 class="text-xl font-bold text-[var(--theme-text-primary)] mb-4">Sales Combo</h3>
+      <app-dashboard-chart-combo></app-dashboard-chart-combo>
+    </div>
+
+  </div>
+
+  Quick Links
+  <div class="card">
+    <div class="flex items-center mb-4">
+      <div class="w-1 h-8 bg-[var(--theme-accent-gradient,var(--theme-accent-primary))] rounded-full mr-4"></div>
+      <h3 class="text-xl font-bold text-[var(--theme-text-primary)]">Quick Links</h3>
+    </div>
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      <div class="quick-link-card" (click)="showcustomerGrid=true">
+        <div class="quick-link-icon icon-accent"><i class="pi pi-users text-3xl"></i></div>
+        <span class="quick-link-label">View Customers</span>
+      </div>
+      <div class="quick-link-card" (click)="showproductGrid=true">
+        <div class="quick-link-icon icon-success"><i class="pi pi-mobile text-3xl"></i></div>
+        <span class="quick-link-label">View Products</span>
+      </div>
+      <div class="quick-link-card" (click)="showInvoiceGrid=true">
+        <div class="quick-link-icon icon-warning"><i class="pi pi-pen-to-square text-3xl"></i></div>
+        <span class="quick-link-label">View Invoices</span>
+      </div>
+      <div class="quick-link-card" (click)="showPaymentGrid=true">
+        <div class="quick-link-icon icon-error"><i class="pi pi-money-bill text-3xl"></i></div>
+        <span class="quick-link-label">View Payments</span>
+      </div>
+    </div>
+  </div>
+
+  PrimeNG Dialogs
+  <p-dialog header="Customers" [(visible)]="showcustomerGrid" [modal]="true"
+    [style]="{ width: '95vw', maxWidth: '1400px' }">
+    <app-customer-list></app-customer-list>
+  </p-dialog>
+  <p-dialog header="Products" [(visible)]="showproductGrid" [modal]="true"
+    [style]="{ width: '95vw', maxWidth: '1400px' }">
+    <app-product-list></app-product-list>
+  </p-dialog>
+  <p-dialog header="Invoices" [(visible)]="showInvoiceGrid" [modal]="true"
+    [style]="{ width: '95vw', maxWidth: '1400px' }">
+    <app-invoice-view></app-invoice-view>
+  </p-dialog>
+  <p-dialog header="Payments" [(visible)]="showPaymentGrid" [modal]="true"
+    [style]="{ width: '95vw', maxWidth: '1400px' }">
+    <app-payment-list></app-payment-list>
+  </p-dialog>
+  <p-dialog header="Invoice" [(visible)]="showpdf" [modal]="true" [style]="{ width: '95vw', maxWidth: '1200px' }">
+    <app-invoice-print [Id]="dashboard.invoiceId"></app-invoice-print>
+  </p-dialog>
+  <p-dialog header="Permission" [(visible)]="showPermission" [modal]="true"
+    [style]="{ width: '95vw', maxWidth: '1200px' }">
+    <app-permissions></app-permissions>
+  </p-dialog>
+</div> -->
+<!-- admin-dashboard.component.html
+<p-toast></p-toast>
+<div class="admin-dashboard" [@fadeIn]="true">
+  <div class="dashboard-header card modern-card">
+    <h2 class="page-title retro-heading">Admin Dashboard</h2>
+    <div class="filters se-filter-bar">
+      <p-select [options]="periodOptions" [(ngModel)]="selectedPeriod" name="selectedPeriod" optionLabel="label"
+        optionValue="value" styleClass="p-inputtext-sm" (onChange)="onFilterChange()">
+      </p-select>
+      <div *ngIf="selectedPeriod === 'custom'" class="custom-date-filter">
+        <p-datepicker [(ngModel)]="customDateRange" selectionMode="range" [readonlyInput]="true"
+          placeholder="Select a date range" dateFormat="dd/mm/yy" styleClass="p-inputtext-sm">
+        </p-datepicker>
+        <button pButton type="button" label="Apply" icon="pi pi-check" class="p-button-sm modern-button"
+          (click)="onApplyCustomRange()"></button>
+      </div>
+    </div>
+  </div>
+
+  <div class="dashboard-body grid grid-cols-1 lg:grid-cols-2 gap-6">
+    <p-panel [toggleable]="true" [@panelAnimation] class="col-span-2">
+      <ng-template pTemplate="header">
+        <div class="flex justify-content-between align-items-center w-full">
+          <span>Charts Overview</span>
+          <ng-container *ngIf="dashboardData$ | async as data">
+            <button pButton icon="pi pi-search-plus" class="p-button-text"
+              (click)="openDialog('Charts Overview', data)"></button>
+          </ng-container>
+        </div>
+      </ng-template>
+      <ng-container *ngIf="dashboardData$ | async as data; else loadingState">
+        <app-dashboard-chart-combo [selectedPeriod]="selectedPeriod" [startDate]="startDate" [endDate]="endDate">
+        </app-dashboard-chart-combo>
+      </ng-container>
+      <ng-template #loadingState>
+        <p-skeleton width="100%" height="180px"></p-skeleton>
+      </ng-template>
+    </p-panel>
+
+    Dashboard Overview
+    <p-panel [toggleable]="true" [@panelAnimation] class="col-span-2">
+      <ng-template pTemplate="header">
+        <div class="flex justify-content-between align-items-center w-full">
+          <span>Dashboard Overview</span>
+          <ng-container *ngIf="dashboardData$ | async as data">
+            <button pButton icon="pi pi-search-plus" class="p-button-text"
+              (click)="openDialog('Dashboard Overview', data)"></button>
+          </ng-container>
+        </div>
+      </ng-template>
+      <ng-container *ngIf="dashboardData$ | async as data; else loadingState">
+        <app-dashboard-summary [summaryData]="data" [isLoading]="isLoading"></app-dashboard-summary>
+      </ng-container>
+      <ng-template #loadingState>
+        <p-skeleton width="100%" height="180px"></p-skeleton>
+      </ng-template>
+    </p-panel>
+
+    Quick Insights
+    <p-panel [toggleable]="true" [@panelAnimation] class="col-span-2">
+      <ng-template pTemplate="header">
+        <div class="flex justify-content-between align-items-center w-full">
+          <span>Quick Insights</span>
+          <ng-container *ngIf="dashboardData$ | async as data">
+            <button pButton icon="pi pi-search-plus" class="p-button-text"
+              (click)="openDialog('Quick Insights', data)"></button>
+          </ng-container>
+        </div>
+      </ng-template>
+      <ng-container *ngIf="dashboardData$ | async as data; else loadingState">
+        <div class="insights-grid grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div class="insight-card metric-card metric-card-success" [@fadeIn]>
+            <i class="pi pi-chart-line text-3xl"></i>
+            <div>Revenue Trend: {{ data.revenueTrend | json }} (Up 15%)</div>
+          </div>
+          <div class="insight-card metric-card metric-card-warning" [@fadeIn]>
+            <i class="pi pi-exclamation-triangle text-3xl"></i>
+            <div>Low Stock Alerts: {{ data.lowStock | json }}</div>
+          </div>
+          <div class="insight-card metric-card metric-card-info" [@fadeIn]>
+            <i class="pi pi-users text-3xl"></i>
+            <div>Customer Growth: {{ data.customerGrowth | json }} (New: 20%)</div>
+          </div>
+        </div>
+      </ng-container>
+      <ng-template #loadingState>
+        <p-skeleton width="100%" height="180px"></p-skeleton>
+      </ng-template>
+    </p-panel>
+
+    Product Analytics
+    <p-panel [toggleable]="true" [@panelAnimation] class="col-span-2">
+      <ng-template pTemplate="header">
+        <div class="flex justify-content-between align-items-center w-full">
+          <span>Product Analytics</span>
+          <ng-container *ngIf="productAnalytics$ | async as data">
+            <button pButton icon="pi pi-search-plus" class="p-button-text"
+              (click)="openDialog('Product Analytics', data)"></button>
+          </ng-container>
+        </div>
+      </ng-template>
+      <ng-container *ngIf="productAnalytics$ | async as data; else loadingState">
+        <app-analytic-dashboard [data]="data"></app-analytic-dashboard>
+      </ng-container>
+      <ng-template #loadingState>
+        <p-skeleton width="100%" height="180px"></p-skeleton>
+      </ng-template>
+    </p-panel>
+
+    Customer Analytics
+    <p-panel [toggleable]="true" [@panelAnimation] class="col-span-2">
+      <ng-template pTemplate="header">
+        <div class="flex justify-content-between align-items-center w-full">
+          <span>Customer Analytics</span>
+          <ng-container *ngIf="customerAnalytics$ | async as data">
+            <button pButton icon="pi pi-search-plus" class="p-button-text"
+              (click)="openDialog('Customer Analytics', data)"></button>
+          </ng-container>
+        </div>
+      </ng-template>
+      <ng-container *ngIf="customerAnalytics$ | async as data; else loadingState">
+        <app-dashboard-top-customer-view [data]="data"></app-dashboard-top-customer-view>
+      </ng-container>
+      <ng-template #loadingState>
+        <p-skeleton width="100%" height="180px"></p-skeleton>
+      </ng-template>
+    </p-panel>
+
+    Payment Analytics
+    <p-panel [toggleable]="true" [@panelAnimation] class="col-span-2">
+      <ng-template pTemplate="header">
+        <div class="flex justify-content-between align-items-center w-full">
+          <span>Payment Analytics</span>
+          <ng-container *ngIf="paymentAnalytics$ | async as data">
+            <button pButton icon="pi pi-search-plus" class="p-button-text"
+              (click)="openDialog('Payment Analytics', data)"></button>
+
+          </ng-container>
+        </div>
+      </ng-template>
+      <ng-container *ngIf="paymentAnalytics$ | async as data; else loadingState">
+        <app-paymentanalytics [data]="data"></app-paymentanalytics>
+      </ng-container>
+      <ng-template #loadingState>
+        <p-skeleton width="100%" height="180px"></p-skeleton>
+      </ng-template>
+    </p-panel>
+
+    Inventory Turnover
+    <p-panel [toggleable]="true" [@panelAnimation]> 
+      <ng-template pTemplate="header">
+        <div class="flex justify-content-between align-items-center w-full">
+          <span>Inventory Turnover</span>
+          <ng-container *ngIf="inventoryTurnover$ | async as data">
+            <button pButton icon="pi pi-search-plus" class="p-button-text"
+              (click)="openDialog('Inventory Turnover', data)"></button>
+          </ng-container>
+        </div>
+      </ng-template>
+      <ng-container *ngIf="inventoryTurnover$ | async as data; else loadingState">
+        <pre class="json-viewer">{{ data | json }}</pre>
+      </ng-container>
+      <ng-template #loadingState>
+        <p-skeleton width="100%" height="180px"></p-skeleton>
+      </ng-template>
+    </p-panel> 
+
+    Sales Forecast
+    <p-panel [toggleable]="true" [@panelAnimation] class="col-span-2">
+      <ng-template pTemplate="header">
+        <div class="flex justify-content-between align-items-center w-full">
+          <span>Sales Forecast</span>
+          <ng-container *ngIf="salesForecast$ | async as data">
+            <button pButton icon="pi pi-search-plus" class="p-button-text"
+              (click)="openDialog('Sales Forecast', data)"></button>
+          </ng-container>
+        </div>
+      </ng-template>
+      <ng-container *ngIf="salesForecast$ | async as data; else loadingState">
+        <app-sales-performance [data]="data"></app-sales-performance> </ng-container>
+      <ng-template #loadingState>
+        <p-skeleton width="100%" height="180px"></p-skeleton>
+      </ng-template>
+    </p-panel>
+
+  </div>
+
+  Generic Zoom Dialog
+  <p-dialog [(visible)]="showDialog" [modal]="true" [style]="{width: '80vw', height: '80vh'}"
+    header="{{ selectedPanelTitle }}" [draggable]="true" [resizable]="true" class="perfect-dialog">
+    <div class="p-4 overflow-auto h-full dialog-content">
+      <ng-container [ngSwitch]="selectedPanelTitle">
+        <app-dashboard-chart-combo *ngSwitchCase="'Charts Overview'" [selectedPeriod]="selectedPeriod"
+          [startDate]="startDate" [endDate]="endDate">
+        </app-dashboard-chart-combo>
+
+        <app-dashboard-summary *ngSwitchCase="'Dashboard Overview'" [summaryData]="selectedPanelData"
+          [isLoading]="false">
+        </app-dashboard-summary>
+
+        <div *ngSwitchCase="'Quick Insights'" class="insights-grid grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div class="insight-card metric-card metric-card-success" [@fadeIn]>
+            <i class="pi pi-chart-line text-3xl"></i>
+            <div>Revenue Trend: {{ selectedPanelData.revenueTrend | json }} (Up 15%)</div>
+          </div>
+          <div class="insight-card metric-card metric-card-warning" [@fadeIn]>
+            <i class="pi pi-exclamation-triangle text-3xl"></i>
+            <div>Low Stock Alerts: {{ selectedPanelData.lowStock | json }}</div>
+          </div>
+          <div class="insight-card metric-card metric-card-info" [@fadeIn]>
+            <i class="pi pi-users text-3xl"></i>
+            <div>Customer Growth: {{ selectedPanelData.customerGrowth | json }} (New: 20%)</div>
+          </div>
+        </div>
+
+        <app-analytic-dashboard *ngSwitchCase="'Product Analytics'" [data]="selectedPanelData">
+        </app-analytic-dashboard>
+
+        <pre *ngSwitchDefault class="json-viewer">{{ selectedPanelData | json }}</pre>
+      </ng-container>
+    </div>
+  </p-dialog>
+</div> -->

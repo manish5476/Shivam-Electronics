@@ -1,197 +1,163 @@
-/* dashboard-summary.component.css */
 :host {
   display: block;
+  font-family: 'Inter', sans-serif;
 }
 
-/* Metric Cards */
-.metric-card {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  padding: 1.5rem;
-  border-radius: 1rem;
-  background: rgba(255, 255, 255, 0.7);
-  backdrop-filter: blur(12px);
-  border: 1px solid var(--theme-border-primary);
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.06);
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
-
-.metric-card:hover {
-  transform: translateY(-6px);
-  box-shadow: 0 12px 25px rgba(0, 0, 0, 0.1);
-}
-
-.metric-icon {
-  width: 3.5rem;
-  height: 3.5rem;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.metric-content {
-  flex: 1;
-}
-
-.metric-value {
-  font-size: 2rem;
-  font-weight: 700;
-  color: var(--theme-text-primary);
-}
-
-.metric-label {
-  font-size: 0.9rem;
-  color: var(--theme-text-secondary);
-}
-
-/* Carousel */
-.carousel-container {
-  position: relative;
-  overflow: hidden;
-}
-
-.carousel-track {
-  display: flex;
-  transition: transform 0.6s ease-in-out;
-}
-
-.carousel-item {
-  min-width: 100%;
+.summary-container {
   padding: 1rem;
-  text-align: center;
-  background: var(--theme-bg-primary);
-  border: 1px solid var(--theme-border-primary);
-  border-radius: 1rem;
+  background-color: #f4f7fe;
+  border-radius: 16px;
+}
+
+/* KPI Grid */
+.kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.kpi-card {
+  background-color: #ffffff;
+  padding: 1.5rem;
+  border-radius: 16px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-}
-
-.carousel-item img {
-  width: 6rem;
-  height: 6rem;
-  object-fit: contain;
-  margin-bottom: 0.5rem;
-}
-
-.product-name {
-  font-weight: 600;
-  font-size: 1rem;
-  margin-bottom: 0.25rem;
-}
-
-.product-quantity {
-  font-size: 0.85rem;
-  color: var(--theme-text-secondary);
-}
-
-.carousel-controls {
   display: flex;
   justify-content: space-between;
-  margin-top: 0.75rem;
+  align-items: center;
+  border-left: 5px solid;
 }
 
-.carousel-controls button {
-  padding: 0.5rem 1rem;
-  border-radius: 9999px;
-  background: var(--theme-bg-secondary);
-  border: 1px solid var(--theme-border-primary);
-  transition: background-color 0.2s;
-}
+.kpi-card-revenue { border-color: #3b82f6; }
+.kpi-card-sales { border-color: #8b5cf6; }
+.kpi-card-profit { border-color: #22c55e; }
+.kpi-card-aov { border-color: #f97316; }
+.kpi-card-customers { border-color: #14b8a6; }
 
-.carousel-controls button:hover {
-  background-color: var(--theme-hover-bg);
-}
-
-.carousel-track {
-  transition: transform 0.5s ease-in-out;
-}
-
-/* :host {
+.kpi-title {
+  font-size: 0.9rem;
+  color: #64748b;
+  margin-bottom: 0.5rem;
   display: block;
 }
 
-d
-.metric-card {
+.kpi-value {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: #1e293b;
+}
+
+.kpi-icon {
+  font-size: 1.75rem;
+  color: #94a3b8;
+}
+
+/* Content Grid */
+.content-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  gap: 1.5rem;
+}
+
+/* Shared Card & List Styles */
+.dashboard-card {
+  background-color: #ffffff;
+  border-radius: 16px;
+  padding: 1.5rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  display: flex;
+  flex-direction: column;
+  min-height: 280px;
+}
+
+.card-header {
+  margin-bottom: 1.5rem;
+}
+
+.card-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #1e293b;
+  margin: 0;
+}
+
+.item-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.list-item {
   display: flex;
   align-items: center;
   gap: 1rem;
-  padding: 1.5rem;
-  border-radius: 1rem;
-  background: rgba(255, 255, 255, 0.7);
-  backdrop-filter: blur(12px);
-  border: 1px solid var(--theme-border-primary);
-  box-shadow: 0 8px 20px rgba(0,0,0,0.06);
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
-.metric-card:hover {
-  transform: translateY(-6px);
-  box-shadow: 0 12px 25px rgba(0,0,0,0.1);
-}
-.metric-icon {
-  width: 3.5rem;
-  height: 3.5rem;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-.metric-content { flex: 1; }
-.metric-value {
-  font-size: 2rem;
-  font-weight: 700;
-  color: var(--theme-text-primary);
-}
-.metric-label {
-  font-size: 0.9rem;
-  color: var(--theme-text-secondary);
 }
 
-d
-.carousel-container {
-  position: relative;
-  overflow: hidden;
-}
-.carousel-track {
-  display: flex;
-  transition: transform 0.6s ease-in-out;
-}
-.carousel-item {
-  min-width: 100%;
-  padding: 1rem;
-  text-align: center;
-  background: var(--theme-bg-primary);
-  border: 1px solid var(--theme-border-primary);
-  border-radius: 1rem;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-}
-.carousel-item img {
-  width: 6rem;
-  height: 6rem;
-  object-fit: contain;
-  margin-bottom: 0.5rem;
-}
-.product-name {
+.item-name {
   font-weight: 600;
-  font-size: 1rem;
+  color: #1e293b;
+  flex-grow: 1;
+}
+
+.item-value {
+  font-weight: 600;
+  color: #475569;
+}
+
+.item-value.negative { color: #ef4444; }
+
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 2rem 1rem;
+  color: #94a3b8;
+  flex-grow: 1;
+}
+
+.empty-state .pi {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+}
+.empty-state .success { color: #22c55e; }
+
+/* Product Carousel Card */
+.product-carousel-card {
+  padding-bottom: 2.5rem; /* Space for carousel indicators */
+}
+
+.product-item {
+  text-align: center;
+  padding: 1rem;
+}
+
+.product-image {
+  width: 120px;
+  height: 120px;
+  object-fit: contain;
+  margin: 0 auto 1rem auto;
+  border-radius: 12px;
+}
+
+.product-name {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #1e293b;
   margin-bottom: 0.25rem;
 }
+
 .product-quantity {
-  font-size: 0.85rem;
-  color: var(--theme-text-secondary);
+  font-size: 0.9rem;
+  color: #64748b;
 }
-.carousel-controls {
-  display: flex;
-  justify-content: space-between;
-  margin-top: 0.75rem;
+
+/* PrimeNG Carousel Overrides */
+:host ::ng-deep .p-carousel .p-carousel-indicators {
+  padding: 1rem;
 }
-.carousel-controls button {
-  padding: 0.5rem 1rem;
-  border-radius: 9999px;
-  background: var(--theme-bg-secondary);
-  border: 1px solid var(--theme-border-primary);
-  transition: background-color 0.2s;
+
+:host ::ng-deep .p-carousel .p-carousel-indicators .p-carousel-indicator.p-highlight button {
+  background-color: #3b82f6;
 }
-.carousel-controls button:hover {
-  background-color: var(--theme-hover-bg);
-} */

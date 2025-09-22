@@ -1,263 +1,60 @@
 <div class="analytics-container" *ngIf="data">
 
-  <!-- KPI Grid -->
-  <div class="kpi-grid">
-    <div class="kpi-card" *ngFor="let kpi of kpis; let i = index" [style.animation-delay.ms]="i * 100">
-      <div class="kpi-icon-wrapper">
-        <i [class]="'pi ' + kpi.icon"></i>
-      </div>
-      <div class="kpi-info">
-        <p class="kpi-title">{{ kpi.title }}</p>
-        <p class="kpi-value">{{ kpi.value }}</p>
-      </div>
+  <!-- Top Metrics Row -->
+  <div class="metrics-row">
+    <div class="metric-card" *ngFor="let kpi of kpis">
+      <div class="metric-title">{{ kpi.title }}</div>
+      <div class="metric-value">{{ kpi.value }} <span class="change {{kpi.change.direction}}">{{kpi.change.value}}%</span></div>
+      <!-- <p-chart type="line" [data]="kpi.chartData" [options]="smallChartOptions" class="small-chart"></p-chart> -->
     </div>
   </div>
 
-  <!-- Top Row: Products + Category -->
-  <div class="dashboard-grid top-row-grid">
-    <!-- Top Performing Products -->
-    <div class="dashboard-card top-products-card">
-      <div class="card-header">
-        <h3 class="section-title"><i class="pi pi-star-fill"></i> Top Performing Products</h3>
-      </div>
-      <div class="card-content">
-        <div class="tab-container">
-          <button class="tab-button" [class.active]="activeTab === 'profit'" (click)="activeTab='profit'">By Profit</button>
-          <button class="tab-button" [class.active]="activeTab === 'revenue'" (click)="activeTab='revenue'">By Revenue</button>
-          <button class="tab-button" [class.active]="activeTab === 'quantity'" (click)="activeTab='quantity'">By Quantity</button>
-        </div>
-        <div class="product-grid">
-          <div class="product-card" *ngFor="let product of getTopProducts(activeTab)">
-            <img [src]="product.thumbnail" (error)="onImageError($event)" [alt]="product.title" class="product-image" />
-            <div class="product-info">
-              <h4 class="product-title">{{ product.title }}</h4>
-              <p class="product-meta">Brand: {{ product.brand }}</p>
-              <p class="product-meta">Category: {{ formatCategoryName(product.category) }}</p>
-              <div class="product-stats">
-                <span>Revenue: {{ formatCurrency(product.totalRevenue) }}</span>
-                <span>Profit: {{ formatCurrency(product.grossProfit) }}</span>
-                <span>Quantity: {{ formatNumber(product.totalQuantity) }}</span>
-              </div>
-              <div class="product-tags" *ngIf="product.tags && product.tags[0]">
-                <span *ngFor="let tag of product.tags[0]" class="tag">{{ tag }}</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+  <!-- Middle Row: Top Products & Traffic -->
+  <div class="middle-row">
+    <div class="products-card">
+      <div class="card-title">Top Products <p-select [options]="periodOptions" [(ngModel)]="selectedPeriod" styleClass="small-selectp-select"></p-select></div>
+      <p-chart type="line" [data]="chartData" [options]="chartOptions"></p-chart>
     </div>
-
-    <!-- Performance by Category -->
-    <div class="dashboard-card category-card">
-      <div class="card-header">
-        <h3 class="section-title"><i class="pi pi-tags"></i> Performance by Category</h3>
-      </div>
-      <div class="card-content">
-        <div class="list-grid">
-          <div class="list-card" *ngFor="let category of data.performanceByCategory; let i=index">
-            <img [src]="category.thumbnails[0]" (error)="onImageError($event)" [alt]="formatCategoryName(category._id)" class="list-image" />
-            <div class="list-info">
-              <h4 class="list-title">{{ formatCategoryName(category._id) }}</h4>
-              <div class="progress-bar">
-                <div class="progress" [style.width.%]="calculatePercentage(category.grossProfit, maxCategoryProfit)" [style.backgroundColor]="colors[i % colors.length]"></div>
-              </div>
-              <p class="list-value profit">Profit: {{ formatCurrency(category.grossProfit) }}</p>
-            </div>
-          </div>
+    <div class="traffic-card">
+      <div class="card-title">Traffic <p-select [options]="periodOptions" [(ngModel)]="selectedPeriod" styleClass="small-selectp-select"></p-select></div>
+      <div class="traffic-list">
+        <div class="traffic-item" *ngFor="let item of trafficData">
+          <div class="traffic-label"><span class="traffic-dot" [style.background-color]="item.color"></span>{{item.label}}</div>
+          <div class="traffic-value">{{item.value}}%</div>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- Performance by Brand (Full Width Below) -->
-  <div class="dashboard-card brand-card">
-    <div class="card-header">
-      <h3 class="section-title"><i class="pi pi-bookmark-fill"></i> Performance by Brand</h3>
-    </div>
-    <div class="card-content">
-      <div class="list-grid brand-list-grid">
-        <div class="list-card" *ngFor="let brand of data.performanceByBrand; let i=index">
-          <img [src]="brand.thumbnails[0]" (error)="onImageError($event)" [alt]="brand._id" class="list-image" />
-          <div class="list-info">
-            <h4 class="list-title">{{ brand._id }}</h4>
-            <div class="progress-bar">
-              <div class="progress" [style.width.%]="calculatePercentage(brand.grossProfit, maxBrandProfit)" [style.backgroundColor]="colors[i % colors.length]"></div>
-            </div>
-            <p class="list-value profit">Profit: {{ formatCurrency(brand.grossProfit) }}</p>
-          </div>
-        </div>
+  <!-- Bottom Row: Leaderboard, Product List, Seller List -->
+  <div class="bottom-row">
+    <div class="leaderboard-card">
+      <div class="card-title">Leaderboard ...</div>
+      <div class="list-item" *ngFor="let leader of leaders">
+        <div class="avatar" [style.background-color]="leader.color">{{leader.initials}}</div>
+        <div class="name">{{leader.name}}</div>
+        <div class="amount">{{leader.amount}} <span class="change {{leader.changeDirection}}"></span></div>
       </div>
     </div>
-  </div>
-</div>
-
-
-
-
-
-<!-- <div class="analytics-container" *ngIf="data">
-  <div class="kpi-grid">
-    <div class="kpi-card" *ngFor="let kpi of kpis; let i = index" [style.animation-delay.ms]="i * 100">
-      <div class="kpi-icon-wrapper" [ngClass]="kpi.iconClass">
-        <i [class]="'pi ' + kpi.icon"></i>
-      </div>
-      <div class="kpi-info">
-        <p class="kpi-title">{{ kpi.title }}</p>
-        <p class="kpi-value">{{ kpi.value }}</p>
-      </div>
-    </div>
-  </div>
-
-  <div class="main-content-grid">
-    <div class="section-card">
-      <h3 class="section-title"><i class="pi pi-star-fill"></i> Top Performing Products</h3>
-      <div class="tab-container">
-        <button class="tab-button" [class.active]="activeTab === 'profit'" (click)="activeTab = 'profit'">By Profit</button>
-        <button class="tab-button" [class.active]="activeTab === 'revenue'" (click)="activeTab = 'revenue'">By Revenue</button>
-        <button class="tab-button" [class.active]="activeTab === 'quantity'" (click)="activeTab = 'quantity'">By Quantity</button>
-      </div>
-      <div class="content-wrapper">
-        <div class="product-grid">
-          <div class="product-card" *ngFor="let product of getTopProducts(activeTab)">
-            <img [src]="product.thumbnail" (error)="onImageError($event)" [alt]="product.title" class="product-image" />
-            <div class="product-info">
-              <h4 class="product-title">{{ product.title }}</h4>
-              <p class="product-meta">Brand: {{ product.brand }}</p>
-              <p class="product-meta">Category: {{ formatCategoryName(product.category) }}</p>
-              <div class="product-stats">
-                <span>Revenue: {{ formatCurrency(product.totalRevenue) }}</span>
-                <span>Profit: {{ formatCurrency(product.grossProfit) }}</span>
-                <span>Quantity: {{ formatNumber(product.totalQuantity) }}</span>
-              </div>
-              <div class="product-tags" *ngIf="product.tags && product.tags[0]">
-                <span *ngFor="let tag of product.tags[0]" class="tag">{{ tag }}</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="side-grid">
-      <div class="section-card">
-        <h3 class="section-title"><i class="pi pi-tags"></i> Performance by Category</h3>
-        <div class="content-wrapper">
-          <div class="list-grid">
-            <div class="list-card" *ngFor="let category of data.performanceByCategory; let i = index">
-              <img [src]="category.thumbnails[0]" (error)="onImageError($event)" [alt]="formatCategoryName(category._id)" class="list-image" />
-              <div class="list-info">
-                <h4 class="list-title">{{ formatCategoryName(category._id) }}</h4>
-                <div class="progress-bar">
-                  <div class="progress" [style.width.%]="calculatePercentage(category.grossProfit, maxCategoryProfit)" [style.backgroundColor]="colors[i % colors.length]"></div>
-                </div>
-                <p class="list-value profit">Profit: {{ formatCurrency(category.grossProfit) }}</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="section-card">
-        <h3 class="section-title"><i class="pi pi-bookmark-fill"></i> Performance by Brand</h3>
-        <div class="content-wrapper">
-          <div class="list-grid">
-            <div class="list-card" *ngFor="let brand of data.performanceByBrand; let i = index">
-              <img [src]="brand.thumbnails[0]" (error)="onImageError($event)" [alt]="brand._id" class="list-image" />
-              <div class="list-info">
-                <h4 class="list-title">{{ brand._id }}</h4>
-                <div class="progress-bar">
-                  <div class="progress" [style.width.%]="calculatePercentage(brand.grossProfit, maxBrandProfit)" [style.backgroundColor]="colors[i % colors.length]"></div>
-                </div>
-                <p class="list-value profit">Profit: {{ formatCurrency(brand.grossProfit) }}</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div> -->
-<!-- <div class="analytics-container" *ngIf="data">
-  KPI Summary Grid
-  <div class="kpi-grid">
-    <div class="kpi-card" *ngFor="let kpi of kpis">
-      <div class="kpi-icon-wrapper" [ngClass]="kpi.iconClass">
-        <i [class]="'pi ' + kpi.icon"></i>
-      </div>
-      <div class="kpi-info">
-        <p class="kpi-title">{{ kpi.title }}</p>
-        <p class="kpi-value">{{ kpi.value }}</p>
-      </div>
-    </div>
-  </div>
-
-  Top Performing Products Section
-  <div class="section-card">
-    <h3 class="section-title"><i class="pi pi-star-fill"></i> Top Performing Products</h3>
-    <div class="tab-container">
-      <button class="tab-button" [class.active]="activeTab === 'profit'" (click)="activeTab = 'profit'">By Profit</button>
-      <button class="tab-button" [class.active]="activeTab === 'revenue'" (click)="activeTab = 'revenue'">By Revenue</button>
-      <button class="tab-button" [class.active]="activeTab === 'quantity'" (click)="activeTab = 'quantity'">By Quantity</button>
-    </div>
-    <div class="product-grid">
-      <div class="product-card" *ngFor="let product of getTopProducts(activeTab)">
-        <img [src]="product.thumbnail" (error)="onImageError($event)" [alt]="product.title" class="product-image" />
+    <div class="product-list-card">
+      <div class="card-title">Product List ...</div>
+      <div class="list-item" *ngFor="let product of products">
+        <img [src]="product.image" (error)="onImageError($event)" alt="{{product.name}}" class="product-img">
         <div class="product-info">
-          <h4 class="product-title">{{ product.title }}</h4>
-          <p class="product-meta">Brand: {{ product.brand }}</p>
-          <p class="product-meta">Category: {{ formatCategoryName(product.category) }}</p>
-          <div class="product-stats">
-            <span>Revenue: {{ formatCurrency(product.totalRevenue) }}</span>
-            <span>Profit: {{ formatCurrency(product.grossProfit) }}</span>
-            <span>Quantity: {{ formatNumber(product.totalQuantity) }}</span>
-          </div>
-          <div class="product-tags">
-            <span *ngFor="let tag of product.tags[0]" class="tag">{{ tag }}</span>
-          </div>
+          <div class="product-name">{{product.name}}</div>
+          <div class="product-user">{{product.user}}</div>
         </div>
+        <span class="arrow {{product.arrow}}"></span>
+      </div>
+    </div>
+    <div class="seller-list-card">
+      <div class="card-title">Seller List ...</div>
+      <div class="list-item" *ngFor="let seller of sellers">
+        <img [src]="seller.photo" (error)="onImageError($event)" alt="{{seller.name}}" class="seller-img">
+        <div class="seller-name">{{seller.name}}</div>
+        <div class="rating">★ {{seller.rating}} ...</div>
       </div>
     </div>
   </div>
 
-  Performance By Category Section
-  <div class="section-card">
-    <h3 class="section-title"><i class="pi pi-tags"></i> Performance by Category</h3>
-    <div class="category-grid">
-      <div class="category-card" *ngFor="let category of data.performanceByCategory; let i = index">
-        <img [src]="category.thumbnails[0]" (error)="onImageError($event)" [alt]="formatCategoryName(category._id)" class="category-image" />
-        <div class="category-info">
-          <h4 class="category-title">{{ formatCategoryName(category._id) }}</h4>
-          <div class="progress-bar">
-            <div class="progress" [style.width.%]="calculatePercentage(category.grossProfit, maxCategoryProfit)" [style.backgroundColor]="colors[i % colors.length]"></div>
-          </div>
-          <p class="category-value">Revenue: {{ formatCurrency(category.totalRevenue) }}</p>
-          <p class="category-value profit">Profit: {{ formatCurrency(category.grossProfit) }}</p>
-          <div class="category-tags">
-            <span *ngFor="let tag of category.tags[0]" class="tag">{{ tag }}</span>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  Performance By Brand Section
-  <div class="section-card">
-    <h3 class="section-title"><i class="pi pi-bookmark-fill"></i> Performance by Brand</h3>
-    <div class="brand-grid">
-      <div class="brand-card" *ngFor="let brand of data.performanceByBrand; let i = index">
-        <img [src]="brand.thumbnails[0]" (error)="onImageError($event)" [alt]="brand._id" class="brand-image" />
-        <div class="brand-info">
-          <h4 class="brand-title">{{ brand._id }}</h4>
-          <div class="progress-bar">
-            <div class="progress" [style.width.%]="calculatePercentage(brand.grossProfit, maxBrandProfit)" [style.backgroundColor]="colors[i % colors.length]"></div>
-          </div>
-          <p class="brand-value">Revenue: {{ formatCurrency(brand.totalRevenue) }}</p>
-          <p class="brand-value profit">Profit: {{ formatCurrency(brand.grossProfit) }}</p>
-          <div class="brand-tags">
-            <span *ngFor="let tag of brand.tags[0]" class="tag">{{ tag }}</span>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div> -->
+</div>

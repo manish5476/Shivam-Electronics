@@ -1,201 +1,97 @@
-/* admin-dashboard.component.css */
 :host {
   display: block;
-  background: linear-gradient(to bottom, var(--theme-body-gradient-start), var(--theme-body-gradient-end));
 }
 
+.admin-dashboard {
+  padding: 1.5rem;
+  background-color: #f4f7fe;
+  min-height: 100vh;
+  font-family: 'Inter', sans-serif;
+}
+
+/* Header */
 .dashboard-header {
-  box-shadow: var(--ui-shadow-hover);
-  transition: all 0.3s ease;
-  border-radius: var(--ui-border-radius);
-}
-
-.dashboard-body {
-  animation: fadeIn 0.5s ease;
-}
-
-/* Add to your common CSS if not there */
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(20px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-/* Fixed height and scrollable for panel contents */
-.p-panel .p-panel-content {
-  max-height: 400px; /* Fixed height for consistency */
-  overflow-y: auto;
-  padding: 1rem;
-  border-radius: 0 0 var(--ui-border-radius) var(--ui-border-radius);
-  background-color: var(--theme-bg-secondary);
-  transition: all 0.3s ease;
-}
-
-/* Custom scrollbar for perfect UI */
-.p-panel .p-panel-content::-webkit-scrollbar {
-  width: 8px;
-}
-
-.p-panel .p-panel-content::-webkit-scrollbar-track {
-  background: var(--theme-scroll-track);
-  border-radius: 4px;
-}
-
-.p-panel .p-panel-content::-webkit-scrollbar-thumb {
-  background: var(--theme-scroll-thumb);
-  border-radius: 4px;
-  transition: background 0.3s;
-}
-
-.p-panel .p-panel-content::-webkit-scrollbar-thumb:hover {
-  background: var(--theme-accent-primary);
-}
-
-/* For insights grid */
-.insights-grid {
-  max-height: 300px;
-  overflow-y: auto;
-}
-
-/* Perfect dialog styles */
-.perfect-dialog .p-dialog-content {
-  background: var(--theme-bg-primary);
-  border-radius: var(--ui-border-radius);
-  box-shadow: var(--ui-shadow-hover);
-  padding: 0;
-  overflow: hidden;
-}
-
-.dialog-content {
-  height: 100%;
-  overflow-y: auto;
-  padding: 1.5rem;
-}
-
-/* Better JSON viewer */
-.json-viewer {
-  background: var(--theme-bg-ternary);
-  padding: 1rem;
-  border-radius: var(--ui-border-radius);
-  font-family: monospace;
-  white-space: pre-wrap;
-  word-break: break-all;
-  max-height: 100%;
-  overflow: auto;
-  box-shadow: inset 0 0 10px rgba(0,0,0,0.05);
-}
-
-/* --- Metric Card Styles (enhanced for perfection) --- */
-.metric-card {
-  background-color: var(--theme-bg-secondary);
-  border: var(--ui-border-width, 1px) solid var(--theme-border-primary);
-  border-left: 5px solid transparent; /* Dynamic left border */
-  border-radius: var(--ui-border-radius);
-  padding: 1.25rem;
   display: flex;
+  justify-content: space-between;
   align-items: center;
-  gap: 1.25rem;
-  box-shadow: var(--ui-shadow);
-  transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
-  cursor: default;
+  margin-bottom: 2rem;
 }
 
-.metric-card:hover {
-  transform: translateY(-4px);
-  box-shadow: var(--ui-shadow-hover);
-  border-left-color: var(--theme-accent-primary);
-}
-
-.metric-icon {
-  flex-shrink: 0;
-  width: 3.5rem;
-  height: 3.5rem;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.75rem;
-  transition: transform 0.3s ease;
-}
-
-.metric-card:hover .metric-icon {
-  transform: scale(1.1);
-}
-
-.metric-value {
-  font-size: 1.75rem;
+.page-title {
+  font-size: 2rem;
   font-weight: 700;
-  color: var(--theme-text-primary);
-  overflow: hidden;
-  text-overflow: ellipsis;
+  color: #1e293b;
 }
 
-.metric-label {
-  font-size: 0.875rem;
-  color: var(--theme-text-secondary);
-  font-weight: 500;
-}
-
-/* Coloring for metric cards based on theme variables */
-.metric-card-accent { border-left-color: var(--theme-accent-primary); }
-.metric-card-accent .metric-icon { background-color: var(--theme-accent-primary-light); color: var(--theme-accent-primary); }
-
-.metric-card-success { border-left-color: var(--theme-success-primary); }
-.metric-card-success .metric-icon { background-color: rgba(40, 167, 69, 0.1); color: var(--theme-success-primary); }
-
-.metric-card-error { border-left-color: var(--theme-error-primary); }
-.metric-card-error .metric-icon { background-color: rgba(220, 53, 69, 0.1); color: var(--theme-error-primary); }
-
-.metric-card-warning { border-left-color: var(--theme-warning-primary); }
-.metric-card-warning .metric-icon { background-color: rgba(255, 193, 7, 0.1); color: var(--theme-warning-primary); }
-
-.metric-card-info { border-left-color: #0ea5e9; }
-.metric-card-info .metric-icon { background-color: rgba(14, 165, 233, 0.1); color: #0ea5e9; }
-
-/* --- Quick Link Styles (enhanced) --- */
-.quick-link-card {
-  background-color: var(--theme-bg-primary);
-  border: var(--ui-border-width) solid var(--theme-border-secondary);
-  border-radius: var(--ui-border-radius);
-  padding: 1.5rem;
-  text-align: center;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  box-shadow: var(--ui-shadow);
-}
-
-.quick-link-card:hover {
-  transform: translateY(-4px) scale(1.02);
-  box-shadow: var(--ui-shadow-hover);
-  background-color: var(--theme-hover-bg);
-}
-
-.quick-link-icon {
-  margin: 0 auto 1rem auto;
-  width: 4rem;
-  height: 4rem;
-  border-radius: 50%;
+.filters {
   display: flex;
+  gap: 1rem;
   align-items: center;
-  justify-content: center;
-  transition: transform 0.3s ease;
 }
 
-.quick-link-card:hover .quick-link-icon {
-  transform: rotate(360deg);
+.custom-date-filter {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
 }
 
-.quick-link-label {
+/* Dashboard Grid */
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+  gap: 1.5rem;
+}
+
+/* Reusable Card Style */
+.dashboard-card {
+  background-color: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  display: flex;
+  flex-direction: column;
+  min-height: 30rem; /* Ensure consistent card height */
+  transition: all 0.3s ease;
+}
+.dashboard-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.07);
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.5rem 1.5rem 0 1.5rem;
+  flex-shrink: 0;
+}
+
+.card-title {
+  font-size: 1.25rem;
   font-weight: 600;
-  color: var(--theme-text-primary);
-  transition: color 0.3s ease;
+  color: #1e293b;
+  margin: 0;
 }
 
-.quick-link-card:hover .quick-link-label {
-  color: var(--theme-accent-primary);
+.card-content {
+  padding: 1rem; /* Reduced padding for child components that have their own */
+  flex-grow: 1;
+  overflow: auto; /* Allow content to scroll if it overflows */
 }
 
-.quick-link-icon.icon-accent { background-color: var(--theme-accent-primary-light); color: var(--theme-accent-primary); }
-.quick-link-icon.icon-success { background-color: rgba(40, 167, 69, 0.1); color: var(--theme-success-primary); }
-.quick-link-icon.icon-warning { background-color: rgba(255, 193, 7, 0.1); color: var(--theme-warning-primary); }
-.quick-link-icon.icon-error { background-color: rgba(220, 53, 69, 0.1); color: var(--theme-error-primary); }
+/* Dialog Styling */
+:host ::ng-deep .modern-dialog .p-dialog-header {
+  border-bottom: 1px solid #e2e8f0;
+  background: #ffffff;
+  color: #1e293b;
+  font-weight: 600;
+  padding: 1.5rem;
+}
 
+:host ::ng-deep .modern-dialog .p-dialog-content {
+  background: #f4f7fe;
+  padding: 1.5rem;
+}
+
+:host ::ng-deep .modern-dialog .p-dialog-header .p-dialog-header-icon {
+  color: #64748b;
+}
