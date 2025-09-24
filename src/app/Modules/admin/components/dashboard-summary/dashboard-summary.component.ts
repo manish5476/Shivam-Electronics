@@ -18,7 +18,6 @@ import { animate, style, transition, trigger } from '@angular/animations';
     ButtonModule, 
     AvatarModule,
     CurrencyPipe,
-    DecimalPipe
   ],
   template: `
     <div class="summary-container" *ngIf="!isLoading && summaryData; else loadingState" @fadeInUp>

@@ -1,47 +1,48 @@
-// admin-dashboard.component.ts
-import { Component, OnInit, inject } from '@angular/core';
+// src/app/features/dashboard/admin-dashboard.component.ts
+import { Component, OnInit, inject, ViewChild, AfterViewInit } from '@angular/core';
 import { trigger, state, style, animate, transition } from '@angular/animations';
-import { Observable, BehaviorSubject, of } from 'rxjs';
-import { switchMap, catchError, finalize, map } from 'rxjs/operators';
+import { BehaviorSubject, concat, of } from 'rxjs';
+import { switchMap, catchError, finalize, map, tap } from 'rxjs/operators';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
-// Import our powerful services
-import { DashboardService } from '../../../core/services/dashboard.service';
+// Gridstack
+import { GridstackComponent, GridstackItemComponent } from 'gridstack/dist/angular';
+import { GridStack, GridStackOptions, GridStackWidget } from 'gridstack';
 
-// Import PrimeNG Modules for the advanced UI
+// PrimeNG Modules
 import { ButtonModule } from 'primeng/button';
 import { DropdownModule } from 'primeng/dropdown';
 import { SkeletonModule } from 'primeng/skeleton';
 import { CalendarModule } from 'primeng/calendar';
 import { MessageService } from 'primeng/api';
 import { ToastModule } from 'primeng/toast';
-import { CardModule } from 'primeng/card';
 import { PanelModule } from 'primeng/panel';
-import { DatePickerModule } from 'primeng/datepicker';
-import { DialogModule } from 'primeng/dialog'; // Added for dialog
+import { DialogModule } from 'primeng/dialog';
+import { ToolbarModule } from 'primeng/toolbar';
 
-// Import our child components (assuming they exist; you can create placeholders if needed)
+// Child components
 import { DashboardSummaryComponent } from '../components/dashboard-summary/dashboard-summary.component';
 import { DashboardChartComboComponent } from '../components/dashboard-chart-combo/dashboard-chart-combo.component';
-import { Select } from 'primeng/select';
 import { AnalyticDashboardComponent } from "../components/analytic-dashboard/analytic-dashboard.component";
 import { DashboardTopCustomerViewComponent } from "../components/dashboard-top-customer-view/dashboard-top-customer-view.component";
 import { PaymentanalyticsComponent } from "../components/paymentanalytics/paymentanalytics.component";
 import { SalesPerformanceComponent } from "../components/sales-performace/sales-performace.component";
+import { Select } from 'primeng/select';
+
+// Dashboard Service & Interfaces
+import { DashboardService } from '../../../core/services/dashboard.service';
 
 @Component({
   selector: 'app-admin-dashboard',
   standalone: true,
   imports: [
-    CommonModule, FormsModule, DatePickerModule, ButtonModule, DropdownModule, SkeletonModule, Select,
-    CalendarModule, ToastModule, CardModule, PanelModule, DialogModule,
-    DashboardSummaryComponent, DashboardChartComboComponent,
-    AnalyticDashboardComponent,
-    DashboardTopCustomerViewComponent,
-    PaymentanalyticsComponent,
-    SalesPerformanceComponent
-],
+    CommonModule, FormsModule, ButtonModule, DropdownModule, SkeletonModule,
+    CalendarModule, ToastModule, PanelModule, DialogModule, ToolbarModule,
+    GridstackComponent, GridstackItemComponent, Select,
+    DashboardSummaryComponent, DashboardChartComboComponent, AnalyticDashboardComponent,
+    DashboardTopCustomerViewComponent, PaymentanalyticsComponent, SalesPerformanceComponent
+  ],
   templateUrl: './admin-dashboard.component.html',
   styleUrls: ['./admin-dashboard.component.css'],
   providers: [MessageService],
@@ -55,101 +56,318 @@ import { SalesPerformanceComponent } from "../components/sales-performace/sales-
     ]),
   ],
 })
-export class AdminDashboardComponent implements OnInit {
+export class AdminDashboardComponent implements OnInit, AfterViewInit {
   private dashboardService = inject(DashboardService);
   private messageService = inject(MessageService);
 
+  @ViewChild(GridstackComponent) gridstackComponent!: GridstackComponent;
+  private grid!: GridStack;
+  public gridOptions: GridStackOptions = { margin: 10, float: true, cellHeight: '10rem' };
+  public isGridLocked = false;
+  private readonly LAYOUT_KEY = 'dashboardLayout_v3';
+
+  // UI state
   isLoading = true;
-
-  // Observables for each section
-  dashboardData$!: Observable<any>;
-  productAnalytics$!: Observable<any>;
-  customerAnalytics$!: Observable<any>;
-  paymentAnalytics$!: Observable<any>;
-  salesAnalytics$!: Observable<any>;
-  inventoryTurnover$!: Observable<any>;
-  salesForecast$!: Observable<any>; // Note: Forecast might not use period/dates, but we can pass if needed
-
-  periodOptions: any[] = [
-    { label: 'Today', value: 'today' },
-    { label: 'Last 7 Days', value: 'last7days' },
-    { label: 'Last 30 Days', value: 'last30days' },
-    { label: 'This Month', value: 'thismonth' },
-    { label: 'This Year', value: 'thisyear' },
-    { label: 'Custom Range', value: 'custom' }
-  ];
-  selectedPeriod: string = 'last30days';
-  customDateRange: Date[] | undefined;
-
-  startDate: string | undefined;
-  endDate: string | undefined;
-
-  private refreshTrigger = new BehaviorSubject<{ period?: string, startDate?: string, endDate?: string }>({ period: this.selectedPeriod });
-
-  // For generic dialog
-  showDialog: boolean = false;
-  selectedPanelTitle: string = '';
+  showDialog = false;
+  selectedPanelTitle = '';
   selectedPanelData: any;
 
-  ngOnInit(): void {
-    // Common pipeline for all sections
-    const dataPipe = (serviceCall: (period?: string, startDate?: string, endDate?: string) => Observable<any>) =>
-      this.refreshTrigger.pipe(
-        switchMap(filters => {
-          this.isLoading = true;
-          return serviceCall(filters.period, filters.startDate, filters.endDate).pipe(
-            map(response => response?.data || response), // Extract data if wrapped
-            finalize(() => this.isLoading = false),
-            catchError(err => {
-              this.messageService.add({ severity: 'error', summary: 'Data Error', detail: 'Failed to load data.' });
-              console.error('Failed to load data', err);
-              return of({}); // Return empty object on error
-            })
-          );
-        })
-      );
+  // Filters
+  public periodOptions: any[] = [
+    { label: 'Today', value: 'today' }, { label: 'Last 7 Days', value: 'last7days' },
+    { label: 'Last 30 Days', value: 'last30days' }, { label: 'This Month', value: 'thismonth' },
+    { label: 'This Year', value: 'thisyear' }, { label: 'Custom Range', value: 'custom' }
+  ];
+  public limitOptions: any[] = [
+    { label: 'Top 5', value: 5 }, { label: 'Top 10', value: 10 }, { label: 'Top 20', value: 20 }
+  ];
+  public selectedPeriod: string = 'last30days';
+  public dataLimit: number = 5;
+  public customDateRange: Date[] | undefined;
+  public startDate: string | undefined;
+  public endDate: string | undefined;
 
-    this.dashboardData$ = dataPipe((p, s, e) => this.dashboardService.getDashboardOverview(p, s, e));
-    this.productAnalytics$ = dataPipe((p, s, e) => this.dashboardService.getProductAnalytics(p, 5, s, e));
-    this.customerAnalytics$ = dataPipe((p, s, e) => this.dashboardService.getCustomerAnalytics(p, 5, s, e));
-    this.paymentAnalytics$ = dataPipe((p, s, e) => this.dashboardService.getPaymentAnalytics(p, s, e));
-    // this.salesAnalytics$ = dataPipe((p, s, e) => this.dashboardService.getSalesAnalytics(undefined, p, s, e)); // Uncommented and assumed params
-    this.inventoryTurnover$ = dataPipe((p, s, e) => this.dashboardService.getInventoryTurnover(p, s, e));
-    this.salesForecast$ = dataPipe((p, s, e) => this.dashboardService.getSalesForecast()); // No params for forecast
+  private refreshTrigger = new BehaviorSubject<{ period: string, startDate?: string, endDate?: string, limit: number }>({
+    period: this.selectedPeriod,
+    limit: this.dataLimit
+  });
+
+  // Data holders (populated sequentially)
+  enhancedKpiSummary: any;
+  kpiSummary: any;
+  overview: any;
+  productAnalytics: any;
+  customerAnalytics: any;
+  paymentAnalytics: any;
+  inventoryTurnover: any;
+  salesForecast: any;
+  salesTrends: any;
+  salesCharts: any;
+  yearlySales: any;
+  monthlySales: any;
+  weeklySales: any;
+
+  // Grid widgets
+  public widgets: GridStackWidget[] = [
+    { id: 'kpiSummary', x: 0, y: 0, w: 12, h: 2, content: 'KPI Summary' },
+    { id: 'chartsOverview', x: 0, y: 2, w: 12, h: 4, content: 'Charts Overview' },
+    { id: 'productAnalytics', x: 0, y: 6, w: 6, h: 5, content: 'Product Analytics' },
+    { id: 'customerAnalytics', x: 6, y: 6, w: 6, h: 5, content: 'Customer Analytics' },
+  ];
+
+  ngOnInit(): void {
+    // on filter change / initial trigger -> start full sequential load
+    this.refreshTrigger.subscribe(() => this.loadDashboardSequential());
+    // initial trigger
+    this.triggerRefresh();
   }
 
-  onFilterChange(): void {
-    if (this.selectedPeriod !== 'custom') {
-      this.customDateRange = undefined;
-      this.startDate = undefined;
-      this.endDate = undefined;
-      this.refreshTrigger.next({ period: this.selectedPeriod });
+  ngAfterViewInit(): void {
+    if (this.gridstackComponent?.grid) {
+      this.grid = this.gridstackComponent.grid;
+      this.loadLayout();
+    } else {
+      console.error('Dashboard grid could not be initialized.');
+      this.messageService.add({ severity: 'error', summary: 'Fatal Error', detail: 'Dashboard layout component failed to load.' });
     }
+  }
+
+  private loadDashboardSequential(): void {
+    this.isLoading = true;
+
+    // Create the concat sequence of all API calls (each call uses cached value by default)
+    concat(
+      this.dashboardService.getEnhancedKpiSummary(this.selectedPeriod, this.startDate, this.endDate).pipe(
+        tap(res => (this.enhancedKpiSummary = (res && res.data) ? res.data : res)),
+        catchError(err => {
+          this.handleError('Enhanced KPI Summary', err);
+          return of(null);
+        })
+      ),
+      this.dashboardService.getKpiSummary(this.selectedPeriod, this.startDate, this.endDate).pipe(
+        tap(res => (this.kpiSummary = (res && res.data) ? res.data : res)),
+        catchError(err => {
+          this.handleError('KPI Summary', err);
+          return of(null);
+        })
+      ),
+      this.dashboardService.getDashboardOverview(this.selectedPeriod, this.startDate, this.endDate).pipe(
+        tap(res => (this.overview = (res && res.data) ? res.data : res)),
+        catchError(err => {
+          this.handleError('Overview', err);
+          return of(null);
+        })
+      ),
+      this.dashboardService.getProductAnalytics(this.selectedPeriod, this.dataLimit, this.startDate, this.endDate).pipe(
+        tap(res => (this.productAnalytics = (res && res.data) ? res.data : res)),
+        catchError(err => {
+          this.handleError('Product Analytics', err);
+          return of(null);
+        })
+      ),
+      this.dashboardService.getCustomerAnalytics(this.selectedPeriod, this.dataLimit, this.startDate, this.endDate).pipe(
+        tap(res => (this.customerAnalytics = (res && res.data) ? res.data : res)),
+        catchError(err => {
+          this.handleError('Customer Analytics', err);
+          return of(null);
+        })
+      ),
+      this.dashboardService.getPaymentAnalytics(this.selectedPeriod, this.startDate, this.endDate).pipe(
+        tap(res => (this.paymentAnalytics = (res && res.data) ? res.data : res)),
+        catchError(err => {
+          this.handleError('Payment Analytics', err);
+          return of(null);
+        })
+      ),
+      this.dashboardService.getInventoryTurnover(this.selectedPeriod, this.startDate, this.endDate).pipe(
+        tap(res => (this.inventoryTurnover = (res && res.data) ? res.data : res)),
+        catchError(err => {
+          this.handleError('Inventory Turnover', err);
+          return of(null);
+        })
+      ),
+      this.dashboardService.getSalesForecast(this.selectedPeriod, this.startDate, this.endDate).pipe(
+        tap(res => (this.salesForecast = (res && res.data) ? res.data : res)),
+        catchError(err => {
+          this.handleError('Sales Forecast', err);
+          return of(null);
+        })
+      ),
+      this.dashboardService.getSalesTrends(this.selectedPeriod, this.startDate, this.endDate).pipe(
+        tap(res => (this.salesTrends = (res && res.data) ? res.data : res)),
+        catchError(err => {
+          this.handleError('Sales Trends', err);
+          return of(null);
+        })
+      ),
+      this.dashboardService.getSalesCharts(this.selectedPeriod, this.startDate, this.endDate).pipe(
+        tap(res => (this.salesCharts = (res && res.data) ? res.data : res)),
+        catchError(err => {
+          this.handleError('Sales Charts', err);
+          return of(null);
+        })
+      ),
+      this.dashboardService.getYearlySales(this.selectedPeriod).pipe(
+        tap(res => (this.yearlySales = (res && res.data) ? res.data : res)),
+        catchError(err => {
+          this.handleError('Yearly Sales', err);
+          return of(null);
+        })
+      ),
+      this.dashboardService.getMonthlySales(this.selectedPeriod).pipe(
+        tap(res => (this.monthlySales = (res && res.data) ? res.data : res)),
+        catchError(err => {
+          this.handleError('Monthly Sales', err);
+          return of(null);
+        })
+      ),
+      this.dashboardService.getWeeklySales(this.selectedPeriod).pipe(
+        tap(res => (this.weeklySales = (res && res.data) ? res.data : res)),
+        catchError(err => {
+          this.handleError('Weekly Sales', err);
+          return of(null);
+        })
+      )
+    ).pipe(
+      finalize(() => {
+        this.isLoading = false;
+        this.messageService.add({ severity: 'success', summary: 'Dashboard', detail: 'Loaded dashboard data.' });
+      })
+    ).subscribe();
+  }
+
+  // --- Per-panel refresh methods (forceRefresh = true) ---
+  refreshKpi(): void {
+    this.isLoading = true;
+    this.dashboardService.getEnhancedKpiSummary(this.selectedPeriod, this.startDate, this.endDate, true).pipe(
+      tap(res => this.enhancedKpiSummary = (res && res.data) ? res.data : res),
+      finalize(() => this.isLoading = false),
+      catchError(err => {
+        this.handleError('Refresh KPIs', err);
+        return of(null);
+      })
+    ).subscribe();
+  }
+
+  refreshProductAnalytics(): void {
+    this.dashboardService.getProductAnalytics(this.selectedPeriod, this.dataLimit, this.startDate, this.endDate, true).pipe(
+      tap(res => this.productAnalytics = (res && res.data) ? res.data : res),
+      catchError(err => {
+        this.handleError('Refresh Products', err);
+        return of(null);
+      })
+    ).subscribe();
+  }
+
+  refreshCustomerAnalytics(): void {
+    this.dashboardService.getCustomerAnalytics(this.selectedPeriod, this.dataLimit, this.startDate, this.endDate, true).pipe(
+      tap(res => this.customerAnalytics = (res && res.data) ? res.data : res),
+      catchError(err => {
+        this.handleError('Refresh Customers', err);
+        return of(null);
+      })
+    ).subscribe();
+  }
+
+  refreshPaymentAnalytics(): void {
+    this.dashboardService.getPaymentAnalytics(this.selectedPeriod, this.startDate, this.endDate, true).pipe(
+      tap(res => this.paymentAnalytics = (res && res.data) ? res.data : res),
+      catchError(err => {
+        this.handleError('Refresh Payments', err);
+        return of(null);
+      })
+    ).subscribe();
+  }
+
+  refreshInventoryTurnover(): void {
+    this.dashboardService.getInventoryTurnover(this.selectedPeriod, this.startDate, this.endDate, true).pipe(
+      tap(res => this.inventoryTurnover = (res && res.data) ? res.data : res),
+      catchError(err => {
+        this.handleError('Refresh Inventory', err);
+        return of(null);
+      })
+    ).subscribe();
+  }
+
+  refreshSalesForecast(): void {
+    this.dashboardService.getSalesForecast(this.selectedPeriod, this.startDate, this.endDate, true).pipe(
+      tap(res => this.salesForecast = (res && res.data) ? res.data : res),
+      catchError(err => {
+        this.handleError('Refresh Forecast', err);
+        return of(null);
+      })
+    ).subscribe();
+  }
+
+  refreshSalesTrends(): void {
+    this.dashboardService.getSalesTrends(this.selectedPeriod, this.startDate, this.endDate, true).pipe(
+      tap(res => this.salesTrends = (res && res.data) ? res.data : res),
+      catchError(err => {
+        this.handleError('Refresh Sales Trends', err);
+        return of(null);
+      })
+    ).subscribe();
+  }
+
+  // --- Filter handlers ---
+  onFilterChange(): void {
+    if (this.selectedPeriod !== 'custom') this.customDateRange = undefined;
+    this.triggerRefresh();
   }
 
   onApplyCustomRange(): void {
-    if (this.selectedPeriod === 'custom') {
-      if (!this.customDateRange || this.customDateRange.length !== 2 || !this.customDateRange[0] || !this.customDateRange[1]) {
-        this.messageService.add({ severity: 'warn', summary: 'Invalid Range', detail: 'Please select a valid start and end date.' });
-        return;
-      }
-      this.startDate = this.formatDate(this.customDateRange[0]);
-      this.endDate = this.formatDate(this.customDateRange[1]);
-      this.refreshTrigger.next({
-        period: 'custom',
-        startDate: this.startDate,
-        endDate: this.endDate
-      });
+    if (this.selectedPeriod === 'custom' && this.customDateRange?.[0] && this.customDateRange?.[1]) {
+      this.triggerRefresh();
+    } else {
+      this.messageService.add({ severity: 'warn', summary: 'Invalid Range', detail: 'Please select a valid start and end date.' });
     }
   }
 
-  private formatDate(date: Date): string {
-    return date.toISOString().split('T')[0]; // Returns YYYY-MM-DD
+  private triggerRefresh(): void {
+    this.startDate = undefined;
+    this.endDate = undefined;
+    if (this.selectedPeriod === 'custom' && this.customDateRange?.[0] && this.customDateRange?.[1]) {
+      this.startDate = this.formatDate(this.customDateRange[0]);
+      this.endDate = this.formatDate(this.customDateRange[1]);
+    }
+    this.refreshTrigger.next({ period: this.selectedPeriod, startDate: this.startDate, endDate: this.endDate, limit: this.dataLimit });
+  }
+
+  // Grid methods
+  toggleLockGrid(): void {
+    this.isGridLocked = !this.isGridLocked;
+    if (this.grid) this.grid.setStatic(this.isGridLocked);
+    this.messageService.add({ severity: 'info', summary: 'Grid Status', detail: this.isGridLocked ? 'Dashboard is now locked.' : 'Dashboard is now unlocked.' });
+  }
+
+  saveLayout(): void {
+    try {
+      const serializedData = this.grid.save();
+      localStorage.setItem(this.LAYOUT_KEY, JSON.stringify(serializedData));
+      this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Dashboard layout saved!' });
+    } catch (e) {
+      this.messageService.add({ severity: 'error', summary: 'Save Failed', detail: 'Unable to save layout.' });
+    }
+  }
+
+  private loadLayout(): void {
+    const saved = localStorage.getItem(this.LAYOUT_KEY);
+    if (saved) {
+      try { this.widgets = JSON.parse(saved); } catch (e) { /* ignore */ }
+    }
   }
 
   openDialog(title: string, data: any): void {
     this.selectedPanelTitle = title;
     this.selectedPanelData = data;
     this.showDialog = true;
+  }
+
+  identify(index: number, w: GridStackWidget) { return w.id; }
+  private formatDate = (date: Date): string => date.toISOString().split('T')[0];
+
+  private handleError(apiName: string, err: any) {
+    console.error(apiName, err);
+    this.messageService.add({ severity: 'error', summary: `${apiName} Failed`, detail: err?.message || 'Unknown error' });
   }
 }

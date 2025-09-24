@@ -95,3 +95,45 @@
 :host ::ng-deep .modern-dialog .p-dialog-header .p-dialog-header-icon {
   color: #64748b;
 }
+
+
+/* Gridstack Customizations */
+.grid-stack-item > .grid-stack-item-content {
+  /* Reset gridstack default styles to let our panels take over */
+  background: transparent;
+  color: inherit;
+  box-shadow: none;
+  border-radius: 0;
+  padding: 0;
+  overflow: visible; /* Let the panel handle overflow */
+}
+
+/* Ensure PrimeNG panels fill the entire grid item */
+:host ::ng-deep .p-panel {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+:host ::ng-deep .p-panel .p-panel-content {
+  flex-grow: 1;
+  overflow: auto; /* Allow content inside the panel to scroll */
+}
+/* Add this to your admin-dashboard.component.css */
+
+/*
+  This directly targets the content container created by Gridstack
+  and hides its scrollbar across all major browsers.
+*/
+:host ::ng-deep .grid-stack-item-content {
+  /* Hides scrollbar for Firefox */
+  scrollbar-width: none;
+  
+  /* Hides scrollbar for IE and Edge */
+  -ms-overflow-style: none;  
+}
+
+/* Hides scrollbar for Chrome, Safari, and Opera */
+:host ::ng-deep .grid-stack-item-content::-webkit-scrollbar {
+  display: none;
+}
