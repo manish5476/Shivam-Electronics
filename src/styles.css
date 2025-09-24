@@ -5,6 +5,14 @@
 @import "tailwindcss";
 @import "primeicons/primeicons.css";
 
+.grid-stack {
+  background: #fafad2;
+}
+.grid-stack-item-content {
+  text-align: center;
+  background-color: #18bc9c;
+}
+
 /* --- 2. BASE THEME & COLOR PALETTE DEFINITIONS --- */
 :root {
   --theme-bg-primary: #ffffff;
