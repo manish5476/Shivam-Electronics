@@ -5,7 +5,8 @@
   <div class="dashboard-header">
     <div class="header-content">
       <div class="header-title">
-        <h1>Customer Dashboard</h1>
+        <h1 class="breadcrumb"><span>Customer List</span> > <span class="current-customer">{{ customer.fullname
+            }}</span></h1>
         <p>Comprehensive customer overview and analytics</p>
       </div>
       <div class="header-actions">
@@ -15,7 +16,8 @@
         </p-select>
         <p-button icon="pi pi-refresh" label="Refresh" styleClass="p-button-outlined" (onClick)="getCustomerDetail()">
         </p-button>
-        <p-button icon="pi pi-eye" label="show" styleClass="p-button-outlined" (click)="showCustomer=true"></p-button>
+        <p-button icon="pi pi-pencil" label="Edit Customer" styleClass="p-button-outlined"
+          (click)="showCustomer=true"></p-button>
       </div>
     </div>
   </div>
@@ -77,6 +79,19 @@
         </div>
       </div>
 
+      <div class="notes-section-v2">
+        <h3 class="card-title">
+          <i class="pi pi-pencil"></i>
+          <span>Notes</span>
+        </h3>
+        <div class="notes-list">
+          <p>- This customer is lorem ipsum dolor sit amet</p>
+          <p>- Lorem ipsum dolor sit amet</p>
+          <p>- Has payment history on certain items</p>
+        </div>
+        <p-button label="Save note" styleClass="p-button-primary"></p-button>
+      </div>
+
     </div>
     <!-- Customer Tabs -->
     <p-tabs [(value)]="activeTab" scrollable styleClass="custom-tabs">
@@ -96,6 +111,10 @@
           <i class="pi pi-credit-card"></i>
           <span class="font-semibold">Payment History</span>
           <p-badge *ngIf="customer.paymentHistory?.length" [value]="customer.paymentHistory.length" />
+        </p-tab>
+        <p-tab value="3" class="flex items-center gap-2">
+          <i class="pi pi-file"></i>
+          <span class="font-semibold">Files</span>
         </p-tab>
       </p-tablist>
 
@@ -177,8 +196,8 @@
             <div class="items-grid-container" *ngIf="customer.cart?.items?.length; else noItems">
               <div class="item-card-v2" *ngFor="let item of customer.cart.items">
                 <div class="item-card-header">
-                  <p-avatar class="item-visual"  [image]="item?.productId?.thumbnail"
-                    shape="square" styleClass="product-avatar-large">
+                  <p-avatar class="item-visual" [image]="item?.productId?.thumbnail" shape="square"
+                    styleClass="product-avatar-large">
                   </p-avatar>
                   <!-- <div ><i class="pi pi-box product-icon"></i></div> -->
                   <div class="item-details">
@@ -269,13 +288,48 @@
           </div>
         </p-tabpanel>
 
+        <!-- Files Tab -->
+        <p-tabpanel value="3">
+          <div class="tab-content">
+            <div class="files-container">
+              <div class="file-header">
+                <h3 class="card-title"><i class="pi pi-folder"></i> Files / Documents</h3>
+                <p-button icon="pi pi-plus" label="Add Files" styleClass="p-button-outlined"></p-button>
+              </div>
+              <div class="file-list">
+                <div class="file-row">
+                  <i class="pi pi-file-pdf"></i>
+                  <span>Checkup Result.pdf</span>
+                  <span>122kb</span>
+                  <i class="pi pi-trash"></i>
+                </div>
+                <div class="file-row">
+                  <i class="pi pi-file-pdf"></i>
+                  <span>Dental X-Ray Result 2.pdf</span>
+                  <span></span>
+                  <i class="pi pi-trash"></i>
+                </div>
+                <div class="file-row">
+                  <i class="pi pi-file-pdf"></i>
+                  <span>Medical Prescriptions.pdf</span>
+                  <span>87kb</span>
+                  <i class="pi pi-trash"></i>
+                </div>
+                <div class="file-row">
+                  <i class="pi pi-file-pdf"></i>
+                  <span>Dental X-Ray Result.pdf</span>
+                  <span></span>
+                  <i class="pi pi-trash"></i>
+                </div>
+              </div>
+            </div>
+          </div>
+        </p-tabpanel>
       </p-tabpanels>
     </p-tabs>
-
-
   </div>
 </div>
 
-<p-dialog header="Permission" [(visible)]="showCustomer" [modal]="true" [style]="{ width: '95vw', maxWidth: '99%' }">
+<p-dialog header="Edit Customer" [(visible)]="showCustomer" [modal]="true" [style]="{ width: '95vw', maxWidth: '99%' }">
   <app-customer-snapshot [customerID]="customerId"></app-customer-snapshot>
 </p-dialog>

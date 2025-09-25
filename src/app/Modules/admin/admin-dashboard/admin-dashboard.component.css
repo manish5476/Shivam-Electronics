@@ -6,26 +6,26 @@
 /* Grid Stack Styles */
 .grid-stack {
   background: var(--theme-bg-primary);
-  height: auto !important; /* Allow container to adjust to content */
-  min-height: 100%; /* Ensure at least viewport height for sparse content */
+  height: auto !important;
+  min-height: 100%;
 }
 
 /* Grid Stack Item Content */
 .grid-stack-item-content {
   width: 100% !important;
-  height: auto !important; /* Allow content to dictate height */
+  height: auto !important;
   box-sizing: border-box;
   background-color: var(--theme-bg-secondary);
   border: var(--ui-border-width) solid var(--theme-border-primary);
-  border-radius: var(--ui-border-radius);
-  box-shadow: var(--ui-shadow);
+  border-radius: 12px;
+  box-shadow: 0 8px 32px var(--theme-shadow-color);
 }
 
 /* NGX Charts */
 .ngx-charts {
   width: 100%;
-  height: auto !important; /* Allow charts to size based on content */
-  min-height: 200px; /* Prevent collapse for empty charts */
+  height: auto !important;
+  min-height: 150px;
 }
 
 /* Images */
@@ -38,12 +38,12 @@ img {
 .p-table {
   width: 100%;
   overflow-x: auto;
-  height: auto !important; /* Ensure tables adjust to content */
+  height: auto !important;
 }
 
 .p-table .p-datatable-wrapper {
   border: var(--ui-border-width) solid var(--theme-border-primary);
-  border-radius: var(--ui-border-radius);
+  border-radius: 12px;
 }
 
 .p-table .p-datatable-thead > tr > th {
@@ -52,6 +52,7 @@ img {
   color: var(--theme-text-primary) !important;
   font-family: var(--font-primary);
   font-weight: 600;
+  padding: 1rem;
 }
 
 .p-table .p-datatable-tbody > tr {
@@ -68,13 +69,13 @@ img {
 .p-toolbar {
   display: flex;
   flex-wrap: wrap;
-  align-items: flex-end;
-  gap: 1.25rem;
-  padding: 1.25rem;
+  align-items: center;
+  gap: 1.5rem;
+  padding: 1.5rem;
   background-color: var(--theme-bg-secondary);
   border: var(--ui-border-width) solid var(--theme-border-primary);
-  border-radius: var(--ui-border-radius);
-  box-shadow: var(--ui-shadow);
+  border-radius: 12px;
+  box-shadow: 0 8px 32px var(--theme-shadow-color);
   margin-bottom: 1.5rem;
 }
 
@@ -82,7 +83,7 @@ img {
 .p-toolbar-group-center,
 .p-toolbar-group-right {
   display: flex;
-  gap: 0.75rem;
+  gap: 1rem;
   align-items: center;
 }
 
@@ -93,25 +94,29 @@ img {
 .p-toolbar-group-center .p-select,
 .p-toolbar-group-center .p-calendar {
   width: 100%;
-  min-width: 200px;
+  min-width: 180px;
 }
 
 .p-toolbar-group-center .p-select .p-select-label,
 .p-toolbar-group-center .p-calendar .p-inputtext {
   display: flex;
   align-items: center;
-  height: 2.75rem;
-  padding: 0 0.75rem;
-  font-size: 0.9rem;
+  height: 2.5rem;
+  padding: 0 1rem;
+  font-size: 0.875rem;
   font-family: var(--font-body);
   background-color: var(--theme-bg-ternary);
   border: var(--ui-border-width) solid var(--theme-border-primary);
-  border-radius: var(--ui-border-radius);
+  border-radius: 8px;
+  transition: background-color 0.3s, border-color 0.3s;
 }
 
-.p-toolbar-group-center .p-button {
-  height: 2.75rem;
-  font-size: 0.9rem;
+.p-toolbar-group-center .p-button,
+.p-toolbar-group-right .p-button {
+  height: 2.5rem;
+  font-size: 0.875rem;
+  border-radius: 8px;
+  transition: background-color 0.3s, box-shadow 0.3s;
 }
 
 /* Panel Styles */
@@ -120,9 +125,9 @@ img {
   border: var(--ui-border-width) solid var(--theme-border-primary);
   border-radius: 12px;
   box-shadow: 0 8px 32px var(--theme-shadow-color);
-  padding: 1.5rem;
-  margin-bottom: 1rem;
-  height: auto !important; /* Ensure panels adjust to content */
+  padding: 0;
+  margin-bottom: 1.5rem;
+  height: auto !important;
 }
 
 .p-panel .p-panel-header {
@@ -131,7 +136,8 @@ img {
   color: var(--theme-text-primary) !important;
   font-family: var(--font-primary);
   font-weight: 600;
-  border-radius: var(--ui-border-radius) var(--ui-border-radius) 0 0;
+  border-radius: 12px 12px 0 0;
+  padding: 1.25rem;
 }
 
 /* Dialog Styles */
@@ -139,10 +145,9 @@ img {
   background-color: var(--theme-bg-primary);
   border: var(--ui-border-width) solid var(--theme-border-primary);
   border-radius: 12px;
-  box-shadow: 0 8px 32px var(--theme-shadow-color);
-  padding: 1.5rem;
-  margin-bottom: 1rem;
-  height: auto !important; /* Ensure dialogs adjust to content */
+  box-shadow: 0 12px 48px var(--theme-shadow-color);
+  padding: 0;
+  height: auto !important;
 }
 
 .p-dialog .p-dialog-header {
@@ -150,6 +155,9 @@ img {
   color: var(--theme-text-primary) !important;
   border-bottom: var(--ui-border-width) solid var(--theme-border-primary) !important;
   font-family: var(--font-primary);
+  font-weight: 600;
+  padding: 1.25rem;
+  border-radius: 12px 12px 0 0;
 }
 
 /* KPI and Analytics Cards */
@@ -172,8 +180,7 @@ img {
   border-radius: 12px;
   box-shadow: 0 8px 32px var(--theme-shadow-color);
   padding: 1.5rem;
-  margin-bottom: 1rem;
-  height: auto !important; /* Ensure cards adjust to content */
+  height: auto !important;
 }
 
 .p-panel .bg-blue-50 h3,
@@ -214,8 +221,8 @@ img {
 /* Skeleton Loading */
 .p-skeleton {
   background-color: var(--theme-bg-ternary) !important;
-  border-radius: var(--ui-border-radius);
-  height: auto !important; /* Allow skeletons to adjust to content */
+  border-radius: 12px;
+  height: auto !important;
 }
 
 /* Progress Spinner */
@@ -232,9 +239,10 @@ img {
 .p-message {
   background-color: var(--theme-bg-secondary) !important;
   border: var(--ui-border-width) solid var(--theme-border-primary) !important;
-  border-radius: var(--ui-border-radius) !important;
+  border-radius: 12px !important;
   color: var(--theme-text-primary) !important;
-  height: auto !important; /* Ensure messages adjust to content */
+  height: auto !important;
+  padding: 1rem;
 }
 
 .p-message.p-message-info {
@@ -249,10 +257,16 @@ img {
 
 /* Responsive Styles */
 @media (max-width: 640px) {
+  .p-toolbar {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+
   .p-toolbar-group-center {
     flex-direction: column;
     align-items: flex-start;
-    gap: 0.5rem;
+    gap: 0.75rem;
   }
 
   .p-toolbar-group-center .p-select,
@@ -272,6 +286,10 @@ img {
   }
 
   .grid-stack-item {
-    width: 100% !important; /* Ensure full width on mobile */
+    width: 100% !important;
+  }
+
+  .p-table {
+    min-width: 0 !important;
   }
 }

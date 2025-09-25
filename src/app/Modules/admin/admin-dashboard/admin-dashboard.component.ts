@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewInit, ViewChild, ChangeDetectionStrategy, inject } from '@angular/core';
+import { Component, OnInit, AfterViewInit, ViewChild, ChangeDetectionStrategy, inject, ChangeDetectorRef } from '@angular/core';
 import { trigger, state, style, animate, transition } from '@angular/animations';
 import { BehaviorSubject, forkJoin, of } from 'rxjs';
 import { catchError, finalize, tap } from 'rxjs/operators';
@@ -177,12 +177,12 @@ public gridOptions: GridStackOptions = {
 };
 
 public widgets: GridStackWidget[] = [
-  { id: 'kpiSummary', x: 0, y: 0, w: 12, content: 'KPI Summary' },
-  { id: 'chartsOverview', x: 0, y: 1, w: 12, content: 'Charts Overview' },
-  { id: 'productAnalytics', x: 0, y: 2, w: 12, content: 'Product Analytics' },
-  { id: 'customerAnalytics', x: 0, y: 3, w: 12, content: 'Customer Analytics' },
-  { id: 'paymentAnalytics', x: 0, y: 4, w: 12, content: 'Payment Analytics' },
-  { id: 'salesForecast', x: 0, y: 5, w: 12, content: 'Sales Forecast' },
+  { id: 'kpiSummary', x: 0, y: 0, w: 12,h:8, content: 'KPI Summary' },
+  { id: 'chartsOverview', x: 0, y: 1, w: 12,h:8, content: 'Charts Overview' },
+  { id: 'productAnalytics', x: 0, y: 2, w: 12,h:8, content: 'Product Analytics' },
+  { id: 'customerAnalytics', x: 0, y: 3, w: 12,h:8, content: 'Customer Analytics' },
+  { id: 'paymentAnalytics', x: 0, y: 4, w: 12,h:8, content: 'Payment Analytics' },
+  { id: 'salesForecast', x: 0, y: 5, w: 12,h:8, content: 'Sales Forecast' },
 ];
   // // public widgets: GridStackWidget[] = [
   // //   { id: 'kpiSummary', x: 0, y: 0, w: 12, h: 2, minH: 2, maxH: 4, content: 'KPI Summary' },
@@ -202,6 +202,7 @@ public widgets: GridStackWidget[] = [
   //   { id: 'salesForecast', x: 6, y: 3, w: 6, content: 'Sales Forecast' },
   // ];
 
+constructor(private cdr: ChangeDetectorRef) {}
 
   ngOnInit(): void {
     this.refreshTrigger.subscribe(() => this.loadDashboardData());
@@ -223,6 +224,14 @@ public widgets: GridStackWidget[] = [
   });
   }
 
+  updateChartHeights() {
+    this.chartView = [600, this.revenueTrendData.length * 50 || 200]; // KPI Summary
+    this.paymentMethodsData = [400, this.paymentMethodsData.length * 50 || 250]; // Payment Analytics pie chart
+    this.collectionTrendsData = [600, this.collectionTrendsData.length * 50 || 200]; // Payment Analytics line chart
+    this.categoryData = [600, this.categoryData.length * 60 || 300]; // Product Analytics
+    this.cdr.detectChanges(); // Trigger change detection with OnPush strategy
+  }
+  
   private updateChartData(): void {
     // Existing revenue and category data...
     if (this.enhancedKpiSummary?.charts?.revenueTrend) {

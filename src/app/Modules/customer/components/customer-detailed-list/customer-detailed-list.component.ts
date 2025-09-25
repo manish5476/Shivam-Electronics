@@ -28,6 +28,8 @@ import { ChipModule } from "primeng/chip"
 import { ProgressBarModule } from "primeng/progressbar"
 import { CustomerSnapshotComponent } from "../../customer-snapshot/customer-snapshot.component";
 import { BadgeModule } from 'primeng/badge';
+import { trigger, transition, style, animate } from '@angular/animations';
+import { Panel } from "primeng/panel";
 
 @Component({
   selector: 'app-customer-detailed-list',
@@ -35,7 +37,6 @@ import { BadgeModule } from 'primeng/badge';
   imports: [
     CommonModule,
     FormsModule,
-
     // PrimeNG
     ButtonModule,
     CardModule,
@@ -48,18 +49,30 @@ import { BadgeModule } from 'primeng/badge';
     ChipModule,
     ProgressBarModule,
     BadgeModule,
-
     // ✅ Use only the new Tabs API (remove TabViewModule completely)
     TabsModule,
-
     // ✅ Dialog should be imported as a module
     DialogModule,
-
     // Your own components
-    CustomerSnapshotComponent
-  ],
+    CustomerSnapshotComponent,
+    Panel
+],
   templateUrl: './customer-detailed-list.component.html',
   styleUrls: ['./customer-detailed-list.component.css'],
+  animations: [
+    trigger('fadeIn', [
+      transition(':enter', [
+        style({ opacity: 0, transform: 'translateY(10px)' }),
+        animate('300ms ease-out', style({ opacity: 1, transform: 'translateY(0)' }))
+      ])
+    ]),
+    trigger('scaleIn', [
+      transition(':enter', [
+        style({ opacity: 0, transform: 'scale(0.95)' }),
+        animate('200ms ease-out', style({ opacity: 1, transform: 'scale(1)' }))
+      ])
+    ])
+  ],
   providers: [MessageService]
 })
 
