@@ -1,194 +1,937 @@
-<p-toast></p-toast>
-<div class="admin-dashboard" [@fadeIn]="true">
-  <!-- Header with Filters -->
-  <div class="dashboard-header flex items-center justify-between mb-4">
-    <div class="left">
-      <h2 class="page-title">Admin Dashboard</h2>
-      <div class="filters flex gap-3 items-center">
-        <p-select [options]="periodOptions" [(ngModel)]="selectedPeriod" optionLabel="label" optionValue="value" styleClass="p-inputtext-sm"
-          (onChange)="onFilterChange()"></p-select>
-
-        <p-select [options]="limitOptions" [(ngModel)]="dataLimit" optionLabel="label" optionValue="value" styleClass="p-inputtext-sm"
-          (onChange)="onFilterChange()"></p-select>
-
-        <div *ngIf="selectedPeriod === 'custom'">
-          <p-calendar [(ngModel)]="customDateRange" selectionMode="range" [readonlyInput]="true" placeholder="Select a date range"
-            dateFormat="dd/mm/yy" styleClass="p-inputtext-sm"></p-calendar>
-          <button pButton type="button" label="Apply" icon="pi pi-check" class="p-button-sm" (click)="onApplyCustomRange()"></button>
-        </div>
+<p-toast position="top-right"></p-toast>
+<div class="admin-dashboard bg-gray-100 dark:bg-gray-900 min-h-screen p-4" [@fadeIn]="true">
+  <p-toolbar styleClass="sticky top-0 z-10 bg-white dark:bg-gray-800 shadow-md rounded-lg mb-4">
+    <div class="p-toolbar-group-left">
+      <h2 class="text-xl font-semibold text-gray-800 dark:text-gray-200">Admin Dashboard</h2>
+    </div>
+    <div class="p-toolbar-group-center flex gap-3 items-center">
+      <p-select [options]="periodOptions" [(ngModel)]="selectedPeriod" optionLabel="label" optionValue="value"
+        styleClass="p-inputtext-sm w-40" (onChange)="onFilterChange()"></p-select>
+      <p-select [options]="limitOptions" [(ngModel)]="dataLimit" optionLabel="label" optionValue="value"
+        styleClass="p-inputtext-sm w-32" (onChange)="onFilterChange()"></p-select>
+      <div *ngIf="selectedPeriod === 'custom'" class="flex gap-2">
+        <p-calendar [(ngModel)]="customDateRange" selectionMode="range" [readonlyInput]="true"
+          placeholder="Select a date range" dateFormat="dd/mm/yy" styleClass="p-inputtext-sm w-64"></p-calendar>
+        <button pButton type="button" label="Apply" icon="pi pi-check" class="p-button-sm p-button-success"
+          (click)="onApplyCustomRange()"></button>
       </div>
+      <p-progressSpinner *ngIf="isLoading" styleClass="w-6 h-6" strokeWidth="4"></p-progressSpinner>
     </div>
+    <div class="p-toolbar-group-right flex gap-2">
+      <button pButton pRipple type="button" [icon]="isGridLocked ? 'pi pi-lock' : 'pi pi-lock-open'"
+        [label]="isGridLocked ? 'Unlock Grid' : 'Lock Grid'" class="p-button-outlined"
+        (click)="toggleLockGrid()"></button>
+      <button pButton type="button" icon="pi pi-save" label="Save Layout" class="p-button-info"
+        (click)="saveLayout()"></button>
+      <button pButton type="button" icon="pi pi-refresh" label="Reload All" class="p-button-secondary"
+        (click)="triggerRefresh()"></button>
+      <button pButton type="button" icon="pi pi-code" label="Toggle JSON" class="p-button-outlined"
+        (click)="showJson = !showJson"></button>
+    </div>
+  </p-toolbar>
 
-    <div class="right flex gap-2">
-      <button pButton pRipple type="button" (click)="toggleLockGrid()" [icon]="isGridLocked ? 'pi pi-lock' : 'pi pi-lock-open'"
-        [label]="isGridLocked ? 'Unlock Grid' : 'Lock Grid'"></button>
-      <button pButton type="button" icon="pi pi-save" label="Save Layout" class="p-button-info" (click)="saveLayout()"></button>
-      <button pButton type="button" icon="pi pi-refresh" label="Reload All" class="p-button-plain" (click)="triggerRefresh()"></button>
-      <button pButton type="button" icon="pi pi-code" label="Toggle JSON" (click)="showJson = !showJson"></button>
-    </div>
+  <p-panel *ngIf="showJson" header="Dashboard Data (Debug)" styleClass="mb-4">
+    <pre
+      class="bg-gray-800 text-white p-4 rounded-lg">{{ { enhancedKpiSummary, kpiSummary, overview, productAnalytics, customerAnalytics, paymentAnalytics, inventoryTurnover, salesForecast, salesTrends, salesCharts, yearlySales, monthlySales, weeklySales } | json }}</pre>
+  </p-panel>
+
+  <div *ngIf="isLoading" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+    <p-skeleton width="100%" height="12rem" styleClass="mb-4 rounded-lg"></p-skeleton>
+    <p-skeleton width="100%" height="20rem" styleClass="mb-4 rounded-lg"></p-skeleton>
+    <p-skeleton width="100%" height="20rem" styleClass="mb-4 rounded-lg"></p-skeleton>
+    <p-skeleton width="100%" height="20rem" styleClass="mb-4 rounded-lg"></p-skeleton>
+    <p-skeleton width="100%" height="20rem" styleClass="mb-4 rounded-lg"></p-skeleton>
+    <p-skeleton width="100%" height="20rem" styleClass="mb-4 rounded-lg"></p-skeleton>
   </div>
 
-  <!-- Main Dashboard Content -->
-  <gridstack [options]="gridOptions" *ngIf="!isLoading">
+  <gridstack [options]="gridOptions" *ngIf="!isLoading" class="relative">
     <gridstack-item *ngFor="let widget of widgets; trackBy: identify" [options]="widget">
-
-      <!-- KPI Summary -->
-      <p-panel *ngIf="widget.id === 'kpiSummary'" [toggleable]="true" styleClass="h-full">
+      <p-panel [header]="widget.content ?? 'Unknown Widget'"
+        styleClass="h-full bg-white dark:bg-gray-800 shadow-md rounded-lg hover:shadow-lg transition-shadow"
+        [@panelAnimation]>
         <ng-template pTemplate="header">
-          <span class="font-bold">Key Performance Indicators</span>
-          <div class="header-actions" style="float:right">
-            <button pButton icon="pi pi-refresh" class="p-button-text p-button-sm" (click)="refreshKpiPanel()" title="Refresh KPIs"></button>
-            <button pButton icon="pi pi-external-link" class="p-button-text p-button-sm" (click)="openDialog('Key Performance Indicators', { enhancedKpiSummary, kpiSummary, overview })" title="Open"></button>
+          <div class="flex justify-between items-center w-full">
+            <span class="text-lg font-semibold">{{ widget.content ?? 'Unknown Widget' }}</span>
+            <div class="flex gap-2">
+              <button pButton icon="pi pi-refresh" class="p-button-text"
+                (click)="refreshWidget(widget.id ?? '')"></button>
+              <button pButton icon="pi pi-window-maximize" class="p-button-text"
+                (click)="openDialog(widget.content ?? 'Unknown Widget', { enhancedKpiSummary, kpiSummary, overview, productAnalytics, customerAnalytics, paymentAnalytics, inventoryTurnover, salesForecast, salesTrends, salesCharts, yearlySales, monthlySales, weeklySales })"></button>
+            </div>
           </div>
         </ng-template>
+        <p-message *ngIf="widget.id && error[widget.id]" severity="error">
+          <!-- <button pButton label="Retry" class="p-button-sm p-button-danger" (click)="refreshWidget(widget.id ?? '')"></button> -->
+        </p-message>
 
-        <app-dashboard-summary [summaryData]="enhancedKpiSummary" [isLoading]="isKpiLoading"></app-dashboard-summary>
-        <div *ngIf="showJson" class="json-section">
-          <pre class="json-viewer">{{ enhancedKpiSummary | json }}</pre>
-          <pre class="json-viewer">{{ kpiSummary | json }}</pre>
-          <pre class="json-viewer">{{ overview | json }}</pre>
-        </div>
-      </p-panel>
-
-      <!-- Charts Overview -->
-      <p-panel *ngIf="widget.id === 'chartsOverview'" [toggleable]="true" styleClass="h-full">
-        <ng-template pTemplate="header">
-          <span class="font-bold">Revenue Trends</span>
-          <div class="header-actions" style="float:right">
-            <button pButton icon="pi pi-refresh" class="p-button-text p-button-sm" (click)="refreshChartsPanel()" title="Refresh Charts"></button>
-            <button pButton icon="pi pi-external-link" class="p-button-text p-button-sm" (click)="openDialog('Revenue Trends', { salesTrends, salesCharts, yearlySales, monthlySales, weeklySales })" title="Open Chart Dialog"></button>
+        <!-- KPI Summary Widget -->
+        <ng-container *ngIf="widget.id === 'kpiSummary' && !error['kpiSummary']">
+          <div class="p-4 space-y-6" *ngIf="!isKpiLoading; else kpiLoading">
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+              <div class="bg-blue-50 dark:bg-blue-900 p-4 rounded-lg shadow">
+                <h3 class="text-sm font-medium text-blue-600 dark:text-blue-300">Total Revenue</h3>
+                <p class="text-2xl font-semibold text-gray-800 dark:text-gray-200">${{
+                  enhancedKpiSummary?.kpiSummary?.totalRevenue?.value?.toLocaleString() || 'N/A' }}</p>
+                <p class="text-sm text-gray-500 dark:text-gray-400">Change: {{
+                  enhancedKpiSummary?.kpiSummary?.totalRevenue?.change || 0 }}%</p>
+              </div>
+              <div class="bg-green-50 dark:bg-green-900 p-4 rounded-lg shadow">
+                <h3 class="text-sm font-medium text-green-600 dark:text-green-300">Gross Profit</h3>
+                <p class="text-2xl font-semibold text-gray-800 dark:text-gray-200">${{
+                  enhancedKpiSummary?.kpiSummary?.grossProfit?.value?.toLocaleString() || 'N/A' }}</p>
+                <p class="text-sm text-gray-500 dark:text-gray-400">Margin: {{
+                  kpiSummary?.salesSummary?.profitMargin?.toFixed(2) || 'N/A' }}%</p>
+              </div>
+              <div class="bg-purple-50 dark:bg-purple-900 p-4 rounded-lg shadow">
+                <h3 class="text-sm font-medium text-purple-600 dark:text-purple-300">Total Sales</h3>
+                <p class="text-2xl font-semibold text-gray-800 dark:text-gray-200">{{
+                  enhancedKpiSummary?.kpiSummary?.totalSales?.value || 'N/A' }}</p>
+                <p class="text-sm text-gray-500 dark:text-gray-400">Avg. Order: ${{
+                  kpiSummary?.salesSummary?.averageOrderValue?.toLocaleString() || 'N/A' }}</p>
+              </div>
+              <div class="bg-yellow-50 dark:bg-yellow-900 p-4 rounded-lg shadow">
+                <h3 class="text-sm font-medium text-yellow-600 dark:text-yellow-300">New Customers</h3>
+                <p class="text-2xl font-semibold text-gray-800 dark:text-gray-200">{{
+                  enhancedKpiSummary?.kpiSummary?.newCustomers?.value || 'N/A' }}</p>
+                <p class="text-sm text-gray-500 dark:text-gray-400">LTV: ${{
+                  enhancedKpiSummary?.customerInsights?.lifetimeValue?.toLocaleString() || 'N/A' }}</p>
+              </div>
+            </div>
+            <div class="bg-white dark:bg-gray-800 p-4 rounded-lg shadow">
+              <h3 class="text-lg font-semibold mb-2">Revenue Trend</h3>
+              <ngx-charts-line-chart [results]="revenueTrendData" [view]="[600, 150]" [xAxis]="showXAxis"
+                [yAxis]="showYAxis" xAxisLabel="Date" yAxisLabel="Revenue ($)" [showXAxisLabel]="showXAxisLabel"
+                [showYAxisLabel]="showYAxisLabel" [scheme]="revenueColorScheme"
+                class="w-full h-36"></ngx-charts-line-chart>
+            </div>
+            <div class="bg-white dark:bg-gray-800 p-4 rounded-lg shadow">
+              <h3 class="text-lg font-semibold mb-2">Top Selling Products</h3>
+              <p-table [value]="overview?.topSellingProducts" [tableStyle]="{ 'min-width': '50rem' }">
+                <ng-template pTemplate="header">
+                  <tr>
+                    <th>Image</th>
+                    <th>Product</th>
+                    <th>Quantity</th>
+                    <th>Revenue</th>
+                  </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-product>
+                  <tr>
+                    <td><img [src]="product.thumbnail" alt="product" class="w-12 h-12 object-cover rounded"></td>
+                    <td>{{ product.productName }}</td>
+                    <td>{{ product.totalQuantity }}</td>
+                    <td>${{ product.totalRevenue?.toLocaleString() }}</td>
+                  </tr>
+                </ng-template>
+              </p-table>
+            </div>
           </div>
-        </ng-template>
+          <ng-template #kpiLoading>
+            <div class="p-4">
+              <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
+                <p-skeleton width="100%" height="6rem" styleClass="rounded-lg"></p-skeleton>
+                <p-skeleton width="100%" height="6rem" styleClass="rounded-lg"></p-skeleton>
+                <p-skeleton width="100%" height="6rem" styleClass="rounded-lg"></p-skeleton>
+                <p-skeleton width="100%" height="6rem" styleClass="rounded-lg"></p-skeleton>
+              </div>
+              <p-skeleton width="100%" height="12rem" styleClass="rounded-lg"></p-skeleton>
+            </div>
+          </ng-template>
+        </ng-container>
 
-        <app-dashboard-chart-combo [selectedPeriod]="selectedPeriod" [startDate]="startDate" [endDate]="endDate"
-          [salesTrends]="salesTrends" [salesCharts]="salesCharts" [yearlySales]="yearlySales"
-          [monthlySales]="monthlySales" [weeklySales]="weeklySales" [isLoading]="isChartsLoading">
-        </app-dashboard-chart-combo>
-        <div *ngIf="showJson" class="json-section">
-          <pre class="json-viewer">{{ salesTrends | json }}</pre>
-          <pre class="json-viewer">{{ salesCharts | json }}</pre>
-          <pre class="json-viewer">{{ yearlySales | json }}</pre>
-          <pre class="json-viewer">{{ monthlySales | json }}</pre>
-          <pre class="json-viewer">{{ weeklySales | json }}</pre>
-        </div>
-      </p-panel>
-
-      <!-- Product Analytics -->
-      <p-panel *ngIf="widget.id === 'productAnalytics'" [toggleable]="true" styleClass="h-full">
-        <ng-template pTemplate="header">
-          <span class="font-bold">Product & Inventory Insights</span>
-          <div class="header-actions" style="float:right">
-            <button pButton icon="pi pi-refresh" class="p-button-text p-button-sm" (click)="refreshProductPanel()" title="Refresh Products"></button>
-            <button pButton icon="pi pi-external-link" class="p-button-text p-button-sm" (click)="openDialog('Product & Inventory Insights', { productAnalytics, inventoryTurnover })" title="Open"></button>
+        <!-- Charts Overview Widget -->
+        <ng-container *ngIf="widget.id === 'chartsOverview' && !error['chartsOverview']">
+          <div class="p-4" *ngIf="!isChartsLoading; else chartsLoading">
+            <p-message severity="info"
+              text="Charts data not yet available. Please provide API response data."></p-message>
           </div>
-        </ng-template>
+          <ng-template #chartsLoading>
+            <div class="p-4">
+              <p-skeleton width="100%" height="20rem" styleClass="rounded-lg"></p-skeleton>
+            </div>
+          </ng-template>
+        </ng-container>
 
-        <app-analytic-dashboard [data]="productAnalytics" [isLoading]="isProductLoading"></app-analytic-dashboard>
-        <div *ngIf="showJson" class="json-section">
-          <pre class="json-viewer">{{ productAnalytics | json }}</pre>
-          <pre class="json-viewer">{{ inventoryTurnover | json }}</pre>
-        </div>
-      </p-panel>
-
-      <!-- Customer Analytics -->
-      <p-panel *ngIf="widget.id === 'customerAnalytics'" [toggleable]="true" styleClass="h-full">
-        <ng-template pTemplate="header">
-          <span class="font-bold">Customer Insights</span>
-          <div class="header-actions" style="float:right">
-            <button pButton icon="pi pi-refresh" class="p-button-text p-button-sm" (click)="refreshCustomerPanel()" title="Refresh Customers"></button>
-            <button pButton icon="pi pi-external-link" class="p-button-text p-button-sm" (click)="openDialog('Customer Insights', customerAnalytics)" title="Open"></button>
+        <!-- Product Analytics Widget -->
+        <ng-container *ngIf="widget.id === 'productAnalytics' && !error['productAnalytics']">
+          <div class="p-4 space-y-6" *ngIf="!isProductLoading; else productLoading">
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+              <div class="bg-blue-50 dark:bg-blue-900 p-4 rounded-lg shadow">
+                <h3 class="text-sm font-medium text-blue-600 dark:text-blue-300">Total Inventory Value</h3>
+                <p class="text-2xl font-semibold text-gray-800 dark:text-gray-200">${{
+                  productAnalytics?.inventorySummary?.totalValue?.toLocaleString() || 'N/A' }}</p>
+              </div>
+              <div class="bg-green-50 dark:bg-green-900 p-4 rounded-lg shadow">
+                <h3 class="text-sm font-medium text-green-600 dark:text-green-300">Items in Stock</h3>
+                <p class="text-2xl font-semibold text-gray-800 dark:text-gray-200">{{
+                  productAnalytics?.inventorySummary?.totalItems || 'N/A' }}</p>
+              </div>
+              <div class="bg-red-50 dark:bg-red-900 p-4 rounded-lg shadow">
+                <h3 class="text-sm font-medium text-red-600 dark:text-red-300">Low Stock</h3>
+                <p class="text-2xl font-semibold text-gray-800 dark:text-gray-200">{{
+                  productAnalytics?.inventorySummary?.lowStockCount || 'N/A' }}</p>
+              </div>
+            </div>
+            <div class="bg-white dark:bg-gray-800 p-4 rounded-lg shadow">
+              <h3 class="text-lg font-semibold mb-2">Performance by Category</h3>
+              <ngx-charts-bar-vertical [results]="categoryData" [view]="chartView" [xAxis]="showXAxis"
+                [yAxis]="showYAxis" xAxisLabel="Category" yAxisLabel="Revenue ($)" [showXAxisLabel]="showXAxisLabel"
+                [showYAxisLabel]="showYAxisLabel" [scheme]="categoryColorScheme"
+                class="w-full h-64"></ngx-charts-bar-vertical>
+            </div>
+            <div class="bg-white dark:bg-gray-800 p-4 rounded-lg shadow">
+              <h3 class="text-lg font-semibold mb-2">Top Products by Revenue</h3>
+              <p-table [value]="productAnalytics?.topPerformingProducts?.topByRevenue"
+                [tableStyle]="{ 'min-width': '50rem' }">
+                <ng-template pTemplate="header">
+                  <tr>
+                    <th>Image</th>
+                    <th>Product</th>
+                    <th>Brand</th>
+                    <th>Revenue</th>
+                    <th>Profit</th>
+                  </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-product>
+                  <tr>
+                    <td><img [src]="product.thumbnail" alt="product" class="w-12 h-12 object-cover rounded"></td>
+                    <td>{{ product.title }}</td>
+                    <td>{{ product.brand }}</td>
+                    <td>${{ product.totalRevenue?.toLocaleString() }}</td>
+                    <td>${{ product.grossProfit?.toLocaleString() }}</td>
+                  </tr>
+                </ng-template>
+              </p-table>
+            </div>
+            <div class="bg-white dark:bg-gray-800 p-4 rounded-lg shadow">
+              <h3 class="text-lg font-semibold mb-2">Inventory Turnover</h3>
+              <p-message severity="info"
+                text="Inventory turnover data not yet available. Please provide API response data."></p-message>
+            </div>
           </div>
-        </ng-template>
+          <ng-template #productLoading>
+            <div class="p-4">
+              <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-4">
+                <p-skeleton width="100%" height="6rem" styleClass="rounded-lg"></p-skeleton>
+                <p-skeleton width="100%" height="6rem" styleClass="rounded-lg"></p-skeleton>
+                <p-skeleton width="100%" height="6rem" styleClass="rounded-lg"></p-skeleton>
+              </div>
+              <p-skeleton width="100%" height="20rem" styleClass="rounded-lg mb-4"></p-skeleton>
+              <p-skeleton width="100%" height="12rem" styleClass="rounded-lg"></p-skeleton>
+            </div>
+          </ng-template>
+        </ng-container>
 
-        <app-dashboard-top-customer-view [data]="customerAnalytics" [isLoading]="isCustomerLoading"></app-dashboard-top-customer-view>
-        <div *ngIf="showJson" class="json-section">
-          <pre class="json-viewer">{{ customerAnalytics | json }}</pre>
-        </div>
-      </p-panel>
-
-      <!-- Payment Analytics -->
-      <p-panel *ngIf="widget.id === 'paymentAnalytics'" [toggleable]="true" styleClass="h-full">
-        <ng-template pTemplate="header">
-          <span class="font-bold">Payment Analytics</span>
-          <div class="header-actions" style="float:right">
-            <button pButton icon="pi pi-refresh" class="p-button-text p-button-sm" (click)="refreshPaymentPanel()" title="Refresh Payments"></button>
-            <button pButton icon="pi pi-external-link" class="p-button-text p-button-sm" (click)="openDialog('Payment Analytics', paymentAnalytics)" title="Open"></button>
+        <!-- Customer Analytics Widget -->
+        <ng-container *ngIf="widget.id === 'customerAnalytics' && !error['customerAnalytics']">
+          <div class="p-4 space-y-6" *ngIf="!isCustomerLoading; else customerLoading">
+            <!-- KPI Cards -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div class="bg-blue-50 dark:bg-blue-900 p-4 rounded-lg shadow">
+                <h3 class="text-sm font-medium text-blue-600 dark:text-blue-300">New Customers</h3>
+                <p class="text-2xl font-semibold text-gray-800 dark:text-gray-200">{{
+                  customerAnalytics?.summary?.newCustomers || 'N/A' }}</p>
+              </div>
+              <div class="bg-green-50 dark:bg-green-900 p-4 rounded-lg shadow">
+                <h3 class="text-sm font-medium text-green-600 dark:text-green-300">Repeat Rate</h3>
+                <p class="text-2xl font-semibold text-gray-800 dark:text-gray-200">{{
+                  (customerAnalytics?.summary?.repeatCustomerRate * 100)?.toFixed(2) || '0' }}%</p>
+              </div>
+            </div>
+            <!-- Top Customers Table (Revenue breakdown empty, so focus on lifetime value) -->
+            <div class="bg-white dark:bg-gray-800 p-4 rounded-lg shadow">
+              <h3 class="text-lg font-semibold mb-2">Top Customers by Lifetime Value</h3>
+              <p-table [value]="customerAnalytics?.topCustomersLifetime" [tableStyle]="{ 'min-width': '50rem' }">
+                <ng-template pTemplate="header">
+                  <tr>
+                    <th>Full Name</th>
+                    <th>Email</th>
+                    <th>Lifetime Value</th>
+                  </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-customer>
+                  <tr>
+                    <td>{{ customer.fullname }}</td>
+                    <td>{{ customer.email }}</td>
+                    <td>${{ customer.lifetimeValue?.toLocaleString() || '0' }}</td>
+                  </tr>
+                </ng-template>
+              </p-table>
+            </div>
+            <!-- Revenue Breakdown (empty, so placeholder) -->
+            <div class="bg-white dark:bg-gray-800 p-4 rounded-lg shadow">
+              <h3 class="text-lg font-semibold mb-2">Revenue Breakdown</h3>
+              <p-message severity="info" text="No revenue breakdown data available."></p-message>
+            </div>
           </div>
-        </ng-template>
-
-        <app-paymentanalytics [data]="paymentAnalytics" [isLoading]="isPaymentLoading"></app-paymentanalytics>
-        <div *ngIf="showJson" class="json-section">
-          <pre class="json-viewer">{{ paymentAnalytics | json }}</pre>
-        </div>
-      </p-panel>
-
-      <!-- Sales Forecast -->
-      <p-panel *ngIf="widget.id === 'salesForecast'" [toggleable]="true" styleClass="h-full">
-        <ng-template pTemplate="header">
-          <span class="font-bold">Sales Forecast</span>
-          <div class="header-actions" style="float:right">
-            <button pButton icon="pi pi-refresh" class="p-button-text p-button-sm" (click)="refreshForecastPanel()" title="Refresh Forecast"></button>
-            <button pButton icon="pi pi-external-link" class="p-button-text p-button-sm" (click)="openDialog('Sales Forecast', salesForecast)" title="Open"></button>
+          <ng-template #customerLoading>
+            <div class="p-4">
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
+                <p-skeleton width="100%" height="6rem" styleClass="rounded-lg"></p-skeleton>
+                <p-skeleton width="100%" height="6rem" styleClass="rounded-lg"></p-skeleton>
+              </div>
+              <p-skeleton width="100%" height="12rem" styleClass="rounded-lg mb-4"></p-skeleton>
+            </div>
+          </ng-template>
+          <!-- <div class="p-4" *ngIf="!isCustomerLoading; else customerLoading">
+            <p-message severity="info"
+              text="Customer analytics data not yet available. Please provide API response data."></p-message>
           </div>
-        </ng-template>
+          <ng-template #customerLoading>
+            <div class="p-4">
+              <p-skeleton width="100%" height="20rem" styleClass="rounded-lg"></p-skeleton>
+            </div>
+          </ng-template> -->
+        </ng-container>
 
-        <app-sales-performance [data]="salesForecast" [isLoading]="isForecastLoading"></app-sales-performance>
-        <div *ngIf="showJson" class="json-section">
-          <pre class="json-viewer">{{ salesForecast | json }}</pre>
-        </div>
+        <!-- Payment Analytics Widget -->
+        <ng-container *ngIf="widget.id === 'paymentAnalytics' && !error['paymentAnalytics']">
+          <div class="p-4 space-y-6" *ngIf="!isPaymentLoading; else paymentLoading">
+            <!-- KPI Cards -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+              <div class="bg-blue-50 dark:bg-blue-900 p-4 rounded-lg shadow">
+                <h3 class="text-sm font-medium text-blue-600 dark:text-blue-300">Total Billed</h3>
+                <p class="text-2xl font-semibold text-gray-800 dark:text-gray-200">${{
+                  paymentAnalytics?.financialHealth?.totalBilled?.toLocaleString() || 'N/A' }}</p>
+              </div>
+              <div class="bg-green-50 dark:bg-green-900 p-4 rounded-lg shadow">
+                <h3 class="text-sm font-medium text-green-600 dark:text-green-300">Total Collected</h3>
+                <p class="text-2xl font-semibold text-gray-800 dark:text-gray-200">${{
+                  paymentAnalytics?.financialHealth?.totalCollected?.toLocaleString() || 'N/A' }}</p>
+              </div>
+              <div class="bg-purple-50 dark:bg-purple-900 p-4 rounded-lg shadow">
+                <h3 class="text-sm font-medium text-purple-600 dark:text-purple-300">Collection Rate</h3>
+                <p class="text-2xl font-semibold text-gray-800 dark:text-gray-200">{{
+                  paymentAnalytics?.financialHealth?.collectionRate?.toFixed(2) || 'N/A' }}%</p>
+              </div>
+              <div class="bg-red-50 dark:bg-red-900 p-4 rounded-lg shadow">
+                <h3 class="text-sm font-medium text-red-600 dark:text-red-300">Failed Payments</h3>
+                <p class="text-2xl font-semibold text-gray-800 dark:text-gray-200">{{
+                  paymentAnalytics?.failedPayments?.count || '0' }}</p>
+              </div>
+            </div>
+            <!-- Payment Methods Pie Chart -->
+            <div class="bg-white dark:bg-gray-800 p-4 rounded-lg shadow">
+              <h3 class="text-lg font-semibold mb-2">Payment Methods Breakdown</h3>
+              <ngx-charts-pie-chart [results]="paymentMethodsData" [view]="[400, 300]" [scheme]="paymentColorScheme"
+                [labels]="true" [doughnut]="false" class="w-full h-64"></ngx-charts-pie-chart>
+            </div>
+            <!-- Collection Trends Line Chart -->
+            <div class="bg-white dark:bg-gray-800 p-4 rounded-lg shadow">
+              <h3 class="text-lg font-semibold mb-2">Collection Trends</h3>
+              <ngx-charts-line-chart [results]="collectionTrendsData" [view]="[600, 200]" [xAxis]="showXAxis"
+                [yAxis]="showYAxis" xAxisLabel="Date" yAxisLabel="Daily Total ($)" [showXAxisLabel]="showXAxisLabel"
+                [showYAxisLabel]="showYAxisLabel" [scheme]="revenueColorScheme"
+                class="w-full h-48"></ngx-charts-line-chart>
+            </div>
+          </div>
+          <ng-template #paymentLoading>
+            <div class="p-4">
+              <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
+                <p-skeleton width="100%" height="6rem" styleClass="rounded-lg"></p-skeleton>
+                <p-skeleton width="100%" height="6rem" styleClass="rounded-lg"></p-skeleton>
+                <p-skeleton width="100%" height="6rem" styleClass="rounded-lg"></p-skeleton>
+                <p-skeleton width="100%" height="6rem" styleClass="rounded-lg"></p-skeleton>
+              </div>
+              <p-skeleton width="100%" height="16rem" styleClass="rounded-lg mb-4"></p-skeleton>
+              <p-skeleton width="100%" height="12rem" styleClass="rounded-lg"></p-skeleton>
+            </div>
+          </ng-template>
+          <!-- <div class="p-4" *ngIf="!isPaymentLoading; else paymentLoading">
+            <p-message severity="info"
+              text="Payment analytics data not yet available. Please provide API response data."></p-message>
+          </div>
+          <ng-template #paymentLoading>
+            <div class="p-4">
+              <p-skeleton width="100%" height="20rem" styleClass="rounded-lg"></p-skeleton>
+            </div>
+          </ng-template> -->
+        </ng-container>
+
+        <!-- Sales Forecast Widget -->
+        <ng-container *ngIf="widget.id === 'salesForecast' && !error['salesForecast']">
+          <div class="p-4" *ngIf="!isForecastLoading; else forecastLoading">
+            <p-message severity="info"
+              text="Sales forecast data not yet available. Please provide API response data."></p-message>
+          </div>
+          <ng-template #forecastLoading>
+            <div class="p-4">
+              <p-skeleton width="100%" height="20rem" styleClass="rounded-lg"></p-skeleton>
+            </div>
+          </ng-template>
+        </ng-container>
       </p-panel>
-
     </gridstack-item>
   </gridstack>
 
-  <!-- Loading Skeleton (Tesla-like dark placeholders) -->
-  <ng-template [ngIf]="isLoading">
-    <div class="grid">
-      <div class="col-12"><p-skeleton width="100%" height="8rem"></p-skeleton></div>
-      <div class="col-12"><p-skeleton width="100%" height="15rem"></p-skeleton></div>
-      <div class="col-6"><p-skeleton width="100%" height="20rem"></p-skeleton></div>
-      <div class="col-6"><p-skeleton width="100%" height="20rem"></p-skeleton></div>
-      <div class="col-6"><p-skeleton width="100%" height="20rem"></p-skeleton></div>
-      <div class="col-6"><p-skeleton width="100%" height="20rem"></p-skeleton></div>
-    </div>
-  </ng-template>
+  <p-dialog [header]="selectedPanelTitle" [(visible)]="showDialog" [modal]="true" styleClass="w-full max-w-9xl"
+    [draggable]="false">
+    <ng-container *ngIf="selectedPanelTitle === 'KPI Summary' && !error['kpiSummary']">
+      <div class="p-4 space-y-6">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          <div class="bg-blue-50 dark:bg-blue-900 p-4 rounded-lg shadow">
+            <h3 class="text-sm font-medium text-blue-600 dark:text-blue-300">Total Revenue</h3>
+            <p class="text-2xl font-semibold text-gray-800 dark:text-gray-200">${{
+              selectedPanelData?.enhancedKpiSummary?.kpiSummary?.totalRevenue?.value?.toLocaleString() || 'N/A' }}</p>
+            <p class="text-sm text-gray-500 dark:text-gray-400">Change: {{
+              selectedPanelData?.enhancedKpiSummary?.kpiSummary?.totalRevenue?.change || 0 }}%</p>
+          </div>
+          <div class="bg-green-50 dark:bg-green-900 p-4 rounded-lg shadow">
+            <h3 class="text-sm font-medium text-green-600 dark:text-green-300">Gross Profit</h3>
+            <p class="text-2xl font-semibold text-gray-800 dark:text-gray-200">${{
+              selectedPanelData?.enhancedKpiSummary?.kpiSummary?.grossProfit?.value?.toLocaleString() || 'N/A' }}</p>
+            <p class="text-sm text-gray-500 dark:text-gray-400">Margin: {{
+              selectedPanelData?.kpiSummary?.salesSummary?.profitMargin?.toFixed(2) || 'N/A' }}%</p>
+          </div>
+          <div class="bg-purple-50 dark:bg-purple-900 p-4 rounded-lg shadow">
+            <h3 class="text-sm font-medium text-purple-600 dark:text-purple-300">Total Sales</h3>
+            <p class="text-2xl font-semibold text-gray-800 dark:text-gray-200">{{
+              selectedPanelData?.enhancedKpiSummary?.kpiSummary?.totalSales?.value || 'N/A' }}</p>
+            <p class="text-sm text-gray-500 dark:text-gray-400">Avg. Order: ${{
+              selectedPanelData?.kpiSummary?.salesSummary?.averageOrderValue?.toLocaleString() || 'N/A' }}</p>
+          </div>
+          <div class="bg-yellow-50 dark:bg-yellow-900 p-4 rounded-lg shadow">
+            <h3 class="text-sm font-medium text-yellow-600 dark:text-yellow-300">New Customers</h3>
+            <p class="text-2xl font-semibold text-gray-800 dark:text-gray-200">{{
+              selectedPanelData?.enhancedKpiSummary?.kpiSummary?.newCustomers?.value || 'N/A' }}</p>
+            <p class="text-sm text-gray-500 dark:text-gray-400">LTV: ${{
+              selectedPanelData?.enhancedKpiSummary?.customerInsights?.lifetimeValue?.toLocaleString() || 'N/A' }}</p>
+          </div>
+        </div>
+        <div class="bg-white dark:bg-gray-800 p-4 rounded-lg shadow">
+          <h3 class="text-lg font-semibold mb-2">Revenue Trend</h3>
+          <ngx-charts-line-chart [results]="revenueTrendData" [view]="[800, 300]" [xAxis]="showXAxis"
+            [yAxis]="showYAxis" xAxisLabel="Date" yAxisLabel="Revenue ($)" [showXAxisLabel]="showXAxisLabel"
+            [showYAxisLabel]="showYAxisLabel" [scheme]="revenueColorScheme" class="w-full h-64"></ngx-charts-line-chart>
+        </div>
+        <div class="bg-white dark:bg-gray-800 p-4 rounded-lg shadow">
+          <h3 class="text-lg font-semibold mb-2">Top Selling Products</h3>
+          <p-table [value]="selectedPanelData?.overview?.topSellingProducts" [tableStyle]="{ 'min-width': '50rem' }">
+            <ng-template pTemplate="header">
+              <tr>
+                <th>Image</th>
+                <th>Product</th>
+                <th>Quantity</th>
+                <th>Revenue</th>
+              </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-product>
+              <tr>
+                <td><img [src]="product.thumbnail" alt="product" class="w-12 h-12 object-cover rounded"></td>
+                <td>{{ product.productName }}</td>
+                <td>{{ product.totalQuantity }}</td>
+                <td>${{ product.totalRevenue?.toLocaleString() }}</td>
+              </tr>
+            </ng-template>
+          </p-table>
+        </div>
+      </div>
+    </ng-container>
 
+    <ng-container *ngIf="selectedPanelTitle === 'Charts Overview' && !error['chartsOverview']">
+      <div class="p-4">
+        <p-message severity="info" text="Charts data not yet available. Please provide API response data."></p-message>
+      </div>
+    </ng-container>
+
+    <ng-container *ngIf="selectedPanelTitle === 'Product Analytics' && !error['productAnalytics']">
+      <div class="p-4 space-y-6">
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          <div class="bg-blue-50 dark:bg-blue-900 p-4 rounded-lg shadow">
+            <h3 class="text-sm font-medium text-blue-600 dark:text-blue-300">Total Inventory Value</h3>
+            <p class="text-2xl font-semibold text-gray-800 dark:text-gray-200">${{
+              selectedPanelData?.productAnalytics?.inventorySummary?.totalValue?.toLocaleString() || 'N/A' }}</p>
+          </div>
+          <div class="bg-green-50 dark:bg-green-900 p-4 rounded-lg shadow">
+            <h3 class="text-sm font-medium text-green-600 dark:text-green-300">Items in Stock</h3>
+            <p class="text-2xl font-semibold text-gray-800 dark:text-gray-200">{{
+              selectedPanelData?.productAnalytics?.inventorySummary?.totalItems || 'N/A' }}</p>
+          </div>
+          <div class="bg-red-50 dark:bg-red-900 p-4 rounded-lg shadow">
+            <h3 class="text-sm font-medium text-red-600 dark:text-red-300">Low Stock</h3>
+            <p class="text-2xl font-semibold text-gray-800 dark:text-gray-200">{{
+              selectedPanelData?.productAnalytics?.inventorySummary?.lowStockCount || 'N/A' }}</p>
+          </div>
+        </div>
+        <div class="bg-white dark:bg-gray-800 p-4 rounded-lg shadow">
+          <h3 class="text-lg font-semibold mb-2">Performance by Category</h3>
+          <ngx-charts-bar-vertical [results]="categoryData" [view]="[800, 400]" [xAxis]="showXAxis" [yAxis]="showYAxis"
+            xAxisLabel="Category" yAxisLabel="Revenue ($)" [showXAxisLabel]="showXAxisLabel"
+            [showYAxisLabel]="showYAxisLabel" [scheme]="categoryColorScheme"
+            class="w-full h-80"></ngx-charts-bar-vertical>
+        </div>
+        <div class="bg-white dark:bg-gray-800 p-4 rounded-lg shadow">
+          <h3 class="text-lg font-semibold mb-2">Top Products by Revenue</h3>
+          <p-table [value]="selectedPanelData?.productAnalytics?.topPerformingProducts?.topByRevenue"
+            [tableStyle]="{ 'min-width': '50rem' }">
+            <ng-template pTemplate="header">
+              <tr>
+                <th>Image</th>
+                <th>Product</th>
+                <th>Brand</th>
+                <th>Revenue</th>
+                <th>Profit</th>
+              </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-product>
+              <tr>
+                <td><img [src]="product.thumbnail" alt="product" class="w-12 h-12 object-cover rounded"></td>
+                <td>{{ product.title }}</td>
+                <td>{{ product.brand }}</td>
+                <td>${{ product.totalRevenue?.toLocaleString() }}</td>
+                <td>${{ product.grossProfit?.toLocaleString() }}</td>
+              </tr>
+            </ng-template>
+          </p-table>
+        </div>
+        <div class="bg-white dark:bg-gray-800 p-4 rounded-lg shadow">
+          <h3 class="text-lg font-semibold mb-2">Inventory Turnover</h3>
+          <p-message severity="info"
+            text="Inventory turnover data not yet available. Please provide API response data."></p-message>
+        </div>
+      </div>
+    </ng-container>
+
+    <ng-container *ngIf="selectedPanelTitle === 'Customer Analytics' && !error['customerAnalytics']">
+      <div class="p-4">
+        <p-message severity="info"
+          text="Customer analytics data not yet available. Please provide API response data."></p-message>
+      </div>
+    </ng-container>
+
+    <ng-container *ngIf="selectedPanelTitle === 'Payment Analytics' && !error['paymentAnalytics']">
+      <div class="p-4">
+        <p-message severity="info"
+          text="Payment analytics data not yet available. Please provide API response data."></p-message>
+      </div>
+    </ng-container>
+
+    <ng-container *ngIf="selectedPanelTitle === 'Sales Forecast' && !error['salesForecast']">
+      <div class="p-4">
+        <p-message severity="info"
+          text="Sales forecast data not yet available. Please provide API response data."></p-message>
+      </div>
+    </ng-container>
+  </p-dialog>
 </div>
 
-<!-- Dialog for panel details (full-screen like Tesla modals) -->
-<p-dialog [(visible)]="showDialog" [modal]="true" [style]="{width: '80vw', height: '80vh', background: '#121212'}"
-  header="{{ selectedPanelTitle }}" [draggable]="true" [resizable]="true" class="perfect-dialog">
-  <div class="p-4 overflow-auto h-full dialog-content">
-    <ng-container [ngSwitch]="selectedPanelTitle">
-      <div *ngSwitchCase="'Revenue Trends'">
-        <app-dashboard-chart-combo [selectedPeriod]="selectedPeriod"
-          [startDate]="startDate" [endDate]="endDate"
-          [salesTrends]="selectedPanelData.salesTrends" [salesCharts]="selectedPanelData.salesCharts"
-          [yearlySales]="selectedPanelData.yearlySales" [monthlySales]="selectedPanelData.monthlySales"
-          [weeklySales]="selectedPanelData.weeklySales">
-        </app-dashboard-chart-combo>
+<!-- <p-toast position="top-right"></p-toast>
+<div class="admin-dashboard bg-gray-100 dark:bg-gray-900 min-h-screen p-4" [@fadeIn]="true">
+  <p-toolbar styleClass="sticky top-0 z-10 bg-white dark:bg-gray-800 shadow-md rounded-lg mb-4">
+    <div class="p-toolbar-group-left">
+      <h2 class="text-xl font-semibold text-gray-800 dark:text-gray-200">Admin Dashboard</h2>
+    </div>
+    <div class="p-toolbar-group-center flex gap-3 items-center">
+      <p-select [options]="periodOptions" [(ngModel)]="selectedPeriod" optionLabel="label" optionValue="value"
+        styleClass="p-inputtext-sm w-40" (onChange)="onFilterChange()"></p-select>
+      <p-select [options]="limitOptions" [(ngModel)]="dataLimit" optionLabel="label" optionValue="value"
+        styleClass="p-inputtext-sm w-32" (onChange)="onFilterChange()"></p-select>
+      <div *ngIf="selectedPeriod === 'custom'" class="flex gap-2">
+        <p-calendar [(ngModel)]="customDateRange" selectionMode="range" [readonlyInput]="true"
+          placeholder="Select a date range" dateFormat="dd/mm/yy" styleClass="p-inputtext-sm w-64"></p-calendar>
+        <button pButton type="button" label="Apply" icon="pi pi-check" class="p-button-sm p-button-success"
+          (click)="onApplyCustomRange()"></button>
       </div>
-      <div *ngSwitchCase="'Key Performance Indicators'">
-        <app-dashboard-summary [summaryData]="selectedPanelData.enhancedKpiSummary" [isLoading]="false"></app-dashboard-summary>
-        <pre class="json-viewer">{{ selectedPanelData.kpiSummary | json }}</pre>
-        <pre class="json-viewer">{{ selectedPanelData.overview | json }}</pre>
-      </div>
-      <div *ngSwitchCase="'Product & Inventory Insights'">
-        <app-analytic-dashboard [data]="selectedPanelData.productAnalytics"></app-analytic-dashboard>
-        <pre class="json-viewer">{{ selectedPanelData.inventoryTurnover | json }}</pre>
-      </div>
-      <app-dashboard-top-customer-view *ngSwitchCase="'Customer Insights'" [data]="selectedPanelData"></app-dashboard-top-customer-view>
-      <app-paymentanalytics *ngSwitchCase="'Payment Analytics'" [data]="selectedPanelData"></app-paymentanalytics>
-      <app-sales-performance *ngSwitchCase="'Sales Forecast'" [data]="selectedPanelData"></app-sales-performance>
-      <pre *ngSwitchDefault class="json-viewer">{{ selectedPanelData | json }}</pre>
-    </ng-container>
+      <p-progressSpinner *ngIf="isLoading" styleClass="w-6 h-6" strokeWidth="4"></p-progressSpinner>
+    </div>
+    <div class="p-toolbar-group-right flex gap-2">
+      <button pButton pRipple type="button" [icon]="isGridLocked ? 'pi pi-lock' : 'pi pi-lock-open'"
+        [label]="isGridLocked ? 'Unlock Grid' : 'Lock Grid'" class="p-button-outlined"
+        (click)="toggleLockGrid()"></button>
+      <button pButton type="button" icon="pi pi-save" label="Save Layout" class="p-button-info"
+        (click)="saveLayout()"></button>
+      <button pButton type="button" icon="pi pi-refresh" label="Reload All" class="p-button-secondary"
+        (click)="triggerRefresh()"></button>
+      <button pButton type="button" icon="pi pi-code" label="Toggle JSON" class="p-button-outlined"
+        (click)="showJson = !showJson"></button>
+    </div>
+  </p-toolbar>
+
+  <p-panel *ngIf="showJson" header="Dashboard Data (Debug)" styleClass="mb-4">
+    <pre
+      class="bg-gray-800 text-white p-4 rounded-lg">{{ { enhancedKpiSummary, kpiSummary, overview, productAnalytics, customerAnalytics, paymentAnalytics, inventoryTurnover, salesForecast, salesTrends, salesCharts, yearlySales, monthlySales, weeklySales } | json }}</pre>
+  </p-panel>
+
+  <div *ngIf="isLoading" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+    <p-skeleton width="100%" height="12rem" styleClass="mb-4 rounded-lg"></p-skeleton>
+    <p-skeleton width="100%" height="20rem" styleClass="mb-4 rounded-lg"></p-skeleton>
+    <p-skeleton width="100%" height="20rem" styleClass="mb-4 rounded-lg"></p-skeleton>
+    <p-skeleton width="100%" height="20rem" styleClass="mb-4 rounded-lg"></p-skeleton>
+    <p-skeleton width="100%" height="20rem" styleClass="mb-4 rounded-lg"></p-skeleton>
+    <p-skeleton width="100%" height="20rem" styleClass="mb-4 rounded-lg"></p-skeleton>
   </div>
-</p-dialog>
-<!-- ---------------------------------------------------------------- -->
+
+  <gridstack [options]="gridOptions" *ngIf="!isLoading" class="relative">
+    <gridstack-item *ngFor="let widget of widgets; trackBy: identify" [options]="widget">
+      <p-panel [header]="widget.content"
+        styleClass="h-full bg-white dark:bg-gray-800 shadow-md rounded-lg hover:shadow-lg transition-shadow"
+        [@panelAnimation]>
+        <ng-template pTemplate="header">
+          <div class="flex justify-between items-center w-full">
+            <span class="text-lg font-semibold">{{ widget.content }}</span>
+            <div class="flex gap-2">
+              <button pButton icon="pi pi-refresh" class="p-button-text" (click)="refreshWidget(widget.id)"></button>
+              <button pButton icon="pi pi-window-maximize" class="p-button-text"
+                (click)="openDialog(widget.content ?? '', { enhancedKpiSummary, kpiSummary, overview, productAnalytics, customerAnalytics, paymentAnalytics, inventoryTurnover, salesForecast, salesTrends, salesCharts, yearlySales, monthlySales, weeklySales })">
+                ></button>
+            </div>
+          </div>
+        </ng-template>
+        <p-message *ngIf="widget.id && error[widget.id]" severity="error" >
+        </p-message>
+       
+
+        KPI Summary Widget
+        <ng-container *ngIf="widget.id === 'kpiSummary' && !error[widget.id]">
+          <div class="p-4 space-y-6" *ngIf="!isKpiLoading; else kpiLoading">
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+              <div class="bg-blue-50 dark:bg-blue-900 p-4 rounded-lg shadow">
+                <h3 class="text-sm font-medium text-blue-600 dark:text-blue-300">Total Revenue</h3>
+                <p class="text-2xl font-semibold text-gray-800 dark:text-gray-200">${{
+                  enhancedKpiSummary?.kpiSummary?.totalRevenue?.value?.toLocaleString() || 'N/A' }}</p>
+                <p class="text-sm text-gray-500 dark:text-gray-400">Change: {{
+                  enhancedKpiSummary?.kpiSummary?.totalRevenue?.change || 0 }}%</p>
+              </div>
+              <div class="bg-green-50 dark:bg-green-900 p-4 rounded-lg shadow">
+                <h3 class="text-sm font-medium text-green-600 dark:text-green-300">Gross Profit</h3>
+                <p class="text-2xl font-semibold text-gray-800 dark:text-gray-200">${{
+                  enhancedKpiSummary?.kpiSummary?.grossProfit?.value?.toLocaleString() || 'N/A' }}</p>
+                <p class="text-sm text-gray-500 dark:text-gray-400">Margin: {{
+                  kpiSummary?.salesSummary?.profitMargin?.toFixed(2) || 'N/A' }}%</p>
+              </div>
+              <div class="bg-purple-50 dark:bg-purple-900 p-4 rounded-lg shadow">
+                <h3 class="text-sm font-medium text-purple-600 dark:text-purple-300">Total Sales</h3>
+                <p class="text-2xl font-semibold text-gray-800 dark:text-gray-200">{{
+                  enhancedKpiSummary?.kpiSummary?.totalSales?.value || 'N/A' }}</p>
+                <p class="text-sm text-gray-500 dark:text-gray-400">Avg. Order: ${{
+                  kpiSummary?.salesSummary?.averageOrderValue?.toLocaleString() || 'N/A' }}</p>
+              </div>
+              <div class="bg-yellow-50 dark:bg-yellow-900 p-4 rounded-lg shadow">
+                <h3 class="text-sm font-medium text-yellow-600 dark:text-yellow-300">New Customers</h3>
+                <p class="text-2xl font-semibold text-gray-800 dark:text-gray-200">{{
+                  enhancedKpiSummary?.kpiSummary?.newCustomers?.value || 'N/A' }}</p>
+                <p class="text-sm text-gray-500 dark:text-gray-400">LTV: ${{
+                  enhancedKpiSummary?.customerInsights?.lifetimeValue?.toLocaleString() || 'N/A' }}</p>
+              </div>
+            </div>
+            <div class="bg-white dark:bg-gray-800 p-4 rounded-lg shadow">
+              <h3 class="text-lg font-semibold mb-2">Revenue Trend</h3>
+              <ngx-charts-line-chart [results]="revenueTrendData" [view]="[600, 150]" [xAxis]="showXAxis"
+                [yAxis]="showYAxis" xAxisLabel="Date" yAxisLabel="Revenue ($)" [showXAxisLabel]="showXAxisLabel"
+                [showYAxisLabel]="showYAxisLabel" [scheme]="revenueColorScheme"
+                class="w-full h-36"></ngx-charts-line-chart>
+            </div>
+            <div class="bg-white dark:bg-gray-800 p-4 rounded-lg shadow">
+              <h3 class="text-lg font-semibold mb-2">Top Selling Products</h3>
+              <p-table [value]="overview?.topSellingProducts" [tableStyle]="{ 'min-width': '50rem' }">
+                <ng-template pTemplate="header">
+                  <tr>
+                    <th>Image</th>
+                    <th>Product</th>
+                    <th>Quantity</th>
+                    <th>Revenue</th>
+                  </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-product>
+                  <tr>
+                    <td><img [src]="product.thumbnail" alt="product" class="w-12 h-12 object-cover rounded"></td>
+                    <td>{{ product.productName }}</td>
+                    <td>{{ product.totalQuantity }}</td>
+                    <td>${{ product.totalRevenue?.toLocaleString() }}</td>
+                  </tr>
+                </ng-template>
+              </p-table>
+            </div>
+          </div>
+          <ng-template #kpiLoading>
+            <div class="p-4">
+              <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
+                <p-skeleton width="100%" height="6rem" styleClass="rounded-lg"></p-skeleton>
+                <p-skeleton width="100%" height="6rem" styleClass="rounded-lg"></p-skeleton>
+                <p-skeleton width="100%" height="6rem" styleClass="rounded-lg"></p-skeleton>
+                <p-skeleton width="100%" height="6rem" styleClass="rounded-lg"></p-skeleton>
+              </div>
+              <p-skeleton width="100%" height="12rem" styleClass="rounded-lg"></p-skeleton>
+            </div>
+          </ng-template>
+        </ng-container>
+
+        Charts Overview Widget
+        <ng-container *ngIf="widget.id === 'chartsOverview' && !error[widget.id]">
+          <div class="p-4" *ngIf="!isChartsLoading; else chartsLoading">
+            <p-message severity="info"
+              text="Charts data not yet available. Please provide API response data."></p-message>
+          </div>
+          <ng-template #chartsLoading>
+            <div class="p-4">
+              <p-skeleton width="100%" height="20rem" styleClass="rounded-lg"></p-skeleton>
+            </div>
+          </ng-template>
+        </ng-container>
+
+        Product Analytics Widget
+        <ng-container *ngIf="widget.id === 'productAnalytics' && !error[widget.id]">
+          <div class="p-4 space-y-6" *ngIf="!isProductLoading; else productLoading">
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+              <div class="bg-blue-50 dark:bg-blue-900 p-4 rounded-lg shadow">
+                <h3 class="text-sm font-medium text-blue-600 dark:text-blue-300">Total Inventory Value</h3>
+                <p class="text-2xl font-semibold text-gray-800 dark:text-gray-200">${{
+                  productAnalytics?.inventorySummary?.totalValue?.toLocaleString() || 'N/A' }}</p>
+              </div>
+              <div class="bg-green-50 dark:bg-green-900 p-4 rounded-lg shadow">
+                <h3 class="text-sm font-medium text-green-600 dark:text-green-300">Items in Stock</h3>
+                <p class="text-2xl font-semibold text-gray-800 dark:text-gray-200">{{
+                  productAnalytics?.inventorySummary?.totalItems || 'N/A' }}</p>
+              </div>
+              <div class="bg-red-50 dark:bg-red-900 p-4 rounded-lg shadow">
+                <h3 class="text-sm font-medium text-red-600 dark:text-red-300">Low Stock</h3>
+                <p class="text-2xl font-semibold text-gray-800 dark:text-gray-200">{{
+                  productAnalytics?.inventorySummary?.lowStockCount || 'N/A' }}</p>
+              </div>
+            </div>
+            <div class="bg-white dark:bg-gray-800 p-4 rounded-lg shadow">
+              <h3 class="text-lg font-semibold mb-2">Performance by Category</h3>
+              <ngx-charts-bar-vertical [results]="categoryData" [view]="chartView" [xAxis]="showXAxis"
+                [yAxis]="showYAxis" xAxisLabel="Category" yAxisLabel="Revenue ($)" [showXAxisLabel]="showXAxisLabel"
+                [showYAxisLabel]="showYAxisLabel" [scheme]="categoryColorScheme"
+                class="w-full h-64"></ngx-charts-bar-vertical>
+            </div>
+            <div class="bg-white dark:bg-gray-800 p-4 rounded-lg shadow">
+              <h3 class="text-lg font-semibold mb-2">Top Products by Revenue</h3>
+              <p-table [value]="productAnalytics?.topPerformingProducts?.topByRevenue"
+                [tableStyle]="{ 'min-width': '50rem' }">
+                <ng-template pTemplate="header">
+                  <tr>
+                    <th>Image</th>
+                    <th>Product</th>
+                    <th>Brand</th>
+                    <th>Revenue</th>
+                    <th>Profit</th>
+                  </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-product>
+                  <tr>
+                    <td><img [src]="product.thumbnail" alt="product" class="w-12 h-12 object-cover rounded"></td>
+                    <td>{{ product.title }}</td>
+                    <td>{{ product.brand }}</td>
+                    <td>${{ product.totalRevenue?.toLocaleString() }}</td>
+                    <td>${{ product.grossProfit?.toLocaleString() }}</td>
+                  </tr>
+                </ng-template>
+              </p-table>
+            </div>
+            <div class="bg-white dark:bg-gray-800 p-4 rounded-lg shadow">
+              <h3 class="text-lg font-semibold mb-2">Inventory Turnover</h3>
+              <p-message severity="info"
+                text="Inventory turnover data not yet available. Please provide API response data."></p-message>
+            </div>
+          </div>
+          <ng-template #productLoading>
+            <div class="p-4">
+              <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-4">
+                <p-skeleton width="100%" height="6rem" styleClass="rounded-lg"></p-skeleton>
+                <p-skeleton width="100%" height="6rem" styleClass="rounded-lg"></p-skeleton>
+                <p-skeleton width="100%" height="6rem" styleClass="rounded-lg"></p-skeleton>
+              </div>
+              <p-skeleton width="100%" height="20rem" styleClass="rounded-lg mb-4"></p-skeleton>
+              <p-skeleton width="100%" height="12rem" styleClass="rounded-lg"></p-skeleton>
+            </div>
+          </ng-template>
+        </ng-container>
+
+        Customer Analytics Widget
+        <ng-container *ngIf="widget.id === 'customerAnalytics' && !error[widget.id]">
+          <div class="p-4" *ngIf="!isCustomerLoading; else customerLoading">
+            <p-message severity="info"
+              text="Customer analytics data not yet available. Please provide API response data."></p-message>
+          </div>
+          <ng-template #customerLoading>
+            <div class="p-4">
+              <p-skeleton width="100%" height="20rem" styleClass="rounded-lg"></p-skeleton>
+            </div>
+          </ng-template>
+        </ng-container>
+
+        Payment Analytics Widget
+        <ng-container *ngIf="widget.id === 'paymentAnalytics' && !error[widget.id]">
+          <div class="p-4" *ngIf="!isPaymentLoading; else paymentLoading">
+            <p-message severity="info"
+              text="Payment analytics data not yet available. Please provide API response data."></p-message>
+          </div>
+          <ng-template #paymentLoading>
+            <div class="p-4">
+              <p-skeleton width="100%" height="20rem" styleClass="rounded-lg"></p-skeleton>
+            </div>
+          </ng-template>
+        </ng-container>
+
+        Sales Forecast Widget
+        <ng-container *ngIf="widget.id === 'salesForecast' && !error[widget.id]">
+          <div class="p-4" *ngIf="!isForecastLoading; else forecastLoading">
+            <p-message severity="info"
+              text="Sales forecast data not yet available. Please provide API response data."></p-message>
+          </div>
+          <ng-template #forecastLoading>
+            <div class="p-4">
+              <p-skeleton width="100%" height="20rem" styleClass="rounded-lg"></p-skeleton>
+            </div>
+          </ng-template>
+        </ng-container>
+      </p-panel>
+    </gridstack-item>
+  </gridstack>
+
+  <p-dialog [header]="selectedPanelTitle" [(visible)]="showDialog" [modal]="true" styleClass="w-11/12 max-w-6xl"
+    [draggable]="false">
+    <ng-container *ngIf="selectedPanelTitle === 'KPI Summary' && !error['kpiSummary']">
+      <div class="p-4 space-y-6">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          <div class="bg-blue-50 dark:bg-blue-900 p-4 rounded-lg shadow">
+            <h3 class="text-sm font-medium text-blue-600 dark:text-blue-300">Total Revenue</h3>
+            <p class="text-2xl font-semibold text-gray-800 dark:text-gray-200">${{
+              selectedPanelData?.enhancedKpiSummary?.kpiSummary?.totalRevenue?.value?.toLocaleString() || 'N/A' }}</p>
+            <p class="text-sm text-gray-500 dark:text-gray-400">Change: {{
+              selectedPanelData?.enhancedKpiSummary?.kpiSummary?.totalRevenue?.change || 0 }}%</p>
+          </div>
+          <div class="bg-green-50 dark:bg-green-900 p-4 rounded-lg shadow">
+            <h3 class="text-sm font-medium text-green-600 dark:text-green-300">Gross Profit</h3>
+            <p class="text-2xl font-semibold text-gray-800 dark:text-gray-200">${{
+              selectedPanelData?.enhancedKpiSummary?.kpiSummary?.grossProfit?.value?.toLocaleString() || 'N/A' }}</p>
+            <p class="text-sm text-gray-500 dark:text-gray-400">Margin: {{
+              selectedPanelData?.kpiSummary?.salesSummary?.profitMargin?.toFixed(2) || 'N/A' }}%</p>
+          </div>
+          <div class="bg-purple-50 dark:bg-purple-900 p-4 rounded-lg shadow">
+            <h3 class="text-sm font-medium text-purple-600 dark:text-gray-300">Total Sales</h3>
+            <p class="text-2xl font-semibold text-gray-800 dark:text-gray-200">{{
+              selectedPanelData?.enhancedKpiSummary?.kpiSummary?.totalSales?.value || 'N/A' }}</p>
+            <p class="text-sm text-gray-500 dark:text-gray-400">Avg. Order: ${{
+              selectedPanelData?.kpiSummary?.salesSummary?.averageOrderValue?.toLocaleString() || 'N/A' }}</p>
+          </div>
+          <div class="bg-yellow-50 dark:bg-yellow-900 p-4 rounded-lg shadow">
+            <h3 class="text-sm font-medium text-yellow-600 dark:text-yellow-300">New Customers</h3>
+            <p class="text-2xl font-semibold text-gray-800 dark:text-gray-200">{{
+              selectedPanelData?.enhancedKpiSummary?.kpiSummary?.newCustomers?.value || 'N/A' }}</p>
+            <p class="text-sm text-gray-500 dark:text-gray-400">LTV: ${{
+              selectedPanelData?.enhancedKpiSummary?.customerInsights?.lifetimeValue?.toLocaleString() || 'N/A' }}</p>
+          </div>
+        </div>
+        <div class="bg-white dark:bg-gray-800 p-4 rounded-lg shadow">
+          <h3 class="text-lg font-semibold mb-2">Revenue Trend</h3>
+          <ngx-charts-line-chart [results]="revenueTrendData" [view]="[800, 300]" [xAxis]="showXAxis"
+            [yAxis]="showYAxis" xAxisLabel="Date" yAxisLabel="Revenue ($)" [showXAxisLabel]="showXAxisLabel"
+            [showYAxisLabel]="showYAxisLabel" [scheme]="revenueColorScheme" class="w-full h-64"></ngx-charts-line-chart>
+        </div>
+        <div class="bg-white dark:bg-gray-800 p-4 rounded-lg shadow">
+          <h3 class="text-lg font-semibold mb-2">Top Selling Products</h3>
+          <p-table [value]="selectedPanelData?.overview?.topSellingProducts" [tableStyle]="{ 'min-width': '50rem' }">
+            <ng-template pTemplate="header">
+              <tr>
+                <th>Image</th>
+                <th>Product</th>
+                <th>Quantity</th>
+                <th>Revenue</th>
+              </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-product>
+              <tr>
+                <td><img [src]="product.thumbnail" alt="product" class="w-12 h-12 object-cover rounded"></td>
+                <td>{{ product.productName }}</td>
+                <td>{{ product.totalQuantity }}</td>
+                <td>${{ product.totalRevenue?.toLocaleString() }}</td>
+              </tr>
+            </ng-template>
+          </p-table>
+        </div>
+      </div>
+    </ng-container>
+
+    <ng-container *ngIf="selectedPanelTitle === 'Charts Overview' && !error['chartsOverview']">
+      <div class="p-4">
+        <p-message severity="info" text="Charts data not yet available. Please provide API response data."></p-message>
+      </div>
+    </ng-container>
+
+    <ng-container *ngIf="selectedPanelTitle === 'Product Analytics' && !error['productAnalytics']">
+      <div class="p-4 space-y-6">
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          <div class="bg-blue-50 dark:bg-blue-900 p-4 rounded-lg shadow">
+            <h3 class="text-sm font-medium text-blue-600 dark:text-blue-300">Total Inventory Value</h3>
+            <p class="text-2xl font-semibold text-gray-800 dark:text-gray-200">${{
+              selectedPanelData?.productAnalytics?.inventorySummary?.totalValue?.toLocaleString() || 'N/A' }}</p>
+          </div>
+          <div class="bg-green-50 dark:bg-green-900 p-4 rounded-lg shadow">
+            <h3 class="text-sm font-medium text-green-600 dark:text-green-300">Items in Stock</h3>
+            <p class="text-2xl font-semibold text-gray-800 dark:text-gray-200">{{
+              selectedPanelData?.productAnalytics?.inventorySummary?.totalItems || 'N/A' }}</p>
+          </div>
+          <div class="bg-red-50 dark:bg-red-900 p-4 rounded-lg shadow">
+            <h3 class="text-sm font-medium text-red-600 dark:text-red-300">Low Stock</h3>
+            <p class="text-2xl font-semibold text-gray-800 dark:text-gray-200">{{
+              selectedPanelData?.productAnalytics?.inventorySummary?.lowStockCount || 'N/A' }}</p>
+          </div>
+        </div>
+        <div class="bg-white dark:bg-gray-800 p-4 rounded-lg shadow">
+          <h3 class="text-lg font-semibold mb-2">Performance by Category</h3>
+          <ngx-charts-bar-vertical [results]="categoryData" [view]="[800, 400]" [xAxis]="showXAxis" [yAxis]="showYAxis"
+            xAxisLabel="Category" yAxisLabel="Revenue ($)" [showXAxisLabel]="showXAxisLabel"
+            [showYAxisLabel]="showYAxisLabel" [scheme]="categoryColorScheme"
+            class="w-full h-80"></ngx-charts-bar-vertical>
+        </div>
+        <div class="bg-white dark:bg-gray-800 p-4 rounded-lg shadow">
+          <h3 class="text-lg font-semibold mb-2">Top Products by Revenue</h3>
+          <p-table [value]="selectedPanelData?.productAnalytics?.topPerformingProducts?.topByRevenue"
+            [tableStyle]="{ 'min-width': '50rem' }">
+            <ng-template pTemplate="header">
+              <tr>
+                <th>Image</th>
+                <th>Product</th>
+                <th>Brand</th>
+                <th>Revenue</th>
+                <th>Profit</th>
+              </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-product>
+              <tr>
+                <td><img [src]="product.thumbnail" alt="product" class="w-12 h-12 object-cover rounded"></td>
+                <td>{{ product.title }}</td>
+                <td>{{ product.brand }}</td>
+                <td>${{ product.totalRevenue?.toLocaleString() }}</td>
+                <td>${{ product.grossProfit?.toLocaleString() }}</td>
+              </tr>
+            </ng-template>
+          </p-table>
+        </div>
+        <div class="bg-white dark:bg-gray-800 p-4 rounded-lg shadow">
+          <h3 class="text-lg font-semibold mb-2">Inventory Turnover</h3>
+          <p-message severity="info"
+            text="Inventory turnover data not yet available. Please provide API response data."></p-message>
+        </div>
+      </div>
+    </ng-container>
+
+    <ng-container *ngIf="selectedPanelTitle === 'Customer Analytics' && !error['customerAnalytics']">
+      <div class="p-4">
+        <p-message severity="info"
+          text="Customer analytics data not yet available. Please provide API response data."></p-message>
+      </div>
+    </ng-container>
+
+    <ng-container *ngIf="selectedPanelTitle === 'Payment Analytics' && !error['paymentAnalytics']">
+      <div class="p-4">
+        <p-message severity="info"
+          text="Payment analytics data not yet available. Please provide API response data."></p-message>
+      </div>
+    </ng-container>
+
+    <ng-container *ngIf="selectedPanelTitle === 'Sales Forecast' && !error['salesForecast']">
+      <div class="p-4">
+        <p-message severity="info"
+          text="Sales forecast data not yet available. Please provide API response data."></p-message>
+      </div>
+    </ng-container>
+  </p-dialog>
+</div>
 <!-- 
-
-
-admin-dashboard.component.html
 <p-toast></p-toast>
 <div class="admin-dashboard" [@fadeIn]="true">
   Header with Filters
@@ -253,7 +996,8 @@ admin-dashboard.component.html
 
         <app-dashboard-chart-combo [selectedPeriod]="selectedPeriod" [startDate]="startDate" [endDate]="endDate">
         </app-dashboard-chart-combo>
- 
+             [salesTrends]="salesTrends" [salesCharts]="salesCharts" [yearlySales]="yearlySales"
+          [monthlySales]="monthlySales" [weeklySales]="weeklySales" 
         <div *ngIf="showJson" class="json-section">
           <pre class="json-viewer">{{ salesTrends | json }}</pre>
           <pre class="json-viewer">{{ salesCharts | json }}</pre>
@@ -296,7 +1040,6 @@ admin-dashboard.component.html
         </div>
       </p-panel>
 
-      Payment Analytics
       <p-panel *ngIf="widget.id === 'paymentAnalytics'" [toggleable]="true" styleClass="h-full">
         <ng-template pTemplate="header">
           <span class="font-bold">Payment Analytics</span>
@@ -331,7 +1074,6 @@ admin-dashboard.component.html
     </gridstack-item>
   </gridstack>
 
-  Loading Skeleton
   <ng-template [ngIf]="isLoading">
     <div class="grid">
       <div class="col-12"><p-skeleton width="100%" height="8rem"></p-skeleton></div>
@@ -345,7 +1087,6 @@ admin-dashboard.component.html
 
 </div>
 
-Dialog for panel details
 <p-dialog [(visible)]="showDialog" [modal]="true" [style]="{width: '80vw', height: '80vh'}"
   header="{{ selectedPanelTitle }}" [draggable]="true" [resizable]="true" class="perfect-dialog">
   <div class="p-4 overflow-auto h-full dialog-content">
@@ -355,7 +1096,6 @@ Dialog for panel details
           [startDate]="startDate" [endDate]="endDate"
         ></app-dashboard-chart-combo>
       </div>
-       
       <div *ngSwitchCase="'Key Performance Indicators'">
         <app-dashboard-summary [summaryData]="selectedPanelData.enhancedKpiSummary" [isLoading]="false"></app-dashboard-summary>
         <pre class="json-viewer">{{ selectedPanelData.kpiSummary | json }}</pre>
@@ -371,4 +1111,4 @@ Dialog for panel details
       <pre *ngSwitchDefault class="json-viewer">{{ selectedPanelData | json }}</pre>
     </ng-container>
   </div>
-</p-dialog> -->
+</p-dialog> --> -->
