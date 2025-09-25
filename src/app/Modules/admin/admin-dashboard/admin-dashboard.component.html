@@ -225,130 +225,139 @@
         <!-- Customer Analytics Widget -->
         <ng-container *ngIf="widget.id === 'customerAnalytics' && !error['customerAnalytics']">
           <div class="p-4 space-y-6" *ngIf="!isCustomerLoading; else customerLoading">
-            <!-- KPI Cards -->
+            <!-- Customer Summary KPI Cards -->
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <div class="bg-blue-50 dark:bg-blue-900 p-4 rounded-lg shadow">
-                <h3 class="text-sm font-medium text-blue-600 dark:text-blue-300">New Customers</h3>
-                <p class="text-2xl font-semibold text-gray-800 dark:text-gray-200">{{
-                  customerAnalytics?.summary?.newCustomers || 'N/A' }}</p>
+              <div class="bg-indigo-50 dark:bg-indigo-900 p-4 rounded-lg shadow">
+                <h3 class="text-sm font-medium text-indigo-600 dark:text-indigo-300">New Customers</h3>
+                <p class="text-3xl font-bold text-gray-800 dark:text-gray-200">{{
+                  customerAnalytics?.summary?.newCustomers || 0 }}</p>
+                <p class="text-sm text-gray-500 dark:text-gray-400">This period</p>
               </div>
-              <div class="bg-green-50 dark:bg-green-900 p-4 rounded-lg shadow">
-                <h3 class="text-sm font-medium text-green-600 dark:text-green-300">Repeat Rate</h3>
-                <p class="text-2xl font-semibold text-gray-800 dark:text-gray-200">{{
-                  (customerAnalytics?.summary?.repeatCustomerRate * 100)?.toFixed(2) || '0' }}%</p>
+              <div class="bg-orange-50 dark:bg-orange-900 p-4 rounded-lg shadow">
+                <h3 class="text-sm font-medium text-orange-600 dark:text-orange-300">Repeat Customer Rate</h3>
+                <p class="text-3xl font-bold text-gray-800 dark:text-gray-200">{{
+                  customerAnalytics?.summary?.repeatCustomerRate * 100 || 0 }}%</p>
+                <p class="text-sm text-gray-500 dark:text-gray-400">Retention rate</p>
               </div>
             </div>
-            <!-- Top Customers Table (Revenue breakdown empty, so focus on lifetime value) -->
+
+            <!-- Top Customers Lifetime Table -->
             <div class="bg-white dark:bg-gray-800 p-4 rounded-lg shadow">
               <h3 class="text-lg font-semibold mb-2">Top Customers by Lifetime Value</h3>
               <p-table [value]="customerAnalytics?.topCustomersLifetime" [tableStyle]="{ 'min-width': '50rem' }">
                 <ng-template pTemplate="header">
                   <tr>
-                    <th>Full Name</th>
+                    <th>Name</th>
                     <th>Email</th>
                     <th>Lifetime Value</th>
                   </tr>
                 </ng-template>
                 <ng-template pTemplate="body" let-customer>
                   <tr>
-                    <td>{{ customer.fullname }}</td>
+                    <td class="font-medium">{{ customer.fullname }}</td>
                     <td>{{ customer.email }}</td>
-                    <td>${{ customer.lifetimeValue?.toLocaleString() || '0' }}</td>
+                    <td class="text-right">${{ customer.lifetimeValue?.toLocaleString() || '0' }}</td>
+                  </tr>
+                </ng-template>
+                <ng-template pTemplate="emptymessage">
+                  <tr>
+                    <td colspan="3" class="text-center py-4">No customer data available</td>
                   </tr>
                 </ng-template>
               </p-table>
             </div>
-            <!-- Revenue Breakdown (empty, so placeholder) -->
-            <div class="bg-white dark:bg-gray-800 p-4 rounded-lg shadow">
+
+            <!-- Revenue Breakdown Placeholder -->
+            <div class="bg-white dark:bg-gray-800 p-4 rounded-lg shadow"
+              *ngIf="!customerAnalytics?.revenueBreakdown?.length">
               <h3 class="text-lg font-semibold mb-2">Revenue Breakdown</h3>
-              <p-message severity="info" text="No revenue breakdown data available."></p-message>
+              <p-message severity="info" text="Revenue breakdown data not available for this period."></p-message>
             </div>
           </div>
           <ng-template #customerLoading>
             <div class="p-4">
               <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
-                <p-skeleton width="100%" height="6rem" styleClass="rounded-lg"></p-skeleton>
-                <p-skeleton width="100%" height="6rem" styleClass="rounded-lg"></p-skeleton>
+                <p-skeleton width="100%" height="8rem" styleClass="rounded-lg"></p-skeleton>
+                <p-skeleton width="100%" height="8rem" styleClass="rounded-lg"></p-skeleton>
               </div>
-              <p-skeleton width="100%" height="12rem" styleClass="rounded-lg mb-4"></p-skeleton>
+              <p-skeleton width="100%" height="16rem" styleClass="rounded-lg"></p-skeleton>
             </div>
           </ng-template>
-          <!-- <div class="p-4" *ngIf="!isCustomerLoading; else customerLoading">
-            <p-message severity="info"
-              text="Customer analytics data not yet available. Please provide API response data."></p-message>
-          </div>
-          <ng-template #customerLoading>
-            <div class="p-4">
-              <p-skeleton width="100%" height="20rem" styleClass="rounded-lg"></p-skeleton>
-            </div>
-          </ng-template> -->
         </ng-container>
 
         <!-- Payment Analytics Widget -->
+        <!-- Payment Analytics Widget -->
         <ng-container *ngIf="widget.id === 'paymentAnalytics' && !error['paymentAnalytics']">
           <div class="p-4 space-y-6" *ngIf="!isPaymentLoading; else paymentLoading">
-            <!-- KPI Cards -->
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            <!-- Financial Health KPI Cards -->
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
               <div class="bg-blue-50 dark:bg-blue-900 p-4 rounded-lg shadow">
                 <h3 class="text-sm font-medium text-blue-600 dark:text-blue-300">Total Billed</h3>
                 <p class="text-2xl font-semibold text-gray-800 dark:text-gray-200">${{
-                  paymentAnalytics?.financialHealth?.totalBilled?.toLocaleString() || 'N/A' }}</p>
+                  paymentAnalytics?.financialHealth?.totalBilled?.toLocaleString() || '0' }}</p>
+                <p class="text-sm text-gray-500 dark:text-gray-400">This period</p>
               </div>
               <div class="bg-green-50 dark:bg-green-900 p-4 rounded-lg shadow">
                 <h3 class="text-sm font-medium text-green-600 dark:text-green-300">Total Collected</h3>
                 <p class="text-2xl font-semibold text-gray-800 dark:text-gray-200">${{
-                  paymentAnalytics?.financialHealth?.totalCollected?.toLocaleString() || 'N/A' }}</p>
+                  paymentAnalytics?.financialHealth?.totalCollected?.toLocaleString() || '0' }}</p>
+                <p class="text-sm text-gray-500 dark:text-gray-400">Collections</p>
               </div>
               <div class="bg-purple-50 dark:bg-purple-900 p-4 rounded-lg shadow">
                 <h3 class="text-sm font-medium text-purple-600 dark:text-purple-300">Collection Rate</h3>
                 <p class="text-2xl font-semibold text-gray-800 dark:text-gray-200">{{
-                  paymentAnalytics?.financialHealth?.collectionRate?.toFixed(2) || 'N/A' }}%</p>
-              </div>
-              <div class="bg-red-50 dark:bg-red-900 p-4 rounded-lg shadow">
-                <h3 class="text-sm font-medium text-red-600 dark:text-red-300">Failed Payments</h3>
-                <p class="text-2xl font-semibold text-gray-800 dark:text-gray-200">{{
-                  paymentAnalytics?.failedPayments?.count || '0' }}</p>
+                  paymentAnalytics?.financialHealth?.collectionRate?.toFixed(1) || '0' }}%</p>
+                <p class="text-sm text-gray-500 dark:text-gray-400">Success rate</p>
               </div>
             </div>
+
+            <!-- Failed Payments Info -->
+            <div class="bg-white dark:bg-gray-800 p-4 rounded-lg shadow">
+              <h3 class="text-lg font-semibold mb-2">Payment Status</h3>
+              <div class="flex items-center gap-4">
+                <div class="bg-green-50 dark:bg-green-900 p-3 rounded-lg flex-1">
+                  <p class="text-sm font-medium text-green-600 dark:text-green-300">Failed Payments</p>
+                  <p class="text-2xl font-bold text-green-800 dark:text-green-200">{{
+                    paymentAnalytics?.failedPayments?.count || 0 }}</p>
+                </div>
+                <div class="bg-red-50 dark:bg-red-900 p-3 rounded-lg flex-1">
+                  <p class="text-sm font-medium text-red-600 dark:text-red-300">Failed Value</p>
+                  <p class="text-2xl font-bold text-red-800 dark:text-red-200">${{
+                    (paymentAnalytics?.failedPayments?.totalValue || 0)?.toLocaleString() }}</p>
+                </div>
+              </div>
+            </div>
+
             <!-- Payment Methods Pie Chart -->
             <div class="bg-white dark:bg-gray-800 p-4 rounded-lg shadow">
               <h3 class="text-lg font-semibold mb-2">Payment Methods Breakdown</h3>
-              <ngx-charts-pie-chart [results]="paymentMethodsData" [view]="[400, 300]" [scheme]="paymentColorScheme"
-                [labels]="true" [doughnut]="false" class="w-full h-64"></ngx-charts-pie-chart>
+              <ngx-charts-pie-chart [results]="paymentMethodsData" [view]="[400, 250]" [scheme]="paymentColorScheme"
+                [doughnut]="false" [arcWidth]="0.25" [labels]="true" [gradient]="false"
+                class="w-full h-64"></ngx-charts-pie-chart>
             </div>
+
             <!-- Collection Trends Line Chart -->
             <div class="bg-white dark:bg-gray-800 p-4 rounded-lg shadow">
               <h3 class="text-lg font-semibold mb-2">Collection Trends</h3>
               <ngx-charts-line-chart [results]="collectionTrendsData" [view]="[600, 200]" [xAxis]="showXAxis"
-                [yAxis]="showYAxis" xAxisLabel="Date" yAxisLabel="Daily Total ($)" [showXAxisLabel]="showXAxisLabel"
-                [showYAxisLabel]="showYAxisLabel" [scheme]="revenueColorScheme"
+                [yAxis]="showYAxis" xAxisLabel="Date" yAxisLabel="Collection Amount ($)"
+                [showXAxisLabel]="showXAxisLabel" [showYAxisLabel]="showYAxisLabel" [scheme]="revenueColorScheme"
                 class="w-full h-48"></ngx-charts-line-chart>
             </div>
           </div>
           <ng-template #paymentLoading>
             <div class="p-4">
-              <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
-                <p-skeleton width="100%" height="6rem" styleClass="rounded-lg"></p-skeleton>
+              <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-4">
                 <p-skeleton width="100%" height="6rem" styleClass="rounded-lg"></p-skeleton>
                 <p-skeleton width="100%" height="6rem" styleClass="rounded-lg"></p-skeleton>
                 <p-skeleton width="100%" height="6rem" styleClass="rounded-lg"></p-skeleton>
               </div>
-              <p-skeleton width="100%" height="16rem" styleClass="rounded-lg mb-4"></p-skeleton>
+              <p-skeleton width="100%" height="20rem" styleClass="rounded-lg mb-4"></p-skeleton>
               <p-skeleton width="100%" height="12rem" styleClass="rounded-lg"></p-skeleton>
             </div>
           </ng-template>
-          <!-- <div class="p-4" *ngIf="!isPaymentLoading; else paymentLoading">
-            <p-message severity="info"
-              text="Payment analytics data not yet available. Please provide API response data."></p-message>
-          </div>
-          <ng-template #paymentLoading>
-            <div class="p-4">
-              <p-skeleton width="100%" height="20rem" styleClass="rounded-lg"></p-skeleton>
-            </div>
-          </ng-template> -->
         </ng-container>
-
-        <!-- Sales Forecast Widget -->
+      <!-- Sales Forecast Widget -->
         <ng-container *ngIf="widget.id === 'salesForecast' && !error['salesForecast']">
           <div class="p-4" *ngIf="!isForecastLoading; else forecastLoading">
             <p-message severity="info"
@@ -515,6 +524,131 @@
   </p-dialog>
 </div>
 
+
+
+
+
+
+        <!-- Customer Analytics Widget -->
+        <!-- <ng-container *ngIf="widget.id === 'customerAnalytics' && !error['customerAnalytics']">
+          <div class="p-4 space-y-6" *ngIf="!isCustomerLoading; else customerLoading">
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div class="bg-blue-50 dark:bg-blue-900 p-4 rounded-lg shadow">
+                <h3 class="text-sm font-medium text-blue-600 dark:text-blue-300">New Customers</h3>
+                <p class="text-2xl font-semibold text-gray-800 dark:text-gray-200">{{
+                  customerAnalytics?.summary?.newCustomers || 'N/A' }}</p>
+              </div>
+              <div class="bg-green-50 dark:bg-green-900 p-4 rounded-lg shadow">
+                <h3 class="text-sm font-medium text-green-600 dark:text-green-300">Repeat Rate</h3>
+                <p class="text-2xl font-semibold text-gray-800 dark:text-gray-200">{{
+                  (customerAnalytics?.summary?.repeatCustomerRate * 100)?.toFixed(2) || '0' }}%</p>
+              </div>
+            </div>
+            <div class="bg-white dark:bg-gray-800 p-4 rounded-lg shadow">
+              <h3 class="text-lg font-semibold mb-2">Top Customers by Lifetime Value</h3>
+              <p-table [value]="customerAnalytics?.topCustomersLifetime" [tableStyle]="{ 'min-width': '50rem' }">
+                <ng-template pTemplate="header">
+                  <tr>
+                    <th>Full Name</th>
+                    <th>Email</th>
+                    <th>Lifetime Value</th>
+                  </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-customer>
+                  <tr>
+                    <td>{{ customer.fullname }}</td>
+                    <td>{{ customer.email }}</td>
+                    <td>${{ customer.lifetimeValue?.toLocaleString() || '0' }}</td>
+                  </tr>
+                </ng-template>
+              </p-table>
+            </div>
+            <div class="bg-white dark:bg-gray-800 p-4 rounded-lg shadow">
+              <h3 class="text-lg font-semibold mb-2">Revenue Breakdown</h3>
+              <p-message severity="info" text="No revenue breakdown data available."></p-message>
+            </div>
+          </div>
+          <ng-template #customerLoading>
+            <div class="p-4">
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
+                <p-skeleton width="100%" height="6rem" styleClass="rounded-lg"></p-skeleton>
+                <p-skeleton width="100%" height="6rem" styleClass="rounded-lg"></p-skeleton>
+              </div>
+              <p-skeleton width="100%" height="12rem" styleClass="rounded-lg mb-4"></p-skeleton>
+            </div>
+          </ng-template>
+        </ng-container> -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!--   <ng-container *ngIf="widget.id === 'paymentAnalytics' && !error['paymentAnalytics']">
+          <div class="p-4 space-y-6" *ngIf="!isPaymentLoading; else paymentLoading">
+            KPI Cards
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+              <div class="bg-blue-50 dark:bg-blue-900 p-4 rounded-lg shadow">
+                <h3 class="text-sm font-medium text-blue-600 dark:text-blue-300">Total Billed</h3>
+                <p class="text-2xl font-semibold text-gray-800 dark:text-gray-200">${{
+                  paymentAnalytics?.financialHealth?.totalBilled?.toLocaleString() || 'N/A' }}</p>
+              </div>
+              <div class="bg-green-50 dark:bg-green-900 p-4 rounded-lg shadow">
+                <h3 class="text-sm font-medium text-green-600 dark:text-green-300">Total Collected</h3>
+                <p class="text-2xl font-semibold text-gray-800 dark:text-gray-200">${{
+                  paymentAnalytics?.financialHealth?.totalCollected?.toLocaleString() || 'N/A' }}</p>
+              </div>
+              <div class="bg-purple-50 dark:bg-purple-900 p-4 rounded-lg shadow">
+                <h3 class="text-sm font-medium text-purple-600 dark:text-purple-300">Collection Rate</h3>
+                <p class="text-2xl font-semibold text-gray-800 dark:text-gray-200">{{
+                  paymentAnalytics?.financialHealth?.collectionRate?.toFixed(2) || 'N/A' }}%</p>
+              </div>
+              <div class="bg-red-50 dark:bg-red-900 p-4 rounded-lg shadow">
+                <h3 class="text-sm font-medium text-red-600 dark:text-red-300">Failed Payments</h3>
+                <p class="text-2xl font-semibold text-gray-800 dark:text-gray-200">{{
+                  paymentAnalytics?.failedPayments?.count || '0' }}</p>
+              </div>
+            </div>
+            Payment Methods Pie Chart
+            <div class="bg-white dark:bg-gray-800 p-4 rounded-lg shadow">
+              <h3 class="text-lg font-semibold mb-2">Payment Methods Breakdown</h3>
+              <ngx-charts-pie-chart [results]="paymentMethodsData" [view]="[400, 300]" [scheme]="paymentColorScheme"
+                [labels]="true" [doughnut]="false" class="w-full h-64"></ngx-charts-pie-chart>
+            </div>
+            Collection Trends Line Chart
+            <div class="bg-white dark:bg-gray-800 p-4 rounded-lg shadow">
+              <h3 class="text-lg font-semibold mb-2">Collection Trends</h3>
+              <ngx-charts-line-chart [results]="collectionTrendsData" [view]="[600, 200]" [xAxis]="showXAxis"
+                [yAxis]="showYAxis" xAxisLabel="Date" yAxisLabel="Daily Total ($)" [showXAxisLabel]="showXAxisLabel"
+                [showYAxisLabel]="showYAxisLabel" [scheme]="revenueColorScheme"
+                class="w-full h-48"></ngx-charts-line-chart>
+            </div>
+          </div>
+          <ng-template #paymentLoading>
+            <div class="p-4">
+              <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
+                <p-skeleton width="100%" height="6rem" styleClass="rounded-lg"></p-skeleton>
+                <p-skeleton width="100%" height="6rem" styleClass="rounded-lg"></p-skeleton>
+                <p-skeleton width="100%" height="6rem" styleClass="rounded-lg"></p-skeleton>
+                <p-skeleton width="100%" height="6rem" styleClass="rounded-lg"></p-skeleton>
+              </div>
+              <p-skeleton width="100%" height="16rem" styleClass="rounded-lg mb-4"></p-skeleton>
+              <p-skeleton width="100%" height="12rem" styleClass="rounded-lg"></p-skeleton>
+            </div>
+          </ng-template>
+       
+        </ng-container> -->
+
+      
+------------------------------------------------------ -->
 <!-- <p-toast position="top-right"></p-toast>
 <div class="admin-dashboard bg-gray-100 dark:bg-gray-900 min-h-screen p-4" [@fadeIn]="true">
   <p-toolbar styleClass="sticky top-0 z-10 bg-white dark:bg-gray-800 shadow-md rounded-lg mb-4">

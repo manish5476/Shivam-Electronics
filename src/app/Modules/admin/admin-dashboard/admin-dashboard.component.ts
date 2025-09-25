@@ -64,16 +64,16 @@ export class AdminDashboardComponent implements OnInit, AfterViewInit {
 
   @ViewChild(GridstackComponent) gridstackComponent!: GridstackComponent;
   private grid!: GridStack;
-  public gridOptions: GridStackOptions = {
-    margin: 10,
-    float: true,
-    cellHeight: '10rem',
-    resizable: { handles: 'all' },
-    column: 12,
-    columnOpts: { breakpoints: [{ w: 1024, c: 8 }, { w: 640, c: 4 }] },
-    minRow: 1,
-    alwaysShowResizeHandle: /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent),
-  };
+  // public gridOptions: GridStackOptions = {
+  //   margin: 10,
+  //   float: true,
+  //   cellHeight: '10rem',
+  //   resizable: { handles: 'all' },
+  //   column: 12,
+  //   columnOpts: { breakpoints: [{ w: 1024, c: 8 }, { w: 640, c: 4 }] },
+  //   minRow: 1,
+  //   alwaysShowResizeHandle: /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent),
+  // };
   public isGridLocked = false;
   private readonly LAYOUT_KEY = 'dashboardLayout_v3';
 
@@ -130,16 +130,15 @@ export class AdminDashboardComponent implements OnInit, AfterViewInit {
   yearlySales: any;
   monthlySales: any;
   weeklySales: any;
-// Add these properties to the class:
-paymentMethodsData: any[] = [];
-collectionTrendsData: any[] = [];
-paymentColorScheme: Color = {
-  name: 'payment',
-  selectable: true,
-  group: ScaleType.Ordinal,
-  domain: ['#3b82f6', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6'],
-};
-
+  // Add these properties to the class:
+  paymentMethodsData: any[] = [];
+  collectionTrendsData: any[] = [];
+  paymentColorScheme: Color = {
+    name: 'payment',
+    selectable: true,
+    group: ScaleType.Ordinal,
+    domain: ['#3b82f6', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6'],
+  };
   revenueTrendData: any[] = [];
   categoryData: any[] = [];
   chartView: [number, number] = [600, 300];
@@ -159,15 +158,50 @@ paymentColorScheme: Color = {
     group: ScaleType.Ordinal,
     domain: ['#3b82f6', '#10b981', '#f59e0b', '#ef4444'],
   };
+public gridOptions: GridStackOptions = {
+  margin: 10,
+  float: true,
+  cellHeight: 'auto', // Allow row height to adjust to content
+  disableResize: false,
+  column: 12,
+  columnOpts: {
+    breakpoints: [
+      { w: 1024, c: 12 }, // 12 columns for medium screens
+      { w: 640, c: 12 }, // 12 columns for mobile (single-column layout)
+    ],
+  },
+  minRow: 1, // Allow grid to expand as needed
+  alwaysShowResizeHandle: /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+    navigator.userAgent
+  ),
+};
 
-  public widgets: GridStackWidget[] = [
-    { id: 'kpiSummary', x: 0, y: 0, w: 12, h: 2, minH: 2, maxH: 4, content: 'KPI Summary' },
-    { id: 'chartsOverview', x: 0, y: 2, w: 12, h: 4, minH: 3, maxH: 6, content: 'Charts Overview' },
-    { id: 'productAnalytics', x: 0, y: 6, w: 6, h: 5, minH: 4, maxH: 8, content: 'Product Analytics' },
-    { id: 'customerAnalytics', x: 6, y: 6, w: 6, h: 5, minH: 4, maxH: 8, content: 'Customer Analytics' },
-    { id: 'paymentAnalytics', x: 0, y: 11, w: 6, h: 5, minH: 4, maxH: 8, content: 'Payment Analytics' },
-    { id: 'salesForecast', x: 6, y: 11, w: 6, h: 5, minH: 4, maxH: 8, content: 'Sales Forecast' },
-  ];
+public widgets: GridStackWidget[] = [
+  { id: 'kpiSummary', x: 0, y: 0, w: 12, content: 'KPI Summary' },
+  { id: 'chartsOverview', x: 0, y: 1, w: 12, content: 'Charts Overview' },
+  { id: 'productAnalytics', x: 0, y: 2, w: 12, content: 'Product Analytics' },
+  { id: 'customerAnalytics', x: 0, y: 3, w: 12, content: 'Customer Analytics' },
+  { id: 'paymentAnalytics', x: 0, y: 4, w: 12, content: 'Payment Analytics' },
+  { id: 'salesForecast', x: 0, y: 5, w: 12, content: 'Sales Forecast' },
+];
+  // // public widgets: GridStackWidget[] = [
+  // //   { id: 'kpiSummary', x: 0, y: 0, w: 12, h: 2, minH: 2, maxH: 4, content: 'KPI Summary' },
+  // //   { id: 'chartsOverview', x: 0, y: 2, w: 12, h: 4, minH: 3, maxH: 6, content: 'Charts Overview' },
+  // //   { id: 'productAnalytics', x: 0, y: 6, w: 6, h: 5, minH: 4, maxH: 8, content: 'Product Analytics' },
+  // //   { id: 'customerAnalytics', x: 6, y: 6, w: 6, h: 5, minH: 4, maxH: 8, content: 'Customer Analytics' },
+  // //   { id: 'paymentAnalytics', x: 0, y: 11, w: 6, h: 5, minH: 4, maxH: 8, content: 'Payment Analytics' },
+  // //   { id: 'salesForecast', x: 6, y: 11, w: 6, h: 5, minH: 4, maxH: 8, content: 'Sales Forecast' },
+  // // ];
+  
+  // public widgets: GridStackWidget[] = [
+  //   { id: 'kpiSummary', x: 0, y: 0, w: 12, content: 'KPI Summary' },
+  //   { id: 'chartsOverview', x: 0, y: 1, w: 12, content: 'Charts Overview' },
+  //   { id: 'productAnalytics', x: 0, y: 2, w: 6, content: 'Product Analytics' },
+  //   { id: 'customerAnalytics', x: 6, y: 2, w: 6, content: 'Customer Analytics' },
+  //   { id: 'paymentAnalytics', x: 0, y: 3, w: 6, content: 'Payment Analytics' },
+  //   { id: 'salesForecast', x: 6, y: 3, w: 6, content: 'Sales Forecast' },
+  // ];
+
 
   ngOnInit(): void {
     this.refreshTrigger.subscribe(() => this.loadDashboardData());
@@ -181,8 +215,68 @@ paymentColorScheme: Color = {
     } else {
       this.handleError('Dashboard grid could not be initialized.', 'Grid Initialization', 'global');
     }
+
+    this.grid.on('change', (event, items) => {
+    items?.forEach((item) => {
+      this.grid.update(item.el!, { h: undefined }); // Clear fixed height to allow content-driven sizing
+    });
+  });
   }
 
+  private updateChartData(): void {
+    // Existing revenue and category data...
+    if (this.enhancedKpiSummary?.charts?.revenueTrend) {
+      this.revenueTrendData = [
+        {
+          name: 'Revenue',
+          series: this.enhancedKpiSummary.charts.revenueTrend.map((item: any) => ({
+            name: item._id,
+            value: item.dailyRevenue,
+          })),
+        },
+      ];
+    }
+    if (this.productAnalytics?.performanceByCategory) {
+      this.categoryData = this.productAnalytics.performanceByCategory.map((item: any) => ({
+        name: item._id.split(',')[1] || item._id,
+        value: item.totalRevenue,
+      }));
+    }
+
+    // New payment analytics data processing
+    if (this.paymentAnalytics?.paymentMethods) {
+      this.paymentMethodsData = this.paymentAnalytics.paymentMethods.map((method: any) => ({
+        name: this.formatPaymentMethod(method._id),
+        value: method.totalAmount,
+      }));
+    }
+
+    if (this.paymentAnalytics?.collectionTrends) {
+      this.collectionTrendsData = [
+        {
+          name: 'Collections',
+          series: this.paymentAnalytics.collectionTrends.map((trend: any) => ({
+            name: trend._id,
+            value: trend.dailyTotal,
+          })),
+        },
+      ];
+    }
+  }
+
+  // Add helper method for payment method formatting
+  private formatPaymentMethod(methodId: string): string {
+    const methodNames: { [key: string]: string } = {
+      'credit_card': 'Credit Card',
+      'upi': 'UPI',
+      'bank_transfer': 'Bank Transfer',
+      'cash': 'Cash',
+      'wallet': 'Digital Wallet'
+    };
+    return methodNames[methodId] || methodId.toUpperCase();
+  }
+
+  // Update updateChartData method:
   // private updateChartData(): void {
   //   if (this.enhancedKpiSummary?.charts?.revenueTrend) {
   //     this.revenueTrendData = [
@@ -201,46 +295,25 @@ paymentColorScheme: Color = {
   //       value: item.totalRevenue,
   //     }));
   //   }
+  //   // New: Process payment analytics
+  //   if (this.paymentAnalytics?.paymentMethods) {
+  //     this.paymentMethodsData = this.paymentAnalytics.paymentMethods.map((item: any) => ({
+  //       name: item._id.replace('_', ' ').toUpperCase(),
+  //       value: item.totalAmount,
+  //     }));
+  //   }
+  //   if (this.paymentAnalytics?.collectionTrends) {
+  //     this.collectionTrendsData = [
+  //       {
+  //         name: 'Collection',
+  //         series: this.paymentAnalytics.collectionTrends.map((item: any) => ({
+  //           name: item._id,
+  //           value: item.dailyTotal,
+  //         })),
+  //       },
+  //     ];
+  //   }
   // }
-
-  // Update updateChartData method:
-private updateChartData(): void {
-  if (this.enhancedKpiSummary?.charts?.revenueTrend) {
-    this.revenueTrendData = [
-      {
-        name: 'Revenue',
-        series: this.enhancedKpiSummary.charts.revenueTrend.map((item: any) => ({
-          name: item._id,
-          value: item.dailyRevenue,
-        })),
-      },
-    ];
-  }
-  if (this.productAnalytics?.performanceByCategory) {
-    this.categoryData = this.productAnalytics.performanceByCategory.map((item: any) => ({
-      name: item._id.split(',')[1] || item._id,
-      value: item.totalRevenue,
-    }));
-  }
-  // New: Process payment analytics
-  if (this.paymentAnalytics?.paymentMethods) {
-    this.paymentMethodsData = this.paymentAnalytics.paymentMethods.map((item: any) => ({
-      name: item._id.replace('_', ' ').toUpperCase(),
-      value: item.totalAmount,
-    }));
-  }
-  if (this.paymentAnalytics?.collectionTrends) {
-    this.collectionTrendsData = [
-      {
-        name: 'Collection',
-        series: this.paymentAnalytics.collectionTrends.map((item: any) => ({
-          name: item._id,
-          value: item.dailyTotal,
-        })),
-      },
-    ];
-  }
-}
 
   private loadDashboardData(forceRefresh = false): void {
     this.isLoading = true;

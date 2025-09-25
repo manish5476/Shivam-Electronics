@@ -5,12 +5,22 @@
 @import "tailwindcss";
 @import "primeicons/primeicons.css";
 
+/* Grid Stack Styles */
 .grid-stack {
-  background: #fafad2;
+  background: var(--theme-bg-primary);
+  height: auto !important; /* Allow container to adjust to content */
+  min-height: 100%; /* Ensure at least viewport height for sparse content */
 }
+
+/* Grid Stack Item Content */
 .grid-stack-item-content {
-  text-align: center;
-  background-color: #18bc9c;
+  width: 100% !important;
+  height: auto !important; /* Allow content to dictate height */
+  box-sizing: border-box;
+  background-color: var(--theme-bg-secondary);
+  border: var(--ui-border-width) solid var(--theme-border-primary);
+  border-radius: var(--ui-border-radius);
+  box-shadow: var(--ui-shadow);
 }
 
 /* --- 2. BASE THEME & COLOR PALETTE DEFINITIONS --- */
