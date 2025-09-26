@@ -1,136 +1,123 @@
-<div class="theme-blue p-6 md:p-8" *ngIf="customerData">
+<div class="customer-snapshot p-4 md:p-6 bg-white rounded-2xl shadow-md" *ngIf="customerData">
   <!-- Header -->
-  <header class="customer-header">
-  <!-- Avatar -->
-  <div class="avatar-container">
-    <img *ngIf="customerData.customer.profileImg" 
-         [src]="customerData.customer.profileImg" 
-         alt="Profile Image"
-         class="avatar-img">
-    <span *ngIf="!customerData.customer.profileImg">
-      {{ customerData.customer.fullname.charAt(0) }}
-    </span>
-  </div>
-
-  <!-- Name + Contact -->
-  <div class="flex-grow">
-    <h1 class="m-0 text-3xl font-bold">
-      {{ customerData.customer.fullname | titlecase }}
-    </h1>
-    <div class="customer-subinfo">
-      <span class="flex items-center gap-2">
-        <i class="pi pi-envelope"></i> {{ customerData.customer.email }}
-      </span>
-      <span class="flex items-center gap-2">
-        <i class="pi pi-phone"></i> {{ customerData.customer.mobileNumber }}
-      </span>
-    </div>
-  </div>
-
-  <!-- Metrics aligned to right -->
-  <div class="flex items-center gap-8 pr-4">
-    <div class="text-center">
-      <div class="metric-label">Lifetime Value</div>
-      <div class="metric-value">
-        {{ customerData.lifetimeValue | currency:'INR':'symbol':'1.0-0' }}
+  <header class="customer-header flex flex-col md:flex-row items-start md:items-center justify-between gap-4 mb-6 pb-4 border-b border-gray-200">
+    <!-- Avatar + Info -->
+    <div class="flex items-center gap-4">
+      <div class="avatar-container w-16 h-16 md:w-20 md:h-20 rounded-full overflow-hidden shadow-md">
+        <img *ngIf="customerData.customer.profileImg" [src]="customerData.customer.profileImg" alt="Profile" class="w-full h-full object-cover">
+        <div *ngIf="!customerData.customer.profileImg" class="w-full h-full flex items-center justify-center bg-gradient-to-br from-blue-400 to-indigo-500 text-white text-2xl md:text-3xl font-bold">
+          {{ customerData.customer.fullname.charAt(0).toUpperCase() }}
+        </div>
+      </div>
+      <div>
+        <h1 class="text-xl md:text-2xl font-semibold text-gray-800">{{ customerData.customer.fullname | titlecase }}</h1>
+        <div class="text-sm md:text-base text-gray-600 flex flex-col md:flex-row items-start md:items-center gap-2 md:gap-4 mt-1">
+          <span class="flex items-center gap-1"><i class="pi pi-envelope text-blue-500"></i> {{ customerData.customer.email }}</span>
+          <span class="flex items-center gap-1"><i class="pi pi-phone text-green-500"></i> {{ customerData.customer.mobileNumber }}</span>
+        </div>
       </div>
     </div>
-    <div class="text-center">
-      <div class="metric-label">Overdue Invoices</div>
-      <div class="metric-value text-[var(--theme-error-primary)]">
+
+    <!-- Status Tag -->
+    <p-tag [value]="customerData.customer.status" [severity]="getStatusSeverity(customerData.customer.status)" [rounded]="true" class="text-sm px-3 py-1"></p-tag>
+  </header>
+
+  <!-- Metrics -->
+  <section class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
+    <div class="metric-card p-4 bg-gradient-to-br from-green-50 to-green-100 rounded-xl shadow-sm text-center transition-all duration-300 hover:shadow-md">
+      <div class="flex justify-center mb-2">
+        <i class="pi pi-dollar text-green-500 text-2xl bg-green-200 p-2 rounded-full"></i>
+      </div>
+      <div class="text-sm text-gray-600">Lifetime Value</div>
+      <div class="text-xl md:text-2xl font-bold text-green-700">{{ customerData.lifetimeValue | currency:'INR':'symbol':'1.0-0' }}</div>
+    </div>
+    <div class="metric-card p-4 bg-gradient-to-br from-red-50 to-red-100 rounded-xl shadow-sm text-center transition-all duration-300 hover:shadow-md">
+      <div class="flex justify-center mb-2">
+        <i class="pi pi-exclamation-triangle text-red-500 text-2xl bg-red-200 p-2 rounded-full"></i>
+      </div>
+      <div class="text-sm text-gray-600">Overdue</div>
+      <div class="text-xl md:text-2xl font-bold" [ngClass]="{'text-red-700': customerData.overdueInvoices.length > 0, 'text-gray-500': customerData.overdueInvoices.length === 0}">
         {{ customerData.overdueInvoices.length }}
       </div>
     </div>
-    <div class="text-center">
-      <div class="metric-label">Member Since</div>
-      <div class="metric-value">
-        {{ customerData.customer.createdAt | date: 'MMM yyyy' }}
+    <div class="metric-card p-4 bg-gradient-to-br from-blue-50 to-blue-100 rounded-xl shadow-sm text-center transition-all duration-300 hover:shadow-md">
+      <div class="flex justify-center mb-2">
+        <i class="pi pi-calendar text-blue-500 text-2xl bg-blue-200 p-2 rounded-full"></i>
       </div>
-    </div>
-    <p-tag [value]="customerData.customer.status" 
-           [severity]="getStatusSeverity(customerData.customer.status)" 
-           [rounded]="true">
-    </p-tag>
-  </div>
-</header>
-
-
-  <!-- Metrics -->
-  <section class="grid grid-cols-1 gap-6 my-8">
-    <div class="metric-card">
-      <label class="metric-label">Product Preferences</label>
-      <div class="flex flex-wrap gap-2 mt-3">
-        <p-tag *ngFor="let pref of customerData.productPreferences" [value]="pref.product + ' (x' + pref.quantity + ')'"
-          severity="info" [rounded]="true" class="px-3 py-1 text-sm">
-        </p-tag>
-      </div>
+      <div class="text-sm text-gray-600">Member Since</div>
+      <div class="text-xl md:text-2xl font-bold text-blue-700">{{ customerData.customer.createdAt | date: 'MMM yyyy' }}</div>
     </div>
   </section>
-  <main>
-    <p-tabView>
-      <p-tabPanel header="Recent Activity">
-        <p-table [value]="customerData.recentActivity.invoices" [paginator]="true" [rows]="5" responsiveLayout="scroll">
-          <ng-template pTemplate="header">
-            <tr>
-              <th>Invoice #</th>
-              <th>Date</th>
-              <th>Due Date</th>
-              <th class="text-right">Amount</th>
-              <th class="text-center">Status</th>
-            </tr>
-          </ng-template>
-          <ng-template pTemplate="body" let-invoice>
-            <tr>
-              <td>{{ invoice.invoiceNumber }}</td>
-              <td>{{ invoice.invoiceDate | date: 'mediumDate' }}</td>
-              <td>{{ invoice.dueDate | date: 'mediumDate' }}</td>
-              <td class="text-right font-semibold">{{ invoice.totalAmount | currency:'INR' }}</td>
-              <td class="text-center">
-                <p-tag [value]="invoice.status" [severity]="getStatusSeverity(invoice.status)" [rounded]="true"></p-tag>
-              </td>
-            </tr>
-          </ng-template>
-        </p-table>
-      </p-tabPanel>
 
-      <!-- Overdue Invoices -->
-      <p-tabPanel>
-        <ng-template pTemplate="header">
-          <i class="pi pi-exclamation-triangle mr-2 text-[var(--theme-error-primary)]"></i>
-          <span class="font-bold text-[var(--theme-error-primary)]">Overdue Invoices</span>
-          <p-tag [value]="customerData.overdueInvoices.length" severity="danger" class="ml-2"></p-tag>
-        </ng-template>
-        <p-table [value]="customerData.overdueInvoices" [paginator]="true" [rows]="5" responsiveLayout="scroll">
-          <ng-template pTemplate="header">
-            <tr>
-              <th>Invoice #</th>
-              <th>Due Date</th>
-              <th class="text-right">Amount</th>
-            </tr>
-          </ng-template>
-          <ng-template pTemplate="body" let-invoice>
-            <tr>
-              <td>{{ invoice.invoiceNumber }}</td>
-              <td>{{ invoice.dueDate | date: 'mediumDate' }}</td>
-              <td class="text-right font-semibold">{{ invoice.totalAmount | currency:'INR' }}</td>
-            </tr>
-          </ng-template>
-        </p-table>
-      </p-tabPanel>
+  <!-- Product Preferences -->
+  <section class="mb-6">
+    <h3 class="text-base md:text-lg font-semibold mb-3 flex items-center gap-2 text-gray-800">
+      <i class="pi pi-tags text-purple-500"></i> Product Preferences
+    </h3>
+    <div class="flex flex-wrap gap-2">
+      <p-tag *ngFor="let pref of customerData.productPreferences" [value]="pref.product + ' (x' + pref.quantity + ')'"
+        severity="secondary" [rounded]="true" class="text-xs px-3 py-1 bg-purple-100 text-purple-700"></p-tag>
+    </div>
+  </section>
 
-      <!-- Addresses -->
-      <p-tabPanel header="Contact & Address">
-        <div class="glass-card" *ngFor="let address of customerData.customer.addresses">
-          <h3 class="m-0 font-semibold flex items-center gap-2">
-            <i class="pi pi-map-marker text-[var(--theme-accent-primary)]"></i>
-            {{ address.type | titlecase }} Address
+  <!-- Tabs -->
+  <p-tabView>
+    <p-tabPanel header="Activity">
+      <div class="space-y-4">
+        <div class="activity-card p-4 bg-white rounded-xl shadow-sm transition-all duration-300 hover:shadow-md" *ngFor="let invoice of customerData.recentActivity.invoices">
+          <div class="flex justify-between items-center mb-2">
+            <span class="font-semibold text-gray-800">Invoice #{{ invoice.invoiceNumber }}</span>
+            <p-tag [value]="invoice.status" [severity]="getStatusSeverity(invoice.status)" [rounded]="true" class="text-xs"></p-tag>
+          </div>
+          <div class="grid grid-cols-2 gap-2 text-sm text-gray-600">
+            <div>Date: {{ invoice.invoiceDate | date: 'shortDate' }}</div>
+            <div>Due: {{ invoice.dueDate | date: 'shortDate' }}</div>
+          </div>
+          <div class="text-right mt-2 font-bold text-gray-900">{{ invoice.totalAmount | currency:'INR' }}</div>
+        </div>
+        <div *ngIf="!customerData.recentActivity.invoices.length" class="text-center py-8 text-gray-500">
+          <i class="pi pi-info-circle text-4xl mb-2"></i>
+          <p>No recent activity</p>
+        </div>
+      </div>
+    </p-tabPanel>
+
+    <p-tabPanel header="Overdue">
+      <div class="space-y-4">
+        <div class="overdue-card p-4 bg-red-50 rounded-xl shadow-sm transition-all duration-300 hover:shadow-md" *ngFor="let invoice of customerData.overdueInvoices">
+          <div class="flex justify-between items-center mb-2">
+            <span class="font-semibold text-red-800">Invoice #{{ invoice.invoiceNumber }}</span>
+            <p-tag value="Overdue" severity="danger" [rounded]="true" class="text-xs"></p-tag>
+          </div>
+          <div class="text-sm text-red-700">
+            Due: {{ invoice.dueDate | date: 'shortDate' }}
+          </div>
+          <div class="text-right mt-2 font-bold text-red-900">{{ invoice.totalAmount | currency:'INR' }}</div>
+        </div>
+        <div *ngIf="!customerData.overdueInvoices.length" class="text-center py-8 text-gray-500">
+          <i class="pi pi-check-circle text-4xl mb-2 text-green-500"></i>
+          <p>No overdue invoices</p>
+        </div>
+      </div>
+    </p-tabPanel>
+
+    <p-tabPanel header="Addresses">
+      <div class="space-y-4">
+        <div class="address-card p-4 bg-gray-50 rounded-xl shadow-sm transition-all duration-300 hover:shadow-md" *ngFor="let address of customerData.customer.addresses">
+          <h3 class="text-sm font-semibold flex items-center gap-2 text-gray-800 mb-2">
+            <i class="pi pi-map-marker text-orange-500"></i> {{ address.type | titlecase }}
           </h3>
-          <p class="mt-2 text-[var(--theme-text-secondary)] text-sm leading-relaxed">
-            {{ address.street }}, {{ address.city }}, {{ address.state }} <br>
-            {{ address.country }} - {{ address.zipCode }}
+          <p class="text-sm text-gray-600">
+            {{ address.street }}<br>
+            {{ address.city }}, {{ address.state }} - {{ address.zipCode }}<br>
+            {{ address.country }}
           </p>
         </div>
-      </p-tabPanel>
-    </p-tabView>
-  </main>
+        <div *ngIf="!customerData.customer.addresses.length" class="text-center py-8 text-gray-500">
+          <i class="pi pi-map text-4xl mb-2"></i>
+          <p>No addresses on file</p>
+        </div>
+      </div>
+    </p-tabPanel>
+  </p-tabView>
 </div>
