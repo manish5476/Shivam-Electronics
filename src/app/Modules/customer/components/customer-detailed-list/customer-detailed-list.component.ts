@@ -55,7 +55,6 @@ import { Panel } from "primeng/panel";
     DialogModule,
     // Your own components
     CustomerSnapshotComponent,
-    Panel
 ],
   templateUrl: './customer-detailed-list.component.html',
   styleUrls: ['./customer-detailed-list.component.css'],

@@ -1,95 +1,56 @@
-@import "gridstack/dist/gridstack.min.css";
+/* --- 1. IMPORTS (must be at very top, Google Fonts first) --- */
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Poppins:wght@400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap");
 @import "tailwindcss";
 @import "primeicons/primeicons.css";
+@import "gridstack/dist/gridstack.min.css";
 
 /* --- 2. CSS CUSTOM PROPERTIES --- */
-:root {
+:root{
   /* Theme Colors (Royal Light Palette) */
-  --theme-bg-primary: rgb(245, 245, 247);
-  /* Creamy white */
-  --theme-bg-secondary: rgb(240, 240, 242);
-  /* Off-white */
-  --theme-bg-ternary: rgb(230, 230, 233);
-  /* Subtle gray */
-  --theme-text-primary: rgb(20, 20, 25);
-  /* Deep charcoal */
-  --theme-text-secondary: rgb(60, 60, 70);
-  /* Soft gray */
-  --theme-text-label: rgb(100, 100, 110);
-  /* Muted gray */
-  --theme-text-inverted: rgb(255, 255, 255);
-  /* White */
-  --theme-border-primary: rgb(210, 210, 215);
-  /* Light gray */
-  --theme-border-secondary: rgb(200, 200, 205);
-  /* Darker gray */
-  --theme-hover-bg: rgb(225, 225, 228);
-  /* Light gray hover */
-  --theme-scroll-track: rgb(235, 235, 238);
-  /* Scroll track */
-  --theme-scroll-thumb: rgb(150, 150, 160);
-  /* Scroll thumb */
-  --theme-shadow-color: rgba(0, 0, 0, 0.1);
-  /* Subtle shadow */
-  --theme-accent-gradient: linear-gradient(135deg, rgb(65, 105, 225) 0%, rgb(138, 43, 226) 100%);
-  /* Royal blue to purple */
-  --theme-accent-primary: rgb(65, 105, 225);
-  /* Royal blue */
-  --theme-accent-primary-light: rgba(65, 105, 225, 0.1);
-  /* Light royal blue */
-  --theme-accent-primary-hover: rgb(50, 80, 180);
-  /* Darker royal blue */
-  --theme-accent-text-color: rgb(255, 255, 255);
-  /* White */
-  --theme-accent-focus-ring: rgba(65, 105, 225, 0.25);
-  /* Focus ring */
-  --theme-success-primary: rgb(46, 139, 87);
-  /* Emerald green */
-  --theme-error-primary: rgb(220, 20, 60);
-  /* Vibrant red */
-  --theme-warning-primary: rgb(255, 215, 0);
-  /* Warm gold */
-  --theme-body-gradient-start: rgb(245, 245, 247);
-  /* Creamy white */
-  --theme-body-gradient-end: rgb(255, 255, 255);
-  /* Pure white */
-
+  --theme-bg-primary: rgb(245, 245, 247);  /* Creamy white */
+  --theme-bg-secondary: rgb(240, 240, 242);  /* Off-white */
+  --theme-bg-ternary: rgb(230, 230, 233);  /* Subtle gray */
+  --theme-text-primary: rgb(20, 20, 25);  /* Deep charcoal */
+  --theme-text-secondary: rgb(60, 60, 70);  /* Soft gray */
+  --theme-text-label: rgb(100, 100, 110);  /* Muted gray */
+  --theme-text-inverted: rgb(255, 255, 255);  /* White */
+  --theme-border-primary: rgb(210, 210, 215);  /* Light gray */
+  --theme-border-secondary: rgb(200, 200, 205);  /* Darker gray */
+  --theme-hover-bg: rgb(225, 225, 228);  /* Light gray hover */
+  --theme-scroll-track: rgb(235, 235, 238);  /* Scroll track */
+  --theme-scroll-thumb: rgb(150, 150, 160);  /* Scroll thumb */
+  --theme-shadow-color: rgba(0, 0, 0, 0.1);  /* Subtle shadow */
+  --theme-accent-gradient: linear-gradient(135deg, rgb(65, 105, 225) 0%, rgb(138, 43, 226) 100%);  /* Royal blue to purple */
+  --theme-accent-primary: rgb(65, 105, 225);  /* Royal blue */
+  --theme-accent-primary-light: rgba(65, 105, 225, 0.1);  /* Light royal blue */
+  --theme-accent-primary-hover: rgb(50, 80, 180);  /* Darker royal blue */
+  --theme-accent-text-color: rgb(255, 255, 255);  /* White */
+  --theme-accent-focus-ring: rgba(65, 105, 225, 0.25);  /* Focus ring */
+  --theme-success-primary: rgb(46, 139, 87);  /* Emerald green */
+  --theme-error-primary: rgb(220, 20, 60);  /* Vibrant red */
+  --theme-warning-primary: rgb(255, 215, 0);  /* Warm gold */
+  --theme-body-gradient-start: rgb(245, 245, 247);  /* Creamy white */
+  --theme-body-gradient-end: rgb(255, 255, 255);  /* Pure white */
   /* Typography */
   --font-primary: "Poppins", sans-serif;
   --font-heading: "Playfair Display", serif;
   --font-body: "Inter", sans-serif;
-  --font-size-base: 1rem;
-  /* 16px */
-  --font-size-sm: 0.875rem;
-  /* 14px */
-  --font-size-lg: 1.125rem;
-  /* 18px */
-  --font-size-xl: 1.5rem;
-  /* 24px */
-  --font-size-2xl: 2rem;
-  /* 32px */
-  --font-size-3xl: 2.5rem;
-  /* 40px */
-
+  --font-size-base: 1rem;  /* 16px */
+  --font-size-sm: 0.875rem;  /* 14px */
+  --font-size-lg: 1.125rem;  /* 18px */
+  --font-size-xl: 1.5rem;  /* 24px */
+  --font-size-2xl: 2rem;  /* 32px */
+  --font-size-3xl: 2.5rem;  /* 40px */
   /* Spacing */
-  --spacing-xs: 0.25rem;
-  /* 4px */
-  --spacing-sm: 0.5rem;
-  /* 8px */
-  --spacing-md: 1rem;
-  /* 16px */
-  --spacing-lg: 1.25rem;
-  /* 20px */
-  --spacing-xl: 1.5rem;
-  /* 24px */
-  --spacing-2xl: 2rem;
-  /* 32px */
-
+  --spacing-xs: 0.25rem;  /* 4px */
+  --spacing-sm: 0.5rem;  /* 8px */
+  --spacing-md: 1rem;  /* 16px */
+  --spacing-lg: 1.25rem;  /* 20px */
+  --spacing-xl: 1.5rem;  /* 24px */
+  --spacing-2xl: 2rem;  /* 32px */
   /* UI Variables */
   --ui-border-width: 1px;
-  --ui-border-radius: 12px;
-  /* Softer, Tesla-like corners */
+  --ui-border-radius: 12px;  /* Softer, Tesla-like corners */
   --ui-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
   --ui-shadow-hover: 0 12px 48px rgba(0, 0, 0, 0.15);
   --ui-button-hover-transform: translateY(-2px);
@@ -98,36 +59,21 @@
 }
 
 body.dark-mode {
-  --theme-bg-primary: rgb(18, 18, 18);
-  /* Deep charcoal */
-  --theme-bg-secondary: rgb(30, 30, 30);
-  /* Lighter charcoal */
-  --theme-bg-ternary: rgb(44, 44, 44);
-  /* Muted gray */
-  --theme-text-primary: rgb(224, 224, 224);
-  /* Light gray */
-  --theme-text-secondary: rgb(160, 160, 160);
-  /* Medium gray */
-  --theme-text-label: rgb(120, 120, 120);
-  /* Darker gray */
-  --theme-text-inverted: rgb(18, 18, 18);
-  /* Deep charcoal */
-  --theme-border-primary: rgb(60, 60, 60);
-  /* Dark gray */
-  --theme-border-secondary: rgb(80, 80, 80);
-  /* Lighter gray */
-  --theme-shadow-color: rgba(0, 0, 0, 0.5);
-  /* Darker shadow */
-  --theme-hover-bg: rgb(50, 50, 50);
-  /* Dark gray hover */
-  --theme-scroll-track: rgb(40, 40, 40);
-  /* Dark scroll track */
-  --theme-scroll-thumb: rgb(100, 100, 100);
-  /* Gray scroll thumb */
-  --theme-body-gradient-start: rgb(18, 18, 18);
-  /* Deep charcoal */
-  --theme-body-gradient-end: rgb(30, 30, 30);
-  /* Lighter charcoal */
+  --theme-bg-primary: rgb(18, 18, 18);  /* Deep charcoal */
+  --theme-bg-secondary: rgb(30, 30, 30);  /* Lighter charcoal */
+  --theme-bg-ternary: rgb(44, 44, 44);  /* Muted gray */
+  --theme-text-primary: rgb(224, 224, 224);  /* Light gray */
+  --theme-text-secondary: rgb(160, 160, 160);  /* Medium gray */
+  --theme-text-label: rgb(120, 120, 120);  /* Darker gray */
+  --theme-text-inverted: rgb(18, 18, 18);  /* Deep charcoal */
+  --theme-border-primary: rgb(60, 60, 60);  /* Dark gray */
+  --theme-border-secondary: rgb(80, 80, 80);  /* Lighter gray */
+  --theme-shadow-color: rgba(0, 0, 0, 0.5);  /* Darker shadow */
+  --theme-hover-bg: rgb(50, 50, 50);  /* Dark gray hover */
+  --theme-scroll-track: rgb(40, 40, 40);  /* Dark scroll track */
+  --theme-scroll-thumb: rgb(100, 100, 100);  /* Gray scroll thumb */
+  --theme-body-gradient-start: rgb(18, 18, 18);  /* Deep charcoal */
+  --theme-body-gradient-end: rgb(30, 30, 30);  /* Lighter charcoal */
 }
 
 /* --- 3. GLOBAL STYLES --- */
