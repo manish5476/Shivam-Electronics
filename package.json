@@ -36,7 +36,7 @@
     "@angular/ssr": "~19.2.15",
     "@swimlane/ngx-charts": "^23.0.1",
     "@tailwindcss/postcss": "^4.0.15",
-    "@types/chartjs": "^0.0.31",
+    "@types/chartjs": "0.0.31",
     "@types/jwt-decode": "^2.2.1",
     "@types/lodash": "^4.17.16",
     "ag-grid-angular": "^33.2.1",
