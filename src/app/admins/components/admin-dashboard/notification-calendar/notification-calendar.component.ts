@@ -3,36 +3,38 @@ import { CommonModule, CurrencyPipe } from '@angular/common';
 import { finalize, Observable, of } from 'rxjs';
 import { delay } from 'rxjs/operators';
 import { NotificationService } from '../../../../core/services/notification.service';
+import { NotesManagerComponent } from "../../../../shared/Common/notes-manager.component";
+import { Dialog } from "primeng/dialog";
 
 // --- INTERFACES to strongly type the data ---
 interface HeatmapDay {
-    day: number;
-    totalRevenue: number;
-    salesCount: number;
-    level: number;
+  day: number;
+  totalRevenue: number;
+  salesCount: number;
+  level: number;
 }
 
 interface DailySummary {
-    date: string;
-    revenue: number;
-    salesCount: number;
-    newCustomers: { _id: string; profileImg: string; fullname: string; mobileNumber: string; }[];
-    newProducts: { _id: string; title: string; thumbnail: string; stock: number; }[];
+  date: string;
+  revenue: number;
+  salesCount: number;
+  newCustomers: { _id: string; profileImg: string; fullname: string; mobileNumber: string; }[];
+  newProducts: { _id: string; title: string; thumbnail: string; stock: number; }[];
 }
 
 interface CalendarDay {
-    date: Date;
-    dayOfMonth: number;
-    isCurrentMonth: boolean;
-    isToday: boolean;
-    heatmapData?: HeatmapDay;
+  date: Date;
+  dayOfMonth: number;
+  isCurrentMonth: boolean;
+  isToday: boolean;
+  heatmapData?: HeatmapDay;
 }
 
 
 @Component({
   selector: 'app-notification-calendar',
   standalone: true,
-  imports: [CommonModule, CurrencyPipe],
+  imports: [CommonModule, CurrencyPipe, NotesManagerComponent, Dialog],
   templateUrl: './notification-calendar.component.html',
   styleUrls: ['./notification-calendar.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -70,34 +72,36 @@ export class NotificationCalendarComponent implements OnInit {
     const startDayOfWeek = firstDayOfMonth.getDay();
     // Add days from the previous month to fill the first week
     for (let i = startDayOfWeek; i > 0; i--) {
-        const prevMonthDate = new Date(year, month, 1 - i);
-        days.push({ date: prevMonthDate, dayOfMonth: prevMonthDate.getDate(), isCurrentMonth: false, isToday: false });
+      const prevMonthDate = new Date(year, month, 1 - i);
+      days.push({ date: prevMonthDate, dayOfMonth: prevMonthDate.getDate(), isCurrentMonth: false, isToday: false });
     }
 
     // Add days for the current month
     for (let i = 1; i <= lastDayOfMonth.getDate(); i++) {
-        const currentDate = new Date(year, month, i);
-        days.push({
-            date: currentDate,
-            dayOfMonth: i,
-            isCurrentMonth: true,
-            isToday: currentDate.getTime() === today.getTime(),
-            heatmapData: heatmap.find(d => d.day === i)
-        });
+      const currentDate = new Date(year, month, i);
+      days.push({
+        date: currentDate,
+        dayOfMonth: i,
+        isCurrentMonth: true,
+        isToday: currentDate.getTime() === today.getTime(),
+        heatmapData: heatmap.find(d => d.day === i)
+      });
     }
 
     // Add days from the next month to fill the last week
     const endDayOfWeek = lastDayOfMonth.getDay();
     if (endDayOfWeek < 6) {
-        for (let i = 1; i < 7 - endDayOfWeek; i++) {
-            const nextMonthDate = new Date(year, month + 1, i);
-            days.push({ date: nextMonthDate, dayOfMonth: nextMonthDate.getDate(), isCurrentMonth: false, isToday: false });
-        }
+      for (let i = 1; i < 7 - endDayOfWeek; i++) {
+        const nextMonthDate = new Date(year, month + 1, i);
+        days.push({ date: nextMonthDate, dayOfMonth: nextMonthDate.getDate(), isCurrentMonth: false, isToday: false });
+      }
     }
     return days;
   });
 
   readonly weekDays = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+  calanderDay: any;
+  showNotesDialog: boolean=false;
 
   ngOnInit() {
     this.fetchHeatmapData();
@@ -163,4 +167,21 @@ export class NotificationCalendarComponent implements OnInit {
     const date = new Date(dateStr);
     return date.toLocaleString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
   }
+
+
+
+
+  addNoteForDay(day: CalendarDay, event: Event): void {
+    event.stopPropagation(); // prevent triggering selectDay
+    this.showNotesDialog=true
+    this.calanderDay=day
+    console.log('Add note for', day.date);
+  }
+
+  viewNotesForDay(day: CalendarDay, event: Event): void {
+    event.stopPropagation(); // prevent triggering selectDay
+    console.log('View notes for', day.date);
+    // 🔜 Later: fetch & display notes (modal / sidebar)
+  }
+
 }
