@@ -1,145 +1,112 @@
-/* dashboard-overview.component.css */
-
 .widget-container {
-  padding: var(--spacing-lg);
+  padding: 16px;
 }
 
-/*
- * Base card with integrated glassmorphism effect.
- * This class leverages your global theme variables to adapt to light/dark modes.
- */
-.se-glass-card {
-  background: var(--theme-card-gradient);
-  border: var(--ui-border-width) solid var(--theme-border-primary);
-  border-radius: var(--ui-border-radius-lg);
-  box-shadow: var(--ui-shadow);
-  padding: var(--spacing-xl);
-  backdrop-filter: var(--ui-glass-backdrop);
-  -webkit-backdrop-filter: var(--ui-glass-backdrop);
-  transition: var(--ui-transition);
-  height: 100%; /* Ensure cards in a grid row have the same height */
-}
-
-.se-glass-card:hover {
-  box-shadow: var(--ui-shadow-md);
-  border-color: var(--theme-border-secondary);
-}
-
-.card-header {
-  font-family: var(--font-heading);
-  font-size: var(--font-size-xl);
-  color: var(--theme-text-primary);
-  margin-bottom: var(--spacing-lg);
-  font-weight: 600;
-}
-
-/*
- * KPI Card styles
- * These cards provide a clear and concise summary of key metrics.
- */
+/* KPI Card */
 .se-kpi-card {
   display: flex;
   flex-direction: column;
-  gap: var(--spacing-md);
+  gap: 6px;
   background: var(--theme-bg-secondary);
-  border: var(--ui-border-width) solid var(--theme-border-primary);
-  border-radius: var(--ui-border-radius-lg);
-  padding: var(--spacing-xl);
-  box-shadow: var(--ui-shadow-sm);
-  transition: var(--ui-transition);
+  border: 1px solid var(--theme-border-primary);
+  border-radius: 8px;
+  padding: 12px 16px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  text-align: center;
 }
 
 .se-kpi-card:hover {
-  transform: var(--ui-translate-hover);
-  box-shadow: var(--ui-shadow-md);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
   border-color: var(--theme-border-secondary);
 }
 
 .kpi-icon-wrapper {
-  width: 50px;
-  height: 50px;
-  border-radius: var(--ui-border-radius);
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
   display: flex;
   align-items: center;
   justify-content: center;
+  margin: 0 auto;
 }
 
 .kpi-icon-wrapper .pi {
-  font-size: 1.75rem;
+  font-size: 1.5rem;
 }
 
 .kpi-content {
   display: flex;
   flex-direction: column;
-  gap: var(--spacing-xs);
+  gap: 2px;
 }
 
 .kpi-title {
-  font-family: var(--font-body);
-  font-size: var(--font-size-base);
-  color: var(--theme-text-label);
+  font-size: 12px;
   font-weight: 500;
+  color: var(--theme-text-label);
 }
 
 .kpi-value {
-  font-family: var(--font-primary);
-  font-size: var(--font-size-3xl);
-  color: var(--theme-text-primary);
+  font-size: 16px;
   font-weight: 700;
-  line-height: var(--line-height-tight);
+  color: var(--theme-text-primary);
 }
 
-/*
- * Top Selling Products list styles
- * A clean and scannable list for showcasing top products.
- */
-.product-list {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  display: flex;
-  flex-direction: column;
-  gap: var(--spacing-lg);
+/* Glass Card for table */
+.se-glass-card {
+  background: var(--theme-card-gradient);
+  border: 1px solid var(--theme-border-primary);
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+  padding: 16px;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  overflow-x: auto;
 }
 
-.product-list-item {
-  display: flex;
-  align-items: center;
-  gap: var(--spacing-md);
-  padding: var(--spacing-sm);
-  border-radius: var(--ui-border-radius);
-  transition: var(--ui-transition-fast);
+.se-glass-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(0,0,0,0.08);
+  border-color: var(--theme-border-secondary);
 }
 
-.product-list-item:hover {
-    background-color: var(--theme-hover-bg);
+.card-header {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--theme-text-primary);
+  margin-bottom: 12px;
+}
+
+/* Product Table */
+.product-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.product-table th,
+.product-table td {
+  padding: 8px 12px;
+  text-align: left;
+  font-size: 12px;
+  color: var(--theme-text-primary);
+}
+
+.product-table th {
+  font-weight: 600;
+  border-bottom: 2px solid var(--theme-border-primary);
+}
+
+.product-table tr:hover {
+  background-color: var(--theme-hover-bg);
 }
 
 .product-thumbnail {
-  width: 50px;
-  height: 50px;
-  border-radius: var(--ui-border-radius-sm);
+  width: 40px;
+  height: 40px;
+  border-radius: 6px;
   object-fit: cover;
-  border: 2px solid var(--theme-border-secondary);
-}
-
-.product-details {
-  flex: 1;
-  min-width: 0; /* Prevents text overflow issues in flex containers */
-}
-
-.product-name {
-  font-family: var(--font-primary);
-  font-weight: 600;
-  color: var(--theme-text-primary);
-  font-size: var(--font-size-base);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.product-sales {
-  font-family: var(--font-body);
-  font-size: var(--font-size-sm);
-  color: var(--theme-text-secondary);
+  border: 1px solid var(--theme-border-secondary);
 }

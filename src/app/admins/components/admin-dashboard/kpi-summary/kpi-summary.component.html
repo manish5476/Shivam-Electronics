@@ -15,6 +15,7 @@
         <span class="metric-value">{{ data.salesSummary.totalRevenue | currency:'INR':'symbol':'1.0-0' }}</span>
       </div>
     </div>
+
     <div class="metric-item">
       <div class="metric-icon bg-[var(--theme-accent-primary-light)] text-[var(--theme-accent-primary)]">
         <i class="pi pi-chart-pie"></i>
@@ -25,6 +26,7 @@
         <span class="metric-sub-value">Margin: {{ data.salesSummary.profitMargin | number:'1.1-1' }}%</span>
       </div>
     </div>
+
     <div class="metric-item">
       <div class="metric-icon bg-[var(--theme-info-light)] text-[var(--theme-info-primary)]">
         <i class="pi pi-shopping-cart"></i>
@@ -34,6 +36,7 @@
         <span class="metric-value">{{ data.salesSummary.averageOrderValue | currency:'INR':'symbol':'1.0-0' }}</span>
       </div>
     </div>
+
     <div class="metric-item">
       <div class="metric-icon bg-[var(--theme-warning-light)] text-[var(--theme-warning-primary)]">
         <i class="pi pi-chart-line"></i>
@@ -48,9 +51,9 @@
   <hr class="widget-divider">
 
   <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8">
-    <div class="lg:col-span-2 space-y-6">
+    <div class="lg:col-span-2 space-y-4">
       <div class="insight-group">
-        <h3 class="insight-header"><i class="pi pi-users mr-3"></i>Customer Insights</h3>
+        <h3 class="insight-header"><i class="pi pi-users mr-2"></i>Customer Insights</h3>
         <div class="insight-list">
           <div class="insight-item">
             <span class="insight-label">New Customers</span>
@@ -64,8 +67,9 @@
           </div>
         </div>
       </div>
+
       <div class="insight-group">
-        <h3 class="insight-header"><i class="pi pi-box mr-3"></i>Inventory Overview</h3>
+        <h3 class="insight-header"><i class="pi pi-box mr-2"></i>Inventory Overview</h3>
         <div class="insight-list">
           <div class="insight-item">
             <span class="insight-label">Total Inventory Value</span>
@@ -83,23 +87,23 @@
       </div>
     </div>
 
-    <div class="lg:col-span-1 flex flex-col items-center text-center p-6 rounded-2xl bg-[var(--theme-bg-primary)]">
-      <h3 class="insight-header"><i class="pi pi-credit-card mr-3"></i>Financial Health</h3>
+    <div class="lg:col-span-1 flex flex-col items-center text-center p-4 rounded-lg bg-[var(--theme-bg-primary)]">
+      <h3 class="insight-header"><i class="pi pi-credit-card mr-2"></i>Financial Health</h3>
       <div class="progress-circle mt-4" [style.--p]="getCollectionPercentage()">
         <div class="progress-value">{{ getCollectionPercentage() | number:'1.0-0' }}%</div>
         <span class="progress-label">Collected</span>
       </div>
-      <p class="mt-4 text-lg font-bold" [style.color]="'var(--theme-text-primary)'">
+      <p class="mt-2 font-bold text-lg text-[var(--theme-text-primary)]">
         {{ data.financialHealth.totalCollected | currency:'INR':'symbol':'1.0-0' }}
       </p>
-      <p class="text-[var(--theme-text-secondary)]">out of {{data.salesSummary.totalRevenue | currency:'INR':'symbol':'1.0-0'}}</p>
+      <p class="text-[var(--theme-text-secondary)]">out of {{ data.salesSummary.totalRevenue | currency:'INR':'symbol':'1.0-0' }}</p>
     </div>
   </div>
 </div>
 
 <ng-template #noDataOrLoading>
-  <div class="flex justify-center items-center h-96 kpi-widget-container">
-    <p class="text-xl" [style.color]="'var(--theme-text-secondary)'">
+  <div class="flex justify-center items-center h-64 kpi-widget-container">
+    <p class="text-base text-[var(--theme-text-secondary)]">
       KPI data is currently unavailable.
     </p>
   </div>

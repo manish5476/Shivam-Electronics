@@ -50,25 +50,27 @@ interface Summary {
     ToastModule, ProgressSpinnerModule, TabViewModule, TooltipModule
   ],
   providers: [MessageService],
-  template: `
+    template: `
     <p-toast></p-toast>
     <div class="notes-container">
       <p-tabView [(activeIndex)]="activeTabIndex" (onChange)="onTabChange($event)">
-        <p-tabPanel header="Day" >
+        <!-- Day Tab -->
+        <p-tabPanel header="Day">
           <div class="notes-layout">
+            <!-- Notes List Sidebar -->
             <div class="notes-sidebar">
               <div class="sidebar-header">
                 <h2 class="section-title">Daily Notes</h2>
                 <div class="header-actions">
                   <button pButton type="button" icon="pi pi-refresh" class="p-button-text p-button-sm" (click)="refreshCurrentView()" pTooltip="Refresh List"></button>
-                  <button pButton icon="pi pi-plus" label="New" class="p-button-sm" (click)="startNewNote()"></button>
+                  <button pButton icon="pi pi-plus" class="p-button-sm" (click)="startNewNote()"></button>
                 </div>
               </div>
               <div class="search-bar">
-                 <span class="p-input-icon-left">
-                    <i class="pi pi-search"></i>
-                    <input type="text" pInputText placeholder="Search..." class="w-full p-inputtext-sm" (input)="filterNotes($event)">
-                 </span>
+                <span class="p-input-icon-left w-full">
+                  <i class="pi pi-search"></i>
+                  <input type="text" pInputText placeholder="Search notes..." class="w-full p-inputtext-sm" (input)="filterNotes($event)">
+                </span>
               </div>
               <div class="notes-list" *ngIf="!isLoading.day; else loadingTemplate">
                 <div *ngIf="filteredDailyNotes.length > 0; else noDailyNotes">
@@ -76,166 +78,454 @@ interface Summary {
                     <div class="note-card-header">
                       <h3 class="note-card-title">{{ note.title }}</h3>
                       <div class="note-card-actions" *ngIf="isEditable(note)">
-                        <button pButton type="button" icon="pi pi-pencil" class="p-button-text p-button-rounded p-button-sm" (click)="selectNote(note, $event)" pTooltip="Edit Note"></button>
-                        <button pButton type="button" icon="pi pi-trash" class="p-button-text p-button-rounded p-button-sm p-button-danger" (click)="deleteNote(note, $event)" pTooltip="Delete Note"></button>
+                        <button pButton type="button" icon="pi pi-pencil" class="p-button-text p-button-sm" (click)="selectNote(note, $event)"></button>
+                        <button pButton type="button" icon="pi pi-trash" class="p-button-text p-button-sm p-button-danger" (click)="deleteNote(note, $event)"></button>
                       </div>
                     </div>
-                    <p class="note-card-content">{{ note.content | slice:0:120 }}...</p>
+                    <p class="note-card-content">{{ note.content | slice:0:100 }}...</p>
                     <div class="note-card-tags" *ngIf="note.tags.length > 0">
                       <span *ngFor="let tag of note.tags | slice:0:3" class="note-tag">{{ tag }}</span>
                       <span *ngIf="note.tags.length > 3" class="note-tag">+{{ note.tags.length - 3 }}</span>
                     </div>
-                    <div class="note-card-attachments" *ngIf="note.attachments.length > 0">
-                      <span class="attachment-count"><i class="pi pi-paperclip"></i> {{ note.attachments.length }}</span>
-                    </div>
-                    <span class="note-card-date">{{ note.createdAt | date:'shortTime' }}</span>
                   </div>
                 </div>
                 <ng-template #noDailyNotes>
-                    <div class="empty-state"><i class="pi pi-inbox"></i><span>No notes for this day.</span></div>
+                  <div class="empty-state"><i class="pi pi-inbox"></i><span>No notes for this day.</span></div>
                 </ng-template>
               </div>
               <ng-template #loadingTemplate>
-                <div class="loading-spinner"><p-progressSpinner styleClass="w-8 h-8"></p-progressSpinner></div>
+                <div class="loading-spinner"><p-progressSpinner styleClass="w-6 h-6"></p-progressSpinner></div>
               </ng-template>
             </div>
+
+            <!-- Note Editor Panel -->
             <div class="note-editor-panel">
               <form [formGroup]="noteForm" (ngSubmit)="saveNote()">
                 <div class="editor-header">
-                  <h2 class="section-title">{{ isEditing ? 'Edit Note' : 'Create Note' }}</h2>
+                  <h2 class="section-title">{{ isEditing ? 'Edit Note' : 'New Note' }}</h2>
                   <div class="editor-actions">
                     <button *ngIf="isEditing" pButton type="button" icon="pi pi-trash" class="p-button-danger p-button-outlined p-button-sm" [disabled]="!isEditable(selectedNote)" (click)="deleteNote(selectedNote)"></button>
                   </div>
                 </div>
+                <div class="editor-top">
+                  <div class="editor-left">
+                    <input type="text" pInputText placeholder="Note Title" formControlName="title" class="title-input">
+                    <p-chips formControlName="tags" placeholder="Add tags" separator="," class="tags-input"></p-chips>
+                    <button pButton type="submit" label="Save" icon="pi pi-check" class="p-button-sm save-button" [disabled]="noteForm.invalid || isSaving || (isEditing && !isEditable(selectedNote))"></button>
+                  </div>
+                  <div class="editor-right">
+                    <label>Attachments</label>
+                    <app-image-uploader (uploaded)="onImageUploaded($event)"></app-image-uploader>
+                  </div>
+                </div>
                 <div class="editor-content">
-                    <div *ngIf="isEditing && !isEditable(selectedNote)" class="read-only-banner">
-                        <i class="pi pi-lock"></i> Notes from past days are read-only.
+                  <textarea pInputTextarea placeholder="Write your note here..." formControlName="content" rows="12" class="content-textarea"></textarea>
+                  <div class="attachments-preview" *ngIf="noteForm.get('attachments')?.value.length > 0">
+                    <div *ngFor="let url of noteForm.get('attachments')?.value; let i = index" class="attachment-thumbnail">
+                      <img [src]="url" alt="Preview">
+                      <button type="button" class="remove-btn" (click)="removeAttachment(i)"><i class="pi pi-times"></i></button>
                     </div>
-                    <div class="form-row">
-                      <div class="form-field flex-1"><input type="text" pInputText placeholder="Note Title" formControlName="title"></div>
-                      <div class="form-field flex-1"><label>Attachments</label><app-image-uploader (uploaded)="onImageUploaded($event)"></app-image-uploader></div>
-                    </div>
-                    <div class="form-row">
-                      <div class="form-field flex-1"><label>Tags</label><p-chips formControlName="tags" separator=","></p-chips></div>
-                      <button pButton type="submit" label="Save" icon="pi pi-check" class="p-button-sm save-button" [disabled]="noteForm.invalid || isSaving || (isEditing && !isEditable(selectedNote))"></button>
-                    </div>
-                    <div class="attachments-preview" *ngIf="noteForm.get('attachments')?.value.length > 0">
-                      <div *ngFor="let url of noteForm.get('attachments')?.value; let i = index" class="attachment-thumbnail">
-                        <img [src]="url" alt="Preview"><button type="button" class="remove-btn" (click)="removeAttachment(i)"><i class="pi pi-times"></i></button>
-                      </div>
-                    </div>
-                    <div class="form-field content-field"><textarea pInputTextarea placeholder="Start writing..." formControlName="content" rows="10"></textarea></div>
+                  </div>
                 </div>
               </form>
             </div>
           </div>
         </p-tabPanel>
 
+        <!-- Summary Tabs (Week / Month / Year) -->
         <p-tabPanel *ngFor="let summary of summaries; let i = index" [header]="summary.title">
-            <div class="notes-layout">
-              <div class="notes-sidebar">
-                <div class="sidebar-header">
-                  <h2 class="section-title">{{ summary.title }} Summary</h2>
-                  <button pButton type="button" icon="pi pi-refresh" class="p-button-text p-button-sm" (click)="refreshCurrentView()" pTooltip="Refresh List"></button>
-                </div>
-                <div class="notes-list" *ngIf="!isLoading[summary.key]; else loadingTemplate">
-                  <div *ngIf="summary.data.length > 0; else noSummaryNotes">
-                    <div *ngFor="let note of summary.data" class="note-card" [class.active]="selectedNote?._id === note._id" (click)="selectForPreview(note)">
-                      <div class="note-card-header">
-                        <h3 class="note-card-title">{{ note.title }}</h3>
-                      </div>
-                      <p class="note-card-content">{{ note.content | slice:0:150 }}...</p>
-                      <div class="note-card-tags" *ngIf="note.tags.length > 0">
-                        <span *ngFor="let tag of note.tags | slice:0:3" class="note-tag">{{ tag }}</span>
-                        <span *ngIf="note.tags.length > 3" class="note-tag">+{{ note.tags.length - 3 }}</span>
-                      </div>
-                      <div class="note-card-attachments" *ngIf="note.attachments.length > 0">
-                        <span class="attachment-count"><i class="pi pi-paperclip"></i> {{ note.attachments.length }}</span>
-                      </div>
-                      <span class="note-card-date">{{ note.createdAt | date:'fullDate' }}</span>
-                    </div>
-                  </div>
-                  <ng-template #noSummaryNotes>
-                      <div class="empty-state"><i [class]="summary.icon"></i><span>No notes found for this {{ summary.key }}.</span></div>
-                  </ng-template>
-                </div>
-                <ng-template #loadingTemplate>
-                  <div class="loading-spinner"><p-progressSpinner styleClass="w-8 h-8"></p-progressSpinner></div>
-                </ng-template>
+          <div class="notes-layout">
+            <div class="notes-sidebar">
+              <div class="sidebar-header">
+                <h2 class="section-title">{{ summary.title }} Summary</h2>
+                <button pButton type="button" icon="pi pi-refresh" class="p-button-text p-button-sm" (click)="refreshCurrentView()"></button>
               </div>
-              <div class="note-preview-panel">
-                <div class="preview-header">
-                  <h2 class="section-title">Note Preview</h2>
-                </div>
-                <div class="preview-content" *ngIf="selectedNote; else noPreview">
-                  <h3 class="preview-title">{{ selectedNote.title }}</h3>
-                  <p class="preview-text">{{ selectedNote.content }}</p>
-                  <div class="note-card-tags" *ngIf="selectedNote.tags.length > 0">
-                    <label>Tags:</label>
-                    <span *ngFor="let tag of selectedNote.tags" class="note-tag">{{ tag }}</span>
+              <div class="notes-list" *ngIf="!isLoading[summary.key]; else loadingTemplate">
+                <div *ngIf="summary.data.length > 0; else noSummaryNotes">
+                  <div *ngFor="let note of summary.data" class="note-card" (click)="selectForPreview(note)">
+                    <h3 class="note-card-title">{{ note.title }}</h3>
+                    <p class="note-card-content">{{ note.content | slice:0:120 }}...</p>
                   </div>
-                  <div class="attachments-preview" *ngIf="selectedNote.attachments.length > 0">
-                    <label>Attachments:</label>
-                    <div *ngFor="let url of selectedNote.attachments; let i = index" class="attachment-thumbnail">
-                      <img [src]="url" alt="Preview">
-                    </div>
-                  </div>
-                  <span class="note-card-date">{{ selectedNote.createdAt | date:'fullDate' }}</span>
                 </div>
-                <ng-template #noPreview>
-                  <div class="empty-state"><i class="pi pi-file"></i><span>Select a note to preview.</span></div>
+                <ng-template #noSummaryNotes>
+                  <div class="empty-state"><i [class]="summary.icon"></i><span>No notes found for this {{ summary.key }}.</span></div>
                 </ng-template>
               </div>
             </div>
+            <div class="note-preview-panel">
+  <div class="preview-header">
+    <h2 class="section-title">Note Preview</h2>
+  </div>
+
+  <div class="preview-content" *ngIf="selectedNote; else noPreview">
+    <div class="preview-top">
+      <div class="preview-info">
+        <h3 class="preview-title">{{ selectedNote.title }}</h3>
+        <div class="note-card-tags" *ngIf="selectedNote.tags.length > 0">
+          <span *ngFor="let tag of selectedNote.tags" class="note-tag">{{ tag }}</span>
+        </div>
+        <span class="note-card-date">{{ selectedNote.createdAt | date:'medium' }}</span>
+      </div>
+      <div class="preview-image" *ngIf="selectedNote.attachments.length > 0">
+        <img [src]="selectedNote.attachments[0]" alt="Attachment Preview">
+      </div>
+    </div>
+
+    <div class="preview-text-content">
+      <p>{{ selectedNote.content }}</p>
+    </div>
+
+    <div class="attachments-section" *ngIf="selectedNote.attachments.length > 1">
+      <label>Other Attachments:</label>
+      <div class="attachments-gallery">
+        <div *ngFor="let url of selectedNote.attachments.slice(1)" class="attachment-thumbnail">
+          <img [src]="url" alt="Attachment">
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <ng-template #noPreview>
+    <div class="empty-state">
+      <i class="pi pi-file"></i>
+      <span>Select a note to preview.</span>
+    </div>
+  </ng-template>
+</div>
+
+            <!-- <div class="note-preview-panel">
+              <div *ngIf="selectedNote; else noPreview">
+                <h3 class="preview-title">{{ selectedNote.title }}</h3>
+                <p class="preview-text">{{ selectedNote.content }}</p>
+                <div class="note-card-tags" *ngIf="selectedNote.tags.length > 0">
+                  <label>Tags:</label>
+                  <span *ngFor="let tag of selectedNote.tags" class="note-tag">{{ tag }}</span>
+                </div>
+              </div>
+              <ng-template #noPreview>
+                <div class="empty-state"><i class="pi pi-file"></i><span>Select a note to preview.</span></div>
+              </ng-template>
+            </div> -->
+          </div>
         </p-tabPanel>
       </p-tabView>
     </div>
   `,
   styles: [`
-    :host, .notes-container { display: block; height: 100%; width: 100%; min-height: 100%; }
-    /* Make TabView content take full height */
-    :host ::ng-deep .p-tabview .p-tabview-panels { height: calc(100% - 45px); }
-    :host ::ng-deep .p-tabview-panel { height: 100%; }
-    .notes-layout { display: grid; grid-template-columns: 280px 1fr; gap: var(--spacing-md); height: 100%; }
-    .notes-sidebar, .note-editor-panel, .note-preview-panel { background: var(--theme-bg-secondary); border-radius: var(--ui-border-radius); border: 1px solid var(--theme-border-primary); display: flex; flex-direction: column; overflow: hidden; }
-    .sidebar-header, .editor-header, .preview-header { display: flex; justify-content: space-between; align-items: center; padding: var(--spacing-sm) var(--spacing-md); border-bottom: 1px solid var(--theme-border-primary); flex-shrink: 0; }
-    .header-actions { display: flex; align-items: center; gap: var(--spacing-xs); }
-    .section-title { font-family: var(--font-primary); font-size: var(--font-size-lg); font-weight: 600; color: var(--theme-text-primary); margin: 0; }
-    .search-bar { padding: var(--spacing-sm) var(--spacing-md); border-bottom: 1px solid var(--theme-border-primary); }
-    .notes-list, .summary-list { flex: 1; overflow-y: auto; padding: var(--spacing-sm); }
-    .loading-spinner, .empty-state { display: flex; flex-direction: column; justify-content: center; align-items: center; height: 100%; text-align: center; color: var(--theme-text-muted); padding: var(--spacing-xl); }
-    .empty-state .pi { font-size: 2rem; margin-bottom: var(--spacing-md); }
-    .note-card { padding: var(--spacing-sm) var(--spacing-md); border-radius: var(--ui-border-radius-sm); margin-bottom: var(--spacing-sm); cursor: pointer; transition: var(--ui-transition-fast); border: 1px solid transparent; background: var(--theme-bg-primary); position: relative; }
-    .note-card:hover { background-color: var(--theme-hover-bg); }
-    .note-card.active { background-color: var(--theme-accent-primary-light); border-color: var(--theme-accent-primary); }
-    .note-card-header { display: flex; justify-content: space-between; align-items: center; gap: var(--spacing-sm); }
-    .note-card-title { font-weight: 600; font-size: var(--font-size-sm); margin: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; flex: 1; }
-    .note-card-content { font-size: var(--font-size-xs); color: var(--theme-text-secondary); margin: var(--spacing-xs) 0; line-height: var(--line-height-tight); }
-    .note-card-tags { display: flex; flex-wrap: wrap; gap: var(--spacing-xs); margin: var(--spacing-xs) 0; }
-    .note-tag { background: var(--theme-accent-primary-light); color: var(--theme-accent-primary); font-size: var(--font-size-xs); padding: 0.125rem 0.5rem; border-radius: var(--ui-border-radius-full); }
-    .note-card-attachments { margin: var(--spacing-xs) 0; }
-    .attachment-count { font-size: var(--font-size-xs); color: var(--theme-text-muted); display: inline-flex; align-items: center; gap: var(--spacing-xs); }
-    .note-card-date { font-size: var(--font-size-xs); color: var(--theme-text-label); font-weight: 500; }
-    .note-card-actions { display: none; }
-    .note-card:hover .note-card-actions { display: flex; }
-    .note-editor-panel form { display: flex; flex-direction: column; height: 100%; }
-    .editor-content, .preview-content { flex: 1; padding: var(--spacing-md); overflow-y: auto; display: flex; flex-direction: column; gap: var(--spacing-md); }
-    .form-row { display: flex; gap: var(--spacing-md); align-items: flex-end; }
-    .form-field { margin-bottom: 0; flex: 1; }
-    .form-field label { font-size: var(--font-size-xs); display: block; margin-bottom: var(--spacing-sm); font-weight: 600; color: var(--theme-text-label); }
-    .save-button { height: fit-content; align-self: flex-end; }
-    .content-field { flex: 1; }
-    .content-field textarea { height: 100%; }
-    .attachments-preview { display: flex; flex-wrap: wrap; gap: var(--spacing-sm); }
-    .attachment-thumbnail { position: relative; width: 60px; height: 60px; border-radius: var(--ui-border-radius-sm); overflow: hidden; }
+    :host, .notes-container { display: block; height: 100%; width: 100%; font-size: 0.85rem; }
+    .notes-layout { display: grid; grid-template-columns: 260px 1fr; gap: 10px; height: 100%; }
+    .notes-sidebar, .note-editor-panel, .note-preview-panel { background: #fff; border-radius: 8px; border: 1px solid #ddd; display: flex; flex-direction: column; overflow: hidden; }
+    .sidebar-header, .editor-header, .preview-header { display: flex; justify-content: space-between; align-items: center; padding: 6px 12px; border-bottom: 1px solid #eee; }
+    .section-title { font-size: 0.9rem; font-weight: 600; margin: 0; }
+    .search-bar { padding: 4px 12px; border-bottom: 1px solid #eee; }
+    .notes-list { flex: 1; overflow-y: auto; padding: 4px 8px; }
+    .note-card { padding: 6px 8px; border-radius: 4px; margin-bottom: 6px; cursor: pointer; border: 1px solid transparent; transition: 0.2s; background: #f9f9f9; }
+    .note-card:hover { border-color: #aaa; }
+    .note-card.active { background: #e6f7ff; border-color: #1890ff; }
+    .note-card-title { font-size: 0.85rem; margin: 0; font-weight: 600; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+    .note-card-content { font-size: 0.75rem; margin: 2px 0; color: #666; }
+    .note-tag { font-size: 0.7rem; background: #e0f3ff; color: #1890ff; padding: 2px 6px; border-radius: 12px; }
+    .editor-top { display: flex; justify-content: space-between; gap: 8px; padding: 8px 12px; }
+    .editor-left { display: flex; flex-direction: column; gap: 6px; flex: 1; }
+    .editor-right { flex: 0 0 200px; display: flex; flex-direction: column; gap: 6px; }
+    .title-input { font-size: 0.85rem; }
+    .tags-input { font-size: 0.75rem; }
+    .save-button { align-self: flex-start; margin-top: 4px; font-size: 0.75rem; }
+    .editor-content { flex: 1; padding: 8px 12px; display: flex; flex-direction: column; gap: 8px; }
+    .content-textarea { flex: 1; font-size: 0.85rem; }
+    .attachments-preview { display: flex; flex-wrap: wrap; gap: 6px; }
+    .attachment-thumbnail { position: relative; width: 50px; height: 50px; border-radius: 4px; overflow: hidden; }
     .attachment-thumbnail img { width: 100%; height: 100%; object-fit: cover; }
-    .remove-btn { position: absolute; top: 2px; right: 2px; width: 18px; height: 18px; border-radius: 50%; background: rgba(0,0,0,0.7); color: white; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; opacity: 0; transition: var(--ui-transition-fast); }
+    .remove-btn { position: absolute; top: 2px; right: 2px; width: 16px; height: 16px; border-radius: 50%; background: rgba(0,0,0,0.7); color: white; display: flex; align-items: center; justify-content: center; font-size: 0.7rem; opacity: 0; transition: 0.2s; border: none; cursor: pointer; }
     .attachment-thumbnail:hover .remove-btn { opacity: 1; }
-    .read-only-banner { padding: var(--spacing-sm) var(--spacing-md); background: var(--theme-warning-light); color: var(--theme-text-secondary); font-size: var(--font-size-xs); border-radius: var(--ui-border-radius-sm); display: flex; align-items: center; gap: var(--spacing-sm); margin-bottom: var(--spacing-md); }
-    .preview-title { font-size: var(--font-size-lg); margin-bottom: var(--spacing-md); }
-    .preview-text { white-space: pre-wrap; word-wrap: break-word; font-size: var(--font-size-base); line-height: var(--line-height-normal); color: var(--theme-text-primary); }
+    .note-preview-panel {
+  display: flex;
+  flex-direction: column;
+  background: var(--theme-bg-secondary);
+  border-radius: var(--ui-border-radius);
+  border: 1px solid var(--theme-border-primary);
+  overflow: hidden;
+}
+
+.preview-header {
+  padding: var(--spacing-sm) var(--spacing-md);
+  border-bottom: 1px solid var(--theme-border-primary);
+}
+
+.preview-content {
+  padding: var(--spacing-md);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+  overflow-y: auto;
+}
+
+.preview-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: var(--spacing-md);
+}
+
+.preview-info {
+  flex: 1;
+}
+
+.preview-title {
+  font-size: 1rem;
+  font-weight: 600;
+  margin: 0 0 var(--spacing-xs) 0;
+}
+
+.note-card-tags {
+  display: flex;
+  gap: var(--spacing-xs);
+  flex-wrap: wrap;
+  margin-bottom: var(--spacing-xs);
+}
+
+.note-tag {
+  background: var(--theme-accent-primary-light);
+  color: var(--theme-accent-primary);
+  font-size: 0.7rem;
+  padding: 0.125rem 0.4rem;
+  border-radius: var(--ui-border-radius-full);
+}
+
+.note-card-date {
+  font-size: 0.65rem;
+  color: var(--theme-text-label);
+}
+
+.preview-image img {
+  width: 120px;
+  height: 120px;
+  object-fit: cover;
+  border-radius: var(--ui-border-radius-sm);
+  border: 1px solid var(--theme-border-primary);
+}
+
+.preview-text-content p {
+  font-size: 0.85rem;
+  line-height: 1.4;
+  color: var(--theme-text-primary);
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+
+.attachments-section {
+  margin-top: var(--spacing-md);
+}
+
+.attachments-gallery {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-sm);
+}
+
+.attachment-thumbnail {
+  width: 60px;
+  height: 60px;
+  border-radius: var(--ui-border-radius-sm);
+  overflow: hidden;
+  border: 1px solid var(--theme-border-primary);
+}
+
+.attachment-thumbnail img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+    .empty-state { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 20px; color: #999; font-size: 0.8rem; text-align: center; }
   `]
 })
+  // template: `
+  //   <p-toast></p-toast>
+  //   <div class="notes-container">
+  //     <p-tabView [(activeIndex)]="activeTabIndex" (onChange)="onTabChange($event)">
+  //       <p-tabPanel header="Day" >
+  //         <div class="notes-layout">
+  //           <div class="notes-sidebar">
+  //             <div class="sidebar-header">
+  //               <h2 class="section-title">Daily Notes</h2>
+  //               <div class="header-actions">
+  //                 <button pButton type="button" icon="pi pi-refresh" class="p-button-text p-button-sm" (click)="refreshCurrentView()" pTooltip="Refresh List"></button>
+  //                 <button pButton icon="pi pi-plus" label="New" class="p-button-sm" (click)="startNewNote()"></button>
+  //               </div>
+  //             </div>
+  //             <div class="search-bar">
+  //                <span class="p-input-icon-left">
+  //                   <i class="pi pi-search"></i>
+  //                   <input type="text" pInputText placeholder="Search..." class="w-full p-inputtext-sm" (input)="filterNotes($event)">
+  //                </span>
+  //             </div>
+  //             <div class="notes-list" *ngIf="!isLoading.day; else loadingTemplate">
+  //               <div *ngIf="filteredDailyNotes.length > 0; else noDailyNotes">
+  //                 <div *ngFor="let note of filteredDailyNotes" class="note-card" [class.active]="selectedNote?._id === note._id" (click)="selectNote(note)">
+  //                   <div class="note-card-header">
+  //                     <h3 class="note-card-title">{{ note.title }}</h3>
+  //                     <div class="note-card-actions" *ngIf="isEditable(note)">
+  //                       <button pButton type="button" icon="pi pi-pencil" class="p-button-text p-button-rounded p-button-sm" (click)="selectNote(note, $event)" pTooltip="Edit Note"></button>
+  //                       <button pButton type="button" icon="pi pi-trash" class="p-button-text p-button-rounded p-button-sm p-button-danger" (click)="deleteNote(note, $event)" pTooltip="Delete Note"></button>
+  //                     </div>
+  //                   </div>
+  //                   <p class="note-card-content">{{ note.content | slice:0:120 }}...</p>
+  //                   <div class="note-card-tags" *ngIf="note.tags.length > 0">
+  //                     <span *ngFor="let tag of note.tags | slice:0:3" class="note-tag">{{ tag }}</span>
+  //                     <span *ngIf="note.tags.length > 3" class="note-tag">+{{ note.tags.length - 3 }}</span>
+  //                   </div>
+  //                   <div class="note-card-attachments" *ngIf="note.attachments.length > 0">
+  //                     <span class="attachment-count"><i class="pi pi-paperclip"></i> {{ note.attachments.length }}</span>
+  //                   </div>
+  //                   <span class="note-card-date">{{ note.createdAt | date:'shortTime' }}</span>
+  //                 </div>
+  //               </div>
+  //               <ng-template #noDailyNotes>
+  //                   <div class="empty-state"><i class="pi pi-inbox"></i><span>No notes for this day.</span></div>
+  //               </ng-template>
+  //             </div>
+  //             <ng-template #loadingTemplate>
+  //               <div class="loading-spinner"><p-progressSpinner styleClass="w-8 h-8"></p-progressSpinner></div>
+  //             </ng-template>
+  //           </div>
+  //           <div class="note-editor-panel">
+  //             <form [formGroup]="noteForm" (ngSubmit)="saveNote()">
+  //               <div class="editor-header">
+  //                 <h2 class="section-title">{{ isEditing ? 'Edit Note' : 'Create Note' }}</h2>
+  //                 <div class="editor-actions">
+  //                   <button *ngIf="isEditing" pButton type="button" icon="pi pi-trash" class="p-button-danger p-button-outlined p-button-sm" [disabled]="!isEditable(selectedNote)" (click)="deleteNote(selectedNote)"></button>
+  //                 </div>
+  //               </div>
+  //               <div class="editor-content">
+  //                   <div *ngIf="isEditing && !isEditable(selectedNote)" class="read-only-banner">
+  //                       <i class="pi pi-lock"></i> Notes from past days are read-only.
+  //                   </div>
+  //                   <div class="form-row">
+  //                     <div class="form-field flex-1"><input type="text" pInputText placeholder="Note Title" formControlName="title"></div>
+  //                     <div class="form-field flex-1"><label>Attachments</label><app-image-uploader (uploaded)="onImageUploaded($event)"></app-image-uploader></div>
+  //                   </div>
+  //                   <div class="form-row">
+  //                     <div class="form-field flex-1"><label>Tags</label><p-chips formControlName="tags" separator=","></p-chips></div>
+  //                     <button pButton type="submit" label="Save" icon="pi pi-check" class="p-button-sm save-button" [disabled]="noteForm.invalid || isSaving || (isEditing && !isEditable(selectedNote))"></button>
+  //                   </div>
+  //                   <div class="attachments-preview" *ngIf="noteForm.get('attachments')?.value.length > 0">
+  //                     <div *ngFor="let url of noteForm.get('attachments')?.value; let i = index" class="attachment-thumbnail">
+  //                       <img [src]="url" alt="Preview"><button type="button" class="remove-btn" (click)="removeAttachment(i)"><i class="pi pi-times"></i></button>
+  //                     </div>
+  //                   </div>
+  //                   <div class="form-field content-field"><textarea pInputTextarea placeholder="Start writing..." formControlName="content" rows="10"></textarea></div>
+  //               </div>
+  //             </form>
+  //           </div>
+  //         </div>
+  //       </p-tabPanel>
+
+  //       <p-tabPanel *ngFor="let summary of summaries; let i = index" [header]="summary.title">
+  //           <div class="notes-layout">
+  //             <div class="notes-sidebar">
+  //               <div class="sidebar-header">
+  //                 <h2 class="section-title">{{ summary.title }} Summary</h2>
+  //                 <button pButton type="button" icon="pi pi-refresh" class="p-button-text p-button-sm" (click)="refreshCurrentView()" pTooltip="Refresh List"></button>
+  //               </div>
+  //               <div class="notes-list" *ngIf="!isLoading[summary.key]; else loadingTemplate">
+  //                 <div *ngIf="summary.data.length > 0; else noSummaryNotes">
+  //                   <div *ngFor="let note of summary.data" class="note-card" [class.active]="selectedNote?._id === note._id" (click)="selectForPreview(note)">
+  //                     <div class="note-card-header">
+  //                       <h3 class="note-card-title">{{ note.title }}</h3>
+  //                     </div>
+  //                     <p class="note-card-content">{{ note.content | slice:0:150 }}...</p>
+  //                     <div class="note-card-tags" *ngIf="note.tags.length > 0">
+  //                       <span *ngFor="let tag of note.tags | slice:0:3" class="note-tag">{{ tag }}</span>
+  //                       <span *ngIf="note.tags.length > 3" class="note-tag">+{{ note.tags.length - 3 }}</span>
+  //                     </div>
+  //                     <div class="note-card-attachments" *ngIf="note.attachments.length > 0">
+  //                       <span class="attachment-count"><i class="pi pi-paperclip"></i> {{ note.attachments.length }}</span>
+  //                     </div>
+  //                     <span class="note-card-date">{{ note.createdAt | date:'fullDate' }}</span>
+  //                   </div>
+  //                 </div>
+  //                 <ng-template #noSummaryNotes>
+  //                     <div class="empty-state"><i [class]="summary.icon"></i><span>No notes found for this {{ summary.key }}.</span></div>
+  //                 </ng-template>
+  //               </div>
+  //               <ng-template #loadingTemplate>
+  //                 <div class="loading-spinner"><p-progressSpinner styleClass="w-8 h-8"></p-progressSpinner></div>
+  //               </ng-template>
+  //             </div>
+  //             <div class="note-preview-panel">
+  //               <div class="preview-header">
+  //                 <h2 class="section-title">Note Preview</h2>
+  //               </div>
+  //               <div class="preview-content" *ngIf="selectedNote; else noPreview">
+  //                 <h3 class="preview-title">{{ selectedNote.title }}</h3>
+  //                 <p class="preview-text">{{ selectedNote.content }}</p>
+  //                 <div class="note-card-tags" *ngIf="selectedNote.tags.length > 0">
+  //                   <label>Tags:</label>
+  //                   <span *ngFor="let tag of selectedNote.tags" class="note-tag">{{ tag }}</span>
+  //                 </div>
+  //                 <div class="attachments-preview" *ngIf="selectedNote.attachments.length > 0">
+  //                   <label>Attachments:</label>
+  //                   <div *ngFor="let url of selectedNote.attachments; let i = index" class="attachment-thumbnail">
+  //                     <img [src]="url" alt="Preview">
+  //                   </div>
+  //                 </div>
+  //                 <span class="note-card-date">{{ selectedNote.createdAt | date:'fullDate' }}</span>
+  //               </div>
+  //               <ng-template #noPreview>
+  //                 <div class="empty-state"><i class="pi pi-file"></i><span>Select a note to preview.</span></div>
+  //               </ng-template>
+  //             </div>
+  //           </div>
+  //       </p-tabPanel>
+  //     </p-tabView>
+  //   </div>
+  // `,
+  // styles: [`
+  //   :host, .notes-container { display: block; height: 100%; width: 100%; min-height: 100%; }
+  //   /* Make TabView content take full height */
+  //   :host ::ng-deep .p-tabview .p-tabview-panels { height: calc(100% - 45px); }
+  //   :host ::ng-deep .p-tabview-panel { height: 100%; }
+  //   .notes-layout { display: grid; grid-template-columns: 280px 1fr; gap: var(--spacing-md); height: 100%; }
+  //   .notes-sidebar, .note-editor-panel, .note-preview-panel { background: var(--theme-bg-secondary); border-radius: var(--ui-border-radius); border: 1px solid var(--theme-border-primary); display: flex; flex-direction: column; overflow: hidden; }
+  //   .sidebar-header, .editor-header, .preview-header { display: flex; justify-content: space-between; align-items: center; padding: var(--spacing-sm) var(--spacing-md); border-bottom: 1px solid var(--theme-border-primary); flex-shrink: 0; }
+  //   .header-actions { display: flex; align-items: center; gap: var(--spacing-xs); }
+  //   .section-title { font-family: var(--font-primary); font-size: var(--font-size-lg); font-weight: 600; color: var(--theme-text-primary); margin: 0; }
+  //   .search-bar { padding: var(--spacing-sm) var(--spacing-md); border-bottom: 1px solid var(--theme-border-primary); }
+  //   .notes-list, .summary-list { flex: 1; overflow-y: auto; padding: var(--spacing-sm); }
+  //   .loading-spinner, .empty-state { display: flex; flex-direction: column; justify-content: center; align-items: center; height: 100%; text-align: center; color: var(--theme-text-muted); padding: var(--spacing-xl); }
+  //   .empty-state .pi { font-size: 2rem; margin-bottom: var(--spacing-md); }
+  //   .note-card { padding: var(--spacing-sm) var(--spacing-md); border-radius: var(--ui-border-radius-sm); margin-bottom: var(--spacing-sm); cursor: pointer; transition: var(--ui-transition-fast); border: 1px solid transparent; background: var(--theme-bg-primary); position: relative; }
+  //   .note-card:hover { background-color: var(--theme-hover-bg); }
+  //   .note-card.active { background-color: var(--theme-accent-primary-light); border-color: var(--theme-accent-primary); }
+  //   .note-card-header { display: flex; justify-content: space-between; align-items: center; gap: var(--spacing-sm); }
+  //   .note-card-title { font-weight: 600; font-size: var(--font-size-sm); margin: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; flex: 1; }
+  //   .note-card-content { font-size: var(--font-size-xs); color: var(--theme-text-secondary); margin: var(--spacing-xs) 0; line-height: var(--line-height-tight); }
+  //   .note-card-tags { display: flex; flex-wrap: wrap; gap: var(--spacing-xs); margin: var(--spacing-xs) 0; }
+  //   .note-tag { background: var(--theme-accent-primary-light); color: var(--theme-accent-primary); font-size: var(--font-size-xs); padding: 0.125rem 0.5rem; border-radius: var(--ui-border-radius-full); }
+  //   .note-card-attachments { margin: var(--spacing-xs) 0; }
+  //   .attachment-count { font-size: var(--font-size-xs); color: var(--theme-text-muted); display: inline-flex; align-items: center; gap: var(--spacing-xs); }
+  //   .note-card-date { font-size: var(--font-size-xs); color: var(--theme-text-label); font-weight: 500; }
+  //   .note-card-actions { display: none; }
+  //   .note-card:hover .note-card-actions { display: flex; }
+  //   .note-editor-panel form { display: flex; flex-direction: column; height: 100%; }
+  //   .editor-content, .preview-content { flex: 1; padding: var(--spacing-md); overflow-y: auto; display: flex; flex-direction: column; gap: var(--spacing-md); }
+  //   .form-row { display: flex; gap: var(--spacing-md); align-items: flex-end; }
+  //   .form-field { margin-bottom: 0; flex: 1; }
+  //   .form-field label { font-size: var(--font-size-xs); display: block; margin-bottom: var(--spacing-sm); font-weight: 600; color: var(--theme-text-label); }
+  //   .save-button { height: fit-content; align-self: flex-end; }
+  //   .content-field { flex: 1; }
+  //   .content-field textarea { height: 100%; }
+  //   .attachments-preview { display: flex; flex-wrap: wrap; gap: var(--spacing-sm); }
+  //   .attachment-thumbnail { position: relative; width: 60px; height: 60px; border-radius: var(--ui-border-radius-sm); overflow: hidden; }
+  //   .attachment-thumbnail img { width: 100%; height: 100%; object-fit: cover; }
+  //   .remove-btn { position: absolute; top: 2px; right: 2px; width: 18px; height: 18px; border-radius: 50%; background: rgba(0,0,0,0.7); color: white; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; opacity: 0; transition: var(--ui-transition-fast); }
+  //   .attachment-thumbnail:hover .remove-btn { opacity: 1; }
+  //   .read-only-banner { padding: var(--spacing-sm) var(--spacing-md); background: var(--theme-warning-light); color: var(--theme-text-secondary); font-size: var(--font-size-xs); border-radius: var(--ui-border-radius-sm); display: flex; align-items: center; gap: var(--spacing-sm); margin-bottom: var(--spacing-md); }
+  //   .preview-title { font-size: var(--font-size-lg); margin-bottom: var(--spacing-md); }
+  //   .preview-text { white-space: pre-wrap; word-wrap: break-word; font-size: var(--font-size-base); line-height: var(--line-height-normal); color: var(--theme-text-primary); }
+  // `]
+// })
 export class NotesManagerComponent implements OnInit, OnChanges {
   private noteService = inject(NoteService);
   private fb = inject(FormBuilder);

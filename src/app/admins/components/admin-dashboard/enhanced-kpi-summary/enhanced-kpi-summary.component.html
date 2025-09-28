@@ -1,63 +1,55 @@
 <div class="se-widget-container" *ngIf="loading && data; else loadingOrNoData">
 
-  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-    <div class="kpi-card">
-      <div class="kpi-header">
-        <i class="pi pi-dollar kpi-icon text-[var(--theme-accent-primary)]"></i>
-        <h3 class="kpi-title">Total Revenue</h3>
-      </div>
-      <p class="kpi-value">{{ data.kpiSummary.totalRevenue.value | currency:'INR':'symbol':'1.0-0' }}</p>
-      <div class="kpi-chart">
-        <p-chart type="line" [data]="revenueMicroChartData" [options]="microChartOptions"></p-chart>
-      </div>
-      <div class="kpi-footer">
-        <p-tag [value]="formatPercent(data.kpiSummary.totalRevenue.change)"
-               [severity]="getChangeSeverity(data.kpiSummary.totalRevenue.change)"></p-tag>
-      </div>
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+  <div class="kpi-card">
+    <div class="kpi-header">
+      <i class="pi pi-dollar kpi-icon text-[var(--theme-accent-primary)]"></i>
+      <h3 class="kpi-title">Total Revenue</h3>
     </div>
-
-    <div class="kpi-card">
-      <div class="kpi-header">
-        <i class="pi pi-shopping-cart kpi-icon text-[var(--theme-success-primary)]"></i>
-        <h3 class="kpi-title">Total Sales</h3>
-      </div>
-      <p class="kpi-value">{{ data.kpiSummary.totalSales.value | number:'1.0-0' }}</p>
-      <div class="kpi-chart">
-        </div>
-      <div class="kpi-footer">
-        <p-tag [value]="formatPercent(data.kpiSummary.totalSales.change)"
-               [severity]="getChangeSeverity(data.kpiSummary.totalSales.change)"></p-tag>
-      </div>
-    </div>
-
-    <div class="kpi-card">
-      <div class="kpi-header">
-        <i class="pi pi-chart-bar kpi-icon text-[var(--theme-info-primary)]"></i>
-        <h3 class="kpi-title">Gross Profit</h3>
-      </div>
-      <p class="kpi-value">{{ data.kpiSummary.grossProfit.value | currency:'INR':'symbol':'1.0-0' }}</p>
-      <div class="kpi-chart">
-        </div>
-      <div class="kpi-footer">
-        <p-tag [value]="formatPercent(data.kpiSummary.grossProfit.change)"
-               [severity]="getChangeSeverity(data.kpiSummary.grossProfit.change)"></p-tag>
-      </div>
-    </div>
-
-    <div class="kpi-card">
-      <div class="kpi-header">
-        <i class="pi pi-users kpi-icon text-[var(--theme-warning-primary)]"></i>
-        <h3 class="kpi-title">New Customers</h3>
-      </div>
-      <p class="kpi-value">{{ data.kpiSummary.newCustomers.value | number:'1.0-0' }}</p>
-      <div class="kpi-chart">
-        </div>
-      <div class="kpi-footer">
-        <p-tag [value]="formatPercent(data.kpiSummary.newCustomers.change)"
-               [severity]="getChangeSeverity(data.kpiSummary.newCustomers.change)"></p-tag>
-      </div>
+    <p class="kpi-value">{{ data.kpiSummary.totalRevenue.value | currency:'INR':'symbol':'1.0-0' }}</p>
+    <div class="kpi-footer">
+      <p-tag [value]="formatPercent(data.kpiSummary.totalRevenue.change)"
+             [severity]="getChangeSeverity(data.kpiSummary.totalRevenue.change)"></p-tag>
     </div>
   </div>
+
+  <div class="kpi-card">
+    <div class="kpi-header">
+      <i class="pi pi-shopping-cart kpi-icon text-[var(--theme-success-primary)]"></i>
+      <h3 class="kpi-title">Total Sales</h3>
+    </div>
+    <p class="kpi-value">{{ data.kpiSummary.totalSales.value | number:'1.0-0' }}</p>
+    <div class="kpi-footer">
+      <p-tag [value]="formatPercent(data.kpiSummary.totalSales.change)"
+             [severity]="getChangeSeverity(data.kpiSummary.totalSales.change)"></p-tag>
+    </div>
+  </div>
+
+  <div class="kpi-card">
+    <div class="kpi-header">
+      <i class="pi pi-chart-bar kpi-icon text-[var(--theme-info-primary)]"></i>
+      <h3 class="kpi-title">Gross Profit</h3>
+    </div>
+    <p class="kpi-value">{{ data.kpiSummary.grossProfit.value | currency:'INR':'symbol':'1.0-0' }}</p>
+    <div class="kpi-footer">
+      <p-tag [value]="formatPercent(data.kpiSummary.grossProfit.change)"
+             [severity]="getChangeSeverity(data.kpiSummary.grossProfit.change)"></p-tag>
+    </div>
+  </div>
+
+  <div class="kpi-card">
+    <div class="kpi-header">
+      <i class="pi pi-users kpi-icon text-[var(--theme-warning-primary)]"></i>
+      <h3 class="kpi-title">New Customers</h3>
+    </div>
+    <p class="kpi-value">{{ data.kpiSummary.newCustomers.value | number:'1.0-0' }}</p>
+    <div class="kpi-footer">
+      <p-tag [value]="formatPercent(data.kpiSummary.newCustomers.change)"
+             [severity]="getChangeSeverity(data.kpiSummary.newCustomers.change)"></p-tag>
+    </div>
+  </div>
+</div>
+
 
   <p-tabView styleClass="se-tabview mt-8">
     <p-tabPanel header="Customer Insights">

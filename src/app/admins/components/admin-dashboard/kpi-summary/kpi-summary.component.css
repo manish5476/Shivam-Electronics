@@ -1,81 +1,73 @@
-/* kpi-dashboard.component.css */
-
 .kpi-widget-container {
   background: var(--theme-bg-secondary);
-  border: var(--ui-border-width) solid var(--theme-border-primary);
-  border-radius: var(--ui-border-radius-xl);
-  padding: var(--spacing-2xl);
-  box-shadow: var(--ui-shadow);
-  transition: var(--ui-transition);
+  border: 1px solid var(--theme-border-primary);
+  border-radius: 12px;
+  padding: 16px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 /* Header */
 .widget-header {
-  margin-bottom: var(--spacing-xl);
+  margin-bottom: 12px;
 }
 .widget-title {
-  font-family: var(--font-heading);
-  font-size: var(--font-size-2xl);
+  font-size: 18px;
+  font-weight: 600;
   color: var(--theme-text-primary);
-  line-height: var(--line-height-tight);
 }
 .widget-subtitle {
-  font-family: var(--font-body);
-  font-size: var(--font-size-base);
+  font-size: 12px;
   color: var(--theme-text-secondary);
-  margin-top: var(--spacing-xs);
+  margin-top: 2px;
 }
 
 /* KPI Metrics Grid */
 .kpi-metrics-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: var(--spacing-lg);
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 12px;
 }
 .metric-item {
   display: flex;
   align-items: center;
-  gap: var(--spacing-md);
+  gap: 12px;
   background: var(--theme-bg-primary);
-  padding: var(--spacing-lg);
-  border-radius: var(--ui-border-radius-lg);
+  padding: 12px;
+  border-radius: 8px;
   border: 1px solid var(--theme-border-primary);
-  transition: var(--ui-transition-fast);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 .metric-item:hover {
-  transform: scale(1.03);
-  box-shadow: var(--ui-shadow-md);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
   border-color: var(--theme-border-secondary);
 }
 .metric-icon {
-  width: 48px;
-  height: 48px;
+  width: 36px;
+  height: 36px;
   border-radius: 50%;
   display: grid;
   place-items: center;
-  font-size: 1.5rem;
-  flex-shrink: 0;
+  font-size: 1.2rem;
 }
 .metric-details {
   display: flex;
   flex-direction: column;
 }
 .metric-label {
-  font-size: var(--font-size-sm);
+  font-size: 12px;
   color: var(--theme-text-label);
   font-weight: 500;
 }
 .metric-value {
-  font-family: var(--font-primary);
-  font-size: var(--font-size-2xl);
+  font-size: 16px;
   font-weight: 700;
   color: var(--theme-text-primary);
-  line-height: var(--line-height-tight);
 }
 .metric-sub-value {
-  font-size: var(--font-size-xs);
+  font-size: 10px;
   color: var(--theme-text-secondary);
-  font-weight: 500;
 }
 
 /* Divider */
@@ -83,73 +75,62 @@
   border: none;
   height: 1px;
   background-color: var(--theme-border-primary);
-  margin: var(--spacing-xl) 0;
+  margin: 16px 0;
 }
 
 /* Insights Section */
 .insight-group {
   background: var(--theme-bg-primary);
-  padding: var(--spacing-lg);
-  border-radius: var(--ui-border-radius-lg);
+  padding: 12px;
+  border-radius: 8px;
   border: 1px solid var(--theme-border-primary);
 }
 .insight-header {
-  font-family: var(--font-heading);
-  font-size: var(--font-size-lg);
-  color: var(--theme-text-primary);
+  font-size: 14px;
   font-weight: 600;
-  margin-bottom: var(--spacing-md);
+  color: var(--theme-text-primary);
+  margin-bottom: 8px;
   display: flex;
   align-items: center;
 }
 .insight-list {
   display: flex;
   flex-direction: column;
-  gap: var(--spacing-sm);
+  gap: 6px;
 }
 .insight-item {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: var(--spacing-sm) 0;
 }
 .insight-label {
-  font-size: var(--font-size-base);
+  font-size: 12px;
   color: var(--theme-text-label);
 }
 .insight-value {
-  font-size: var(--font-size-base);
+  font-size: 12px;
   font-weight: 600;
   color: var(--theme-text-primary);
 }
 
 /* Financial Health Progress Circle */
 .progress-circle {
-  position: relative;
-  width: 160px;
-  height: 160px;
+  width: 120px;
+  height: 120px;
   border-radius: 50%;
   display: grid;
   place-items: center;
   background: radial-gradient(closest-side, var(--theme-bg-primary) 84%, transparent 85% 100%),
-              conic-gradient(var(--theme-accent-primary) calc(var(--p, 0) * 1%), var(--theme-bg-ternary) 0);
-  animation: progress-spin 1s ease-out;
+              conic-gradient(var(--theme-accent-primary) calc(var(--p,0)*1%), var(--theme-bg-ternary) 0);
 }
 .progress-value {
-  font-family: var(--font-primary);
-  font-size: var(--font-size-3xl);
-  color: var(--theme-text-primary);
+  font-size: 18px;
   font-weight: 700;
+  color: var(--theme-text-primary);
 }
 .progress-label {
   position: absolute;
-  bottom: 35px;
-  font-size: var(--font-size-xs);
+  bottom: 20px;
+  font-size: 10px;
   color: var(--theme-text-label);
-  text-transform: uppercase;
-  letter-spacing: 1px;
-}
-
-@keyframes progress-spin {
-  from { --p: 0; }
 }

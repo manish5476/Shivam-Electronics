@@ -33,6 +33,19 @@ export class NoteService extends BaseApiService {
         ),
       );
   }
+  /**
+   * Fetches notes based on a time period.
+   * @param filterParams The time period to filter by.
+   */
+  getloginsummary(): Observable<any> {
+    return this.http
+      .get<any>(`${this.baseUrl}${"/v1/notifications"}/login-summary`)
+      .pipe(
+        catchError((error: HttpErrorResponse) =>
+          this.errorhandler.handleError('getloginsummary', error),
+        ),
+      );
+  }
 
   /**
    * Fetches a single note by its unique ID.

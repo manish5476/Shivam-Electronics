@@ -1,29 +1,70 @@
-/*
- Use ::ng-deep to penetrate the component's scope and style the tooltip,
- as it's rendered in a different part of the DOM.
-*/
-:host ::ng-deep .ngx-charts-tooltip-content {
-  background: rgba(20, 20, 40, 0.7) !important; /* Dark, semi-transparent background */
-  backdrop-filter: blur(5px);
-  -webkit-backdrop-filter: blur(5px);
-  color: #fff !important;
-  border: 1px solid rgba(255, 255, 255, 0.2) !important;
-  border-radius: 8px !important;
-  padding: 0 !important; /* Remove default padding to use our own */
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4) !important;
+:host {
+  --glass-heading-color: #fff;
 }
 
-/* Styles for the content inside our custom template */
+/* Glass Card */
+.glass-card {
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-radius: 16px;
+  padding: 1.5rem;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.35);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  transition: all 0.2s ease-in-out;
+}
+
+.glass-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.5);
+}
+
+/* Tooltip Styling */
+:host ::ng-deep .ngx-charts-tooltip-content {
+  background: rgba(255, 255, 255, 0.1) !important;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  border-radius: 12px !important;
+  padding: 0 !important;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.35) !important;
+  transition: all 0.2s ease-in-out;
+}
+
 .custom-tooltip {
-  padding: 0.5rem 1rem; /* 8px 16px */
+  padding: 0.75rem 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
 }
 
 .tooltip-header {
-  font-size: 0.875rem; /* 14px */
-  color: #c7d2fe; /* Light indigo for the header */
-  margin-bottom: 0.25rem; /* 4px */
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #e0e7ff;
+  margin-bottom: 0.25rem;
+  letter-spacing: 0.5px;
 }
 
 .tooltip-body {
-  font-size: 1rem; /* 16px */
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.tooltip-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.tooltip-label {
+  font-size: 0.8rem;
+  color: #cbd5e1;
+}
+
+.tooltip-value {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #fff;
 }

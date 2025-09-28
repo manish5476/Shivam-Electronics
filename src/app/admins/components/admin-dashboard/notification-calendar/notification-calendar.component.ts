@@ -52,7 +52,7 @@ export class NotificationCalendarComponent implements OnInit {
   selectedDaySummary = signal<DailySummary | null>(null);
   isLoadingHeatmap = signal(false);
   isLoadingSummary = signal(false);
-
+  showSummaryDialog: boolean = false
   // --- COMPUTED SIGNALS ---
   displayedMonth = computed(() => {
     return this.currentDate().toLocaleString('default', { month: 'long', year: 'numeric' });
@@ -101,7 +101,7 @@ export class NotificationCalendarComponent implements OnInit {
 
   readonly weekDays = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
   calanderDay: any;
-  showNotesDialog: boolean=false;
+  showNotesDialog: boolean = false;
 
   ngOnInit() {
     this.fetchHeatmapData();
@@ -152,6 +152,7 @@ export class NotificationCalendarComponent implements OnInit {
   }
 
   selectDay(day: CalendarDay): void {
+    this.showSummaryDialog = true
     if (!day.isCurrentMonth || !day.heatmapData) return;
     this.selectedDay.set(day);
     this.fetchDailySummary(day.date);
@@ -173,8 +174,8 @@ export class NotificationCalendarComponent implements OnInit {
 
   addNoteForDay(day: CalendarDay, event: Event): void {
     event.stopPropagation(); // prevent triggering selectDay
-    this.showNotesDialog=true
-    this.calanderDay=day
+    this.showNotesDialog = true
+    this.calanderDay = day
     console.log('Add note for', day.date);
   }
 

@@ -1,0 +1,90 @@
+<div class="glass-card login-summary-dialog">
+  <header class="dialog-header">
+    <h2>Login Summary</h2>
+    <button pButton type="button" label="Close" class="p-button-text close-btn" (click)="closeDialog()"></button>
+  </header>
+
+  <!-- KPI Cards -->
+  <section class="kpi-cards">
+    <div class="kpi-card">
+      <h3>Yesterday Revenue</h3>
+      <p>{{ summaryData.yesterdayRevenue | currency }}</p>
+    </div>
+    <div class="kpi-card">
+      <h3>New Customers Yesterday</h3>
+      <p>{{ summaryData.newCustomersYesterday || 0 }}</p>
+    </div>
+    <div class="kpi-card">
+      <h3>New Products Today</h3>
+      <p>{{ summaryData.newProductsToday?.length || 0 }}</p>
+    </div>
+    <div class="kpi-card">
+      <h3>New Customers Today</h3>
+      <p>{{ summaryData.newCustomersToday?.length || 0 }}</p>
+    </div>
+  </section>
+
+  <!-- New Products Table -->
+  <section class="notes-table" *ngIf="summaryData.newProductsToday?.length">
+    <h4>New Products Today</h4>
+    <p-table [value]="summaryData.newProductsToday">
+      <ng-template pTemplate="header">
+        <tr>
+          <th>Title</th>
+          <th>Thumbnail</th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-product>
+        <tr>
+          <td>{{ product.title }}</td>
+          <td>
+            <img *ngIf="product.thumbnail" [src]="product.thumbnail" alt="Thumbnail" width="50" />
+            <span *ngIf="!product.thumbnail">-</span>
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </section>
+
+  <!-- New Customers Table -->
+  <section class="notes-table" *ngIf="summaryData.newCustomersToday?.length">
+    <h4>New Customers Today</h4>
+    <p-table [value]="summaryData.newCustomersToday">
+      <ng-template pTemplate="header">
+        <tr>
+          <th>Full Name</th>
+          <th>Mobile Number</th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-customer>
+        <tr>
+          <td>{{ customer.fullname }}</td>
+          <td>{{ customer.mobileNumber }}</td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </section>
+
+  <!-- Customers with Dues -->
+  <section class="notes-table" *ngIf="summaryData.customersWithDues?.length">
+    <h4>Customers with Dues</h4>
+    <p-table [value]="summaryData.customersWithDues">
+      <ng-template pTemplate="header">
+        <tr>
+          <th>Full Name</th>
+          <th>Due Amount</th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-customer>
+        <tr>
+          <td>{{ customer.fullname }}</td>
+          <td>{{ customer.dueAmount | currency }}</td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </section>
+
+  <footer class="dialog-footer">
+    <button pButton type="button" label="Close" (click)="closeDialog()" class="p-button-outlined"></button>
+  </footer>
+</div>

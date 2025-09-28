@@ -37,12 +37,12 @@
           <!-- Top-right actions -->
           <div class="day-actions" (click)="$event.stopPropagation()">
             <button class="action-btn add" (click)="addNoteForDay(day,$event)">
-              <svg xmlns="http://www.w3.org/2000/svg" class="icon-sm" fill="none" viewBox="0 0 24 24"
+              <svg xmlns="http://www.w3.org/2000/svg" class="icon-sm" fill="none" viewBox="0 0 24 24" color="black"
                 stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
               </svg>
             </button>
-            <button class="action-btn view" (click)="viewNotesForDay(day,$event)">
+            <!-- <button class="action-btn view" (click)="viewNotesForDay(day,$event)">
               <svg xmlns="http://www.w3.org/2000/svg" class="icon-sm" fill="none" viewBox="0 0 24 24"
                 stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -50,7 +50,7 @@
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                   d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
               </svg>
-            </button>
+            </button> -->
           </div>
 
           <span class="today-marker" *ngIf="day.isToday && !isDaySelected(day)"></span>
@@ -63,113 +63,116 @@
     </div>
 
     <!-- Daily Summary Section -->
-    <div class="summary-container">
-      <div class="summary-panel">
-        @if(isLoadingSummary()) {
-        <div class="loading-state">
-          <div class="spinner"></div>
-        </div>
-        } @else if(selectedDaySummary()) {
-        <!-- Header with date -->
-        <div class="summary-header">
-          <div>
-            <h3 class="summary-title">Daily Summary</h3>
-            <p class="summary-date">{{ formatDateForSummary(selectedDaySummary()!.date) }}</p>
-          </div>
-        </div>
 
-        <!-- Metric Cards -->
-        <div class="summary-metrics-grid">
-          <div class="metric-card revenue">
-            <p class="metric-label">Revenue</p>
-            <p class="metric-value">{{ selectedDaySummary()!.revenue | currency:'INR':'symbol':'1.0-0' }}</p>
-          </div>
-          <div class="metric-card sales">
-            <p class="metric-label">Sales</p>
-            <p class="metric-value">{{ selectedDaySummary()!.salesCount }}</p>
-          </div>
-        </div>
 
-        <!-- Customers -->
-        <div class="summary-section">
-          <h4 class="section-title">New Customers</h4>
-          <div class="scroll-list">
-            @for(customer of selectedDaySummary()!.newCustomers; track customer._id) {
-            <div class="list-card">
-              <span class="avatar">{{ customer.fullname.charAt(0) }}</span>
-              <div>
-                <p class="item-title">{{ customer.fullname }}</p>
-                <p class="item-subtitle">{{ customer.mobileNumber }}</p>
-              </div>
-            </div>
-            }
-            @empty {
-            <p class="placeholder-text">No new customers today.</p>
-            }
-          </div>
-        </div>
-
-        <!-- Products -->
-        <div class="summary-section">
-          <h4 class="section-title">New Products</h4>
-          <div class="scroll-list">
-            @for(product of selectedDaySummary()!.newProducts; track product._id) {
-            <div class="list-card">
-              <span class="avatar-icon">
-                <svg class="icon-sm" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                    d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
-                </svg>
-              </span>
-              <div>
-                <p class="item-title">{{ product.title }}</p>
-                <p class="item-subtitle">Stock: {{ product.stock }}</p>
-              </div>
-            </div>
-            }
-            @empty {
-            <p class="placeholder-text">No new products today.</p>
-            }
-          </div>
-        </div>
-        } @else {
-        <div class="placeholder-state">
-          <svg class="placeholder-icon" fill="none" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 
-            2.25 0 012.25-2.25h13.5A2.25 2.25 0 
-            0121 7.5v11.25m-18 0A2.25 2.25 0 
-            005.25 21h13.5A2.25 2.25 0 0021 
-            18.75m-18 0h18" />
-          </svg>
-          <h3 class="placeholder-title">Select a day</h3>
-          <p class="placeholder-text">Click a colored day to see activity summary.</p>
-        </div>
-        }
-      </div>
-    </div>
-
-  <p-dialog 
-  [(visible)]="showNotesDialog"
-  [modal]="true"
-  [draggable]="false"
-  [resizable]="false"
-  [closable]="true"
-  [style]="{
+    <p-dialog [(visible)]="showSummaryDialog" [modal]="true" [draggable]="false" [resizable]="false" [closable]="true"
+      [style]="{
     'min-width': '95vw',
     'max-width': '1200px',
     'min-height': '80vh',
     'max-height': '90vh',
     'border-radius': '20px'
-  }"
->
-  <!-- Custom Header -->
-  <ng-template pTemplate="header">
-    <div class="dialog-header">
-      <span class="dialog-title">{{ calanderDay | date:'fullDate' }}</span>
-    </div>
-  </ng-template>
+  }">
+      <!-- Custom Header -->
+      <ng-template pTemplate="header">
+        <div class="dialog-header">
+          <span class="dialog-title">{{ calanderDay | date:'fullDate' }}</span>
+        </div>
+      </ng-template>
 
-  <!-- Dialog Content -->
-  <app-notes-manager [date]="calanderDay"></app-notes-manager>
-</p-dialog>
+      <!-- Dialog Content -->
+      <div class="summary-container">
+        <div class="summary-panel">
+          @if(isLoadingSummary()) {
+          <div class="loading-state">
+            <div class="spinner"></div>
+          </div>
+          } @else if(selectedDaySummary()) {
+          <!-- Header with date -->
+          <div class="summary-header">
+            <div>
+              <h3 class="summary-title">Daily Summary</h3>
+              <p class="summary-date">{{ formatDateForSummary(selectedDaySummary()!.date) }}</p>
+            </div>
+          </div>
 
+          <!-- Metric Cards -->
+          <div class="summary-metrics-grid">
+            <div class="metric-card revenue">
+              <p class="metric-label">Revenue</p>
+              <p class="metric-value">{{ selectedDaySummary()!.revenue | currency:'INR':'symbol':'1.0-0' }}</p>
+            </div>
+            <div class="metric-card sales">
+              <p class="metric-label">Sales</p>
+              <p class="metric-value">{{ selectedDaySummary()!.salesCount }}</p>
+            </div>
+          </div>
+
+          <!-- Customers -->
+          <div class="summary-section">
+            <h4 class="section-title">New Customers</h4>
+            <div class="scroll-list">
+              @for(customer of selectedDaySummary()!.newCustomers; track customer._id) {
+              <div class="list-card">
+                <span class="avatar">{{ customer.fullname.charAt(0) }}</span>
+                <div>
+                  <p class="item-title">{{ customer.fullname }}</p>
+                  <p class="item-subtitle">{{ customer.mobileNumber }}</p>
+                </div>
+              </div>
+              }
+              @empty {
+              <p class="placeholder-text">No new customers today.</p>
+              }
+            </div>
+          </div>
+
+          <!-- Products -->
+          <div class="summary-section">
+            <h4 class="section-title">New Products</h4>
+            <div class="scroll-list">
+              @for(product of selectedDaySummary()!.newProducts; track product._id) {
+              <div class="list-card">
+                <span class="avatar-icon">
+                  <svg class="icon-sm" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                      d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
+                  </svg>
+                </span>
+                <div>
+                  <p class="item-title">{{ product.title }}</p>
+                  <p class="item-subtitle">Stock: {{ product.stock }}</p>
+                </div>
+              </div>
+              }
+              @empty {
+              <p class="placeholder-text">No new products today.</p>
+              }
+            </div>
+          </div>
+          } @else {
+          <div class="placeholder-state">
+            <svg class="placeholder-icon" fill="none" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 
+            2.25 0 012.25-2.25h13.5A2.25 2.25 0 
+            0121 7.5v11.25m-18 0A2.25 2.25 0 
+            005.25 21h13.5A2.25 2.25 0 0021 
+            18.75m-18 0h18" />
+            </svg>
+            <h3 class="placeholder-title">Select a day</h3>
+            <p class="placeholder-text">Click a colored day to see activity summary.</p>
+          </div>
+          }
+        </div>
+      </div>
+    </p-dialog>
+
+    <p-dialog [(visible)]="showNotesDialog" [modal]="true" [draggable]="false" [resizable]="false" [closable]="true"
+       [style]="{'min-width': '95vw','max-width': '1200px','min-height': '80vh','max-height': '90vh','border-radius': '20px'}">
+      <ng-template pTemplate="header">
+        <div class="dialog-header">
+          <span class="dialog-title">{{ calanderDay | date:'fullDate' }}</span>
+        </div>
+      </ng-template>
+      <app-notes-manager [date]="calanderDay"></app-notes-manager>
+    </p-dialog>

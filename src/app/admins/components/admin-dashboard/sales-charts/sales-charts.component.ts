@@ -2,7 +2,6 @@ import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { NgxChartsModule, Color, ScaleType, TooltipModule } from '@swimlane/ngx-charts';
 import { CommonModule } from '@angular/common';
 
-// Define a unified interface for the incoming data
 export interface SalesData {
   yearlySales: { year: number; month: number; totalRevenue: number; salesCount: number; }[];
   weeklySales: { year: number; week: number; dailySales: { date: string; totalRevenue: number; salesCount: number }[]; }[];
@@ -11,14 +10,13 @@ export interface SalesData {
 @Component({
   selector: 'app-sales-charts',
   standalone: true,
-  imports: [CommonModule, NgxChartsModule,TooltipModule],
+  imports: [CommonModule, NgxChartsModule, TooltipModule],
   templateUrl: './sales-charts.component.html',
   styleUrls: ['./sales-charts.component.css']
 })
 export class SalesChartsComponent implements OnChanges {
-  // The 'loading' input has been removed
   @Input() data: SalesData | null = null;
-  @Input() loading: boolean = false;
+
   yearlySalesData: any[] = [];
   weeklySalesData: any[] = [];
   chartColorScheme!: Color;
@@ -54,13 +52,15 @@ export class SalesChartsComponent implements OnChanges {
 
     this.yearlySalesData = this.data.yearlySales.map(sale => ({
       name: this.getMonthName(sale.month),
-      value: sale.totalRevenue
+      value: sale.totalRevenue,
+      extra: { salesCount: sale.salesCount }
     }));
 
     const weeklyRevenue = this.data.weeklySales
       .map(week => ({
         name: `Week ${week.week}`,
-        value: week.dailySales.reduce((sum, day) => sum + day.totalRevenue, 0)
+        value: week.dailySales.reduce((sum, day) => sum + day.totalRevenue, 0),
+        extra: { salesCount: week.dailySales.reduce((sum, day) => sum + day.salesCount, 0) }
       }))
       .filter(week => week.value > 0);
 

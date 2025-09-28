@@ -64,8 +64,7 @@
 
   <!-- Charts & Tables (full width stacked) -->
   <div class="grid grid-cols-1 gap-4 md:gap-6 mb-6">
-    <app-sales-charts [title]="'Sales Charts'" [data]="(salesCharts$ | async)?.data">
-    </app-sales-charts>
+
 
     <app-sales-trends [title]="'Sales Trends'"
       [data]="[(salesTrends$ | async)?.data, (monthlySales$ | async)?.data, (yearlySales$ | async)?.data]">
@@ -74,7 +73,9 @@
 
     <app-yearly-sales [title]="'Yearly Sales'" [data]="(yearlySales$ | async)?.data">
     </app-yearly-sales>
-
+    
+    <app-sales-charts [title]="'Sales Charts'" [data]="(salesCharts$ | async)?.data">
+    </app-sales-charts>
 
   </div>
 

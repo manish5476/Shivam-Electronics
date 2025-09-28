@@ -1,7 +1,6 @@
-/* payment-analytics.component.css */
-
 .payment-analytics-page {
   padding: var(--spacing-2xl);
+  background: var(--theme-bg-primary);
 }
 
 /* Header */
@@ -10,20 +9,20 @@
 }
 .page-title {
   font-family: var(--font-heading);
-  font-size: var(--font-size-4xl);
+  font-size: var(--font-size-1xl);
+  font-weight: 700;
   color: var(--theme-text-primary);
 }
 .page-subtitle {
-  font-family: var(--font-body);
   font-size: var(--font-size-lg);
   color: var(--theme-text-secondary);
   margin-top: var(--spacing-xs);
 }
 
-/* KPI Cards */
+/* KPI Grid */
 .kpi-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
   gap: var(--spacing-lg);
   margin-bottom: var(--spacing-2xl);
 }
@@ -32,18 +31,24 @@
   align-items: center;
   gap: var(--spacing-lg);
   background: var(--theme-bg-secondary);
-  padding: var(--spacing-lg);
-  border-radius: var(--ui-border-radius-lg);
+  padding: var(--spacing-lg) var(--spacing-xl);
+  border-radius: var(--ui-border-radius-xl);
   border: 1px solid var(--theme-border-primary);
+  box-shadow: var(--shadow-md);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.summary-kpi-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-lg);
 }
 .kpi-icon-wrapper {
-  width: 50px;
-  height: 50px;
-  border-radius: var(--ui-border-radius);
+  width: 56px;
+  height: 56px;
+  border-radius: var(--ui-border-radius-lg);
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.75rem;
+  font-size: 2rem;
   flex-shrink: 0;
 }
 .kpi-content {
@@ -51,15 +56,13 @@
   flex-direction: column;
 }
 .kpi-value {
-  font-family: var(--font-primary);
-  font-size: var(--font-size-3xl);
+  font-size: var(--font-size-1xl);
   font-weight: 700;
   color: var(--theme-text-primary);
 }
 .kpi-label {
-  font-size: var(--font-size-base);
-  color: var(--theme-text-label);
-  font-weight: 500;
+  font-size: var(--font-size-sm);
+  color: var(--theme-text-secondary);
 }
 
 /* Main Content Grid */
@@ -77,42 +80,34 @@
 .se-card {
   background: var(--theme-bg-secondary);
   border: 1px solid var(--theme-border-primary);
-  border-radius: var(--ui-border-radius-lg);
+  border-radius: var(--ui-border-radius-xl);
   padding: var(--spacing-xl);
-  height: 100%;
-}
-.center-content {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
+  box-shadow: var(--shadow-sm);
 }
 .card-header {
-  font-family: var(--font-heading);
   font-size: var(--font-size-xl);
-  color: var(--theme-text-primary);
-  margin-bottom: var(--spacing-lg);
   font-weight: 600;
-  width: 100%;
-  text-align: left;
+  color: var(--theme-text-primary);
+  margin-bottom: var(--spacing-md);
 }
-.center-content .card-header {
-    text-align: center;
+.center-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 /* Chart Containers */
 .chart-container {
   width: 100%;
-  flex-grow: 1;
 }
 .large-chart {
-    height: 500px;
+  height: 420px;
 }
 .small-chart {
-    height: 250px;
+  height: 260px;
 }
 .gauge-chart {
-    height: 200px;
+  height: 220px;
 }
 .insight-sidebar {
   display: flex;
@@ -120,27 +115,85 @@
   gap: var(--spacing-xl);
 }
 
-
-/* NGX Charts Overrides */
+/* NGX Charts Styling */
 :host ::ng-deep .ngx-charts text {
-    fill: var(--theme-text-secondary) !important;
+  fill: var(--theme-text-secondary) !important;
 }
-
-:host ::ng-deep .chart-container .ngx-charts-outer-text {
-    fill: var(--theme-text-primary) !important;
-    font-size: var(--font-size-sm) !important;
-    font-weight: 600;
-}
-
 :host ::ng-deep .ngx-charts .gauge-text {
-    fill: var(--theme-text-primary) !important;
-    font-size: 2.5rem !important;
-    font-weight: 700;
+  fill: var(--theme-text-primary) !important;
+  font-size: 2.25rem !important;
+  font-weight: 700;
 }
 :host ::ng-deep .ngx-charts .gauge-sub-text {
-    fill: var(--theme-text-secondary) !important;
+  fill: var(--theme-text-secondary) !important;
 }
 
-:host ::ng-deep .advanced-pie-legend {
-    display: none !important; /* Hide legend if not needed */
+.payment-analytics-page {
+  padding: var(--spacing-xl);
+  background: var(--theme-bg-primary);
+  max-width:100%;   /* prevent content from being too wide on large monitors */
+  margin: 0 auto;      /* center container */
+  box-sizing: border-box;
 }
+
+/* Header */
+.page-header {
+  margin-bottom: var(--spacing-lg);
+}
+.page-title {
+  font-size: var(--font-size-xl);
+}
+.page-subtitle {
+  font-size: var(--font-size-md);
+}
+
+/* KPI Grid - slightly smaller cards */
+.kpi-grid {
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: var(--spacing-md);
+  margin-bottom: var(--spacing-xl);
+}
+.summary-kpi-card {
+  padding: var(--spacing-md) var(--spacing-lg);
+  gap: var(--spacing-md);
+}
+.kpi-icon-wrapper {
+  width: 48px;
+  height: 48px;
+  font-size: 1.5rem;
+}
+.kpi-value {
+  font-size: var(--font-size-lg);
+}
+.kpi-label {
+  font-size: var(--font-size-xs);
+}
+
+/* Main Content Grid */
+.main-content-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: var(--spacing-lg);
+}
+@media (max-width: 1024px) {
+  .main-content-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Card */
+.se-card {
+  padding: var(--spacing-lg);
+}
+
+/* Chart Containers - slightly smaller */
+.large-chart {
+  height: 300px;
+}
+.small-chart {
+  height: 180px;
+}
+.gauge-chart {
+  height: 160px;
+}
+

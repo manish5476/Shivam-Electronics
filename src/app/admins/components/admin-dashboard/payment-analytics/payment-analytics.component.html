@@ -1,31 +1,39 @@
 <div *ngIf="data; else noDataOrLoading" class="payment-analytics-page">
 
+  <!-- Header -->
   <header class="page-header">
     <div>
-      <h1 class="page-title">Payment & Collection Analytics</h1>
-      <p class="page-subtitle">A complete overview of your financial health and payment flows.</p>
+      <h5 class="page-title">💰 Payment & Collection Analytics</h5>
+      <p class="page-subtitle">Track collections, billing, and payment performance with real-time insights.</p>
     </div>
   </header>
 
+  <!-- KPI Section -->
   <div class="kpi-grid">
     <div class="summary-kpi-card">
       <div class="kpi-icon-wrapper bg-[var(--theme-success-light)]">
         <i class="pi pi-check-circle text-[var(--theme-success-primary)]"></i>
       </div>
       <div class="kpi-content">
-        <span class="kpi-value">{{ data.financialHealth.totalCollected | currency:'INR':'symbol':'1.0-0' }}</span>
+        <span class="kpi-value">
+          {{ data.financialHealth.totalCollected | currency:'INR':'symbol':'1.0-0' }}
+        </span>
         <span class="kpi-label">Total Collected</span>
       </div>
     </div>
+
     <div class="summary-kpi-card">
       <div class="kpi-icon-wrapper bg-[var(--theme-info-light)]">
         <i class="pi pi-file-import text-[var(--theme-info-primary)]"></i>
       </div>
       <div class="kpi-content">
-        <span class="kpi-value">{{ data.financialHealth.totalBilled | currency:'INR':'symbol':'1.0-0' }}</span>
+        <span class="kpi-value">
+          {{ data.financialHealth.totalBilled | currency:'INR':'symbol':'1.0-0' }}
+        </span>
         <span class="kpi-label">Total Billed</span>
       </div>
     </div>
+
     <div class="summary-kpi-card">
       <div class="kpi-icon-wrapper bg-[var(--theme-error-light)]">
         <i class="pi pi-times-circle text-[var(--theme-error-primary)]"></i>
@@ -37,9 +45,11 @@
     </div>
   </div>
 
+  <!-- Main Content -->
   <div class="main-content-grid">
+    <!-- Collection Trends -->
     <div class="se-card">
-      <h3 class="card-header">Collection Trends</h3>
+      <h3 class="card-header">📈 Collection Trends</h3>
       <div class="chart-container large-chart">
         <ngx-charts-area-chart
             [results]="collectionTrendData"
@@ -56,9 +66,11 @@
       </div>
     </div>
 
+    <!-- Sidebar -->
     <div class="insight-sidebar">
+      <!-- Payment Methods -->
       <div class="se-card">
-        <h3 class="card-header">Payment Methods</h3>
+        <h3 class="card-header">💳 Payment Methods</h3>
         <div class="chart-container small-chart">
           <ngx-charts-pie-chart
             [results]="paymentMethodData"
@@ -70,8 +82,10 @@
           </ngx-charts-pie-chart>
         </div>
       </div>
+
+      <!-- Collection Rate -->
       <div class="se-card center-content">
-        <h3 class="card-header">Collection Rate</h3>
+        <h3 class="card-header">⚡ Collection Rate</h3>
         <div class="chart-container gauge-chart">
           <ngx-charts-gauge
             [results]="collectionRateData"
@@ -89,6 +103,7 @@
   </div>
 </div>
 
+<!-- Fallback -->
 <ng-template #noDataOrLoading>
   <div class="flex justify-center items-center h-screen">
     <p class="text-xl" [style.color]="'var(--theme-text-secondary)'">

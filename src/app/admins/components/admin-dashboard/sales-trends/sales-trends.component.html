@@ -1,65 +1,12 @@
 <div *ngIf="data; else noDataOrLoading" class="sales-trends-widget">
 
+  <!-- Header -->
   <header class="widget-header">
     <h1 class="widget-title">Comprehensive Sales Trends</h1>
     <p class="widget-subtitle">Yearly, monthly, and daily performance analysis.</p>
   </header>
 
-  <div class="kpi-summary-grid">
-    <div class="summary-card">
-      <span class="summary-label">Total Yearly Revenue</span>
-      <span class="summary-value">{{ totalYearlyRevenue | currency:'INR':'symbol':'1.0-0' }}</span>
-    </div>
-    <div class="summary-card">
-      <span class="summary-label">Best Performing Month</span>
-      <span *ngIf="bestPerformingMonth" class="summary-value highlight">{{ bestPerformingMonth.name }}</span>
-      <span *ngIf="bestPerformingMonth" class="summary-sub-value">{{ bestPerformingMonth.value |
-        currency:'INR':'symbol':'1.0-0' }}</span>
-    </div>
-    <div class="summary-card">
-      <span class="summary-label">Peak Revenue Day</span>
-      <span *ngIf="peakRevenueDay" class="summary-value highlight">{{ peakRevenueDay.value |
-        currency:'INR':'symbol':'1.0-0' }}</span>
-      <span *ngIf="peakRevenueDay" class="summary-sub-value">{{ peakRevenueDay.date | date: 'mediumDate' }}</span>
-    </div>
-  </div>
-
-  <hr class="widget-divider">
-
-  <div class="preview-chart-container" (click)="openDialog()" title="Click to expand">
-    <ngx-charts-area-chart [results]="previewChartData" [scheme]="chartColorScheme" [gradient]="true" [xAxis]="false"
-      [yAxis]="false" [legend]="false" [showGridLines]="false">
-    </ngx-charts-area-chart>
-  </div>
-</div>
-
-<ng-template #noDataOrLoading>
-  <div class="flex justify-center items-center h-96 sales-trends-widget">
-    <p class="text-xl" [style.color]="'var(--theme-text-secondary)'">
-      Sales trend data is currently unavailable.
-    </p>
-  </div>
-</ng-template>
-
-<p-dialog header="Detailed Sales & Revenue Analysis" [(visible)]="isDialogVisible" [modal]="true"
-  [style]="{ width: '90vw', height: '85vh', 'max-width': '1400px' }" [draggable]="false" [resizable]="false"
-  styleClass="se-dialog">
-  <div class="dialog-chart-container">
-    <ngx-charts-bar-vertical [results]="dialogChartData" [scheme]="chartColorScheme" [gradient]="true" [xAxis]="true"
-      [yAxis]="true" [legend]="true" [showXAxisLabel]="true" xAxisLabel="Months" [showYAxisLabel]="true"
-      yAxisLabel="Revenue">
-    </ngx-charts-bar-vertical>
-  </div>
-</p-dialog>
-
-
-<!-- <div *ngIf="data; else noDataOrLoading" class="sales-trends-widget">
-
-  <header class="widget-header">
-    <h1 class="widget-title">Comprehensive Sales Trends</h1>
-    <p class="widget-subtitle">Yearly, monthly, and daily performance analysis.</p>
-  </header>
-
+  <!-- KPI Summary Row -->
   <div class="kpi-summary-grid">
     <div class="summary-card">
       <span class="summary-label">Total Yearly Revenue</span>
@@ -73,122 +20,56 @@
     <div class="summary-card">
       <span class="summary-label">Peak Revenue Day</span>
       <span *ngIf="peakRevenueDay" class="summary-value highlight">{{ peakRevenueDay.value | currency:'INR':'symbol':'1.0-0' }}</span>
-      <span *ngIf="peakRevenueDay" class="summary-sub-value">{{ peakRevenueDay.date | date: 'mediumDate' }}</span>
+      <span *ngIf="peakRevenueDay" class="summary-sub-value">{{ peakRevenueDay.date | date:'mediumDate' }}</span>
     </div>
   </div>
 
   <hr class="widget-divider">
 
-  <div class="view-chart-action">
-    <button pButton 
-            type="button" 
-            label="View Detailed Chart" 
-            icon="pi pi-chart-line"
-            (click)="openDialog()">
-    </button>
-  </div>
-</div>
-
-<ng-template #noDataOrLoading>
-  <div class="flex justify-center items-center h-96 sales-trends-widget">
-    <p class="text-xl" [style.color]="'var(--theme-text-secondary)'">
-      Sales trend data is currently unavailable.
-    </p>
-  </div>
-</ng-template>
-
-<p-dialog 
-    header="Detailed Sales & Revenue Analysis" 
-    [(visible)]="isDialogVisible" 
-    [modal]="true"
-    [style]="{ width: '90vw', height: '85vh', 'max-width': '1400px' }" 
-    [draggable]="false" 
-    [resizable]="false"
-    styleClass="se-dialog">
-    <div class="dialog-chart-container">
-        <ngx-charts-bar-vertical
-            [results]="dialogChartData"
-            [scheme]="chartColorScheme"
-            [gradient]="true"
-            [xAxis]="true"
-            [yAxis]="true"
-            [legend]="true"
-            [showXAxisLabel]="true"
-            xAxisLabel="Months"
-            [showYAxisLabel]="true"
-            yAxisLabel="Revenue">
-        </ngx-charts-bar-vertical>
-    </div>
-</p-dialog> -->
-<!-- <div *ngIf="data; else noDataOrLoading" class="sales-trends-widget">
-
-  <header class="widget-header">
-    <h1 class="widget-title">Comprehensive Sales Trends</h1>
-    <p class="widget-subtitle">Yearly, monthly, and daily performance analysis.</p>
-  </header>
-
-  <div class="kpi-summary-grid">
-    <div class="summary-card">
-      <span class="summary-label">Total Yearly Revenue</span>
-      <span class="summary-value">{{ totalYearlyRevenue | currency:'INR':'symbol':'1.0-0' }}</span>
-    </div>
-    <div class="summary-card">
-      <span class="summary-label">Best Performing Month</span>
-      <span *ngIf="bestPerformingMonth" class="summary-value highlight">{{ bestPerformingMonth.name }}</span>
-      <span *ngIf="bestPerformingMonth" class="summary-sub-value">{{ bestPerformingMonth.value |
-        currency:'INR':'symbol':'1.0-0' }}</span>
-    </div>
-    <div class="summary-card">
-      <span class="summary-label">Peak Revenue Day</span>
-      <span *ngIf="peakRevenueDay" class="summary-value highlight">{{ peakRevenueDay.value |
-        currency:'INR':'symbol':'1.0-0' }}</span>
-      <span *ngIf="peakRevenueDay" class="summary-sub-value">{{ peakRevenueDay.date | date: 'mediumDate' }}</span>
-    </div>
-  </div>
-
-  <hr class="widget-divider">
-
+  <!-- Preview Chart -->
   <div class="preview-chart-container" (click)="openDialog()" title="Click to expand">
-    <ngx-charts-area-chart [results]="previewChartData" [scheme]="chartColorScheme" [gradient]="true" [xAxis]="false"
-      [yAxis]="false" [legend]="false" [showGridLines]="false">
-    </ngx-charts-area-chart>
+  <ngx-charts-bar-vertical
+      [results]="dialogChartData"
+      [scheme]="chartColorScheme"
+      [gradient]="true"
+      [xAxis]="true"
+      [yAxis]="true"
+      [legend]="true"
+      [showXAxisLabel]="true"
+      xAxisLabel="Months"
+      [showYAxisLabel]="true"
+      [tooltipDisabled]="false"
+      yAxisLabel="Revenue">
+    </ngx-charts-bar-vertical>
   </div>
+
 </div>
 
+<!-- No Data Template -->
 <ng-template #noDataOrLoading>
-  <div class="flex justify-center items-center h-96 sales-trends-widget">
-    <p class="text-xl" [style.color]="'var(--theme-text-secondary)'">
+  <div class="flex justify-center items-center h-64 sales-trends-widget">
+    <p class="text-base text-[var(--theme-text-secondary)]">
       Sales trend data is currently unavailable.
     </p>
   </div>
 </ng-template>
 
+<!-- Dialog -->
 <p-dialog header="Detailed Sales & Revenue Analysis" [(visible)]="isDialogVisible" [modal]="true"
-  [style]="{ width: '80vw', height: '80vh', 'max-width': '1200px' }" [draggable]="false" [resizable]="false"
+  [style]="{ width: '90vw', height: '85vh', 'max-width': '1400px' }" [draggable]="false" [resizable]="false"
   styleClass="se-dialog">
   <div class="dialog-chart-container">
-    <ngx-charts-bar-vertical [results]="dialogChartData" [scheme]="chartColorScheme" [gradient]="true" [xAxis]="true"
-      [yAxis]="true" [legend]="true" [showXAxisLabel]="true" xAxisLabel="Months" [showYAxisLabel]="true"
+    <ngx-charts-bar-vertical
+      [results]="dialogChartData"
+      [scheme]="chartColorScheme"
+      [gradient]="true"
+      [xAxis]="true"
+      [yAxis]="true"
+      [legend]="true"
+      [showXAxisLabel]="true"
+      xAxisLabel="Months"
+      [showYAxisLabel]="true"
       yAxisLabel="Revenue">
     </ngx-charts-bar-vertical>
   </div>
 </p-dialog>
- <div *ngIf="data; else noDataOrLoading" class="sales-trends-widget">
-
-  <header class="widget-header">
-    <h1 class="widget-title">Sales & Revenue Trends</h1>
-    <p class="widget-subtitle">Analysis of monthly performance with daily fluctuations.</p>
-  </header>
-
-  <div class="chart-container">
-    <p-chart type="bar" [data]="chartData" [options]="chartOptions"></p-chart>
-  </div>
-</div>
-
-<ng-template #noDataOrLoading>
-  <div class="flex justify-center items-center h-96 sales-trends-widget">
-    <p class="text-xl" [style.color]="'var(--theme-text-secondary)'">
-      Sales trend data is currently unavailable.
-    </p>
-  </div>
-</ng-template> --> -->

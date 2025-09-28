@@ -1,0 +1,72 @@
+.login-summary-dialog {
+  width: 100%;
+  padding: var(--spacing-4xl);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-lg);
+}
+
+.glass-card {
+  width: 100vh;
+}
+
+.dialog-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: var(--ui-border-width) solid var(--theme-border-primary);
+  padding-bottom: var(--spacing-sm);
+}
+
+.dialog-header h2 {
+  font-family: var(--font-heading);
+  font-size: var(--font-size-3xl);
+  color: var(--glass-heading-color);
+  margin: 0;
+}
+
+.close-btn {
+  color: var(--theme-text-secondary);
+  font-weight: bold;
+}
+
+.kpi-cards {
+  display: flex;
+  gap: var(--spacing-lg);
+  flex-wrap: wrap;
+  margin-bottom: var(--spacing-lg);
+}
+
+.kpi-card {
+  flex: 1 1 200px;
+  background: var(--theme-card-gradient);
+  padding: var(--spacing-lg);
+  border-radius: var(--ui-border-radius-lg);
+  box-shadow: var(--ui-shadow-md);
+  text-align: center;
+  transition: var(--ui-transition);
+}
+
+.kpi-card h3 {
+  font-size: var(--font-size-lg);
+  margin-bottom: var(--spacing-sm);
+  color: var(--theme-text-secondary);
+}
+
+.kpi-card p {
+  font-size: var(--font-size-2xl);
+  font-weight: 700;
+  color: var(--theme-text-primary);
+}
+
+.notes-table h4 {
+  font-family: var(--font-heading);
+  font-size: var(--font-size-xl);
+  margin-bottom: var(--spacing-sm);
+}
+
+.dialog-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--spacing-sm);
+}

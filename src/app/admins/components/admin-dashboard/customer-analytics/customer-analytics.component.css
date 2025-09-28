@@ -144,3 +144,56 @@
     font-size: var(--font-size-sm) !important;
     font-weight: 600;
 }
+
+/* Page */
+.customer-analytics-page {
+  padding: var(--spacing-lg);
+}
+
+/* Header */
+.page-title { font-size: 1.5rem; }   /* smaller */
+.page-subtitle { font-size: 0.875rem; margin-top: 0.25rem; }
+
+/* KPI Cards */
+.kpi-grid.compact {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+.summary-kpi-card.compact {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem 1rem;
+  border-radius: var(--ui-border-radius);
+  border: 1px solid var(--theme-border-primary);
+  background: var(--theme-bg-secondary);
+  transition: 0.2s;
+}
+.summary-kpi-card.compact:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.08); }
+
+.kpi-icon-wrapper { width: 40px; height: 40px; font-size: 1.25rem; }
+.kpi-value { font-size: 1.25rem; font-weight: 700; }
+.kpi-label { font-size: 0.75rem; font-weight: 500; color: var(--theme-text-label); }
+
+/* Main Grid */
+.main-content-grid.compact {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 1rem;
+}
+@media (max-width: 1024px) { .main-content-grid.compact { grid-template-columns: 1fr; } }
+
+/* Cards */
+.se-card { padding: 1rem; border-radius: var(--ui-border-radius); background: var(--theme-bg-secondary); }
+.card-header { font-size: 1rem; font-weight: 600; margin-bottom: 0.75rem; }
+
+/* Table */
+:host ::ng-deep .se-table.compact .p-datatable-thead > tr > th { font-size: 0.75rem; }
+:host ::ng-deep .se-table.compact .p-datatable-tbody > tr { font-size: 0.75rem; }
+.rank-badge { width: 24px; height: 24px; font-size: 0.75rem; }
+
+/* Chart Sidebar */
+.chart-container { height: 180px; }
+:host ::ng-deep .chart-container .ngx-charts-outer-text { font-size: 0.75rem !important; font-weight: 600; }

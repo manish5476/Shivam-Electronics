@@ -255,7 +255,7 @@ export class AgGridReferenceComponent {
 //     },
 //      // Number Input Column - Currency
 //      {
-//         headerName: 'Price (INR)',
+//         headerName: 'Price (USD)',
 //         field: 'price',
 //         cellRenderer: 'primeNgInputCellRenderer',
 //         cellRendererParams: {
@@ -263,7 +263,7 @@ export class AgGridReferenceComponent {
 //             inputConfig: {
 //                 placeholder: 'Enter price',
 //                 mode: 'currency', // Currency mode
-//                 currency: 'INR', // Specify currency (optional, default is locale)
+//                 currency: 'USD', // Specify currency (optional, default is locale)
 //                 minFractionDigits: 2,
 //                 maxFractionDigits: 2,
 //                 prefix: '$' // Add a prefix

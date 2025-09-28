@@ -379,7 +379,7 @@ export class DashboardChartComponentComponent implements OnInit, OnDestroy {
 //             color: textColorSecondary,
 //             font: { size: 12 },
 //             callback: function (value: any) {
-//               return value.toLocaleString('en-US', { style: 'currency', currency: 'INR', maximumFractionDigits: 0 });
+//               return value.toLocaleString('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 });
 //             }
 //           },
 //           grid: { color: surfaceBorder }
@@ -440,7 +440,7 @@ export class DashboardChartComponentComponent implements OnInit, OnDestroy {
 //             color: textColorSecondary,
 //             font: { size: 12 },
 //             callback: function (value: any) {
-//               return value.toLocaleString('en-US', { style: 'currency', currency: 'INR', maximumFractionDigits: 0 });
+//               return value.toLocaleString('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 });
 //             }
 //           },
 //           grid: { color: surfaceBorder }
