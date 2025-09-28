@@ -1,0 +1,29 @@
+/*
+ Use ::ng-deep to penetrate the component's scope and style the tooltip,
+ as it's rendered in a different part of the DOM.
+*/
+:host ::ng-deep .ngx-charts-tooltip-content {
+  background: rgba(20, 20, 40, 0.7) !important; /* Dark, semi-transparent background */
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+  color: #fff !important;
+  border: 1px solid rgba(255, 255, 255, 0.2) !important;
+  border-radius: 8px !important;
+  padding: 0 !important; /* Remove default padding to use our own */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4) !important;
+}
+
+/* Styles for the content inside our custom template */
+.custom-tooltip {
+  padding: 0.5rem 1rem; /* 8px 16px */
+}
+
+.tooltip-header {
+  font-size: 0.875rem; /* 14px */
+  color: #c7d2fe; /* Light indigo for the header */
+  margin-bottom: 0.25rem; /* 4px */
+}
+
+.tooltip-body {
+  font-size: 1rem; /* 16px */
+}

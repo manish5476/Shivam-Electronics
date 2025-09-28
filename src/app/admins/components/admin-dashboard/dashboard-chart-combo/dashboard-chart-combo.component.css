@@ -1,0 +1,88 @@
+/* dashboard-chart-combo.component.css */
+:host {
+  display: block;
+  padding: var(--spacing-xl);
+}
+
+.dynamic-chart-dashboard {
+  width: 100%;
+}
+
+/* Chart Grid Layout */
+.chart-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  gap: var(--spacing-xl);
+}
+
+/* Chart Card Design */
+.chart-card {
+  display: flex;
+  flex-direction: column;
+  background: var(--theme-bg-secondary);
+  border: 1px solid var(--theme-border-primary);
+  border-radius: var(--ui-border-radius-xl);
+  box-shadow: var(--ui-shadow-sm);
+  transition: var(--ui-transition);
+  height: 400px;
+}
+.chart-card:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--ui-shadow-md);
+  border-color: var(--theme-border-secondary);
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--spacing-md) var(--spacing-lg);
+  border-bottom: 1px solid var(--theme-border-primary);
+  flex-shrink: 0;
+}
+.card-title {
+  font-family: var(--font-heading);
+  font-size: var(--font-size-lg);
+  font-weight: 600;
+  color: var(--theme-text-primary);
+}
+
+.card-body {
+  flex-grow: 1;
+  padding: var(--spacing-lg);
+  position: relative;
+  min-height: 0;
+}
+.ngx-chart-wrapper, .error-placeholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.error-placeholder {
+  flex-direction: column;
+  gap: var(--spacing-md);
+  color: var(--theme-text-muted);
+}
+.error-placeholder .pi {
+  font-size: 2rem;
+}
+
+
+/* Dialog Styling */
+.dialog-chart-container {
+  width: 100%;
+  height: 100%;
+}
+:host ::ng-deep .se-dialog .p-dialog-header {
+  background: var(--theme-bg-secondary) !important;
+  color: var(--theme-text-primary) !important;
+  border-bottom: 1px solid var(--theme-border-primary);
+}
+:host ::ng-deep .se-dialog .p-dialog-content {
+  background: var(--theme-bg-primary) !important;
+  padding: var(--spacing-lg);
+  height: calc(100% - 5rem);
+  overflow: hidden;
+}

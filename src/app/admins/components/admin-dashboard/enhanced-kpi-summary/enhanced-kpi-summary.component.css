@@ -1,126 +1,124 @@
-/* Global Styles */
-:host {
-  display: block;
-  font-family: var(--font-body);
-  font-size: var(--font-size-base);
-  color: var(--theme-text-primary);
-  height: 100%;
-  margin: 0;
-  background: linear-gradient(to bottom, var(--theme-body-gradient-start), var(--theme-body-gradient-end));
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  transition: var(--ui-transition);
-}
+/* enhanced-kpi-summary.component.css */
 
-*,
-*::before,
-*::after {
-  box-sizing: border-box;
-  transition: var(--ui-transition);
-}
-
-/* GridStack item (outer wrapper) */
-.grid-stack-item-content {
-  background: rgba(255, 255, 255, 0.05);
-  border-radius: 2rem;
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-  transition: var(--ui-transition);
-}
-
-.grid-stack-item-content:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 14px 40px rgba(0, 0, 0, 0.25);
-}
-
-/* p-panel wrapper */
-:host ::ng-deep .p-panel {
-  border-radius: 2rem;
-  border: none;
-  backdrop-filter: blur(20px);
-  background: rgba(255, 255, 255, 0.05);
-  box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-  transition: var(--ui-transition);
-}
-
-/* Panel Header */
-:host ::ng-deep .p-panel-header {
-  font-family: var(--font-heading);
-  font-size: var(--font-size-lg);
-  font-weight: 600;
-  padding: var(--spacing-md) var(--spacing-lg);
-  border-bottom: none;
-  color: var(--theme-text-primary);
-}
-
-/* KPI Cards */
-:host ::ng-deep .p-card {
-  background: rgba(255, 255, 255, 0.1);
-  border-radius: 2rem;
-  overflow: hidden;
-  box-shadow: 0 8px 25px rgba(0,0,0,0.2);
-  transition: var(--ui-transition), transform 0.3s, box-shadow 0.3s;
-}
-
-:host ::ng-deep .p-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 12px 35px rgba(0,0,0,0.25);
-}
-
-/* KPI Card Headers */
-:host ::ng-deep .p-card .bg-blue-50,
-:host ::ng-deep .p-card .bg-green-50,
-:host ::ng-deep .p-card .bg-purple-50,
-:host ::ng-deep .p-card .bg-yellow-50 {
-  background: var(--theme-accent-primary-light) !important;
-  border-radius: var(--ui-border-radius);
+.se-widget-container {
+  background: var(--theme-bg-secondary);
+  border: var(--ui-border-width) solid var(--theme-border-primary);
+  border-radius: var(--ui-border-radius-xl);
+  padding: var(--spacing-xl);
   box-shadow: var(--ui-shadow);
+}
+
+/* Enhanced KPI Card with Micro-chart */
+.kpi-card {
+  display: flex;
+  flex-direction: column;
+  background: var(--theme-bg-primary);
+  border: var(--ui-border-width) solid var(--theme-border-primary);
+  border-radius: var(--ui-border-radius-lg);
   padding: var(--spacing-lg);
   transition: var(--ui-transition);
 }
 
-:host ::ng-deep .p-card h3 {
-  font-size: var(--font-size-sm);
-  font-weight: 600;
-  color: var(--theme-text-label);
+.kpi-card:hover {
+  transform: var(--ui-translate-hover);
+  box-shadow: var(--ui-shadow-md);
+  border-color: var(--theme-border-secondary);
 }
 
-:host ::ng-deep .p-card p {
+.kpi-header {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  margin-bottom: var(--spacing-sm);
+}
+
+.kpi-icon {
   font-size: var(--font-size-xl);
+}
+
+.kpi-title {
+  font-family: var(--font-body);
+  font-size: var(--font-size-base);
+  color: var(--theme-text-label);
+  font-weight: 500;
+}
+
+.kpi-value {
+  font-family: var(--font-primary);
+  font-size: var(--font-size-3xl);
+  color: var(--theme-text-primary);
   font-weight: 700;
+  line-height: var(--line-height-tight);
 }
 
-/* Footer tag styling */
-:host ::ng-deep .p-card .p-tag {
-  font-size: var(--font-size-sm);
-  padding: 0.25rem 0.5rem;
-  border-radius: 0.75rem;
+.kpi-chart {
+  height: 60px;
+  margin: var(--spacing-md) 0;
+}
+
+.kpi-footer {
+  margin-top: auto;
+}
+
+/* TabView Styling */
+:host ::ng-deep .se-tabview .p-tabview-nav {
+  background: transparent;
+  border: none;
+  border-bottom: var(--ui-border-width-thick) solid var(--theme-border-primary);
+}
+
+:host ::ng-deep .se-tabview .p-tabview-nav-link {
+  background: transparent;
+  border: none;
+  color: var(--theme-text-secondary);
+  font-family: var(--font-primary);
   font-weight: 600;
+  transition: var(--ui-transition);
 }
 
-/* Divider Styling */
-:host ::ng-deep .p-divider {
-  border-color: rgba(255, 255, 255, 0.2);
+:host ::ng-deep .se-tabview .p-tabview-nav-link:not(.p-disabled):focus {
+  box-shadow: none;
 }
 
-/* ProgressBar Styling */
-:host ::ng-deep .p-progressbar .p-progressbar-value {
+:host ::ng-deep .se-tabview .p-tabview-nav li.p-highlight .p-tabview-nav-link {
+  color: var(--theme-accent-primary);
+}
+
+:host ::ng-deep .se-tabview .p-tabview-ink-bar {
   background: var(--theme-accent-primary);
-  border-radius: 0.5rem;
+  height: 3px;
 }
 
-/* Loading Skeleton */
-:host ::ng-deep .p-skeleton {
-  background: rgba(255, 255, 255, 0.05);
-  border-radius: 2rem;
-  box-shadow: inset 0 0 8px rgba(0,0,0,0.1);
+:host ::ng-deep .se-tabview .p-tabview-panels {
+  background: transparent;
+  padding: var(--spacing-lg) 0;
 }
 
-/* Dark Mode overrides */
-:host-context(body.dark-mode) .grid-stack-item-content,
-:host-context(body.dark-mode) ::ng-deep .p-panel,
-:host-context(body.dark-mode) ::ng-deep .p-card {
-  background: rgba(0, 0, 0, 0.25);
-  box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+/* Insight Card Styling (for content within tabs) */
+.insight-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: var(--spacing-lg);
+}
+
+.insight-card {
+    background: var(--theme-bg-primary);
+    padding: var(--spacing-md);
+    border-radius: var(--ui-border-radius);
+    border: 1px solid var(--theme-border-primary);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.insight-label {
+    font-size: var(--font-size-base);
+    color: var(--theme-text-label);
+    font-weight: 500;
+}
+
+.insight-value {
+    font-size: var(--font-size-lg);
+    font-weight: 600;
+    color: var(--theme-text-primary);
 }

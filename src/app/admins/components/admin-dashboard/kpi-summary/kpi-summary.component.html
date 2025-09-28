@@ -1,161 +1,106 @@
-<!-- <div class="kpi-dashboard">
+<div *ngIf="data; else noDataOrLoading" class="kpi-widget-container">
 
-  
-  <header class="dashboard-header">
-    <h1>KPI Dashboard</h1>
-    <p class="subtitle">Overview of business performance</p>
-  </header>
-]
-
-  
-  <div class="kpi-grid">
-    <div class="kpi-card">
-      <h3>Total Revenue</h3>
-      <p class="value">₹{{data.salesSummary.totalRevenue | number:'1.0-0'}}</p>
-    </div>
-    <div class="kpi-card">
-      <h3>Gross Profit</h3>
-      <p class="value">₹{{data.salesSummary.grossProfit | number:'1.0-0'}}</p>
-      <span class="sub">Margin: {{data.salesSummary.profitMargin | number:'1.1-1'}}%</span>
-    </div>
-    <div class="kpi-card">
-      <h3>Avg Order Value</h3>
-      <p class="value">₹{{data.salesSummary.averageOrderValue | number:'1.0-0'}}</p>
-    </div>
-    <div class="kpi-card">
-      <h3>Total Sales</h3>
-      <p class="value">{{data.salesSummary.totalSales}}</p>
-    </div>
-  </div>
-
-  
-  <div class="insights-grid">
-    <div class="kpi-card">
-      <h3>Customer Insights</h3>
-      <p>New Customers: <strong>{{data.customerInsights.newCustomers}}</strong></p>
-      <p>Customers with Dues: 
-        <span *ngIf="data.customerInsights.customersWithDues.length; else noDues">
-          {{data.customerInsights.customersWithDues.length}}
-        </span>
-        <ng-template #noDues>None 🎉</ng-template>
-      </p>
-    </div>
-    <div class="kpi-card">
-      <h3>Inventory Overview</h3>
-      <p>Total Inventory Value: ₹{{data.inventoryOverview.totalInventoryValue | number:'1.0-0'}}</p>
-      <p>Total Items in Stock: {{data.inventoryOverview.totalItemsInStock}}</p>
-      <p class="low-stock" *ngIf="data.inventoryOverview.lowStockCount > 0">
-        ⚠️ Low Stock Items: {{data.inventoryOverview.lowStockCount}}
-      </p>
-    </div>
-  </div>
-
-  
-  <div class="kpi-card large">
-    <h3>Financial Health</h3>
-    <p>Total Collected: ₹{{data.financialHealth.totalCollected | number:'1.0-0'}}</p>
-    <div class="progress-bar">
-      <div class="progress" [style.width.%]="(data.financialHealth.totalCollected / data.salesSummary.totalRevenue) * 100"></div>
-    </div>
-    <span class="sub">{{ (data.financialHealth.totalCollected / data.salesSummary.totalRevenue) * 100 | number:'1.0-0'}}% Collected</span>
-  </div>
-
-</div>
- -->
-<div class="kpi-dashboard">
-
-  <!-- Header -->
-  <header class="dashboard-header">
-    <h1>KPI Dashboard</h1>
-    <p class="subtitle">Overview of business performance</p>
+  <header class="widget-header">
+    <h1 class="widget-title">Business Health Overview</h1>
+    <p class="widget-subtitle">A summary of core performance indicators.</p>
   </header>
 
-  <!-- Filter Bar
-  <div class="se-filter-bar">
-    <div class="se-filter-field">
-      <label for="dateRange">Date Range</label>
-      <p-calendar id="dateRange" [(ngModel)]="dateRange" selectionMode="range"></p-calendar>
-    </div>
-    <div class="se-filter-field">
-      <label for="branch">Branch</label>
-      <p-dropdown id="branch" [options]="branches" [(ngModel)]="selectedBranch"></p-dropdown>
-    </div>
-    <div class="se-filter-actions">
-      <button pButton type="button" label="Apply Filter" class="p-button"></button>
-    </div>
-  </div> -->
-
-  <!-- KPI Cards -->
-  <div class="kpi-grid">
-    <div class="kpi-card">
-      <div class="kpi-icon revenue"><i class="pi pi-wallet"></i></div>
-      <h3>Total Revenue</h3>
-      <p class="value">₹{{data.salesSummary.totalRevenue | number:'1.0-0'}}</p>
-    </div>
-
-    <div class="kpi-card">
-      <div class="kpi-icon profit"><i class="pi pi-chart-pie"></i></div>
-      <h3>Gross Profit</h3>
-      <p class="value">₹{{data.salesSummary.grossProfit | number:'1.0-0'}}</p>
-      <span class="sub">Margin: {{data.salesSummary.profitMargin | number:'1.1-1'}}%</span>
-    </div>
-
-    <div class="kpi-card">
-      <div class="kpi-icon order"><i class="pi pi-shopping-cart"></i></div>
-      <h3>Avg Order Value</h3>
-      <p class="value">₹{{data.salesSummary.averageOrderValue | number:'1.0-0'}}</p>
-    </div>
-
-    <div class="kpi-card">
-      <div class="kpi-icon sales"><i class="pi pi-chart-line"></i></div>
-      <h3>Total Sales</h3>
-      <p class="value">{{data.salesSummary.totalSales}}</p>
-    </div>
-  </div>
-
-  <!-- Insights -->
-  <div class="insights-grid">
-    <div class="kpi-card">
-      <h3><i class="pi pi-users"></i> Customer Insights</h3>
-      <div class="insight">
-        <i class="pi pi-user-plus"></i> New Customers: <strong>{{data.customerInsights.newCustomers}}</strong>
+  <div class="kpi-metrics-grid">
+    <div class="metric-item">
+      <div class="metric-icon bg-[var(--theme-success-light)] text-[var(--theme-success-primary)]">
+        <i class="pi pi-wallet"></i>
       </div>
-      <div class="insight">
-        <i class="pi pi-exclamation-triangle"></i> 
-        Customers with Dues: 
-        <span *ngIf="data.customerInsights.customersWithDues.length; else noDues">
-          {{data.customerInsights.customersWithDues.length}}
-        </span>
-        <ng-template #noDues><span class="success">✅ None</span></ng-template>
+      <div class="metric-details">
+        <span class="metric-label">Total Revenue</span>
+        <span class="metric-value">{{ data.salesSummary.totalRevenue | currency:'INR':'symbol':'1.0-0' }}</span>
       </div>
     </div>
-
-    <div class="kpi-card">
-      <h3><i class="pi pi-box"></i> Inventory Overview</h3>
-      <div class="insight"><i class="pi pi-database"></i> Value: ₹{{data.inventoryOverview.totalInventoryValue | number:'1.0-0'}}</div>
-      <div class="insight"><i class="pi pi-tags"></i> Stock: {{data.inventoryOverview.totalItemsInStock}}</div>
-      <div class="insight low-stock" *ngIf="data.inventoryOverview.lowStockCount > 0">
-        <i class="pi pi-exclamation-circle"></i> Low Stock Items: {{data.inventoryOverview.lowStockCount}}
+    <div class="metric-item">
+      <div class="metric-icon bg-[var(--theme-accent-primary-light)] text-[var(--theme-accent-primary)]">
+        <i class="pi pi-chart-pie"></i>
+      </div>
+      <div class="metric-details">
+        <span class="metric-label">Gross Profit</span>
+        <span class="metric-value">{{ data.salesSummary.grossProfit | currency:'INR':'symbol':'1.0-0' }}</span>
+        <span class="metric-sub-value">Margin: {{ data.salesSummary.profitMargin | number:'1.1-1' }}%</span>
+      </div>
+    </div>
+    <div class="metric-item">
+      <div class="metric-icon bg-[var(--theme-info-light)] text-[var(--theme-info-primary)]">
+        <i class="pi pi-shopping-cart"></i>
+      </div>
+      <div class="metric-details">
+        <span class="metric-label">Avg. Order Value</span>
+        <span class="metric-value">{{ data.salesSummary.averageOrderValue | currency:'INR':'symbol':'1.0-0' }}</span>
+      </div>
+    </div>
+    <div class="metric-item">
+      <div class="metric-icon bg-[var(--theme-warning-light)] text-[var(--theme-warning-primary)]">
+        <i class="pi pi-chart-line"></i>
+      </div>
+      <div class="metric-details">
+        <span class="metric-label">Total Sales</span>
+        <span class="metric-value">{{ data.salesSummary.totalSales }}</span>
       </div>
     </div>
   </div>
 
-  <!-- Financial Health -->
-  <div class="kpi-card large financial">
-    <h3><i class="pi pi-credit-card"></i> Financial Health</h3>
-    <div class="circular-progress">
-      <svg>
-        <circle class="bg" cx="50%" cy="50%" r="45"></circle>
-        <circle class="progress" 
-          [attr.stroke-dasharray]="2 * Math.PI * 45" 
-          [attr.stroke-dashoffset]="(1 - (data.financialHealth.totalCollected / data.salesSummary.totalRevenue)) * 2 * Math.PI * 45"
-          cx="50%" cy="50%" r="45"></circle>
-      </svg>
-      <div class="progress-value">
-        {{ (data.financialHealth.totalCollected / data.salesSummary.totalRevenue) * 100 | number:'1.0-0'}}%
+  <hr class="widget-divider">
+
+  <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8">
+    <div class="lg:col-span-2 space-y-6">
+      <div class="insight-group">
+        <h3 class="insight-header"><i class="pi pi-users mr-3"></i>Customer Insights</h3>
+        <div class="insight-list">
+          <div class="insight-item">
+            <span class="insight-label">New Customers</span>
+            <span class="insight-value">{{ data.customerInsights.newCustomers }}</span>
+          </div>
+          <div class="insight-item">
+            <span class="insight-label">Customers with Dues</span>
+            <span class="insight-value" [class.text-[var(--theme-error-primary)]]="data.customerInsights.customersWithDues.length > 0">
+              {{ data.customerInsights.customersWithDues.length > 0 ? data.customerInsights.customersWithDues.length : 'None' }}
+            </span>
+          </div>
+        </div>
+      </div>
+      <div class="insight-group">
+        <h3 class="insight-header"><i class="pi pi-box mr-3"></i>Inventory Overview</h3>
+        <div class="insight-list">
+          <div class="insight-item">
+            <span class="insight-label">Total Inventory Value</span>
+            <span class="insight-value">{{ data.inventoryOverview.totalInventoryValue | currency:'INR':'symbol':'1.0-0' }}</span>
+          </div>
+          <div class="insight-item">
+            <span class="insight-label">Items in Stock</span>
+            <span class="insight-value">{{ data.inventoryOverview.totalItemsInStock }}</span>
+          </div>
+          <div class="insight-item" *ngIf="data.inventoryOverview.lowStockCount > 0">
+            <span class="insight-label text-[var(--theme-warning-primary)]">Low Stock Items</span>
+            <span class="insight-value text-[var(--theme-warning-primary)]">{{ data.inventoryOverview.lowStockCount }}</span>
+          </div>
+        </div>
       </div>
     </div>
-    <p>Total Collected: ₹{{data.financialHealth.totalCollected | number:'1.0-0'}}</p>
-  </div>
 
+    <div class="lg:col-span-1 flex flex-col items-center text-center p-6 rounded-2xl bg-[var(--theme-bg-primary)]">
+      <h3 class="insight-header"><i class="pi pi-credit-card mr-3"></i>Financial Health</h3>
+      <div class="progress-circle mt-4" [style.--p]="getCollectionPercentage()">
+        <div class="progress-value">{{ getCollectionPercentage() | number:'1.0-0' }}%</div>
+        <span class="progress-label">Collected</span>
+      </div>
+      <p class="mt-4 text-lg font-bold" [style.color]="'var(--theme-text-primary)'">
+        {{ data.financialHealth.totalCollected | currency:'INR':'symbol':'1.0-0' }}
+      </p>
+      <p class="text-[var(--theme-text-secondary)]">out of {{data.salesSummary.totalRevenue | currency:'INR':'symbol':'1.0-0'}}</p>
+    </div>
+  </div>
 </div>
+
+<ng-template #noDataOrLoading>
+  <div class="flex justify-center items-center h-96 kpi-widget-container">
+    <p class="text-xl" [style.color]="'var(--theme-text-secondary)'">
+      KPI data is currently unavailable.
+    </p>
+  </div>
+</ng-template>

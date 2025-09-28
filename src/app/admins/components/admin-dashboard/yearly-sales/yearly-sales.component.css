@@ -1,0 +1,97 @@
+/* yearly-sales.component.css */
+
+.yearly-sales-widget {
+  background: var(--theme-bg-secondary);
+  border: var(--ui-border-width) solid var(--theme-border-primary);
+  border-radius: var(--ui-border-radius-xl);
+  padding: var(--spacing-xl);
+  box-shadow: var(--ui-shadow);
+  display: flex;
+  flex-direction: column;
+  /* height: 100%; REMOVED THIS LINE */
+}
+
+/* Header */
+.widget-header {
+  margin-bottom: var(--spacing-lg);
+}
+.widget-title {
+  font-family: var(--font-heading);
+  font-size: var(--font-size-2xl);
+  color: var(--theme-text-primary);
+}
+.widget-subtitle {
+  font-family: var(--font-body);
+  font-size: var(--font-size-base);
+  color: var(--theme-text-secondary);
+  margin-top: var(--spacing-xs);
+}
+
+/* Preview Chart Container */
+.preview-chart-container {
+  height: 250px; /* ADDED A SPECIFIC HEIGHT */
+  cursor: pointer;
+  border-radius: var(--ui-border-radius-lg);
+  padding: var(--spacing-sm);
+  background: var(--theme-bg-primary);
+  border: 1px dashed var(--theme-border-secondary);
+  transition: var(--ui-transition);
+  position: relative;
+}
+.preview-chart-container:hover {
+  border-color: var(--theme-accent-primary);
+  background: var(--theme-hover-bg);
+  transform: scale(1.02);
+}
+.preview-chart-container::after {
+    content: '\e950'; /* PrimeIcon for expand */
+    font-family: 'primeicons';
+    position: absolute;
+    top: var(--spacing-sm);
+    right: var(--spacing-sm);
+    color: var(--theme-text-muted);
+    opacity: 0.5;
+    transition: var(--ui-transition-fast);
+}
+.preview-chart-container:hover::after {
+    opacity: 1;
+    color: var(--theme-accent-primary);
+}
+
+
+.chart-wrapper {
+  width: 100%;
+  height: 100%;
+}
+
+.no-data-placeholder {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    gap: var(--spacing-md);
+    color: var(--theme-text-muted);
+    font-family: var(--font-body);
+}
+
+/* Dialog and Detailed Chart */
+.dialog-chart-container {
+  width: 100%;
+  height: 100%;
+}
+
+:host ::ng-deep .se-dialog .p-dialog-header {
+  background: var(--theme-bg-secondary) !important;
+  color: var(--theme-text-primary) !important;
+  font-family: var(--font-heading);
+  border-bottom: 1px solid var(--theme-border-primary);
+}
+:host ::ng-deep .se-dialog .p-dialog-content {
+  background: var(--theme-bg-primary) !important;
+  padding: var(--spacing-lg);
+  height: calc(100% - 60px); /* Adjust based on header height */
+}
+:host ::ng-deep .se-dialog .p-dialog-header-icon {
+    color: var(--theme-text-secondary) !important;
+}

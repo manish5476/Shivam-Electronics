@@ -1,12 +1,28 @@
 import { Component, Input } from '@angular/core';
+import { CommonModule } from '@angular/common';
+
+// Strongly-typed interface for the component's data
+export interface DashboardOverviewData {
+  totalRevenue: number;
+  totalSales: number;
+  grossProfit: number;
+  averageOrderValue: number;
+  newCustomers: number;
+  topSellingProducts: {
+    totalQuantity: number;
+    productName: string;
+    thumbnail: string;
+  }[];
+  customersWithDues: any[];
+}
 
 @Component({
   selector: 'app-dashboard-overview',
-  imports: [],
+  standalone: true,
+  imports: [CommonModule],
   templateUrl: './dashboard-overview.component.html',
-  styleUrl: './dashboard-overview.component.css'
+  styleUrls: ['./dashboard-overview.component.css']
 })
 export class DashboardOverviewComponent {
-  @Input() data: any
-  @Input() loading: any
+  @Input() data: DashboardOverviewData | null = null;
 }

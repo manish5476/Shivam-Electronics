@@ -1,0 +1,44 @@
+<div class="chart-combo-container">
+  <!-- Filter Section -->
+  <div class="filter-bar card modern-card">
+    <h3 class="section-header retro-subheading">Dashboard Charts</h3>
+    <div class="flex items-center gap-4">
+      <p-multiSelect [options]="(chartOptions$ | async) || []" [(ngModel)]="selectedCharts" placeholder="Select Charts"
+        optionLabel="label" optionValue="value" styleClass="p-inputtext-sm" (onChange)="onChartSelectionChange()"
+        [maxSelectedLabels]="3" selectedItemsLabel="{0} charts selected">
+      </p-multiSelect>
+    </div>
+  </div>
+
+  <!-- Charts Display Section (Carousel Style) -->
+  <p-carousel [value]="displayCharts" [responsiveOptions]="responsiveOptions" [numVisible]="4" [numScroll]="1" [circular]="true" [autoplayInterval]="3000" [@fadeIn]>
+    <ng-template pTemplate="item" let-chart let-i="index">
+      <div class="chart-panel card modern-card" [@panelAnimation] (click)="openChartDialog(chart)">
+        <div class="chart-header">
+          <h3 class="chart-title">{{ chart.title }}</h3>
+        </div>
+        <div class="chart-body">
+          <ng-container *ngIf="chart.isLoading; else chartContent">
+            <p-skeleton width="100%" height="100%"></p-skeleton>
+          </ng-container>
+          <ng-template #chartContent>
+            <p-chart *ngIf="chart.data" [type]="chart.type" [data]="chart.data" [options]="chart.options"
+              height="100%"></p-chart>
+            <div *ngIf="chart.error || !chart.data" class="flex items-center justify-center h-full text-gray-500">
+              <p>{{ chart.error || 'No data to display for the selected criteria.' }}</p>
+            </div>
+          </ng-template>
+        </div>
+      </div>
+    </ng-template>
+  </p-carousel>
+
+  <!-- Enlarged Chart Dialog -->
+  <p-dialog [(visible)]="showDialog" [modal]="true" [style]="{width: '80vw', height: '80vh'}"
+    header="{{ selectedChartForDialog?.title }}" [draggable]="true" [resizable]="true">
+    <div class="dialog-chart-body">
+      <p-chart *ngIf="selectedChartForDialog?.data" [type]="selectedChartForDialog?.type"
+        [data]="selectedChartForDialog?.data" [options]="selectedChartForDialog?.options" height="100%"></p-chart>
+    </div>
+  </p-dialog>
+</div>

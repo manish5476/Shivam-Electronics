@@ -205,3 +205,178 @@ pre {
   box-shadow: 0 0 0 3px var(--theme-accent-focus-ring);
   outline: none;
 }
+
+/* admin-dashboard.component.css */
+
+.admin-dashboard {
+  padding: var(--spacing-xl);
+  background: var(--theme-bg-primary);
+}
+
+/* Redesigned Header */
+.dashboard-header {
+  margin-bottom: var(--spacing-2xl);
+}
+
+.dashboard-title {
+  font-family: var(--font-heading);
+  font-size: var(--font-size-4xl);
+  color: var(--theme-text-primary);
+  line-height: var(--line-height-tight);
+}
+
+.dashboard-subtitle {
+  font-family: var(--font-body);
+  font-size: var(--font-size-lg);
+  color: var(--theme-text-secondary);
+  margin-top: var(--spacing-xs);
+  margin-bottom: var(--spacing-xl);
+}
+
+/* Override for filter bar to remove default PrimeNG padding */
+:host ::ng-deep .se-filter-bar .p-toolbar {
+  padding: 0 !important;
+}
+
+.custom-range-field {
+  flex-grow: 2; /* Allow date range to take more space */
+}
+
+/* Loading Overlay */
+.loading-overlay {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: var(--theme-bg-overlay);
+  z-index: var(--z-modal);
+}
+
+:host ::ng-deep .loading-overlay .p-progress-spinner {
+    width: 60px;
+    height: 60px;
+}
+
+/* Grid Stack Item Content padding */
+:host ::ng-deep .grid-stack-item-content {
+    padding: var(--spacing-lg);
+    display: flex;
+    flex-direction: column;
+}
+
+/* Allow app components to fill the grid item */
+:host ::ng-deep .grid-stack-item-content > *:first-child {
+    flex: 1;
+    min-height: 0;
+}
+
+
+/* Detail Dialog Styling */
+.dialog-content {
+  background-color: var(--theme-bg-ternary);
+  color: var(--theme-text-secondary);
+  border-radius: var(--ui-border-radius-sm);
+  padding: var(--spacing-md);
+  font-family: var(--font-mono);
+  font-size: var(--font-size-sm);
+  max-height: 70vh;
+  overflow: auto;
+}
+/* Layout */
+.admin-dashboard {
+  padding: var(--spacing-lg);
+  background: var(--theme-bg-primary);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-lg);
+}
+
+/* Header */
+.dashboard-header {
+  margin-bottom: var(--spacing-md);
+  text-align: left;
+}
+
+.dashboard-title {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: var(--theme-text-primary);
+  margin: 0;
+}
+
+.dashboard-subtitle {
+  font-size: 1rem;
+  color: var(--theme-text-secondary);
+  margin-top: 0.25rem;
+}
+
+/* Grid Layout */
+.dashboard-grid {
+  display: grid;
+  gap: var(--spacing-lg);
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+}
+
+/* Toolbar */
+.se-filter-bar {
+  padding: 0.75rem 1rem;
+  border-radius: 0.75rem;
+  background: var(--theme-bg-secondary);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* Buttons */
+.se-button {
+  background: var(--theme-accent-primary);
+  border: none;
+  color: var(--theme-accent-text-color);
+  border-radius: 9999px;
+  padding: 0.5rem 1rem;
+  font-size: 0.875rem;
+  transition: 0.2s ease;
+}
+.se-button:hover {
+  background: var(--theme-accent-primary-hover);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.08);
+}
+
+.se-button-outline {
+  background: transparent;
+  border: 1px solid var(--theme-border-secondary);
+  color: var(--theme-text-primary);
+}
+.se-button-outline:hover {
+  background: var(--theme-bg-ternary);
+}
+
+/* Inputs */
+.se-input {
+  border-radius: 9999px;
+  padding: 0.25rem 0.75rem;
+  font-size: 0.875rem;
+  background: var(--theme-bg-ternary);
+  border: 1px solid var(--theme-border-secondary);
+}
+
+/* Dialog */
+.dialog-content {
+  background: var(--theme-bg-ternary);
+  color: var(--theme-text-secondary);
+  border-radius: 0.5rem;
+  padding: 1rem;
+  font-family: monospace;
+  font-size: 0.875rem;
+  max-height: 70vh;
+  overflow: auto;
+}

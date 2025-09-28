@@ -34,6 +34,8 @@ import { PaymentAnalyticsComponent } from './payment-analytics/payment-analytics
 import { CustomerAnalyticsComponent } from './customer-analytics/customer-analytics.component';
 import { SalesForecastComponent } from './sales-forecast/sales-forecast.component';
 import { InventoryTurnoverComponent } from './inventory-turnover/inventory-turnover.component';
+import { DashboardChartComboComponent } from "./dashboard-chart-combo/dashboard-chart-combo.component";
+import { NotificationCalendarComponent } from "./notification-calendar/notification-calendar.component";
 
 @Component({
   selector: 'app-admin-dashboard',
@@ -60,12 +62,13 @@ import { InventoryTurnoverComponent } from './inventory-turnover/inventory-turno
     SalesChartsComponent,
     SalesTrendsComponent,
     YearlySalesComponent,
-    MonthlySalesComponent,
     PaymentAnalyticsComponent,
     CustomerAnalyticsComponent,
     SalesForecastComponent,
     InventoryTurnoverComponent,
-  ],
+    DashboardChartComboComponent,
+    NotificationCalendarComponent
+],
   templateUrl: './admin-dashboard.component.html',
   styleUrls: ['./admin-dashboard.component.css'],
   providers: [MessageService],

@@ -1,1 +1,70 @@
-<p>dashboard-overview works!</p>
+<div *ngIf="data; else noDataOrLoading" class="widget-container">
+  <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8">
+
+    <div class="lg:col-span-2 grid grid-cols-1 sm:grid-cols-2 gap-6 lg:gap-8">
+      
+      <div class="se-kpi-card">
+        <div class="kpi-icon-wrapper bg-[var(--theme-success-light)]">
+          <i class="pi pi-dollar text-[var(--theme-success-primary)]"></i>
+        </div>
+        <div class="kpi-content">
+          <h3 class="kpi-title">Total Revenue</h3>
+          <p class="kpi-value">{{ data.totalRevenue | currency:'INR':'symbol':'1.0-0' }}</p>
+        </div>
+      </div>
+
+      <div class="se-kpi-card">
+        <div class="kpi-icon-wrapper bg-[var(--theme-accent-primary-light)]">
+          <i class="pi pi-chart-line text-[var(--theme-accent-primary)]"></i>
+        </div>
+        <div class="kpi-content">
+          <h3 class="kpi-title">Gross Profit</h3>
+          <p class="kpi-value">{{ data.grossProfit | currency:'INR':'symbol':'1.0-0' }}</p>
+        </div>
+      </div>
+
+      <div class="se-kpi-card">
+        <div class="kpi-icon-wrapper bg-[var(--theme-info-light)]">
+          <i class="pi pi-shopping-cart text-[var(--theme-info-primary)]"></i>
+        </div>
+        <div class="kpi-content">
+          <h3 class="kpi-title">Average Order Value</h3>
+          <p class="kpi-value">{{ data.averageOrderValue | currency:'INR':'symbol':'1.0-0' }}</p>
+        </div>
+      </div>
+
+      <div class="se-kpi-card">
+        <div class="kpi-icon-wrapper bg-[var(--theme-warning-light)]">
+          <i class="pi pi-users text-[var(--theme-warning-primary)]"></i>
+        </div>
+        <div class="kpi-content">
+          <h3 class="kpi-title">New Customers</h3>
+          <p class="kpi-value">{{ data.newCustomers }}</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="lg:col-span-1 se-glass-card">
+      <h3 class="card-header">Top Selling Products</h3>
+      <ul class="product-list">
+        <li *ngFor="let product of data.topSellingProducts" class="product-list-item">
+          <img [src]="product.thumbnail" [alt]="product.productName" class="product-thumbnail">
+          <div class="product-details">
+            <p class="product-name">{{ product.productName }}</p>
+            <p class="product-sales">
+              <span class="font-bold text-[var(--theme-text-primary)]">{{ product.totalQuantity }}</span> units sold
+            </p>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<ng-template #noDataOrLoading>
+  <div class="flex justify-center items-center h-64 se-glass-card m-8">
+    <p class="text-xl" [style.color]="'var(--theme-text-secondary)'">
+      No overview data available.
+    </p>
+  </div>
+</ng-template>

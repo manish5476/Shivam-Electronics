@@ -1,0 +1,234 @@
+/* --- GLOBAL STYLES & VARIABLES --- */
+:host {
+  --color-text-primary: var(--theme-text-primary, #1e293b);
+  --color-text-secondary: var(--theme-text-secondary, #64748b);
+  --color-text-tertiary: var(--theme-text-tertiary, #94a3b8);
+  --color-border: var(--theme-border-secondary, #e2e8f0);
+  --color-surface: var(--theme-bg-secondary, #ffffff);
+  --color-primary: var(--theme-accent-primary, #4f46e5);
+  --color-primary-hover: var(--theme-accent-primary-hover, #4338ca);
+  --color-today: #ef4444;
+  --level-0-bg: var(--theme-bg-ternary, #f1f5f9);
+  /* NEW: Modern blue-themed heatmap colors */
+  --level-1-bg: #dbeafe;
+  --level-2-bg: #93c5fd;
+  --level-3-bg: #3b82f6;
+  --level-4-bg: #1d4ed8;
+  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+}
+
+.calendar-container {
+  background-color: transparent;
+  color: var(--color-text-primary);
+  padding: 0;
+}
+
+.calendar-main {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem;
+}
+
+@media (min-width: 1024px) {
+  .calendar-main {
+    grid-template-columns: 2fr 1fr;
+  }
+}
+
+/* --- CALENDAR PANEL --- */
+.calendar-panel {
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 1rem;
+  box-shadow: var(--shadow-sm);
+  padding: 1rem;
+}
+
+@media (min-width: 640px) {
+  .calendar-panel {
+    padding: 1.5rem;
+  }
+}
+
+.calendar-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.month-title {
+  font-size: 1.25rem;
+  font-weight: 700;
+}
+
+.calendar-nav {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.btn {
+  border-radius: 0.375rem;
+  transition: background-color 0.2s;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+}
+
+.btn-today {
+  background-color: var(--level-0-bg);
+  color: var(--color-text-secondary);
+  padding: 0.375rem 0.75rem;
+  font-size: 0.875rem;
+}
+.btn-today:hover {
+  background-color: var(--color-border);
+}
+
+.btn-icon {
+  background-color: transparent;
+  color: var(--color-text-secondary);
+  padding: 0.5rem;
+  border-radius: 9999px;
+}
+.btn-icon:hover {
+  background-color: var(--level-0-bg);
+  color: var(--color-text-primary);
+}
+.icon {
+  width: 1.25rem;
+  height: 1.25rem;
+}
+
+/* --- CALENDAR GRID --- */
+.calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 0.25rem;
+}
+
+.weekday-header {
+  text-align: center;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--color-text-tertiary);
+  text-transform: uppercase;
+  padding-bottom: 0.5rem;
+}
+
+.day-cell {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0.5rem;
+  transition: all 0.15s ease-in-out;
+  font-size: 0.875rem;
+}
+
+.day-cell.inactive {
+  opacity: 0.4;
+  color: var(--color-text-tertiary);
+}
+
+.day-cell.selectable {
+  cursor: pointer;
+}
+.day-cell.selectable:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 0 2px var(--color-primary);
+  z-index: 10;
+}
+
+.day-cell.selected {
+  background-color: var(--color-primary) !important;
+  color: white !important;
+  font-weight: 700;
+  transform: scale(1.05);
+  box-shadow: 0 0 0 2px var(--color-primary);
+}
+
+.today-marker {
+  position: absolute;
+  top: 0.375rem;
+  right: 0.375rem;
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 9999px;
+  background-color: var(--color-today);
+}
+
+/* Heatmap Colors */
+.day-cell.level-0 { background-color: var(--level-0-bg); color: var(--color-text-tertiary); }
+.day-cell.level-1 { background-color: var(--level-1-bg); color: #1e40af; }
+.day-cell.level-2 { background-color: var(--level-2-bg); color: #1e40af; }
+.day-cell.level-3 { background-color: var(--level-3-bg); color: white; }
+.day-cell.level-4 { background-color: var(--level-4-bg); color: white; }
+
+
+/* --- SUMMARY PANEL --- */
+.summary-container {
+  margin-top: 2rem;
+}
+@media (min-width: 1024px) {
+  .summary-container {
+    margin-top: 0;
+  }
+}
+.summary-panel {
+  position: sticky;
+  top: 2rem;
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 1rem;
+  box-shadow: var(--shadow-sm);
+  padding: 1.5rem;
+  min-height: 24rem;
+}
+
+.loading-state, .placeholder-state {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  text-align: center;
+  min-height: 24rem;
+}
+.spinner {
+  animation: spin 1s linear infinite;
+  border: 4px solid var(--level-0-bg);
+  border-top: 4px solid var(--color-primary);
+  border-radius: 50%;
+  width: 3rem;
+  height: 3rem;
+}
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.summary-title { font-size: 1.125rem; font-weight: 700; margin-bottom: 0.25rem; }
+.summary-date { font-size: 0.875rem; color: var(--color-text-secondary); margin-bottom: 1.5rem; }
+.summary-metrics { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; text-align: center; margin-bottom: 1.5rem; }
+.metric-label { font-size: 0.75rem; color: var(--color-text-tertiary); text-transform: uppercase; }
+.metric-value { font-size: 1.5rem; font-weight: 600; }
+.metric-value.revenue { color: #16a34a; }
+
+.summary-section { margin-bottom: 1.5rem; }
+.section-title { font-size: 0.875rem; font-weight: 600; margin-bottom: 0.75rem; }
+.item-list { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 0.75rem; }
+.list-item { display: flex; align-items: center; gap: 0.75rem; font-size: 0.875rem; }
+.avatar { display: flex; align-items: center; justify-content: center; height: 2rem; width: 2rem; border-radius: 9999px; background-color: var(--level-0-bg); color: var(--color-text-secondary); font-weight: 600; }
+.avatar-icon { display: flex; align-items: center; justify-content: center; height: 2rem; width: 2rem; border-radius: 9999px; background-color: var(--level-0-bg); color: var(--color-text-secondary); }
+.icon-sm { width: 1rem; height: 1rem; }
+.item-title { font-weight: 500; }
+.item-subtitle { color: var(--color-text-tertiary); }
+.placeholder-text { font-size: 0.875rem; color: var(--color-text-tertiary); }
+
+.placeholder-icon { width: 4rem; height: 4rem; color: var(--color-border); margin-bottom: 1rem; }
+.placeholder-title { font-weight: 600; }
+

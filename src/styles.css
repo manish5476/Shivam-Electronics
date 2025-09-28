@@ -243,6 +243,32 @@ body.dark-mode {
   --theme-body-gradient: linear-gradient(135deg, rgb(15, 15, 15) 0%, rgb(25, 25, 25) 100%);
   --theme-card-gradient: linear-gradient(145deg, rgba(25, 25, 25, 0.9) 0%, rgba(35, 35, 35, 0.8) 100%);
   --theme-glass-gradient: linear-gradient(145deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.02) 100%);
+
+    /* Glassmorphism Theme Variables */
+  /* --glass-bg: rgba(255, 255, 255, 0.15);
+  --glass-border-color: rgba(255, 255, 255, 0.2);
+  --glass-blur-intensity: 8px;
+  --glass-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+  --glass-border-radius: 1rem;
+  --glass-text-color: #ffffff;
+  --glass-heading-color: #f0f0f0; */
+ /* Glassmorphism Theme Variables - UPDATED FOR CONTRAST */
+  --glass-bg: rgba(255, 255, 255, 0.15);
+  --glass-border-color: rgba(255, 255, 255, 0.2);
+  --glass-blur-intensity: 8px;
+  --glass-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+  --glass-border-radius: 1rem;
+
+  /* --- REVISED TEXT COLORS --- */
+  --glass-text-color: #1f2937;      /* A dark cool-gray (Tailwind gray-800) */
+  --glass-heading-color: #111827; 
+  
+  /* Chart Colors for ngx-charts */
+  --chart-color-1: #93c5fd; /* light blue */
+  --chart-color-2: #a78bfa; /* light purple */
+  --chart-color-3: #fde047; /* light yellow */
+  --chart-color-4: #fca5a5; /* light red */
+  --chart-color-5: #6ee7b7; /* light green */
 }
 :host,
 html,
@@ -290,6 +316,17 @@ body {
 .grid-stack-item-content:hover {
   box-shadow: var(--ui-shadow-hover);
   transform: translateY(-2px);
+}
+
+.glass-card {
+  background: var(--glass-bg);
+  backdrop-filter: blur(var(--glass-blur-intensity));
+  -webkit-backdrop-filter: blur(var(--glass-blur-intensity));
+  border-radius: var(--glass-border-radius);
+  border: 1px solid var(--glass-border-color);
+  box-shadow: var(--glass-shadow);
+  padding: 1.5rem;
+  color: var(--glass-text-color);
 }
 
 /*-----------------------------------------

@@ -1,8 +1,9 @@
+import { CommonModule } from '@angular/common';
 import { Component, Input } from '@angular/core';
 
 @Component({
   selector: 'app-inventory-turnover',
-  imports: [],
+  imports: [CommonModule],
   templateUrl: './inventory-turnover.component.html',
   styleUrl: './inventory-turnover.component.css'
 })

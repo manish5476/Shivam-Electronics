@@ -1,1 +1,84 @@
-{{data|json}}
+<div class="yearly-sales-widget">
+  <header class="widget-header">
+    <h1 class="widget-title">{{ title }}</h1>
+    <p class="widget-subtitle">Monthly revenue overview for the year.</p>
+  </header>
+
+  <div class="preview-chart-container" (click)="openDialog()" title="Click to expand">
+    <div *ngIf="data; else noData" class="chart-wrapper">
+      <ngx-charts-bar-vertical [view]="view" [results]="chartData" [scheme]="chartColorScheme" [xAxis]="false"
+        [yAxis]="false" [legend]="false" [gradient]="true">
+      </ngx-charts-bar-vertical>
+    </div>
+  </div>
+
+  <ng-template #noData>
+    <div class="no-data-placeholder">
+      <i class="pi pi-chart-bar" style="font-size: 2rem"></i>
+      <span>No yearly data available</span>
+    </div>
+  </ng-template>
+</div>
+
+
+<p-dialog header="Detailed Yearly Sales" [(visible)]="isDialogVisible" [modal]="true"
+  [style]="{ width: '80vw', height: '70vh' }" [draggable]="false" [resizable]="false" styleClass="se-dialog">
+  <div class="dialog-chart-container">
+    <ngx-charts-bar-vertical [view]="view" [results]="chartData" [scheme]="chartColorScheme" [xAxis]="true"
+      [yAxis]="true" [legend]="true" [showXAxisLabel]="true" xAxisLabel="Month" [showYAxisLabel]="true"
+      yAxisLabel="Revenue" [gradient]="true">
+    </ngx-charts-bar-vertical>
+  </div>
+</p-dialog>
+
+<!-- <div class="yearly-sales-widget">
+  <header class="widget-header">
+    <h1 class="widget-title">{{ title }}</h1>
+    <p class="widget-subtitle">Monthly revenue overview for the year.</p>
+  </header>
+
+  <div class="preview-chart-container" (click)="openDialog()" title="Click to expand">
+    <div *ngIf="data; else noData" class="chart-wrapper">
+      <ngx-charts-bar-vertical
+        [results]="chartData"
+        [scheme]="chartColorScheme"
+        [xAxis]="false"
+        [yAxis]="false"
+        [legend]="false"
+        [gradient]="true">
+      </ngx-charts-bar-vertical>
+    </div>
+  </div>
+
+  <ng-template #noData>
+    <div class="no-data-placeholder">
+      <i class="pi pi-chart-bar" style="font-size: 2rem"></i>
+      <span>No yearly data available</span>
+    </div>
+  </ng-template>
+</div>
+
+
+<p-dialog 
+    header="Detailed Yearly Sales" 
+    [(visible)]="isDialogVisible" 
+    [modal]="true"
+    [style]="{ width: '80vw', height: '70vh' }" 
+    [draggable]="false" 
+    [resizable]="false"
+    styleClass="se-dialog">
+    <div class="dialog-chart-container">
+        <ngx-charts-bar-vertical
+            [results]="chartData"
+            [scheme]="chartColorScheme"
+            [xAxis]="true"
+            [yAxis]="true"
+            [legend]="true"
+            [showXAxisLabel]="true"
+            [showYAxisLabel]="true"
+            xAxisLabel="Month"
+            yAxisLabel="Revenue"
+            [gradient]="true">
+        </ngx-charts-bar-vertical>
+    </div>
+</p-dialog> -->

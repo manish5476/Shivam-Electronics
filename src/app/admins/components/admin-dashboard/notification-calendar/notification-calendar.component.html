@@ -1,0 +1,122 @@
+<div class="calendar-container">
+  <main class="calendar-main">
+    <!-- Calendar Section -->
+    <div class="calendar-panel">
+      <!-- Calendar Header -->
+      <div class="calendar-header">
+        <h2 class="month-title">{{ displayedMonth() }}</h2>
+        <div class="calendar-nav">
+          <button (click)="goToToday()" class="btn btn-today">Today</button>
+          <button (click)="changeMonth(-1)" aria-label="Previous month" class="btn btn-icon">
+            <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg>
+          </button>
+          <button (click)="changeMonth(1)" aria-label="Next month" class="btn btn-icon">
+            <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- Calendar Grid -->
+      <div class="calendar-grid">
+        <!-- Day Headers -->
+        @for(day of weekDays; track day) {
+          <div class="weekday-header">{{ day }}</div>
+        }
+
+        <!-- Day Cells -->
+        @for(day of calendarGrid(); track day.date.getTime()) {
+          <div 
+              (click)="selectDay(day)"
+              class="day-cell"
+              [class.inactive]="!day.isCurrentMonth"
+              [class.selectable]="day.heatmapData"
+              [class.selected]="isDaySelected(day)"
+              [class.level-0]="day.isCurrentMonth && !day.heatmapData"
+              [class.level-1]="day.heatmapData?.level === 1"
+              [class.level-2]="day.heatmapData?.level === 2"
+              [class.level-3]="day.heatmapData?.level === 3"
+              [class.level-4]="day.heatmapData?.level === 4">
+            <span class="today-marker" *ngIf="day.isToday && !isDaySelected(day)"></span>
+            {{ day.dayOfMonth }}
+          </div>
+        }
+      </div>
+    </div>
+
+    <!-- Daily Summary Section -->
+    <div class="summary-container">
+      <div class="summary-panel">
+        @if(isLoadingSummary()) {
+          <div class="loading-state">
+            <div class="spinner"></div>
+          </div>
+        } @else if(selectedDaySummary()) {
+          <!-- Summary Header -->
+          <h3 class="summary-title">Daily Summary</h3>
+          <p class="summary-date">{{ formatDateForSummary(selectedDaySummary()!.date) }}</p>
+
+          <!-- Revenue & Sales -->
+          <div class="summary-metrics">
+            <div>
+              <p class="metric-label">Revenue</p>
+              <p class="metric-value revenue">{{ selectedDaySummary()!.revenue | currency:'INR':'symbol':'1.0-0' }}</p>
+            </div>
+            <div>
+              <p class="metric-label">Sales</p>
+              <p class="metric-value">{{ selectedDaySummary()!.salesCount }}</p>
+            </div>
+          </div>
+
+          <!-- New Customers -->
+          <div class="summary-section">
+            <h4 class="section-title">New Customers ({{selectedDaySummary()!.newCustomers.length}})</h4>
+            @if(selectedDaySummary()!.newCustomers.length > 0) {
+              <ul class="item-list">
+                @for(customer of selectedDaySummary()!.newCustomers; track customer._id) {
+                  <li class="list-item">
+                    <span class="avatar">{{ customer.fullname.charAt(0) }}</span>
+                    <div>
+                      <p class="item-title">{{ customer.fullname }}</p>
+                      <p class="item-subtitle">{{ customer.mobileNumber }}</p>
+                    </div>
+                  </li>
+                }
+              </ul>
+            } @else {
+              <p class="placeholder-text">No new customers on this day.</p>
+            }
+          </div>
+
+          <!-- New Products -->
+          <div class="summary-section">
+            <h4 class="section-title">New Products ({{selectedDaySummary()!.newProducts.length}})</h4>
+            @if(selectedDaySummary()!.newProducts.length > 0) {
+              <ul class="item-list">
+                @for(product of selectedDaySummary()!.newProducts; track product._id) {
+                  <li class="list-item">
+                    <span class="avatar-icon">
+                      <svg class="icon-sm" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path></svg>
+                    </span>
+                    <div>
+                      <p class="item-title">{{ product.title }}</p>
+                      <p class="item-subtitle">Stock: {{ product.stock }}</p>
+                    </div>
+                  </li>
+                }
+              </ul>
+            } @else {
+              <p class="placeholder-text">No new products on this day.</p>
+            }
+          </div>
+        } @else {
+          <div class="placeholder-state">
+            <svg class="placeholder-icon" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0h18M12 12.75h.008v.008H12v-.008z" /></svg>
+            <h3 class="placeholder-title">Select a day</h3>
+            <p class="placeholder-text">Click on a colored day to see its activity summary.</p>
+          </div>
+        }
+      </div>
+    </div>
+  </main>
+</div>
+

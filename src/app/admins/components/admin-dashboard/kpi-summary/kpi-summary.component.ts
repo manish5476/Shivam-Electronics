@@ -13,4 +13,11 @@ export class KpiSummaryComponent {
     Math = Math; // ✅ makes Math usable in template
 
   @Input() loading: any
+
+   getCollectionPercentage(): number {
+    if (!this.data || !this.data.salesSummary.totalRevenue) {
+      return 0;
+    }
+    return (this.data.financialHealth.totalCollected / this.data.salesSummary.totalRevenue) * 100;
+  }
 }

@@ -1,1 +1,97 @@
-<p>customer-analytics works!</p>
+<div *ngIf="data; else noDataOrLoading" class="customer-analytics-page">
+
+  <header class="page-header">
+    <div>
+      <h1 class="page-title">Customer Analytics</h1>
+      <p class="page-subtitle">A complete overview of your customer base and top performers.</p>
+    </div>
+  </header>
+
+  <div class="kpi-grid">
+    <div class="summary-kpi-card">
+      <div class="kpi-icon-wrapper bg-[var(--theme-success-light)]">
+        <i class="pi pi-user-plus text-[var(--theme-success-primary)]"></i>
+      </div>
+      <div class="kpi-content">
+        <span class="kpi-value">{{ data.summary.newCustomers }}</span>
+        <span class="kpi-label">New Customers</span>
+      </div>
+    </div>
+    <div class="summary-kpi-card">
+      <div class="kpi-icon-wrapper bg-[var(--theme-accent-primary-light)]">
+        <i class="pi pi-sync text-[var(--theme-accent-primary)]"></i>
+      </div>
+      <div class="kpi-content">
+        <span class="kpi-value">{{ data.summary.repeatCustomerRate | percent:'1.1-1' }}</span>
+        <span class="kpi-label">Repeat Customer Rate</span>
+      </div>
+    </div>
+    <div class="summary-kpi-card">
+        <div class="kpi-icon-wrapper bg-[var(--theme-info-light)]">
+            <i class="pi pi-users text-[var(--theme-info-primary)]"></i>
+        </div>
+        <div class="kpi-content">
+            <span class="kpi-value">21</span>
+            <span class="kpi-label">Total Customers</span>
+        </div>
+    </div>
+  </div>
+
+  <div class="main-content-grid">
+    <div class="se-card">
+      <h3 class="card-header">Top Customers by Lifetime Value</h3>
+      <p-table [value]="data.topCustomersLifetime" styleClass="se-table">
+        <ng-template pTemplate="header">
+          <tr>
+            <th style="width: 4rem">Rank</th>
+            <th>Customer</th>
+            <th style="width: 12rem">Lifetime Value</th>
+            <th style="width: 8rem"></th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-customer let-i="rowIndex">
+          <tr>
+            <td>
+              <span class="rank-badge" [ngClass]="'rank-' + (i + 1)">{{ i + 1 }}</span>
+            </td>
+            <td>
+              <span class="font-bold" [style.color]="'var(--theme-text-primary)'">{{ customer.fullname }}</span>
+            </td>
+            <td>
+              <span class="font-mono font-semibold">{{ customer.lifetimeValue | currency:'INR':'symbol':'1.0-0' }}</span>
+            </td>
+            <td>
+              <button pButton type="button" label="View" icon="pi pi-arrow-right" iconPos="right"
+                      class="p-button-text p-button-sm" (click)="viewCustomerDetails(customer)"></button>
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </div>
+
+    <div class="insight-sidebar">
+      <div class="se-card">
+        <h3 class="card-header">Repeat Customer Rate</h3>
+        <div class="chart-container">
+          <ngx-charts-pie-chart
+            [results]="repeatRateChartData"
+            [scheme]="chartColorScheme"
+            [doughnut]="true"
+            [legend]="false"
+            [labels]="true"
+            [arcWidth]="0.25">
+          </ngx-charts-pie-chart>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<ng-template #noDataOrLoading>
+  <div class="flex justify-center items-center h-screen">
+    <p class="text-xl" [style.color]="'var(--theme-text-secondary)'">
+      Customer analytics are currently unavailable.
+    </p>
+  </div>
+</ng-template>

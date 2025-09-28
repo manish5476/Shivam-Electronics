@@ -23,9 +23,9 @@ export class ChartService extends BaseApiService {
    * Fetches the list of available charts to populate UI dropdowns or multiselects.
    * This can be cached if needed, but for now, it's a simple GET.
    */
-  getChartOptions(): Observable<ChartOption[]> {
+  getChartOptions(): Observable<any[]> {
     return this.http
-      .get<{ status: string; data: ChartOption[] }>(`${this.baseUrl}${this.endpoint}/options`)
+      .get<{ status: string; data: any[] }>(`${this.baseUrl}${this.endpoint}/options`)
       .pipe(
         map(response => response.data),
         catchError((error: HttpErrorResponse) =>

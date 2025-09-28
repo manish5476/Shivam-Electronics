@@ -1,13 +1,131 @@
-<div class="grid-stack-item-content p-4 md:p-6"
+<div class="se-widget-container" *ngIf="loading && data; else loadingOrNoData">
+
+  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+    <div class="kpi-card">
+      <div class="kpi-header">
+        <i class="pi pi-dollar kpi-icon text-[var(--theme-accent-primary)]"></i>
+        <h3 class="kpi-title">Total Revenue</h3>
+      </div>
+      <p class="kpi-value">{{ data.kpiSummary.totalRevenue.value | currency:'INR':'symbol':'1.0-0' }}</p>
+      <div class="kpi-chart">
+        <p-chart type="line" [data]="revenueMicroChartData" [options]="microChartOptions"></p-chart>
+      </div>
+      <div class="kpi-footer">
+        <p-tag [value]="formatPercent(data.kpiSummary.totalRevenue.change)"
+               [severity]="getChangeSeverity(data.kpiSummary.totalRevenue.change)"></p-tag>
+      </div>
+    </div>
+
+    <div class="kpi-card">
+      <div class="kpi-header">
+        <i class="pi pi-shopping-cart kpi-icon text-[var(--theme-success-primary)]"></i>
+        <h3 class="kpi-title">Total Sales</h3>
+      </div>
+      <p class="kpi-value">{{ data.kpiSummary.totalSales.value | number:'1.0-0' }}</p>
+      <div class="kpi-chart">
+        </div>
+      <div class="kpi-footer">
+        <p-tag [value]="formatPercent(data.kpiSummary.totalSales.change)"
+               [severity]="getChangeSeverity(data.kpiSummary.totalSales.change)"></p-tag>
+      </div>
+    </div>
+
+    <div class="kpi-card">
+      <div class="kpi-header">
+        <i class="pi pi-chart-bar kpi-icon text-[var(--theme-info-primary)]"></i>
+        <h3 class="kpi-title">Gross Profit</h3>
+      </div>
+      <p class="kpi-value">{{ data.kpiSummary.grossProfit.value | currency:'INR':'symbol':'1.0-0' }}</p>
+      <div class="kpi-chart">
+        </div>
+      <div class="kpi-footer">
+        <p-tag [value]="formatPercent(data.kpiSummary.grossProfit.change)"
+               [severity]="getChangeSeverity(data.kpiSummary.grossProfit.change)"></p-tag>
+      </div>
+    </div>
+
+    <div class="kpi-card">
+      <div class="kpi-header">
+        <i class="pi pi-users kpi-icon text-[var(--theme-warning-primary)]"></i>
+        <h3 class="kpi-title">New Customers</h3>
+      </div>
+      <p class="kpi-value">{{ data.kpiSummary.newCustomers.value | number:'1.0-0' }}</p>
+      <div class="kpi-chart">
+        </div>
+      <div class="kpi-footer">
+        <p-tag [value]="formatPercent(data.kpiSummary.newCustomers.change)"
+               [severity]="getChangeSeverity(data.kpiSummary.newCustomers.change)"></p-tag>
+      </div>
+    </div>
+  </div>
+
+  <p-tabView styleClass="se-tabview mt-8">
+    <p-tabPanel header="Customer Insights">
+      <div class="insight-grid">
+        <div class="insight-card">
+          <span class="insight-label">Total Customers</span>
+          <span class="insight-value">{{ data.customerInsights.totalCustomers | number:'1.0-0' }}</span>
+        </div>
+        <div class="insight-card">
+          <span class="insight-label">Lifetime Value</span>
+          <span class="insight-value">{{ data.customerInsights.lifetimeValue | currency:'INR':'symbol':'1.0-0' }}</span>
+        </div>
+        <div class="insight-card">
+          <span class="insight-label">Champions</span>
+          <p-tag value="{{ data.customerInsights.champions }}" severity="success"></p-tag>
+        </div>
+        <div class="insight-card">
+          <span class="insight-label">At-Risk Customers</span>
+          <p-tag value="{{ data.customerInsights.atRiskCustomers }}" severity="danger"></p-tag>
+        </div>
+      </div>
+    </p-tabPanel>
+    <p-tabPanel header="Inventory Overview">
+      <div class="insight-grid">
+        <div class="insight-card col-span-2">
+            <span class="insight-label">Total Inventory Value</span>
+            <span class="insight-value">{{ data.inventoryOverview.totalInventoryValue | currency:'INR':'symbol':'1.0-0' }}</span>
+        </div>
+         <div class="insight-card col-span-2">
+            <span class="insight-label">Items in Stock</span>
+            <span class="insight-value">{{ data.inventoryOverview.totalItemsInStock | number:'1.0-0' }}</span>
+        </div>
+      </div>
+    </p-tabPanel>
+    <p-tabPanel header="Financial Health">
+      <div class="insight-grid">
+        </div>
+    </p-tabPanel>
+  </p-tabView>
+</div>
+
+<ng-template #loadingOrNoData>
+  <div *ngIf="loading; else noData" class="se-widget-container">
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+      <p-skeleton width="100%" height="170px" styleClass="rounded-2xl"></p-skeleton>
+      <p-skeleton width="100%" height="170px" styleClass="rounded-2xl"></p-skeleton>
+      <p-skeleton width="100%" height="170px" styleClass="rounded-2xl"></p-skeleton>
+      <p-skeleton width="100%" height="170px" styleClass="rounded-2xl"></p-skeleton>
+    </div>
+    <p-skeleton width="100%" height="250px" styleClass="mt-8 rounded-2xl"></p-skeleton>
+  </div>
+  <ng-template #noData>
+    <div class="se-widget-container flex items-center justify-center h-64">
+      <p-message severity="info" text="No data available for the selected period."></p-message>
+    </div>
+  </ng-template>
+</ng-template>
+
+<!-- <div class="grid-stack-item-content p-4 md:p-6"
      [style]="{'background': 'var(--theme-bg-secondary)', 'border-radius': 'var(--ui-border-radius)', 'box-shadow': 'var(--ui-shadow)'}">
 
   <p-panel [header]="title" styleClass="rounded-2xl border-0">
     <ng-container *ngIf="loading; else loadingTemplate">
       <div *ngIf="data; else noData" class="flex flex-col gap-6">
 
-        <!-- KPI Summary Section -->
+        KPI Summary Section
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-          <!-- Total Revenue -->
+          Total Revenue
           <p-card styleClass="shadow-md hover:shadow-lg transition-transform transform hover:-translate-y-1 rounded-2xl overflow-hidden">
             <ng-template pTemplate="header">
               <div class="bg-blue-50 p-4">
@@ -16,7 +134,7 @@
                   <div class="flex-1">
                     <h3 class="text-sm font-semibold text-[var(--theme-text-label)]">Total Revenue</h3>
                     <p class="text-xl md:text-2xl font-bold text-[var(--theme-accent-primary)]">
-                      {{ data.kpiSummary.totalRevenue.value | currency:'USD':'symbol':'1.0-0' }}
+                      {{ data.kpiSummary.totalRevenue.value | currency:'INR':'symbol':'1.0-0' }}
                     </p>
                   </div>
                 </div>
@@ -31,7 +149,7 @@
             </ng-template>
           </p-card>
 
-          <!-- Total Sales -->
+          Total Sales
           <p-card styleClass="shadow-md hover:shadow-lg transition-transform transform hover:-translate-y-1 rounded-2xl overflow-hidden">
             <ng-template pTemplate="header">
               <div class="bg-green-50 p-4">
@@ -55,7 +173,7 @@
             </ng-template>
           </p-card>
 
-          <!-- Gross Profit -->
+          Gross Profit
           <p-card styleClass="shadow-md hover:shadow-lg transition-transform transform hover:-translate-y-1 rounded-2xl overflow-hidden">
             <ng-template pTemplate="header">
               <div class="bg-purple-50 p-4">
@@ -64,7 +182,7 @@
                   <div class="flex-1">
                     <h3 class="text-sm font-semibold text-[var(--theme-text-label)]">Gross Profit</h3>
                     <p class="text-xl md:text-2xl font-bold text-[var(--theme-accent-primary)]">
-                      {{ data.kpiSummary.grossProfit.value | currency:'USD':'symbol':'1.0-0' }}
+                      {{ data.kpiSummary.grossProfit.value | currency:'INR':'symbol':'1.0-0' }}
                     </p>
                   </div>
                 </div>
@@ -79,7 +197,7 @@
             </ng-template>
           </p-card>
 
-          <!-- New Customers -->
+          New Customers
           <p-card styleClass="shadow-md hover:shadow-lg transition-transform transform hover:-translate-y-1 rounded-2xl overflow-hidden">
             <ng-template pTemplate="header">
               <div class="bg-yellow-50 p-4">
@@ -106,7 +224,7 @@
 
         <p-divider></p-divider>
 
-        <!-- Customer Insights Section -->
+        Customer Insights Section
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
           <p-card header="Customer Insights" styleClass="shadow-md rounded-2xl">
             <div class="flex flex-col gap-4">
@@ -116,7 +234,7 @@
               </div>
               <div class="flex justify-between items-center">
                 <span class="text-[var(--theme-text-label)]">Lifetime Value</span>
-                <span class="font-bold text-lg">{{ data.customerInsights.lifetimeValue | currency:'USD':'symbol':'1.0-0' }}</span>
+                <span class="font-bold text-lg">{{ data.customerInsights.lifetimeValue | currency:'INR':'symbol':'1.0-0' }}</span>
               </div>
               <p-divider></p-divider>
               <div class="flex flex-col gap-2">
@@ -138,18 +256,18 @@
                 <h4 class="text-sm font-semibold text-[var(--theme-text-label)]">Revenue Breakdown</h4>
                 <div *ngFor="let item of data.customerInsights.revenueBreakdown" class="flex justify-between items-center">
                   <span class="capitalize">{{ item._id }}</span>
-                  <span class="font-medium">{{ item.totalRevenue | currency:'USD':'symbol':'1.0-0' }}</span>
+                  <span class="font-medium">{{ item.totalRevenue | currency:'INR':'symbol':'1.0-0' }}</span>
                 </div>
               </div>
             </div>
           </p-card>
 
-          <!-- Inventory Overview Section -->
+          Inventory Overview Section
           <p-card header="Inventory Overview" styleClass="shadow-md rounded-2xl">
             <div class="flex flex-col gap-4">
               <div class="flex justify-between items-center">
                 <span class="text-[var(--theme-text-label)]">Total Inventory Value</span>
-                <span class="font-bold text-lg">{{ data.inventoryOverview.totalInventoryValue | currency:'USD':'symbol':'1.0-0' }}</span>
+                <span class="font-bold text-lg">{{ data.inventoryOverview.totalInventoryValue | currency:'INR':'symbol':'1.0-0' }}</span>
               </div>
               <div class="flex justify-between items-center">
                 <span class="text-[var(--theme-text-label)]">Total Items in Stock</span>
@@ -171,13 +289,13 @@
 
         <p-divider></p-divider>
 
-        <!-- Financial Health Section -->
+        Financial Health Section
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
           <p-card header="Financial Health" styleClass="shadow-md rounded-2xl">
             <div class="flex flex-col gap-4">
               <div class="flex justify-between items-center">
                 <span class="text-[var(--theme-text-label)]">Total Collected</span>
-                <span class="font-bold text-lg">{{ data.financialHealth.totalCollected | currency:'USD':'symbol':'1.0-0' }}</span>
+                <span class="font-bold text-lg">{{ data.financialHealth.totalCollected | currency:'INR':'symbol':'1.0-0' }}</span>
               </div>
               <div class="flex justify-between items-center">
                 <span class="text-[var(--theme-text-label)]">Collection Rate</span>
@@ -191,7 +309,7 @@
             </div>
           </p-card>
 
-          <!-- Revenue Trend Chart Section -->
+          Revenue Trend Chart Section
           <p-card header="Revenue Trend" styleClass="shadow-md rounded-2xl">
             <p-chart type="line" [data]="revenueChartData" [options]="revenueChartOptions" [height]="'250'"></p-chart>
           </p-card>
@@ -199,13 +317,13 @@
 
       </div>
 
-      <!-- No data message -->
+      No data message
       <ng-template #noData>
         <p-message severity="info" text="No data available for the selected period." styleClass="w-full"></p-message>
       </ng-template>
     </ng-container>
 
-    <!-- Loading skeleton -->
+    Loading skeleton
     <ng-template #loadingTemplate>
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         <p-skeleton width="100%" height="100px" styleClass="mb-2"></p-skeleton>
@@ -224,4 +342,4 @@
     </ng-template>
 
   </p-panel>
-</div>
+</div> -->

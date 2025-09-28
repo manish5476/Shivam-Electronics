@@ -76,7 +76,7 @@ export interface CustomerAnalyticsData {
         <!-- FIX: Removed ?. from data.revenueBreakdown as 'data' is already checked -->
         <p-card header="Returning Revenue" class="kpi-card kpi-card-revenue" *ngIf="data.revenueBreakdown.length > 0">
           <div class="kpi-content">
-            <span class="kpi-value">{{ (data.revenueBreakdown[0].totalRevenue || 0) | currency:'USD':'symbol':'1.2-2' }}</span>
+            <span class="kpi-value">{{ (data.revenueBreakdown[0].totalRevenue || 0) | currency:'INR':'symbol':'1.2-2' }}</span>
             <p-progressBar [value]="(data.revenueBreakdown[0].totalRevenue / 1000000) * 100" [style]="{height: '4px'}" styleClass="mt-2"></p-progressBar>
           </div>
         </p-card>
@@ -126,7 +126,7 @@ export interface CustomerAnalyticsData {
                     </p-avatar>
                     <div>
                       <span class="customer-name">{{ customer.fullname }}</span>
-                      <span class="purchase-amount">{{ customer.lifetimeValue | currency:'USD' }}</span>
+                      <span class="purchase-amount">{{ customer.lifetimeValue | currency:'INR' }}</span>
                     </div>
                   </div>
                   <span class="customer-email">{{ customer.email }}</span>
@@ -178,7 +178,7 @@ export interface CustomerAnalyticsData {
             <div class="card-details">
               <div class="detail-item">
                 <span>Balance</span>
-                <strong>{{ getTotalRevenue() | currency:'USD' }}</strong>
+                <strong>{{ getTotalRevenue() | currency:'INR' }}</strong>
               </div>
               <div class="detail-item">
                 <span>Total Segments</span>
@@ -203,7 +203,7 @@ export interface CustomerAnalyticsData {
                     <span class="movement-date">{{ customer.lastPurchaseDate || 'Needs attention' }}</span>
                   </div>
                   <span class="movement-amount amount-risk" *ngIf="customer.totalPurchasedAmount">
-                    {{ customer.totalPurchasedAmount | currency:'USD' }}
+                    {{ customer.totalPurchasedAmount | currency:'INR' }}
                   </span>
                 </div>
               </ng-container>
@@ -360,7 +360,7 @@ export class DashboardTopCustomerViewComponent {
 //           <div class="kpi-icon"><i class="pi pi-dollar"></i></div>
 //           <div class="kpi-content">
 //             <span class="kpi-title">Total Returning Revenue</span>
-//             <span class="kpi-value">{{ (data.revenueBreakdown[0]?.totalRevenue || 0) | currency:'USD':'symbol':'1.2-2' }}</span>
+//             <span class="kpi-value">{{ (data.revenueBreakdown[0]?.totalRevenue || 0) | currency:'INR':'symbol':'1.2-2' }}</span>
 //           </div>
 //         </div>
 //         <div class="kpi-card kpi-card-new">
@@ -408,7 +408,7 @@ export class DashboardTopCustomerViewComponent {
 //                     <p-avatar [image]="customer.profileImg || 'assets/default-avatar.png'" styleClass="mr-2" size="normal" shape="circle" pTooltip="Profile Image"></p-avatar>
 //                     <span class="customer-name">{{ customer.fullname }}</span>
 //                   </div>
-//                   <span class="purchase-amount">{{ customer.totalPurchasedAmount | currency:'USD' }}</span>
+//                   <span class="purchase-amount">{{ customer.totalPurchasedAmount | currency:'INR' }}</span>
 //                   <span class="customer-email">{{ customer.email }}</span>
 //                   <i class="pi pi-ellipsis-h more-options"></i>
 //                 </div>
@@ -456,11 +456,11 @@ export class DashboardTopCustomerViewComponent {
 //               </div>
 //               <div class="summary-item">
 //                 <span class="summary-label">Avg. Lifetime Value</span>
-//                 <strong class="summary-value">{{ calculateAvgLifetimeValue() | currency:'USD':'symbol':'1.2-2' }}</strong>
+//                 <strong class="summary-value">{{ calculateAvgLifetimeValue() | currency:'INR':'symbol':'1.2-2' }}</strong>
 //               </div>
 //               <div class="summary-item">
 //                 <span class="summary-label">Total Revenue</span>
-//                 <strong class="summary-value">{{ calculateTotalRevenue() | currency:'USD':'symbol':'1.2-2' }}</strong>
+//                 <strong class="summary-value">{{ calculateTotalRevenue() | currency:'INR':'symbol':'1.2-2' }}</strong>
 //               </div>
 //             </div>
 //           </div>
@@ -491,7 +491,7 @@ export class DashboardTopCustomerViewComponent {
 //                       <span class="movement-name">{{ customer.fullname }}</span>
 //                     </div>
 //                     <span class="movement-date">Last Purchase: {{ customer.lastPurchaseDate | date:'shortDate' }}</span>
-//                     <span class="movement-amount">{{ customer.totalPurchasedAmount | currency:'USD' }}</span>
+//                     <span class="movement-amount">{{ customer.totalPurchasedAmount | currency:'INR' }}</span>
 //                   </div>
 //                   <span class="movement-status amount-risk">Alert</span>
 //                 </div>
@@ -790,7 +790,7 @@ export class DashboardTopCustomerViewComponent {
 // //         <div class="kpi-card kpi-card-revenue">
 // //           <div class="kpi-content">
 // //             <span class="kpi-title">Total Returning Revenue</span>
-// //             <span class="kpi-value">{{ (data.revenueBreakdown[0].totalRevenue || 0) | currency:'USD':'symbol':'1.2-2' }}</span>
+// //             <span class="kpi-value">{{ (data.revenueBreakdown[0].totalRevenue || 0) | currency:'INR':'symbol':'1.2-2' }}</span>
 // //           </div>
 // //         </div>
 // //         <div class="kpi-card kpi-card-new">
@@ -831,7 +831,7 @@ export class DashboardTopCustomerViewComponent {
 // //                   <p-avatar [label]="customer.fullname.charAt(0)" styleClass="mr-2" size="normal" shape="circle"></p-avatar>
 // //                   <span class="customer-name">{{ customer.fullname }}</span>
 // //                 </div>
-// //                 <span class="purchase-amount">{{ customer.totalPurchasedAmount | currency:'USD' }}</span>
+// //                 <span class="purchase-amount">{{ customer.totalPurchasedAmount | currency:'INR' }}</span>
 // //                 <span class="customer-email">{{ customer.email }}</span>
 // //                 <i class="pi pi-ellipsis-h more-options"></i>
 // //               </div>
