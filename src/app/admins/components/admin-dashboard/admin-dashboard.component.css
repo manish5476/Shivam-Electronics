@@ -1,0 +1,207 @@
+/* =======================
+   Admin Dashboard Styles
+======================= */
+
+/* Base Layout */
+.admin-dashboard {
+  background-color: var(--theme-bg-primary);
+  min-height: 100vh;
+  font-family: var(--font-body);
+  padding: 1rem;
+}
+
+@media (min-width: 768px) {
+  .admin-dashboard {
+    padding: 1.5rem;
+  }
+}
+
+/* Toolbar */
+.se-filter-bar {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  background-color: var(--theme-bg-secondary);
+  padding: 0.25rem 0.75rem;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.06);
+  border-radius: var(--ui-border-radius);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* Toolbar Text */
+.se-filter-bar h2 {
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: var(--theme-text-primary);
+  font-family: var(--font-primary);
+}
+
+/* Toolbar Buttons */
+.p-toolbar-group-right button,
+.p-toolbar-group-center button {
+  transition: all 0.2s ease-in-out;
+  padding: 0.25rem 0.75rem;
+  font-size: 0.875rem;
+}
+
+.p-toolbar-group-right button:hover,
+.p-toolbar-group-center button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+}
+
+/* PrimeNG Select & Calendar */
+.p-select,
+.p-calendar {
+  font-family: var(--font-body);
+  border-radius: 9999px;
+  border-width: 1px;
+  border-color: var(--theme-border-secondary);
+  background-color: var(--theme-bg-ternary);
+  padding: 0.25rem 0.75rem;
+  font-size: 0.875rem;
+}
+
+.p-calendar .p-inputtext {
+  font-size: 0.875rem;
+}
+
+/* KPI & Analytics Cards */
+.app-enhanced-kpi-summary,
+.app-kpi-summary,
+.app-dashboard-overview,
+.app-product-analytics,
+.app-sales-charts,
+.app-sales-trends,
+.app-yearly-sales,
+.app-monthly-sales,
+.app-sales-forecast,
+.app-inventory-turnover,
+.app-customer-analytics,
+.app-payment-analytics {
+  background-color: var(--theme-bg-secondary);
+  border-radius: 1rem;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  padding: 1rem;
+  transition: all 0.2s ease-in-out;
+}
+
+.app-enhanced-kpi-summary:hover,
+.app-kpi-summary:hover,
+.app-dashboard-overview:hover,
+.app-product-analytics:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+}
+
+/* JSON Debug Panel */
+pre {
+  background-color: var(--theme-bg-ternary);
+  color: var(--theme-text-secondary);
+  border-radius: 1rem;
+  padding: 1rem;
+  overflow: auto;
+  max-height: 24rem;
+  font-size: 0.875rem;
+  font-family: monospace;
+}
+
+/* Loading Skeletons */
+.p-skeleton {
+  border-radius: 1rem;
+}
+
+/* Dialog Styling */
+.p-dialog {
+  border-radius: 1rem;
+  font-family: var(--font-body);
+}
+
+.p-dialog .p-dialog-header {
+  font-weight: 600;
+  color: var(--theme-text-primary);
+  font-family: var(--font-primary);
+}
+
+/* Responsive Grid Adjustments */
+@media (min-width: 640px) {
+  .grid-cols-1.sm\:grid-cols-2 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1024px) {
+  .lg\:grid-cols-3 {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+  .lg\:grid-cols-4 {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+/* Progress Spinner */
+.p-progress-spinner {
+  color: var(--theme-accent-primary);
+}
+
+/* Buttons */
+.p-button {
+  border-radius: 9999px;
+  font-family: var(--font-body);
+  font-weight: 500;
+  transition: all 0.2s ease-in-out;
+}
+
+.p-button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+/* Tooltip Overrides */
+.p-tooltip {
+  font-family: var(--font-body);
+  font-size: 0.875rem;
+}
+
+/* End of Dashboard CSS */
+/* Button styles */
+.se-button {
+  height: 2.75rem;
+  font-size: var(--font-size-sm);
+  font-family: var(--font-primary);
+  font-weight: 600;
+  background: var(--theme-accent-gradient, var(--theme-accent-primary));
+  color: var(--theme-accent-text-color);
+  border: var(--ui-border-width) solid var(--theme-accent-primary);
+  border-radius: var(--ui-border-radius);
+  box-shadow: var(--ui-shadow);
+  transition: var(--ui-transition);
+}
+.se-button:hover {
+  background: var(--theme-accent-primary-hover);
+  border-color: var(--theme-accent-primary-hover);
+  transform: var(--ui-button-hover-transform);
+  box-shadow: var(--ui-shadow-hover);
+}
+
+/* Input styles */
+.se-input {
+  width: 100%;
+  height: 2.75rem;
+  padding: var(--spacing-sm) var(--spacing-md);
+  font-family: var(--font-body);
+  font-size: var(--font-size-sm);
+  color: var(--theme-text-primary);
+  background: var(--theme-bg-ternary);
+  border: var(--ui-border-width) solid var(--theme-border-primary);
+  border-radius: var(--ui-border-radius);
+  transition: var(--ui-transition);
+}
+.se-input:focus {
+  border-color: var(--theme-accent-primary);
+  box-shadow: 0 0 0 3px var(--theme-accent-focus-ring);
+  outline: none;
+}

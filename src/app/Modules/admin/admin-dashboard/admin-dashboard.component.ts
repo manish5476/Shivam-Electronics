@@ -157,11 +157,11 @@ public gridOptions: GridStackOptions = {
   column: 12,
   columnOpts: {
     breakpoints: [
-      { w: 1024, c: 12 }, // 12 columns for medium screens
-      { w: 640, c: 12 }, // 12 columns for mobile (single-column layout)
+      { w: 1024, c: 12 }, 
+      { w: 640, c: 12 }, 
     ],
   },
-  minRow: 1, // Allow grid to expand as needed
+  minRow: 1, 
   alwaysShowResizeHandle: /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
     navigator.userAgent
   ),
@@ -268,102 +268,274 @@ constructor(private cdr: ChangeDetectorRef) {}
     this.isPaymentLoading = true;
     this.isForecastLoading = true;
 
-    forkJoin([
-      this.dashboardService
-        .getEnhancedKpiSummary(this.selectedPeriod, this.startDate, this.endDate, forceRefresh)
-        .pipe(
-          tap((res) => (this.enhancedKpiSummary = res?.data || res)),
-          catchError((err) => { this.handleError('Enhanced KPI Summary', err, 'kpiSummary'); return of(null); })
-        ),
-      this.dashboardService
-        .getKpiSummary(this.selectedPeriod, this.startDate, this.endDate, forceRefresh)
-        .pipe(
-          tap((res) => (this.kpiSummary = res?.data || res)),
-          catchError((err) => { this.handleError('KPI Summary', err, 'kpiSummary'); return of(null); })
-        ),
-      this.dashboardService
-        .getDashboardOverview(this.selectedPeriod, this.startDate, this.endDate, forceRefresh)
-        .pipe(
-          tap((res) => (this.overview = res?.data || res)),
-          catchError((err) => { this.handleError('Overview', err, 'kpiSummary'); return of(null); })
-        ),
-      this.dashboardService
-        .getProductAnalytics(this.selectedPeriod, this.dataLimit, this.startDate, this.endDate, forceRefresh)
-        .pipe(
-          tap((res) => (this.productAnalytics = res?.data || res)),
-          catchError((err) => { this.handleError('Product Analytics', err, 'productAnalytics'); return of(null); })
-        ),
-      this.dashboardService
-        .getCustomerAnalytics(this.selectedPeriod, this.dataLimit, this.startDate, this.endDate, forceRefresh)
-        .pipe(
-          tap((res) => (this.customerAnalytics = res?.data || res)),
-          catchError((err) => { this.handleError('Customer Analytics', err, 'customerAnalytics'); return of(null); })
-        ),
-      this.dashboardService
-        .getPaymentAnalytics(this.selectedPeriod, this.startDate, this.endDate, forceRefresh)
-        .pipe(
-          tap((res) => (this.paymentAnalytics = res?.data || res)),
-          catchError((err) => { this.handleError('Payment Analytics', err, 'paymentAnalytics'); return of(null); })
-        ),
-      this.dashboardService
-        .getInventoryTurnover(this.selectedPeriod, this.startDate, this.endDate, forceRefresh)
-        .pipe(
-          tap((res) => (this.inventoryTurnover = res?.data || res)),
-          catchError((err) => { this.handleError('Inventory Turnover', err, 'productAnalytics'); return of(null); })
-        ),
-      this.dashboardService
-        .getSalesForecast(this.selectedPeriod, this.startDate, this.endDate, forceRefresh)
-        .pipe(
-          tap((res) => (this.salesForecast = res?.data || res)),
-          catchError((err) => { this.handleError('Sales Forecast', err, 'salesForecast'); return of(null); })
-        ),
-      this.dashboardService
-        .getSalesTrends(this.selectedPeriod, this.startDate, this.endDate, forceRefresh)
-        .pipe(
-          tap((res) => (this.salesTrends = res?.data || res)),
-          catchError((err) => { this.handleError('Sales Trends', err, 'chartsOverview'); return of(null); })
-        ),
-      this.dashboardService
-        .getSalesCharts(this.selectedPeriod, this.startDate, this.endDate, forceRefresh)
-        .pipe(
-          tap((res) => (this.salesCharts = res?.data || res)),
-          catchError((err) => { this.handleError('Sales Charts', err, 'chartsOverview'); return of(null); })
-        ),
-      this.dashboardService
-        .getYearlySales(this.selectedPeriod, forceRefresh)
-        .pipe(
-          tap((res) => (this.yearlySales = res?.data || res)),
-          catchError((err) => { this.handleError('Yearly Sales', err, 'chartsOverview'); return of(null); })
-        ),
-      this.dashboardService
-        .getMonthlySales(this.selectedPeriod, forceRefresh)
-        .pipe(
-          tap((res) => (this.monthlySales = res?.data || res)),
-          catchError((err) => { this.handleError('Monthly Sales', err, 'chartsOverview'); return of(null); })
-        ),
-      this.dashboardService
-        .getWeeklySales(this.selectedPeriod, forceRefresh)
-        .pipe(
-          tap((res) => (this.weeklySales = res?.data || res)),
-          catchError((err) => { this.handleError('Weekly Sales', err, 'chartsOverview'); return of(null); })
-        ),
-    ])
-      .pipe(
-        finalize(() => {
-          this.isLoading = false;
-          this.isKpiLoading = false;
-          this.isChartsLoading = false;
-          this.isProductLoading = false;
-          this.isCustomerLoading = false;
-          this.isPaymentLoading = false;
-          this.isForecastLoading = false;
-          this.updateChartData();
-          this.messageService.add({ severity: 'success', summary: 'Dashboard', detail: 'Loaded dashboard data.' });
-        })
-      )
-      .subscribe();
-  }
-
+  //   forkJoin([
+  //     this.dashboardService
+  //       .getEnhancedKpiSummary(this.selectedPeriod, this.startDate, this.endDate, forceRefresh)
+  //       .pipe(
+  //         tap((res) => (this.enhancedKpiSummary = res?.data || res)),
+  //         catchError((err) => { this.handleError('Enhanced KPI Summary', err, 'kpiSummary'); return of(null); })
+  //       ),
+  //     this.dashboardService
+  //       .getKpiSummary(this.selectedPeriod, this.startDate, this.endDate, forceRefresh)
+  //       .pipe(
+  //         tap((res) => (this.kpiSummary = res?.data || res)),
+  //         catchError((err) => { this.handleError('KPI Summary', err, 'kpiSummary'); return of(null); })
+  //       ),
+  //     this.dashboardService
+  //       .getDashboardOverview(this.selectedPeriod, this.startDate, this.endDate, forceRefresh)
+  //       .pipe(
+  //         tap((res) => (this.overview = res?.data || res)),
+  //         catchError((err) => { this.handleError('Overview', err, 'kpiSummary'); return of(null); })
+  //       ),
+  //     this.dashboardService
+  //       .getProductAnalytics(this.selectedPeriod, this.dataLimit, this.startDate, this.endDate, forceRefresh)
+  //       .pipe(
+  //         tap((res) => (this.productAnalytics = res?.data || res)),
+  //         catchError((err) => { this.handleError('Product Analytics', err, 'productAnalytics'); return of(null); })
+  //       ),
+  //     this.dashboardService
+  //       .getCustomerAnalytics(this.selectedPeriod, this.dataLimit, this.startDate, this.endDate, forceRefresh)
+  //       .pipe(
+  //         tap((res) => (this.customerAnalytics = res?.data || res)),
+  //         catchError((err) => { this.handleError('Customer Analytics', err, 'customerAnalytics'); return of(null); })
+  //       ),
+  //     this.dashboardService
+  //       .getPaymentAnalytics(this.selectedPeriod, this.startDate, this.endDate, forceRefresh)
+  //       .pipe(
+  //         tap((res) => (this.paymentAnalytics = res?.data || res)),
+  //         catchError((err) => { this.handleError('Payment Analytics', err, 'paymentAnalytics'); return of(null); })
+  //       ),
+  //     this.dashboardService
+  //       .getInventoryTurnover(this.selectedPeriod, this.startDate, this.endDate, forceRefresh)
+  //       .pipe(
+  //         tap((res) => (this.inventoryTurnover = res?.data || res)),
+  //         catchError((err) => { this.handleError('Inventory Turnover', err, 'productAnalytics'); return of(null); })
+  //       ),
+  //     this.dashboardService
+  //       .getSalesForecast(this.selectedPeriod, this.startDate, this.endDate, forceRefresh)
+  //       .pipe(
+  //         tap((res) => (this.salesForecast = res?.data || res)),
+  //         catchError((err) => { this.handleError('Sales Forecast', err, 'salesForecast'); return of(null); })
+  //       ),
+  //     this.dashboardService
+  //       .getSalesTrends(this.selectedPeriod, this.startDate, this.endDate, forceRefresh)
+  //       .pipe(
+  //         tap((res) => (this.salesTrends = res?.data || res)),
+  //         catchError((err) => { this.handleError('Sales Trends', err, 'chartsOverview'); return of(null); })
+  //       ),
+  //     this.dashboardService
+  //       .getSalesCharts(this.selectedPeriod, this.startDate, this.endDate, forceRefresh)
+  //       .pipe(
+  //         tap((res) => (this.salesCharts = res?.data || res)),
+  //         catchError((err) => { this.handleError('Sales Charts', err, 'chartsOverview'); return of(null); })
+  //       ),
+  //     this.dashboardService
+  //       .getYearlySales(this.selectedPeriod, forceRefresh)
+  //       .pipe(
+  //         tap((res) => (this.yearlySales = res?.data || res)),
+  //         catchError((err) => { this.handleError('Yearly Sales', err, 'chartsOverview'); return of(null); })
+  //       ),
+  //     this.dashboardService
+  //       .getMonthlySales(this.selectedPeriod, forceRefresh)
+  //       .pipe(
+  //         tap((res) => (this.monthlySales = res?.data || res)),
+  //         catchError((err) => { this.handleError('Monthly Sales', err, 'chartsOverview'); return of(null); })
+  //       ),
+  //     this.dashboardService
+  //       .getWeeklySales(this.selectedPeriod, forceRefresh)
+  //       .pipe(
+  //         tap((res) => (this.weeklySales = res?.data || res)),
+  //         catchError((err) => { this.handleError('Weekly Sales', err, 'chartsOverview'); return of(null); })
+  //       ),
+  //   ])
+  //     .pipe(
+  //       finalize(() => {
+  //         this.isLoading = false;
+  //         this.isKpiLoading = false;
+  //         this.isChartsLoading = false;
+  //         this.isProductLoading = false;
+  //         this.isCustomerLoading = false;
+  //         this.isPaymentLoading = false;
+  //         this.isForecastLoading = false;
+  //         this.updateChartData();
+  //         this.messageService.add({ severity: 'success', summary: 'Dashboard', detail: 'Loaded dashboard data.' });
+  //       })
+  //     )
+  //     .subscribe();
+  // }
+forkJoin([
+  this.dashboardService
+    .getEnhancedKpiSummary(this.selectedPeriod, this.startDate, this.endDate, forceRefresh)
+    .pipe(
+      tap((res) => {
+        console.log('API: Enhanced KPI Summary →', res);
+        this.enhancedKpiSummary = res?.data || res;
+      }),
+      catchError((err) => {
+        this.handleError('Enhanced KPI Summary', err, 'kpiSummary');
+        return of(null);
+      })
+    ),
+  this.dashboardService
+    .getKpiSummary(this.selectedPeriod, this.startDate, this.endDate, forceRefresh)
+    .pipe(
+      tap((res) => {
+        console.log('API: KPI Summary →', res);
+        this.kpiSummary = res?.data || res;
+      }),
+      catchError((err) => {
+        this.handleError('KPI Summary', err, 'kpiSummary');
+        return of(null);
+      })
+    ),
+  this.dashboardService
+    .getDashboardOverview(this.selectedPeriod, this.startDate, this.endDate, forceRefresh)
+    .pipe(
+      tap((res) => {
+        console.log('API: Overview →', res);
+        this.overview = res?.data || res;
+      }),
+      catchError((err) => {
+        this.handleError('Overview', err, 'kpiSummary');
+        return of(null);
+      })
+    ),
+  this.dashboardService
+    .getProductAnalytics(this.selectedPeriod, this.dataLimit, this.startDate, this.endDate, forceRefresh)
+    .pipe(
+      tap((res) => {
+        console.log('API: Product Analytics →', res);
+        this.productAnalytics = res?.data || res;
+      }),
+      catchError((err) => {
+        this.handleError('Product Analytics', err, 'productAnalytics');
+        return of(null);
+      })
+    ),
+  this.dashboardService
+    .getCustomerAnalytics(this.selectedPeriod, this.dataLimit, this.startDate, this.endDate, forceRefresh)
+    .pipe(
+      tap((res) => {
+        console.log('API: Customer Analytics →', res);
+        this.customerAnalytics = res?.data || res;
+      }),
+      catchError((err) => {
+        this.handleError('Customer Analytics', err, 'customerAnalytics');
+        return of(null);
+      })
+    ),
+  this.dashboardService
+    .getPaymentAnalytics(this.selectedPeriod, this.startDate, this.endDate, forceRefresh)
+    .pipe(
+      tap((res) => {
+        console.log('API: Payment Analytics →', res);
+        this.paymentAnalytics = res?.data || res;
+      }),
+      catchError((err) => {
+        this.handleError('Payment Analytics', err, 'paymentAnalytics');
+        return of(null);
+      })
+    ),
+  this.dashboardService
+    .getInventoryTurnover(this.selectedPeriod, this.startDate, this.endDate, forceRefresh)
+    .pipe(
+      tap((res) => {
+        console.log('API: Inventory Turnover →', res);
+        this.inventoryTurnover = res?.data || res;
+      }),
+      catchError((err) => {
+        this.handleError('Inventory Turnover', err, 'productAnalytics');
+        return of(null);
+      })
+    ),
+  this.dashboardService
+    .getSalesForecast(this.selectedPeriod, this.startDate, this.endDate, forceRefresh)
+    .pipe(
+      tap((res) => {
+        console.log('API: Sales Forecast →', res);
+        this.salesForecast = res?.data || res;
+      }),
+      catchError((err) => {
+        this.handleError('Sales Forecast', err, 'salesForecast');
+        return of(null);
+      })
+    ),
+  this.dashboardService
+    .getSalesTrends(this.selectedPeriod, this.startDate, this.endDate, forceRefresh)
+    .pipe(
+      tap((res) => {
+        console.log('API: Sales Trends →', res);
+        this.salesTrends = res?.data || res;
+      }),
+      catchError((err) => {
+        this.handleError('Sales Trends', err, 'chartsOverview');
+        return of(null);
+      })
+    ),
+  this.dashboardService
+    .getSalesCharts(this.selectedPeriod, this.startDate, this.endDate, forceRefresh)
+    .pipe(
+      tap((res) => {
+        console.log('API: Sales Charts →', res);
+        this.salesCharts = res?.data || res;
+      }),
+      catchError((err) => {
+        this.handleError('Sales Charts', err, 'chartsOverview');
+        return of(null);
+      })
+    ),
+  this.dashboardService
+    .getYearlySales(this.selectedPeriod, '')
+    .pipe(
+      tap((res) => {
+        console.log('API: Yearly Sales →', res);
+        this.yearlySales = res?.data || res;
+      }),
+      catchError((err) => {
+        this.handleError('Yearly Sales', err, 'chartsOverview');
+        return of(null);
+      })
+    ),
+  this.dashboardService
+    .getMonthlySales(this.selectedPeriod, forceRefresh)
+    .pipe(
+      tap((res) => {
+        console.log('API: Monthly Sales →', res);
+        this.monthlySales = res?.data || res;
+      }),
+      catchError((err) => {
+        this.handleError('Monthly Sales', err, 'chartsOverview');
+        return of(null);
+      })
+    ),
+  this.dashboardService
+    .getWeeklySales(this.selectedPeriod, forceRefresh)
+    .pipe(
+      tap((res) => {
+        console.log('API: Weekly Sales →', res);
+        this.weeklySales = res?.data || res;
+      }),
+      catchError((err) => {
+        this.handleError('Weekly Sales', err, 'chartsOverview');
+        return of(null);
+      })
+    ),
+])
+  .pipe(
+    finalize(() => {
+      this.isLoading = false;
+      this.isKpiLoading = false;
+      this.isChartsLoading = false;
+      this.isProductLoading = false;
+      this.isCustomerLoading = false;
+      this.isPaymentLoading = false;
+      this.isForecastLoading = false;
+      this.updateChartData();
+      this.messageService.add({ severity: 'success', summary: 'Dashboard', detail: 'Loaded dashboard data.' });
+    })
+  )
+  .subscribe();
+}
   refreshKpiPanel(): void {
     this.isKpiLoading = true;
     this.error['kpiSummary'] = null;
@@ -407,7 +579,7 @@ constructor(private cdr: ChangeDetectorRef) {}
           tap((res) => (this.salesCharts = res?.data || res)),
           catchError((err) => { this.handleError('Refresh Sales Charts', err, 'chartsOverview'); return of(null); })
         ),
-      this.dashboardService.getYearlySales(this.selectedPeriod, true).pipe(
+      this.dashboardService.getYearlySales(this.selectedPeriod, 'false').pipe(
         tap((res) => (this.yearlySales = res?.data || res)),
         catchError((err) => { this.handleError('Refresh Yearly Sales', err, 'chartsOverview'); return of(null); })
       ),

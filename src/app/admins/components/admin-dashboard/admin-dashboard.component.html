@@ -1,0 +1,355 @@
+<p-toast position="top-right"></p-toast>
+
+<div class="admin-dashboard min-h-screen p-4 md:p-6" [style]="{'background': 'var(--theme-bg-primary)'}"  
+  [@fadeIn]="true">
+  <p-toolbar styleClass="sticky top-0 z-20 shadow-md rounded-2xl mb-2 md:mb-4 se-filter-bar"    
+    [style]="{'background': 'var(--theme-bg-secondary)', 'padding': '0.25rem 0.75rem'}">
+    <div class="p-toolbar-group-left flex items-center">
+      <h2 class="text-lg md:text-xl font-bold tracking-tight"        
+        [style]="{'color': 'var(--theme-text-primary)', 'font-family': 'var(--font-primary)'}">Admin Dashboard</h2>
+    </div>
+
+    <div class="p-toolbar-group-center flex flex-wrap gap-1 md:gap-2 items-center justify-center flex-1 px-1">
+      <p-select [options]="periodOptions" [(ngModel)]="selectedPeriod" optionLabel="label" optionValue="value"    
+           styleClass="p-inputtext-xs w-32 md:w-40 rounded-full"        
+        [style]="{'background': 'var(--theme-bg-ternary)', 'border-color': 'var(--theme-border-secondary)', 'font-family': 'var(--font-body)', 'font-size': '0.875rem'}"
+                (onChange)="onFilterChange()"></p-select>
+
+      <p-select [options]="limitOptions" [(ngModel)]="dataLimit" optionLabel="label" optionValue="value"        
+        styleClass="p-inputtext-xs w-24 md:w-32 rounded-full"        
+        [style]="{'background': 'var(--theme-bg-ternary)', 'border-color': 'var(--theme-border-secondary)', 'font-family': 'var(--font-body)', 'font-size': '0.875rem'}"
+                (onChange)="onFilterChange()"></p-select>
+
+      <div *ngIf="selectedPeriod === 'custom'" class="flex gap-1 items-center w-full md:w-auto">
+        <p-calendar [(ngModel)]="customDateRange" selectionMode="range" [readonlyInput]="true"          
+          placeholder="Select Date Range" dateFormat="dd/mm/yy" styleClass="p-inputtext-xs w-full md:w-64 rounded-full"
+                  
+          [style]="{'background': 'var(--theme-bg-ternary)', 'border-color': 'var(--theme-border-secondary)', 'font-family': 'var(--font-body)', 'font-size': '0.875rem'}"></p-calendar>
+        <button pButton type="button" label="Apply" icon="pi pi-check" class="p-button-xs rounded-full"        
+          
+          [style]="{'background': 'var(--theme-accent-primary)', 'color': 'var(--theme-accent-text-color)', 'border': 'none', 'padding': '0.25rem 0.75rem'}"
+                  (click)="onApplyCustomRange()"></button>
+      </div>
+
+      <p-progressSpinner *ngIf="isLoading$ | async" styleClass="w-4 h-4 md:w-5 md:h-5"        
+        strokeWidth="4"></p-progressSpinner>
+    </div>
+
+    <div class="p-toolbar-group-right flex gap-1 md:gap-2">
+      <button pButton type="button" icon="pi pi-refresh" label="Reload" class="p-button-xs rounded-full"        
+        [style]="{'background': 'var(--theme-bg-ternary)', 'color': 'var(--theme-text-primary)', 'border-color': 'var(--theme-border-secondary)', 'font-family': 'var(--font-body)', 'padding': '0.25rem 0.75rem'}"
+                (click)="triggerRefresh()"></button>
+    </div>
+  </p-toolbar>
+
+  <!-- KPI Row -->
+  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 mb-4">
+    <app-enhanced-kpi-summary [title]="'Enhanced KPI Summary'"
+      [data]="(enhancedKpiSummary$ | async)?.data" [loading]="(isLoading$ | async) ?? false">
+    </app-enhanced-kpi-summary>
+
+    <app-kpi-summary [title]="'KPI Summary'" [data]="(kpiSummary$ | async)?.data" [loading]="(isLoading$ | async) ?? false">
+      </app-kpi-summary>
+
+    <app-dashboard-overview [title]="'Overview'" [data]="(overview$ | async)?.data"
+      [loading]="(isLoading$ | async) ?? false">
+      </app-dashboard-overview>
+
+    <app-product-analytics [title]="'Product Analytics'" [data]="(productAnalytics$ | async)?.data"      
+      [loading]="(isLoading$ | async) ?? false">
+      </app-product-analytics>
+  </div>
+
+  <!-- Charts & Tables -->
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 mb-6">
+    <app-sales-charts [title]="'Sales Charts'" [data]="(salesCharts$ | async)?.data"
+      [loading]="(isLoading$ | async) ?? false">
+      </app-sales-charts>
+
+    <app-sales-trends [title]="'Sales Trends'" [data]="(salesTrends$ | async)?.data"
+      [loading]="(isLoading$ | async) ?? false">
+      </app-sales-trends>
+
+    <app-yearly-sales [title]="'Yearly Sales'" [data]="(yearlySales$ | async)?.data"
+      [loading]="(isLoading$ | async) ?? false">
+      </app-yearly-sales>
+
+    <app-monthly-sales [title]="'Monthly Sales'" [data]="(monthlySales$ | async)?.data"
+      [loading]="(isLoading$ | async) ?? false">
+      </app-monthly-sales>
+  </div>
+
+  <!-- Product, Customers & Payments -->
+  <div class="grid grid-cols-1 lg:grid-cols-3 gap-4 md:gap-6 mb-6">
+    <app-product-analytics [title]="'Top Categories'" [data]="(productAnalytics$ | async)?.data"      
+      [loading]="(isLoading$ | async) ?? false">
+      </app-product-analytics>
+
+    <app-customer-analytics [title]="'Top Customers'" [data]="(customerAnalytics$ | async)?.data"
+      [loading]="(isLoading$ | async) ?? false"       (openDetail)="openDialog('Customer Details', $event)">
+      </app-customer-analytics>
+
+    <app-payment-analytics [title]="'Payment Analytics'" [data]="(paymentAnalytics$ | async)?.data"      
+      [loading]="(isLoading$ | async) ?? false" (openDetail)="openDialog('Payment Details', $event)">
+      </app-payment-analytics>
+  </div>
+
+  <!-- Forecast & Inventory -->
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 mb-8">
+    <app-sales-forecast [title]="'Sales Forecast'" [data]="(salesForecast$ | async)?.data"
+      [loading]="(isLoading$ | async) ?? false">
+      </app-sales-forecast>
+
+    <app-inventory-turnover [title]="'Inventory Turnover'" [data]="(inventoryTurnover$ | async)?.data"      
+      [loading]="(isLoading$ | async) ?? false">
+      </app-inventory-turnover>
+  </div>
+
+  <!-- Loading Skeleton -->
+  <div *ngIf="isLoading$ | async" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
+    <p-skeleton *ngFor="let i of [1,2,3,4]" width="100%" height="8rem md:10rem"      
+      styleClass="mb-4 rounded-2xl"></p-skeleton>
+    <p-skeleton width="100%" height="16rem md:20rem"      
+      styleClass="mb-4 rounded-2xl col-span-1 sm:col-span-2 md:col-span-4"></p-skeleton>
+    <p-skeleton width="100%" height="16rem md:20rem"      
+      styleClass="mb-4 rounded-2xl col-span-1 sm:col-span-2 md:col-span-4"></p-skeleton>
+  </div>
+
+  <!-- Detail Dialog -->
+  <p-dialog header="{{ selectedTitle }}" [(visible)]="showDialog" [modal]="true" [style]="{ width: '70vw' }">
+    
+    <pre class="p-4 font-mono text-sm overflow-auto max-h-[60vh]">{{ selectedData | json }}</pre>
+  
+  </p-dialog>
+</div>
+
+<!-- <p-toast position="top-right"></p-toast>
+
+<div class="admin-dashboard min-h-screen p-4 md:p-6" [style]="{'background': 'var(--theme-bg-primary)'}"
+  [@fadeIn]="true">
+  Toolbar
+  <p-toolbar styleClass="sticky top-0 z-20 shadow-md rounded-full mb-4 md:mb-6 se-filter-bar"
+    [style]="{'background': 'var(--theme-bg-secondary)', 'padding': '0.5rem 1rem'}">
+    <div class="p-toolbar-group-left flex items-center">
+      <h2 class="text-xl md:text-2xl font-bold tracking-tight"
+        [style]="{'color': 'var(--theme-text-primary)', 'font-family': 'var(--font-primary)'}">Admin Dashboard</h2>
+    </div>
+
+    <div class="p-toolbar-group-center flex flex-wrap gap-2 md:gap-4 items-center justify-center flex-1 px-2">
+      <p-select [options]="periodOptions" [(ngModel)]="selectedPeriod" optionLabel="label" optionValue="value"
+        styleClass="p-inputtext-sm w-36 md:w-48 rounded-full"
+        [style]="{'background': 'var(--theme-bg-ternary)', 'border-color': 'var(--theme-border-secondary)', 'font-family': 'var(--font-body)'}"
+        (onChange)="onFilterChange()"></p-select>
+
+      <p-select [options]="limitOptions" [(ngModel)]="dataLimit" optionLabel="label" optionValue="value"
+        styleClass="p-inputtext-sm w-28 md:w-36 rounded-full"
+        [style]="{'background': 'var(--theme-bg-ternary)', 'border-color': 'var(--theme-border-secondary)', 'font-family': 'var(--font-body)'}"
+        (onChange)="onFilterChange()"></p-select>
+
+      <div *ngIf="selectedPeriod === 'custom'" class="flex gap-2 items-center w-full md:w-auto">
+        <p-calendar [(ngModel)]="customDateRange" selectionMode="range" [readonlyInput]="true"
+          placeholder="Select Date Range" dateFormat="dd/mm/yy" styleClass="p-inputtext-sm w-full md:w-72 rounded-full"
+          [style]="{'background': 'var(--theme-bg-ternary)', 'border-color': 'var(--theme-border-secondary)', 'font-family': 'var(--font-body)'}"></p-calendar>
+        <button pButton type="button" label="Apply" icon="pi pi-check" class="p-button-sm rounded-full"
+          [style]="{'background': 'var(--theme-accent-primary)', 'color': 'var(--theme-accent-text-color)', 'border': 'none'}"
+          (click)="onApplyCustomRange()"></button>
+      </div>
+
+      <p-progressSpinner *ngIf="isLoading$ | async" styleClass="w-5 h-5 md:w-6 md:h-6"
+        strokeWidth="4"></p-progressSpinner>
+    </div>
+
+    <div class="p-toolbar-group-right flex gap-2 md:gap-3">
+      <button pButton type="button" icon="pi pi-refresh" label="Reload" class="p-button-sm rounded-full"
+        [style]="{'background': 'var(--theme-bg-ternary)', 'color': 'var(--theme-text-primary)', 'border-color': 'var(--theme-border-secondary)', 'font-family': 'var(--font-body)'}"
+        (click)="triggerRefresh()"></button>
+    </div>
+  </p-toolbar>
+
+  KPI Row
+  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 mb-4">
+    <app-enhanced-kpi-summary [title]="'Enhanced KPI Summary'" [data]="enhancedKpiSummary$ | async"
+      [loading]="isLoading$ | async">
+    </app-enhanced-kpi-summary>
+
+    <app-kpi-summary [title]="'KPI Summary'" [data]="kpiSummary$ | async" [loading]="isLoading$ | async">
+    </app-kpi-summary>
+
+    <app-dashboard-overview [title]="'Overview'" [data]="overview$ | async" [loading]="isLoading$ | async">
+    </app-dashboard-overview>
+
+    <app-product-analytics [title]="'Product Analytics'" [data]="productAnalytics$ | async"
+      [loading]="(isLoading$ | async) ?? false">
+    </app-product-analytics>
+  </div>
+
+  Charts & Tables
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 mb-6">
+    <app-sales-charts [title]="'Sales Charts'" [data]="salesCharts$ | async" [loading]="isLoading$ | async">
+    </app-sales-charts>
+
+    <app-sales-trends [title]="'Sales Trends'" [data]="salesTrends$ | async" [loading]="isLoading$ | async">
+    </app-sales-trends>
+
+    <app-yearly-sales [title]="'Yearly Sales'" [data]="yearlySales$ | async" [loading]="isLoading$ | async">
+    </app-yearly-sales>
+
+    <app-monthly-sales [title]="'Monthly Sales'" [data]="monthlySales$ | async" [loading]="isLoading$ | async">
+    </app-monthly-sales>
+  </div>
+
+  Product, Customers & Payments
+  <div class="grid grid-cols-1 lg:grid-cols-3 gap-4 md:gap-6 mb-6">
+    <app-product-analytics [title]="'Top Categories'" [data]="productAnalytics$ | async"
+      [loading]="(isLoading$ | async) ?? false">
+    </app-product-analytics>
+
+    <app-customer-analytics [title]="'Top Customers'" [data]="customerAnalytics$ | async" [loading]="isLoading$ | async"
+      (openDetail)="openDialog('Customer Details', $event)">
+    </app-customer-analytics>
+
+    <app-payment-analytics [title]="'Payment Analytics'" [data]="paymentAnalytics$ | async"
+      [loading]="isLoading$ | async" (openDetail)="openDialog('Payment Details', $event)">
+    </app-payment-analytics>
+  </div>
+
+  Forecast & Inventory
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 mb-8">
+    <app-sales-forecast [title]="'Sales Forecast'" [data]="salesForecast$ | async" [loading]="isLoading$ | async">
+    </app-sales-forecast>
+
+    <app-inventory-turnover [title]="'Inventory Turnover'" [data]="inventoryTurnover$ | async"
+      [loading]="isLoading$ | async">
+    </app-inventory-turnover>
+  </div>
+
+  Loading Skeleton
+  <div *ngIf="isLoading$ | async" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
+    <p-skeleton *ngFor="let i of [1,2,3,4]" width="100%" height="8rem md:10rem"
+      styleClass="mb-4 rounded-2xl"></p-skeleton>
+    <p-skeleton width="100%" height="16rem md:20rem"
+      styleClass="mb-4 rounded-2xl col-span-1 sm:col-span-2 md:col-span-4"></p-skeleton>
+    <p-skeleton width="100%" height="16rem md:20rem"
+      styleClass="mb-4 rounded-2xl col-span-1 sm:col-span-2 md:col-span-4"></p-skeleton>
+  </div>
+
+  Detail Dialog
+  <p-dialog header="{{ selectedTitle }}" [(visible)]="showDialog" [modal]="true" [style]="{ width: '70vw' }">
+    <pre class="p-4 font-mono text-sm overflow-auto max-h-[60vh]">{{ selectedData | json }}</pre>
+  </p-dialog>
+</div> -->
+
+
+<!-- <p-toast position="top-right"></p-toast>
+
+<div class="admin-dashboard min-h-screen p-4 md:p-6" [style]="{'background': 'var(--theme-bg-primary)'}" [@fadeIn]="true">
+  Toolbar
+  <p-toolbar styleClass="sticky top-0 z-20 shadow-md rounded-full mb-4 md:mb-6 se-filter-bar"
+    [style]="{'background': 'var(--theme-bg-secondary)', 'padding': '0.5rem 1rem'}">
+    <div class="p-toolbar-group-left flex items-center">
+      <h2 class="text-xl md:text-2xl font-bold tracking-tight"
+        [style]="{'color': 'var(--theme-text-primary)', 'font-family': 'var(--font-primary)'}">Admin Dashboard</h2>
+    </div>
+
+    <div class="p-toolbar-group-center flex flex-wrap gap-2 md:gap-4 items-center justify-center flex-1 px-2">
+      <p-select [options]="periodOptions" [(ngModel)]="selectedPeriod" optionLabel="label" optionValue="value"
+        styleClass="p-inputtext-sm w-36 md:w-48 rounded-full"
+        [style]="{'background': 'var(--theme-bg-ternary)', 'border-color': 'var(--theme-border-secondary)', 'font-family': 'var(--font-body)'}"
+        (onChange)="onFilterChange()"></p-select>
+
+      <p-select [options]="limitOptions" [(ngModel)]="dataLimit" optionLabel="label" optionValue="value"
+        styleClass="p-inputtext-sm w-28 md:w-36 rounded-full"
+        [style]="{'background': 'var(--theme-bg-ternary)', 'border-color': 'var(--theme-border-secondary)', 'font-family': 'var(--font-body)'}"
+        (onChange)="onFilterChange()"></p-select>
+
+      <div *ngIf="selectedPeriod === 'custom'" class="flex gap-2 items-center w-full md:w-auto">
+        <p-calendar [(ngModel)]="customDateRange" selectionMode="range" [readonlyInput]="true"
+          placeholder="Select Date Range" dateFormat="dd/mm/yy" styleClass="p-inputtext-sm w-full md:w-72 rounded-full"
+          [style]="{'background': 'var(--theme-bg-ternary)', 'border-color': 'var(--theme-border-secondary)', 'font-family': 'var(--font-body)'}"></p-calendar>
+        <button pButton type="button" label="Apply" icon="pi pi-check" class="p-button-sm rounded-full"
+          [style]="{'background': 'var(--theme-accent-primary)', 'color': 'var(--theme-accent-text-color)', 'border': 'none'}"
+          (click)="onApplyCustomRange()"></button>
+      </div>
+
+      <p-progressSpinner *ngIf="isLoading$ | async" styleClass="w-5 h-5 md:w-6 md:h-6" strokeWidth="4"></p-progressSpinner>
+    </div>
+
+    <div class="p-toolbar-group-right flex gap-2 md:gap-3">
+      <button pButton type="button" icon="pi pi-refresh" label="Reload" class="p-button-sm rounded-full"
+        [style]="{'background': 'var(--theme-bg-ternary)', 'color': 'var(--theme-text-primary)', 'border-color': 'var(--theme-border-secondary)', 'font-family': 'var(--font-body)'}"
+        (click)="triggerRefresh()"></button>
+    </div>
+  </p-toolbar>
+
+
+  KPI Row
+  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 mb-4">
+    <app-enhanced-kpi-summary [title]="'Enhanced KPI Summary'" [data]="enhancedKpiSummary$ | async" [loading]="isLoading$ | async">
+    </app-enhanced-kpi-summary>
+
+    <app-kpi-summary [title]="'KPI Summary'" [data]="kpiSummary$ | async" [loading]="isLoading$ | async">
+    </app-kpi-summary>
+
+    <app-dashboard-overview [title]="'Overview'" [data]="overview$ | async" [loading]="isLoading$ | async">
+    </app-dashboard-overview>
+
+    <app-product-analytics [title]="'Product Analytics'" [data]="productAnalytics$ | async" [loading]="isLoading$ | async">
+    </app-product-analytics>
+  </div>
+
+  Charts & Tables
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 mb-6">
+    <app-sales-charts [title]="'Sales Charts'" [data]="salesCharts$ | async" [loading]="isLoading$ | async">
+    </app-sales-charts>
+
+    <app-sales-trends [title]="'Sales Trends'" [data]="salesTrends$ | async" [loading]="isLoading$ | async">
+    </app-sales-trends>
+
+    <app-yearly-sales [title]="'Yearly Sales'" [data]="yearlySales$ | async" [loading]="isLoading$ | async">
+    </app-yearly-sales>
+
+    <app-monthly-sales [title]="'Monthly Sales'" [data]="monthlySales$ | async" [loading]="isLoading$ | async">
+    </app-monthly-sales>
+  </div>
+
+  Product, Customers & Payments
+  <div class="grid grid-cols-1 lg:grid-cols-3 gap-4 md:gap-6 mb-6">
+<ng-container *ngIf="productAnalytics$ | async as productAnalytics">
+  <app-product-analytics
+    [title]="'Top Categories'"
+    [data]="productAnalytics"
+    [loading]="isLoading$ | async">
+  </app-product-analytics>
+</ng-container>
+
+
+    <app-customer-analytics [title]="'Top Customers'" [data]="customerAnalytics$ | async" [loading]="isLoading$ | async"
+      (openDetail)="openDialog('Customer Details', $event)">
+    </app-customer-analytics>
+
+    <app-payment-analytics [title]="'Payment Analytics'" [data]="paymentAnalytics$ | async" [loading]="isLoading$ | async"
+      (openDetail)="openDialog('Payment Details', $event)">
+    </app-payment-analytics>
+  </div>
+
+  Forecast & Inventory
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 mb-8">
+    <app-sales-forecast [title]="'Sales Forecast'" [data]="salesForecast$ | async" [loading]="isLoading$ | async">
+    </app-sales-forecast>
+
+    <app-inventory-turnover [title]="'Inventory Turnover'" [data]="inventoryTurnover$ | async" [loading]="isLoading$ | async">
+    </app-inventory-turnover>
+  </div>
+
+  Loading Skeleton
+  <div *ngIf="isLoading$ | async" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
+    <p-skeleton *ngFor="let i of [1,2,3,4]" width="100%" height="8rem md:10rem" styleClass="mb-4 rounded-2xl"></p-skeleton>
+    <p-skeleton width="100%" height="16rem md:20rem" styleClass="mb-4 rounded-2xl col-span-1 sm:col-span-2 md:col-span-4"></p-skeleton>
+    <p-skeleton width="100%" height="16rem md:20rem" styleClass="mb-4 rounded-2xl col-span-1 sm:col-span-2 md:col-span-4"></p-skeleton>
+  </div>
+
+  Detail Dialog
+  <p-dialog header="{{ selectedTitle }}" [(visible)]="showDialog" [modal]="true" [style]="{ width: '70vw' }">
+    <pre class="p-4 font-mono text-sm overflow-auto max-h-[60vh]">{{ selectedData | json }}</pre>
+  </p-dialog>
+</div> -->

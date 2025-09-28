@@ -1,0 +1,126 @@
+/* Global Styles */
+:host {
+  display: block;
+  font-family: var(--font-body);
+  font-size: var(--font-size-base);
+  color: var(--theme-text-primary);
+  height: 100%;
+  margin: 0;
+  background: linear-gradient(to bottom, var(--theme-body-gradient-start), var(--theme-body-gradient-end));
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  transition: var(--ui-transition);
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  transition: var(--ui-transition);
+}
+
+/* GridStack item (outer wrapper) */
+.grid-stack-item-content {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 2rem;
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  transition: var(--ui-transition);
+}
+
+.grid-stack-item-content:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 14px 40px rgba(0, 0, 0, 0.25);
+}
+
+/* p-panel wrapper */
+:host ::ng-deep .p-panel {
+  border-radius: 2rem;
+  border: none;
+  backdrop-filter: blur(20px);
+  background: rgba(255, 255, 255, 0.05);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+  transition: var(--ui-transition);
+}
+
+/* Panel Header */
+:host ::ng-deep .p-panel-header {
+  font-family: var(--font-heading);
+  font-size: var(--font-size-lg);
+  font-weight: 600;
+  padding: var(--spacing-md) var(--spacing-lg);
+  border-bottom: none;
+  color: var(--theme-text-primary);
+}
+
+/* KPI Cards */
+:host ::ng-deep .p-card {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 2rem;
+  overflow: hidden;
+  box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+  transition: var(--ui-transition), transform 0.3s, box-shadow 0.3s;
+}
+
+:host ::ng-deep .p-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 35px rgba(0,0,0,0.25);
+}
+
+/* KPI Card Headers */
+:host ::ng-deep .p-card .bg-blue-50,
+:host ::ng-deep .p-card .bg-green-50,
+:host ::ng-deep .p-card .bg-purple-50,
+:host ::ng-deep .p-card .bg-yellow-50 {
+  background: var(--theme-accent-primary-light) !important;
+  border-radius: var(--ui-border-radius);
+  box-shadow: var(--ui-shadow);
+  padding: var(--spacing-lg);
+  transition: var(--ui-transition);
+}
+
+:host ::ng-deep .p-card h3 {
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  color: var(--theme-text-label);
+}
+
+:host ::ng-deep .p-card p {
+  font-size: var(--font-size-xl);
+  font-weight: 700;
+}
+
+/* Footer tag styling */
+:host ::ng-deep .p-card .p-tag {
+  font-size: var(--font-size-sm);
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.75rem;
+  font-weight: 600;
+}
+
+/* Divider Styling */
+:host ::ng-deep .p-divider {
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+/* ProgressBar Styling */
+:host ::ng-deep .p-progressbar .p-progressbar-value {
+  background: var(--theme-accent-primary);
+  border-radius: 0.5rem;
+}
+
+/* Loading Skeleton */
+:host ::ng-deep .p-skeleton {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 2rem;
+  box-shadow: inset 0 0 8px rgba(0,0,0,0.1);
+}
+
+/* Dark Mode overrides */
+:host-context(body.dark-mode) .grid-stack-item-content,
+:host-context(body.dark-mode) ::ng-deep .p-panel,
+:host-context(body.dark-mode) ::ng-deep .p-card {
+  background: rgba(0, 0, 0, 0.25);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+}
