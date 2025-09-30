@@ -1,0 +1,375 @@
+/*
+ * NOTES MANAGER STYLES
+ * This file uses the global theme variables for a consistent look.
+ */
+
+:host {
+  display: block;
+}
+
+.notes-manager-host {
+  height: 75vh;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--theme-bg-primary);
+  font-family: var(--font-body);
+  font-size: var(--font-size-sm);
+}
+
+/* --- TABS STYLES (UPDATED for p-tabs) --- */
+:host ::ng-deep .p-tabs .p-tablist {
+  background: var(--theme-bg-secondary);
+  border-bottom: var(--ui-border-width) solid var(--theme-border-primary);
+  padding: 0 var(--spacing-md);
+}
+:host ::ng-deep .p-tabs .p-tabpanels {
+  padding: 0;
+  background-color: var(--theme-bg-primary);
+  height: 100%;
+}
+:host ::ng-deep .p-tabs .p-tab {
+  font-family: var(--font-primary);
+  font-weight: 500;
+  gap: 0.5rem; /* For icon and text spacing */
+}
+
+/* --- MAIN LAYOUT --- */
+.notes-layout {
+  display: grid;
+  grid-template-columns: minmax(300px, 1.2fr) 3fr;
+  gap: var(--spacing-lg);
+  height: calc(75vh - 60px); /* Adjust based on your dialog header/tab height */
+  padding: var(--spacing-lg);
+}
+.summary-layout {
+  grid-template-columns: minmax(300px, 1fr) 2.5fr;
+}
+
+/* --- NOTES SIDEBAR --- */
+.notes-sidebar {
+  background: var(--theme-bg-secondary);
+  border-radius: var(--ui-border-radius);
+  border: var(--ui-border-width) solid var(--theme-border-primary);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  box-shadow: var(--ui-shadow-sm);
+}
+.sidebar-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--spacing-sm) var(--spacing-md);
+  border-bottom: var(--ui-border-width) solid var(--theme-border-primary);
+  flex-shrink: 0;
+}
+.section-title {
+  font-family: var(--font-heading);
+  font-size: var(--font-size-lg);
+  font-weight: 600;
+  margin: 0;
+  color: var(--theme-text-primary);
+}
+.sidebar-content {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  overflow: hidden;
+}
+.search-bar {
+  padding: var(--spacing-md);
+  border-bottom: var(--ui-border-width) solid var(--theme-border-primary);
+}
+
+.notes-list-wrapper {
+  flex-grow: 1;
+  overflow-y: auto;
+  padding: var(--spacing-sm);
+}
+
+/* --- SKELETON LOADER --- */
+.skeleton-loader {
+  padding: var(--spacing-sm);
+}
+.skeleton-card {
+  height: 85px;
+  border-radius: var(--ui-border-radius-sm);
+  margin-bottom: var(--spacing-sm);
+  background: linear-gradient(90deg, var(--theme-bg-ternary) 25%, var(--theme-hover-bg) 50%, var(--theme-bg-ternary) 75%);
+  background-size: 200% 100%;
+  animation: skeleton-wave 1.5s infinite linear;
+}
+@keyframes skeleton-wave {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+/* --- NOTE CARD --- */
+.note-card {
+  position: relative;
+  display: flex;
+  padding: 0;
+  border-radius: var(--ui-border-radius-sm);
+  margin-bottom: var(--spacing-sm);
+  cursor: pointer;
+  border: var(--ui-border-width) solid transparent;
+  transition: var(--ui-transition-fast);
+  background: transparent;
+  overflow: hidden;
+}
+.note-card-border {
+  flex-shrink: 0;
+  width: 5px;
+  background-color: var(--theme-border-secondary);
+  transition: var(--ui-transition);
+}
+.note-card-content {
+  padding: var(--spacing-sm) var(--spacing-md);
+  flex-grow: 1;
+}
+.note-card:hover {
+  transform: var(--ui-translate-hover);
+  background: var(--theme-hover-bg);
+  box-shadow: var(--ui-shadow-xs);
+}
+.note-card.active {
+  transform: translateY(0);
+  background: var(--theme-accent-primary-light);
+  border-color: var(--theme-accent-primary);
+}
+.note-card.active .note-card-border {
+  background: var(--theme-accent-gradient);
+}
+.note-title {
+  font-family: var(--font-primary);
+  font-size: var(--font-size-base);
+  font-weight: 600;
+  margin: 0 0 var(--spacing-xs) 0;
+  color: var(--theme-text-primary);
+}
+.note-excerpt {
+  font-size: var(--font-size-xs);
+  color: var(--theme-text-secondary);
+  margin: 0;
+  line-height: var(--line-height-normal);
+}
+.note-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: var(--spacing-sm);
+  font-size: 0.7rem;
+  color: var(--theme-text-muted);
+}
+.note-tags { display: flex; align-items: center; gap: var(--spacing-xs); }
+
+/* --- NOTE EDITOR & PREVIEW PANELS --- */
+.note-editor-panel, .note-preview-panel {
+  background: var(--theme-bg-secondary);
+  border-radius: var(--ui-border-radius);
+  border: var(--ui-border-width) solid var(--theme-border-primary);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  box-shadow: var(--ui-shadow-sm);
+}
+.note-form { display: flex; flex-direction: column; height: 100%; }
+.editor-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--spacing-xs) var(--spacing-md);
+  border-bottom: var(--ui-border-width) solid var(--theme-border-primary);
+  flex-shrink: 0;
+}
+.title-input {
+  font-family: var(--font-heading) !important;
+  font-size: var(--font-size-xl) !important;
+  font-weight: 700 !important;
+  border: none !important;
+  box-shadow: none !important;
+  flex-grow: 1;
+  background: transparent !important;
+}
+.editor-actions { display: flex; gap: var(--spacing-sm); }
+.editor-body {
+  display: grid;
+  grid-template-columns: 3fr 1.1fr;
+  flex-grow: 1;
+  overflow: hidden;
+}
+.editor-content { padding: var(--spacing-md); overflow-y: auto; }
+.content-textarea {
+  width: 100%; height: 100%; resize: none; border: none;
+  font-size: var(--font-size-base);
+  line-height: var(--line-height-relaxed);
+  color: var(--theme-text-primary);
+  background: transparent;
+}
+.content-textarea:focus { box-shadow: none; }
+.editor-sidebar {
+  border-left: var(--ui-border-width) solid var(--theme-border-primary);
+  padding: var(--spacing-md);
+  display: flex; flex-direction: column; gap: var(--spacing-xl);
+  overflow-y: auto;
+  background-color: var(--theme-bg-primary);
+}
+.sidebar-section label {
+  display: flex; align-items: center;
+  font-size: var(--font-size-xs);
+  font-weight: 600; text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: var(--spacing-sm);
+  color: var(--theme-text-label);
+}
+.attachments-preview { display: flex; flex-wrap: wrap; gap: var(--spacing-sm); margin-top: var(--spacing-md); }
+.attachment-thumb {
+  position: relative;
+  width: 70px; height: 70px;
+  border-radius: var(--ui-border-radius-sm);
+  overflow: hidden;
+  border: var(--ui-border-width-thick) solid transparent;
+  transition: var(--ui-transition);
+}
+.attachment-thumb:hover { border-color: var(--theme-accent-primary); }
+.attachment-thumb img { width: 100%; height: 100%; object-fit: cover; }
+.attachment-thumb .remove-btn { position: absolute; top: -8px; right: -8px; }
+
+/* --- PREVIEW PANEL --- */
+.preview-header {
+  padding: var(--spacing-sm) var(--spacing-sm) var(--spacing-sm) var(--spacing-lg);
+  border-bottom: var(--ui-border-width) solid var(--theme-border-primary);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.preview-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+}
+.preview-date { font-size: var(--font-size-xs); color: var(--theme-text-muted); }
+.preview-content { padding: var(--spacing-lg); overflow-y: auto; }
+.preview-text {
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  line-height: var(--line-height-relaxed);
+  color: var(--theme-text-secondary);
+}
+.note-tags-preview { display: flex; gap: var(--spacing-sm); flex-wrap: wrap; margin-bottom: var(--spacing-md); }
+.note-tag {
+    font-size: var(--font-size-xs);
+    background: var(--theme-accent-primary-light);
+    color: var(--theme-accent-primary);
+    padding: 0.25rem 0.75rem;
+    border-radius: var(--ui-border-radius-full);
+    font-weight: 500;
+}
+/* Attachment Gallery Styles */
+.attachments-gallery {
+  margin-top: var(--spacing-xl);
+}
+.gallery-title {
+  font-family: var(--font-primary);
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  margin-bottom: var(--spacing-md);
+  color: var(--theme-text-label);
+}
+.gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: var(--spacing-md);
+}
+.attachment-link {
+  display: block;
+  border-radius: var(--ui-border-radius-sm);
+  overflow: hidden;
+  box-shadow: var(--ui-shadow-sm);
+  transition: var(--ui-transition);
+  aspect-ratio: 1 / 1;
+  position: relative; /* Add for positioning indicator */
+}
+.attachment-link:hover {
+  transform: var(--ui-scale-hover) var(--ui-translate-hover);
+  box-shadow: var(--ui-shadow-md);
+}
+
+/* FIXED: Style the p-image component and its parts correctly */
+:host ::ng-deep .attachment-link .p-image {
+  display: block;
+  height: 100%;
+  width: 100%;
+}
+:host ::ng-deep .attachment-link .p-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: var(--ui-border-radius-sm);
+}
+:host ::ng-deep .attachment-link .p-image-preview-indicator {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.4);
+  color: white;
+  opacity: 0;
+  transition: var(--ui-transition);
+  border-radius: var(--ui-border-radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+:host ::ng-deep .attachment-link .p-image:hover .p-image-preview-indicator {
+  opacity: 1;
+}
+
+/* --- CONFIRMATION DIALOG STYLES --- */
+:host ::ng-deep .p-confirm-dialog .p-dialog-content {
+  padding: var(--spacing-xl) !important;
+  text-align: center;
+}
+:host ::ng-deep .p-confirm-dialog .p-dialog-footer {
+  padding: 0 var(--spacing-lg) var(--spacing-lg) !important;
+  display: flex;
+  justify-content: center;
+  gap: var(--spacing-md);
+  border-top: none;
+}
+:host ::ng-deep .p-confirm-dialog .p-confirm-dialog-icon {
+  font-size: 2.5rem;
+  color: var(--theme-error-primary);
+}
+:host ::ng-deep .p-confirm-dialog .p-confirm-dialog-message {
+  margin-left: 0;
+  margin-top: var(--spacing-md);
+  font-size: var(--font-size-base);
+  color: var(--theme-text-secondary);
+}
+
+/* --- PLACEHOLDER / EMPTY STATES --- */
+.state-placeholder {
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  height: 100%; text-align: center;
+  gap: var(--spacing-sm);
+  padding: var(--spacing-xl);
+}
+.placeholder-icon {
+  font-size: 3rem;
+  color: var(--theme-border-primary);
+}
+.placeholder-text {
+  font-size: var(--font-size-lg);
+  font-weight: 500;
+  color: var(--theme-text-secondary);
+}
+.placeholder-subtext {
+  font-size: var(--font-size-sm);
+  color: var(--theme-text-muted);
+}
+

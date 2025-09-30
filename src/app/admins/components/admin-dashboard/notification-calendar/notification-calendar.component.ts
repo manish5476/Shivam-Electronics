@@ -3,9 +3,8 @@ import { CommonModule, CurrencyPipe } from '@angular/common';
 import { finalize, Observable, of } from 'rxjs';
 import { delay } from 'rxjs/operators';
 import { NotificationService } from '../../../../core/services/notification.service';
-import { NotesManagerComponent } from "../../../../shared/Common/notes-manager.component";
 import { Dialog } from "primeng/dialog";
-
+import { NotesManagerComponent } from '../../../../shared/Common/notes-manager/notes-manager.component';
 // --- INTERFACES to strongly type the data ---
 interface HeatmapDay {
   day: number;

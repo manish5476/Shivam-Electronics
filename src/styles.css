@@ -499,6 +499,117 @@ body {
   }
 }
 
+/*
+ * COMMON PRIMENG COMPONENT STYLES
+ * Import this file into your global styles.css to theme PrimeNG components.
+ * It uses the global theme variables for a consistent look.
+ */
+
+/* --- DIALOG & PANEL STYLES --- */
+.p-dialog,
+.p-panel {
+  background: var(--theme-bg-secondary);
+  border: var(--ui-border-width) solid var(--theme-border-primary);
+  border-radius: var(--ui-border-radius-lg);
+  box-shadow: var(--ui-shadow-lg);
+}
+
+.p-dialog .p-dialog-header,
+.p-panel .p-panel-header {
+  background: transparent;
+  color: var(--theme-text-primary);
+  border-bottom: var(--ui-border-width) solid var(--theme-border-primary);
+  font-family: var(--font-primary);
+  font-size: var(--font-size-lg);
+  font-weight: 600;
+  padding: var(--spacing-sm) var(--spacing-lg); /* Slim header padding */
+  border-radius: var(--ui-border-radius-lg) var(--ui-border-radius-lg) 0 0;
+}
+
+.p-dialog .p-dialog-header .p-dialog-header-icon {
+  width: 2.25rem;
+  height: 2.25rem;
+  color: var(--theme-text-label);
+  border-radius: var(--ui-border-radius-full);
+  transition: var(--ui-transition);
+}
+
+.p-dialog .p-dialog-header .p-dialog-header-icon:hover {
+  color: var(--theme-text-primary);
+  background-color: var(--theme-hover-bg);
+}
+
+.p-dialog .p-dialog-content,
+.p-panel .p-panel-content {
+  background: var(--theme-bg-primary);
+  padding: 0 !important; /* Let inner components manage padding */
+  border-radius: 0 0 var(--ui-border-radius-lg) var(--ui-border-radius-lg);
+  overflow: hidden;
+}
+
+/* --- BUTTON STYLES --- */
+.p-button {
+  font-family: var(--font-primary);
+  font-weight: 600;
+  font-size: var(--font-size-sm);
+  border-radius: var(--ui-border-radius-sm);
+  padding: 0.625rem 1.25rem;
+  background: var(--theme-accent-gradient);
+  color: var(--theme-accent-text-color);
+  border: none;
+  box-shadow: var(--ui-shadow-xs);
+  transition: var(--ui-transition);
+}
+.p-button:hover {
+  transform: var(--ui-translate-hover);
+  box-shadow: var(--ui-shadow-md);
+}
+.p-button.p-button-text {
+  background: transparent;
+  color: var(--theme-text-label);
+  box-shadow: none;
+}
+.p-button.p-button-text:hover {
+  background: var(--theme-hover-bg);
+  color: var(--theme-text-primary);
+}
+
+/* --- INPUT & FORM STYLES --- */
+.p-inputtext,
+.p-chips .p-chips-input-token input,
+.p-editor .p-editor-content .ql-editor {
+  width: 100%;
+  padding: var(--spacing-sm) var(--spacing-md);
+  font-family: var(--font-body);
+  font-size: var(--font-size-sm);
+  color: var(--theme-text-primary);
+  background: var(--theme-bg-secondary);
+  border: var(--ui-border-width) solid var(--theme-border-primary);
+  border-radius: var(--ui-border-radius-sm);
+  transition: var(--ui-transition);
+}
+.p-inputtext:focus,
+.p-chips .p-chips-input-token input:focus {
+  border-color: var(--theme-border-focus);
+  box-shadow: 0 0 0 3px var(--theme-accent-focus-ring);
+  outline: none;
+}
+.p-chips .p-chips-multiple-container {
+  padding-top: var(--spacing-xs);
+  padding-bottom: var(--spacing-xs);
+}
+.p-chips .p-chips-token {
+  background: var(--theme-accent-primary-light);
+  color: var(--theme-accent-primary);
+  border-radius: var(--ui-border-radius-full);
+}
+
+/* --- MEDIA QUERIES --- */
+@media screen and (max-width: 768px) {
+  .p-dialog {
+    width: 95vw !important;
+  }
+}
 
 
 .theme-blue {
