@@ -1,9 +1,9 @@
 <div class="sticky top-0 z-10 w-full shadow-md rounded-lg font-roboto">
   <div class="overflow-x-auto whitespace-nowrap">
     <div class="inline-flex">
-      <p-selectButton [options]="navItems" [(ngModel)]="activeItem" optionLabel="label" optionValue="component"
+     <p-select appendTo="body" Button [options]="navItems" [(ngModel)]="activeItem" optionLabel="label" optionValue="component"
         aria-label="Component Navigation" class="flex-shrink-0"
-        (onChange)="navigateToComponent(activeItem)"></p-selectButton>
+        (onChange)="navigateToComponent(activeItem)"></p-select>
     </div>
   </div>
 </div>

@@ -1,72 +1,45 @@
-.login-summary-dialog {
-  width: 100%;
-  padding: var(--spacing-4xl);
+/* Dialog fixed full height */
+.dialog-fullscreen {
+  width: 95vw !important;
+  height: 90vh !important;
   display: flex;
   flex-direction: column;
-  gap: var(--spacing-lg);
 }
 
-.glass-card {
-  width: 100vh;
-}
-
-.dialog-header {
+/* Container inside dialog */
+.summary-container {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  border-bottom: var(--ui-border-width) solid var(--theme-border-primary);
-  padding-bottom: var(--spacing-sm);
+  flex-direction: column;
+  height: 100%;
 }
 
-.dialog-header h2 {
-  font-family: var(--font-heading);
-  font-size: var(--font-size-3xl);
-  color: var(--glass-heading-color);
-  margin: 0;
+/* KPI row fixed above tabs */
+.summary-metrics-row {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1rem;
+  padding: 0.75rem;
+  flex-shrink: 0; /* fixed height */
 }
 
-.close-btn {
-  color: var(--theme-text-secondary);
-  font-weight: bold;
-}
-
-.kpi-cards {
+/* Tabs section */
+.summary-tabs-container {
   display: flex;
-  gap: var(--spacing-lg);
-  flex-wrap: wrap;
-  margin-bottom: var(--spacing-lg);
+  flex-direction: column;
+  flex: 1;
+  overflow: hidden; /* prevent double scroll */
 }
 
-.kpi-card {
-  flex: 1 1 200px;
-  background: var(--theme-card-gradient);
-  padding: var(--spacing-lg);
-  border-radius: var(--ui-border-radius-lg);
-  box-shadow: var(--ui-shadow-md);
-  text-align: center;
-  transition: var(--ui-transition);
+/* Scrollable tab panels */
+.summary-tab-panels {
+  flex: 1;
+  overflow-y: auto;
+  padding: 0.75rem;
 }
 
-.kpi-card h3 {
-  font-size: var(--font-size-lg);
-  margin-bottom: var(--spacing-sm);
-  color: var(--theme-text-secondary);
-}
-
-.kpi-card p {
-  font-size: var(--font-size-2xl);
-  font-weight: 700;
-  color: var(--theme-text-primary);
-}
-
-.notes-table h4 {
-  font-family: var(--font-heading);
-  font-size: var(--font-size-xl);
-  margin-bottom: var(--spacing-sm);
-}
-
-.dialog-footer {
+/* List style */
+.scroll-list {
   display: flex;
-  justify-content: flex-end;
-  gap: var(--spacing-sm);
+  flex-direction: column;
+  gap: 0.5rem;
 }

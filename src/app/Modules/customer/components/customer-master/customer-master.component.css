@@ -1,12 +1,15 @@
 /* ---
   Customer Detail Component - Themed Styles
+  Updated for better responsiveness across screens, smaller font sizes using common CSS variables,
+  and alignment with common theme (e.g., spacing, shadows, transitions, glassmorphism where applicable).
 --- */
 
 :host {
   display: block;
   background-color: var(--theme-bg-primary);
   min-height: 100vh;
-  padding: .5rem;
+  padding: var(--spacing-sm); /* Smaller padding for better mobile fit */
+  font-family: var(--font-body);
 }
 
 .customer-detail-container {
@@ -14,15 +17,18 @@
   margin: 0 auto;
 }
 
-/* --- Header Card (No changes) --- */
+/* --- Header Card --- */
 .header-card-v2 {
-  background-color: var(--theme-bg-secondary);
-  border: 1px solid var(--theme-border-primary);
-  border-radius: 1rem;
-  margin-bottom: 2rem;
-  padding: 2rem;
-  box-shadow: 0 8px 24px var(--theme-shadow-color);
+  background: var(--theme-card-gradient); /* Use common gradient for subtle depth */
+  backdrop-filter: var(--ui-glass-backdrop);
+  -webkit-backdrop-filter: var(--ui-glass-backdrop);
+  border: var(--ui-border-width) solid var(--theme-border-primary);
+  border-radius: var(--ui-border-radius-lg);
+  margin-bottom: var(--spacing-xl);
+  padding: var(--spacing-lg);
+  box-shadow: var(--ui-shadow-md);
   position: relative;
+  transition: var(--ui-transition);
 }
 
 .header-card-v2::before {
@@ -31,15 +37,21 @@
   top: 0;
   left: 0;
   right: 0;
-  height: 4px;
-  background: var(--theme-accent-primary);
+  height: 3px; /* Slightly smaller accent bar */
+  background: var(--theme-accent-gradient);
+  border-radius: var(--ui-border-radius-lg) var(--ui-border-radius-lg) 0 0;
+}
+
+.header-card-v2:hover {
+  box-shadow: var(--ui-shadow-hover);
+  transform: var(--ui-translate-hover);
 }
 
 .header-content-v2 {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: 2rem;
+  gap: var(--spacing-lg);
 }
 
 .profile-avatar-wrapper {
@@ -48,11 +60,12 @@
 }
 
 .profile-avatar-large {
-  width: 7rem !important;
-  height: 7rem !important;
-  font-size: 2.5rem !important;
-  border: 4px solid var(--theme-bg-secondary);
-  box-shadow: 0 0 0 4px var(--theme-accent-primary);
+  width: 5rem !important; /* Smaller avatar for compact UI */
+  height: 5rem !important;
+  font-size: 1.75rem !important; /* Smaller font in avatar */
+  border: var(--ui-border-width-thick) solid var(--theme-bg-secondary);
+  box-shadow: 0 0 0 var(--ui-border-width-thick) var(--theme-accent-primary);
+  transition: var(--ui-transition);
 }
 
 .avatar-edit-button {
@@ -61,7 +74,7 @@
   right: 0;
   opacity: 0;
   transform: scale(0.8);
-  transition: opacity 0.2s, transform 0.2s;
+  transition: var(--ui-transition-fast);
 }
 
 .profile-avatar-wrapper:hover .avatar-edit-button {
@@ -81,22 +94,25 @@
 }
 
 .customer-title {
-  font-size: 2.5rem;
+  font-size: var(--font-size-2xl); /* Smaller than original 2.5rem, uses fluid clamp */
   font-weight: 700;
   color: var(--theme-text-primary);
-  margin-bottom: 0.25rem;
+  margin-bottom: var(--spacing-xs);
+  font-family: var(--font-heading); /* Use common heading font */
+  line-height: var(--line-height-tight);
 }
 
 .customer-subtitle {
-  font-size: 1.125rem;
+  font-size: var(--font-size-sm); /* Smaller subtitle */
   color: var(--theme-text-secondary);
-  margin-bottom: 1rem;
+  margin-bottom: var(--spacing-md);
+  line-height: var(--line-height-normal);
 }
 
 .info-tags {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.5rem;
+  gap: var(--spacing-sm);
   justify-content: center;
 }
 
@@ -109,12 +125,18 @@
 .info-tag {
   display: inline-flex;
   align-items: center;
-  gap: 0.5rem;
-  padding: 0.25rem 0.75rem;
-  border-radius: 9999px;
-  font-size: 0.75rem;
+  gap: var(--spacing-xs);
+  padding: var(--spacing-xs) var(--spacing-md);
+  border-radius: var(--ui-border-radius-full);
+  font-size: var(--font-size-xs); /* Smaller tag font */
   font-weight: 500;
-  border: 1px solid transparent;
+  border: var(--ui-border-width) solid transparent;
+  transition: var(--ui-transition-fast);
+  background: var(--theme-bg-ternary);
+}
+
+.info-tag:hover {
+  transform: var(--ui-scale-hover);
 }
 
 .tag-status {
@@ -124,124 +146,129 @@
 }
 
 .tag-phone {
-  background-color: rgba(34, 197, 94, 0.1);
+  background-color: var(--theme-success-light);
   color: var(--theme-success-primary);
-  border-color: rgba(34, 197, 94, 0.2);
+  border-color: var(--theme-success-light);
 }
 
 .tag-address {
-  background-color: rgba(168, 85, 247, 0.1);
-  color: #a855f7;
-  border-color: rgba(168, 85, 247, 0.2);
+  background-color: var(--theme-info-light);
+  color: var(--theme-info-primary);
+  border-color: var(--theme-info-light);
 }
 
 .header-actions-v2 {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.75rem;
+  gap: var(--spacing-sm);
   align-items: center;
 }
 
 /* --- Main Grid & Form Cards --- */
-
-/* UPDATED: Changed .main-grid from a grid to a flex column */
 .main-grid {
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
+  gap: var(--spacing-lg);
 }
 
-/* NEW: Added this class to handle the first row of cards */
 .form-row-flex {
   display: flex;
-  gap: 1.5rem;
+  gap: var(--spacing-lg);
   flex-direction: column;
-  /* Stacks cards on mobile */
 }
 
-/* On screens wider than 1024px, make the cards in the flex row go side-by-side */
 @media (min-width: 1024px) {
   .form-row-flex {
     flex-direction: row;
   }
 }
 
-/* DELETED: The .grid-column-left and .grid-column-right classes are no longer needed */
-
 .form-card {
-  background-color: var(--theme-bg-secondary);
-  border: 1px solid var(--theme-border-primary);
-  border-radius: 0.75rem;
-  padding: 1.5rem;
-  box-shadow: 0 4px 12px var(--theme-shadow-color);
+  background: var(--theme-card-gradient);
+  backdrop-filter: var(--ui-glass-backdrop);
+  -webkit-backdrop-filter: var(--ui-glass-backdrop);
+  border: var(--ui-border-width) solid var(--theme-border-primary);
+  border-radius: var(--ui-border-radius);
+  padding: var(--spacing-md);
+  box-shadow: var(--ui-shadow);
   flex: 1;
-  /* Allows cards in .form-row-flex to share space equally */
+  transition: var(--ui-transition);
+}
+
+.form-card:hover {
+  box-shadow: var(--ui-shadow-hover);
+  transform: var(--ui-translate-hover);
 }
 
 .section-header {
-  font-size: 1.125rem;
+  font-size: var(--font-size-lg); /* Smaller section headers */
   font-weight: 600;
   color: var(--theme-text-primary);
-  margin-bottom: 1.5rem;
+  margin-bottom: var(--spacing-md);
   display: flex;
   align-items: center;
-  gap: 0.75rem;
+  gap: var(--spacing-sm);
+  font-family: var(--font-primary);
+  line-height: var(--line-height-tight);
 }
 
 .section-header i {
   color: var(--theme-accent-primary);
+  font-size: var(--font-size-base);
 }
 
 .form-fields {
   display: flex;
   flex-direction: column;
-  /* Stack fields vertically */
-  gap: 1.5rem;
+  gap: var(--spacing-md);
 }
 
-/* On wider screens, place fields side-by-side */
 @media (min-width: 768px) {
   .form-fields {
     flex-direction: row;
   }
 }
 
-
 .form-group {
   flex: 1;
-  /* Allows form groups to share space */
 }
 
 .form-group label {
   font-weight: 500;
   color: var(--theme-text-label);
-  margin-bottom: 0.5rem;
+  margin-bottom: var(--spacing-sm);
   display: block;
-  font-size: 0.875rem;
+  font-size: var(--font-size-sm); /* Smaller labels */
+  line-height: var(--line-height-tight);
 }
 
-/* --- Themed Input & Select Styles (No changes) --- */
+/* --- Themed Input & Select Styles --- */
 :host ::ng-deep .p-inputtext,
 :host ::ng-deep .p-select {
-  width: 100%;
-  border-radius: 0.5rem !important;
-  border: 1px solid var(--theme-border-primary) !important;
-  transition: all 0.2s ease;
-  background-color: var(--theme-bg-primary) !important;
+  height: 2.5rem; /* Slightly smaller height for compact feel */
+  font-size: var(--font-size-sm); /* Smaller input font */
+  border-radius: var(--ui-border-radius) !important;
+  border: var(--ui-border-width) solid var(--theme-border-primary) !important;
+  transition: var(--ui-transition);
+  background-color: var(--theme-bg-ternary) !important;
+  padding: var(--spacing-xs) var(--spacing-md) !important;
 }
 
 :host ::ng-deep .p-inputtext:enabled:focus,
 :host ::ng-deep .p-select:not(.p-disabled).p-focus {
   border-color: var(--theme-accent-primary) !important;
-  box-shadow: 0 0 0 2px var(--theme-accent-focus-ring) !important;
+  box-shadow: 0 0 0 3px var(--theme-accent-focus-ring) !important;
+  background-color: var(--theme-bg-overlay) !important;
 }
 
-/* --- Themed Table Styles (No changes) --- */
+/* --- Themed Table Styles --- */
 .card-header-action {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 1.5rem;
+  margin-bottom: var(--spacing-md);
+  flex-wrap: wrap;
+  gap: var(--spacing-sm);
 }
 
 .card-header-action .section-header {
@@ -249,47 +276,53 @@
 }
 
 .table-wrapper {
-  border: 1px solid var(--theme-border-primary);
-  border-radius: 0.5rem;
+  border: var(--ui-border-width) solid var(--theme-border-primary);
+  border-radius: var(--ui-border-radius);
   overflow: hidden;
+  box-shadow: var(--ui-shadow);
 }
 
-:host ::ng-deep .modern-table.p-datatable .p-datatable-thead>tr>th {
-  background-color: var(--theme-hover-bg);
+:host ::ng-deep .modern-table.p-datatable .p-datatable-thead > tr > th {
+  background-color: var(--theme-bg-secondary);
   color: var(--theme-text-secondary);
   font-weight: 600;
-  font-size: 0.75rem;
+  font-size: var(--font-size-xs); /* Smaller table headers */
   text-transform: uppercase;
   border: none;
-  border-bottom: 1px solid var(--theme-border-primary);
+  border-bottom: var(--ui-border-width) solid var(--theme-border-primary);
+  padding: var(--spacing-sm) !important;
+  font-family: var(--font-primary);
 }
 
-:host ::ng-deep .modern-table.p-datatable .p-datatable-tbody>tr {
-  background-color: var(--theme-bg-secondary);
-  transition: background-color 0.2s ease;
+:host ::ng-deep .modern-table.p-datatable .p-datatable-tbody > tr {
+  background-color: var(--theme-bg-primary);
+  transition: var(--ui-transition);
 }
 
-:host ::ng-deep .modern-table.p-datatable .p-datatable-tbody>tr:hover {
+:host ::ng-deep .modern-table.p-datatable .p-datatable-tbody > tr:hover {
   background-color: var(--theme-hover-bg);
 }
 
-:host ::ng-deep .modern-table.p-datatable .p-datatable-tbody>tr>td {
+:host ::ng-deep .modern-table.p-datatable .p-datatable-tbody > tr > td {
   border: none;
-  border-bottom: 1px solid var(--theme-border-secondary);
+  border-bottom: var(--ui-border-width) solid var(--theme-border-secondary);
   color: var(--theme-text-primary);
+  padding: var(--spacing-sm) !important;
+  font-size: var(--font-size-sm); /* Smaller table body font */
 }
 
 .address-line-1 {
   font-weight: 500;
+  font-size: var(--font-size-sm);
 }
 
 .address-line-2 {
-  font-size: 0.875rem;
+  font-size: var(--font-size-xs); /* Smaller secondary text */
   color: var(--theme-text-secondary);
 }
 
 .status-icon {
-  font-size: 1.25rem;
+  font-size: 1rem; /* Smaller icons */
 }
 
 .icon-success {
@@ -302,264 +335,96 @@
 
 .action-buttons {
   display: flex;
-  gap: 0.25rem;
+  gap: var(--spacing-xs);
 }
 
 .empty-table-message {
-  padding: 2rem;
+  padding: var(--spacing-lg);
   text-align: center;
   color: var(--theme-text-secondary);
+  font-size: var(--font-size-sm);
 }
 
-/* --- Themed Dialog Styles (No changes) --- */
+/* --- Themed Dialog Styles --- 
+   Aligns with common CSS for slim headers, rounder corners, and responsive sizing.
+--- */
 :host ::ng-deep .themed-dialog .p-dialog-header {
-  background-color: var(--theme-bg-primary);
+  background: transparent !important;
   color: var(--theme-text-primary);
-  border-bottom: 1px solid var(--theme-border-primary);
-  border-radius: 0.75rem 0.75rem 0 0;
+  border-bottom: var(--ui-border-width) solid var(--theme-border-primary);
+  border-radius: var(--ui-border-radius-lg) var(--ui-border-radius-lg) 0 0 !important;
+  padding: var(--spacing-sm) var(--spacing-lg) !important;
+  font-size: var(--font-size-lg) !important;
 }
 
 :host ::ng-deep .themed-dialog .p-dialog-content {
-  background-color: var(--theme-bg-secondary);
-  padding: 1.5rem;
+  background: var(--theme-bg-primary);
+  padding: var(--spacing-md) !important;
+  border-radius: 0 0 var(--ui-border-radius-lg) var(--ui-border-radius-lg) !important;
+  font-size: var(--font-size-sm); /* Smaller dialog content font */
 }
 
 :host ::ng-deep .themed-dialog .p-dialog-footer {
-  background-color: var(--theme-bg-primary);
-  border-top: 1px solid var(--theme-border-primary);
-  border-radius: 0 0 0.75rem 0.75rem;
+  background: var(--theme-bg-primary);
+  border-top: var(--ui-border-width) solid var(--theme-border-primary);
+  border-radius: 0 0 var(--ui-border-radius-lg) var(--ui-border-radius-lg) !important;
+  padding: var(--spacing-sm) var(--spacing-lg) !important;
+  gap: var(--spacing-sm);
 }
 
-/* 
+/* Additional responsive tweaks for smaller screens */
+@media (max-width: 768px) {
+  :host {
+    padding: var(--spacing-xs);
+  }
 
-:host {
-  display: block;
-  background-color: var(--theme-bg-primary);
-  min-height: 100vh;
-  padding: 1.5rem;
-}
+  .header-content-v2 {
+    flex-direction: column;
+    text-align: center;
+    gap: var(--spacing-md);
+  }
 
-.customer-detail-container {
-  max-width: 100%;
-  margin: 0 auto;
-}
+  .header-actions-v2 {
+    justify-content: center;
+    width: 100%;
+  }
 
---- Header Card ---
-.header-card-v2 {
-  background-color: var(--theme-bg-secondary);
-  border: 1px solid var(--theme-border-primary);
-  border-radius: 1rem;
-  margin-bottom: 2rem;
-  padding: 2rem;
-  box-shadow: 0 8px 24px var(--theme-shadow-color);
-  position: relative;
-}
+  .form-card {
+    padding: var(--spacing-sm);
+  }
 
-.header-card-v2::before {
-  content: '';
-  position: absolute;
-  top: 0; left: 0; right: 0;
-  height: 4px;
-  background: var(--theme-accent-primary);
-}
+  .section-header {
+    font-size: var(--font-size-base);
+  }
 
-.header-content-v2 {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 2rem;
-}
+  .customer-title {
+    font-size: var(--font-size-xl);
+  }
 
-.profile-avatar-wrapper {
-  position: relative;
-  flex-shrink: 0;
-}
-.profile-avatar-large {
-  width: 7rem !important;
-  height: 7rem !important;
-  font-size: 2.5rem !important;
-  border: 4px solid var(--theme-bg-secondary);
-  box-shadow: 0 0 0 4px var(--theme-accent-primary);
-}
-.avatar-edit-button {
-  position: absolute;
-  bottom: 0; right: 0;
-  opacity: 0;
-  transform: scale(0.8);
-  transition: opacity 0.2s, transform 0.2s;
-}
-.profile-avatar-wrapper:hover .avatar-edit-button {
-  opacity: 1;
-  transform: scale(1);
+  .info-tags {
+    justify-content: center !important;
+  }
+
+  /* Ensure dialogs are fullscreen on mobile as per common CSS */
+  :host ::ng-deep .p-dialog {
+    width: 95vw !important;
+    height: 90vh !important;
+  }
 }
 
-.header-info {
-  flex-grow: 1;
-  text-align: center;
-}
-@media (min-width: 1024px) { .header-info { text-align: left; } }
+@media (max-width: 480px) {
+  .profile-avatar-large {
+    width: 4rem !important;
+    height: 4rem !important;
+    font-size: 1.25rem !important;
+  }
 
-.customer-title {
-  font-size: 2.5rem;
-  font-weight: 700;
-  color: var(--theme-text-primary);
-  margin-bottom: 0.25rem;
-}
-.customer-subtitle {
-  font-size: 1.125rem;
-  color: var(--theme-text-secondary);
-  margin-bottom: 1rem;
-}
-.info-tags {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem;
-  justify-content: center;
-}
-@media (min-width: 1024px) { .info-tags { justify-content: flex-start; } }
+  .form-fields {
+    gap: var(--spacing-sm);
+  }
 
-.info-tag {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  padding: 0.25rem 0.75rem;
-  border-radius: 9999px;
-  font-size: 0.75rem;
-  font-weight: 500;
-  border: 1px solid transparent;
+  .action-buttons {
+    flex-direction: column;
+    gap: var(--spacing-xs);
+  }
 }
-.tag-status { background-color: var(--theme-accent-primary-light); color: var(--theme-accent-primary); border-color: var(--theme-accent-primary-light); }
-.tag-phone { background-color: rgba(34, 197, 94, 0.1); color: var(--theme-success-primary); border-color: rgba(34, 197, 94, 0.2); }
-.tag-address { background-color: rgba(168, 85, 247, 0.1); color: #a855f7; border-color: rgba(168, 85, 247, 0.2); }
-
-.header-actions-v2 {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.75rem;
-  align-items: center;
-}
-
---- Main Grid & Form Cards ---
-.main-grid {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 1.5rem;
-}
-@media (min-width: 1280px) { .main-grid { grid-template-columns: 1fr 2fr; } }
-
-.grid-column-left, .grid-column-right {
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
-}
-
-.form-card {
-  background-color: var(--theme-bg-secondary);
-  border: 1px solid var(--theme-border-primary);
-  border-radius: 0.75rem;
-  padding: 1.5rem;
-  box-shadow: 0 4px 12px var(--theme-shadow-color);
-}
-
-.section-header {
-  font-size: 1.125rem;
-  font-weight: 600;
-  color: var(--theme-text-primary);
-  margin-bottom: 1.5rem;
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-}
-.section-header i { color: var(--theme-accent-primary); }
-
-.form-fields {
-  display: flex;
-  flex-direction: row;
-  gap: 1.5rem;
-}
-
-.form-group label {
-  font-weight: 500;
-  color: var(--theme-text-label);
-  margin-bottom: 0.5rem;
-  display: block;
-  font-size: 0.875rem;
-}
-
---- Themed Input & Select Styles ---
-:host ::ng-deep .p-inputtext,
-:host ::ng-deep .p-select {
-  width: 100%;
-  border-radius: 0.5rem !important;
-  border: 1px solid var(--theme-border-primary) !important;
-  transition: all 0.2s ease;
-  background-color: var(--theme-bg-primary) !important;
-}
-:host ::ng-deep .p-inputtext:enabled:focus,
-:host ::ng-deep .p-select:not(.p-disabled).p-focus {
-  border-color: var(--theme-accent-primary) !important;
-  box-shadow: 0 0 0 2px var(--theme-accent-focus-ring) !important;
-}
-
---- Themed Table Styles ---
-.card-header-action {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 1.5rem;
-}
-.card-header-action .section-header { margin-bottom: 0; }
-
-.table-wrapper {
-  border: 1px solid var(--theme-border-primary);
-  border-radius: 0.5rem;
-  overflow: hidden;
-}
-
-:host ::ng-deep .modern-table.p-datatable .p-datatable-thead > tr > th {
-  background-color: var(--theme-hover-bg);
-  color: var(--theme-text-secondary);
-  font-weight: 600;
-  font-size: 0.75rem;
-  text-transform: uppercase;
-  border: none;
-  border-bottom: 1px solid var(--theme-border-primary);
-}
-
-:host ::ng-deep .modern-table.p-datatable .p-datatable-tbody > tr {
-  background-color: var(--theme-bg-secondary);
-  transition: background-color 0.2s ease;
-}
-:host ::ng-deep .modern-table.p-datatable .p-datatable-tbody > tr:hover {
-  background-color: var(--theme-hover-bg);
-}
-:host ::ng-deep .modern-table.p-datatable .p-datatable-tbody > tr > td {
-  border: none;
-  border-bottom: 1px solid var(--theme-border-secondary);
-  color: var(--theme-text-primary);
-}
-
-.address-line-1 { font-weight: 500; }
-.address-line-2 { font-size: 0.875rem; color: var(--theme-text-secondary); }
-.status-icon { font-size: 1.25rem; }
-.icon-success { color: var(--theme-success-primary); }
-.icon-muted { color: var(--theme-border-primary); }
-.action-buttons { display: flex; gap: 0.25rem; }
-.empty-table-message { padding: 2rem; text-align: center; color: var(--theme-text-secondary); }
-
---- Themed Dialog Styles ---
-:host ::ng-deep .themed-dialog .p-dialog-header {
-  background-color: var(--theme-bg-primary);
-  color: var(--theme-text-primary);
-  border-bottom: 1px solid var(--theme-border-primary);
-  border-radius: 0.75rem 0.75rem 0 0;
-}
-:host ::ng-deep .themed-dialog .p-dialog-content {
-  background-color: var(--theme-bg-secondary);
-  padding: 1.5rem;
-}
-:host ::ng-deep .themed-dialog .p-dialog-footer {
-  background-color: var(--theme-bg-primary);
-  border-top: 1px solid var(--theme-border-primary);
-  border-radius: 0 0 0.75rem 0.75rem;
-} */

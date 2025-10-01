@@ -9,11 +9,11 @@
         [style]="{'color': 'var(--theme-text-primary)', 'font-family': 'var(--font-primary)'}">Admin Dashboard</h2>
     </div>
     <div class="p-toolbar-group-center flex flex-wrap gap-2 md:gap-4 items-center justify-center flex-1 px-2">
-      <p-select [options]="periodOptions" [(ngModel)]="selectedPeriod" optionLabel="label" optionValue="value"
+     <p-select appendTo="body"  [options]="periodOptions" [(ngModel)]="selectedPeriod" optionLabel="label" optionValue="value"
         styleClass="p-inputtext-sm w-36 md:w-48 rounded-full"
         [style]="{'background': 'var(--theme-bg-ternary)', 'border-color': 'var(--theme-border-secondary)', 'font-family': 'var(--font-body)'}"
         (onChange)="onFilterChange()"></p-select>
-      <p-select [options]="limitOptions" [(ngModel)]="dataLimit" optionLabel="label" optionValue="value"
+     <p-select appendTo="body"  [options]="limitOptions" [(ngModel)]="dataLimit" optionLabel="label" optionValue="value"
         styleClass="p-inputtext-sm w-28 md:w-36 rounded-full"
         [style]="{'background': 'var(--theme-bg-ternary)', 'border-color': 'var(--theme-border-secondary)', 'font-family': 'var(--font-body)'}"
         (onChange)="onFilterChange()"></p-select>
@@ -922,9 +922,9 @@
       <h2 class="text-2xl font-bold tracking-tight" [style]="{'color': 'var(--theme-text-primary)', 'font-family': 'var(--font-primary)'}">Admin Dashboard</h2>
     </div>
     <div class="p-toolbar-group-center flex flex-wrap gap-4 items-center">
-      <p-select [options]="periodOptions" [(ngModel)]="selectedPeriod" optionLabel="label" optionValue="value"
+     <p-select appendTo="body"  [options]="periodOptions" [(ngModel)]="selectedPeriod" optionLabel="label" optionValue="value"
         styleClass="p-inputtext-sm w-48 rounded-xl" [style]="{'background': 'var(--theme-bg-ternary)', 'border-color': 'var(--theme-border-secondary)', 'font-family': 'var(--font-body)'}" (onChange)="onFilterChange()"></p-select>
-      <p-select [options]="limitOptions" [(ngModel)]="dataLimit" optionLabel="label" optionValue="value"
+     <p-select appendTo="body"  [options]="limitOptions" [(ngModel)]="dataLimit" optionLabel="label" optionValue="value"
         styleClass="p-inputtext-sm w-36 rounded-xl" [style]="{'background': 'var(--theme-bg-ternary)', 'border-color': 'var(--theme-border-secondary)', 'font-family': 'var(--font-body)'}" (onChange)="onFilterChange()"></p-select>
       <div *ngIf="selectedPeriod === 'custom'" class="flex gap-3 items-center">
         <p-calendar [(ngModel)]="customDateRange" selectionMode="range" [readonlyInput]="true"
@@ -1553,9 +1553,9 @@
       <h2 class="text-2xl font-bold tracking-tight" [style]="{'color': 'var(--theme-text-primary)', 'font-family': 'var(--font-primary)'}">Admin Dashboard</h2>
     </div>
     <div class="p-toolbar-group-center flex flex-wrap gap-4 items-center">
-      <p-select [options]="periodOptions" [(ngModel)]="selectedPeriod" optionLabel="label" optionValue="value"
+     <p-select appendTo="body"  [options]="periodOptions" [(ngModel)]="selectedPeriod" optionLabel="label" optionValue="value"
         styleClass="p-inputtext-sm w-48 rounded-xl" [style]="{'background': 'var(--theme-bg-ternary)', 'border-color': 'var(--theme-border-secondary)', 'font-family': 'var(--font-body)'}" (onChange)="onFilterChange()"></p-select>
-      <p-select [options]="limitOptions" [(ngModel)]="dataLimit" optionLabel="label" optionValue="value"
+     <p-select appendTo="body"  [options]="limitOptions" [(ngModel)]="dataLimit" optionLabel="label" optionValue="value"
         styleClass="p-inputtext-sm w-36 rounded-xl" [style]="{'background': 'var(--theme-bg-ternary)', 'border-color': 'var(--theme-border-secondary)', 'font-family': 'var(--font-body)'}" (onChange)="onFilterChange()"></p-select>
       <div *ngIf="selectedPeriod === 'custom'" class="flex gap-3 items-center">
         <p-calendar [(ngModel)]="customDateRange" selectionMode="range" [readonlyInput]="true"

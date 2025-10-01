@@ -24,7 +24,7 @@
     <div class="se-filter-bar">
       <div class="flex-grow">
         <label>Select Master Type</label>
-        <p-select [options]="typeOptions" optionLabel="label" optionValue="value" [(ngModel)]="selectedType"
+       <p-select appendTo="body"  [options]="typeOptions" optionLabel="label" optionValue="value" [(ngModel)]="selectedType"
           placeholder="Select a Master Type to Manage" (onChange)="loadItems()" [showClear]="true"></p-select>
       </div>
       <div class="se-filter-actions">
@@ -135,7 +135,7 @@
       <div class="se-filter-bar">
         <div class="se-filter-field flex-grow-[2]">
           <label>Select a Master Type to Manage</label>
-          <p-select [options]="typeOptions" optionLabel="label" optionValue="value" [(ngModel)]="selectedType"
+         <p-select appendTo="body"  [options]="typeOptions" optionLabel="label" optionValue="value" [(ngModel)]="selectedType"
             placeholder="Choose a master list..." (onChange)="loadItems()" [showClear]="true"></p-select>
         </div>
         <div class="se-filter-actions">

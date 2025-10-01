@@ -40,13 +40,13 @@
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
                 <div>
                     <label for="seller">Select Seller</label>
-                    <p-select id="seller" formControlName="seller" [options]="dropdownOptions.sellers"
+                   <p-select appendTo="body"  id="seller" formControlName="seller" [options]="dropdownOptions.sellers"
                         optionLabel="name" optionValue="_id" placeholder="Select a seller"
                         styleClass="themed-select w-full" />
                 </div>
                 <div>
                     <label for="status">Status</label>
-                    <p-select id="status" formControlName="status" [options]="statusOptions"
+                   <p-select appendTo="body"  id="status" formControlName="status" [options]="statusOptions"
                         placeholder="Select a status" styleClass="themed-select w-full" />
                 </div>
             </div>
@@ -66,7 +66,7 @@
                     <tbody formArrayName="products">
                         <tr *ngFor="let item of products.controls; let i = index" [formGroupName]="i" class="border-b">
                             <td class="p-2">
-                                <p-select formControlName="product" [options]="dropdownOptions.products"
+                               <p-select appendTo="body"  formControlName="product" [options]="dropdownOptions.products"
                                     (onChange)="onProductChange(i)" optionLabel="title" optionValue="_id"
                                     placeholder="Select a product" styleClass="themed-select w-full" />
                             </td>

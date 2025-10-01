@@ -1,45 +1,640 @@
-/* File: src/app/Modules/customer/components/customer-snapshot/customer-snapshot.component.css (Updated) */
+/* ---
+  Customer Snapshot Component - Fixed Card Colors for Better Contrast
+  Ensured card backgrounds have proper contrast against text: light mode uses subtle off-white,
+  dark mode uses deeper grays; added explicit color overrides for readability.
+--- */
 
-/* Avatar */
+.customer-snapshot {
+  background: var(--theme-card-gradient);
+  backdrop-filter: var(--ui-glass-backdrop);
+  -webkit-backdrop-filter: var(--ui-glass-backdrop);
+  border: var(--ui-border-width) solid var(--glass-border-color);
+  border-radius: var(--ui-border-radius-xl);
+  box-shadow: var(--ui-shadow-lg);
+  padding: var(--spacing-sm);
+  transition: var(--ui-transition-slow);
+  font-family: var(--font-body);
+  height: 100%;
+  overflow-y: auto;
+  color: var(--theme-text-primary); /* Ensure base text color */
+}
+
+@media (min-width: 768px) {
+  .customer-snapshot {
+    padding: var(--spacing-md);
+  }
+}
+
+.customer-snapshot:hover {
+  box-shadow: var(--ui-shadow-xl);
+  transform: var(--ui-translate-hover);
+}
+
+/* Gradient Strip for Main Header */
+.customer-snapshot::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: var(--theme-accent-gradient);
+  border-radius: var(--ui-border-radius-xl) var(--ui-border-radius-xl) 0 0;
+}
+
+/* Dialog-Specific Overrides */
+:host ::ng-deep .p-dialog .p-dialog-content {
+  overflow-y: auto !important;
+  max-height: 70vh !important;
+  padding: var(--spacing-xs) !important;
+}
+
+/* Header - Integrated with Metrics */
+.customer-header {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--spacing-sm);
+  margin-bottom: var(--spacing-md);
+  padding-bottom: var(--spacing-sm);
+  border-bottom: var(--ui-border-width) solid var(--theme-border-primary);
+  position: relative;
+  color: var(--theme-text-primary); /* Explicit text color */
+}
+
+@media (min-width: 768px) {
+  .customer-header {
+    flex-direction: row;
+    align-items: center;
+    gap: var(--spacing-md);
+  }
+}
+
+/* Avatar and Name Section */
+.header-main {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  flex-grow: 1;
+}
+
 .avatar-container {
-  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-  transition: transform 0.15s ease;
+  width: 3.5rem;
+  height: 3.5rem;
+  border-radius: var(--ui-border-radius-full);
+  overflow: hidden;
+  box-shadow: var(--ui-shadow-md);
+  transition: var(--ui-transition);
+  flex-shrink: 0;
 }
+
+@media (min-width: 768px) {
+  .avatar-container {
+    width: 4rem;
+    height: 4rem;
+  }
+}
+
 .avatar-container:hover {
-  transform: scale(1.05);
+  transform: var(--ui-scale-hover);
 }
 
-/* Metric Cards */
-.metric-card {
-  border: 1px solid rgba(0,0,0,0.05);
-  transition: box-shadow 0.2s ease;
-}
-.metric-card:hover {
-  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+.avatar-container img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
-/* TabView */
-:host ::ng-deep .p-tabview-nav {
-  border-bottom: 1px solid rgba(0,0,0,0.1) !important;
-}
-:host ::ng-deep .p-tabview-nav-link {
-  padding: 0.75rem 1rem !important;
-  font-size: 0.875rem !important;
-}
-
-/* DataTable */
-:host ::ng-deep .p-datatable-thead > tr > th {
-  font-size: 0.75rem !important;
-  padding: 0.5rem !important;
-}
-:host ::ng-deep .p-datatable-tbody > tr > td {
-  padding: 0.5rem !important;
-  font-size: 0.875rem;
+.avatar-container div {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--theme-accent-gradient);
+  color: var(--theme-accent-text-color);
+  font-size: var(--font-size-base);
+  font-weight: 700;
+  font-family: var(--font-primary);
 }
 
-/* Glass Card */
-.glass-card {
-  background: rgba(255,255,255,0.8);
-  backdrop-filter: blur(8px);
-  box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+.customer-header h1 {
+  font-size: var(--font-size-base);
+  font-weight: 600;
+  color: var(--theme-text-primary);
+  margin: 0 0 var(--spacing-xs) 0;
+  font-family: var(--font-heading);
+  line-height: var(--line-height-tight);
+}
+
+@media (min-width: 768px) {
+  .customer-header h1 {
+    font-size: var(--font-size-lg);
+  }
+}
+
+.customer-header .text-sm {
+  font-size: var(--font-size-xs);
+  color: var(--theme-text-secondary);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--spacing-xs);
+  margin-top: var(--spacing-xs);
+}
+
+@media (min-width: 768px) {
+  .customer-header .text-sm {
+    flex-direction: row;
+    align-items: center;
+    gap: var(--spacing-sm);
+    margin-top: 0;
+  }
+}
+
+.customer-header .text-sm span {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+  font-size: var(--font-size-xs);
+}
+
+.customer-header i {
+  font-size: var(--font-size-sm);
+  color: var(--theme-accent-primary);
+}
+
+/* Integrated Metrics in Header */
+.header-metrics {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs);
+  flex-shrink: 0;
+}
+
+@media (min-width: 768px) {
+  .header-metrics {
+    flex-direction: row;
+    justify-content: flex-end;
+    gap: var(--spacing-sm);
+  }
+}
+
+.metric-header {
+  background: var(--theme-bg-secondary); /* Distinct bg for contrast */
+  border: var(--ui-border-width) solid var(--theme-border-primary);
+  border-radius: var(--ui-border-radius);
+  padding: var(--spacing-xs);
+  text-align: center;
+  transition: var(--ui-transition);
+  min-width: 8rem;
+  color: var(--theme-text-primary); /* Explicit text */
+}
+
+.metric-header:hover {
+  box-shadow: var(--ui-shadow-sm);
+  background: var(--theme-hover-bg); /* Subtle hover bg */
+}
+
+.metric-header .flex {
+  justify-content: center;
+  margin-bottom: var(--spacing-xs);
+}
+
+.metric-header i {
+  font-size: var(--font-size-sm);
+  color: var(--theme-accent-primary);
+  background: var(--theme-accent-primary-light);
+  padding: var(--spacing-xs - 0.125rem);
+  border-radius: var(--ui-border-radius-full);
+}
+
+.metric-header div:first-of-type {
+  font-size: var(--font-size-xs - 0.0625rem);
+  color: var(--theme-text-secondary);
+  margin-bottom: 0;
+  font-weight: 500;
+}
+
+.metric-header div:last-of-type {
+  font-size: var(--font-size-xs);
+  font-weight: 700;
+  color: var(--theme-text-primary);
+}
+
+/* Status Tag */
+.customer-header .p-tag {
+  font-size: var(--font-size-xs);
+  padding: var(--spacing-xs) var(--spacing-md);
+  border-radius: var(--ui-border-radius-full);
+  align-self: flex-start;
+}
+
+@media (min-width: 768px) {
+  .customer-header .p-tag {
+    align-self: center;
+  }
+}
+
+/* Product Preferences - Reduced Margin */
+h3 {
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  color: var(--theme-text-primary);
+  margin-bottom: var(--spacing-xs);
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  font-family: var(--font-primary);
+  position: relative;
+}
+
+h3::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: var(--theme-accent-gradient);
+}
+
+@media (min-width: 768px) {
+  h3 {
+    font-size: var(--font-size-base);
+  }
+}
+
+h3 i {
+  color: var(--theme-accent-primary);
+  font-size: var(--font-size-base);
+}
+
+.flex.flex-wrap {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-xs);
+}
+
+.p-tag {
+  font-size: var(--font-size-xs);
+  padding: var(--spacing-xs) var(--spacing-sm);
+  border-radius: var(--ui-border-radius-full);
+  background: var(--theme-accent-primary-light);
+  color: var(--theme-accent-primary);
+  border: var(--ui-border-width) solid var(--theme-accent-primary-light);
+}
+
+/* TabView Enhancements - Gradient Strips on Tab Headers */
+:host ::ng-deep .p-tabview {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+
+  .p-tabview-nav {
+    background: transparent;
+    border-bottom: var(--ui-border-width) solid var(--theme-border-primary);
+    border-radius: var(--ui-border-radius) var(--ui-border-radius) 0 0;
+    margin-bottom: var(--spacing-xs);
+    flex-shrink: 0;
+    position: relative;
+  }
+
+  .p-tabview-nav::before {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: var(--theme-accent-gradient);
+  }
+
+  .p-tabview-nav-link {
+    background: transparent !important;
+    border: none !important;
+    color: var(--theme-text-muted) !important;
+    transition: var(--ui-transition-fast);
+    font-weight: 500;
+    border-radius: var(--ui-border-radius) var(--ui-border-radius) 0 0;
+    padding: var(--spacing-xs) var(--spacing-sm) !important;
+    font-size: var(--font-size-xs) !important;
+    font-family: var(--font-primary) !important;
+  }
+
+  .p-tabview-nav-link:hover {
+    color: var(--theme-text-primary) !important;
+    background: var(--theme-hover-bg) !important;
+  }
+
+  .p-tabview-ink-bar {
+    background-color: var(--theme-accent-primary) !important;
+    height: 2px !important;
+  }
+
+  .p-tabview-panels {
+    background: transparent;
+    padding: 0;
+    flex: 1;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+
+  .p-tabview-panel {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+    overflow-y: auto;
+    max-height: calc(100vh - 200px);
+  }
+
+  .p-tabview-panel > div {
+    overflow-y: auto;
+    padding-right: var(--spacing-xs);
+  }
+}
+
+/* Compact Activity/Overdue/Address Cards - 4 per Row with Better Contrast */
+.tab-content {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--spacing-sm);
+}
+
+@media (max-width: 1024px) {
+  .tab-content {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .tab-content {
+    grid-template-columns: 1fr;
+  }
+}
+
+.activity-card,
+.overdue-card,
+.address-card {
+  background: var(--theme-bg-secondary); /* Distinct bg for contrast */
+  border: var(--ui-border-width) solid var(--theme-border-primary);
+  border-radius: var(--ui-border-radius);
+  padding: var(--spacing-xs);
+  transition: var(--ui-transition);
+  position: relative;
+  overflow: hidden;
+  height: fit-content;
+  color: var(--theme-text-primary); /* Explicit text color */
+}
+
+.activity-card::before,
+.overdue-card::before,
+.address-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: var(--theme-accent-gradient);
+}
+
+.activity-card:hover,
+.overdue-card:hover,
+.address-card:hover {
+  box-shadow: var(--ui-shadow-sm);
+  transform: var(--ui-scale-hover);
+  background: var(--theme-hover-bg); /* Hover bg change for visibility */
+}
+
+.activity-card .flex,
+.overdue-card .flex {
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--spacing-xs);
+  flex-wrap: wrap;
+}
+
+.activity-card span:first-child,
+.overdue-card span:first-child {
+  font-weight: 600;
+  color: var(--theme-text-primary);
+  font-size: var(--font-size-xs);
+  font-family: var(--font-primary);
+}
+
+.activity-card .grid,
+.overdue-card div {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--spacing-xs);
+  font-size: var(--font-size-xs - 0.0625rem);
+  color: var(--theme-text-secondary);
+}
+
+.activity-card div:last-child,
+.overdue-card div:last-child {
+  text-align: right;
+  margin-top: var(--spacing-xs);
+  font-weight: 600;
+  color: var(--theme-text-primary);
+  font-size: var(--font-size-sm);
+}
+
+.overdue-card {
+  background: var(--theme-error-light);
+  border-color: var(--theme-error-primary-light); /* Better contrast border */
+}
+
+.overdue-card span:first-child {
+  color: var(--theme-error-primary);
+}
+
+.overdue-card div {
+  color: var(--theme-error-primary);
+}
+
+.overdue-card div:last-child {
+  color: var(--theme-error-primary);
+}
+
+.address-card h3 {
+  font-size: var(--font-size-xs);
+  font-weight: 600;
+  color: var(--theme-text-primary);
+  margin-bottom: var(--spacing-xs);
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+  font-family: var(--font-primary);
+}
+
+.address-card h3 i {
+  color: var(--theme-info-primary);
+  font-size: var(--font-size-xs);
+}
+
+.address-card p {
+  font-size: var(--font-size-xs - 0.0625rem);
+  color: var(--theme-text-secondary);
+  line-height: var(--line-height-tight);
+  margin: 0;
+}
+
+/* Empty States - Compact */
+.text-center {
+  text-align: center;
+  padding: var(--spacing-md);
+  color: var(--theme-text-secondary);
+}
+
+.text-center i {
+  font-size: var(--font-size-xl);
+  color: var(--theme-accent-primary);
+  margin-bottom: var(--spacing-sm);
+}
+
+.text-center p {
+  font-size: var(--font-size-sm);
+  margin: 0;
+}
+
+/* Responsive Tweaks */
+@media (max-width: 768px) {
+  .customer-header .text-sm {
+    flex-direction: column;
+    gap: var(--spacing-xs);
+  }
+
+  .metric-header div:last-of-type {
+    font-size: var(--font-size-xs);
+  }
+
+  :host ::ng-deep .p-tabview-panel {
+    max-height: calc(100vh - 150px);
+  }
+}
+
+@media (max-width: 480px) {
+  .customer-snapshot {
+    padding: var(--spacing-xs);
+  }
+
+  .header-metrics {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .metric-header {
+    min-width: auto;
+    width: 100%;
+  }
+}
+
+/* Dark Mode Specific Overrides for Contrast */
+body.dark-mode .activity-card,
+body.dark-mode .overdue-card,
+body.dark-mode .address-card {
+  background: var(--theme-bg-ternary); /* Deeper bg in dark mode */
+  border-color: var(--theme-border-secondary);
+  color: var(--theme-text-primary);
+}
+
+body.dark-mode .metric-header {
+  background: var(--theme-bg-ternary);
+  border-color: var(--theme-border-secondary);
+}
+
+body.dark-mode .overdue-card {
+  background: rgba(220, 20, 60, 0.1); /* Subtle red tint */
+  border-color: rgba(220, 20, 60, 0.2);
+}
+/* ---
+  Customer Dashboard & Snapshot Components - Enhanced Scrollbar Styles
+  Added custom scrollbar styles for better visibility and consistency across browsers,
+  ensuring scrollbars appear and function properly in both light/dark modes with subtle theming.
+--- */
+
+/* Existing styles remain, adding scrollbar enhancements below */
+
+/* Custom Scrollbar for Scrollable Content */
+.scrollable-content {
+  max-height: 20rem;
+  overflow-y: auto;
+  padding-right: var(--spacing-xs);
+  scrollbar-width: thin; /* Firefox */
+  scrollbar-color: var(--theme-scroll-thumb) var(--theme-scroll-track); /* Firefox */
+}
+
+/* Webkit Scrollbar (Chrome, Safari, Edge) */
+.scrollable-content::-webkit-scrollbar {
+  width: 6px;
+}
+
+.scrollable-content::-webkit-scrollbar-track {
+  background: var(--theme-scroll-track);
+  border-radius: 3px;
+}
+
+.scrollable-content::-webkit-scrollbar-thumb {
+  background: var(--theme-scroll-thumb);
+  border-radius: 3px;
+  transition: var(--ui-transition-fast);
+}
+
+.scrollable-content::-webkit-scrollbar-thumb:hover {
+  background: var(--theme-accent-primary-light);
+}
+
+/* Ensure Tab Panels Have Proper Scrolling if Needed */
+:host ::ng-deep .p-tabview-panel {
+  overflow-y: auto;
+  max-height: 60vh; /* Limit height to trigger scroll if content is long */
+}
+
+/* Dark Mode Scrollbar Overrides */
+body.dark-mode .scrollable-content::-webkit-scrollbar-track {
+  background: var(--theme-bg-ternary);
+}
+
+body.dark-mode .scrollable-content::-webkit-scrollbar-thumb {
+  background: var(--theme-text-secondary);
+}
+
+body.dark-mode .scrollable-content::-webkit-scrollbar-thumb:hover {
+  background: var(--theme-accent-primary);
+}
+
+/* Additional Fix for Nested Scrollables (e.g., in Timeline or Lists) */
+.payment-timeline,
+.cart-card .grid {
+  overflow-x: auto; /* Horizontal scroll if needed for small screens */
+  scrollbar-width: thin;
+}
+
+.payment-timeline::-webkit-scrollbar,
+.cart-card .grid::-webkit-scrollbar {
+  height: 4px;
+}
+
+.payment-timeline::-webkit-scrollbar-track,
+.cart-card .grid::-webkit-scrollbar-track {
+  background: var(--theme-scroll-track);
+}
+
+.payment-timeline::-webkit-scrollbar-thumb,
+.cart-card .grid::-webkit-scrollbar-thumb {
+  background: var(--theme-scroll-thumb);
+  border-radius: 2px;
+}
+
+/* Responsive: Hide scrollbar on very small screens if space is tight */
+@media (max-width: 480px) {
+  .scrollable-content::-webkit-scrollbar {
+    width: 4px;
+  }
 }

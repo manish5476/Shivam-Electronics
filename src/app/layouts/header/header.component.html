@@ -39,12 +39,12 @@
           <div class="py-2">
             <div class="flex justify-between items-center mb-2">
               <span class="text-sm font-medium text-[var(--theme-text-label)]">Appearance</span>
-              <p-selectButton [options]="themeOptions" [(ngModel)]="isDarkMode"
+             <p-select appendTo="body" Button [options]="themeOptions" [(ngModel)]="isDarkMode"
                 (onChange)="onThemeModeChange($event.value)" optionValue="value">
                 <ng-template let-item>
                   <i [class]="item.icon"></i>
                 </ng-template>
-              </p-selectButton>
+              </p-select>
             </div>
             <div class="grid grid-cols-6 gap-2 mt-3">
               <div *ngFor="let theme of colorThemes" pTooltip="{{theme.name}}" tooltipPosition="top"

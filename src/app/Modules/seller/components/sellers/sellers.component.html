@@ -4,7 +4,7 @@
     <div class="form-header">
       <h2 class="form-title"><i class="pi pi-user-plus"></i> Manage Seller</h2>
       <div class="form-controls">
-        <p-select [options]="sellersForDropdown" [(ngModel)]="selectedSellerId" optionLabel="name" optionValue="_id" name="seller"
+       <p-select appendTo="body"  [options]="sellersForDropdown" [(ngModel)]="selectedSellerId" optionLabel="name" optionValue="_id" name="seller"
           placeholder="Select a Seller to Edit" [showClear]="true" (onChange)="fetchSellerDetails()"
           styleClass="themed-select seller-selector">
         </p-select>
@@ -33,7 +33,7 @@
           </div>
           <div class="form-group">
             <label for="status">Status <span class="required">*</span></label>
-            <p-select id="status" [options]="statuses" formControlName="status" placeholder="Select Status"
+           <p-select appendTo="body"  id="status" [options]="statuses" formControlName="status" placeholder="Select Status"
               styleClass="themed-select" panelStyleClass="themed-panel" [required]="true"></p-select>
             <small *ngIf="sellerForm.controls['status'].invalid && sellerForm.controls['status'].touched"
               class="validation-error">Status is required</small>

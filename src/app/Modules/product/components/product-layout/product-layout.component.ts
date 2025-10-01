@@ -18,9 +18,10 @@ import { RouterModule } from '@angular/router';
 import { Routes } from '@angular/router';
 import { SelectButtonModule } from 'primeng/selectbutton';
 import { FormsModule } from '@angular/forms';
+import { Select } from 'primeng/select';
 @Component({
     selector: 'app-product-layout',
-    imports: [CommonModule, RouterModule, SelectButtonModule, FormsModule],
+    imports: [CommonModule, RouterModule, SelectButtonModule,Select, FormsModule],
     templateUrl: './product-layout.component.html',
     styleUrl: './product-layout.component.css'
 })

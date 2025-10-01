@@ -10,19 +10,19 @@
 
     <div class="se-filter-field">
       <label for="category">Category</label>
-      <p-select id="category" [(ngModel)]="productFilter.category" [options]="categoryOptions"
+     <p-select appendTo="body"  id="category" [(ngModel)]="productFilter.category" [options]="categoryOptions"
         placeholder="All Categories" (onChange)="applyFiltersAndReset()" [showClear]="true"></p-select>
     </div>
 
     <div class="se-filter-field">
       <label for="brand">Brand</label>
-      <p-select id="brand" [(ngModel)]="productFilter.brand" [options]="brandOptions" placeholder="All Brands"
+     <p-select appendTo="body"  id="brand" [(ngModel)]="productFilter.brand" [options]="brandOptions" placeholder="All Brands"
         (onChange)="applyFiltersAndReset()" [showClear]="true"></p-select>
     </div>
 
     <div class="se-filter-field">
       <label for="sku">SKU</label>
-      <p-select id="sku" [(ngModel)]="productFilter.sku" [options]="skuOptions" placeholder="All SKUs"
+     <p-select appendTo="body"  id="sku" [(ngModel)]="productFilter.sku" [options]="skuOptions" placeholder="All SKUs"
         (onChange)="applyFiltersAndReset()" [showClear]="true"></p-select>
     </div>
 
@@ -67,5 +67,4 @@
       <app-product-master [redirectedData]="redirectedProduct"></app-product-master>
     </ng-template>
   </p-dialog>
-
 </div>

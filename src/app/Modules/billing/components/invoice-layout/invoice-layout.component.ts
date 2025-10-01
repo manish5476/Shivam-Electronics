@@ -8,9 +8,10 @@ import { GstInvoiceComponent } from '../gst-invoice/gst-invoice.component';
 import { InvoiceViewComponent } from '../invoice-view/invoice-view.component';
 import { InvoiceDetailCardComponent } from '../invoice-detailsview/invoice-detailsview.component';
 import { InvoicePrintComponent } from '../invoice-print/invoice-print.component';
+import { Select } from 'primeng/select';
 @Component({
   selector: 'app-invoice-layout',
-  imports: [CommonModule, RouterModule, SelectButtonModule, FormsModule],
+  imports: [CommonModule, RouterModule,Select, SelectButtonModule, FormsModule],
   templateUrl: './invoice-layout.component.html',
   styleUrl: './invoice-layout.component.css'
 })

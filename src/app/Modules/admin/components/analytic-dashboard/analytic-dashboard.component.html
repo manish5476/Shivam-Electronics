@@ -12,11 +12,11 @@
   <!-- Middle Row: Top Products & Traffic -->
   <div class="middle-row">
     <div class="products-card">
-      <div class="card-title">Top Products <p-select [options]="periodOptions" [(ngModel)]="selectedPeriod" styleClass="small-selectp-select"></p-select></div>
+      <div class="card-title">Top Products<p-select appendTo="body"  [options]="periodOptions" [(ngModel)]="selectedPeriod" styleClass="small-selectp-select"></p-select></div>
       <p-chart type="line" [data]="chartData" [options]="chartOptions"></p-chart>
     </div>
     <div class="traffic-card">
-      <div class="card-title">Traffic <p-select [options]="periodOptions" [(ngModel)]="selectedPeriod" styleClass="small-selectp-select"></p-select></div>
+      <div class="card-title">Traffic<p-select appendTo="body"  [options]="periodOptions" [(ngModel)]="selectedPeriod" styleClass="small-selectp-select"></p-select></div>
       <div class="traffic-list">
         <div class="traffic-item" *ngFor="let item of trafficData">
           <div class="traffic-label"><span class="traffic-dot" [style.background-color]="item.color"></span>{{item.label}}</div>

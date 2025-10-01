@@ -28,6 +28,7 @@
             ],
             "styles": [
               "src/styles.css",
+              "src/themes.css",
               "node_modules/primeicons/primeicons.css",
               "@angular/material/prebuilt-themes/azure-blue.css"
             ],
@@ -121,6 +122,7 @@
             ],
             "styles": [
               "src/styles.css",
+              "src/themes.css",
               "@angular/material/prebuilt-themes/azure-blue.css"
             ],
             "scripts": []

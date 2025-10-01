@@ -1,5 +1,5 @@
 <div class="flex flex-col md:flex-row justify-between items-center gap-4 mb-4">
-  <p-select [(ngModel)]="paymentFilter.customerId" (onChange)="getPaymentData()" [options]="customerIDDropdown"
+ <p-select appendTo="body"  [(ngModel)]="paymentFilter.customerId" (onChange)="getPaymentData()" [options]="customerIDDropdown"
     optionLabel="fullname" optionValue="_id" placeholder="Select Customer" class="w-full md:w-64">
   </p-select>
 </div>
@@ -78,7 +78,7 @@
 
 
 <!-- <div class="flex flex-col md:flex-row justify-between items-center gap-4 mb-4">
-  <p-select [(ngModel)]="paymentFilter.customerId" (onChange)="getPaymentData()" [options]="customerIDDropdown"
+ <p-select appendTo="body"  [(ngModel)]="paymentFilter.customerId" (onChange)="getPaymentData()" [options]="customerIDDropdown"
     optionLabel="fullname" optionValue="_id" placeholder="Select Customer" class="w-full md:w-64">
   </p-select>
 </div>

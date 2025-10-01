@@ -7,7 +7,7 @@ import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-
+import { Select } from 'primeng/select';
 // PrimeNG Modules
 import { AvatarModule } from 'primeng/avatar';
 import { ButtonModule } from 'primeng/button';
@@ -28,7 +28,7 @@ import { ThemeService, ThemeSettings } from '../../core/services/theme.service';
     RouterModule,
     PopoverModule,
     AvatarModule,
-    ButtonModule,
+    ButtonModule,Select,
     SelectButtonModule,
     TooltipModule
   ],

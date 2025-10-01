@@ -4,7 +4,7 @@
     <!-- Customer Dropdown -->
     <div class="se-filter-field">
       <label for="customer">Customer</label>
-      <p-select id="customer" appendTo="body" [options]="customerFilter.customerIDDropdown"
+     <p-select appendTo="body"  id="customer" appendTo="body" [options]="customerFilter.customerIDDropdown"
         [(ngModel)]="customerFilter.name" (onChange)="resetFilters()" [filter]="true" filterBy="fullname"
         optionLabel="fullname" optionValue="_id" [showClear]="true" placeholder="Select a Customer">
       </p-select>
@@ -62,7 +62,7 @@
   d
     <div class="se-filter-field">
       <label for="customer">Customer</label>
-      <p-select id="customer" appendTo="body" [options]="customerFilter.customerIDDropdown"
+     <p-select appendTo="body"  id="customer" appendTo="body" [options]="customerFilter.customerIDDropdown"
         [(ngModel)]="customerFilter.name" (onChange)="getData()" [filter]="true" filterBy="fullname"
         optionLabel="fullname" optionValue="_id" [showClear]="true" placeholder="Select a Customer">
       </p-select>

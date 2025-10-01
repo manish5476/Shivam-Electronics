@@ -13,12 +13,12 @@
     </div>
 
     <div class="p-toolbar-group-center flex flex-wrap gap-1 md:gap-2 items-center justify-center flex-1 px-1">
-      <p-select [options]="periodOptions" [(ngModel)]="selectedPeriod" optionLabel="label" optionValue="value"
+     <p-select appendTo="body"  [options]="periodOptions" [(ngModel)]="selectedPeriod" optionLabel="label" optionValue="value"
         styleClass="p-inputtext-xs w-32 md:w-40 rounded-full"
         [style]="{'background': 'var(--theme-bg-ternary)', 'border-color': 'var(--theme-border-secondary)', 'font-family': 'var(--font-body)', 'font-size': '0.875rem'}"
         (onChange)="onFilterChange()"></p-select>
 
-      <p-select [options]="limitOptions" [(ngModel)]="dataLimit" optionLabel="label" optionValue="value"
+     <p-select appendTo="body"  [options]="limitOptions" [(ngModel)]="dataLimit" optionLabel="label" optionValue="value"
         styleClass="p-inputtext-xs w-24 md:w-32 rounded-full"
         [style]="{'background': 'var(--theme-bg-ternary)', 'border-color': 'var(--theme-border-secondary)', 'font-family': 'var(--font-body)', 'font-size': '0.875rem'}"
         (onChange)="onFilterChange()"></p-select>

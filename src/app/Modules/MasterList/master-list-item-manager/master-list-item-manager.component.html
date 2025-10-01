@@ -2,7 +2,7 @@
   <h3>Master List Items</h3>
 
   <!-- Type Selector -->
-  <p-select [options]="types" [(ngModel)]="selectedType" optionLabel="label" optionValue="value"
+ <p-select appendTo="body"  [options]="types" [(ngModel)]="selectedType" optionLabel="label" optionValue="value"
     placeholder="Select a type" (onChange)="onTypeChange()">
   </p-select>
 

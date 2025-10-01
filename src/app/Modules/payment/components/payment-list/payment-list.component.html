@@ -24,7 +24,7 @@
       <!-- Status Dropdown -->
       <div class="flex flex-col flex-grow min-w-[150px]">
         <label for="status" class="text-sm font-medium text-[var(--theme-text-secondary)] mb-1">Status</label>
-        <p-select id="status" [options]="statusOptions" [(ngModel)]="paymentFilter.status"
+       <p-select appendTo="body"  id="status" [options]="statusOptions" [(ngModel)]="paymentFilter.status"
           (onChange)="applyFiltersAndReset()" placeholder="All Statuses" [showClear]="true"></p-select>
       </div>
 
@@ -32,7 +32,7 @@
       <div class="flex flex-col flex-grow min-w-[150px]">
         <label for="paymentMethod" class="text-sm font-medium text-[var(--theme-text-secondary)] mb-1">Payment
           Method</label>
-        <p-select id="paymentMethod" [options]="methodOptions" [(ngModel)]="paymentFilter.paymentMethod"
+       <p-select appendTo="body"  id="paymentMethod" [options]="methodOptions" [(ngModel)]="paymentFilter.paymentMethod"
           (onChange)="applyFiltersAndReset()" placeholder="All Methods" [showClear]="true"></p-select>
       </div>
 

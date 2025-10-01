@@ -21,13 +21,13 @@
         </div>
         <div class="form-group">
           <label for="seller">Billed By</label>
-          <p-select id="seller" formControlName="seller" [options]="InvoiceObject.sellersDrop" optionLabel="name"
+         <p-select appendTo="body"  id="seller" formControlName="seller" [options]="InvoiceObject.sellersDrop" optionLabel="name"
             optionValue="_id" placeholder="Select Seller" appendTo="body" styleClass="themed-select"
             panelStyleClass="themed-panel"></p-select>
         </div>
         <div class="form-group">
           <label for="buyer">Billed To</label>
-          <p-select id="buyer" formControlName="buyer" [options]="InvoiceObject.customerIDDropdown"
+         <p-select appendTo="body"  id="buyer" formControlName="buyer" [options]="InvoiceObject.customerIDDropdown"
             optionLabel="fullname" optionValue="_id" placeholder="Select Buyer" appendTo="body"
             styleClass="themed-select" panelStyleClass="themed-panel"></p-select>
         </div>
@@ -53,7 +53,7 @@
           </thead>
           <tbody formArrayName="items">
             <tr *ngFor="let itemFormGroup of itemsFormArray.controls; let i = index" [formGroupName]="i">
-              <td><p-select formControlName="product" [options]="InvoiceObject.productdrop" optionLabel="title"
+              <td><p-select appendTo="body" appendTo="body" formControlName="product" [options]="InvoiceObject.productdrop" optionLabel="title"
                   class="w-full" optionValue="_id" (onChange)="onProductChange($event, i)"
                   (ngModelChange)="onItemValueChange(i)" appendTo="body" styleClass="themed-select"
                   panelStyleClass="themed-panel"></p-select></td>

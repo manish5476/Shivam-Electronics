@@ -6,6 +6,11 @@ import { NotificationService } from '../../../../core/services/notification.serv
 import { Dialog } from "primeng/dialog";
 import { NotesManagerComponent } from '../../../../shared/Common/notes-manager/notes-manager.component';
 // --- INTERFACES to strongly type the data ---
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
+import { TabViewModule } from 'primeng/tabview';
+import { BadgeModule } from 'primeng/badge';
+import { DialogModule } from 'primeng/dialog'; // Best practice to import the module
+import { TabsModule } from 'primeng/tabs';
 interface HeatmapDay {
   day: number;
   totalRevenue: number;
@@ -33,7 +38,8 @@ interface CalendarDay {
 @Component({
   selector: 'app-notification-calendar',
   standalone: true,
-  imports: [CommonModule, CurrencyPipe, NotesManagerComponent, Dialog],
+  imports: [CommonModule, CurrencyPipe, TabsModule,NotesManagerComponent, Dialog, ProgressSpinnerModule, TabViewModule, BadgeModule,
+    DialogModule],
   templateUrl: './notification-calendar.component.html',
   styleUrls: ['./notification-calendar.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -48,7 +54,7 @@ export class NotificationCalendarComponent implements OnInit {
   currentDate = signal(new Date());
   heatmapData = signal<HeatmapDay[]>([]);
   selectedDay = signal<CalendarDay | null>(null);
-  selectedDaySummary = signal<DailySummary | null>(null);
+  selectedDaySummary = signal<any | null>(null);
   isLoadingHeatmap = signal(false);
   isLoadingSummary = signal(false);
   showSummaryDialog: boolean = false
@@ -57,7 +63,7 @@ export class NotificationCalendarComponent implements OnInit {
     return this.currentDate().toLocaleString('default', { month: 'long', year: 'numeric' });
   });
 
-  calendarGrid = computed<CalendarDay[]>(() => {
+  calendarGrid = computed<any>(() => {
     const date = this.currentDate();
     const year = date.getFullYear();
     const month = date.getMonth();
@@ -69,13 +75,12 @@ export class NotificationCalendarComponent implements OnInit {
     today.setHours(0, 0, 0, 0);
 
     const startDayOfWeek = firstDayOfMonth.getDay();
-    // Add days from the previous month to fill the first week
+
     for (let i = startDayOfWeek; i > 0; i--) {
       const prevMonthDate = new Date(year, month, 1 - i);
       days.push({ date: prevMonthDate, dayOfMonth: prevMonthDate.getDate(), isCurrentMonth: false, isToday: false });
     }
 
-    // Add days for the current month
     for (let i = 1; i <= lastDayOfMonth.getDate(); i++) {
       const currentDate = new Date(year, month, i);
       days.push({

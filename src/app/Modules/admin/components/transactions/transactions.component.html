@@ -17,11 +17,11 @@
           placeholder="Search description..." class="p-inputtext-sm" />
 
         <!-- Type Dropdown -->
-        <p-select id="type" [options]="typeOptions" [(ngModel)]="transactionFilter.type"
+       <p-select appendTo="body"  id="type" [options]="typeOptions" [(ngModel)]="transactionFilter.type"
           (onChange)="applyFiltersAndReset()" placeholder="All Types" [showClear]="true"></p-select>
 
         <!-- Status Dropdown -->
-        <p-select id="status" [options]="statusOptions" [(ngModel)]="transactionFilter.status"
+       <p-select appendTo="body"  id="status" [options]="statusOptions" [(ngModel)]="transactionFilter.status"
           (onChange)="applyFiltersAndReset()" placeholder="All Statuses" [showClear]="true"></p-select>
 
         <!-- Date Range -->
@@ -79,7 +79,7 @@
     
       <div class="flex flex-col gap-2">
         <label class="text-sm font-medium text-[var(--theme-text-label)]">Type</label>
-        <p-select 
+       <p-select appendTo="body"  
           [options]="type" 
           optionLabel="label" 
           optionValue="value"

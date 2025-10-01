@@ -8,14 +8,14 @@
 
       <div class="flex flex-col">
         <label for="buyer" class="text-sm font-medium text-[var(--theme-text-secondary)] mb-1">Buyer</label>
-        <p-select id="buyer" appendTo="body" [options]="customerIDDropdown" [(ngModel)]="invoiceFilter.buyer"
+       <p-select appendTo="body"  id="buyer" appendTo="body" [options]="customerIDDropdown" [(ngModel)]="invoiceFilter.buyer"
           [filter]="true" filterBy="fullname" optionLabel="fullname" optionValue="_id" [showClear]="true"
           placeholder="Select Buyer" (onChange)="applyFiltersAndReset()" />
       </div>
 
       <div class="flex flex-col">
         <label for="status" class="text-sm font-medium text-[var(--theme-text-secondary)] mb-1">Status</label>
-        <p-select id="status" appendTo="body" [options]="statusOptions" [(ngModel)]="invoiceFilter.status"
+       <p-select appendTo="body"  id="status" appendTo="body" [options]="statusOptions" [(ngModel)]="invoiceFilter.status"
           (onChange)="applyFiltersAndReset()" placeholder="All Status" [showClear]="true" />
       </div>
 
@@ -63,13 +63,13 @@
       </div>
 
       <div class="header-controls flex items-center flex-wrap justify-end gap-3 sm:gap-4">
-        <p-select id="buyer" appendTo="body" [options]="customerIDDropdown" [(ngModel)]="invoiceFilter.buyer"
+       <p-select appendTo="body"  id="buyer" appendTo="body" [options]="customerIDDropdown" [(ngModel)]="invoiceFilter.buyer"
           (onChange)="getData()" [checkmark]="true" [filter]="true" filterBy="fullname" optionLabel="fullname"
           optionValue="id" [showClear]="true" placeholder="Select Buyer"
           class="flex-1 min-w-[10rem] p-inputtext-sm border border-[var(--theme-border-primary)] rounded-md" />
 
         
-        <p-select id="status" appendTo="body" [options]="statusOptions" optionLabel="label" optionValue="value"
+       <p-select appendTo="body"  id="status" appendTo="body" [options]="statusOptions" optionLabel="label" optionValue="value"
           [(ngModel)]="invoiceFilter.status" (onChange)="getData()" placeholder="All Status"
           class="flex-1 min-w-[8rem] p-inputtext-sm border border-[var(--theme-border-primary)] rounded-md" />
 

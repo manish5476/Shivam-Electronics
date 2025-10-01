@@ -3,7 +3,7 @@
   <div class="chart-header">
     <h3 class="section-header">Yearly Sales</h3>
     <div class="flex items-center gap-2">
-      <p-select [options]="chartTypeOptions" [(ngModel)]="selectedChartType" name="charttype" (onChange)="onChartTypeChange()" optionLabel="label" optionValue="value" styleClass="p-select-sm w-48">
+     <p-select appendTo="body"  [options]="chartTypeOptions" [(ngModel)]="selectedChartType" name="charttype" (onChange)="onChartTypeChange()" optionLabel="label" optionValue="value" styleClass="p-select-sm w-48">
           <ng-template let-item pTemplate="selectedItem">
               <i [class]="item.icon" class="mr-2"></i>
               <span>{{item.label}}</span>

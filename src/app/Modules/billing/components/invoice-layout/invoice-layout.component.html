@@ -1,9 +1,9 @@
 <main class="flex-1 overflow-y-auto w-full relative bg-gray-50 font-roboto">
    <div class="flex card-details justify-center">
-      <p-selectButton [options]="componentNavItems" [(ngModel)]="activeComponent" optionLabel="label"
+     <p-select appendTo="body" Button [options]="componentNavItems" [(ngModel)]="activeComponent" optionLabel="label"
         optionValue="component" aria-labelledby="basic" (onChange)="navigateToComponent(activeComponent)"
         [style]="{ minWidth: '60%', justifyContent: 'center' }" class="p-selectbutton-custom">
-      </p-selectButton>
+      </p-select>
     </div>
 
   <div class="">

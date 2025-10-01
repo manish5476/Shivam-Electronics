@@ -15,7 +15,7 @@
 
     <div class="se-filter-field">
       <label for="status">Status</label>
-      <p-select id="status" [options]="statusOptions" [(ngModel)]="sellerFilter.status"
+     <p-select appendTo="body"  id="status" [options]="statusOptions" [(ngModel)]="sellerFilter.status"
         (onChange)="applyFiltersAndReset()" placeholder="All Statuses" [showClear]="true"></p-select>
     </div>
 

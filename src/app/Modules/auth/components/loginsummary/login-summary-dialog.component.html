@@ -1,33 +1,57 @@
-<div class="glass-card login-summary-dialog">
+<div class="glass-card login-summary-dialog dialog-fullscreen">
   <header class="dialog-header">
-    <h2>Login Summary</h2>
-    <button pButton type="button" label="Close" class="p-button-text close-btn" (click)="closeDialog()"></button>
+    <div class="dialog-header-text">
+      <h2 class="dialog-title">Login Summary</h2>
+    </div>
+    <button pButton type="button" icon="pi pi-times" class="p-button-text close-btn" (click)="closeDialog()"></button>
   </header>
 
   <!-- KPI Cards -->
-  <section class="kpi-cards">
-    <div class="kpi-card">
-      <h3>Yesterday Revenue</h3>
-      <p>{{ summaryData.yesterdayRevenue | currency }}</p>
+  <section class="kpi-cards summary-metrics-row">
+    <div class="kpi-card metric-card revenue">
+      <div class="metric-icon-wrapper">
+        <i class="pi pi-wallet metric-icon"></i>
+      </div>
+      <div class="metric-details">
+        <p class="metric-label">Yesterday Revenue</p>
+        <p class="metric-value">{{ summaryData.yesterdayRevenue | currency:"INR" }}</p>
+      </div>
     </div>
-    <div class="kpi-card">
-      <h3>New Customers Yesterday</h3>
-      <p>{{ summaryData.newCustomersYesterday || 0 }}</p>
+    <div class="kpi-card metric-card sales">
+      <div class="metric-icon-wrapper">
+        <i class="pi pi-users metric-icon"></i>
+      </div>
+      <div class="metric-details">
+        <p class="metric-label">New Customers Yesterday</p>
+        <p class="metric-value">{{ summaryData.newCustomersYesterday || 0 }}</p>
+      </div>
     </div>
-    <div class="kpi-card">
-      <h3>New Products Today</h3>
-      <p>{{ summaryData.newProductsToday?.length || 0 }}</p>
+    <div class="kpi-card metric-card purchases">
+      <div class="metric-icon-wrapper">
+        <i class="pi pi-box metric-icon"></i>
+      </div>
+      <div class="metric-details">
+        <p class="metric-label">New Products Today</p>
+        <p class="metric-value">{{ summaryData.newProductsToday?.length || 0 }}</p>
+      </div>
     </div>
-    <div class="kpi-card">
-      <h3>New Customers Today</h3>
-      <p>{{ summaryData.newCustomersToday?.length || 0 }}</p>
+    <div class="kpi-card metric-card payments">
+      <div class="metric-icon-wrapper">
+        <i class="pi pi-users metric-icon"></i>
+      </div>
+      <div class="metric-details">
+        <p class="metric-label">New Customers Today</p>
+        <p class="metric-value">{{ summaryData.newCustomersToday?.length || 0 }}</p>
+      </div>
     </div>
   </section>
 
   <!-- New Products Table -->
-  <section class="notes-table" *ngIf="summaryData.newProductsToday?.length">
-    <h4>New Products Today</h4>
-    <p-table [value]="summaryData.newProductsToday">
+  <section class="notes-table list-section" *ngIf="summaryData.newProductsToday?.length">
+    <h4 class="section-title">
+      <i class="pi pi-box mr-2"></i>New Products Today
+    </h4>
+    <p-table [value]="summaryData.newProductsToday" class="scroll-list">
       <ng-template pTemplate="header">
         <tr>
           <th>Title</th>
@@ -35,11 +59,13 @@
         </tr>
       </ng-template>
       <ng-template pTemplate="body" let-product>
-        <tr>
-          <td>{{ product.title }}</td>
+        <tr class="list-card">
+          <td class="item-details">
+            <p class="item-title">{{ product.title }}</p>
+          </td>
           <td>
-            <img *ngIf="product.thumbnail" [src]="product.thumbnail" alt="Thumbnail" width="50" />
-            <span *ngIf="!product.thumbnail">-</span>
+            <img *ngIf="product.thumbnail" [src]="product.thumbnail" alt="Thumbnail" class="avatar-img is-product" />
+            <span *ngIf="!product.thumbnail" class="item-subtitle">-</span>
           </td>
         </tr>
       </ng-template>
@@ -47,9 +73,11 @@
   </section>
 
   <!-- New Customers Table -->
-  <section class="notes-table" *ngIf="summaryData.newCustomersToday?.length">
-    <h4>New Customers Today</h4>
-    <p-table [value]="summaryData.newCustomersToday">
+  <section class="notes-table list-section" *ngIf="summaryData.newCustomersToday?.length">
+    <h4 class="section-title">
+      <i class="pi pi-users mr-2"></i>New Customers Today
+    </h4>
+    <p-table [value]="summaryData.newCustomersToday" class="scroll-list">
       <ng-template pTemplate="header">
         <tr>
           <th>Full Name</th>
@@ -57,18 +85,22 @@
         </tr>
       </ng-template>
       <ng-template pTemplate="body" let-customer>
-        <tr>
-          <td>{{ customer.fullname }}</td>
-          <td>{{ customer.mobileNumber }}</td>
+        <tr class="list-card">
+          <td class="item-details">
+            <p class="item-title">{{ customer.fullname }}</p>
+          </td>
+          <td class="item-amount">{{ customer.mobileNumber }}</td>
         </tr>
       </ng-template>
     </p-table>
   </section>
 
   <!-- Customers with Dues -->
-  <section class="notes-table" *ngIf="summaryData.customersWithDues?.length">
-    <h4>Customers with Dues</h4>
-    <p-table [value]="summaryData.customersWithDues">
+  <section class="notes-table list-section" *ngIf="summaryData.customersWithDues?.length">
+    <h4 class="section-title">
+      <i class="pi pi-exclamation-triangle mr-2"></i>Customers with Dues
+    </h4>
+    <p-table [value]="summaryData.customersWithDues" class="scroll-list">
       <ng-template pTemplate="header">
         <tr>
           <th>Full Name</th>
@@ -76,9 +108,11 @@
         </tr>
       </ng-template>
       <ng-template pTemplate="body" let-customer>
-        <tr>
-          <td>{{ customer.fullname }}</td>
-          <td>{{ customer.dueAmount | currency }}</td>
+        <tr class="list-card">
+          <td class="item-details">
+            <p class="item-title">{{ customer.fullname }}</p>
+          </td>
+          <td class="item-amount profit-text">{{ customer.dueAmount | currency:"INR" }}</td>
         </tr>
       </ng-template>
     </p-table>

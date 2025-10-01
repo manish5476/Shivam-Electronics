@@ -45,10 +45,11 @@ import { SelectButtonModule } from 'primeng/selectbutton';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { ScrollerModule } from 'primeng/scroller';
+import { Select } from 'primeng/select';
 
 @Component({
     selector: 'app-common-layout',
-    imports: [CommonModule,ScrollerModule, SelectButtonModule, FormsModule],
+    imports: [CommonModule,ScrollerModule,Select, SelectButtonModule, FormsModule],
     templateUrl: './common-layout.component.html',
     styleUrls: ['./common-layout.component.css']
 })
