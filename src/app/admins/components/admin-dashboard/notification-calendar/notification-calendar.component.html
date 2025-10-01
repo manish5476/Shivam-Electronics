@@ -5,46 +5,87 @@
         <h2 class="month-title">{{ displayedMonth() }}</h2>
         <div class="calendar-nav">
           <button (click)="goToToday()" class="btn btn-today">Today</button>
-          <button (click)="changeMonth(-1)" aria-label="Previous month" class="btn btn-icon">
-            <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+          <button
+            (click)="changeMonth(-1)"
+            aria-label="Previous month"
+            class="btn btn-icon"
+          >
+            <svg
+              class="icon"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M15 19l-7-7 7-7"
+              ></path>
             </svg>
           </button>
-          <button (click)="changeMonth(1)" aria-label="Next month" class="btn btn-icon">
-            <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+          <button
+            (click)="changeMonth(1)"
+            aria-label="Next month"
+            class="btn btn-icon"
+          >
+            <svg
+              class="icon"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M9 5l7 7-7 7"
+              ></path>
             </svg>
           </button>
         </div>
       </div>
 
       <div class="calendar-grid">
-        @for(day of weekDays; track day) {
-        <div class="weekday-header">{{ day }}</div>
+        @for (day of weekDays; track day) {
+          <div class="weekday-header">{{ day }}</div>
         }
 
-        @for(day of calendarGrid(); track day.date.getTime()) {
-        <div class="day-cell" [class.inactive]="!day.isCurrentMonth" [class.selectable]="day.heatmapData"
-          [class.selected]="isDaySelected(day)" [class.level-0]="day.isCurrentMonth && !day.heatmapData"
-          [class.level-1]="day.heatmapData?.level === 1" [class.level-2]="day.heatmapData?.level === 2"
-          [class.level-3]="day.heatmapData?.level === 3" [class.level-4]="day.heatmapData?.level === 4"
-          (click)="selectDay(day)">
+        @for (day of calendarGrid(); track day.date.getTime()) {
+          <div
+            class="day-cell"
+            [class.inactive]="!day.isCurrentMonth"
+            [class.selectable]="day.heatmapData"
+            [class.selected]="isDaySelected(day)"
+            [class.level-0]="day.isCurrentMonth && !day.heatmapData"
+            [class.level-1]="day.heatmapData?.level === 1"
+            [class.level-2]="day.heatmapData?.level === 2"
+            [class.level-3]="day.heatmapData?.level === 3"
+            [class.level-4]="day.heatmapData?.level === 4"
+            (click)="selectDay(day)"
+          >
+            <div class="day-actions" (click)="$event.stopPropagation()">
+              <button
+                class="action-btn add"
+                (click)="addNoteForDay(day, $event)"
+                pTooltip="Add Note"
+              >
+                <i class="pi pi-plus"></i>
+              </button>
+            </div>
 
-          <div class="day-actions" (click)="$event.stopPropagation()">
-            <button class="action-btn add" (click)="addNoteForDay(day, $event)" pTooltip="Add Note">
-              <i class="pi pi-plus"></i>
-            </button>
+            <span class="day-number">{{ day.dayOfMonth }}</span>
+            <span
+              class="today-marker"
+              *ngIf="day.isToday && !isDaySelected(day)"
+            ></span>
           </div>
-
-          <span class="day-number">{{ day.dayOfMonth }}</span>
-          <span class="today-marker" *ngIf="day.isToday && !isDaySelected(day)"></span>
-        </div>
         }
       </div>
     </div>
   </main>
 
-   <p-dialog [(visible)]="showSummaryDialog" maskStyleClass="backdrop-blur-sm" [modal]="true" [draggable]="false"
+  <!-- <p-dialog [(visible)]="showSummaryDialog" maskStyleClass="backdrop-blur-sm" [modal]="true" [draggable]="false"
     [resizable]="false" [styleClass]="'summary-dialog glass-card dialog-fullscreen'">
 
     <ng-template pTemplate="header">
@@ -57,7 +98,7 @@
       </div>
     </ng-template>
 
-    <!-- CONTENT -->
+    CONTENT
     <div class="summary-content">
       @if(isLoadingSummary()) {
       <div class="loading-state">
@@ -66,7 +107,7 @@
       } @else {
       @if (selectedDaySummary(); as summary) {
 
-      <!-- TOP METRICS ROW -->
+      TOP METRICS ROW
       <div class="summary-metrics-row">
         <div class="metric-card revenue">
           <i class="pi pi-chart-line metric-icon"></i>
@@ -98,9 +139,9 @@
         </div>
       </div>
 
-      <!-- DETAILS GRID -->
+      DETAILS GRID
       <div class="summary-details-grid">
-        <!-- CUSTOMERS -->
+        CUSTOMERS
         <div class="list-section">
           <h4 class="section-title"><i class="pi pi-users mr-2"></i>New Customers</h4>
           <div class="scroll-list">
@@ -118,7 +159,7 @@
           </div>
         </div>
 
-        <!-- PRODUCTS -->
+        PRODUCTS
         <div class="list-section">
           <h4 class="section-title"><i class="pi pi-box mr-2"></i>New Products</h4>
           <div class="scroll-list">
@@ -147,18 +188,215 @@
       }
     </div>
   </p-dialog>
+ -->
+  <p-dialog
+    [(visible)]="showSummaryDialog"
+    maskStyleClass="backdrop-blur-sm"
+    [modal]="true"
+    [draggable]="false"
+    [resizable]="false"
+    [styleClass]="'summary-dialog glass-card dialog-fullscreen'"
+  >
+    <ng-template pTemplate="header">
+      <div class="dialog-header">
+        <i class="pi pi-chart-bar dialog-header-icon"></i>
+        <div class="dialog-header-text">
+          <span class="dialog-title">Daily Business Summary</span>
+          <span class="dialog-subtitle">{{
+            calanderDay | date: "fullDate"
+          }}</span>
+        </div>
+      </div>
+    </ng-template>
 
+    <div class="summary-content">
+      @if (isLoadingSummary()) {
+        <div class="loading-state">
+          <p-progressSpinner aria-label="Loading"></p-progressSpinner>
+          <h3 class="loading-text">Analyzing Daily Data...</h3>
+        </div>
+      } @else {
+        @if (selectedDaySummary(); as summary) {
+          <div class="summary-metrics-row">
+            <div class="metric-card">
+              <i class="pi pi-wallet metric-icon revenue"></i>
+              <div>
+                <p class="metric-label">Total Revenue</p>
+                <p class="metric-value">
+                  {{ summary.keyMetrics.revenue.value | currency: "INR" }}
+                </p>
+              </div>
+            </div>
+            <div class="metric-card">
+              <i class="pi pi-shopping-cart metric-icon sales"></i>
+              <div>
+                <p class="metric-label">Total Sales</p>
+                <p class="metric-value">
+                  {{ summary.keyMetrics.salesCount.value }}
+                </p>
+              </div>
+            </div>
+            <div class="metric-card">
+              <i class="pi pi-receipt metric-icon purchases"></i>
+              <div>
+                <p class="metric-label">Total Purchases</p>
+                <p class="metric-value">
+                  {{ summary.keyMetrics.totalPurchases.value }}
+                </p>
+              </div>
+            </div>
+            <div class="metric-card">
+              <i class="pi pi-money-bill metric-icon payments"></i>
+              <div>
+                <p class="metric-label">Payments Received</p>
+                <p class="metric-value">
+                  {{
+                    summary.keyMetrics.paymentsReceived.value | currency: "INR"
+                  }}
+                </p>
+              </div>
+            </div>
+          </div>
 
-   <p-dialog maskStyleClass="backdrop-blur-sm" [(visible)]="showNotesDialog" [modal]="true" [draggable]="false"
-    [resizable]="false" [styleClass]="'notes-dialog glass-card dialog-fullscreen'">
+          <p-tabView styleClass="summary-tabview">
+            <p-tabPanel>
+              <ng-template pTemplate="header">
+                <i class="pi pi-tag mr-2"></i>
+                <span>Sales Invoices</span>
+                <p-badge
+                  [value]="summary.transactionDetails.sales.count"
+                  styleClass="ml-2"
+                ></p-badge>
+              </ng-template>
+              <div class="scroll-list">
+                @for (
+                  invoice of summary.transactionDetails.sales.invoices;
+                  track invoice._id
+                ) {
+                  <div class="list-card invoice-card">
+                    <div class="avatar-icon-wrapper sales-bg">
+                      <i class="pi pi-file-export"></i>
+                    </div>
+                    <div class="item-details">
+                      <p class="item-title">{{ invoice.invoiceNumber }}</p>
+                      <p class="item-subtitle">
+                        <i class="pi pi-user text-xs"></i>
+                        {{ invoice.buyerDetails.fullname }}
+                      </p>
+                    </div>
+                    <div class="item-status" [ngClass]="invoice.status">
+                      {{ invoice.status }}
+                    </div>
+                    <div class="item-amount">
+                      {{ invoice.totalAmount | currency: "INR" }}
+                    </div>
+                  </div>
+                } @empty {
+                  <div class="empty-state">
+                    <i class="pi pi-inbox empty-icon"></i>
+                    <p>No sales were recorded on this day.</p>
+                  </div>
+                }
+              </div>
+            </p-tabPanel>
 
-
+            <p-tabPanel header="Actionable Insights">
+              <ng-template pTemplate="header">
+                <i class="pi pi-sparkles mr-2"></i>
+                <span>Insights</span>
+              </ng-template>
+              <div class="insights-grid">
+                <div class="list-section">
+                  <h4 class="section-title">Top Customers Today</h4>
+                  <div class="scroll-list">
+                    @for (
+                      customer of summary.actionableInsights.topCustomersToday;
+                      track customer._id
+                    ) {
+                      <div class="list-card">
+                        <img
+                          class="avatar-img"
+                          [src]="customer.profileImg"
+                          alt="Customer Avatar"
+                        />
+                        <div class="item-details">
+                          <p class="item-title">{{ customer.fullname }}</p>
+                          <p class="item-subtitle">
+                            {{ customer.mobileNumber }}
+                          </p>
+                        </div>
+                        <div class="item-amount">
+                          {{ customer.amount | currency: "INR" }}
+                        </div>
+                      </div>
+                    } @empty {
+                      <div class="empty-state">
+                        <i class="pi pi-users empty-icon"></i>
+                        <p>No significant customer activity.</p>
+                      </div>
+                    }
+                  </div>
+                </div>
+                <div class="list-section">
+                  <h4 class="section-title">Most Profitable Items</h4>
+                  <div class="scroll-list">
+                    @for (
+                      product of summary.actionableInsights.mostProfitableToday;
+                      track product._id
+                    ) {
+                      <div class="list-card">
+                        <img
+                          class="avatar-img is-product"
+                          [src]="product.thumbnail"
+                          alt="Product Thumbnail"
+                        />
+                        <div class="item-details">
+                          <p class="item-title">{{ product.title }}</p>
+                          <p class="item-subtitle">Profit Generated</p>
+                        </div>
+                        <div class="item-amount profit-text">
+                          {{ product.totalProfit | currency: "INR" }}
+                        </div>
+                      </div>
+                    } @empty {
+                      <div class="empty-state">
+                        <i class="pi pi-dollar empty-icon"></i>
+                        <p>No profitable items to show.</p>
+                      </div>
+                    }
+                  </div>
+                </div>
+              </div>
+            </p-tabPanel>
+          </p-tabView>
+        } @else {
+          <div class="empty-state-full">
+            <i class="pi pi-calendar-times placeholder-icon"></i>
+            <h3 class="placeholder-title">No Summary Available</h3>
+            <p class="placeholder-text">
+              There was no business activity for the selected day.
+            </p>
+          </div>
+        }
+      }
+    </div>
+  </p-dialog>
+  <p-dialog
+    maskStyleClass="backdrop-blur-sm"
+    [(visible)]="showNotesDialog"
+    [modal]="true"
+    [draggable]="false"
+    [resizable]="false"
+    [styleClass]="'notes-dialog glass-card dialog-fullscreen'"
+  >
     <ng-template pTemplate="header">
       <div class="dialog-header">
         <i class="pi pi-pencil dialog-header-icon"></i>
         <div class="dialog-header-text">
           <span class="dialog-title">Daily Notes</span>
-          <span class="dialog-subtitle">{{ calanderDay | date:'fullDate' }}</span>
+          <span class="dialog-subtitle">{{
+            calanderDay | date: "fullDate"
+          }}</span>
         </div>
       </div>
     </ng-template>
