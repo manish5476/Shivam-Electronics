@@ -1,19 +1,31 @@
 <div class="seller-form-container">
   <div class="main-card-v2">
 
-    <div class="form-header">
-      <h2 class="form-title"><i class="pi pi-user-plus"></i> Manage Seller</h2>
-      <div class="form-controls">
-       <p-select appendTo="body"  [options]="sellersForDropdown" [(ngModel)]="selectedSellerId" optionLabel="name" optionValue="_id" name="seller"
-          placeholder="Select a Seller to Edit" [showClear]="true" (onChange)="fetchSellerDetails()"
-          styleClass="themed-select seller-selector">
+    <div class="form-header flex items-center justify-between gap-4">
+      <!-- Title -->
+      <h2 class="form-title flex items-center gap-2 text-lg font-semibold">
+        <i class="pi pi-user-plus"></i>
+        Manage Seller
+      </h2>
+
+      <!-- Controls -->
+      <div class="form-controls flex items-center gap-2">
+        <p-select appendTo="body" [options]="sellersForDropdown" [(ngModel)]="selectedSellerId" optionLabel="name"
+          optionValue="_id" name="seller" placeholder="Select a Seller to Edit" [showClear]="true"
+          (onChange)="fetchSellerDetails()" styleClass="themed-select seller-selector">
         </p-select>
-        <button pButton type="button" icon="pi pi-search" (click)="fetchSellerDetails()" [disabled]="!selectedSellerId"
-          pTooltip="Load Seller" tooltipPosition="bottom"></button>
+
+        <button pButton type="button" icon="pi pi-search" class="inline-flex" (click)="fetchSellerDetails()"
+          [disabled]="!selectedSellerId" pTooltip="Load Seller" tooltipPosition="bottom">
+        </button>
+
         <button pButton type="button" label="New" icon="pi pi-plus" (click)="resetForm()"
-          class="p-button-outlined"></button>
+          class="p-button-outlined inline-flex">
+        </button>
+
       </div>
     </div>
+
 
     <form [formGroup]="sellerForm" (ngSubmit)="saveSeller()">
       <div class="form-section-card">
@@ -33,8 +45,9 @@
           </div>
           <div class="form-group">
             <label for="status">Status <span class="required">*</span></label>
-           <p-select appendTo="body"  id="status" [options]="statuses" formControlName="status" placeholder="Select Status"
-              styleClass="themed-select" panelStyleClass="themed-panel" [required]="true"></p-select>
+            <p-select appendTo="body" id="status" [options]="statuses" formControlName="status"
+              placeholder="Select Status" styleClass="themed-select" panelStyleClass="themed-panel"
+              [required]="true"></p-select>
             <small *ngIf="sellerForm.controls['status'].invalid && sellerForm.controls['status'].touched"
               class="validation-error">Status is required</small>
           </div>

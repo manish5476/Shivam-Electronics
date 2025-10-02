@@ -4,6 +4,7 @@ import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas-pro';
 import { InvoiceService } from '../../../../core/services/invoice.service';
 import * as QRCode from 'qrcode';
+import { CommonMethodService } from '../../../../core/Utils/common-method.service';
 
 @Component({
   selector: 'app-invoice-print',
@@ -16,7 +17,7 @@ export class InvoicePrintComponent implements OnInit, OnChanges {
   @Input() Id: string | null = null;
   invoiceData: any;
 
-  constructor(private invoiceService: InvoiceService) {}
+  constructor(private invoiceService: InvoiceService,public  commonMeethodService:CommonMethodService) { }
 
   ngOnInit() {
     if (this.Id) {
@@ -42,9 +43,9 @@ export class InvoicePrintComponent implements OnInit, OnChanges {
 
   convertNumberToWords(num: number | undefined): string {
     if (!num) return '';
-    const ones = ['Zero','One','Two','Three','Four','Five','Six','Seven','Eight','Nine','Ten',
-      'Eleven','Twelve','Thirteen','Fourteen','Fifteen','Sixteen','Seventeen','Eighteen','Nineteen'];
-    const tens = ['','','Twenty','Thirty','Forty','Fifty','Sixty','Seventy','Eighty','Ninety'];
+    const ones = ['Zero', 'One', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eight', 'Nine', 'Ten',
+      'Eleven', 'Twelve', 'Thirteen', 'Fourteen', 'Fifteen', 'Sixteen', 'Seventeen', 'Eighteen', 'Nineteen'];
+    const tens = ['', '', 'Twenty', 'Thirty', 'Forty', 'Fifty', 'Sixty', 'Seventy', 'Eighty', 'Ninety'];
 
     function convertToWords(n: number): string {
       if (n < 20) return ones[n];
@@ -83,6 +84,10 @@ export class InvoicePrintComponent implements OnInit, OnChanges {
       pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
       pdf.save(`invoice-${this.invoiceData?.invoiceNumber || 'download'}.pdf`);
     });
+  }
+
+  trackByFn(index: number, item: any): any {
+    return index;
   }
 
   printInvoice() {

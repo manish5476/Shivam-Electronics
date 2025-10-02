@@ -12,22 +12,33 @@ import { Card } from 'primeng/card';
 import { ButtonModule } from 'primeng/button';
 import { TimelineModule } from 'primeng/timeline';
 import { Tag } from 'primeng/tag';
+import { Badge } from "primeng/badge";
 interface EventItem {
   status?: string;
   date?: string;
   icon?: string;
   color?: string;
-  data?: any; 
+  data?: any;
 }
 
 @Component({
   selector: 'app-view-payment',
   standalone: true,
-  imports: [FormsModule, Tag, ButtonModule, SelectModule, TimelineModule, SplitterModule, CommonModule],
+  imports: [FormsModule, Tag, ButtonModule, SelectModule, TimelineModule, SplitterModule, CommonModule, Badge],
   templateUrl: './view-payment.component.html',
   styleUrl: './view-payment.component.css'
 })
 export class ViewPaymentComponent implements OnInit {
+  viewReceipt(_t34: any) {
+    throw new Error('Method not implemented.');
+  }
+
+  refundPayment(_t34: any) {
+    throw new Error('Method not implemented.');
+  }
+  focusOnDropdown() {
+    throw new Error('Method not implemented.');
+  }
 
   events: EventItem[] = [];
 
@@ -73,20 +84,20 @@ export class ViewPaymentComponent implements OnInit {
       customerId: this.paymentFilter.customerId,
       phoneNumbers: this.paymentFilter.phoneNumbers,
     };
-  
+
     this.PaymentService.getAllpaymentData(filterParams).subscribe((res: any) => {
       this.paymentFilter.data = res.data;
       this.events = res.data.map((payment: any) => ({ // Map the payment data.
         status: payment.status,
         date: new Date(payment.createdAt).toLocaleDateString() + ' ' + new Date(payment.createdAt).toLocaleTimeString(),
-        icon: this.getIconForStatus(payment.status)|| 'pending',
-        color: this.getColorForStatus(payment.status)|| 'blue',
+        icon: this.getIconForStatus(payment.status) || 'pending',
+        color: this.getColorForStatus(payment.status) || 'blue',
         data: this.paymentFilter.data,
       }));
     });
   }
 
-    getIconForStatus(status: string): string {
+  getIconForStatus(status: string): string {
     switch (status) {
       case 'pending':
         return 'pi pi-clock';
@@ -99,7 +110,7 @@ export class ViewPaymentComponent implements OnInit {
     }
   }
 
- getStatusSeverity(status: string) {
+  getStatusSeverity(status: string) {
     switch (status) {
       case 'PENDING':
         return 'warn';

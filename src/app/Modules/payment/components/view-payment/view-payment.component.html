@@ -1,67 +1,140 @@
-<div class="flex flex-col md:flex-row justify-between items-center gap-4 mb-4">
- <p-select appendTo="body"  [(ngModel)]="paymentFilter.customerId" (onChange)="getPaymentData()" [options]="customerIDDropdown"
-    optionLabel="fullname" optionValue="_id" placeholder="Select Customer" class="w-full md:w-64">
+<div class="flex flex-col md:flex-row justify-between items-center gap-4 mb-6 bg-[var(--theme-bg-secondary)] p-4 rounded-xl border border-[var(--theme-border-primary)] shadow-sm">
+  <div class="flex items-center gap-2">
+    <i class="pi pi-users text-[var(--theme-accent-primary)] text-xl"></i>
+    <label class="text-sm font-medium text-[var(--theme-text-secondary)]">Select Customer</label>
+  </div>
+  <p-select appendTo="body" [(ngModel)]="paymentFilter.customerId" (onChange)="getPaymentData()" [options]="customerIDDropdown"
+    optionLabel="fullname" optionValue="_id" placeholder="Select Customer" class="w-full md:w-80">
+    <ng-template let-option pTemplate="item">
+      <div class="flex items-center gap-3 p-2">
+        <div class="w-8 h-8 rounded-full bg-[var(--theme-accent-primary-light)] flex items-center justify-center">
+          <i class="pi pi-user text-[var(--theme-accent-primary)] text-sm"></i>
+        </div>
+        <span class="font-medium text-[var(--theme-text-primary)]">{{ option.fullname }}</span>
+      </div>
+    </ng-template>
   </p-select>
 </div>
 
 <!-- Timeline -->
-<div *ngIf="paymentFilter.data.length > 0; else elsepart">
-  <p-timeline [value]="paymentFilter.data" align="alternate" styleClass="customized-timeline">
+<div *ngIf="paymentFilter.data.length > 0; else elsepart" class="mb-8">
+  <div class="flex items-center gap-2 mb-6">
+    <i class="pi pi-history text-[var(--theme-accent-primary)] text-2xl"></i>
+    <h3 class="text-xl font-semibold text-[var(--theme-text-primary)]">Payment History</h3>
+    <p-badge [value]="paymentFilter.data.length" severity="info" class="ml-auto"></p-badge>
+  </div>
+  <p-timeline [value]="paymentFilter.data" align="alternate" styleClass="customized-timeline w-full">
 
     <!-- Marker -->
     <ng-template pTemplate="marker">
-      <span
-        class="flex w-8 h-8 items-center justify-center text-white rounded-full shadow-md bg-gradient-to-r from-blue-500 to-purple-500">
-        <i class="pi pi-money-bill text-base"></i>
+      <span class="flex w-12 h-12 items-center justify-center text-white rounded-full shadow-lg bg-gradient-to-r from-[var(--theme-accent-primary)] to-[var(--theme-accent-primary-hover)] transform hover:scale-110 transition-transform duration-200">
+        <i class="pi pi-money-bill text-lg"></i>
       </span>
     </ng-template>
 
     <!-- Card Content -->
     <ng-template pTemplate="content" let-payment>
-      <div class="relative bg-white rounded-xl shadow-md border border-gray-100 p-5 w-full max-w-md mx-auto">
+      <div class="relative bg-white dark:bg-[var(--theme-bg-secondary)] rounded-xl shadow-lg border border-gray-100 dark:border-[var(--theme-border-primary)] p-6 w-full max-w-lg mx-auto transform hover:shadow-2xl transition-all duration-300 overflow-hidden group">
 
-        <!-- Top row: Date + Status -->
-        <div class="flex justify-between items-center mb-3">
-          <span class="text-sm text-gray-500">{{ payment.createdAt | date:'mediumDate' }}</span>
+        <!-- Gradient Overlay for Hover -->
+        <div class="absolute inset-0 bg-gradient-to-t from-[var(--theme-accent-primary-light)] opacity-0 group-hover:opacity-10 transition-opacity duration-300"></div>
+
+        <!-- Header Section -->
+        <div class="flex justify-between items-start mb-5 relative z-10">
+          <div class="flex items-center gap-3">
+            <div class="w-16 h-16 rounded-xl bg-gradient-to-br from-[var(--theme-success-primary)] to-green-600 flex items-center justify-center shadow-lg">
+              <i class="pi pi-wallet text-white text-2xl"></i>
+            </div>
+            <div>
+              <h2 class="text-2xl font-bold text-[var(--theme-text-primary)]">Payment Received</h2>
+              <p class="text-sm text-[var(--theme-text-muted)]">Transaction #{{ payment.transactionId | slice:0:8 }}...</p>
+            </div>
+          </div>
           <p-tag [value]="payment.status" [severity]="getStatusSeverity(payment.status)"
-            styleClass="!text-xs !py-1 !px-3 !rounded-md" />
+            styleClass="!text-sm !py-2 !px-4 !rounded-full font-semibold shadow-sm" />
         </div>
 
-        <!-- Title -->
-        <div class="flex items-center gap-2 mb-3">
-          <i class="pi pi-wallet text-indigo-500"></i>
-          <h2 class="text-lg font-semibold text-gray-800">Payment</h2>
+        <!-- Date and Quick Stats -->
+        <div class="flex justify-between items-center mb-6 relative z-10">
+          <span class="text-base text-[var(--theme-text-secondary)] font-medium">{{ payment.createdAt | date:'MMM d, yyyy • h:mm a' }}</span>
+          <div class="flex gap-4">
+            <div class="text-center">
+              <p class="text-sm text-[var(--theme-text-muted)]">Method</p>
+              <p class="font-semibold text-[var(--theme-accent-primary)]">{{ payment.paymentMethod }}</p>
+            </div>
+            <div class="text-center">
+              <p class="text-sm text-[var(--theme-text-muted)]">Ref ID</p>
+              <p class="font-mono text-xs text-[var(--theme-text-primary)] truncate max-w-20">{{ payment.transactionId }}</p>
+            </div>
+          </div>
         </div>
 
-        <!-- Transaction Info -->
-        <div class="flex flex-wrap gap-2 mb-4">
-          <span class="chip">Txn ID</span>
-          <span class="chip chip-alt">{{ payment.transactionId }}</span>
+        <!-- Main Amount Section -->
+        <div class="mb-6 relative z-10">
+          <p class="text-sm text-[var(--theme-text-muted)] uppercase font-medium tracking-wide mb-2">Transaction Amount</p>
+          <div class="flex items-baseline gap-2">
+            <i class="pi pi-inr text-[var(--theme-success-primary)] text-3xl"></i>
+            <p class="text-4xl font-bold text-[var(--theme-text-primary)] leading-none">
+              {{ payment.amount | number:'1.0-0' }}
+            </p>
+            <span class="text-lg text-[var(--theme-text-secondary)]">.{{ payment.amount | number:'1.2-2' | slice:3 }}</span>
+          </div>
         </div>
 
-        <!-- Amount -->
-        <div class="mb-3">
-          <p class="text-xs text-gray-400">Amount</p>
-          <p class="text-2xl font-bold text-gray-900">
-            ₹{{ payment.amount | number:'1.2-2' }}
-          </p>
+        <!-- Details Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6 relative z-10">
+          <div class="flex items-center gap-3 p-3 bg-[var(--theme-bg-ternary)] rounded-lg">
+            <div class="w-10 h-10 rounded-lg bg-[var(--theme-accent-primary-light)] flex items-center justify-center">
+              <i class="pi pi-user text-[var(--theme-accent-primary)]"></i>
+            </div>
+            <div>
+              <p class="text-xs text-[var(--theme-text-muted)]">Customer</p>
+              <p class="font-semibold text-[var(--theme-text-primary)]">{{ payment.customerName }}</p>
+            </div>
+          </div>
+          <div class="flex items-center gap-3 p-3 bg-[var(--theme-bg-ternary)] rounded-lg">
+            <div class="w-10 h-10 rounded-lg bg-[var(--theme-info-primary-light)] flex items-center justify-center">
+              <i class="pi pi-phone text-[var(--theme-info-primary)]"></i>
+            </div>
+            <div>
+              <p class="text-xs text-[var(--theme-text-muted)]">Contact</p>
+              <p class="font-semibold text-[var(--theme-text-primary)]">{{ payment.phoneNumbers }}</p>
+            </div>
+          </div>
+          <div *ngIf="payment.paymentMethod" class="flex items-center gap-3 p-3 bg-[var(--theme-bg-ternary)] rounded-lg md:col-span-2">
+            <div class="w-10 h-10 rounded-lg" [ngClass]="{
+              'bg-red-100': payment.paymentMethod === 'Card',
+              'bg-green-100': payment.paymentMethod === 'UPI',
+              'bg-purple-100': payment.paymentMethod === 'Wallet'
+            }">
+              <i [class]="payment.paymentMethod === 'Card' ? 'pi pi-credit-card' : payment.paymentMethod === 'UPI' ? 'pi pi-qrcode' : 'pi pi-wallet'" 
+                 [ngClass]="{
+                   'text-red-600': payment.paymentMethod === 'Card',
+                   'text-green-600': payment.paymentMethod === 'UPI',
+                   'text-purple-600': payment.paymentMethod === 'Wallet'
+                 }" class="text-xl"></i>
+            </div>
+            <div>
+              <p class="text-xs text-[var(--theme-text-muted)]">Payment Method</p>
+              <p class="font-semibold text-[var(--theme-text-primary)]">{{ payment.paymentMethod }}</p>
+            </div>
+          </div>
         </div>
 
-        <!-- Payment Method -->
-        <p class="text-sm font-medium text-blue-600 mb-3">
-          {{ payment.paymentMethod }}
-        </p>
+        <!-- Description -->
+        <div *ngIf="payment.description" class="note-box relative z-10">
+          <i class="pi pi-info-circle text-[var(--theme-accent-primary)] mr-3 inline-block align-middle"></i>
+          <span class="align-middle">{{ payment.description }}</span>
+        </div>
 
-        <!-- Optional Fields -->
-        <div *ngIf="payment.description" class="note-box">
-          {{ payment.description }}
+        <!-- Action Buttons -->
+        <div class="flex gap-3 pt-4 border-t border-[var(--theme-border-secondary)] relative z-10">
+          <p-button label="View Receipt" icon="pi pi-receipt" styleClass="p-button-outlined p-button-sm flex-1" (click)="viewReceipt(payment)"></p-button>
+          <p-button label="Refund" icon="pi pi-undo" styleClass="p-button-secondary p-button-sm flex-1" [disabled]="payment.status !== 'completed'" (click)="refundPayment(payment)"></p-button>
         </div>
-        <div *ngIf="payment.customerName" class="text-sm text-gray-600">
-          <strong>Customer:</strong> {{ payment.customerName }}
-        </div>
-        <div *ngIf="payment.phoneNumbers" class="text-sm text-gray-600">
-          <strong>Phone:</strong> {{ payment.phoneNumbers }}
-        </div>
+
+        <!-- Subtle footer line -->
+        <div class="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-[var(--theme-accent-primary)] to-transparent opacity-20"></div>
       </div>
     </ng-template>
   </p-timeline>
@@ -69,139 +142,10 @@
 
 <!-- Empty State -->
 <ng-template #elsepart>
-  <div class="empty-state flex flex-col items-center justify-center text-center py-16">
-    <div class="text-6xl mb-4 text-gray-400">💸</div>
-    <p class="text-lg font-semibold text-gray-700">No Payment Records Found</p>
-    <p class="text-sm text-gray-500 mt-1">Select a customer to view payment history</p>
+  <div class="empty-state flex flex-col items-center justify-center text-center py-20 bg-[var(--theme-bg-secondary)] rounded-xl border border-dashed border-[var(--theme-border-secondary)]">
+    <div class="text-8xl mb-6 text-[var(--theme-text-muted)] animate-bounce">💸</div>
+    <h3 class="text-2xl font-bold text-[var(--theme-text-primary)] mb-2">No Payment Records Found</h3>
+    <p class="text-base text-[var(--theme-text-secondary)] mb-6 max-w-md">Select a customer above to view their payment history and transaction details.</p>
+    <p-button label="Select a Customer" icon="pi pi-arrow-right" styleClass="p-button-outlined p-button-secondary" (click)="focusOnDropdown()"></p-button>
   </div>
 </ng-template>
-
-
-<!-- <div class="flex flex-col md:flex-row justify-between items-center gap-4 mb-4">
- <p-select appendTo="body"  [(ngModel)]="paymentFilter.customerId" (onChange)="getPaymentData()" [options]="customerIDDropdown"
-    optionLabel="fullname" optionValue="_id" placeholder="Select Customer" class="w-full md:w-64">
-  </p-select>
-</div>
-
-
-
-<div class="div" *ngIf="paymentFilter.data.length>0;else elsepart">
-  <p-timeline [value]="paymentFilter.data" align="alternate" styleClass="customized-timeline">
-    <ng-template pTemplate="marker" let-event>
-      <span class="flex w-8 h-8 items-center justify-center text-white rounded-full shadow-sm z-10"
-        [style.backgroundColor]="'black'">
-        <i [class]="'pi pi-money-bill'"></i>
-      </span>
-    </ng-template>
-
-    <ng-template pTemplate="content" let-payment>
-      <div
-        class="relative bg-white p-6 rounded-2xl shadow-md border border-gray-200 w-full max-w-md mx-auto overflow-hidden">
-        <span class="absolute inset-x-0 bottom-0 h-2 bg-gradient-to-r from-green-300 via-blue-500 to-purple-600"></span>
-        <div class="absolute top-4 right-4 text-sm text-gray-800 font-medium">
-          {{ payment.createdAt | date:'mediumDate' }}
-        </div>
-
-        Header with icon
-        <div class="flex items-center gap-2 mb-2">
-          <i class="pi pi-wallet text-lg text-gray-600"></i>
-          <h2 class="text-xl font-semibold text-gray-800">Payment Details</h2>
-        </div>
-
-        Transaction ID buttons
-        <div class="flex flex-wrap gap-2 mt-2">
-          <p-button label="Transaction ID" icon="pi pi-hashtag" iconPos="left" severity="info" variant="outlined"
-            styleClass="!text-sm !py-1 !px-3 !rounded-full" [disabled]="true">
-          </p-button>
-
-          <p-button [label]="payment.transactionId" variant="outlined" severity="contrast"
-            styleClass="!text-sm !py-1 !px-3 !rounded-full" [disabled]="true">
-          </p-button>
-        </div>
-
-        Amount
-        <div class="mt-6">
-          <p class="text-sm text-gray-500">Amount</p>
-          <div class="text-3xl font-bold text-gray-900">
-            ₹{{ payment.amount | number:'1.2-2' }}
-          </div>
-        </div>
-
-        Payment method
-        <div class="mt-2 text-gray-900 text-blue-700	 font-medium">
-          {{ payment.paymentMethod }}
-        </div>
-
-        Description box
-        <div *ngIf="payment.description"
-          class="mt-4 p-4 border border-gray-300 rounded-lg bg-gray-50 text-gray-700 whitespace-pre-line">
-          {{ payment.description }}
-        </div>
-
-        Customer info
-        <div *ngIf="payment.customerName" class="mt-4 text-gray-700">
-          <strong>Customer Name:</strong> {{ payment.customerName }}
-        </div>
-        <div *ngIf="payment.phoneNumbers" class="text-gray-700">
-          <strong>Phone:</strong> {{ payment.phoneNumbers }}
-        </div>
-
-        Status tag aligned bottom right
-        <div class="mt-4 flex justify-end">
-          <p-tag [value]="payment.status" [severity]="getStatusSeverity(payment.status)"
-            styleClass="!text-sm !py-1 !px-4 !rounded-lg" />
-        </div>
-      </div>
-    </ng-template>
-  </p-timeline>
-</div>
-<ng-template #elsepart>
-  <div class="empty-state">
-    <svg width="100%" height="100%" viewBox="0 0 800 400" xmlns="http://www.w3.org/2000/svg">
-      Background gradient
-      <defs>
-        <linearGradient id="bgGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%" stop-color="#6a11cb" />
-          <stop offset="100%" stop-color="#2575fc" />
-        </linearGradient>
-
-        Text gradient
-        <linearGradient id="textGradient" x1="0%" y1="0%" x2="100%" y2="0%">
-          <stop offset="0%" stop-color="#ff6a00" />
-          <stop offset="50%" stop-color="#ee0979" />
-          <stop offset="100%" stop-color="#ff6a00" />
-        </linearGradient>
-
-        Glow effect
-        <filter id="glow">
-          <feGaussianBlur stdDeviation="4" result="blur" />
-          <feMerge>
-            <feMergeNode in="blur" />
-            <feMergeNode in="SourceGraphic" />
-          </feMerge>
-        </filter>
-      </defs>
-
-      Background
-      <rect width="100%" height="100%" fill="url(#bgGradient)" />
-
-      404 Text
-      <text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" font-family="Arial, Helvetica, sans-serif"
-        font-size="160" font-weight="bold" fill="url(#textGradient)" filter="url(#glow)">
-        404
-      </text>
-
-      Subtitle
-      <text x="50%" y="65%" dominant-baseline="middle" text-anchor="middle" font-family="Arial, Helvetica, sans-serif"
-        font-size="28" fill="#ffffff">
-        Oops! Page Not Found
-      </text>
-
-      Decorative Circles
-      <circle cx="150" cy="80" r="40" fill="rgba(255,255,255,0.15)" />
-      <circle cx="650" cy="300" r="60" fill="rgba(255,255,255,0.1)" />
-      <circle cx="700" cy="100" r="30" fill="rgba(255,255,255,0.2)" />
-    </svg>
-
-  </div>
-</ng-template> -->

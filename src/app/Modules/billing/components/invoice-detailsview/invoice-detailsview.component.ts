@@ -11,6 +11,7 @@ import { SelectModule } from 'primeng/select';
 import { FormsModule } from '@angular/forms';
 import { EmiService } from '../../../../core/services/emi.service';
 import { signal } from '@angular/core'; // Use signals for reactive Id binding
+import { CommonMethodService } from '../../../../core/Utils/common-method.service';
 
 @Component({
   selector: 'app-invoice-detail-card',
@@ -29,7 +30,7 @@ export class InvoiceDetailCardComponent implements OnInit {
   private cdr = inject(ChangeDetectorRef);
 
   // Reactive effect for Id changes - ensures API call on select
-  constructor(private InvoiceService: InvoiceService, public EmiService: EmiService, private messageService: AppMessageService) {
+  constructor(private InvoiceService: InvoiceService, public EmiService: EmiService, private commonMethodService: CommonMethodService, private messageService: AppMessageService) {
     effect(() => {
       const id = this.Id;
       if (id) {
@@ -84,30 +85,31 @@ export class InvoiceDetailCardComponent implements OnInit {
   }
 
   printInvoice() {
-    const printContent = document.getElementById('invoice-print-section');
-    const WindowPrt = window.open('', '', 'left=0,top=0,width=900,height=700,toolbar=0,scrollbars=0,status=0');
-    if (WindowPrt && printContent) {
-      WindowPrt.document.write(`
-      <html>
-        <head>
-          <title>Invoice</title>
-          <style>
-            body { font-family: var(--font-body); padding: 20px; background: white; }
-            table { width: 100%; border-collapse: collapse; margin-top: 20px; }
-            th, td { border: 1px solid var(--theme-border-primary); padding: 8px; text-align: left; }
-            th { background-color: var(--theme-bg-secondary); color: var(--theme-text-primary); }
-          </style>
-        </head>
-        <body>${printContent.innerHTML}</body>
-      </html>`);
-      WindowPrt.document.close();
-      WindowPrt.focus();
-      WindowPrt.print();
-      WindowPrt.close();
-    }
+    this.commonMethodService.downloadInvoicePDF(this.Id)
+    // const printContent = document.getElementById('invoice-print-section');
+    // const WindowPrt = window.open('', '', 'left=0,top=0,width=900,height=700,toolbar=0,scrollbars=0,status=0');
+    // if (WindowPrt && printContent) {
+    //   WindowPrt.document.write(`
+    //   <html>
+    //     <head>
+    //       <title>Invoice</title>
+    //       <style>
+    //         body { font-family: var(--font-body); padding: 20px; background: white; }
+    //         table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+    //         th, td { border: 1px solid var(--theme-border-primary); padding: 8px; text-align: left; }
+    //         th { background-color: var(--theme-bg-secondary); color: var(--theme-text-primary); }
+    //       </style>
+    //     </head>
+    //     <body>${printContent.innerHTML}</body>
+    //   </html>`);
+    //   WindowPrt.document.close();
+    //   WindowPrt.focus();
+    //   WindowPrt.print();
+    //   WindowPrt.close();
+    // }
   }
 
-  getCustomerdata(event?:any) {
+  getCustomerdata(event?: any) {
     console.log('getCustomerdata called with ID:', this.Id); // Debug: Confirm call
     if (!this.Id) {
       console.warn('No ID provided'); // Debug log
@@ -285,7 +287,7 @@ export class InvoiceDetailCardComponent implements OnInit {
 //     };
 //     if (!this.Id) {
 //       console.error('Cannot create EMI plan: Invoice ID is missing.');
-//       return; 
+//       return;
 //     }
 //     const invoiceIdAsString = this.Id.toString();
 

@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
-import { catchError } from 'rxjs/operators';
+import { Observable, throwError } from 'rxjs';
+import { catchError, map } from 'rxjs/operators';
 import { BaseApiService } from './base-api.service';
 import { HttpErrorResponse } from '@angular/common/http';
-
+import { MessageService } from 'primeng/api'; // Assuming you're using PrimeNG for toasts
 export interface Invoice {
   _id: string;
   invoiceNumber: string;
@@ -14,7 +14,7 @@ export interface Invoice {
 
 @Injectable({ providedIn: 'root' })
 export class InvoiceService extends BaseApiService {
-  
+
 
   private endpoint = '/v1/invoices';
 
@@ -22,6 +22,50 @@ export class InvoiceService extends BaseApiService {
   getAllInvoices(filterParams?: any): Observable<Invoice[]> {
     return this.http.get<Invoice[]>(`${this.baseUrl}${this.endpoint}`, { params: this.createHttpParams(filterParams) })
       .pipe(catchError((error: HttpErrorResponse) => this.errorhandler.handleError('getAllInvoices', error)));
+  }
+
+  // // RENAMED for consistency
+  // getInvoicesPrint(id:any): Observable<Invoice[]> {
+  //   return this.http.get<Invoice[]>(`${this.baseUrl}${this.endpoint}/${id}/pdf`)
+  //     .pipe(catchError((error: HttpErrorResponse) => this.errorhandler.handleError('getInvoicesPrint', error)));
+  // }
+
+
+  getInvoicesPrint(id: any): Observable<Blob> {
+    return this.http.get(`${this.baseUrl}${this.endpoint}/${id}/pdf`, {
+      responseType: 'blob'
+    }).pipe(
+      catchError((error: HttpErrorResponse) => this.errorhandler.handleError('getInvoicesPrint', error))
+    );
+  }
+
+/**
+   * Sends invoice PDF via email to the buyer.
+   * @param invoiceId - The ID of the invoice.
+   * @returns Observable of the response.
+   */
+  
+  sendInvoiceEmail(invoiceId: string): Observable<any> {
+    const url = `${this.baseUrl}${this.endpoint}/${invoiceId}/send-email`;
+    return this.http.post(url, {}).pipe(
+      map((response: any) => {
+        // this.messageService.add({
+        //   severity: 'success',
+        //   summary: 'Email Sent',
+        //   detail: response.message || 'Invoice email sent successfully!'
+        // });
+        return response;
+      }),
+      catchError((error: HttpErrorResponse) => {
+        console.error('Error sending email:', error);
+        // this.messageService.add({
+        //   severity: 'error',
+        //   summary: 'Email Failed',
+        //   detail: error.error?.message || 'Failed to send invoice email. Please try again.'
+        // });
+        return throwError(() => error);
+      })
+    );
   }
 
   // RENAMED for consistency

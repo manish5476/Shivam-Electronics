@@ -10,6 +10,7 @@ import { SelectModule } from 'primeng/select';
 import { Button } from "primeng/button";
 import { ImageCellRendererComponent } from '../../../../shared/AgGrid/AgGridcomponents/image-cell-renderer/image-cell-renderer.component';
 import { AutopopulateService } from '../../../../core/services/autopopulate.service';
+import { Badge } from "primeng/badge";
 
 @Component({
   selector: 'app-product-detail',
@@ -25,7 +26,7 @@ export class ProductDetailComponent implements OnInit {
   private isLoading = false;
   private totalCount = 0;
   private pageSize = 20;
-  data: any[] = [];
+  data: any
   column: any[] = [];
   rowSelectionMode: any = 'single';
 

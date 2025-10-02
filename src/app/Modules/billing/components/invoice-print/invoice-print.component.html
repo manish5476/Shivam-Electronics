@@ -1,147 +1,153 @@
-<div class="invoice doc-surface" *ngIf="invoiceData">
+<div #invoiceContent class="invoice doc-surface" *ngIf="invoiceData" id="print-section">
 
   <!-- Header -->
   <div class="brandbar">
     <div class="brand-left">
-      <div>
-        <h2 class="brand-title">{{ invoiceData?.sellerDetails?.shopName }}</h2>
-        <p class="brand-tag">{{ invoiceData?.sellerDetails?.name }}</p>
-        <p class="brand-contact">GSTIN: {{ invoiceData?.sellerDetails?.gstin }}</p>
-        <p class="brand-contact">Ph: {{ invoiceData?.sellerDetails?.contactNumber }}</p>
-        <p class="brand-contact">
-          {{ invoiceData?.sellerDetails?.address?.street }},
-          {{ invoiceData?.sellerDetails?.address?.city }},
-          {{ invoiceData?.sellerDetails?.address?.state }} - {{ invoiceData?.sellerDetails?.address?.pincode }}
-        </p>
+      <div class="brand-info">
+        <h1 class="brand-title">{{ invoiceData?.sellerDetails?.shopName }}</h1>
+        <p class="brand-subtitle">{{ invoiceData?.sellerDetails?.name }}</p>
+        <div class="brand-details">
+          <p><strong>GSTIN:</strong> {{ invoiceData?.sellerDetails?.gstin }}</p>
+          <p><strong>Phone:</strong> {{ invoiceData?.sellerDetails?.contactNumber }}</p>
+          <p class="address">{{ invoiceData?.sellerDetails?.address?.street }}, {{ invoiceData?.sellerDetails?.address?.city }}, {{ invoiceData?.sellerDetails?.address?.state }} - {{ invoiceData?.sellerDetails?.address?.pincode }}</p>
+        </div>
       </div>
     </div>
 
-    <div class="invoice-pill">
-      <div class="pill-row"><span class="pill-label">Invoice No:</span><span class="pill-value">{{
-          invoiceData?.invoiceNumber }}</span></div>
-      <div class="pill-row"><span class="pill-label">Date:</span><span class="pill-value">{{ invoiceData?.invoiceDate |
-          date:'dd/MM/yyyy' }}</span></div>
-      <div class="pill-row"><span class="pill-label">Due Date:</span><span class="pill-value">{{ invoiceData?.dueDate |
-          date:'dd/MM/yyyy' }}</span></div>
-      <div class="pill-row"><span class="pill-label">Status:</span><span class="pill-value">{{ invoiceData?.status |
-          uppercase }}</span></div>
+    <div class="invoice-header">
+      <div class="invoice-meta">
+        <div class="meta-row"><span class="meta-label">Invoice No:</span><span class="meta-value">{{ invoiceData?.invoiceNumber }}</span></div>
+        <div class="meta-row"><span class="meta-label">Date:</span><span class="meta-value">{{ invoiceData?.invoiceDate | date:'dd/MM/yyyy' }}</span></div>
+        <div class="meta-row"><span class="meta-label">Due Date:</span><span class="meta-value">{{ invoiceData?.dueDate | date:'dd/MM/yyyy' }}</span></div>
+        <div class="meta-row"><span class="meta-label">Status:</span><span class="meta-value status-{{ invoiceData?.status?.toLowerCase() }}">{{ invoiceData?.status | uppercase }}</span></div>
+      </div>
     </div>
   </div>
 
-  <!-- Parties -->
-  <div class="parties">
-    <div class="party-card">
-      <h4 class="card-head">Bill To</h4>
-      <div class="card-body">
+  <!-- Parties Section -->
+  <div class="parties-section page-break-avoid">
+    <div class="party-card bill-to">
+      <h3 class="card-title">Bill To</h3>
+      <div class="card-content">
         <p class="party-name">{{ invoiceData?.buyerDetails?.fullname }}</p>
-        <p class="muted">GSTIN: {{ invoiceData?.buyerDetails?.gstin || 'N/A' }}</p>
-        <p class="muted">{{ invoiceData?.buyerDetails?.addresses?.[0]?.street }},
-          {{ invoiceData?.buyerDetails?.addresses?.[0]?.city }},
-          {{ invoiceData?.buyerDetails?.addresses?.[0]?.state }},
-          {{ invoiceData?.buyerDetails?.addresses?.[0]?.zipCode }}</p>
-        <p class="muted">Ph: {{ invoiceData?.buyerDetails?.phoneNumbers?.[0]?.number }}</p>
+        <p class="party-detail"><strong>GSTIN:</strong> {{ invoiceData?.buyerDetails?.gstin || 'N/A' }}</p>
+        <p class="party-address">{{ invoiceData?.buyerDetails?.addresses?.[0]?.street }}, {{ invoiceData?.buyerDetails?.addresses?.[0]?.city }}, {{ invoiceData?.buyerDetails?.addresses?.[0]?.state }} - {{ invoiceData?.buyerDetails?.addresses?.[0]?.zipCode }}</p>
+        <p class="party-detail"><strong>Phone:</strong> {{ invoiceData?.buyerDetails?.phoneNumbers?.[0]?.number }}</p>
       </div>
     </div>
 
-    <div class="party-card">
-      <h4 class="card-head">Seller</h4>
-      <div class="card-body">
+    <div class="party-card ship-to">
+      <h3 class="card-title">Seller Details</h3>
+      <div class="card-content">
         <p class="party-name">{{ invoiceData?.sellerDetails?.shopName }}</p>
-        <p class="muted">PAN: {{ invoiceData?.sellerDetails?.pan }}</p>
-        <p class="muted">Bank: {{ invoiceData?.sellerDetails?.bankDetails?.bankName }} ({{
-          invoiceData?.sellerDetails?.bankDetails?.branch }})</p>
-        <p class="muted">A/C: {{ invoiceData?.sellerDetails?.bankDetails?.accountNumber }}</p>
-        <p class="muted">IFSC: {{ invoiceData?.sellerDetails?.bankDetails?.ifscCode }}</p>
+        <p class="party-detail"><strong>PAN:</strong> {{ invoiceData?.sellerDetails?.pan }}</p>
+        <div class="bank-details">
+          <p class="party-detail"><strong>Bank:</strong> {{ invoiceData?.sellerDetails?.bankDetails?.bankName }} ({{ invoiceData?.sellerDetails?.bankDetails?.branch }})</p>
+          <p class="party-detail"><strong>A/C No:</strong> {{ invoiceData?.sellerDetails?.bankDetails?.accountNumber }}</p>
+          <p class="party-detail"><strong>IFSC:</strong> {{ invoiceData?.sellerDetails?.bankDetails?.ifscCode }}</p>
+        </div>
       </div>
     </div>
   </div>
 
-  <!-- Items -->
-  <div class="items">
+  <!-- Items Table -->
+  <div class="items-section">
     <table class="items-table">
-      <thead>
+      <thead class="table-header">
         <tr>
-          <th class="th-sm">#</th>
-          <th>Description</th>
-          <th>HSN/SAC</th>
-          <th>Qty</th>
-          <th>Rate</th>
-          <th>Discount</th>
-          <th>Taxable</th>
-          <th>GST %</th>
-          <th>GST Amt</th>
-          <th class="right">Amount</th>
+          <th class="col-sr">#</th>
+          <th class="col-desc">Description</th>
+          <th class="col-hsn">HSN/SAC</th>
+          <th class="col-qty">Qty</th>
+          <th class="col-rate">Rate</th>
+          <th class="col-disc">Disc</th>
+          <th class="col-tax">Taxable</th>
+          <th class="col-gst">GST %</th>
+          <th class="col-gst-amt">GST Amt</th>
+          <th class="col-amount">Amount</th>
         </tr>
       </thead>
-      <tbody>
-        <tr *ngFor="let item of invoiceData?.items; let i = index">
-          <td>{{ i+1 }}</td>
-          <td class="wrap">{{ item.customTitle || invoiceData?.itemDetails[i]?.title }}</td>
-          <td>{{ item.hsnSac || '—' }}</td>
-          <td>{{ item.quantity }}</td>
-          <td>{{ item.rate | currency:'INR' }}</td>
-          <td>{{ item.discount | currency:'INR' }}</td>
-          <td>{{ item.taxableValue | currency:'INR' }}</td>
-          <td>{{ item.gstRate }}%</td>
-          <td>{{ item.gstAmount | currency:'INR' }}</td>
-          <td class="right strong">{{ item.amount | currency:'INR' }}</td>
+      <tbody class="table-body">
+        <tr *ngFor="let item of invoiceData?.items; let i = index; trackBy: trackByFn" class="item-row">
+          <td class="col-sr">{{ i + 1 }}</td>
+          <td class="col-desc">{{ item.customTitle || invoiceData?.itemDetails[i]?.title }}</td>
+          <td class="col-hsn">{{ item.hsnSac || '—' }}</td>
+          <td class="col-qty">{{ item.quantity }}</td>
+          <td class="col-rate">{{ item.rate | currency:'INR':'symbol':'1.2-2' }}</td>
+          <td class="col-disc">{{ item.discount | currency:'INR':'symbol':'1.2-2' }}</td>
+          <td class="col-tax">{{ item.taxableValue | currency:'INR':'symbol':'1.2-2' }}</td>
+          <td class="col-gst">{{ item.gstRate }}%</td>
+          <td class="col-gst-amt">{{ item.gstAmount | currency:'INR':'symbol':'1.2-2' }}</td>
+          <td class="col-amount">{{ item.amount | currency:'INR':'symbol':'1.2-2' }}</td>
         </tr>
       </tbody>
-      <tfoot>
-        <tr>
-          <td colspan="9" class="right strong">Sub Total</td>
-          <td class="right">{{ invoiceData?.subTotal | currency:'INR' }}</td>
+      <tfoot class="table-footer">
+        <tr class="subtotal-row">
+          <td colspan="9" class="label-col">Sub Total</td>
+          <td class="value-col">{{ invoiceData?.subTotal | currency:'INR':'symbol':'1.2-2' }}</td>
         </tr>
-        <tr>
-          <td colspan="9" class="right strong">Discount</td>
-          <td class="right">{{ invoiceData?.totalDiscount | currency:'INR' }}</td>
+        <tr class="discount-row">
+          <td colspan="9" class="label-col">Total Discount</td>
+          <td class="value-col">{{ invoiceData?.totalDiscount | currency:'INR':'symbol':'1.2-2' }}</td>
         </tr>
-        <tr>
-          <td colspan="9" class="right strong">GST</td>
-          <td class="right" >{{ invoiceData?.gst | currency:'INR' }}</td>
+        <tr class="gst-row">
+          <td colspan="9" class="label-col">Total GST</td>
+          <td class="value-col">{{ invoiceData?.gst | currency:'INR':'symbol':'1.2-2' }}</td>
         </tr>
-        <tr class="grand">
-          <td colspan="9" class="right strong">TOTAL</td>
-          <td class="right">{{ invoiceData?.totalAmount | currency:'INR' }}</td>
+        <tr class="grand-total-row">
+          <td colspan="9" class="label-col grand-label">GRAND TOTAL</td>
+          <td class="value-col grand-value">{{ invoiceData?.totalAmount | currency:'INR':'symbol':'1.2-2' }}</td>
         </tr>
       </tfoot>
     </table>
   </div>
 
   <!-- Amount in Words -->
-  <div class="amount-words">
-    <span>Amount in Words:</span>
-    <span class="words">Rupees {{ convertNumberToWords(invoiceData?.totalAmount) }} Only</span>
+  <div class="amount-words-section page-break-avoid">
+    <div class="words-container">
+      <span class="words-label">Amount in Words:</span>
+      <span class="words-value">Rupees {{ convertNumberToWords(invoiceData?.totalAmount) }} Only</span>
+    </div>
   </div>
 
   <!-- Notes & Payment -->
-  <div class="notes-pay">
-    <div class="notes">
-      <h4 class="card-head">Notes</h4>
-      <p>{{ invoiceData?.notes || 'Thank you for your business!' }}</p>
-    </div>
-    <div class="pay">
-      <h4 class="card-head">Payment</h4>
-      <canvas id="upi-qrcode" class="qr"></canvas>
-      <p>Bank: {{ invoiceData?.sellerDetails?.bankDetails?.bankName }}</p>
-      <p>A/C: {{ invoiceData?.sellerDetails?.bankDetails?.accountNumber }}</p>
-      <p>IFSC: {{ invoiceData?.sellerDetails?.bankDetails?.ifscCode }}</p>
+  <div class="footer-section page-break-avoid">
+    <div class="notes-payment-grid">
+      <div class="notes-card">
+        <h3 class="card-title">Notes</h3>
+        <p class="notes-content">{{ invoiceData?.notes || 'Thank you for your business! We appreciate your trust and look forward to serving you again.' }}</p>
+      </div>
+      <div class="payment-card">
+        <h3 class="card-title">Payment Details</h3>
+        <div class="qr-container">
+          <canvas id="upi-qrcode" class="qr-code"></canvas>
+        </div>
+        <div class="bank-info">
+          <p class="bank-detail"><strong>Bank:</strong> {{ invoiceData?.sellerDetails?.bankDetails?.bankName }}</p>
+          <p class="bank-detail"><strong>A/C No:</strong> {{ invoiceData?.sellerDetails?.bankDetails?.accountNumber }}</p>
+          <p class="bank-detail"><strong>IFSC:</strong> {{ invoiceData?.sellerDetails?.bankDetails?.ifscCode }}</p>
+          <p class="upi-note">Scan QR for UPI Payment</p>
+        </div>
+      </div>
     </div>
   </div>
 
   <!-- Signature -->
-  <div class="signature">
-    <div></div>
-    <div class="sig-box">
-      <div class="sig-line"></div>
-      <p class="issuer">Authorised Signatory</p>
+  <div class="signature-section page-break-avoid">
+    <div class="signature-left"></div>
+    <div class="signature-right">
+      <div class="signature-line"></div>
+      <p class="signature-text">Authorised Signatory</p>
     </div>
   </div>
 </div>
 
-<!-- Actions -->
-<div class="actions">
-  <button class="btn-primary" (click)="printInvoice()">Print</button>
-  <button class="btn-primary" (click)="downloadPDF()">Download PDF</button>
+<!-- Actions (Hidden in Print/PDF) -->
+<div class="actions" *ngIf="invoiceData">
+  <button class="action-btn print-btn" (click)="commonMeethodService.downloadInvoicePDF(invoiceData.id)">
+    <i class="pi pi-print"></i> Print
+  </button>
+  <button class="action-btn pdf-btn" (click)="downloadPDF()">
+    <i class="pi pi-download"></i> Download PDF
+  </button>
 </div>
-

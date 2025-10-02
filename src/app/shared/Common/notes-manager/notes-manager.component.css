@@ -161,7 +161,7 @@
   color: var(--theme-text-secondary);
   line-height: var(--line-height-normal);
   display: -webkit-box;
-  -webkit-line-clamp: 2;
+  /* -webkit-line-clamp: 2; */
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
@@ -475,7 +475,7 @@
   }
 
   .note-excerpt {
-    -webkit-line-clamp: 1;
+    /* -webkit-line-clamp: 1; */
     font-size: var(--font-size-xs);
   }
 

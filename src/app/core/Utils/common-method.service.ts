@@ -5,7 +5,8 @@ import { Observable, throwError } from 'rxjs';
 import { AppMessageService } from '../services/message.service';
 import { DatePipe } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
-
+import { InvoiceService } from '../services/invoice.service';
+import { saveAs } from 'file-saver';
 // A reusable type for PrimeNG component severities
 type Severity = "success" | "secondary" | "info" | "warn" | "danger" | "contrast" | undefined;
 
@@ -20,8 +21,35 @@ export class CommonMethodService {
   private router = inject(Router);
   private route = inject(ActivatedRoute);
 
-  constructor() { }
+  constructor(private invoiceService: InvoiceService) { }
 
+public downloadInvoicePDF(invoiceId: any): void {
+  this.invoiceService.getInvoicesPrint(invoiceId).subscribe({
+    next: (blob: Blob) => {
+      const filename = `invoice-${invoiceId}.pdf`;
+      saveAs(blob, filename); // Now recognized
+    },
+    error: (error) => {
+      console.error('Error downloading PDF:', error);
+    }
+  });
+}
+
+public sendEmailForInvoice(invoiceId: string): void {
+    this.invoiceService.sendInvoiceEmail(invoiceId).subscribe({
+      next: (response) => {
+        console.log('Email sent:', response);
+        // Optional: Refresh grid or close dialog
+      },
+      error: (error) => {
+        console.error('Email error:', error);
+      }
+    });
+  }
+
+
+// Usage example in template or method
+// <button (click)="downloadInvoicePDF(selectedInvoiceId)">Download PDF</button>
   // --- Data Formatting Utilities ---
    
   public responsiveOptions = [

@@ -52,65 +52,7 @@
   </div>
 </div>
 
-<p-dialog header="Invoice Preview" [(visible)]="showpdf" [modal]="true" [style]="{ width: '90vw', maxWidth: '1200px' }">
-  <app-invoice-print [Id]="invoiceId"></app-invoice-print>
+<p-dialog header="Invoice Preview" [(visible)]="showpdf" [modal]="true" [style]="{ width: '90vw', maxWidth: '1200px' }"
+[contentStyle]="{ height: '80vh', overflow: 'auto', padding: '0' }">
+<app-invoice-print [Id]="invoiceId" class="invoice-preview"></app-invoice-print>
 </p-dialog>
-<!-- <div class="h-[calc(100vh-56px)] flex flex-col overflow-hidden">
-  <div class="ag-grid-header-filter-area card-filter">
-    <div class="flex items-center justify-between px-6 py-3">
-      <div class="header-info">
-        <h4 class="text-xl font-bold tracking-wide text-[var(--theme-text-heading)]">Invoice List</h4>
-      </div>
-
-      <div class="header-controls flex items-center flex-wrap justify-end gap-3 sm:gap-4">
-       <p-select appendTo="body"  id="buyer" appendTo="body" [options]="customerIDDropdown" [(ngModel)]="invoiceFilter.buyer"
-          (onChange)="getData()" [checkmark]="true" [filter]="true" filterBy="fullname" optionLabel="fullname"
-          optionValue="id" [showClear]="true" placeholder="Select Buyer"
-          class="flex-1 min-w-[10rem] p-inputtext-sm border border-[var(--theme-border-primary)] rounded-md" />
-
-        
-       <p-select appendTo="body"  id="status" appendTo="body" [options]="statusOptions" optionLabel="label" optionValue="value"
-          [(ngModel)]="invoiceFilter.status" (onChange)="getData()" placeholder="All Status"
-          class="flex-1 min-w-[8rem] p-inputtext-sm border border-[var(--theme-border-primary)] rounded-md" />
-
-        
-        <input pInputText id="invoiceNumber" [(ngModel)]="invoiceFilter.invoiceNumber" (change)="getData()"
-          placeholder="Invoice Number"
-          class="flex-1 min-w-[10rem] p-inputtext-sm border border-[var(--theme-border-primary)] rounded-md" />
-
-        
-        <input pInputText id="buyerEmail" [(ngModel)]="invoiceFilter.buyerEmail" (change)="getData()"
-          placeholder="Buyer Email"
-          class="flex-1 min-w-[12rem] p-inputtext-sm border border-[var(--theme-border-primary)] rounded-md" />
-
-        
-        <div class="flex items-center space-x-2 flex-1 min-w-[18rem]">
-          <input pInputText type="date" id="createdFrom" [(ngModel)]="invoiceFilter.createdFrom" (change)="getData()"
-            placeholder="From Date"
-            class="flex-1 p-inputtext-sm border border-[var(--theme-border-primary)] rounded-md" />
-          <span class="text-[var(--theme-text-secondary)]">to</span>
-          <input pInputText type="date" id="createdTo" [(ngModel)]="invoiceFilter.createdTo" (change)="getData()"
-            placeholder="To Date"
-            class="flex-1 p-inputtext-sm border border-[var(--theme-border-primary)] rounded-md" />
-        </div>
-
-        
-        <div class="flex space-x-2">
-    
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div class="card mt-1">
-    <app-shared-grid [gridHeight]="'210px'" [headerFilter]="false" [data]="data" [GridName]="'Invoice Details'"
-      [showActions]="true" [rowSelectionMode]="rowSelectionMode" [rowClassRules]="rowClassrules" [column]="column"
-      (eventFromGrid)="eventFromGrid($event)"></app-shared-grid>
-  </div>
-</div>
-
-
-<p-dialog header="Invoice" [(visible)]="showpdf" [modal]="true" [style]="{ width: '90vw', maxWidth: '1200px' }"
-  class="bg-[var(--theme-dialog-bg)] text-[var(--theme-text-primary)] rounded-xl">
-  <app-invoice-print [Id]="invoiceId"></app-invoice-print>
-</p-dialog> -->

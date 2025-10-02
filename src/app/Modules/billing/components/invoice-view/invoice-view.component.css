@@ -316,3 +316,60 @@
     margin: 12mm;
   }
 }
+/* Add this to invoice-print.component.css for preview mode */
+.invoice-preview .invoice-container {
+  max-width: none;
+  width: 100%;
+  min-height: auto;
+  height: auto;
+  margin: 0;
+  padding: 1rem;
+  box-sizing: border-box;
+  overflow-y: auto;
+  max-height: 100%;
+}
+
+.invoice-preview .footer {
+  position: static;
+  margin-top: 2rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--border);
+}
+
+/* Ensure table scrolls if needed */
+.invoice-preview .items-table {
+  overflow-x: auto;
+  display: block;
+  width: 100%;
+}
+
+.invoice-preview .items-table thead,
+.invoice-preview .items-table tbody,
+.invoice-preview .items-table tfoot {
+  display: table;
+  width: 100%;
+  table-layout: fixed;
+}
+
+/* Responsive adjustments for preview */
+@media (max-width: 768px) {
+  .invoice-preview .invoice-container {
+    padding: 0.5rem;
+    font-size: 10pt;
+  }
+  
+  .invoice-preview .brandbar {
+    flex-direction: column;
+    gap: 1rem;
+    text-align: center;
+  }
+  
+  .invoice-preview .parties-section,
+  .invoice-preview .notes-payment-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .invoice-preview .items-table {
+    font-size: 8pt;
+  }
+}
