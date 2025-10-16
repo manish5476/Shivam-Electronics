@@ -1,8 +1,4 @@
-import {
-  Component,
-  inject,
-  OnInit,
-} from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { RouterModule, Router } from '@angular/router';
 import { AuthService } from '../../../../core/services/auth.service'; // adjust path if needed
 import { CommonModule } from '@angular/common';
@@ -25,8 +21,7 @@ import { LoginSummaryDialogComponent } from '../loginsummary/loginsummary.compon
   imports: [CommonModule, RouterModule, FormsModule, ReactiveFormsModule],
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css'],
-    providers: [DialogService] 
-
+  providers: [DialogService],
 })
 export class LoginComponent implements OnInit {
   public loginForm: FormGroup;
@@ -35,28 +30,29 @@ export class LoginComponent implements OnInit {
   showPassword = false; // <--- added here
   private loginSub: Subscription | null = null;
   private noteService = inject(NoteService);
-  loginSummary: any
-constructor(
-  private dialogService: DialogService,
-  private auth: AuthService,
-  private router: Router,
-  private messageService: AppMessageService,
-  private fb: FormBuilder,
-
+  loginSummary: any;
+  constructor(
+    private dialogService: DialogService,
+    private auth: AuthService,
+    private router: Router,
+    private messageService: AppMessageService,
+    private fb: FormBuilder,
   ) {
-
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(6)]],
     });
   }
 
-  ngOnInit(): void { }
+  ngOnInit(): void {}
 
   onLogin() {
     if (this.loginForm.invalid) {
       this.loginForm.markAllAsTouched();
-      this.messageService.showError('Validation Error', 'Please fill out the form correctly.');
+      this.messageService.showError(
+        'Validation Error',
+        'Please fill out the form correctly.',
+      );
       return;
     }
 
@@ -70,7 +66,11 @@ constructor(
         if (response?.token && response?.data?.user) {
           const user = response.data.user;
 
-          this.messageService.handleResponse('success', 'Login Successful', `Welcome ${user.name}`);
+          this.messageService.handleResponse(
+            'success',
+            'Login Successful',
+            `Welcome ${user.name}`,
+          );
 
           // Load summary after login
           this.loadLoginSummary();
@@ -79,7 +79,7 @@ constructor(
           switch (user.role) {
             case 'admin':
             case 'superAdmin':
-              this.router.navigate(['/dashboard']);
+              this.router.navigate(['/admin/dashboard']);
               break;
             case 'user':
               this.router.navigate(['/home']);
@@ -88,14 +88,17 @@ constructor(
               this.router.navigate(['/home']);
           }
         } else {
-          this.messageService.showError('Login Failed', 'Invalid credentials. Please try again.');
+          this.messageService.showError(
+            'Login Failed',
+            'Invalid credentials. Please try again.',
+          );
         }
       },
       error: (err) => {
         this.isSubmitting = false;
         console.error('Login Error:', err);
         this.messageService.handleError(err, 'Login Failed');
-      }
+      },
     });
   }
   // onLogin() {
@@ -146,7 +149,8 @@ constructor(
   //     }
   //   });
   // }
-  private formatDateForApi = (date: Date): string => date.toISOString().split('T')[0];
+  private formatDateForApi = (date: Date): string =>
+    date.toISOString().split('T')[0];
 
   loadLoginSummary(): void {
     this.noteService.getloginsummary().subscribe({
@@ -156,23 +160,26 @@ constructor(
         }
       },
       error: (err) => {
-        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Failed to load login summary.' });
-      }
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error',
+          detail: 'Failed to load login summary.',
+        });
+      },
     });
   }
 
- openSummaryDialog(data: any) {
-  const ref = this.dialogService.open(LoginSummaryDialogComponent, {
-    header: 'Login Summary',
-    width: '80vw',
-    modal: true,
-    data: data, // pass API response
-    contentStyle: { 'overflow': 'auto' }
-  });
+  openSummaryDialog(data: any) {
+    const ref = this.dialogService.open(LoginSummaryDialogComponent, {
+      header: 'Login Summary',
+      width: '80vw',
+      modal: true,
+      data: data, // pass API response
+      contentStyle: { overflow: 'auto' },
+    });
 
-  ref.onClose.subscribe(() => {
-    console.log('Login summary dialog closed');
-  });
-}
-
+    ref.onClose.subscribe(() => {
+      console.log('Login summary dialog closed');
+    });
+  }
 }
