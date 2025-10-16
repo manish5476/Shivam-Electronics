@@ -6,12 +6,13 @@ import { MainDashboardComponent } from './layouts/main-dashboard/main-dashboard.
 import { AuthResolver } from './core/auth.resolver';
 import { HomePageComponent } from './layouts/dashboard/home-page/home-page.component';
 import { UserProfileComponent } from './Modules/auth/components/user-profile/user-profile.component';
-
+import { AdminDashboardComponent } from './Modules/admin/admin-dashboard/admin-dashboard.component';
 
 export const routes: Routes = [
   {
     path: 'auth',
-    loadChildren: () => import('./Modules/auth/auth.routes').then(m => m.AUTH_ROUTES),
+    loadChildren: () =>
+      import('./Modules/auth/auth.routes').then((m) => m.AUTH_ROUTES),
   },
 
   {
@@ -20,40 +21,60 @@ export const routes: Routes = [
     canActivate: [AuthGuard],
     resolve: { isAuthenticated: AuthResolver },
     children: [
-      { path: '', component: MainDashboardComponent },   // default (can keep or change)
-      { path: 'dashboard', component: MainDashboardComponent },
-      { path: 'home', component: HomePageComponent },   // 👈 add this
+      { path: '', component: AdminDashboardComponent }, // default (can keep or change)
+      { path: 'dashboard', component: AdminDashboardComponent },
+      { path: 'home', component: HomePageComponent }, // 👈 add this
       {
         path: 'admin',
-        loadChildren: () => import('./Modules/admin/admin.routes').then(m => m.ADMIN_ROUTES),
+        loadChildren: () =>
+          import('./Modules/admin/admin.routes').then((m) => m.ADMIN_ROUTES),
       },
       {
         path: 'payment',
-        loadChildren: () => import('./Modules/payment/payment.routes').then(m => m.PAYMENT_ROUTES),
+        loadChildren: () =>
+          import('./Modules/payment/payment.routes').then(
+            (m) => m.PAYMENT_ROUTES,
+          ),
       },
       {
         path: 'customers',
-        loadChildren: () => import('./Modules/customer/customer.routes').then(m => m.CUSTOMER_ROUTES),
+        loadChildren: () =>
+          import('./Modules/customer/customer.routes').then(
+            (m) => m.CUSTOMER_ROUTES,
+          ),
       },
       {
         path: 'sellers',
-        loadChildren: () => import('./Modules/seller/seller.routes').then(m => m.SELLER_ROUTES),
+        loadChildren: () =>
+          import('./Modules/seller/seller.routes').then((m) => m.SELLER_ROUTES),
       },
       {
         path: 'invoices',
-        loadChildren: () => import('./Modules/billing/billing.routes').then(m => m.BILLING_ROUTES),
+        loadChildren: () =>
+          import('./Modules/billing/billing.routes').then(
+            (m) => m.BILLING_ROUTES,
+          ),
       },
       {
         path: 'products',
-        loadChildren: () => import('./Modules/product/product.routes').then(m => m.PRODUCT_ROUTES),
+        loadChildren: () =>
+          import('./Modules/product/product.routes').then(
+            (m) => m.PRODUCT_ROUTES,
+          ),
       },
       {
         path: 'master',
-        loadChildren: () => import('./Modules/MasterList/master.routes').then(m => m.MASTER_ROUTES),
+        loadChildren: () =>
+          import('./Modules/MasterList/master.routes').then(
+            (m) => m.MASTER_ROUTES,
+          ),
       },
       {
         path: 'personalInfo',
-        loadChildren: () => import('./Modules/PersonalInfo/personalinfo.routes').then(m => m.PERSONAL_INFO),
+        loadChildren: () =>
+          import('./Modules/PersonalInfo/personalinfo.routes').then(
+            (m) => m.PERSONAL_INFO,
+          ),
       },
       { path: '**', component: NotFoundComponent },
     ],
@@ -105,8 +126,6 @@ export const routes: Routes = [
 //     ],
 //   },
 // ];
-
-
 
 // import { Routes } from '@angular/router';
 // import { NotFoundComponent } from './shared/Components/notfound/notfound.component';
