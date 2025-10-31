@@ -1,73 +1,63 @@
 /* ---
-  Customer Snapshot Component - Fixed Card Colors for Better Contrast
-  Ensured card backgrounds have proper contrast against text: light mode uses subtle off-white,
-  dark mode uses deeper grays; added explicit color overrides for readability.
+  Customer Snapshot Component - Enterprise Refactor (Perfection Pass)
+  - Flattens header metrics into the header, removing "card-in-card".
+  - Converts tab content from cards to clean, border-separated list items.
+  - Unifies all colors with theme variables.
+  - Enhances responsive layout (flex-based header) and typographic hierarchy.
+  - Adds custom scrollbars to tab panel.
 --- */
 
+:host {
+  display: block;
+  height: 100%; /* Ensure host fills the dialog content area */
+}
+
 .customer-snapshot {
-  background: var(--theme-card-gradient);
-  backdrop-filter: var(--ui-glass-backdrop);
-  -webkit-backdrop-filter: var(--ui-glass-backdrop);
-  border: var(--ui-border-width) solid var(--glass-border-color);
-  border-radius: var(--ui-border-radius-xl);
-  box-shadow: var(--ui-shadow-lg);
-  padding: var(--spacing-sm);
-  transition: var(--ui-transition-slow);
+  background: var(--theme-bg-primary); /* Use primary bg for a dialog */
   font-family: var(--font-body);
   height: 100%;
-  overflow-y: auto;
-  color: var(--theme-text-primary); /* Ensure base text color */
+  display: flex;
+  flex-direction: column;
+  overflow: hidden; /* Main component doesn't scroll; tab panel does */
+  color: var(--theme-text-primary);
 }
 
-@media (min-width: 768px) {
-  .customer-snapshot {
-    padding: var(--spacing-md);
-  }
+/* Remove the glass effect when inside a dialog */
+:host-context(.p-dialog) .customer-snapshot {
+  background: transparent;
+  backdrop-filter: none;
+  border: none;
+  box-shadow: none;
+  padding: 0;
 }
 
+/* Remove the hover effect and gradient line when in a dialog */
 .customer-snapshot:hover {
-  box-shadow: var(--ui-shadow-xl);
-  transform: var(--ui-translate-hover);
+  box-shadow: none;
+  transform: none;
 }
-
-/* Gradient Strip for Main Header */
 .customer-snapshot::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 3px;
-  background: var(--theme-accent-gradient);
-  border-radius: var(--ui-border-radius-xl) var(--ui-border-radius-xl) 0 0;
+  display: none;
 }
 
-/* Dialog-Specific Overrides */
-:host ::ng-deep .p-dialog .p-dialog-content {
-  overflow-y: auto !important;
-  max-height: 70vh !important;
-  padding: var(--spacing-xs) !important;
-}
-
-/* Header - Integrated with Metrics */
+/* --- Header - Integrated with Metrics --- */
 .customer-header {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   justify-content: space-between;
-  gap: var(--spacing-sm);
-  margin-bottom: var(--spacing-md);
-  padding-bottom: var(--spacing-sm);
+  gap: var(--spacing-md);
+  margin-bottom: var(--spacing-lg);
+  padding: var(--spacing-sm) 0 var(--spacing-lg) 0;
   border-bottom: var(--ui-border-width) solid var(--theme-border-primary);
   position: relative;
-  color: var(--theme-text-primary); /* Explicit text color */
+  color: var(--theme-text-primary);
 }
 
-@media (min-width: 768px) {
+@media (min-width: 1024px) {
   .customer-header {
     flex-direction: row;
     align-items: center;
-    gap: var(--spacing-md);
   }
 }
 
@@ -75,29 +65,19 @@
 .header-main {
   display: flex;
   align-items: center;
-  gap: var(--spacing-sm);
+  gap: var(--spacing-md);
   flex-grow: 1;
+  width: 100%;
 }
 
 .avatar-container {
-  width: 3.5rem;
-  height: 3.5rem;
+  width: 4rem;
+  height: 4rem;
   border-radius: var(--ui-border-radius-full);
   overflow: hidden;
-  box-shadow: var(--ui-shadow-md);
-  transition: var(--ui-transition);
+  box-shadow: var(--ui-shadow-sm);
   flex-shrink: 0;
-}
-
-@media (min-width: 768px) {
-  .avatar-container {
-    width: 4rem;
-    height: 4rem;
-  }
-}
-
-.avatar-container:hover {
-  transform: var(--ui-scale-hover);
+  border: 3px solid var(--theme-bg-primary); /* Border for depth */
 }
 
 .avatar-container img {
@@ -114,13 +94,13 @@
   justify-content: center;
   background: var(--theme-accent-gradient);
   color: var(--theme-accent-text-color);
-  font-size: var(--font-size-base);
-  font-weight: 700;
+  font-size: var(--font-size-xl);
+  font-weight: 600;
   font-family: var(--font-primary);
 }
 
 .customer-header h1 {
-  font-size: var(--font-size-base);
+  font-size: var(--font-size-xl);
   font-weight: 600;
   color: var(--theme-text-primary);
   margin: 0 0 var(--spacing-xs) 0;
@@ -128,14 +108,8 @@
   line-height: var(--line-height-tight);
 }
 
-@media (min-width: 768px) {
-  .customer-header h1 {
-    font-size: var(--font-size-lg);
-  }
-}
-
 .customer-header .text-sm {
-  font-size: var(--font-size-xs);
+  font-size: var(--font-size-sm);
   color: var(--theme-text-secondary);
   display: flex;
   flex-direction: column;
@@ -148,122 +122,147 @@
   .customer-header .text-sm {
     flex-direction: row;
     align-items: center;
-    gap: var(--spacing-sm);
-    margin-top: 0;
+    gap: var(--spacing-lg);
   }
 }
 
 .customer-header .text-sm span {
   display: flex;
   align-items: center;
-  gap: var(--spacing-xs);
-  font-size: var(--font-size-xs);
+  gap: var(--spacing-sm);
 }
 
-.customer-header i {
-  font-size: var(--font-size-sm);
+.customer-header .text-sm i {
+  font-size: var(--font-size-base);
   color: var(--theme-accent-primary);
+  flex-shrink: 0;
 }
 
-/* Integrated Metrics in Header */
+/* --- REFACTORED: Header Metrics --- */
 .header-metrics {
   display: flex;
-  flex-direction: column;
-  gap: var(--spacing-xs);
+  flex-direction: column; /* Stack on mobile */
+  gap: var(--spacing-sm);
   flex-shrink: 0;
+  width: 100%;
 }
 
 @media (min-width: 768px) {
   .header-metrics {
-    flex-direction: row;
-    justify-content: flex-end;
-    gap: var(--spacing-sm);
+    flex-direction: row; /* Row on tablet+ */
+    width: auto;
+    min-width: 24rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .header-metrics {
+    min-width: 28rem;
   }
 }
 
 .metric-header {
-  background: var(--theme-bg-secondary); /* Distinct bg for contrast */
-  border: var(--ui-border-width) solid var(--theme-border-primary);
+  background: transparent;
   border-radius: var(--ui-border-radius);
-  padding: var(--spacing-xs);
-  text-align: center;
-  transition: var(--ui-transition);
-  min-width: 8rem;
-  color: var(--theme-text-primary); /* Explicit text */
-}
-
-.metric-header:hover {
-  box-shadow: var(--ui-shadow-sm);
-  background: var(--theme-hover-bg); /* Subtle hover bg */
+  padding: var(--spacing-sm);
+  text-align: left;
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  border: 1px solid var(--theme-border-primary);
+  background: var(--theme-bg-secondary);
+  flex: 1; /* Allow items to grow equally */
 }
 
 .metric-header .flex {
   justify-content: center;
-  margin-bottom: var(--spacing-xs);
+  margin-bottom: 0;
+  flex-shrink: 0;
 }
 
 .metric-header i {
   font-size: var(--font-size-sm);
   color: var(--theme-accent-primary);
   background: var(--theme-accent-primary-light);
-  padding: var(--spacing-xs - 0.125rem);
+  padding: var(--spacing-sm);
   border-radius: var(--ui-border-radius-full);
 }
 
-.metric-header div:first-of-type {
-  font-size: var(--font-size-xs - 0.0625rem);
-  color: var(--theme-text-secondary);
-  margin-bottom: 0;
-  font-weight: 500;
+/* Use theme color for overdue icon */
+.metric-header.overdue i {
+  color: var(--theme-error-primary);
+  background: var(--theme-error-light);
 }
 
-.metric-header div:last-of-type {
+.metric-header > div:not(.flex) {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  overflow: hidden; /* Prevent text overflow */
+}
+
+.metric-header div:nth-of-type(2) { /* Label: "Lifetime Value" */
   font-size: var(--font-size-xs);
-  font-weight: 700;
+  color: var(--theme-text-secondary);
+  font-weight: 500;
+  line-height: var(--line-height-tight);
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+.metric-header div:last-of-type { /* Value: "$10,000" */
+  font-size: var(--font-size-base);
+  font-weight: 600;
   color: var(--theme-text-primary);
+  line-height: var(--line-height-tight);
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+/* Use theme color for overdue value */
+.metric-header .text-red-600 {
+  color: var(--theme-error-primary) !important;
 }
 
 /* Status Tag */
 .customer-header .p-tag {
-  font-size: var(--font-size-xs);
+  font-size: var(--font-size-sm);
   padding: var(--spacing-xs) var(--spacing-md);
   border-radius: var(--ui-border-radius-full);
-  align-self: flex-start;
+  position: absolute; /* Position in corner */
+  top: var(--spacing-sm); /* Adjusted for new padding */
+  right: 0;
 }
 
-@media (min-width: 768px) {
+@media (max-width: 1023px) {
   .customer-header .p-tag {
-    align-self: center;
+    position: relative;
+    top: 0;
+    right: 0;
+    align-self: flex-start;
+    margin-top: var(--spacing-sm);
   }
 }
 
-/* Product Preferences - Reduced Margin */
+/* --- Section Headers --- */
 h3 {
-  font-size: var(--font-size-sm);
+  font-size: var(--font-size-lg);
   font-weight: 600;
   color: var(--theme-text-primary);
-  margin-bottom: var(--spacing-xs);
+  margin-bottom: var(--spacing-md);
   display: flex;
   align-items: center;
   gap: var(--spacing-sm);
   font-family: var(--font-primary);
-  position: relative;
+  padding-bottom: var(--spacing-sm);
+  border-bottom: 1px solid var(--theme-border-secondary);
 }
 
+/* Remove the ::before pseudo-element */
 h3::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 2px;
-  background: var(--theme-accent-gradient);
-}
-
-@media (min-width: 768px) {
-  h3 {
-    font-size: var(--font-size-base);
-  }
+  display: none;
 }
 
 h3 i {
@@ -271,370 +270,292 @@ h3 i {
   font-size: var(--font-size-base);
 }
 
+/* Product Preferences */
 .flex.flex-wrap {
   display: flex;
   flex-wrap: wrap;
-  gap: var(--spacing-xs);
+  gap: var(--spacing-sm);
 }
 
 .p-tag {
   font-size: var(--font-size-xs);
   padding: var(--spacing-xs) var(--spacing-sm);
   border-radius: var(--ui-border-radius-full);
-  background: var(--theme-accent-primary-light);
-  color: var(--theme-accent-primary);
-  border: var(--ui-border-width) solid var(--theme-accent-primary-light);
+  background: var(--theme-bg-ternary);
+  color: var(--theme-text-secondary);
+  border: var(--ui-border-width) solid var(--theme-border-primary);
+  font-weight: 500;
 }
 
-/* TabView Enhancements - Gradient Strips on Tab Headers */
+/* --- TabView Enhancements --- */
 :host ::ng-deep .p-tabview {
-  height: 100%;
+  flex-grow: 1; /* Allow tabs to fill remaining space */
   display: flex;
   flex-direction: column;
-
-  .p-tabview-nav {
-    background: transparent;
-    border-bottom: var(--ui-border-width) solid var(--theme-border-primary);
-    border-radius: var(--ui-border-radius) var(--ui-border-radius) 0 0;
-    margin-bottom: var(--spacing-xs);
-    flex-shrink: 0;
-    position: relative;
-  }
-
-  .p-tabview-nav::before {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    height: 2px;
-    background: var(--theme-accent-gradient);
-  }
-
-  .p-tabview-nav-link {
-    background: transparent !important;
-    border: none !important;
-    color: var(--theme-text-muted) !important;
-    transition: var(--ui-transition-fast);
-    font-weight: 500;
-    border-radius: var(--ui-border-radius) var(--ui-border-radius) 0 0;
-    padding: var(--spacing-xs) var(--spacing-sm) !important;
-    font-size: var(--font-size-xs) !important;
-    font-family: var(--font-primary) !important;
-  }
-
-  .p-tabview-nav-link:hover {
-    color: var(--theme-text-primary) !important;
-    background: var(--theme-hover-bg) !important;
-  }
-
-  .p-tabview-ink-bar {
-    background-color: var(--theme-accent-primary) !important;
-    height: 2px !important;
-  }
-
-  .p-tabview-panels {
-    background: transparent;
-    padding: 0;
-    flex: 1;
-    min-height: 0;
-    display: flex;
-    flex-direction: column;
-    overflow: hidden;
-  }
-
-  .p-tabview-panel {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    min-height: 0;
-    overflow-y: auto;
-    max-height: calc(100vh - 200px);
-  }
-
-  .p-tabview-panel > div {
-    overflow-y: auto;
-    padding-right: var(--spacing-xs);
-  }
+  min-height: 0; /* Fix flexbox overflow */
 }
 
-/* Compact Activity/Overdue/Address Cards - 4 per Row with Better Contrast */
+:host ::ng-deep .p-tabview .p-tabview-nav {
+  background: transparent;
+  border-bottom: var(--ui-border-width) solid var(--theme-border-primary);
+  flex-shrink: 0;
+  overflow-x: auto; /* Allow tabs to scroll on mobile */
+  overflow-y: hidden;
+  white-space: nowrap;
+}
+
+/* Add scrollbar styles for tab navigation */
+:host ::ng-deep .p-tabview .p-tabview-nav::-webkit-scrollbar {
+  height: 2px;
+  background: var(--theme-scroll-track);
+}
+:host ::ng-deep .p-tabview .p-tabview-nav::-webkit-scrollbar-thumb {
+  background: var(--theme-accent-primary);
+}
+
+
+:host ::ng-deep .p-tabview .p-tabview-nav-link {
+  background: transparent !important;
+  border: none !important;
+  color: var(--theme-text-muted) !important;
+  transition: var(--ui-transition-fast);
+  font-weight: 500;
+  padding: var(--spacing-md) var(--spacing-lg) !important;
+  font-size: var(--font-size-sm) !important;
+  font-family: var(--font-primary) !important;
+}
+
+:host ::ng-deep .p-tabview .p-tabview-nav-link:hover {
+  color: var(--theme-text-primary) !important;
+  background: var(--theme-hover-bg) !important;
+}
+
+:host ::ng-deep .p-tabview .p-tabview-ink-bar {
+  background-color: var(--theme-accent-primary) !important;
+  height: 2px !important;
+}
+
+:host ::ng-deep .p-tabview .p-tabview-panels {
+  background: transparent;
+  padding: var(--spacing-lg) 0 0 0; /* Add padding top */
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden; /* Panel container doesn't scroll */
+}
+
+:host ::ng-deep .p-tabview .p-tabview-panel {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  overflow-y: auto; /* This panel is the main scroller */
+  padding-right: var(--spacing-sm); /* Space for scrollbar */
+  scrollbar-width: thin;
+  scrollbar-color: var(--theme-scroll-thumb) var(--theme-scroll-track);
+}
+
+/* Custom Scrollbar for Tab Panel */
+:host ::ng-deep .p-tabview-panel::-webkit-scrollbar {
+  width: 6px;
+}
+:host ::ng-deep .p-tabview-panel::-webkit-scrollbar-track {
+  background: var(--theme-scroll-track);
+  border-radius: 3px;
+}
+:host ::ng-deep .p-tabview-panel::-webkit-scrollbar-thumb {
+  background: var(--theme-scroll-thumb);
+  border-radius: 3px;
+}
+:host ::ng-deep .p-tabview-panel::-webkit-scrollbar-thumb:hover {
+  background: var(--theme-accent-primary-light);
+}
+
+
+/* --- REFACTORED: Tab Content Grid & Items --- */
 .tab-content {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: var(--spacing-sm);
+  grid-template-columns: 1fr; /* Default to 1 column */
+  gap: var(--spacing-md);
 }
 
-@media (max-width: 1024px) {
+@media (min-width: 768px) {
   .tab-content {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(2, 1fr); /* 2 columns on tablet */
   }
 }
 
-@media (max-width: 768px) {
+@media (min-width: 1280px) {
   .tab-content {
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(3, 1fr); /* 3 columns on large desktop */
   }
 }
 
+/* This is now a list item, not a card */
 .activity-card,
 .overdue-card,
 .address-card {
-  background: var(--theme-bg-secondary); /* Distinct bg for contrast */
+  background: var(--theme-bg-secondary);
   border: var(--ui-border-width) solid var(--theme-border-primary);
-  border-radius: var(--ui-border-radius);
-  padding: var(--spacing-xs);
-  transition: var(--ui-transition);
+  border-radius: var(--ui-border-radius-lg);
+  padding: var(--spacing-md);
+  transition: var(--ui-transition-fast);
   position: relative;
   overflow: hidden;
   height: fit-content;
-  color: var(--theme-text-primary); /* Explicit text color */
-}
-
-.activity-card::before,
-.overdue-card::before,
-.address-card::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 2px;
-  background: var(--theme-accent-gradient);
+  color: var(--theme-text-primary);
+  box-shadow: var(--ui-shadow-xs); /* More subtle shadow */
 }
 
 .activity-card:hover,
 .overdue-card:hover,
 .address-card:hover {
-  box-shadow: var(--ui-shadow-sm);
-  transform: var(--ui-scale-hover);
-  background: var(--theme-hover-bg); /* Hover bg change for visibility */
+  box-shadow: var(--ui-shadow-md); /* Deeper shadow on hover */
+  transform: translateY(-2px);
+  border-color: var(--theme-accent-primary-light);
+  background: var(--theme-hover-bg);
+  z-index: 10;
+}
+
+/* Remove the ::before pseudo-element */
+.activity-card::before,
+.overdue-card::before,
+.address-card::before {
+  display: none;
 }
 
 .activity-card .flex,
 .overdue-card .flex {
   justify-content: space-between;
   align-items: center;
-  margin-bottom: var(--spacing-xs);
+  margin-bottom: var(--spacing-sm);
   flex-wrap: wrap;
+  gap: var(--spacing-xs);
 }
 
 .activity-card span:first-child,
 .overdue-card span:first-child {
   font-weight: 600;
   color: var(--theme-text-primary);
-  font-size: var(--font-size-xs);
+  font-size: var(--font-size-sm);
   font-family: var(--font-primary);
 }
 
-.activity-card .grid,
-.overdue-card div {
+.activity-card .grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: var(--spacing-xs);
-  font-size: var(--font-size-xs - 0.0625rem);
+  font-size: var(--font-size-xs);
   color: var(--theme-text-secondary);
+  margin-bottom: var(--spacing-md); /* Space before amount */
 }
 
+/* This is the AMOUHT */
 .activity-card div:last-child,
 .overdue-card div:last-child {
   text-align: right;
-  margin-top: var(--spacing-xs);
-  font-weight: 600;
+  margin-top: 0;
+  font-weight: 700;
   color: var(--theme-text-primary);
-  font-size: var(--font-size-sm);
+  font-size: var(--font-size-lg); /* Make amount more prominent */
+  line-height: var(--line-height-tight);
 }
 
+/* Overdue Card Styling */
 .overdue-card {
   background: var(--theme-error-light);
-  border-color: var(--theme-error-primary-light); /* Better contrast border */
+  border-color: var(--theme-error-primary);
 }
-
-.overdue-card span:first-child {
-  color: var(--theme-error-primary);
-}
-
+.overdue-card span:first-child,
 .overdue-card div {
   color: var(--theme-error-primary);
 }
-
 .overdue-card div:last-child {
   color: var(--theme-error-primary);
+  font-weight: 700;
+}
+.overdue-card .p-tag {
+  background: var(--theme-error-primary);
+  color: var(--theme-text-inverted);
+  border-color: var(--theme-error-primary);
 }
 
+
 .address-card h3 {
-  font-size: var(--font-size-xs);
+  font-size: var(--font-size-sm);
   font-weight: 600;
   color: var(--theme-text-primary);
-  margin-bottom: var(--spacing-xs);
-  display: flex;
-  align-items: center;
-  gap: var(--spacing-xs);
-  font-family: var(--font-primary);
+  margin-bottom: var(--spacing-sm);
+  border: none; /* Remove border from base h3 */
+  padding: 0;
 }
 
 .address-card h3 i {
   color: var(--theme-info-primary);
-  font-size: var(--font-size-xs);
+  font-size: var(--font-size-sm);
 }
 
 .address-card p {
-  font-size: var(--font-size-xs - 0.0625rem);
+  font-size: var(--font-size-sm);
   color: var(--theme-text-secondary);
-  line-height: var(--line-height-tight);
+  line-height: var(--line-height-relaxed);
   margin: 0;
 }
 
 /* Empty States - Compact */
 .text-center {
   text-align: center;
-  padding: var(--spacing-md);
+  padding: var(--spacing-xl);
   color: var(--theme-text-secondary);
+  grid-column: 1 / -1; /* Span full grid */
+  background: transparent;
+  border: 2px dashed var(--theme-border-secondary);
+  border-radius: var(--ui-border-radius-lg);
 }
 
 .text-center i {
-  font-size: var(--font-size-xl);
-  color: var(--theme-accent-primary);
+  font-size: var(--font-size-2xl);
+  color: var(--theme-text-muted);
   margin-bottom: var(--spacing-sm);
 }
 
 .text-center p {
   font-size: var(--font-size-sm);
   margin: 0;
+  font-weight: 500;
 }
 
-/* Responsive Tweaks */
-@media (max-width: 768px) {
-  .customer-header .text-sm {
-    flex-direction: column;
-    gap: var(--spacing-xs);
-  }
-
-  .metric-header div:last-of-type {
-    font-size: var(--font-size-xs);
-  }
-
-  :host ::ng-deep .p-tabview-panel {
-    max-height: calc(100vh - 150px);
-  }
-}
-
-@media (max-width: 480px) {
-  .customer-snapshot {
-    padding: var(--spacing-xs);
-  }
-
-  .header-metrics {
-    flex-direction: column;
-    width: 100%;
-  }
-
-  .metric-header {
-    min-width: auto;
-    width: 100%;
-  }
-}
-
-/* Dark Mode Specific Overrides for Contrast */
-body.dark-mode .activity-card,
-body.dark-mode .overdue-card,
-body.dark-mode .address-card {
-  background: var(--theme-bg-ternary); /* Deeper bg in dark mode */
-  border-color: var(--theme-border-secondary);
-  color: var(--theme-text-primary);
-}
-
-body.dark-mode .metric-header {
+/* Dark Mode Specific Overrides */
+body.dark-mode .p-tag {
   background: var(--theme-bg-ternary);
+  color: var(--theme-text-secondary);
   border-color: var(--theme-border-secondary);
 }
 
 body.dark-mode .overdue-card {
-  background: rgba(220, 20, 60, 0.1); /* Subtle red tint */
-  border-color: rgba(220, 20, 60, 0.2);
-}
-/* ---
-  Customer Dashboard & Snapshot Components - Enhanced Scrollbar Styles
-  Added custom scrollbar styles for better visibility and consistency across browsers,
-  ensuring scrollbars appear and function properly in both light/dark modes with subtle theming.
---- */
-
-/* Existing styles remain, adding scrollbar enhancements below */
-
-/* Custom Scrollbar for Scrollable Content */
-.scrollable-content {
-  max-height: 20rem;
-  overflow-y: auto;
-  padding-right: var(--spacing-xs);
-  scrollbar-width: thin; /* Firefox */
-  scrollbar-color: var(--theme-scroll-thumb) var(--theme-scroll-track); /* Firefox */
+  background: rgba(220, 20, 60, 0.15);
+  border-color: rgba(220, 20, 60, 0.3);
 }
 
-/* Webkit Scrollbar (Chrome, Safari, Edge) */
-.scrollable-content::-webkit-scrollbar {
-  width: 6px;
+body.dark-mode .overdue-card .p-tag {
+  background: var(--theme-error-primary);
+  color: var(--theme-text-inverted);
+  border-color: var(--theme-error-primary);
 }
 
-.scrollable-content::-webkit-scrollbar-track {
-  background: var(--theme-scroll-track);
-  border-radius: 3px;
+body.dark-mode .text-center {
+  background: transparent;
+  border-color: var(--theme-border-secondary);
 }
 
-.scrollable-content::-webkit-scrollbar-thumb {
-  background: var(--theme-scroll-thumb);
-  border-radius: 3px;
-  transition: var(--ui-transition-fast);
-}
-
-.scrollable-content::-webkit-scrollbar-thumb:hover {
-  background: var(--theme-accent-primary-light);
-}
-
-/* Ensure Tab Panels Have Proper Scrolling if Needed */
-:host ::ng-deep .p-tabview-panel {
-  overflow-y: auto;
-  max-height: 60vh; /* Limit height to trigger scroll if content is long */
-}
-
-/* Dark Mode Scrollbar Overrides */
-body.dark-mode .scrollable-content::-webkit-scrollbar-track {
+body.dark-mode :host ::ng-deep .p-tabview-panel::-webkit-scrollbar-track {
   background: var(--theme-bg-ternary);
 }
-
-body.dark-mode .scrollable-content::-webkit-scrollbar-thumb {
+body.dark-mode :host ::ng-deep .p-tabview-panel::-webkit-scrollbar-thumb {
+  background: var(--theme-text-muted);
+}
+body.dark-mode :host ::ng-deep .p-tabview-panel::-webkit-scrollbar-thumb:hover {
   background: var(--theme-text-secondary);
 }
 
-body.dark-mode .scrollable-content::-webkit-scrollbar-thumb:hover {
-  background: var(--theme-accent-primary);
-}
-
-/* Additional Fix for Nested Scrollables (e.g., in Timeline or Lists) */
-.payment-timeline,
-.cart-card .grid {
-  overflow-x: auto; /* Horizontal scroll if needed for small screens */
-  scrollbar-width: thin;
-}
-
-.payment-timeline::-webkit-scrollbar,
-.cart-card .grid::-webkit-scrollbar {
-  height: 4px;
-}
-
-.payment-timeline::-webkit-scrollbar-track,
-.cart-card .grid::-webkit-scrollbar-track {
-  background: var(--theme-scroll-track);
-}
-
-.payment-timeline::-webkit-scrollbar-thumb,
-.cart-card .grid::-webkit-scrollbar-thumb {
-  background: var(--theme-scroll-thumb);
-  border-radius: 2px;
-}
-
-/* Responsive: Hide scrollbar on very small screens if space is tight */
-@media (max-width: 480px) {
-  .scrollable-content::-webkit-scrollbar {
-    width: 4px;
-  }
-}
