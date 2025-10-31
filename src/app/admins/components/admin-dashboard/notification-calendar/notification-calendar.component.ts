@@ -53,7 +53,7 @@ export class NotificationCalendarComponent implements OnInit {
   // --- STATE MANAGEMENT WITH SIGNALS ---
   currentDate = signal(new Date());
   heatmapData = signal<HeatmapDay[]>([]);
-  selectedDay = signal<CalendarDay | null>(null);
+  selectedDay = signal<CalendarDay | null>(null)  ;
   selectedDaySummary = signal<any | null>(null);
   isLoadingHeatmap = signal(false);
   isLoadingSummary = signal(false);
