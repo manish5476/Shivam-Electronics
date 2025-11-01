@@ -40,9 +40,9 @@
       <!-- Profile Info -->
       <div class="profile-card">
         <div class="flex items-center gap-3"> <!-- Smaller gap -->
-          <p-avatar *ngIf="customer?.profileImg; else initialsAvatar" [image]="customer?.profileImg" shape="circle" size="xlarge" styleClass="flex-shrink-0"></p-avatar>
+          <p-avatar *ngIf="customer?.profileImg; else initialsAvatar" [image]="customer?.profileImg" shape="circle" size="large" styleClass="flex-shrink-0"></p-avatar>
           <ng-template #initialsAvatar>
-            <p-avatar [label]="commonMethod.getInitials(customer.fullname || '')" shape="circle" size="xlarge" styleClass="flex-shrink-0"></p-avatar>
+            <p-avatar [label]="commonMethod.getInitials(customer.fullname || '')" shape="circle" size="large" styleClass="flex-shrink-0"></p-avatar>
           </ng-template>
           <div class="flex-grow">
             <h2>{{ customer?.fullname }}</h2>
@@ -174,3 +174,4 @@
 <p-dialog header="Edit Profile" [(visible)]="showCustomer" [modal]="true" [style]="{width: '95vw'}">
   <app-customer-snapshot [customerID]="customerId"></app-customer-snapshot>
 </p-dialog>
+

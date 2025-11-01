@@ -1,69 +1,108 @@
 <div class="flex flex-col rounded-md overflow-hidden bg-[var(--theme-bg-secondary)] h-full">
 
-  <!-- 🔹 Filter Bar -->
-  <div class="card-filter p-4 bg-[var(--theme-bg-primary)] shadow-md">
-    <!-- MODIFIED: Replaced Grid with Flexbox for a responsive single-row layout -->
-    <div class="flex flex-wrap items-end gap-x-6 gap-y-4">
+  <!-- 🔹 Common Filter Container -->
+  <div class="se-filter-container">
+    <div class="se-filter-bar">
 
       <!-- Transaction ID -->
-      <div class="flex flex-col flex-grow min-w-[160px]">
-        <label for="transactionId" class="text-sm font-medium text-[var(--theme-text-secondary)] mb-1">Transaction
-          ID</label>
-        <input pInputText id="transactionId" [(ngModel)]="paymentFilter.transactionId" (input)="applyFiltersAndReset()"
+      <div class="se-filter-field">
+        <label for="transactionId">Transaction ID</label>
+        <input
+          pInputText
+          id="transactionId"
+          [(ngModel)]="paymentFilter.transactionId"
+          (input)="applyFiltersAndReset()"
           placeholder="Search ID..." />
       </div>
 
       <!-- Customer Name -->
-      <div class="flex flex-col flex-grow min-w-[160px]">
-        <label for="customerName" class="text-sm font-medium text-[var(--theme-text-secondary)] mb-1">Customer
-          Name</label>
-        <input pInputText id="customerName" [(ngModel)]="paymentFilter.customerName" (input)="applyFiltersAndReset()"
+      <div class="se-filter-field">
+        <label for="customerName">Customer Name</label>
+        <input
+          pInputText
+          id="customerName"
+          [(ngModel)]="paymentFilter.customerName"
+          (input)="applyFiltersAndReset()"
           placeholder="Search Customer..." />
       </div>
 
       <!-- Status Dropdown -->
-      <div class="flex flex-col flex-grow min-w-[150px]">
-        <label for="status" class="text-sm font-medium text-[var(--theme-text-secondary)] mb-1">Status</label>
-       <p-select appendTo="body"  id="status" [options]="statusOptions" [(ngModel)]="paymentFilter.status"
-          (onChange)="applyFiltersAndReset()" placeholder="All Statuses" [showClear]="true"></p-select>
+      <div class="se-filter-field">
+        <label for="status">Status</label>
+        <p-select
+          appendTo="body"
+          id="status"
+          [options]="statusOptions"
+          [(ngModel)]="paymentFilter.status"
+          (onChange)="applyFiltersAndReset()"
+          placeholder="All Statuses"
+          [showClear]="true">
+        </p-select>
       </div>
 
-      <!-- Method Dropdown -->
-      <div class="flex flex-col flex-grow min-w-[150px]">
-        <label for="paymentMethod" class="text-sm font-medium text-[var(--theme-text-secondary)] mb-1">Payment
-          Method</label>
-       <p-select appendTo="body"  id="paymentMethod" [options]="methodOptions" [(ngModel)]="paymentFilter.paymentMethod"
-          (onChange)="applyFiltersAndReset()" placeholder="All Methods" [showClear]="true"></p-select>
+      <!-- Payment Method -->
+      <div class="se-filter-field">
+        <label for="paymentMethod">Payment Method</label>
+        <p-select
+          appendTo="body"
+          id="paymentMethod"
+          [options]="methodOptions"
+          [(ngModel)]="paymentFilter.paymentMethod"
+          (onChange)="applyFiltersAndReset()"
+          placeholder="All Methods"
+          [showClear]="true">
+        </p-select>
       </div>
 
       <!-- Date Range -->
-      <div class="flex flex-col flex-grow min-w-[300px]">
-        <label class="text-sm font-medium text-[var(--theme-text-secondary)] mb-1">Payment Date Range</label>
+      <div class="se-filter-field se-date-range">
+        <label>Payment Date Range</label>
         <div class="flex items-center gap-2">
-          <input pInputText type="date" id="createdFrom" [(ngModel)]="paymentFilter.createdFrom"
-            (change)="applyFiltersAndReset()" class="w-full" />
-          <span class="text-[var(--theme-text-secondary)]">to</span>
-          <input pInputText type="date" id="createdTo" [(ngModel)]="paymentFilter.createdTo"
-            (change)="applyFiltersAndReset()" class="w-full" />
+          <input
+            pInputText
+            type="date"
+            id="createdFrom"
+            [(ngModel)]="paymentFilter.createdFrom"
+            (change)="applyFiltersAndReset()" />
+          <span class="text-[var(--theme-text-secondary)] text-sm">to</span>
+          <input
+            pInputText
+            type="date"
+            id="createdTo"
+            [(ngModel)]="paymentFilter.createdTo"
+            (change)="applyFiltersAndReset()" />
         </div>
       </div>
 
       <!-- Actions -->
-      <!-- MODIFIED: Pushed to the right with ml-auto -->
-      <div class="flex items-end gap-2 ml-auto">
-        <p-button (click)="applyFiltersAndReset()" label="Apply" icon="pi pi-check" styleClass="p-button-sm"></p-button>
-        <p-button (click)="resetFilters()" label="Reset" icon="pi pi-refresh"
-          styleClass="p-button-sm p-button-outlined"></p-button>
+      <div class="se-filter-actions">
+        <p-button
+          (click)="applyFiltersAndReset()"
+          label="Apply"
+          icon="pi pi-check">
+        </p-button>
+        <p-button
+          (click)="resetFilters()"
+          label="Reset"
+          icon="pi pi-refresh"
+          styleClass="p-button-outlined">
+        </p-button>
       </div>
+
     </div>
   </div>
 
-  <!-- 🔹 Grid Area (Unchanged) -->
-    <div class="mt-1 card">
-      <app-shared-grid [data]="data" [gridHeight]="'240px'" [headerFilter]="false" [GridName]="'Customer Details'"
-        [column]="column" (eventFromGrid)="eventFromGrid($event)" (gridReady)="onGridReady($event)"
-        (scrolledToBottom)="onScrolledToBottom($event)">
-      </app-shared-grid>
-    </div>
-  
+  <!-- 🔹 Grid Area -->
+  <div class="mt-1 card">
+    <app-shared-grid
+      [data]="data"
+      [gridHeight]="'240px'"
+      [headerFilter]="false"
+      [GridName]="'Payment Details'"
+      [column]="column"
+      (eventFromGrid)="eventFromGrid($event)"
+      (gridReady)="onGridReady($event)"
+      (scrolledToBottom)="onScrolledToBottom($event)">
+    </app-shared-grid>
+  </div>
 </div>

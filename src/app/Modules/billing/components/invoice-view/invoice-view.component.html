@@ -1,58 +1,103 @@
-<div class="h-[calc(100vh-56px)] flex flex-col overflow-hidden bg-[var(--theme-bg-secondary)]">
+<div class="flex flex-col rounded-md overflow-hidden bg-[var(--theme-bg-primary)] text-[var(--theme-text-primary)]">
 
-  <div class="card-filter p-4 bg-[var(--theme-bg-primary)] shadow-md">
-    <div class="flex items-center justify-between">
-      <h4 class="text-xl font-bold text-[var(--theme-text-heading)]">Invoice List</h4>
-    </div>
-    <div class="mt-3 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-6 gap-4 items-end">
+  <!-- Shared Filter Container -->
+  <div class="se-filter-container">
+    <div class="se-filter-bar">
 
-      <div class="flex flex-col">
-        <label for="buyer" class="text-sm font-medium text-[var(--theme-text-secondary)] mb-1">Buyer</label>
-       <p-select appendTo="body"  id="buyer" appendTo="body" [options]="customerIDDropdown" [(ngModel)]="invoiceFilter.buyer"
-          [filter]="true" filterBy="fullname" optionLabel="fullname" optionValue="_id" [showClear]="true"
-          placeholder="Select Buyer" (onChange)="applyFiltersAndReset()" />
+      <!-- Buyer -->
+      <div class="se-filter-field">
+        <label for="buyer">Buyer</label>
+        <p-select
+          appendTo="body"
+          id="buyer"
+          [options]="customerIDDropdown"
+          [(ngModel)]="invoiceFilter.buyer"
+          [filter]="true"
+          filterBy="fullname"
+          optionLabel="fullname"
+          optionValue="_id"
+          [showClear]="true"
+          placeholder="Select Buyer"
+          (onChange)="applyFiltersAndReset()">
+        </p-select>
       </div>
 
-      <div class="flex flex-col">
-        <label for="status" class="text-sm font-medium text-[var(--theme-text-secondary)] mb-1">Status</label>
-       <p-select appendTo="body"  id="status" appendTo="body" [options]="statusOptions" [(ngModel)]="invoiceFilter.status"
-          (onChange)="applyFiltersAndReset()" placeholder="All Status" [showClear]="true" />
+      <!-- Status -->
+      <div class="se-filter-field">
+        <label for="status">Status</label>
+        <p-select
+          appendTo="body"
+          id="status"
+          [options]="statusOptions"
+          [(ngModel)]="invoiceFilter.status"
+          (onChange)="applyFiltersAndReset()"
+          placeholder="All Status"
+          [showClear]="true">
+        </p-select>
       </div>
 
-      <div class="flex flex-col">
-        <label for="invoiceNumber" class="text-sm font-medium text-[var(--theme-text-secondary)] mb-1">Invoice #</label>
-        <input pInputText id="invoiceNumber" [(ngModel)]="invoiceFilter.invoiceNumber" (input)="applyFiltersAndReset()"
+      <!-- Invoice Number -->
+      <div class="se-filter-field">
+        <label for="invoiceNumber">Invoice #</label>
+        <input
+          pInputText
+          id="invoiceNumber"
+          [(ngModel)]="invoiceFilter.invoiceNumber"
+          (input)="applyFiltersAndReset()"
           placeholder="Search Invoice Number" />
       </div>
 
-      <div class="flex flex-col lg:col-span-2">
-        <label class="text-sm font-medium text-[var(--theme-text-secondary)] mb-1">Invoice Date Range</label>
-        <div class="flex items-center gap-2">
-          <input pInputText type="date" id="createdFrom" [(ngModel)]="invoiceFilter.createdFrom"
-            (change)="applyFiltersAndReset()" class="w-full" />
-          <span class="text-[var(--theme-text-secondary)]">to</span>
-          <input pInputText type="date" id="createdTo" [(ngModel)]="invoiceFilter.createdTo"
-            (change)="applyFiltersAndReset()" class="w-full" />
+      <!-- Date Range -->
+      <div class="se-filter-field">
+        <label for="createdFrom">Invoice Date Range</label>
+        <div class="flex gap-2">
+          <input
+            id="createdFrom"
+            type="date"
+            pInputText
+            [(ngModel)]="invoiceFilter.createdFrom"
+            (change)="applyFiltersAndReset()" />
+          <input
+            id="createdTo"
+            type="date"
+            pInputText
+            [(ngModel)]="invoiceFilter.createdTo"
+            (change)="applyFiltersAndReset()" />
         </div>
       </div>
 
-      <div class="flex items-end gap-2">
-        <p-button (click)="applyFiltersAndReset()" label="Apply" icon="pi pi-check" styleClass="p-button-sm"></p-button>
-        <p-button (click)="resetFilters()" label="Reset" icon="pi pi-refresh"
-          styleClass="p-button-sm p-button-outlined"></p-button>
+      <!-- Action Buttons -->
+      <div class="se-filter-actions">
+        <p-button (click)="applyFiltersAndReset()" label="Apply" icon="pi pi-check"></p-button>
+        <p-button (click)="resetFilters()" label="Reset" icon="pi pi-refresh" styleClass="p-button-outlined"></p-button>
       </div>
+
     </div>
   </div>
 
-  <div class="flex-grow card mt-1 p-4 bg-[var(--theme-bg-primary)]">
-    <app-shared-grid [data]="data" [gridHeight]="'280px'" [headerFilter]="false" [rowSelectionMode]="rowSelectionMode"
-      [GridName]="'Invoice Details'" [column]="column" (eventFromGrid)="eventFromGrid($event)"
-      (gridReady)="onGridReady($event)" (scrolledToBottom)="onScrolledToBottom($event)">
+  <!-- Grid -->
+  <div class="mt-1 card">
+    <app-shared-grid
+      [data]="data"
+      [gridHeight]="'280px'"
+      [headerFilter]="false"
+      [rowSelectionMode]="rowSelectionMode"
+      [GridName]="'Invoice Details'"
+      [column]="column"
+      (eventFromGrid)="eventFromGrid($event)"
+      (gridReady)="onGridReady($event)"
+      (scrolledToBottom)="onScrolledToBottom($event)">
     </app-shared-grid>
   </div>
-</div>
 
-<p-dialog header="Invoice Preview" [(visible)]="showpdf" [modal]="true" [style]="{ width: '90vw', maxWidth: '1200px' }"
-[contentStyle]="{ height: '80vh', overflow: 'auto', padding: '0' }">
-<app-invoice-print [Id]="invoiceId" class="invoice-preview"></app-invoice-print>
-</p-dialog>
+  <!-- Invoice Preview Dialog -->
+  <p-dialog
+    header="Invoice Preview"
+    [(visible)]="showpdf"
+    [modal]="true"
+    [style]="{ width: '90vw', maxWidth: '1200px' }"
+    [contentStyle]="{ height: '80vh', overflow: 'auto', padding: '0' }">
+    <app-invoice-print [Id]="invoiceId" class="invoice-preview"></app-invoice-print>
+  </p-dialog>
+
+</div>

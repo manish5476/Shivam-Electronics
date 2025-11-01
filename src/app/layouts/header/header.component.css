@@ -1,3 +1,20 @@
 :host {
   display: block;
 }
+.theme-toggle-btn {
+  border: none;
+  background: transparent;
+  font-size: 1.8rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+:host ::ng-deep .p-togglebutton.p-highlight {
+  background-color: var(--surface-100);
+  color: var(--primary-color);
+}
+
+:host ::ng-deep .p-togglebutton-icon {
+  font-size: 2rem;
+}

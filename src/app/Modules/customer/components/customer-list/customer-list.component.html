@@ -1,116 +1,57 @@
-<div class="flex flex-col rounded-md overflow-hidden bg-[var(--theme-bg-primary)] text-[var(--theme-text-primary)]">
-
+<div class="se-filter-container">
   <div class="se-filter-bar">
-    <!-- Customer Dropdown -->
+
+    <!-- Customer -->
     <div class="se-filter-field">
       <label for="customer">Customer</label>
-     <p-select appendTo="body"  id="customer" appendTo="body" [options]="customerFilter.customerIDDropdown"
-        [(ngModel)]="customerFilter.name" (onChange)="resetFilters()" [filter]="true" filterBy="fullname"
-        optionLabel="fullname" optionValue="_id" [showClear]="true" placeholder="Select a Customer">
+      <p-select id="customer" [options]="customerFilter.customerIDDropdown" [(ngModel)]="customerFilter.name"
+        (onChange)="resetFilters()" [filter]="true" filterBy="fullname" optionLabel="fullname" optionValue="_id"
+        [showClear]="true" placeholder="Select a Customer" appendTo="body">
       </p-select>
     </div>
 
-    <!-- Email Input with AutoComplete -->
+    <!-- Email -->
     <div class="se-filter-field">
       <label for="email">Email</label>
       <p-autoComplete id="email" [(ngModel)]="customerFilter.email" [suggestions]="emailSuggestions"
         (completeMethod)="filterEmails($event)" [forceSelection]="false" placeholder="Enter email" [minLength]="1"
-        class="w-full" pInputText (onBlur)="resetFilters()">
+        (onBlur)="resetFilters()">
       </p-autoComplete>
     </div>
 
-
-    <!-- Phone Input -->
+    <!-- Phone -->
     <div class="se-filter-field">
       <label for="phone">Phone</label>
-      <input id="phone" [(ngModel)]="customerFilter.phone" (input)="resetFilters()" placeholder="Phone" type="number"
-        pInputText min="1" />
-
+      <input id="phone" type="number" pInputText [(ngModel)]="customerFilter.phone" (input)="resetFilters()"
+        placeholder="Phone" />
     </div>
 
-    <!-- Page Input -->
+    <!-- Page -->
     <div class="se-filter-field">
       <label for="page">Page</label>
-      <input id="page" [(ngModel)]="customerFilter.page" (input)="resetFilters()" placeholder="Page" type="number" pInputText
-        min="1" />
+      <input id="page" type="number" pInputText [(ngModel)]="customerFilter.page" (input)="resetFilters()"
+        placeholder="Page" />
     </div>
 
-    <!-- Limit Input -->
+    <!-- Limit -->
     <div class="se-filter-field">
       <label for="limit">Limit</label>
-      <input id="limit" [(ngModel)]="customerFilter.limit" (input)="resetFilters()" placeholder="Limit" pInputText
-        type="number" min="1" />
+      <input id="limit" type="number" pInputText [(ngModel)]="customerFilter.limit" (input)="resetFilters()"
+        placeholder="Limit" />
     </div>
 
-    <!-- Action Buttons -->
+    <!-- Actions -->
     <div class="se-filter-actions">
-      <p-button (click)="resetFilters()" label="Apply" icon="pi pi-check"></p-button>
-      <p-button (click)="resetFilters()" label="Reset" icon="pi pi-refresh" styleClass="p-button-outlined"></p-button>
+      <p-button label="Apply" icon="pi pi-check" (click)="resetFilters()"></p-button>
+      <p-button label="Reset" icon="pi pi-refresh" styleClass="p-button-outlined" (click)="resetFilters()"></p-button>
     </div>
   </div>
 
-  <!-- Grid Area (remains unchanged) -->
-  <div class="mt-1 card">
-    <app-shared-grid [data]="data" [gridHeight]="'280px'" [headerFilter]="false" [rowSelectionMode]="rowSelectionMode"
-      [GridName]="'Customer Details'" [column]="column" (eventFromGrid)="eventFromGrid($event)" (gridReady)="onGridReady($event)" (scrolledToBottom)="onScrolledToBottom($event)">
+  <!-- Table area -->
+  <div class="mt-2 card">
+    <app-shared-grid [data]="data" [gridHeight]="'220px'" [headerFilter]="false" [rowSelectionMode]="rowSelectionMode"
+      [GridName]="'Customer Details'" [column]="column" (eventFromGrid)="eventFromGrid($event)"
+      (gridReady)="onGridReady($event)" (scrolledToBottom)="onScrolledToBottom($event)">
     </app-shared-grid>
   </div>
 </div>
-<!-- <div class="flex flex-col rounded-md overflow-hidden bg-[var(--theme-bg-primary)] text-[var(--theme-text-primary)]">
-
-  <div class="se-filter-bar">
-  d
-    <div class="se-filter-field">
-      <label for="customer">Customer</label>
-     <p-select appendTo="body"  id="customer" appendTo="body" [options]="customerFilter.customerIDDropdown"
-        [(ngModel)]="customerFilter.name" (onChange)="getData()" [filter]="true" filterBy="fullname"
-        optionLabel="fullname" optionValue="_id" [showClear]="true" placeholder="Select a Customer">
-      </p-select>
-    </div>
-
-  d
-    <div class="se-filter-field">
-      <label for="email">Email</label>
-      <p-autoComplete id="email" [(ngModel)]="customerFilter.email" [suggestions]="emailSuggestions"
-        (completeMethod)="filterEmails($event)" [forceSelection]="false" placeholder="Enter email" [minLength]="1"
-        class="w-full" pInputText>
-      </p-autoComplete>
-    </div>
-
-
-  d
-    <div class="se-filter-field">
-      <label for="phone">Phone</label>
-      <input id="phone" [(ngModel)]="customerFilter.phone" (input)="getData()" placeholder="Phone" type="number"
-        pInputText min="1" />
-
-    </div>
-
-  d
-    <div class="se-filter-field">
-      <label for="page">Page</label>
-      <input id="page" [(ngModel)]="customerFilter.page" (input)="getData()" placeholder="Page" type="number" pInputText
-        min="1" />
-    </div>
-
-  d
-    <div class="se-filter-field">
-      <label for="limit">Limit</label>
-      <input id="limit" [(ngModel)]="customerFilter.limit" (input)="getData()" placeholder="Limit" pInputText
-        type="number" min="1" />
-    </div>
-
-  d
-    <div class="se-filter-actions">
-      <p-button (click)="getData()" label="Apply" icon="pi pi-check"></p-button>
-      <p-button (click)="resetFilters()" label="Reset" icon="pi pi-refresh" styleClass="p-button-outlined"></p-button>
-    </div>
-  </div>
-
-d
-  <div class="mt-1 card">
-    <app-shared-grid [data]="data" [gridHeight]="'280px'" [headerFilter]="false" [rowSelectionMode]="rowSelectionMode"
-      [GridName]="'Customer Details'" [column]="column" (eventFromGrid)="eventFromGrid($event)">
-    </app-shared-grid>
-  </div>
-</div> -->

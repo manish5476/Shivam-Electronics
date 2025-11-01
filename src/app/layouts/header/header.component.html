@@ -1,29 +1,31 @@
-<div class="w-full mx-auto flex h-12 items-center justify-between px-4 sm:px-6 lg:px-8">
-  <div class="flex items-center gap-4">
+<div
+  class="w-full mx-auto flex h-10 items-center justify-between px-4 sm:px-6 lg:px-8 border-b border-[var(--theme-border-primary)]">
+  <div class="flex items-center gap-3">
     <button type="button"
-      class="flex items-center justify-center w-10 h-10 rounded-lg bg-[var(--theme-bg-secondary)] hover:bg-[var(--theme-hover-bg)] transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-[var(--theme-accent-primary)] focus:ring-opacity-75"
+      class="flex items-center justify-center w-8 h-8 rounded-lg bg-[var(--theme-bg-secondary)] hover:bg-[var(--theme-hover-bg)] transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-[var(--theme-accent-primary)] focus:ring-opacity-75"
       (click)="toggleSidebar.emit()">
-      <i class="pi pi-bars text-[var(--theme-text-secondary)] text-xl"></i>
+      <i class="pi pi-bars text-[var(--theme-text-secondary)] text-lg"></i>
     </button>
-    <a href="/" class="text-[var(--theme-text-primary)] text-xl font-bold tracking-tight">Shivam Electronics</a>
+    <a href="/" class="text-[var(--theme-text-primary)] text-lg font-bold tracking-tight">Shivam Electronics</a>
   </div>
 
-  <div class="flex items-center gap-4">
+  <div class="flex items-center gap-3">
     <!-- Main user display area -->
     <ng-container *ngIf="currentUser$ | async as user; else loggedOutView">
       <button type="button"
-        class="flex h-10 items-center bg-[var(--theme-bg-ternary)] gap-3 group focus:outline-none focus:ring-2 focus:ring-[var(--theme-accent-primary)] focus:ring-opacity-75 rounded-full p-1 pr-3 hover:bg-[var(--theme-hover-bg)]"
+        class="flex h-8 items-center bg-[var(--theme-bg-ternary)] gap-2 group focus:outline-none focus:ring-2 focus:ring-[var(--theme-accent-primary)] focus:ring-opacity-75 rounded-full p-1 pr-3 hover:bg-[var(--theme-hover-bg)]"
         (click)="op.toggle($event)">
         <p-avatar [label]="user.name ? getInitials(user.name) : 'U'"
           image="https://imgs.search.brave.com/E0qQWdzT8_8gkjaYBKZjg8zeuJWOxsPwlim2wn2WvW4/rs:fit:500:0:1:0/g:ce/aHR0cHM6Ly9pbWcu/ZnJlZXBpay5jb20v/cHJlbWl1bS1waG90/by9jdXRlLWxpdHRs/ZS1sb3JkLWtyaXNo/bmFfMzk0NDYyLTI5/MzYuanBnP3NlbXQ9/YWlzX2h5YnJpZCZ3/PTc0MCZxPTgw"
-          styleClass="mr-2" shape="circle"></p-avatar>
+          styleClass="w-6 h-6 text-xs" shape="circle"></p-avatar>
         <span class="hidden md:inline-block font-medium text-sm bg-[var(--theme-bg-ternary)]">{{ user.name }}</span>
         <i
-          class="hidden md:inline-block pi pi-angle-down text-[var(--theme-text-secondary)] group-hover:text-[var(--theme-text-primary)] transition-colors duration-200"></i>
+          class="hidden md:inline-block pi pi-angle-down text-xs text-[var(--theme-text-secondary)] group-hover:text-[var(--theme-text-primary)] transition-colors duration-200"></i>
       </button>
 
       <!-- Popover content with theme controls -->
-      <p-popover #op>
+      <p-popover #op appendTo="body" [showTransitionOptions]="'150ms ease-out'"
+        [hideTransitionOptions]="'150ms ease-in'">
         <div
           class="p-4 bg-[var(--theme-bg-ternary)] border border-[var(--theme-border-primary)] rounded-lg shadow-xl min-w-[250px]">
           <!-- User Info Section -->
@@ -39,16 +41,13 @@
           <div class="py-2">
             <div class="flex justify-between items-center mb-2">
               <span class="text-sm font-medium text-[var(--theme-text-label)]">Appearance</span>
-             <p-select appendTo="body" Button [options]="themeOptions" [(ngModel)]="isDarkMode"
-                (onChange)="onThemeModeChange($event.value)" optionValue="value">
-                <ng-template let-item>
-                  <i [class]="item.icon"></i>
-                </ng-template>
-              </p-select>
+              <p-toggleButton [(ngModel)]="isDarkMode" onLabel="" offLabel="" [onIcon]="'pi pi-moon'"
+                offIcon="pi pi-sun" (onChange)="onThemeModeChange(isDarkMode)" styleClass="theme-toggle-btn">
+              </p-toggleButton>
             </div>
             <div class="grid grid-cols-6 gap-2 mt-3">
               <div *ngFor="let theme of colorThemes" pTooltip="{{theme.name}}" tooltipPosition="top"
-                class="w-8 h-8 rounded-full cursor-pointer border-2 transition-all"
+                class="w-6 h-6 rounded-full cursor-pointer border-2 transition-all"
                 [style.backgroundColor]="theme.color"
                 [ngClass]="{'border-[var(--theme-accent-primary)]': accentColor === theme.color, 'border-transparent': accentColor !== theme.color}"
                 (click)="onAccentColorChange(theme.class, theme.color)">
@@ -88,9 +87,9 @@
     </ng-template>
 
     <button type="button"
-      class="md:hidden w-10 h-10 rounded-full bg-[var(--theme-bg-secondary)] hover:bg-[var(--theme-hover-bg)] flex items-center justify-center"
+      class="md:hidden w-8 h-8 rounded-full bg-[var(--theme-bg-secondary)] hover:bg-[var(--theme-hover-bg)] flex items-center justify-center"
       (click)="mobileMenuToggle.emit()">
-      <i class="pi pi-bars text-[var(--theme-text-secondary)] text-xl"></i>
+      <i class="pi pi-bars text-[var(--theme-text-secondary)] text-lg"></i>
     </button>
   </div>
 </div>

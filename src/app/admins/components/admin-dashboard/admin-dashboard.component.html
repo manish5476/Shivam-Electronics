@@ -1,6 +1,6 @@
 <p-toast position="top-right"></p-toast>
 
-<div class="admin-dashboard min-h-screen p-4 md:p-6" [style]="{'background': 'var(--theme-bg-primary)'}"
+<div class="admin-dashboard min-h-screen md:p-6" [style]="{'background': 'var(--theme-bg-primary)'}"
      [@fadeIn]="true">
 
     <p-toolbar styleClass="sticky top-0 z-20 shadow-md rounded-2xl mb-2 md:mb-4 se-filter-bar"
@@ -32,7 +32,8 @@
                         (click)="onApplyCustomRange()"></button>
             </div>
             
-            </div>
+            <!-- <p-progressSpinner *ngIf="isLoading$ | async" styleClass="w-4 h-4 md:w-5 md:h-5" strokeWidth="4"></p-progressSpinner> -->
+        </div>
 
         <div class="p-toolbar-group-right flex gap-1 md:gap-2 mt-2 md:mt-0">
             <button pButton type="button" icon="pi pi-refresh" label="Reload" class="p-button-xs rounded-full"
@@ -41,66 +42,91 @@
         </div>
     </p-toolbar>
 
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6 mb-4">
-        <app-notification-calendar></app-notification-calendar> 
-        <app-enhanced-kpi-summary [loading]="(isLoading$ | async) ?? false" [title]="'Enhanced KPI Summary'"
-                                  [data]="(enhancedKpiSummary$ | async)?.data">
-        </app-enhanced-kpi-summary>
-        <app-kpi-summary [loading]="(isLoading$ | async) ?? false" [title]="'KPI Summary'"
-                         [data]="(kpiSummary$ | async)?.data">
-        </app-kpi-summary>
-        <app-dashboard-overview [title]="'Overview'" [data]="(overview$ | async)?.data">
-        </app-dashboard-overview>
-    </div>
-
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-6 mb-6">
-        <app-dashboard-chart-combo [selectedPeriod]="selectedPeriod" [startDate]="startDate" [endDate]="endDate"></app-dashboard-chart-combo>
+    <!-- 
+      NEW WRAPPER DIV:
+      This div constrains all the grid content below it to a max-width
+      and centers it on the page, fixing the "free screen mode" issue.
+    -->
+    <div class="mx-auto max-w-7xl"> <!-- 7xl is 1280px -->
         
-        <app-sales-trends [title]="'Sales Trends'"
-                          [data]="[(salesTrends$ | async)?.data, (monthlySales$ | async)?.data, (yearlySales$ | async)?.data]">
-        </app-sales-trends>
-    </div>
+        <!-- 
+          LAYOUT CHANGE:
+          All grid classes (sm:, lg:, xl:) have been removed to force a single column.
+          The col-span on app-notification-calendar is also removed as it's no longer needed.
+        -->
+        <div class="grid grid-cols-1 gap-4 md:gap-6 mb-4">
+            
+            <app-notification-calendar>
+            </app-notification-calendar> 
+            
+            <app-enhanced-kpi-summary [loading]="(isLoading$ | async) ?? false" [title]="'Enhanced KPI Summary'"
+                                      [data]="(enhancedKpiSummary$ | async)?.data">
+            </app-enhanced-kpi-summary>
+            <app-kpi-summary [loading]="(isLoading$ | async) ?? false" [title]="'KPI Summary'"
+                             [data]="(kpiSummary$ | async)?.data">
+            </app-kpi-summary>
+            <app-dashboard-overview [title]="'Overview'" [data]="(overview$ | async)?.data">
+            </app-dashboard-overview>
+        </div>
+
+        <!-- LAYOUT CHANGE: Removed lg:grid-cols-2 -->
+        <div class="grid grid-cols-1 gap-4 md:gap-6 mb-6">
+            <app-dashboard-chart-combo [selectedPeriod]="selectedPeriod" [startDate]="startDate" [endDate]="endDate"></app-dashboard-chart-combo>
+            
+            <app-sales-trends [title]="'Sales Trends'"
+                              [data]="[(salesTrends$ | async)?.data, (monthlySales$ | async)?.data, (yearlySales$ | async)?.data]">
+            </app-sales-trends>
+        </div>
+        
+        <!-- LAYOUT CHANGE: Removed lg:grid-cols-2 -->
+        <div class="grid grid-cols-1 gap-4 md:gap-6 mb-6">
+            <app-yearly-sales [title]="'Yearly Sales'" [data]="(yearlySales$ | async)?.data">
+            </app-yearly-sales>
+            
+            <app-sales-charts [title]="'Sales Charts'" [data]="(salesCharts$ | async)?.data">
+            </app-sales-charts>
+        </div>
+
+        <!-- LAYOUT CHANGE: Removed lg:grid-cols-3 -->
+        <div class="grid grid-cols-1 gap-4 md:gap-6 mb-6">
+            <app-product-analytics [title]="'Top Categories'" [data]="(productAnalytics$ | async)?.data">
+            </app-product-analytics>
+
+            <app-customer-analytics [title]="'Top Customers'" [data]="(customerAnalytics$ | async)?.data"
+                                    (openDetail)="openDialog('Customer Details', $event)">
+            </app-customer-analytics>
+
+            <app-payment-analytics [title]="'Payment Analytics'" [data]="(paymentAnalytics$ | async)?.data"
+                                   (openDetail)="openDialog('Payment Details', $event)">
+            </app-payment-analytics>
+        </div>
+
+        <!-- LAYOUT CHANGE: Removed lg:grid-cols-2 -->
+        <div class="grid grid-cols-1 gap-4 md:gap-6 mb-8">
+            <app-sales-forecast [title]="'Sales Forecast'" [data]="(salesForecast$ | async)?.data">
+            </app-sales-forecast>
+
+            <app-inventory-turnover [title]="'Inventory Turnover'" [data]="(inventoryTurnover$ | async)?.data">
+            </app-inventory-turnover>
+        </div>
+
+        <!-- LAYOUT CHANGE: Removed lg:grid-cols-2 -->
+        <div *ngIf="isLoading$ | async" class="grid grid-cols-1 gap-4 md:gap-6">
+            <p-skeleton *ngFor="let i of [1,2,3,4]" width="100%" height="8rem md:10rem"
+                        styleClass="mb-4 rounded-2xl"></p-skeleton>
+            <p-skeleton width="100%" height="16rem md:20rem" styleClass="mb-4 rounded-2xl"></p-skeleton>
+            <p-skeleton width="100%" height="16rem md:20rem" styleClass="mb-4 rounded-2xl"></p-skeleton>
+        </div>
     
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-6 mb-6">
-        <app-yearly-sales [title]="'Yearly Sales'" [data]="(yearlySales$ | async)?.data">
-        </app-yearly-sales>
-        
-        <app-sales-charts [title]="'Sales Charts'" [data]="(salesCharts$ | async)?.data">
-        </app-sales-charts>
-    </div>
-
-    <div class="grid grid-cols-1 lg:grid-cols-3 gap-4 md:gap-6 mb-6">
-        <app-product-analytics [title]="'Top Categories'" [data]="(productAnalytics$ | async)?.data">
-        </app-product-analytics>
-
-        <app-customer-analytics [title]="'Top Customers'" [data]="(customerAnalytics$ | async)?.data"
-                                (openDetail)="openDialog('Customer Details', $event)">
-        </app-customer-analytics>
-
-        <app-payment-analytics [title]="'Payment Analytics'" [data]="(paymentAnalytics$ | async)?.data"
-                               (openDetail)="openDialog('Payment Details', $event)">
-        </app-payment-analytics>
-    </div>
-
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-6 mb-8">
-        <app-sales-forecast [title]="'Sales Forecast'" [data]="(salesForecast$ | async)?.data">
-        </app-sales-forecast>
-
-        <app-inventory-turnover [title]="'Inventory Turnover'" [data]="(inventoryTurnover$ | async)?.data">
-        </app-inventory-turnover>
-    </div>
-
-    <div *ngIf="isLoading$ | async" class="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-6">
-        <p-skeleton *ngFor="let i of [1,2,3,4]" width="100%" height="8rem md:10rem"
-                    styleClass="mb-4 rounded-2xl"></p-skeleton>
-        <p-skeleton width="100%" height="16rem md:20rem" styleClass="mb-4 rounded-2xl"></p-skeleton>
-        <p-skeleton width="100%" height="16rem md:20rem" styleClass="mb-4 rounded-2xl"></p-skeleton>
-    </div>
+    </div> <!-- End of new max-w-7xl wrapper -->
 
     <p-dialog header="{{ selectedTitle }}" [(visible)]="showDialog" [modal]="true" styleClass="responsive-dialog">
         <pre class="dialog-content">{{ selectedData | json }}</pre>
     </p-dialog>
 </div>
+
+
+
 
 <!-- <p-toast position="top-right"></p-toast>
 

@@ -18,7 +18,7 @@ import { TooltipModule } from 'primeng/tooltip';
 // App Services & Interfaces
 import { AuthService, User } from '../../core/services/auth.service';
 import { ThemeService, ThemeSettings } from '../../core/services/theme.service';
-
+import { ToggleButtonModule } from 'primeng/togglebutton';
 @Component({
   selector: 'app-header',
   standalone: true,
@@ -28,8 +28,8 @@ import { ThemeService, ThemeSettings } from '../../core/services/theme.service';
     RouterModule,
     PopoverModule,
     AvatarModule,
-    ButtonModule,Select,
-    SelectButtonModule,
+    ButtonModule,
+    SelectButtonModule,ToggleButtonModule,
     TooltipModule
   ],
   templateUrl: './header.component.html',

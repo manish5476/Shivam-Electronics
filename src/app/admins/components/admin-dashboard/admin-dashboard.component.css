@@ -8,11 +8,12 @@
   min-height: 100vh;
   font-family: var(--font-body);
   padding: 1rem;
+
 }
 
 @media (min-width: 768px) {
   .admin-dashboard {
-    padding: 1.5rem;
+    padding: .5rem;
   }
 }
 
@@ -377,7 +378,7 @@ pre {
   padding: 1rem;
   font-family: monospace;
   font-size: 0.875rem;
-  max-height: 70vh;
+  max-height: 80vh;
   overflow: auto;
 }
 /* 
