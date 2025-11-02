@@ -4956,3 +4956,12 @@ input[type=number] {
     transform: var(--ui-button-hover-transform);
     box-shadow: var(--ui-shadow-hover);
   } */
+
+  /* Hide scrollbar globally */
+* {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+*::-webkit-scrollbar {
+  display: none;
+}

@@ -1,6 +1,6 @@
-<div id="invoice-print-section" class="min-h-screen w-full px-2 sm:px-4 md:px-6"
+<!-- <div id="invoice-print-section" class="min-h-screen w-full px-2 sm:px-4 md:px-6"
   style="background: var(--theme-body-gradient); color: var(--theme-text-primary);">
-  <!-- Invoice Selection Dropdown -->
+  Invoice Selection Dropdown
   <div class="card mb-2">
    <p-select appendTo="body"  appendTo="body" [(ngModel)]="Id" (onChange)="getCustomerdata($event)" [options]="invoiceDropDown"
       optionLabel="invoiceNumber" optionValue="id" placeholder="Select Invoice"
@@ -9,7 +9,7 @@
     </p-select>
   </div>
 
-  <!-- Header -->
+  Header
   <div class="flex flex-col sm:flex-row justify-between items-center gap-2 sm:gap-4 mt-1">
     <h1 class="text-lg sm:text-xl font-semibold text-center sm:text-left" style="color: var(--theme-text-primary);">Invoice Details
     </h1>
@@ -21,7 +21,7 @@
     </button>
   </div>
 
-  <!-- Invoice Info -->
+  Invoice Info
   <div class="card mb-2 transition-all duration-200 hover:shadow-md" (mouseenter)="onCardHover($event, true)"
     (mouseleave)="onCardHover($event, false)">
     <div class="px-2 py-1 border-b" style="border-color: var(--theme-border-primary);">
@@ -67,7 +67,7 @@
     </div>
   </div>
 
-  <!-- Seller and Buyer Details -->
+  Seller and Buyer Details
   <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6 mb-2">
     <div class="card transition-all duration-200 hover:shadow-md" (mouseenter)="onCardHover($event, true)"
       (mouseleave)="onCardHover($event, false)">
@@ -129,7 +129,7 @@
     </div>
   </div>
 
-  <!-- Items Table -->
+  Items Table
   <div class="card mb-2 overflow-hidden transition-all duration-200 hover:shadow-md"
     (mouseenter)="onCardHover($event, true)" (mouseleave)="onCardHover($event, false)">
     <div class="px-2 py-1 border-b" style="border-color: var(--theme-border-primary);">
@@ -173,7 +173,7 @@
     </div>
   </div>
 
-  <!-- Financial Summary -->
+  Financial Summary
   <div class="card transition-all duration-200 hover:shadow-md" (mouseenter)="onCardHover($event, true)"
     (mouseleave)="onCardHover($event, false)">
     <div class="px-2 py-1 border-b" style="border-color: var(--theme-border-primary);">
@@ -201,6 +201,202 @@
       <div class="flex justify-between border-t pt-2 sm:pt-4 mt-2 sm:mt-4 text-xs sm:text-sm" style="border-color: var(--theme-border-primary);">
         <span class="text-base sm:text-lg font-semibold" style="color: var(--theme-text-primary);">Grand Total</span>
         <span class="text-lg sm:text-xl font-bold" style="color: var(--theme-success-primary);">{{ invoiceData()?.totalAmount ? (invoiceData()?.totalAmount | currency:'INR') : 'N/A' }}</span>
+      </div>
+    </div>
+  </div>
+</div> -->
+<div id="invoice-print-section" class="invoice-page">
+  <!-- Invoice Selector -->
+  <div class="selector-card">
+    <p-select
+      appendTo="body"
+      [(ngModel)]="Id"
+      (onChange)="getCustomerdata($event)"
+      [options]="invoiceDropDown"
+      optionLabel="invoiceNumber"
+      optionValue="id"
+      placeholder="Select Invoice"
+      styleClass="invoice-select">
+    </p-select>
+  </div>
+
+  <!-- Header -->
+  <div class="page-header">
+    <h1 class="page-title">Invoice Details</h1>
+    <button
+      (click)="printInvoice()"
+      class="print-btn"
+      (mouseenter)="onPrintButtonHover($event, true)"
+      (mouseleave)="onPrintButtonHover($event, false)">
+      <i class="pi pi-print"></i> Print Invoice
+    </button>
+  </div>
+
+  <!-- Invoice Info Card -->
+  <div class="info-card" (mouseenter)="onCardHover($event, true)" (mouseleave)="onCardHover($event, false)">
+    <div class="card-header">
+      <i class="pi pi-file-invoice"></i>
+      <h2>Invoice Information</h2>
+    </div>
+    <div class="info-grid">
+      <div class="info-item">
+        <span class="label">Number</span>
+        <span class="value">{{ invoiceData()?.invoiceNumber || 'N/A' }}</span>
+      </div>
+      <div class="info-item">
+        <span class="label">Date</span>
+        <span class="value">{{ invoiceData()?.invoiceDate | date:'longDate' }}</span>
+      </div>
+      <div class="info-item">
+        <span class="label">Due Date</span>
+        <span class="value">{{ invoiceData()?.dueDate | date:'longDate' }}</span>
+      </div>
+      <div class="info-item">
+        <span class="label">Status</span>
+        <p-tag
+          [value]="invoiceData()?.status || 'N/A'"
+          [severity]="getStatusSeverity(invoiceData()?.status)"
+          styleClass="status-tag">
+        </p-tag>
+      </div>
+      <div class="info-item">
+        <span class="label">Place of Supply</span>
+        <span class="value">{{ invoiceData()?.placeOfSupply || 'N/A' }}</span>
+      </div>
+      <div class="info-item">
+        <span class="label">Payment Terms</span>
+        <span class="value">{{ invoiceData()?.paymentTerms || 'N/A' }}</span>
+      </div>
+      <div class="info-item full">
+        <span class="label">Notes</span>
+        <span class="value notes">{{ invoiceData()?.notes || 'N/A' }}</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Seller & Buyer Cards -->
+  <div class="dual-cards">
+    <!-- Seller -->
+    <div class="detail-card" (mouseenter)="onCardHover($event, true)" (mouseleave)="onCardHover($event, false)">
+      <div class="card-header">
+        <i class="pi pi-user"></i>
+        <h2>Seller Details</h2>
+      </div>
+      <div class="detail-grid">
+        @for (key of sellerKeys; track key) {
+          <div class="detail-item">
+            <span class="label">{{ formatKey(key) }}</span>
+            <span class="value">
+              @if (key === 'createdAt' || key === 'updatedAt') {
+                {{ invoiceData()?.sellerDetails?.[key] | date:'longDate' }}
+              } @else {
+                {{ invoiceData()?.sellerDetails?.[key] || 'N/A' }}
+              }
+            </span>
+          </div>
+        }
+      </div>
+    </div>
+
+    <!-- Buyer -->
+    <div class="detail-card" (mouseenter)="onCardHover($event, true)" (mouseleave)="onCardHover($event, false)">
+      <div class="card-header">
+        <i class="pi pi-user-plus"></i>
+        <h2>Buyer Details</h2>
+      </div>
+      <div class="detail-content">
+        <div class="detail-item">
+          <span class="label">Name</span>
+          <span class="value">{{ invoiceData()?.buyerDetails?.fullname || 'N/A' }}</span>
+        </div>
+        <div class="detail-item full">
+          <span class="label">Address</span>
+          <span class="value address">
+            {{ formatAddress(invoiceData()?.buyerDetails?.addresses?.[0]) }}
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Items (CARD GRID) -->
+  <div class="items-card" (mouseenter)="onCardHover($event, true)" (mouseleave)="onCardHover($event, false)">
+    <div class="card-header">
+      <i class="pi pi-list"></i>
+      <h2>Items</h2>
+    </div>
+    <div class="items-grid">
+      @for (item of invoiceData()?.items; track item._id; let i = $index) {
+        <div class="item-card">
+          <div class="item-header">
+            <h3 class="item-title">{{ item.customTitle || 'Untitled Item' }}</h3>
+          </div>
+          <div class="item-body">
+            <div class="item-row">
+              <span>Quantity</span>
+              <span class="value">{{ item.quantity }}</span>
+            </div>
+            <div class="item-row">
+              <span>Rate</span>
+              <span class="value">{{ item.rate | currency:'INR' }}</span>
+            </div>
+            <div class="item-row">
+              <span>Discount</span>
+              <span class="value discount">-{{ item.discount | currency:'INR' }}</span>
+            </div>
+            <div class="item-row">
+              <span>Taxable</span>
+              <span class="value">{{ item.taxableValue | currency:'INR' }}</span>
+            </div>
+            <div class="item-row tax">
+              <span>CGST</span>
+              <span class="value">{{ item.cgstAmount | currency:'INR' }} ({{ item.cgstRate }}%)</span>
+            </div>
+            <div class="item-row tax">
+              <span>SGST</span>
+              <span class="value">{{ item.sgstAmount | currency:'INR' }} ({{ item.sgstRate }}%)</span>
+            </div>
+            <div class="item-footer">
+              <span>Amount</span>
+              <span class="total">{{ item.amount | currency:'INR' }}</span>
+            </div>
+          </div>
+        </div>
+      } @empty {
+        <div class="empty-state">
+          <i class="pi pi-inbox"></i>
+          <p>No items in this invoice.</p>
+        </div>
+      }
+    </div>
+  </div>
+
+  <!-- Financial Summary -->
+  <div class="summary-card" (mouseenter)="onCardHover($event, true)" (mouseleave)="onCardHover($event, false)">
+    <div class="card-header">
+      <i class="pi pi-wallet"></i>
+      <h2>Financial Summary</h2>
+    </div>
+    <div class="summary-body">
+      <div class="summary-row">
+        <span>Sub Total</span>
+        <span>{{ invoiceData()?.subTotal | currency:'INR' }}</span>
+      </div>
+      <div class="summary-row discount">
+        <span>Total Discount</span>
+        <span class="negative">-{{ invoiceData()?.totalDiscount | currency:'INR' }}</span>
+      </div>
+      <div class="summary-row">
+        <span>Total Tax (CGST+SGST/IGST)</span>
+        <span>{{ (invoiceData()?.igst || 0) + (invoiceData()?.totalCGST || 0) + (invoiceData()?.totalSGST || 0) | currency:'INR' }}</span>
+      </div>
+      <div class="summary-row">
+        <span>CESS</span>
+        <span>{{ invoiceData()?.cess | currency:'INR' }}</span>
+      </div>
+      <div class="summary-total">
+        <span>Grand Total</span>
+        <span class="grand-total">{{ invoiceData()?.totalAmount | currency:'INR' }}</span>
       </div>
     </div>
   </div>

@@ -14,7 +14,6 @@ export class ProductAnalyticsComponent {
   @Input() data: any
   @Input() loading: boolean = false;
 
-
   // Helper function to format category names
   formatCategoryName(id: string): string {
     return id.split(',').pop()?.replace(/([A-Z])/g, ' $1').trim() || 'N/A';

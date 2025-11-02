@@ -1,4 +1,76 @@
 <div *ngIf="data; else noDataOrLoading" class="sales-forecast-page">
+  <!-- 🔹 Page Header -->
+  <header class="page-header">
+    <div class="header-content">
+      <h1 class="page-title">Sales Forecast</h1>
+      <p class="page-subtitle">Projected sales performance based on historical data.</p>
+    </div>
+  </header>
+
+  <!-- 🔹 KPI Summary Grid -->
+  <section class="kpi-grid">
+    <div class="summary-kpi-card forecast-card">
+      <div class="kpi-icon-wrapper">
+        <i class="pi pi-chart-line"></i>
+      </div>
+      <div class="kpi-content">
+        <span class="kpi-value">{{ data.forecast.nextMonth | currency:'INR':'symbol':'1.0-0' }}</span>
+        <span class="kpi-label">Forecast for Next Month</span>
+      </div>
+    </div>
+
+    <!-- <div class="summary-kpi-card growth-card">
+      <div class="kpi-icon-wrapper">
+        <i class="pi pi-trending-up"></i>
+      </div>
+      <div class="kpi-content">
+        <span class="kpi-value">{{ data.forecast.growthRate | percent:'1.0-1' }}</span>
+        <span class="kpi-label">Expected Growth Rate</span>
+      </div>
+    </div> -->
+  </section>
+
+  <!-- 🔹 Chart Card -->
+  <section class="se-card">
+    <div class="card-header">
+      <h3>Historical Performance vs Forecast</h3>
+      <p>Visual comparison of past months and the next predicted period.</p>
+    </div>
+
+    <div class="chart-container">
+      <ngx-charts-bar-vertical
+        *ngIf="forecastChartData?.length"
+        [results]="forecastChartData"
+        [scheme]="chartColorScheme"
+        [xAxis]="true"
+        [yAxis]="true"
+        [legend]="true"
+        [showXAxisLabel]="true"
+        xAxisLabel="Month"
+        [showYAxisLabel]="true"
+        yAxisLabel="Total Sales (₹)"
+        [animations]="true"
+        [gradient]="false">
+      </ngx-charts-bar-vertical>
+
+      <div *ngIf="!forecastChartData?.length" class="chart-empty">
+        <i class="pi pi-info-circle"></i>
+        <p>No chart data available.</p>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- 🔹 Fallback -->
+<ng-template #noDataOrLoading>
+  <div class="no-data-state">
+    <i class="pi pi-exclamation-triangle"></i>
+    <p>Sales forecast data is currently unavailable.</p>
+  </div>
+</ng-template>
+
+
+<!-- <div *ngIf="data; else noDataOrLoading" class="sales-forecast-page">
 
   <header class="page-header">
     <div>
@@ -45,4 +117,4 @@
       Sales forecast data is currently unavailable.
     </p>
   </div>
-</ng-template>
+</ng-template> -->

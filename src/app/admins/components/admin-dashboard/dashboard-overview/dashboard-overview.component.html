@@ -1,14 +1,13 @@
-<div *ngIf="data; else noDataOrLoading" class="widget-container">
-
-  <!-- KPI Row -->
-  <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+<div *ngIf="data; else noDataOrLoading">
+  <!-- KPI Row (unchanged) -->
+  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2 md:gap-4 mb-4">
     <div class="se-kpi-card">
       <div class="kpi-icon-wrapper bg-[var(--theme-success-light)]">
         <i class="pi pi-dollar text-[var(--theme-success-primary)]"></i>
       </div>
       <div class="kpi-content">
         <h3 class="kpi-title">Total Revenue</h3>
-        <p class="kpi-value">{{ data.totalRevenue | currency:'USD':'symbol':'1.0-0' }}</p>
+        <p class="kpi-value">{{ data.totalRevenue | currency:'INR':'symbol':'1.0-0' }}</p>
       </div>
     </div>
 
@@ -18,7 +17,7 @@
       </div>
       <div class="kpi-content">
         <h3 class="kpi-title">Gross Profit</h3>
-        <p class="kpi-value">{{ data.grossProfit | currency:'USD':'symbol':'1.0-0' }}</p>
+        <p class="kpi-value">{{ data.grossProfit | currency:'INR':'symbol':'1.0-0' }}</p>
       </div>
     </div>
 
@@ -28,7 +27,7 @@
       </div>
       <div class="kpi-content">
         <h3 class="kpi-title">Average Order Value</h3>
-        <p class="kpi-value">{{ data.averageOrderValue | currency:'USD':'symbol':'1.0-0' }}</p>
+        <p class="kpi-value">{{ data.averageOrderValue | currency:'INR':'symbol':'1.0-0' }}</p>
       </div>
     </div>
 
@@ -43,34 +42,36 @@
     </div>
   </div>
 
-  <!-- Table / Product List -->
-  <div class="se-glass-card">
-    <h3 class="card-header">Top Selling Products</h3>
-    <table class="product-table">
-      <thead>
-        <tr>
-          <th>Thumbnail</th>
-          <th>Product Name</th>
-          <th>Units Sold</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let product of data.topSellingProducts">
-          <td>
-            <img [src]="product.thumbnail" [alt]="product.productName" class="product-thumbnail">
-          </td>
-          <td>{{ product.productName }}</td>
-          <td class="text-center">{{ product.totalQuantity }}</td>
-        </tr>
-      </tbody>
-    </table>
+  <!-- Top Selling Products - Refactored to Responsive Card Grid -->
+  <h3 class="card-header">Top Selling Products</h3>
+  <div class="product-grid">
+    <!-- Added safe operator ?. -->
+    <div *ngFor="let product of data?.topSellingProducts; " class="product-card">
+      <!-- trackBy: trackByProduct -->
+      <div class="product-image-wrapper">
+        <img [src]="product.thumbnail" [alt]="product.productName" class="product-image" loading="lazy">
+        <!-- Optional: Overlay badge for units sold preview -->
+        <div class="product-badge">
+          <i class="pi pi-shopping-cart mr-1"></i>
+          {{ product.totalQuantity }}
+        </div>
+      </div>
+      <div class="product-content">
+        <h4 class="product-name">{{ product.productName }}</h4>
+        <div class="product-stats">
+          <span class="product-units">
+            <i class="pi pi-tag mr-1 text-[var(--theme-success-primary)]"></i>
+            {{ product.totalQuantity }} Units Sold
+          </span>
+        </div>
+      </div>
+    </div>
   </div>
-  
 </div>
 
 <ng-template #noDataOrLoading>
-  <div class="flex justify-center items-center h-64 se-glass-card m-4">
-    <p class="text-base text-[var(--theme-text-secondary)]">
+  <div class="flex justify-center items-center h-48">
+    <p class="text-sm text-[var(--theme-text-secondary)]">
       No overview data available.
     </p>
   </div>

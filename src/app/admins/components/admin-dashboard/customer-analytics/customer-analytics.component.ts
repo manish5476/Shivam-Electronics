@@ -66,7 +66,13 @@ export class CustomerAnalyticsComponent implements OnChanges {
     }
   }
 
-  viewCustomerDetails(customer: any): void {
-    this.openDetail.emit(customer);
-  }
+viewCustomerDetails(customer: any): void {
+  this.openDetail.emit({
+    title: `Customer: ${customer.fullname}`,
+    data: customer,
+    template: 'customerTemplate'
+  });
+}
+
+  
 }

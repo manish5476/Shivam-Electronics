@@ -9,14 +9,16 @@ import { ProgressBarModule } from 'primeng/progressbar';
 import { DividerModule } from 'primeng/divider';
 import { TagModule } from 'primeng/tag';
 import { TabViewModule } from 'primeng/tabview'; // Import TabViewModule
-
+import { TabsModule } from 'primeng/tabs';
+import { Badge } from "primeng/badge";
 @Component({
   selector: 'app-enhanced-kpi-summary',
   standalone: true,
   imports: [
     CommonModule, PanelModule, SkeletonModule, MessageModule, ChartModule,
-    CardModule, ProgressBarModule, DividerModule, TagModule, TabViewModule // Add TabViewModule
-  ],
+    CardModule, ProgressBarModule, DividerModule, TabsModule, TagModule, TabViewModule // Add TabViewModule
+    ,
+],
   templateUrl: './enhanced-kpi-summary.component.html',
   styleUrls: ['./enhanced-kpi-summary.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush
@@ -32,6 +34,20 @@ export class EnhancedKpiSummaryComponent implements OnChanges {
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['data'] && this.data) {
       this.prepareMicroCharts();
+    }
+  }
+  getKpiColor(type: string): string {
+    switch (type) {
+      case 'revenue':
+        return 'var(--theme-accent-primary)';
+      case 'sales':
+        return 'var(--theme-success-primary)';
+      case 'profit':
+        return 'var(--theme-info-primary)';
+      case 'customers':
+        return 'var(--theme-warning-primary)';
+      default:
+        return 'var(--theme-text-primary)';
     }
   }
 

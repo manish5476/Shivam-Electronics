@@ -1,88 +1,334 @@
-/* dashboard-chart-combo.component.css */
+/* ── Host ─────────────────────────────────────────────────────────────── */
 :host {
   display: block;
   padding: var(--spacing-xl);
 }
 
-.dynamic-chart-dashboard {
-  width: 100%;
-}
-
-/* Chart Grid Layout */
-.chart-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-  gap: var(--spacing-xl);
-}
-
-/* Chart Card Design */
-.chart-card {
+/* ── Filter Bar ─────────────────────────────────────────────────────── */
+.filter-bar {
   display: flex;
   flex-direction: column;
-  background: var(--theme-bg-secondary);
-  border: 1px solid var(--theme-border-primary);
-  border-radius: var(--ui-border-radius-xl);
-  box-shadow: var(--ui-shadow-sm);
-  transition: var(--ui-transition);
-  height: 400px;
-}
-.chart-card:hover {
-  transform: translateY(-5px);
-  box-shadow: var(--ui-shadow-md);
-  border-color: var(--theme-border-secondary);
+  gap: var(--spacing-md);
+  margin-bottom: var(--spacing-xl);
 }
 
-.card-header {
+.filter-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: var(--spacing-md) var(--spacing-lg);
-  border-bottom: 1px solid var(--theme-border-primary);
-  flex-shrink: 0;
+  flex-wrap: wrap;
+  gap: var(--spacing-md);
 }
-.card-title {
+
+.section-header {
+  margin: 0;
   font-family: var(--font-heading);
-  font-size: var(--font-size-lg);
+  font-size: var(--font-size-xl);
   font-weight: 600;
   color: var(--theme-text-primary);
 }
 
-.card-body {
-  flex-grow: 1;
-  padding: var(--spacing-lg);
-  position: relative;
-  min-height: 0;
+.filter-actions {
+  display: flex;
+  gap: var(--spacing-sm);
+  align-items: center;
 }
-.ngx-chart-wrapper, .error-placeholder {
+
+/* ── Card (carousel item) ───────────────────────────────────────────── */
+.modern-card-enhanced {
+  background: var(--theme-card-gradient);
+  border: var(--ui-border-width) solid var(--theme-border-primary);
+  border-radius: var(--ui-border-radius);
+  /* 12px curved */
+  box-shadow: var(--ui-shadow);
+  overflow: hidden;
+  backdrop-filter: var(--ui-glass-backdrop);
+  -webkit-backdrop-filter: var(--ui-glass-backdrop);
+  height: 100%;
+  max-height: 380px;
+  min-width: 280px;
+  display: flex;
+  flex-direction: column;
+  cursor: pointer;
+  margin: 0 var(--spacing-sm);
+  /* gap inside carousel */
+}
+
+.modern-card-enhanced:hover {
+  transform: var(--ui-button-hover-transform);
+  box-shadow: var(--ui-shadow-lg);
+  border-color: var(--theme-accent-primary);
+}
+
+/* Header */
+.chart-header {
+  padding: var(--spacing-md) var(--spacing-lg);
+  border-bottom: var(--ui-border-width) solid var(--theme-border-secondary);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: var(--theme-bg-ternary);
+}
+
+.chart-title {
+  margin: 0;
+  font-family: var(--font-primary);
+  font-size: var(--font-size-base);
+  font-weight: 600;
+  color: var(--theme-text-primary);
+}
+
+.chart-status {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+  font-size: var(--font-size-sm);
+  color: var(--theme-success-primary);
+}
+
+/* Body */
+.chart-body {
+  flex: 1;
+  position: relative;
+  overflow: hidden;
+  min-height: 220px;
+  padding: var(--spacing-sm);
+}
+
+.chart-content-wrapper {
   width: 100%;
   height: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
 }
-.error-placeholder {
-  flex-direction: column;
-  gap: var(--spacing-md);
-  color: var(--theme-text-muted);
+
+.chart-skeleton {
+  border-radius: var(--ui-border-radius-sm);
 }
+
+/* Footer */
+.chart-footer {
+  padding: var(--spacing-sm) var(--spacing-lg);
+  border-top: var(--ui-border-width) solid var(--theme-border-secondary);
+  background: var(--theme-bg-ternary);
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--spacing-xs);
+}
+
+.chart-footer .p-button {
+  border-radius: var(--ui-border-radius-full);
+}
+
+/* Error */
+.error-placeholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-sm);
+  color: var(--theme-text-muted);
+  padding: var(--spacing-lg);
+  text-align: center;
+}
+
 .error-placeholder .pi {
   font-size: 2rem;
+  opacity: 0.5;
 }
 
+/* ── Carousel gaps ─────────────────────────────────────────────────── */
+:host ::ng-deep .p-carousel .p-carousel-content .p-carousel-item {
+  padding: 0 var(--spacing-sm);
+}
 
-/* Dialog Styling */
-.dialog-chart-container {
-  width: 100%;
-  height: 100%;
+:host ::ng-deep .p-carousel .p-carousel-content {
+  gap: var(--spacing-md);
 }
-:host ::ng-deep .se-dialog .p-dialog-header {
-  background: var(--theme-bg-secondary) !important;
-  color: var(--theme-text-primary) !important;
-  border-bottom: 1px solid var(--theme-border-primary);
+
+/* ── Dialog ─────────────────────────────────────────────────────────── */
+.chart-dialog {
+  max-width: 95vw !important;
+  max-height: 95vh !important;
 }
-:host ::ng-deep .se-dialog .p-dialog-content {
-  background: var(--theme-bg-primary) !important;
-  padding: var(--spacing-lg);
-  height: calc(100% - 5rem);
+
+:host ::ng-deep .chart-dialog .p-dialog-header {
+  display: none !important;
+}
+
+.dialog-content {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  background: var(--theme-body-gradient);
+  border-radius: var(--ui-border-radius-xl);
   overflow: hidden;
+  box-shadow: var(--ui-shadow-xl);
+}
+
+.dialog-toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--spacing-lg) var(--spacing-xl);
+  background: var(--theme-accent-gradient);
+  color: var(--theme-accent-text-color);
+  flex-shrink: 0;
+  border-radius: var(--ui-border-radius-xl) var(--ui-border-radius-xl) 0 0;
+}
+
+.toolbar-left {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-lg);
+}
+
+.toolbar-title {
+  font-size: var(--font-size-xl);
+  font-weight: 700;
+  color: var(--theme-accent-text-color);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, .1);
+}
+
+.toolbar-right {
+  display: flex;
+  gap: var(--spacing-md);
+}
+
+.dialog-chart-wrapper {
+  flex: 1;
+  overflow: auto;
+  background: var(--theme-bg-primary);
+  padding: var(--spacing-xl);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.dialog-error {
+  padding: var(--spacing-3xl);
+  max-width: 400px;
+  text-align: center;
+}
+
+/* ── Responsive ─────────────────────────────────────────────────────── */
+@media (max-width:1024px) {
+  :host {
+    padding: var(--spacing-lg);
+  }
+
+  .modern-card-enhanced {
+    max-height: 350px;
+    min-width: 250px;
+  }
+
+  .chart-body {
+    min-height: 180px;
+  }
+}
+
+@media (max-width:768px) {
+  .filter-header {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .filter-actions {
+    justify-content: center;
+  }
+
+  .dialog-toolbar {
+    flex-direction: column;
+    gap: var(--spacing-md);
+    align-items: center;
+  }
+
+  .toolbar-left,
+  .toolbar-right {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .toolbar-right {
+    order: -1;
+  }
+
+  .dialog-chart-wrapper {
+    padding: var(--spacing-md);
+  }
+
+  .chart-dialog [style] {
+    width: 100vw !important;
+    height: 100vh !important;
+    border-radius: 0 !important;
+  }
+}
+
+
+/* Main container fills dialog */
+.chart-dialog-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  gap: 1rem;
+  padding: 0.5rem 1rem;
+}
+
+/* Toolbar */
+.dialog-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--surface-ground);
+  border-bottom: 1px solid var(--surface-border);
+  padding: 0.5rem 1rem;
+  border-radius: 0.75rem;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.toolbar-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--text-color);
+  margin-left: 0.75rem;
+}
+
+.toolbar-right p-button {
+  margin-left: 0.5rem;
+}
+
+/* Chart wrapper fills available space */
+.dialog-chart-wrapper {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  padding: 1rem;
+  border-radius: 0.75rem;
+  background: var(--surface-card);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.08);
+}
+
+.dialog-chart-wrapper canvas {
+  width: 100% !important;
+  height: 100% !important;
+  max-height: 80vh;
+}
+
+/* Dialog full-screen mode */
+.fullscreen-chart .p-dialog {
+  width: 100vw !important;
+  height: 100vh !important;
+  max-width: none !important;
+  max-height: none !important;
+}
+
+/* Error placeholder */
+.dialog-error {
+  text-align: center;
+  color: var(--theme-error-primary);
+  font-size: 1rem;
+  font-weight: 500;
 }

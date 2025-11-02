@@ -50,6 +50,16 @@ export class InvoiceDetailCardComponent implements OnInit {
       this.getCustomerdata();
     }
   }
+  sellerKeys = ['name', 'shopname', 'gstin', 'pan', 'contactNumber', 'address', 'createdAt', 'updatedAt'];
+
+formatKey(key: string): string {
+  return key.replace(/([A-Z])/g, ' $1').replace(/^./, str => str.toUpperCase());
+}
+
+formatAddress(addr: any): string {
+  if (!addr) return 'N/A';
+  return `${addr.street || ''}, ${addr.city || ''} ${addr.state || ''} ${addr.zipCode || ''}`.trim().replace(/,\s*$/, '');
+}
 
   onPrintButtonHover(event: MouseEvent, isHovering: boolean) {
     const button = event.currentTarget as HTMLElement;

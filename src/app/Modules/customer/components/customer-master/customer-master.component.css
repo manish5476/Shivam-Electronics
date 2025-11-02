@@ -3,6 +3,17 @@
   Updated for better responsiveness across screens, smaller font sizes using common CSS variables,
   and alignment with common theme (e.g., spacing, shadows, transitions, glassmorphism where applicable).
 --- */
+:host {
+  display: contents; /* Remove component's box model */
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+/* Or if you need a wrapper */
+.page-wrapper {
+  width: 100%;
+  flex: 1;
+}
 
 :host {
   display: block;

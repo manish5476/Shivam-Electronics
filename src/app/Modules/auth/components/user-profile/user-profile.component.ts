@@ -9,6 +9,7 @@ import { ChipModule } from 'primeng/chip';
 import { ButtonModule } from 'primeng/button';
 import { ToastModule } from 'primeng/toast';
 import { MessageService } from 'primeng/api';
+import { ProgressSpinner } from "primeng/progressspinner";
 
 @Component({
   selector: 'app-user-profile',
@@ -20,8 +21,9 @@ import { MessageService } from 'primeng/api';
     FileUploadModule,
     ChipModule,
     ButtonModule,
-    ToastModule
-  ],
+    ToastModule,
+    ProgressSpinner
+],
   providers: [MessageService],
   templateUrl: './user-profile.component.html',
   styleUrl: './user-profile.component.css'

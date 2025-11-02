@@ -21,88 +21,91 @@
     </div>
   </div>
 
-  <hr class="widget-divider">
+  <hr class="widget-divider" />
 
-  <!-- Main Grid -->
-  <div class="grid lg:grid-cols-5 gap-6">
+  <!-- Top Performing Products Section -->
+<section class="analytics-section">
+  <h3 class="section-header">Top Performing Products</h3>
 
-    <!-- Top Performing Products -->
-    <div class="lg:col-span-3">
-      <h3 class="section-header">Top Performing Products</h3>
-      <p-tabView styleClass="se-tabview">
-        <p-tabPanel header="By Profit">
-          <ul class="product-list">
-            <li *ngFor="let product of data.topPerformingProducts.topByProfit" class="product-list-item">
-              <img [src]="product.thumbnail" [alt]="product.title" class="product-thumbnail" onerror="this.src='https://i.pinimg.com/736x/72/8a/69/728a69b420c64aad866be3fbe409965e.jpg'">
-              <div class="product-info">
-                <span class="product-title">{{ product.title }}</span>
-                <span class="product-metric">{{ product.grossProfit | currency:'INR':'symbol':'1.0-0' }} Profit</span>
-              </div>
-              <span class="product-quantity">{{ product.totalQuantity }} sold</span>
-            </li>
-          </ul>
-        </p-tabPanel>
-
-        <p-tabPanel header="By Revenue">
-          <ul class="product-list">
-            <li *ngFor="let product of data.topPerformingProducts.topByRevenue" class="product-list-item">
-              <img [src]="product.thumbnail" [alt]="product.title" class="product-thumbnail" onerror="this.src='https://i.pinimg.com/736x/72/8a/69/728a69b420c64aad866be3fbe409965e.jpg'">
-              <div class="product-info">
-                <span class="product-title">{{ product.title }}</span>
-                <span class="product-metric">{{ product.totalRevenue | currency:'INR':'symbol':'1.0-0' }} Revenue</span>
-              </div>
-              <span class="product-quantity">{{ product.totalQuantity }} sold</span>
-            </li>
-          </ul>
-        </p-tabPanel>
-
-        <p-tabPanel header="By Quantity">
-          <ul class="product-list">
-            <li *ngFor="let product of data.topPerformingProducts.topByQuantity" class="product-list-item">
-              <img [src]="product.thumbnail" [alt]="product.title" class="product-thumbnail" onerror="this.src='https://i.pinimg.com/736x/72/8a/69/728a69b420c64aad866be3fbe409965e.jpg'">
-              <div class="product-info">
-                <span class="product-title">{{ product.title }}</span>
-                <span class="product-metric">{{ product.totalQuantity }} units sold</span>
-              </div>
-              <span class="product-quantity">{{ product.totalRevenue | currency:'INR':'symbol':'1.0-0' }}</span>
-            </li>
-          </ul>
-        </p-tabPanel>
-      </p-tabView>
-    </div>
-
-    <!-- Performance by Category & Brand -->
-    <div class="lg:col-span-2 space-y-6">
-      <div>
-        <h3 class="section-header">Performance by Category</h3>
-        <div class="performance-carousel">
-          <div *ngFor="let category of data.performanceByCategory" class="performance-card">
-            <img [src]="category.thumbnails[0]" [alt]="category._id" class="performance-thumbnail" onerror="this.src='https://i.pinimg.com/736x/72/8a/69/728a69b420c64aad866be3fbe409965e.jpg'">
-            <div class="performance-overlay">
-              <span class="performance-title">{{ formatCategoryName(category._id) }}</span>
-              <span class="performance-metric">{{ category.totalRevenue | currency:'INR':'symbol':'1.0-0' }}</span>
-            </div>
+  <p-tabView styleClass="se-tabview">
+    <p-tabPanel header="By Profit">
+      <div class="product-card-grid">
+        <div *ngFor="let product of data.topPerformingProducts.topByProfit" class="product-card">
+          <img [src]="product.thumbnail" [alt]="product.title" class="product-image"
+            onerror="this.src='https://i.pinimg.com/736x/72/8a/69/728a69b420c64aad866be3fbe409965e.jpg'">
+          <div class="product-card-body">
+            <h4 class="product-title">{{ product.title }}</h4>
+            <p class="product-metric">{{ product.grossProfit | currency:'INR':'symbol':'1.0-0' }} Profit</p>
+            <p class="product-quantity">{{ product.totalQuantity }} sold</p>
           </div>
         </div>
       </div>
+    </p-tabPanel>
 
-      <div>
-        <h3 class="section-header">Performance by Brand</h3>
-        <div class="performance-carousel">
-          <div *ngFor="let brand of data.performanceByBrand" class="performance-card">
-            <img [src]="brand.thumbnails[0]" [alt]="brand._id" class="performance-thumbnail" onerror="this.src='https://i.pinimg.com/736x/72/8a/69/728a69b420c64aad866be3fbe409965e.jpg'">
-            <div class="performance-overlay">
-              <span class="performance-title">{{ brand._id }}</span>
-              <span class="performance-metric">{{ brand.totalRevenue | currency:'INR':'symbol':'1.0-0' }}</span>
-            </div>
+    <p-tabPanel header="By Revenue">
+      <div class="product-card-grid">
+        <div *ngFor="let product of data.topPerformingProducts.topByRevenue" class="product-card">
+          <img [src]="product.thumbnail" [alt]="product.title" class="product-image"
+            onerror="this.src='https://i.pinimg.com/736x/72/8a/69/728a69b420c64aad866be3fbe409965e.jpg'">
+          <div class="product-card-body">
+            <h4 class="product-title">{{ product.title }}</h4>
+            <p class="product-metric">{{ product.totalRevenue | currency:'INR':'symbol':'1.0-0' }} Revenue</p>
+            <p class="product-quantity">{{ product.totalQuantity }} sold</p>
           </div>
         </div>
       </div>
-    </div>
+    </p-tabPanel>
 
-  </div>
+    <p-tabPanel header="By Quantity">
+      <div class="product-card-grid">
+        <div *ngFor="let product of data.topPerformingProducts.topByQuantity" class="product-card">
+          <img [src]="product.thumbnail" [alt]="product.title" class="product-image"
+            onerror="this.src='https://i.pinimg.com/736x/72/8a/69/728a69b420c64aad866be3fbe409965e.jpg'">
+          <div class="product-card-body">
+            <h4 class="product-title">{{ product.title }}</h4>
+            <p class="product-metric">{{ product.totalQuantity }} units sold</p>
+            <p class="product-quantity">{{ product.totalRevenue | currency:'INR':'symbol':'1.0-0' }}</p>
+          </div>
+        </div>
+      </div>
+    </p-tabPanel>
+  </p-tabView>
+</section>
+
+
+  <!-- Performance by Category -->
+  <section class="analytics-section">
+    <h3 class="section-header">Performance by Category</h3>
+    <div class="performance-carousel">
+      <div *ngFor="let category of data.performanceByCategory" class="performance-card">
+        <img [src]="category.thumbnails[0]" [alt]="category._id" class="performance-thumbnail"
+          onerror="this.src='https://i.pinimg.com/736x/72/8a/69/728a69b420c64aad866be3fbe409965e.jpg'">
+        <div class="performance-overlay">
+          <span class="performance-title">{{ formatCategoryName(category._id) }}</span>
+          <span class="performance-metric">{{ category.totalRevenue | currency:'INR':'symbol':'1.0-0' }}</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Performance by Brand -->
+  <section class="analytics-section">
+    <h3 class="section-header">Performance by Brand</h3>
+    <div class="performance-carousel">
+      <div *ngFor="let brand of data.performanceByBrand" class="performance-card">
+        <img [src]="brand.thumbnails[0]" [alt]="brand._id" class="performance-thumbnail"
+          onerror="this.src='https://i.pinimg.com/736x/72/8a/69/728a69b420c64aad866be3fbe409965e.jpg'">
+        <div class="performance-overlay">
+          <span class="performance-title">{{ brand._id }}</span>
+          <span class="performance-metric">{{ brand.totalRevenue | currency:'INR':'symbol':'1.0-0' }}</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
 </div>
 
+<!-- No Data State -->
 <ng-template #noDataOrLoading>
   <div class="no-data-message">
     <p>Product analytics are currently unavailable.</p>

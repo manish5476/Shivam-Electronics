@@ -1,199 +1,155 @@
-/* customer-analytics.component.css */
-
+/* Page Layout */
 .customer-analytics-page {
   padding: var(--spacing-2xl);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-2xl);
+  background: var(--theme-bg-primary);
+  min-height: 100vh;
 }
 
 /* Header */
 .page-header {
-  margin-bottom: var(--spacing-xl);
+  text-align: left;
 }
 .page-title {
-  font-family: var(--font-heading);
-  font-size: var(--font-size-4xl);
+  font-size: 1.75rem;
+  font-weight: 700;
   color: var(--theme-text-primary);
 }
 .page-subtitle {
-  font-family: var(--font-body);
-  font-size: var(--font-size-lg);
   color: var(--theme-text-secondary);
-  margin-top: var(--spacing-xs);
+  font-size: 0.95rem;
+  margin-top: 0.25rem;
 }
 
-/* KPI Cards */
-.kpi-grid {
+/* KPI Section */
+.kpi-section {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
   gap: var(--spacing-lg);
-  margin-bottom: var(--spacing-2xl);
 }
-.summary-kpi-card {
+.kpi-card {
   display: flex;
   align-items: center;
-  gap: var(--spacing-lg);
+  gap: 1rem;
   background: var(--theme-bg-secondary);
-  padding: var(--spacing-lg);
-  border-radius: var(--ui-border-radius-lg);
   border: 1px solid var(--theme-border-primary);
+  border-radius: var(--ui-border-radius-lg);
+  padding: 1rem 1.25rem;
+  transition: all 0.25s ease;
 }
-.kpi-icon-wrapper {
-  width: 50px;
-  height: 50px;
-  border-radius: var(--ui-border-radius);
+.kpi-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.08);
+}
+.kpi-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.75rem;
-  flex-shrink: 0;
+  font-size: 1.5rem;
 }
-.kpi-content {
+.kpi-details {
   display: flex;
   flex-direction: column;
 }
 .kpi-value {
-  font-family: var(--font-primary);
-  font-size: var(--font-size-3xl);
+  font-size: 1.5rem;
   font-weight: 700;
   color: var(--theme-text-primary);
 }
 .kpi-label {
-  font-size: var(--font-size-base);
-  color: var(--theme-text-label);
-  font-weight: 500;
+  font-size: 0.875rem;
+  color: var(--theme-text-secondary);
 }
 
-/* Main Content Grid */
-.main-content-grid {
+/* Analytics Grid */
+.analytics-grid {
   display: grid;
-  grid-template-columns: 2fr 1fr; /* 2/3 for table, 1/3 for sidebar */
+  grid-template-columns: 2fr 1fr;
   gap: var(--spacing-xl);
 }
 @media (max-width: 1024px) {
-  .main-content-grid {
+  .analytics-grid {
     grid-template-columns: 1fr;
   }
 }
 
-.se-card {
+/* Cards */
+.analytics-card {
   background: var(--theme-bg-secondary);
-  border: 1px solid var(--theme-border-primary);
   border-radius: var(--ui-border-radius-lg);
+  border: 1px solid var(--theme-border-primary);
   padding: var(--spacing-xl);
-  height: 100%;
 }
 .card-header {
-  font-family: var(--font-heading);
-  font-size: var(--font-size-xl);
-  color: var(--theme-text-primary);
-  margin-bottom: var(--spacing-lg);
+  font-size: 1.1rem;
   font-weight: 600;
+  margin-bottom: var(--spacing-md);
+  color: var(--theme-text-primary);
 }
 
-/* Custom Styled PrimeNG Table */
-:host ::ng-deep .se-table .p-datatable-header {
-  display: none; /* We use our own header */
-}
-:host ::ng-deep .se-table .p-datatable-wrapper {
-  border: none;
-  box-shadow: none;
+/* Table Styling */
+.table-container {
+  max-height: 400px;
+  overflow-y: auto;
 }
 :host ::ng-deep .se-table .p-datatable-thead > tr > th {
-  background: var(--theme-bg-ternary) !important;
-  color: var(--theme-text-label) !important;
-  font-size: var(--font-size-sm);
-  border: none;
+  background: var(--theme-bg-ternary);
+  color: var(--theme-text-label);
+  font-size: 0.875rem;
+  font-weight: 600;
 }
 :host ::ng-deep .se-table .p-datatable-tbody > tr {
-  background: transparent !important;
-  color: var(--theme-text-secondary) !important;
-  transition: var(--ui-transition-fast);
+  font-size: 0.85rem;
+  color: var(--theme-text-secondary);
 }
 :host ::ng-deep .se-table .p-datatable-tbody > tr:hover {
-  background: var(--theme-hover-bg) !important;
+  background: var(--theme-hover-bg);
 }
 
+/* Rank Badge */
 .rank-badge {
-  font-family: var(--font-primary);
-  font-weight: 700;
-  font-size: var(--font-size-sm);
-  width: 28px;
-  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
   border-radius: 50%;
-  display: grid;
-  place-items: center;
+  font-size: 0.8rem;
+  font-weight: 600;
   background: var(--theme-bg-ternary);
   color: var(--theme-text-label);
 }
-/* Medal styles for top 3 */
-.rank-1 { background: #FFD700; color: #4b3800; } /* Gold */
-.rank-2 { background: #C0C0C0; color: #2e2e2e; } /* Silver */
-.rank-3 { background: #CD7F32; color: #41260c; } /* Bronze */
+.rank-1 { background: #FFD700; color: #4b3800; }
+.rank-2 { background: #C0C0C0; color: #2e2e2e; }
+.rank-3 { background: #CD7F32; color: #41260c; }
 
-/* Insight Sidebar */
-.insight-sidebar {
-  display: flex;
-  flex-direction: column;
-  gap: var(--spacing-xl);
-}
-.chart-container {
-  height: 250px;
-}
+.customer-name { font-weight: 600; color: var(--theme-text-primary); }
+.customer-value { font-family: monospace; font-weight: 700; color: var(--theme-text-primary); }
 
-:host ::ng-deep .chart-container .ngx-charts-outer-text {
-    fill: var(--theme-text-primary) !important;
-    font-size: var(--font-size-sm) !important;
-    font-weight: 600;
-}
-
-/* Page */
-.customer-analytics-page {
-  padding: var(--spacing-lg);
-}
-
-/* Header */
-.page-title { font-size: 1.5rem; }   /* smaller */
-.page-subtitle { font-size: 0.875rem; margin-top: 0.25rem; }
-
-/* KPI Cards */
-.kpi-grid.compact {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 1rem;
-  margin-bottom: 1.5rem;
-}
-.summary-kpi-card.compact {
+/* Chart Card */
+.chart-wrapper {
+  height: 260px;
   display: flex;
   align-items: center;
-  gap: 0.75rem;
-  padding: 0.75rem 1rem;
-  border-radius: var(--ui-border-radius);
-  border: 1px solid var(--theme-border-primary);
-  background: var(--theme-bg-secondary);
-  transition: 0.2s;
+  justify-content: center;
 }
-.summary-kpi-card.compact:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.08); }
-
-.kpi-icon-wrapper { width: 40px; height: 40px; font-size: 1.25rem; }
-.kpi-value { font-size: 1.25rem; font-weight: 700; }
-.kpi-label { font-size: 0.75rem; font-weight: 500; color: var(--theme-text-label); }
-
-/* Main Grid */
-.main-content-grid.compact {
-  display: grid;
-  grid-template-columns: 2fr 1fr;
-  gap: 1rem;
+:host ::ng-deep .chart-wrapper .ngx-charts-outer-text {
+  fill: var(--theme-text-primary) !important;
+  font-weight: 600 !important;
+  font-size: 0.8rem !important;
 }
-@media (max-width: 1024px) { .main-content-grid.compact { grid-template-columns: 1fr; } }
 
-/* Cards */
-.se-card { padding: 1rem; border-radius: var(--ui-border-radius); background: var(--theme-bg-secondary); }
-.card-header { font-size: 1rem; font-weight: 600; margin-bottom: 0.75rem; }
-
-/* Table */
-:host ::ng-deep .se-table.compact .p-datatable-thead > tr > th { font-size: 0.75rem; }
-:host ::ng-deep .se-table.compact .p-datatable-tbody > tr { font-size: 0.75rem; }
-.rank-badge { width: 24px; height: 24px; font-size: 0.75rem; }
-
-/* Chart Sidebar */
-.chart-container { height: 180px; }
-:host ::ng-deep .chart-container .ngx-charts-outer-text { font-size: 0.75rem !important; font-weight: 600; }
+/* No Data */
+.no-data {
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--theme-text-secondary);
+  font-size: 1rem;
+}

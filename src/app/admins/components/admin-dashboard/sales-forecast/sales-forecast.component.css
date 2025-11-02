@@ -1,98 +1,169 @@
-/* sales-forecast.component.css */
-
+/* 🌟 Root Layout */
 .sales-forecast-page {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-2xl);
   padding: var(--spacing-2xl);
+  background: var(--theme-bg-primary);
 }
 
-/* Header */
+/* 🔹 Header */
 .page-header {
-  margin-bottom: var(--spacing-xl);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
 }
+
 .page-title {
   font-family: var(--font-heading);
   font-size: var(--font-size-4xl);
   color: var(--theme-text-primary);
-}
-.page-subtitle {
-  font-family: var(--font-body);
-  font-size: var(--font-size-lg);
-  color: var(--theme-text-secondary);
-  margin-top: var(--spacing-xs);
+  font-weight: 700;
 }
 
-/* KPI Cards */
+.page-subtitle {
+  color: var(--theme-text-secondary);
+  font-size: var(--font-size-md);
+  margin-top: 0.25rem;
+}
+
+/* 🔹 KPI Cards */
 .kpi-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: var(--spacing-lg);
-  margin-bottom: var(--spacing-2xl);
 }
+
 .summary-kpi-card {
   display: flex;
   align-items: center;
-  gap: var(--spacing-lg);
   background: var(--theme-bg-secondary);
-  padding: var(--spacing-lg);
-  border-radius: var(--ui-border-radius-lg);
   border: 1px solid var(--theme-border-primary);
+  border-radius: var(--ui-border-radius-lg);
+  padding: var(--spacing-lg);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.03);
+  transition: transform 0.2s, box-shadow 0.2s;
 }
+
+.summary-kpi-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.05);
+}
+
 .forecast-card {
-    border-left: 4px solid var(--theme-accent-primary);
+  border-left: 5px solid var(--theme-accent-primary);
 }
+
+.growth-card {
+  border-left: 5px solid var(--theme-success-primary);
+}
+
 .kpi-icon-wrapper {
-  width: 50px;
-  height: 50px;
-  border-radius: var(--ui-border-radius);
+  width: 55px;
+  height: 55px;
+  border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 1.75rem;
+  margin-right: var(--spacing-md);
+  background-color: var(--theme-accent-primary-light);
+  color: var(--theme-accent-primary);
   flex-shrink: 0;
 }
+
+.growth-card .kpi-icon-wrapper {
+  background-color: var(--theme-success-light);
+  color: var(--theme-success-primary);
+}
+
 .kpi-content {
   display: flex;
   flex-direction: column;
 }
+
 .kpi-value {
-  font-family: var(--font-primary);
-  font-size: var(--font-size-3xl);
   font-weight: 700;
+  font-size: var(--font-size-2xl);
   color: var(--theme-text-primary);
 }
+
 .kpi-label {
-  font-size: var(--font-size-base);
-  color: var(--theme-text-label);
-  font-weight: 500;
+  color: var(--theme-text-secondary);
+  font-size: var(--font-size-sm);
 }
 
-/* Main Chart Card */
+/* 🔹 Chart Section */
 .se-card {
   background: var(--theme-bg-secondary);
   border: 1px solid var(--theme-border-primary);
   border-radius: var(--ui-border-radius-lg);
   padding: var(--spacing-xl);
-  height: 100%;
 }
-.card-header {
-  font-family: var(--font-heading);
+
+.card-header h3 {
   font-size: var(--font-size-xl);
   color: var(--theme-text-primary);
-  margin-bottom: var(--spacing-lg);
   font-weight: 600;
 }
+
+.card-header p {
+  color: var(--theme-text-secondary);
+  font-size: var(--font-size-sm);
+  margin-top: 0.25rem;
+}
+
 .chart-container {
-  height: 500px;
+  height: 480px;
   width: 100%;
+  margin-top: var(--spacing-md);
 }
 
-/* NGX Charts Overrides */
+.chart-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 400px;
+  color: var(--theme-text-muted);
+  gap: 0.5rem;
+}
+
+/* 🔹 No Data State */
+.no-data-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 70vh;
+  color: var(--theme-text-secondary);
+  gap: 0.5rem;
+  text-align: center;
+}
+
+.no-data-state i {
+  font-size: 2rem;
+  color: var(--theme-error-primary);
+}
+
+/* 🔹 Chart Overrides */
 :host ::ng-deep .ngx-charts text {
-    fill: var(--theme-text-secondary) !important;
+  fill: var(--theme-text-secondary) !important;
 }
 
-/* Style the forecast bar differently */
-:host ::ng-deep .bar-chart .bar-series:last-child .bar {
-    stroke: var(--theme-info-primary);
-    stroke-width: 2px;
-    stroke-dasharray: 6, 4;
+:host ::ng-deep .bar rect {
+  rx: 4px;
+  ry: 4px;
+}
+
+/* 🔹 Responsiveness */
+@media (max-width: 768px) {
+  .page-title {
+    font-size: 1.75rem;
+  }
+
+  .chart-container {
+    height: 380px;
+  }
 }

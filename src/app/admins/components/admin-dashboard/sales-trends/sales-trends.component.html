@@ -12,40 +12,50 @@
       <span class="summary-label">Total Yearly Revenue</span>
       <span class="summary-value">{{ totalYearlyRevenue | currency:'INR':'symbol':'1.0-0' }}</span>
     </div>
+
     <div class="summary-card">
       <span class="summary-label">Best Performing Month</span>
-      <span *ngIf="bestPerformingMonth" class="summary-value highlight">{{ bestPerformingMonth.name }}</span>
-      <span *ngIf="bestPerformingMonth" class="summary-sub-value">{{ bestPerformingMonth.value | currency:'INR':'symbol':'1.0-0' }}</span>
+      <span *ngIf="bestPerformingMonth" class="summary-value highlight">
+        {{ bestPerformingMonth.name }}
+      </span>
+      <span *ngIf="bestPerformingMonth" class="summary-sub-value">
+        {{ bestPerformingMonth.value | currency:'INR':'symbol':'1.0-0' }}
+      </span>
     </div>
+
     <div class="summary-card">
       <span class="summary-label">Peak Revenue Day</span>
-      <span *ngIf="peakRevenueDay" class="summary-value highlight">{{ peakRevenueDay.value | currency:'INR':'symbol':'1.0-0' }}</span>
-      <span *ngIf="peakRevenueDay" class="summary-sub-value">{{ peakRevenueDay.date | date:'mediumDate' }}</span>
+      <span *ngIf="peakRevenueDay" class="summary-value highlight">
+        {{ peakRevenueDay.value | currency:'INR':'symbol':'1.0-0' }}
+      </span>
+      <span *ngIf="peakRevenueDay" class="summary-sub-value">
+        {{ peakRevenueDay.date | date:'mediumDate' }}
+      </span>
     </div>
   </div>
 
   <hr class="widget-divider">
 
-  <!-- Preview Chart -->
+  <!-- Preview Chart (click to expand) -->
   <div class="preview-chart-container" (click)="openDialog()" title="Click to expand">
-  <ngx-charts-bar-vertical
-      [results]="dialogChartData"
+    <ngx-charts-bar-vertical
+      [results]="previewChartData"
       [scheme]="chartColorScheme"
       [gradient]="true"
       [xAxis]="true"
       [yAxis]="true"
-      [legend]="true"
+      [legend]="false"
       [showXAxisLabel]="true"
       xAxisLabel="Months"
       [showYAxisLabel]="true"
-      [tooltipDisabled]="false"
-      yAxisLabel="Revenue">
+      yAxisLabel="Revenue"
+      [animations]="true">
     </ngx-charts-bar-vertical>
   </div>
 
 </div>
 
-<!-- No Data Template -->
+<!-- No Data / Loading -->
 <ng-template #noDataOrLoading>
   <div class="flex justify-center items-center h-64 sales-trends-widget">
     <p class="text-base text-[var(--theme-text-secondary)]">
@@ -54,10 +64,16 @@
   </div>
 </ng-template>
 
-<!-- Dialog -->
-<p-dialog header="Detailed Sales & Revenue Analysis" [(visible)]="isDialogVisible" [modal]="true"
-  [style]="{ width: '90vw', height: '85vh', 'max-width': '1400px' }" [draggable]="false" [resizable]="false"
+<!-- Full-size Dialog -->
+<p-dialog
+  header="Detailed Sales & Revenue Analysis"
+  [(visible)]="isDialogVisible"
+  [modal]="true"
+  [style]="{ width: '90vw', height: '85vh', 'max-width': '1400px' }"
+  [draggable]="false"
+  [resizable]="false"
   styleClass="se-dialog">
+
   <div class="dialog-chart-container">
     <ngx-charts-bar-vertical
       [results]="dialogChartData"
@@ -69,7 +85,78 @@
       [showXAxisLabel]="true"
       xAxisLabel="Months"
       [showYAxisLabel]="true"
-      yAxisLabel="Revenue">
+      yAxisLabel="Revenue"
+      [animations]="true">
     </ngx-charts-bar-vertical>
   </div>
 </p-dialog>
+<!-- <div *ngIf="data; else noDataOrLoading" class="sales-trends-widget">
+
+  Header
+  <header class="widget-header">
+    <div class="header-left">
+      <i class="pi pi-chart-line header-icon"></i>
+      <div>
+        <h1 class="widget-title">Comprehensive Sales Trends</h1>
+        <p class="widget-subtitle">Yearly, monthly, and daily performance overview</p>
+      </div>
+    </div>
+    <button pButton icon="pi pi-external-link" label="Expand" class="p-button-sm p-button-outlined"
+      (click)="openDialog()"></button>
+  </header>
+
+  KPI Summary Row
+  <div class="kpi-summary-grid">
+    <div class="summary-card gradient-card-1">
+      <span class="summary-label">Total Yearly Revenue</span>
+      <span class="summary-value">{{ totalYearlyRevenue | currency:'INR':'symbol':'1.0-0' }}</span>
+    </div>
+
+    <div class="summary-card gradient-card-2">
+      <span class="summary-label">Best Performing Month</span>
+      <span *ngIf="bestPerformingMonth" class="summary-value highlight">{{ bestPerformingMonth.name }}</span>
+      <span *ngIf="bestPerformingMonth" class="summary-sub-value">{{ bestPerformingMonth.value |
+        currency:'INR':'symbol':'1.0-0' }}</span>
+    </div>
+
+    <div class="summary-card gradient-card-3">
+      <span class="summary-label">Peak Revenue Day</span>
+      <span *ngIf="peakRevenueDay" class="summary-value highlight">{{ peakRevenueDay.value |
+        currency:'INR':'symbol':'1.0-0' }}</span>
+      <span *ngIf="peakRevenueDay" class="summary-sub-value">{{ peakRevenueDay.date | date:'mediumDate' }}</span>
+    </div>
+  </div>
+
+  Chart
+  <div class="chart-section">
+    <h3 class="chart-title">Monthly Revenue Overview</h3>
+    <div class="chart-container" (click)="openDialog()">
+      <ngx-charts-bar-vertical [results]="previewChartData" [scheme]="chartColorScheme" [gradient]="true" [xAxis]="true"
+        [yAxis]="true" [legend]="false" [showXAxisLabel]="true" xAxisLabel="Months" [showYAxisLabel]="true"
+        yAxisLabel="Revenue">
+      </ngx-charts-bar-vertical>
+    </div>
+  </div>
+
+</div>
+
+No Data Template
+<ng-template #noDataOrLoading>
+  <div class="empty-state">
+    <i class="pi pi-database text-4xl mb-2"></i>
+    <p>No sales trend data available</p>
+  </div>
+</ng-template>
+
+Dialog
+<p-dialog header="Detailed Sales & Revenue Analysis" [(visible)]="isDialogVisible" [modal]="true"
+  [style]="{ width: '90vw', height: '85vh', 'max-width': '1400px' }" [draggable]="false" [resizable]="false"
+  styleClass="se-dialog">
+
+  <div class="dialog-chart-container">
+    <ngx-charts-bar-vertical [results]="dialogChartData" [scheme]="chartColorScheme" [gradient]="true" [xAxis]="true"
+      [yAxis]="true" [legend]="true" [showXAxisLabel]="true" xAxisLabel="Months" [showYAxisLabel]="true"
+      yAxisLabel="Revenue">
+    </ngx-charts-bar-vertical>
+  </div>
+</p-dialog> -->

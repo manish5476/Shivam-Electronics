@@ -1,3 +1,4 @@
+/* ── Widget container ───────────────────────────────────────────────────── */
 .sales-trends-widget {
   background: var(--theme-bg-secondary);
   border: 1px solid var(--theme-border-primary);
@@ -9,10 +10,8 @@
   gap: 1rem;
 }
 
-/* Header */
-.widget-header {
-  margin-bottom: var(--spacing-md);
-}
+/* ── Header ─────────────────────────────────────────────────────────────── */
+.widget-header { margin-bottom: var(--spacing-md); }
 .widget-title {
   font-family: var(--font-heading);
   font-size: var(--font-size-xl);
@@ -26,7 +25,7 @@
   margin-top: 2px;
 }
 
-/* KPI Summary Row */
+/* ── KPI grid ───────────────────────────────────────────────────────────── */
 .kpi-summary-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -37,11 +36,8 @@
   border-radius: var(--ui-border-radius-lg);
   border: 1px solid var(--theme-border-primary);
   padding: var(--spacing-md);
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
   text-align: center;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  transition: transform .2s ease, box-shadow .2s ease;
 }
 .summary-card:hover {
   transform: translateY(-2px);
@@ -59,24 +55,22 @@
   color: var(--theme-text-primary);
   margin-top: 4px;
 }
-.summary-value.highlight {
-  color: var(--theme-accent-primary);
-}
+.summary-value.highlight { color: var(--theme-accent-primary); }
 .summary-sub-value {
   font-size: var(--font-size-xs);
   color: var(--theme-text-secondary);
   margin-top: 2px;
 }
 
-/* Divider */
+/* ── Divider ────────────────────────────────────────────────────────────── */
 .widget-divider {
   border: none;
   height: 1px;
-  background-color: var(--theme-border-primary);
+  background: var(--theme-border-primary);
   margin: 1rem 0;
 }
 
-/* Preview Chart */
+/* ── Preview chart (clickable) ─────────────────────────────────────────── */
 .preview-chart-container {
   height: 420px;
   cursor: pointer;
@@ -84,7 +78,7 @@
   padding: var(--spacing-sm);
   background: var(--theme-bg-primary);
   border: 1px dashed var(--theme-border-secondary);
-  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+  transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease;
   position: relative;
 }
 .preview-chart-container:hover {
@@ -99,14 +93,16 @@
   top: 8px;
   right: 8px;
   color: var(--theme-text-muted);
-  opacity: 0.7;
+  opacity: .7;
 }
 
-/* Dialog Chart */
+/* ── Dialog chart (full size) ──────────────────────────────────────────── */
 .dialog-chart-container {
   width: 100%;
   height: 100%;
 }
+
+/* PrimeNG dialog theming */
 :host ::ng-deep .se-dialog .p-dialog-header {
   background: var(--theme-bg-secondary) !important;
   color: var(--theme-text-primary) !important;
@@ -116,4 +112,164 @@
   background: var(--theme-bg-primary) !important;
   padding: var(--spacing-lg);
   height: calc(100% - 4rem);
+  overflow: hidden;
 }
+/* .sales-trends-widget {
+  background: var(--theme-bg-primary);
+  border-radius: 1rem;
+  padding: 1.5rem;
+  box-shadow: var(--ui-shadow);
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  border: 1px solid var(--theme-border-primary);
+  transition: all 0.3s ease;
+}
+
+.sales-trends-widget:hover {
+  box-shadow: var(--ui-shadow-md);
+  border-color: var(--theme-border-secondary);
+}
+
+Header
+.widget-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.header-icon {
+  font-size: 1.8rem;
+  color: var(--theme-accent-primary);
+}
+
+.widget-title {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--theme-text-primary);
+  margin: 0;
+}
+
+.widget-subtitle {
+  font-size: 0.9rem;
+  color: var(--theme-text-secondary);
+  margin: 0;
+}
+
+KPI Cards
+.kpi-summary-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1rem;
+}
+
+.summary-card {
+  border-radius: 0.75rem;
+  padding: 1rem 1.25rem;
+  text-align: center;
+  color: #fff;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.summary-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.gradient-card-1 {
+  background: linear-gradient(135deg, var(--theme-accent-primary), var(--theme-success-primary));
+}
+.gradient-card-2 {
+  background: linear-gradient(135deg, var(--theme-info-primary), var(--theme-accent-primary));
+}
+.gradient-card-3 {
+  background: linear-gradient(135deg, var(--theme-warning-primary), var(--theme-error-primary));
+}
+
+.summary-label {
+  font-size: 0.85rem;
+  font-weight: 500;
+  opacity: 0.85;
+}
+
+.summary-value {
+  font-size: 1.4rem;
+  font-weight: 700;
+  margin-top: 0.3rem;
+}
+
+.summary-sub-value {
+  font-size: 0.85rem;
+  opacity: 0.9;
+  margin-top: 0.2rem;
+}
+
+Chart Section
+.chart-section {
+  margin-top: 1rem;
+}
+
+.chart-title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--theme-text-primary);
+  margin-bottom: 0.5rem;
+}
+
+.chart-container {
+  background: var(--theme-bg-secondary);
+  border-radius: 0.75rem;
+  padding: 1rem;
+  height: 420px;
+  border: 1px solid var(--theme-border-primary);
+  transition: all 0.2s ease;
+}
+
+.chart-container:hover {
+  border-color: var(--theme-accent-primary);
+  box-shadow: var(--ui-shadow-md);
+  cursor: pointer;
+}
+
+Empty State
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  color: var(--theme-text-secondary);
+  height: 300px;
+  background: var(--theme-bg-secondary);
+  border-radius: 1rem;
+}
+
+Dialog Chart
+.dialog-chart-container {
+  width: 100%;
+  height: 100%;
+}
+
+:host ::ng-deep .se-dialog .p-dialog-header {
+  background: var(--theme-bg-secondary) !important;
+  color: var(--theme-text-primary) !important;
+  border-bottom: 1px solid var(--theme-border-primary);
+  font-weight: 600;
+}
+
+:host ::ng-deep .se-dialog .p-dialog-content {
+  background: var(--theme-bg-primary) !important;
+  padding: 1.5rem;
+  height: calc(100% - 4rem);
+  overflow: hidden;
+}
+
+:host ::ng-deep .se-dialog .p-dialog-content ngx-charts-bar-vertical {
+  width: 100%;
+  height: 100%;
+} */
