@@ -1,0 +1,286 @@
+<!-- src/app/Modules/EMI/emi-dashboard/emi-dashboard.component.html -->
+<div class="emi-dashboard p-4 sm:p-6 max-w-7xl mx-auto space-y-6">
+
+  <!-- Stats Cards -->
+  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+    <div class="stats-card glass-card p-5 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 cursor-pointer">
+      <div class="flex items-center justify-between">
+        <div>
+          <p class="text-xs font-medium text-amber-600 uppercase tracking-wider">Due Today</p>
+          <p class="text-3xl font-bold text-amber-700 mt-1">{{ getDueTodayCount() }}</p>
+          <p class="text-sm text-gray-600">Installments</p>
+        </div>
+        <div class="icon-circle bg-amber-100 text-amber-600">
+          <i class="pi pi-clock text-2xl"></i>
+        </div>
+      </div>
+    </div>
+
+    <div class="stats-card glass-card p-5 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 cursor-pointer">
+      <div class="flex items-center justify-between">
+        <div>
+          <p class="text-xs font-medium text-blue-600 uppercase tracking-wider">Upcoming (7d)</p>
+          <p class="text-3xl font-bold text-blue-700 mt-1">{{ getUpcomingCount() }}</p>
+          <p class="text-sm text-gray-600">Pending</p>
+        </div>
+        <div class="icon-circle bg-blue-100 text-blue-600">
+          <i class="pi pi-calendar text-2xl"></i>
+        </div>
+      </div>
+    </div>
+
+    <div class="stats-card glass-card p-5 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 cursor-pointer">
+      <div class="flex items-center justify-between">
+        <div>
+          <p class="text-xs font-medium text-red-600 uppercase tracking-wider">Overdue</p>
+          <p class="text-3xl font-bold text-red-700 mt-1">{{ getOverdueCount() }}</p>
+          <p class="text-sm text-gray-600">Late</p>
+        </div>
+        <div class="icon-circle bg-red-100 text-red-600">
+          <i class="pi pi-exclamation-triangle text-2xl"></i>
+        </div>
+      </div>
+    </div>
+
+    <div class="stats-card glass-card p-5 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 cursor-pointer">
+      <div class="flex items-center justify-between">
+        <div>
+          <p class="text-xs font-medium text-green-600 uppercase tracking-wider">Recent Payments</p>
+          <p class="text-3xl font-bold text-green-700 mt-1">{{ report.payments?.length || 0 }}</p>
+          <p class="text-sm text-gray-600">Last 5</p>
+        </div>
+        <div class="icon-circle bg-green-100 text-green-600">
+          <i class="pi pi-money-bill text-2xl"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Due Today -->
+  <div class="data-card glass-card rounded-xl shadow-md overflow-hidden">
+    <div class="card-header px-6 py-4 bg-gradient-to-r from-amber-50 to-yellow-50 border-b border-amber-200">
+      <h3 class="text-lg font-semibold text-amber-800 flex items-center gap-2">
+        <i class="pi pi-clock"></i> Due Today
+      </h3>
+    </div>
+    <div class="p-4">
+      <p-table [value]="getDueTodayInstallments()" [loading]="loading" class="emi-table">
+        <ng-template pTemplate="header">
+          <tr class="bg-gray-50">
+            <th class="font-semibold text-gray-700">Customer</th>
+            <th class="font-semibold text-gray-700">Invoice</th>
+            <th class="font-semibold text-gray-700">EMI #</th>
+            <th class="font-semibold text-gray-700">Amount</th>
+            <th class="font-semibold text-gray-700">Action</th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-inst>
+          <tr class="hover:bg-amber-50 transition-colors">
+            <td class="font-medium">{{ getCustomerName(inst) }}</td>
+            <td class="font-mono text-xs text-gray-600">{{ getInvoiceNumber(inst) }}</td>
+            <td><p-badge [value]="inst.installmentNumber" severity="info" class="text-xs"></p-badge></td>
+            <td class="font-bold text-green-700">{{ inst.amount | currency:'INR':'symbol' }}</td>
+            <td>
+              <p-button label="Pay Now" icon="pi pi-check" size="small" severity="success"
+                        (onClick)="openPaymentDialog(inst)"
+                        class="text-xs font-medium"></p-button>
+            </td>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="emptymessage">
+          <tr><td colspan="5" class="text-center py-8 text-gray-500">No installments due today.</td></tr>
+        </ng-template>
+      </p-table>
+    </div>
+  </div>
+
+  <!-- Upcoming -->
+  <div class="data-card glass-card rounded-xl shadow-md overflow-hidden">
+    <div class="card-header px-6 py-4 bg-gradient-to-r from-blue-50 to-indigo-50 border-b border-blue-200">
+      <h3 class="text-lg font-semibold text-blue-800 flex items-center gap-2">
+        <i class="pi pi-calendar"></i> Upcoming EMIs (Next 7 Days)
+      </h3>
+    </div>
+    <div class="p-4">
+      <p-table [value]="getUpcomingInstallments()" [loading]="loading" class="emi-table">
+        <ng-template pTemplate="header">
+          <tr class="bg-gray-50">
+            <th class="font-semibold text-gray-700">Customer</th>
+            <th class="font-semibold text-gray-700">Invoice</th>
+            <th class="font-semibold text-gray-700">EMI #</th>
+            <th class="font-semibold text-gray-700">Amount</th>
+            <th class="font-semibold text-gray-700">Due Date</th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-inst>
+          <tr class="hover:bg-blue-50 transition-colors">
+            <td class="font-medium">{{ getCustomerName(inst) }}</td>
+            <td class="font-mono text-xs text-gray-600">{{ getInvoiceNumber(inst) }}</td>
+            <td><p-badge [value]="inst.installmentNumber" severity="info" class="text-xs"></p-badge></td>
+            <td class="font-medium text-blue-700">{{ inst.amount | currency:'INR':'symbol' }}</td>
+            <td class="text-sm">{{ inst.dueDate | date:'dd MMM' }}</td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </div>
+  </div>
+
+  <!-- Overdue -->
+  <div class="data-card glass-card rounded-xl shadow-md overflow-hidden border border-red-200">
+    <div class="card-header px-6 py-4 bg-gradient-to-r from-red-50 to-rose-50 border-b border-red-200">
+      <h3 class="text-lg font-semibold text-red-800 flex items-center gap-2">
+        <i class="pi pi-exclamation-triangle"></i> Overdue EMIs
+      </h3>
+    </div>
+    <div class="p-4">
+      <p-table [value]="getOverdueInstallments()" [loading]="loading" class="emi-table">
+        <ng-template pTemplate="header">
+          <tr class="bg-red-50">
+            <th class="font-semibold text-red-700">Customer</th>
+            <th class="font-semibold text-red-700">Invoice</th>
+            <th class="font-semibold text-red-700">EMI #</th>
+            <th class="font-semibold text-red-700">Amount</th>
+            <th class="font-semibold text-red-700">Days Late</th>
+            <th class="font-semibold text-red-700">Action</th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-inst>
+          <tr class="bg-red-50 hover:bg-red-100 transition-colors">
+            <td class="font-medium text-red-700">{{ getCustomerName(inst) }}</td>
+            <td class="font-mono text-xs text-red-600">{{ getInvoiceNumber(inst) }}</td>
+            <td><p-badge [value]="inst.installmentNumber" severity="danger" class="text-xs"></p-badge></td>
+            <td class="font-bold text-red-700">{{ inst.amount | currency:'INR':'symbol' }}</td>
+            <td><p-badge [value]="getDaysOverdue(inst.dueDate)" severity="danger" class="text-xs"></p-badge></td>
+            <td class="space-x-1">
+              <p-button label="Remind" icon="pi pi-bell" size="small"  class="text-xs"></p-button>
+              <p-button label="Pay" icon="pi pi-money-bill" size="small" severity="danger"
+                        (onClick)="openPaymentDialog(inst)" class="text-xs"></p-button>
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </div>
+  </div>
+
+  <!-- Recent Payments -->
+  <div class="data-card glass-card rounded-xl shadow-md overflow-hidden">
+    <div class="card-header px-6 py-4 bg-gradient-to-r from-green-50 to-emerald-50 border-b border-green-200">
+      <h3 class="text-lg font-semibold text-green-800 flex items-center gap-2">
+        <i class="pi pi-check-circle"></i> Recent Payments
+      </h3>
+    </div>
+    <div class="p-4">
+      <p-table [value]="report.payments" [loading]="loading" class="emi-table">
+        <ng-template pTemplate="header">
+          <tr class="bg-gray-50">
+            <th class="font-semibold text-gray-700">Customer</th>
+            <th class="font-semibold text-gray-700">Amount</th>
+            <th class="font-semibold text-gray-700">Date</th>
+            <th class="font-semibold text-gray-700">TXN ID</th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-pay>
+          <tr class="hover:bg-green-50 transition-colors">
+            <td class="font-medium">{{ pay.customerId }}</td>
+            <td class="font-bold text-green-700">{{ pay.amount | currency:'INR':'symbol' }}</td>
+            <td class="text-sm">{{ pay.createdAt | date:'short' }}</td>
+            <td class="font-mono text-xs text-gray-600">{{ pay.transactionId }}</td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </div>
+  </div>
+
+  <!-- ENHANCED PAYMENT DIALOG -->
+  <p-dialog
+    header="Record EMI Payment"
+    [(visible)]="paymentDialog"
+    [modal]="true"
+    [style]="{ width: '460px' }"
+    styleClass="payment-dialog glass-card"
+    [closable]="false"
+  >
+    <div class="p-6 space-y-6">
+      <!-- Amount -->
+      <div class="text-center">
+        <p class="text-sm font-medium text-gray-600">Amount Due</p>
+        <p class="text-4xl font-bold text-green-700 mt-2">
+          {{ selectedInstallment?.amount | currency:'INR':'symbol' }}
+        </p>
+      </div>
+
+      <!-- Payment Method -->
+      <div>
+        <label class="block text-sm font-semibold text-gray-700 mb-3">Payment Method</label>
+        <div class="grid grid-cols-2 gap-3">
+          @for (method of paymentMethods; track method.value) {
+            <div
+              class="method-option p-4 rounded-lg border-2 cursor-pointer transition-all"
+              [class.border-green-500]="paymentForm.paymentMethod === method.value"
+              [class.bg-green-50]="paymentForm.paymentMethod === method.value"
+              [class.border-gray-300]="paymentForm.paymentMethod !== method.value"
+              (click)="paymentForm.paymentMethod = method.value"
+            >
+              <div class="flex items-center justify-center gap-3">
+                <i [class]="method.icon" class="text-xl"></i>
+                <span class="font-medium text-sm">{{ method.label }}</span>
+              </div>
+            </div>
+          }
+        </div>
+      </div>
+
+      <!-- Transaction ID -->
+      <div>
+        <label class="block text-sm font-semibold text-gray-700 mb-2">Transaction ID (Optional)</label>
+        <div class="flex gap-2">
+          <input
+            pInputText
+            [(ngModel)]="paymentForm.transactionId"
+            placeholder="e.g., UPI123456"
+            class="flex-1 h-11"
+          />
+          @if (paymentForm.transactionId) {
+            <p-button
+              icon="pi pi-copy"
+              severity="secondary"
+              size="small"
+              (onClick)="copyToClipboard(paymentForm.transactionId)"
+              pTooltip="Copy"
+            ></p-button>
+          }
+        </div>
+      </div>
+
+      <!-- Success Animation -->
+      @if (paymentSuccess) {
+        <div class="text-center py-4">
+          <i class="pi pi-check-circle text-6xl text-green-600 animate-bounce"></i>
+          <p class="text-lg font-semibold text-green-700 mt-3">Payment Recorded!</p>
+        </div>
+      }
+    </div>
+
+    <ng-template pTemplate="footer">
+      <div class="flex justify-between items-center px-6 py-4 border-t border-gray-200">
+        <p-button
+          label="Cancel"
+          severity="secondary"
+          (onClick)="paymentDialog = false"
+          icon="pi pi-times"
+          [disabled]="creating"
+        ></p-button>
+        <p-button
+          label="Confirm Payment"
+          icon="pi pi-check"
+          severity="success"
+          [loading]="creating"
+          (onClick)="submitPayment()"
+          [disabled]="!selectedInstallment"
+        ></p-button>
+      </div>
+    </ng-template>
+  </p-dialog>
+
+  <p-toast></p-toast>
+</div>

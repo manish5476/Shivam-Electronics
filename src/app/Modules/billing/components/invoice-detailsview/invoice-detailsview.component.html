@@ -1,235 +1,27 @@
-<!-- <div id="invoice-print-section" class="min-h-screen w-full px-2 sm:px-4 md:px-6"
-  style="background: var(--theme-body-gradient); color: var(--theme-text-primary);">
-  Invoice Selection Dropdown
-  <div class="card mb-2">
-   <p-select appendTo="body"  appendTo="body" [(ngModel)]="Id" (onChange)="getCustomerdata($event)" [options]="invoiceDropDown"
-      optionLabel="invoiceNumber" optionValue="id" placeholder="Select Invoice"
-      styleClass="w-full sm:w-80 text-sm rounded-lg"
-      panelStyleClass="text-sm bg-[var(--theme-bg-secondary)] border-[var(--theme-border-primary)] shadow-lg rounded-lg">
-    </p-select>
-  </div>
-
-  Header
-  <div class="flex flex-col sm:flex-row justify-between items-center gap-2 sm:gap-4 mt-1">
-    <h1 class="text-lg sm:text-xl font-semibold text-center sm:text-left" style="color: var(--theme-text-primary);">Invoice Details
-    </h1>
-    <button (click)="printInvoice()"
-      class="p-button p-component p-button-text flex items-center gap-2 text-xs sm:text-sm font-medium transition-all duration-200 hover:scale-105"
-      [ngClass]="{'p-button-hover': true}"
-      (mouseenter)="onPrintButtonHover($event, true)" (mouseleave)="onPrintButtonHover($event, false)">
-      <i class="pi pi-print text-sm sm:text-base"></i> Print Invoice
-    </button>
-  </div>
-
-  Invoice Info
-  <div class="card mb-2 transition-all duration-200 hover:shadow-md" (mouseenter)="onCardHover($event, true)"
-    (mouseleave)="onCardHover($event, false)">
-    <div class="px-2 py-1 border-b" style="border-color: var(--theme-border-primary);">
-      <h2 class="text-sm sm:text-base font-medium flex items-center gap-2" style="color: var(--theme-text-primary);">
-        <i class="pi pi-file-invoice text-sm sm:text-base" style="color: var(--theme-accent-primary);"></i> Invoice Information
-      </h2>
-    </div>
-    <div class="divide-y p-2 sm:p-4" style="border-color: var(--theme-border-secondary);">
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 sm:gap-4 py-2">
-        <div class="flex items-center">
-          <dt class="font-medium text-xs sm:text-sm" style="color: var(--theme-text-secondary);">Number</dt>
-          <dd class="ml-2 sm:ml-4 text-xs sm:text-sm" style="color: var(--theme-text-primary);">{{ invoiceData()?.invoiceNumber || 'N/A' }}</dd>
-        </div>
-        <div class="flex items-center">
-          <dt class="font-medium text-xs sm:text-sm" style="color: var(--theme-text-secondary);">Date</dt>
-          <dd class="ml-2 sm:ml-4 text-xs sm:text-sm" style="color: var(--theme-text-primary);">{{ invoiceData()?.invoiceDate ? (invoiceData()?.invoiceDate | date:'longDate') : 'N/A' }}</dd>
-        </div>
-        <div class="flex items-center">
-          <dt class="font-medium text-xs sm:text-sm" style="color: var(--theme-text-secondary);">Due Date</dt>
-          <dd class="ml-2 sm:ml-4 text-xs sm:text-sm" style="color: var(--theme-text-primary);">{{ invoiceData()?.dueDate ? (invoiceData()?.dueDate | date:'longDate') : 'N/A' }}</dd>
-        </div>
-        <div class="flex items-center">
-          <dt class="font-medium text-xs sm:text-sm" style="color: var(--theme-text-secondary);">Status</dt>
-          <dd class="ml-2 sm:ml-4">
-            <p-tag [value]="invoiceData()?.status || 'N/A'"
-              [severity]="invoiceData()?.status ? getStatusSeverity(invoiceData()?.status) : 'info'"
-              styleClass="text-xs py-1 px-2 rounded-full"></p-tag>
-          </dd>
-        </div>
-        <div class="flex items-center">
-          <dt class="font-medium text-xs sm:text-sm" style="color: var(--theme-text-secondary);">Place of Supply</dt>
-          <dd class="ml-2 sm:ml-4 text-xs sm:text-sm" style="color: var(--theme-text-primary);">{{ invoiceData()?.placeOfSupply || 'N/A' }}</dd>
-        </div>
-        <div class="flex items-center">
-          <dt class="font-medium text-xs sm:text-sm" style="color: var(--theme-text-secondary);">Payment Terms</dt>
-          <dd class="ml-2 sm:ml-4 text-xs sm:text-sm" style="color: var(--theme-text-primary);">{{ invoiceData()?.paymentTerms || 'N/A' }}</dd>
-        </div>
-        <div class="col-span-1 sm:col-span-2 lg:col-span-3 flex items-start">
-          <dt class="font-medium text-xs sm:text-sm" style="color: var(--theme-text-secondary);">Notes</dt>
-          <dd class="ml-2 sm:ml-4 text-xs sm:text-sm whitespace-pre-line" style="color: var(--theme-text-primary);">{{ invoiceData()?.notes || 'N/A' }}</dd>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  Seller and Buyer Details
-  <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6 mb-2">
-    <div class="card transition-all duration-200 hover:shadow-md" (mouseenter)="onCardHover($event, true)"
-      (mouseleave)="onCardHover($event, false)">
-      <div class="px-2 py-1 border-b" style="border-color: var(--theme-border-primary);">
-        <h2 class="text-sm sm:text-base font-medium flex items-center gap-2" style="color: var(--theme-text-primary);">
-          <i class="pi pi-user text-sm sm:text-base" style="color: var(--theme-accent-primary);"></i> Seller Details
-        </h2>
-      </div>
-      <dl class="divide-y p-2 sm:p-4" style="border-color: var(--theme-border-secondary);">
-        <ng-container *ngFor="let key of ['name', 'shopname', 'gstin', 'pan', 'contactNumber', 'address', 'createdAt', 'updatedAt']">
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-4 py-2">
-            <dt class="font-medium text-xs sm:text-sm capitalize" style="color: var(--theme-text-secondary);">
-              {{ key }}
-            </dt>
-            <dd class="text-xs sm:text-sm truncate" style="color: var(--theme-text-primary);">
-              <ng-container *ngIf="invoiceData()?.sellerDetails; else na">
-                <ng-container [ngSwitch]="key">
-                  <span *ngSwitchCase="'createdAt'">
-                    {{ invoiceData()?.sellerDetails?.createdAt ? (invoiceData()?.sellerDetails?.createdAt | date:'longDate') : 'N/A' }}
-                  </span>
-                  <span *ngSwitchCase="'updatedAt'">
-                    {{ invoiceData()?.sellerDetails?.updatedAt ? (invoiceData()?.sellerDetails?.updatedAt | date:'longDate') : 'N/A' }}
-                  </span>
-                  <span *ngSwitchDefault>
-                    {{ invoiceData()?.sellerDetails?.[key] || 'N/A' }}
-                  </span>
-                </ng-container>
-              </ng-container>
-              <ng-template #na>N/A</ng-template>
-            </dd>
-          </div>
-        </ng-container>
-      </dl>
-    </div>
-
-    <div class="card transition-all duration-200 hover:shadow-md" (mouseenter)="onCardHover($event, true)"
-      (mouseleave)="onCardHover($event, false)">
-      <div class="px-2 py-1 border-b" style="border-color: var(--theme-border-primary);">
-        <h2 class="text-sm sm:text-base font-medium flex items-center gap-2" style="color: var(--theme-text-primary);">
-          <i class="pi pi-user-plus text-sm sm:text-base" style="color: var(--theme-accent-primary);"></i> Buyer Details
-        </h2>
-      </div>
-      <div class="divide-y p-2 sm:p-4" style="border-color: var(--theme-border-secondary);">
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-4 py-2">
-          <dt class="font-medium text-xs sm:text-sm" style="color: var(--theme-text-secondary);">Name</dt>
-          <dd class="text-xs sm:text-sm" style="color: var(--theme-text-primary);">{{ invoiceData()?.buyerDetails?.fullname || 'N/A' }}</dd>
-        </div>
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-4 py-2">
-          <dt class="font-medium text-xs sm:text-sm" style="color: var(--theme-text-secondary);">Address</dt>
-          <dd class="text-xs sm:text-sm whitespace-pre-line" style="color: var(--theme-text-primary);">
-            {{ invoiceData()?.buyerDetails?.addresses?.[0] ? 
-            (invoiceData()?.buyerDetails?.addresses[0]?.street || 'N/A') + ', ' +
-            (invoiceData()?.buyerDetails?.addresses[0]?.city || '') + ' ' +
-            (invoiceData()?.buyerDetails?.addresses[0]?.state || '') + ' ' +
-            (invoiceData()?.buyerDetails?.addresses[0]?.zipCode || '') : 'N/A' }}
-          </dd>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  Items Table
-  <div class="card mb-2 overflow-hidden transition-all duration-200 hover:shadow-md"
-    (mouseenter)="onCardHover($event, true)" (mouseleave)="onCardHover($event, false)">
-    <div class="px-2 py-1 border-b" style="border-color: var(--theme-border-primary);">
-      <h2 class="text-sm sm:text-base font-medium flex items-center gap-2" style="color: var(--theme-text-primary);">
-        <i class="pi pi-list text-sm sm:text-base" style="color: var(--theme-accent-primary);"></i> Items
-      </h2>
-    </div>
-    <div class="overflow-x-auto">
-      <p-table [value]="invoiceData()?.items || []"
-        styleClass="p-datatable-sm p-datatable-striped" responsiveLayout="stack" [breakpoint]="'640px'">
-        <ng-template pTemplate="header">
-          <tr style="background-color: var(--theme-bg-secondary); color: var(--theme-text-primary);">
-            <th class="p-2 sm:p-3 rounded-tl-lg text-xs sm:text-sm">Item</th>
-            <th class="text-right p-2 sm:p-3 text-xs sm:text-sm">Qty</th>
-            <th class="text-right p-2 sm:p-3 text-xs sm:text-sm">Rate</th>
-            <th class="text-right p-2 sm:p-3 text-xs sm:text-sm">Discount</th>
-            <th class="text-right p-2 sm:p-3 text-xs sm:text-sm">Taxable</th>
-            <th class="text-right p-2 sm:p-3 text-xs sm:text-sm">CGST</th>
-            <th class="text-right p-2 sm:p-3 text-xs sm:text-sm">SGST</th>
-            <th class="text-right p-2 sm:p-3 rounded-tr-lg text-xs sm:text-sm">Amount</th>
-          </tr>
-        </ng-template>
-        <ng-template pTemplate="body" let-item>
-          <tr style="background-color: var(--theme-bg-primary); color: var(--theme-text-primary);">
-            <td class="p-2 sm:p-3 rounded-bl-lg text-xs sm:text-sm">{{ item?.customTitle || 'N/A' }}</td>
-            <td class="text-right p-2 sm:p-3 text-xs sm:text-sm">{{ item?.quantity || 'N/A' }}</td>
-            <td class="text-right p-2 sm:p-3 text-xs sm:text-sm">{{ item?.rate ? (item.rate | currency:'INR') : 'N/A' }}</td>
-            <td class="text-right p-2 sm:p-3 text-xs sm:text-sm">{{ item?.discount ? (item.discount | currency:'INR') : 'N/A' }}</td>
-            <td class="text-right p-2 sm:p-3 text-xs sm:text-sm">{{ item?.taxableValue ? (item.taxableValue | currency:'INR') : 'N/A' }}</td>
-            <td class="text-right p-2 sm:p-3 text-xs sm:text-sm">{{ item?.cgstAmount ? (item.cgstAmount | currency:'INR') + ' (' + (item.cgstRate || '0') + '%)' : 'N/A' }}</td>
-            <td class="text-right p-2 sm:p-3 text-xs sm:text-sm">{{ item?.sgstAmount ? (item.sgstAmount | currency:'INR') + ' (' + (item.sgstRate || '0') + '%)' : 'N/A' }}</td>
-            <td class="text-right p-2 sm:p-3 rounded-br-lg text-xs sm:text-sm font-medium">{{ item?.amount ? (item.amount | currency:'INR') : 'N/A' }}</td>
-          </tr>
-        </ng-template>
-        <ng-template pTemplate="emptymessage">
-          <tr>
-            <td colspan="8" class="text-center py-4 text-xs sm:text-sm" style="color: var(--theme-text-secondary);">No items found in this invoice.</td>
-          </tr>
-        </ng-template>
-      </p-table>
-    </div>
-  </div>
-
-  Financial Summary
-  <div class="card transition-all duration-200 hover:shadow-md" (mouseenter)="onCardHover($event, true)"
-    (mouseleave)="onCardHover($event, false)">
-    <div class="px-2 py-1 border-b" style="border-color: var(--theme-border-primary);">
-      <h2 class="text-sm sm:text-base font-medium flex items-center gap-2" style="color: var(--theme-text-primary);">
-        <i class="pi pi-wallet text-sm sm:text-base" style="color: var(--theme-success-primary);"></i> Financial Summary
-      </h2>
-    </div>
-    <div class="divide-y px-2 py-2 sm:py-4" style="border-color: var(--theme-border-secondary);">
-      <div class="flex justify-between py-1 sm:py-2 text-xs sm:text-sm">
-        <span style="color: var(--theme-text-secondary);">Sub Total</span>
-        <span style="color: var(--theme-text-primary);">{{ invoiceData()?.subTotal ? (invoiceData()?.subTotal | currency:'INR') : 'N/A' }}</span>
-      </div>
-      <div class="flex justify-between py-1 sm:py-2 text-xs sm:text-sm">
-        <span style="color: var(--theme-error-primary);">Total Discount</span>
-        <span style="color: var(--theme-error-primary);">{{ invoiceData()?.totalDiscount ? ('(' + (invoiceData()?.totalDiscount | currency:'INR') + ')') : '(N/A)' }}</span>
-      </div>
-      <div class="flex justify-between py-1 sm:py-2 text-xs sm:text-sm">
-        <span style="color: var(--theme-text-primary);">Total Tax (CGST+SGST/IGST)</span>
-        <span style="color: var(--theme-text-primary);">{{ invoiceData() ? ((invoiceData()?.igst || 0) + (invoiceData()?.totalCGST || 0) + (invoiceData()?.totalSGST || 0) | currency:'INR') : 'N/A' }}</span>
-      </div>
-      <div class="flex justify-between py-1 sm:py-2 text-xs sm:text-sm">
-        <span style="color: var(--theme-text-primary);">CESS</span>
-        <span style="color: var(--theme-text-primary);">{{ invoiceData()?.cess ? (invoiceData()?.cess | currency:'INR') : 'N/A' }}</span>
-      </div>
-      <div class="flex justify-between border-t pt-2 sm:pt-4 mt-2 sm:mt-4 text-xs sm:text-sm" style="border-color: var(--theme-border-primary);">
-        <span class="text-base sm:text-lg font-semibold" style="color: var(--theme-text-primary);">Grand Total</span>
-        <span class="text-lg sm:text-xl font-bold" style="color: var(--theme-success-primary);">{{ invoiceData()?.totalAmount ? (invoiceData()?.totalAmount | currency:'INR') : 'N/A' }}</span>
-      </div>
-    </div>
-  </div>
-</div> -->
 <div id="invoice-print-section" class="invoice-page">
   <!-- Invoice Selector -->
   <div class="selector-card">
-    <p-select
-      appendTo="body"
-      [(ngModel)]="Id"
-      (onChange)="getCustomerdata($event)"
-      [options]="invoiceDropDown"
-      optionLabel="invoiceNumber"
-      optionValue="id"
-      placeholder="Select Invoice"
-      styleClass="invoice-select">
+    <p-select appendTo="body" [(ngModel)]="Id" (onChange)="getCustomerdata($event)" [options]="invoiceDropDown"
+      optionLabel="label" optionValue="id" [filter]="true" filterBy="label" [showClear]="true"
+      placeholder="Select Invoice" styleClass="invoice-select">
     </p-select>
   </div>
 
   <!-- Header -->
   <div class="page-header">
     <h1 class="page-title">Invoice Details</h1>
-    <button
-      (click)="printInvoice()"
-      class="print-btn"
-      (mouseenter)="onPrintButtonHover($event, true)"
+    <button (click)="printInvoice()" class="print-btn" (mouseenter)="onPrintButtonHover($event, true)"
       (mouseleave)="onPrintButtonHover($event, false)">
       <i class="pi pi-print"></i> Print Invoice
     </button>
+
+    <!-- Add the dialog -->
+    <app-emi-create [(visible)]="showEmiDialog" [invoiceId]="Id"
+      (emiCreated)="onEmiCreated($event)"></app-emi-create>
+
+    <!-- Trigger Button -->
+    <p-button label="Create EMI" icon="pi pi-money-bill" (onClick)="openEmiDialog('inv_123')"
+      severity="success"></p-button>
   </div>
 
   <!-- Invoice Info Card -->
@@ -253,9 +45,7 @@
       </div>
       <div class="info-item">
         <span class="label">Status</span>
-        <p-tag
-          [value]="invoiceData()?.status || 'N/A'"
-          [severity]="getStatusSeverity(invoiceData()?.status)"
+        <p-tag [value]="invoiceData()?.status || 'N/A'" [severity]="getStatusSeverity(invoiceData()?.status)"
           styleClass="status-tag">
         </p-tag>
       </div>
@@ -284,16 +74,16 @@
       </div>
       <div class="detail-grid">
         @for (key of sellerKeys; track key) {
-          <div class="detail-item">
-            <span class="label">{{ formatKey(key) }}</span>
-            <span class="value">
-              @if (key === 'createdAt' || key === 'updatedAt') {
-                {{ invoiceData()?.sellerDetails?.[key] | date:'longDate' }}
-              } @else {
-                {{ invoiceData()?.sellerDetails?.[key] || 'N/A' }}
-              }
-            </span>
-          </div>
+        <div class="detail-item">
+          <span class="label">{{ formatKey(key) }}</span>
+          <span class="value">
+            @if (key === 'createdAt' || key === 'updatedAt') {
+            {{ invoiceData()?.sellerDetails?.[key] | date:'longDate' }}
+            } @else {
+            {{ invoiceData()?.sellerDetails?.[key] || 'N/A' }}
+            }
+          </span>
+        </div>
         }
       </div>
     </div>
@@ -327,46 +117,46 @@
     </div>
     <div class="items-grid">
       @for (item of invoiceData()?.items; track item._id; let i = $index) {
-        <div class="item-card">
-          <div class="item-header">
-            <h3 class="item-title">{{ item.customTitle || 'Untitled Item' }}</h3>
+      <div class="item-card">
+        <div class="item-header">
+          <h3 class="item-title">{{ item.customTitle || 'Untitled Item' }}</h3>
+        </div>
+        <div class="item-body">
+          <div class="item-row">
+            <span>Quantity</span>
+            <span class="value">{{ item.quantity }}</span>
           </div>
-          <div class="item-body">
-            <div class="item-row">
-              <span>Quantity</span>
-              <span class="value">{{ item.quantity }}</span>
-            </div>
-            <div class="item-row">
-              <span>Rate</span>
-              <span class="value">{{ item.rate | currency:'INR' }}</span>
-            </div>
-            <div class="item-row">
-              <span>Discount</span>
-              <span class="value discount">-{{ item.discount | currency:'INR' }}</span>
-            </div>
-            <div class="item-row">
-              <span>Taxable</span>
-              <span class="value">{{ item.taxableValue | currency:'INR' }}</span>
-            </div>
-            <div class="item-row tax">
-              <span>CGST</span>
-              <span class="value">{{ item.cgstAmount | currency:'INR' }} ({{ item.cgstRate }}%)</span>
-            </div>
-            <div class="item-row tax">
-              <span>SGST</span>
-              <span class="value">{{ item.sgstAmount | currency:'INR' }} ({{ item.sgstRate }}%)</span>
-            </div>
-            <div class="item-footer">
-              <span>Amount</span>
-              <span class="total">{{ item.amount | currency:'INR' }}</span>
-            </div>
+          <div class="item-row">
+            <span>Rate</span>
+            <span class="value">{{ item.rate | currency:'INR' }}</span>
+          </div>
+          <div class="item-row">
+            <span>Discount</span>
+            <span class="value discount">-{{ item.discount | currency:'INR' }}</span>
+          </div>
+          <div class="item-row">
+            <span>Taxable</span>
+            <span class="value">{{ item.taxableValue | currency:'INR' }}</span>
+          </div>
+          <div class="item-row tax">
+            <span>CGST</span>
+            <span class="value">{{ item.cgstAmount | currency:'INR' }} ({{ item.cgstRate }}%)</span>
+          </div>
+          <div class="item-row tax">
+            <span>SGST</span>
+            <span class="value">{{ item.sgstAmount | currency:'INR' }} ({{ item.sgstRate }}%)</span>
+          </div>
+          <div class="item-footer">
+            <span>Amount</span>
+            <span class="total">{{ item.amount | currency:'INR' }}</span>
           </div>
         </div>
+      </div>
       } @empty {
-        <div class="empty-state">
-          <i class="pi pi-inbox"></i>
-          <p>No items in this invoice.</p>
-        </div>
+      <div class="empty-state">
+        <i class="pi pi-inbox"></i>
+        <p>No items in this invoice.</p>
+      </div>
       }
     </div>
   </div>
@@ -388,7 +178,8 @@
       </div>
       <div class="summary-row">
         <span>Total Tax (CGST+SGST/IGST)</span>
-        <span>{{ (invoiceData()?.igst || 0) + (invoiceData()?.totalCGST || 0) + (invoiceData()?.totalSGST || 0) | currency:'INR' }}</span>
+        <span>{{ (invoiceData()?.igst || 0) + (invoiceData()?.totalCGST || 0) + (invoiceData()?.totalSGST || 0) |
+          currency:'INR' }}</span>
       </div>
       <div class="summary-row">
         <span>CESS</span>

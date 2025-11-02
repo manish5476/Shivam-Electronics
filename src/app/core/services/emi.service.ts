@@ -20,12 +20,6 @@ export interface EmiPaymentPayload {
 export class EmiService extends BaseApiService {
   private endpoint = '/v1/emis';
 
-  /**
-   * Creates a new EMI plan from an existing invoice.
-   * Corresponds to: POST /from-invoice/:invoiceId
-   * @param invoiceId The ID of the invoice to convert into an EMI plan.
-   * @param data The details of the EMI plan (installments, start date, etc.).
-   */
   createEmiFromInvoice(invoiceId: string, data: EmiCreationPayload): Observable<any> {
     const url = `${this.baseUrl}${this.endpoint}/from-invoice/${invoiceId}`;
     return this.http
@@ -69,6 +63,7 @@ export class EmiService extends BaseApiService {
         ),
       );
   }
+  
   getUpcomingEmis(): Observable<any> {
     const url = `${this.baseUrl}/v1/operational/upcoming-emis`;
     return this.http

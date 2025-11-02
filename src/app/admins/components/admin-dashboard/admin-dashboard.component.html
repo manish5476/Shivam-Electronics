@@ -88,17 +88,16 @@
           <p-tabpanel value="4">
             <div class="flex flex-col gap-4">
               <app-customer-analytics [data]="(customerAnalytics$ | async)?.data"
-                  (openDetail)="openDialog($event.title, $event.data, customerDetailTemplate)"
-                  ></app-customer-analytics>
+                (openDetail)="openDialog($event.title, $event.data, customerDetailTemplate)"></app-customer-analytics>
 
 
-<ng-template #customerDetailTemplate let-data="data">
-  <div class="customer-detail-card">
-    <h2>{{ data.fullname }}</h2>
-    <p><strong>Email:</strong> {{ data.email }}</p>
-    <p><strong>Lifetime Value:</strong> ₹{{ data.lifetimeValue | number }}</p>
-  </div>
-</ng-template>
+              <ng-template #customerDetailTemplate let-data="data">
+                <div class="customer-detail-card">
+                  <h2>{{ data.fullname }}</h2>
+                  <p><strong>Email:</strong> {{ data.email }}</p>
+                  <p><strong>Lifetime Value:</strong> ₹{{ data.lifetimeValue | number }}</p>
+                </div>
+              </ng-template>
 
             </div>
           </p-tabpanel>

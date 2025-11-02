@@ -23,7 +23,7 @@ export class SidebarComponent implements OnInit {
 
   expandedItems: boolean[] = [];
 
-menuItems = [
+  menuItems = [
     // {
     //   label: 'Master', icon: 'pi pi-database',
     //   items: [
@@ -74,6 +74,13 @@ menuItems = [
         { label: 'View Invoice', icon: 'pi pi-eye', routerLink: ['/invoices/view'] },
         { label: 'Create Invoice', icon: 'pi pi-plus-circle', routerLink: ['/invoices/create'] },
         { label: 'Invoice Details', icon: 'pi pi-file-edit', routerLink: ['/invoices/details'] }
+      ]
+    },
+    {
+      label: 'Emi', icon: 'pi pi-indian-rupee',
+      items: [
+        { label: 'Create Emi', icon: 'pi pi-eye', routerLink: ['/Emi/create'] },
+        { label: 'Emi dashboard', icon: 'pi pi-eye', routerLink: ['/Emi/emidashboard'] },
       ]
     },
     {

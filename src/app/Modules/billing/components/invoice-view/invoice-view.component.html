@@ -7,43 +7,24 @@
       <!-- Buyer -->
       <div class="se-filter-field">
         <label for="buyer">Buyer</label>
-        <p-select
-          appendTo="body"
-          id="buyer"
-          [options]="customerIDDropdown"
-          [(ngModel)]="invoiceFilter.buyer"
-          [filter]="true"
-          filterBy="fullname"
-          optionLabel="fullname"
-          optionValue="_id"
-          [showClear]="true"
-          placeholder="Select Buyer"
-          (onChange)="applyFiltersAndReset()">
+        <p-select appendTo="body" id="buyer" [options]="customerIDDropdown" [(ngModel)]="invoiceFilter.buyer"
+          [filter]="true" filterBy="label" optionLabel="fullname" optionValue="_id" [showClear]="true"
+          placeholder="Select Buyer" (onChange)="applyFiltersAndReset()">
         </p-select>
       </div>
 
       <!-- Status -->
       <div class="se-filter-field">
         <label for="status">Status</label>
-        <p-select
-          appendTo="body"
-          id="status"
-          [options]="statusOptions"
-          [(ngModel)]="invoiceFilter.status"
-          (onChange)="applyFiltersAndReset()"
-          placeholder="All Status"
-          [showClear]="true">
+        <p-select appendTo="body" id="status" [options]="statusOptions" [(ngModel)]="invoiceFilter.status"
+          (onChange)="applyFiltersAndReset()" placeholder="All Status" [showClear]="true">
         </p-select>
       </div>
 
       <!-- Invoice Number -->
       <div class="se-filter-field">
         <label for="invoiceNumber">Invoice #</label>
-        <input
-          pInputText
-          id="invoiceNumber"
-          [(ngModel)]="invoiceFilter.invoiceNumber"
-          (input)="applyFiltersAndReset()"
+        <input pInputText id="invoiceNumber" [(ngModel)]="invoiceFilter.invoiceNumber" (input)="applyFiltersAndReset()"
           placeholder="Search Invoice Number" />
       </div>
 
@@ -51,17 +32,9 @@
       <div class="se-filter-field">
         <label for="createdFrom">Invoice Date Range</label>
         <div class="flex gap-2">
-          <input
-            id="createdFrom"
-            type="date"
-            pInputText
-            [(ngModel)]="invoiceFilter.createdFrom"
+          <input id="createdFrom" type="date" pInputText [(ngModel)]="invoiceFilter.createdFrom"
             (change)="applyFiltersAndReset()" />
-          <input
-            id="createdTo"
-            type="date"
-            pInputText
-            [(ngModel)]="invoiceFilter.createdTo"
+          <input id="createdTo" type="date" pInputText [(ngModel)]="invoiceFilter.createdTo"
             (change)="applyFiltersAndReset()" />
         </div>
       </div>
@@ -77,26 +50,15 @@
 
   <!-- Grid -->
   <div class="mt-1 card">
-    <app-shared-grid
-      [data]="data"
-      [gridHeight]="'280px'"
-      [headerFilter]="false"
-      [rowSelectionMode]="rowSelectionMode"
-      [GridName]="'Invoice Details'"
-      [column]="column"
-      (eventFromGrid)="eventFromGrid($event)"
-      (gridReady)="onGridReady($event)"
-      (scrolledToBottom)="onScrolledToBottom($event)">
+    <app-shared-grid [data]="data" [gridHeight]="'280px'" [headerFilter]="false" [rowSelectionMode]="rowSelectionMode"
+      [GridName]="'Invoice Details'" [column]="column" (eventFromGrid)="eventFromGrid($event)"
+      (gridReady)="onGridReady($event)" (scrolledToBottom)="onScrolledToBottom($event)">
     </app-shared-grid>
   </div>
 
   <!-- Invoice Preview Dialog -->
-  <p-dialog
-    header="Invoice Preview"
-    [(visible)]="showpdf"
-    [modal]="true"
-    [style]="{ width: '90vw', maxWidth: '1200px' }"
-    [contentStyle]="{ height: '80vh', overflow: 'auto', padding: '0' }">
+  <p-dialog header="Invoice Preview" [(visible)]="showpdf" [modal]="true"
+    [style]="{ width: '90vw', maxWidth: '1200px' }" [contentStyle]="{ height: '80vh', overflow: 'auto', padding: '0' }">
     <app-invoice-print [Id]="invoiceId" class="invoice-preview"></app-invoice-print>
   </p-dialog>
 

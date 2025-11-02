@@ -76,6 +76,13 @@ export const routes: Routes = [
             (m) => m.PERSONAL_INFO,
           ),
       },
+      {
+        path: 'Emi',
+        loadChildren: () =>
+          import('./Modules/EMI/emi.routes').then(
+            (m) => m.EMI_ROUTES,
+          ),
+      },
       { path: '**', component: NotFoundComponent },
     ],
   },

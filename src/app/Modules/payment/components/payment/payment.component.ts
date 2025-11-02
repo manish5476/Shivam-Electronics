@@ -18,7 +18,7 @@ import { AutopopulateService } from '../../../../core/services/autopopulate.serv
   standalone: true,
   imports: [
     FormsModule, CommonModule, DropdownModule, ButtonModule, Select, InputNumberModule, ToastModule
-],
+  ],
   providers: [MessageService], // Ensures MessageService is available
   templateUrl: './payment.component.html',
   styleUrl: './payment.component.css'
@@ -41,13 +41,16 @@ export class PaymentComponent implements OnInit {
     description: '',
     metadata: '{}',
   };
-// UPDATED: Added labels and icons for the new UI
+
+  // UPDATED: Added labels and icons for the new UI
   public paymentMethods = [
     { label: 'Credit Card', value: 'credit_card', icon: 'pi-credit-card' },
     { label: 'UPI', value: 'upi', icon: 'pi-mobile' },
     { label: 'Bank Transfer', value: 'bank_transfer', icon: 'pi-building' }
   ];
+
   public statuses = ['pending', 'completed', 'failed', 'refunded'];
+  
   ngOnInit(): void {
     this.loadInitialData();
   }
@@ -60,6 +63,7 @@ export class PaymentComponent implements OnInit {
         _id: cust._id
       }));
     });
+    
   }
 
   fetchCustomerData() {
@@ -88,11 +92,10 @@ export class PaymentComponent implements OnInit {
     }
   }
 
-    // ADDED: New function to handle clicking on payment method chips
+  // ADDED: New function to handle clicking on payment method chips
   selectPaymentMethod(method: string): void {
     this.paymentData.paymentMethod = method;
   }
-
 
   // --- Form Submission ---
   onSubmit() {
@@ -106,8 +109,8 @@ export class PaymentComponent implements OnInit {
       return;
     }
     if (this.customer.remainingAmount != null && this.paymentData.amount > this.customer.remainingAmount) {
-        this.messageService.add({ severity: 'warn', summary: 'Validation Error', detail: `Amount cannot be greater than remaining balance (₹${this.customer.remainingAmount}).` });
-        return;
+      this.messageService.add({ severity: 'warn', summary: 'Validation Error', detail: `Amount cannot be greater than remaining balance (₹${this.customer.remainingAmount}).` });
+      return;
     }
     if (!this.isValidJson(this.paymentData.metadata)) {
       this.messageService.add({ severity: 'warn', summary: 'Validation Error', detail: 'Metadata contains invalid JSON.' });

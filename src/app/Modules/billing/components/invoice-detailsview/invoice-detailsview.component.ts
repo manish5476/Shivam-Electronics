@@ -12,18 +12,22 @@ import { FormsModule } from '@angular/forms';
 import { EmiService } from '../../../../core/services/emi.service';
 import { signal } from '@angular/core'; // Use signals for reactive Id binding
 import { CommonMethodService } from '../../../../core/Utils/common-method.service';
+import { EmiCreateComponent } from "../../../EMI/create-emi/create-emi.component";
+import { Button } from "primeng/button";
 
 @Component({
   selector: 'app-invoice-detail-card',
   standalone: true,
-  imports: [CommonModule, FormsModule, Tag, SelectModule, TableModule],
+  imports: [CommonModule, FormsModule, Tag, SelectModule, TableModule, EmiCreateComponent, Button],
   templateUrl: './invoice-detailsview.component.html',
   styleUrl: './invoice-detailsview.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class InvoiceDetailCardComponent implements OnInit {
+showEmiDialog = false;
+selectedInvoiceId: string | null = null;
   public autoPopulate = inject(AutopopulateService);
-  @Input() Id: string | undefined;
+  @Input() Id: any
   invoiceData = signal<any>(null); // Use signal for reactive data
   loading = signal<boolean>(true);
   invoiceDropDown: any[] = [];
@@ -144,6 +148,16 @@ formatAddress(addr: any): string {
       }
     });
   }
+
+  openEmiDialog(invoiceId: string) {
+  this.selectedInvoiceId = invoiceId;
+  this.showEmiDialog = true;
+}
+
+onEmiCreated(res: any) {
+  console.log('EMI Created!', res);
+  // Refresh list, show toast, etc.
+}
 
   convertToEmi() {
     const emiPlan: any = {
