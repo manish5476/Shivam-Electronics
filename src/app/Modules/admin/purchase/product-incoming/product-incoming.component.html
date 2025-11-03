@@ -1,164 +1,254 @@
-<!-- Toast Notification -->
-<div *ngIf="toast().visible" class="toast" [ngClass]="{
-       'toast-success': toast().severity === 'success',
-       'toast-error': toast().severity === 'error',
-       'toast-warn': toast().severity === 'warn'
-     }">
-    <span class="font-bold">{{ toast().summary }}</span>
-    <p>{{ toast().detail }}</p>
-</div>
+<!-- src/app/Modules/PurchaseOrder/product-incoming.component.html -->
+<div class="flex flex-col h-full p-4 gap-6 bg-[var(--theme-bg-secondary)]">
 
-<!-- Confirmation Dialog -->
-<div *ngIf="confirmation().visible" class="confirmation-backdrop">
-    <div class="confirmation-dialog card">
-        <h3 class="text-xl font-bold mb-4">{{ confirmation().header }}</h3>
-        <p class="text-gray-600 mb-6">{{ confirmation().message }}</p>
-        <div class="flex justify-end gap-4">
-            <button (click)="confirmation().reject()" class="p-button-secondary modern-button">Cancel</button>
-            <button (click)="confirmation().accept()" class="modern-button">Confirm</button>
+    <!-- Toast -->
+    <div *ngIf="toast().visible" class="toast" [ngClass]="toastClass()">
+        <i [class]="toastIcon()" class="text-xl mr-3"></i>
+        <div>
+            <p class="font-bold">{{ toast().summary }}</p>
+            <p class="text-sm opacity-90">{{ toast().detail }}</p>
         </div>
     </div>
-</div>
 
-<div class="p-6 md:p-8 card">
-    <h2 class="text-2xl font-bold mb-6 retro-heading">Purchase Order Management</h2>
-
-    <!-- Tabs -->
-    <div class="flex border-b border-gray-200 mb-6">
-        <button (click)="activeTab.set('create')" class="tab-button" [class.active]="activeTab() === 'create'">
-            {{ editingPurchaseOrderId() ? 'Edit Purchase Order' : 'Create Purchase Order' }}
-        </button>
-        <button (click)="activeTab.set('view'); loadPurchases()" class="tab-button"
-            [class.active]="activeTab() === 'view'">
-            View All Orders
-        </button>
+    <!-- Confirmation -->
+    <div *ngIf="confirmation().visible" class="confirmation-backdrop" (click)="confirmation().reject()">
+        <div class="confirmation-dialog glass-card p-6" (click)="$event.stopPropagation()">
+            <h3 class="text-xl font-bold mb-3">{{ confirmation().header }}</h3>
+            <p class="mb-6">{{ confirmation().message }}</p>
+            <div class="flex justify-end gap-3">
+                <p-button label="Cancel" severity="secondary" (onClick)="confirmation().reject()"
+                    class="h-11"></p-button>
+                <p-button label="Confirm" severity="danger" (onClick)="confirmation().accept()" class="h-11"></p-button>
+            </div>
+        </div>
     </div>
 
-    <div *ngIf="activeTab() === 'create'" class="animate-fade-in">
-        <form [formGroup]="purchaseForm">
-            <!-- Seller & Status -->
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-                <div>
-                    <label for="seller">Select Seller</label>
-                   <p-select appendTo="body"  id="seller" formControlName="seller" [options]="dropdownOptions.sellers"
-                        optionLabel="name" optionValue="_id" placeholder="Select a seller"
-                        styleClass="themed-select w-full" />
-                </div>
-                <div>
-                    <label for="status">Status</label>
-                   <p-select appendTo="body"  id="status" formControlName="status" [options]="statusOptions"
-                        placeholder="Select a status" styleClass="themed-select w-full" />
-                </div>
-            </div>
+    <!-- Main Card -->
+    <div class="glass-card rounded-xl shadow-xl p-6 md:p-8">
+        <!-- Title -->
+        <h2 class="text-2xl font-bold mb-6 flex items-center gap-3">
+            <i class="pi pi-shopping-cart text-[var(--theme-accent-primary)]"></i>
+            Purchase Order Management
+        </h2>
+        <!-- Tabs -->
+        <div class="flex border-b border-[var(--theme-border-primary)] mb-2 gap-4 overflow-x-auto">
+            <button (click)="activeTab.set('create')" class="tab-button" [class.active]="activeTab() === 'create'">
+                {{ editingPurchaseOrderId() ? 'Edit PO' : 'Create PO' }}
+            </button>
+            <button (click)="activeTab.set('view'); applyFilters()" class="tab-button"
+                [class.active]="activeTab() === 'view'">
+                View Orders
+            </button>
+        </div>
 
-            <!-- Products Table -->
-            <div class="mb-4">
-                <table class="w-full">
-                    <thead>
-                        <tr class="border-b">
-                            <th class="w-2/5 text-left p-2">Product</th>
-                            <th class="w-1/5 text-left p-2">Quantity</th>
-                            <th class="w-1/5 text-left p-2">Cost Price (INR)</th>
-                            <th class="w-1/5 text-right p-2">Total</th>
-                            <th class="w-auto p-2"></th>
-                        </tr>
-                    </thead>
-                    <tbody formArrayName="products">
-                        <tr *ngFor="let item of products.controls; let i = index" [formGroupName]="i" class="border-b">
-                            <td class="p-2">
-                               <p-select appendTo="body"  formControlName="product" [options]="dropdownOptions.products"
-                                    (onChange)="onProductChange(i)" optionLabel="title" optionValue="_id"
-                                    placeholder="Select a product" styleClass="themed-select w-full" />
-                            </td>
-                            <td class="p-2">
-                                <input type="number" formControlName="quantity" (input)="updateItemTotal(i)"
-                                    class="themed-input text-center">
-                            </td>
-                            <td class="p-2">
-                                <input type="number" formControlName="costPrice" (input)="updateItemTotal(i)"
-                                    class="themed-input text-right">
-                            </td>
-                            <td class="text-right font-semibold p-2">
-                                {{ products.at(i).get('total')?.value | currency:'INR' }}
-                            </td>
-                            <td class="text-center p-2">
-                                <button type="button" (click)="removeProduct(i)"
-                                    class="text-red-500 hover:text-red-700 p-2 font-bold text-xl">✕</button>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-                <button type="button" (click)="addProduct()" class="modern-button p-button-text mt-4">+ Add
-                    Product</button>
-            </div>
+        <!-- CREATE / EDIT -->
+        <div *ngIf="activeTab() === 'create'" class="animate-fade-in">
+            <form [formGroup]="purchaseForm" class="space-y-6">
+                <!-- Seller & Status -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="se-filter-field">
+                        <label class="block text-sm font-semibold mb-2">Seller</label>
+                        <p-select appendTo="body" formControlName="seller" [options]="dropdownOptions.sellers"
+                            optionLabel="name" optionValue="_id" placeholder="Select seller"
+                            styleClass="themed-select w-full h-12"></p-select>
+                    </div>
+                    <div class="se-filter-field">
+                        <label class="block text-sm font-semibold mb-2">Status</label>
+                        <p-select appendTo="body" formControlName="status" [options]="statusOptions"
+                            placeholder="Select status" styleClass="themed-select w-full h-12"></p-select>
+                    </div>
+                </div>
 
-            <!-- Form Actions -->
-            <div class="mt-6 flex justify-between items-center">
-                <div class="flex gap-4">
-                    <button type="button" (click)="savePurchase()" [disabled]="purchaseForm.invalid"
-                        class="modern-button">
-                        {{ editingPurchaseOrderId() ? 'Update Purchase Order' : 'Save Purchase Order' }}
-                    </button>
-                    <button *ngIf="editingPurchaseOrderId()" type="button" (click)="cancelEdit()"
-                        class="modern-button p-button-secondary">Cancel</button>
-                    <button *ngIf="!editingPurchaseOrderId()" type="button" (click)="resetForm()"
-                        class="modern-button p-button-secondary">Reset</button>
+                <!-- Products Table -->
+                <div class="glass-card-inner p-4 rounded-lg">
+                    <table class="w-full">
+                        <thead>
+                            <tr class="border-b border-[var(--theme-border-primary)]">
+                                <th class="text-left py-3 font-semibold">Product</th>
+                                <th class="text-left py-3 font-semibold">Qty</th>
+                                <th class="text-left py-3 font-semibold">Cost (INR)</th>
+                                <th class="text-right py-3 font-semibold">Total</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody formArrayName="products">
+                            <tr *ngFor="let item of products.controls; let i = index" [formGroupName]="i"
+                                class="border-b">
+                                <td class="py-3">
+                                    <p-select appendTo="body" formControlName="product"
+                                        [options]="dropdownOptions.products" (onChange)="onProductChange(i)"
+                                        optionLabel="title" optionValue="_id" placeholder="Select"
+                                        styleClass="themed-select w-full h-11"></p-select>
+                                </td>
+                                <td class="py-3">
+                                    <input type="number" formControlName="quantity" (input)="updateItemTotal(i)"
+                                        class="themed-input text-center h-11" min="1">
+                                </td>
+                                <td class="py-3">
+                                    <input type="number" formControlName="costPrice" (input)="updateItemTotal(i)"
+                                        class="themed-input text-right h-11" min="0">
+                                </td>
+                                <td class="text-right font-bold py-3 text-green-600">
+                                    {{ products.at(i).get('total')?.value | currency:'INR':'symbol':'1.0-0' }}
+                                </td>
+                                <td class="text-center py-3">
+                                    <button type="button" (click)="removeProduct(i)"
+                                        class="text-red-500 hover:text-red-700 text-xl">X</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <p-button label="Add Product" icon="pi pi-plus" severity="info" (onClick)="addProduct()"
+                        size="small" class="mt-4 h-11"></p-button>
                 </div>
-                <div class="font-bold text-xl retro-subheading">
-                    Grand Total: {{ getTotalAmount() | currency:'INR' }}
+
+                <!-- Actions -->
+                <div class="flex justify-between items-center mt-8">
+                    <div class="flex gap-3">
+                        <p-button [label]="editingPurchaseOrderId() ? 'Update' : 'Save'" icon="pi pi-save"
+                            severity="success" (onClick)="savePurchase()" [disabled]="purchaseForm.invalid"
+                            class="h-12 px-6"></p-button>
+                        <p-button *ngIf="editingPurchaseOrderId()" label="Cancel" icon="pi pi-times"
+                            severity="secondary" (onClick)="cancelEdit()" class="h-12"></p-button>
+                        <p-button *ngIf="!editingPurchaseOrderId()" label="Reset" icon="pi pi-refresh"
+                            severity="secondary" (onClick)="resetForm()" class="h-12"></p-button>
+                    </div>
+                    <div class="text-2xl font-bold text-[var(--theme-accent-primary)]">
+                        Total: {{ getTotalAmount() | currency:'INR':'symbol':'1.0-0' }}
+                    </div>
                 </div>
-            </div>
-        </form>
+            </form>
+        </div>
+
+        <!-- VIEW + FILTERS -->
+        <div *ngIf="activeTab() === 'view'" class="animate-fade-in">
+            <!-- FILTER BAR -->
+            <div class="se-filter-bar mb-6">
+    <div class="flex flex-wrap md:flex-nowrap items-center gap-4">
+
+      <!-- PO Number -->
+      <div class="se-filter-field flex-shrink-0">
+        <input pInputText [(ngModel)]="filters.poNumber" (input)="applyFilters()" placeholder="PO Number"
+          class="h-11 w-44 themed-input" />
+      </div>
+
+      <!-- Seller -->
+      <div class="se-filter-field flex-shrink-0">
+        <p-dropdown appendTo="body" [(ngModel)]="filters.seller" [options]="dropdownOptions.sellers" optionLabel="name"
+          optionValue="_id" placeholder="All Sellers" [showClear]="true" (onChange)="applyFilters()"
+          styleClass="h-11 w-52 themed-select"></p-dropdown>
+      </div>
+
+      <!-- Status -->
+      <div class="se-filter-field flex-shrink-0">
+        <p-dropdown appendTo="body" [(ngModel)]="filters.status" [options]="statusFilterOptions"
+          placeholder="All Status" [showClear]="true" (onChange)="applyFilters()"
+          styleClass="h-11 w-44 themed-select"></p-dropdown>
+      </div>
+
+      <!-- Date Range -->
+      <div class="flex items-center gap-2 flex-shrink-0">
+        <p-datepicker [(ngModel)]="filters.startDate" (onSelect)="applyFilters()" dateFormat="dd/mm/yy" [showIcon]="true"
+          placeholder="From" styleClass="h-11 w-40 themed-select" appendTo="body"></p-datepicker>
+        <span class="text-gray-400">to</span>
+        <p-datepicker [(ngModel)]="filters.endDate" (onSelect)="applyFilters()" dateFormat="dd/mm/yy" [showIcon]="true"
+          placeholder="To" styleClass="h-11 w-40 themed-select" appendTo="body"></p-datepicker>
+      </div>
+
+      <!-- Actions -->
+      <div class="se-filter-actions flex-shrink-0 flex gap-2">
+        <p-button label="Apply" icon="pi pi-check" severity="success" (onClick)="applyFilters()" size="small"
+          class="h-11"></p-button>
+        <p-button label="Reset" icon="pi pi-refresh" severity="secondary" (onClick)="resetFilters()" size="small"
+          class="h-11"></p-button>
+      </div>
     </div>
+  </div>
 
-    <div *ngIf="activeTab() === 'view'" class="animate-fade-in">
-        <table class="w-full mt-4">
-            <thead>
-                <tr class="border-b">
-                    <th class="text-left p-2">PO Number</th>
-                    <th class="text-left p-2">Seller</th>
-                    <th class="text-left p-2">Total Amount</th>
-                    <th class="text-left p-2">Status</th>
-                    <th class="text-left p-2">Date</th>
-                    <th class="text-center p-2">Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr *ngFor="let po of purchaseList" class="border-b hover:bg-gray-50">
-                    <td class="p-2">{{ po.poNumber }}</td>
-                    <td class="p-2">{{ po.sellerName }}</td>
-                    <td class="p-2">{{ po.totalAmount | currency:'INR' }}</td>
-                    <td class="p-2">
-                        <span class="px-2 py-1 rounded-full text-xs font-medium" [ngClass]="{
-                    'bg-yellow-100 text-yellow-800': po.status === 'Pending',
-                    'bg-green-100 text-green-800': po.status === 'Received',
-                    'bg-red-100 text-red-800': po.status === 'Cancelled'
-                  }">
-                            {{ po.status }}
-                        </span>
-                    </td>
-                    <td class="p-2">{{ po.poDate | date:'medium' }}</td>
-                    <td class="p-2 text-center">
-                        <div class="flex gap-2 justify-center">
-                            <button pButton type="button" icon="pi pi-pencil" (click)="editPurchaseOrder(po)"
-                                class="p-button-rounded p-button-info p-button-sm" pTooltip="Edit Order"
-                                tooltipPosition="top"></button>
-                            <button *ngIf="po.status === 'Pending'" pButton type="button" icon="pi pi-check"
-                                (click)="receiveStock(po)" class="p-button-rounded p-button-success p-button-sm"
-                                pTooltip="Receive Stock" tooltipPosition="top"></button>
-                            <button *ngIf="po.status === 'Pending'" pButton type="button" icon="pi pi-times"
-                                (click)="cancelPurchaseOrder(po)" class="p-button-rounded p-button-warning p-button-sm"
-                                pTooltip="Cancel Order" tooltipPosition="top"></button>
-                            <button pButton type="button" icon="pi pi-trash" (click)="deletePurchaseOrder(po)"
-                                class="p-button-rounded p-button-danger p-button-sm" pTooltip="Delete Order"
-                                tooltipPosition="top"></button>
-                        </div>
-                    </td>
-                </tr>
-                <tr *ngIf="purchaseList.length === 0">
-                    <td colspan="6" class="text-center p-6 text-gray-500">No purchase orders found.</td>
-                </tr>
-            </tbody>
-        </table>
+            <!-- TABLE -->
+            <p-table [value]="purchaseList" [loading]="loading" styleClass="p-datatable-sm" [rowHover]="true">
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th></th>
+                        <th>PO #</th>
+                        <th>Seller</th>
+                        <th>Shop</th>
+                        <th>GSTIN</th>
+                        <th>Total</th>
+                        <th>Status</th>
+                        <th>Date</th>
+                        <th class="text-center">Actions</th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-po let-expanded="expanded">
+                    <tr>
+                        <td>
+                            <button pButton type="button" [pRowToggler]="po"
+                                [icon]="expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'"
+                                class="p-button-text p-button-rounded p-button-plain"></button>
+                        </td>
+                        <td>{{ po.poNumber || po._id }}</td>
+                        <td>{{ po.seller?.name || 'N/A' }}</td>
+                        <td>{{ po.seller?.shopName || 'N/A' }}</td>
+                        <td class="font-mono text-xs">{{ po.seller?.gstin || 'N/A' }}</td>
+                        <td class="font-bold">{{ po.totalAmount | currency:'INR' }}</td>
+                        <td>
+                            <p-tag [value]="po.status" [severity]="getStatusSeverity(po.status)"></p-tag>
+                        </td>
+                        <td>{{ po.orderDate | date:'medium' }}</td>
+                        <td class="text-center">
+                            <div class="flex gap-1 justify-center">
+                                <p-button icon="pi pi-pencil" (onClick)="editPurchaseOrder(po)" severity="info"
+                                    size="small" pTooltip="Edit"></p-button>
+                                <p-button *ngIf="po.status === 'pending'" icon="pi pi-check"
+                                    (onClick)="receiveStock(po)" severity="success" size="small"
+                                    pTooltip="Receive"></p-button>
+                                <p-button *ngIf="po.status === 'pending'" icon="pi pi-times"
+                                    (onClick)="cancelPurchaseOrder(po)" size="small" pTooltip="Cancel"></p-button>
+                                <p-button icon="pi pi-trash" (onClick)="deletePurchaseOrder(po)" severity="danger"
+                                    size="small" pTooltip="Delete"></p-button>
+                            </div>
+                        </td>
+                    </tr>
+                </ng-template>
+
+                <!-- EXPANDED ROW -->
+                <ng-template pTemplate="rowexpansion" let-po>
+                    <tr>
+                        <td colspan="9" class="p-0">
+                            <div class="glass-card-inner p-5 m-4 rounded-lg">
+                                <h4 class="font-bold mb-3 text-lg">Items</h4>
+                                <table class="w-full text-sm">
+                                    <thead>
+                                        <tr class="border-b">
+                                            <th class="text-left py-2">Product</th>
+                                            <th class="text-center py-2">Qty</th>
+                                            <th class="text-right py-2">Cost</th>
+                                            <th class="text-right py-2">Total</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr *ngFor="let item of po.items" class="border-b">
+                                            <td class="py-2">{{ getProductName(item.product) }}</td>
+                                            <td class="text-center py-2">{{ item.quantity }}</td>
+                                            <td class="text-right py-2">{{ item.purchasePrice | currency:'INR' }}</td>
+                                            <td class="text-right py-2 font-medium">{{ item.quantity *
+                                                item.purchasePrice | currency:'INR' }}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </td>
+                    </tr>
+                </ng-template>
+
+                <ng-template pTemplate="emptymessage">
+                    <tr>
+                        <td colspan="9" class="text-center py-8 text-[var(--theme-text-muted)]">No purchase orders
+                            found.</td>
+                    </tr>
+                </ng-template>
+            </p-table>
+        </div>
     </div>
 </div>

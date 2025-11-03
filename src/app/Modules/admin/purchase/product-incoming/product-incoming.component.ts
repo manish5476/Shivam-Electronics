@@ -1,52 +1,68 @@
+import { Select } from 'primeng/select';
+// src/app/Modules/PurchaseOrder/product-incoming.component.ts
 import { Component, OnInit, inject, signal } from '@angular/core';
 import { CommonModule, CurrencyPipe } from '@angular/common';
-import { ReactiveFormsModule, FormBuilder, FormGroup, FormArray, Validators } from '@angular/forms';
+import { ReactiveFormsModule, FormBuilder, FormGroup, FormArray, Validators, FormsModule } from '@angular/forms';
 import { forkJoin } from 'rxjs';
 
-// PrimeNG Modules
+// PrimeNG
 import { ButtonModule } from 'primeng/button';
-import { Select } from 'primeng/select';
+import { DropdownModule } from 'primeng/dropdown';
+import { TableModule } from 'primeng/table';
+import { TagModule } from 'primeng/tag';
+import { TooltipModule } from 'primeng/tooltip';
+import { CalendarModule } from 'primeng/calendar';
+import { InputTextModule } from 'primeng/inputtext';
 
 // Services
 import { AutopopulateService } from '../../../../core/services/autopopulate.service';
 import { PurchaseorderService } from '../../../../core/services/purchaseorder.service';
+import { DatePicker } from 'primeng/datepicker';
 
 @Component({
   selector: 'app-product-incoming',
   standalone: true,
+  imports: [
+    CommonModule, ReactiveFormsModule, ButtonModule, DropdownModule, Select, DatePicker, FormsModule,
+    TableModule, TagModule, TooltipModule, CalendarModule, InputTextModule
+  ],
   providers: [CurrencyPipe],
   templateUrl: './product-incoming.component.html',
-  styleUrls: ['./product-incoming.component.css'],
-  imports: [
-    CommonModule,
-    ReactiveFormsModule,
-    ButtonModule,
-    Select
-  ]
+  styleUrls: ['./product-incoming.component.css']
 })
 export class PurchaseOrderDashboardComponent implements OnInit {
-
   purchaseForm!: FormGroup;
   purchaseList: any[] = [];
-  activeTab = signal('create');
-  // --- NEW: Signal to track the ID of the PO being edited ---
+  loading = false;
+  activeTab = signal<'create' | 'view'>('create');
   editingPurchaseOrderId = signal<string | null>(null);
 
-  public dropdownOptions = {
-    products: [] as any[],
-    sellers: [] as any[],
+  dropdownOptions = { products: [] as any[], sellers: [] as any[] };
+  statusOptions = [
+    { label: 'Pending', value: 'pending' },
+    { label: 'Received', value: 'received' },
+    { label: 'Cancelled', value: 'cancelled' }
+  ];
+  statusFilterOptions = [
+    { label: 'All', value: '' },
+    ...this.statusOptions
+  ];
+
+  // FILTERS
+  filters = {
+    poNumber: '',
+    seller: null as string | null,
+    status: '' as string,
+    startDate: null as Date | null,
+    endDate: null as Date | null
   };
 
-  // --- NEW: Status options for the dropdown ---
-  public statusOptions = ["pending", "completed", "cancelled"]
-
-  toast = signal({ visible: false, severity: 'success', summary: '', detail: '' });
+  toast = signal({ visible: false, severity: 'success' as 'success' | 'error' | 'warn', summary: '', detail: '' });
   confirmation = signal({ visible: false, header: '', message: '', accept: () => { }, reject: () => { } });
 
   private fb = inject(FormBuilder);
   private purchaseService = inject(PurchaseorderService);
   private autoPopulate = inject(AutopopulateService);
-  expandedRows = signal<{[key: string]: boolean}>({});
 
   ngOnInit(): void {
     this.initializeForm();
@@ -56,9 +72,8 @@ export class PurchaseOrderDashboardComponent implements OnInit {
   initializeForm() {
     this.purchaseForm = this.fb.group({
       seller: ['', Validators.required],
-      // --- MODIFIED: Added status FormControl ---
-      status: ['Pending', Validators.required],
-      products: this.fb.array([]),
+      status: ['pending', Validators.required],
+      products: this.fb.array([])
     });
     this.addProduct();
   }
@@ -68,11 +83,11 @@ export class PurchaseOrderDashboardComponent implements OnInit {
   }
 
   loadInitialData() {
-    this.autoPopulate.getModuleData('products').subscribe((data: any) => this.dropdownOptions.products = data);
-    this.autoPopulate.getModuleData('sellers').subscribe((data: any) => this.dropdownOptions.sellers = data);
+    this.autoPopulate.getModuleData('sellers').subscribe(data => this.dropdownOptions.sellers = data);
+    this.autoPopulate.getModuleData('products').subscribe(data => this.dropdownOptions.products = data);
   }
-  // --- Data Loading ---
-  // loadInitialData(): void {
+  
+  // loadInitialData() {
   //   forkJoin({
   //     products: this.autoPopulate.getModuleData('products'),
   //     sellers: this.autoPopulate.getModuleData('sellers')
@@ -80,226 +95,162 @@ export class PurchaseOrderDashboardComponent implements OnInit {
   //     next: ({ products, sellers }) => {
   //       this.dropdownOptions.products = products || [];
   //       this.dropdownOptions.sellers = sellers || [];
-  //       this.loadPurchases();
-  //     },
-  //     error: (err) => {
-  //       console.error('Failed to load dropdown data', err);
-  //       this.showToast('error', 'Load Error', 'Could not load sellers or products.');
   //     }
   //   });
   // }
 
-  // loadPurchases() {
-  //   this.purchaseService.getPurchaseOrders().subscribe((res: any) => {
-  //     const purchases = res.data || [];
-  //     this.purchaseList = purchases.map((p: any) => ({
-  //       ...p,
-  //       sellerName: this.dropdownOptions.sellers.find(s => s._id === p.seller)?.name || 'N/A',
-  //     }));
-  //   });
-  // }
-loadPurchases() {
-  this.purchaseService.getPurchaseOrders().subscribe((res: any) => {
-    const purchases = res.data || [];
-    this.purchaseList = purchases.map((order: any) => {
-      // Map over the items to add the product name
-      const mappedItems = order.items.map((item: any) => ({
-        ...item,
-        productName: this.dropdownOptions.products.find(p => p._id === item.product)?.title || 'Unknown Product'
-      }));
+  applyFilters() {
+    this.loading = true;
+    const params: any = {};
 
-      return {
-        ...order,
-        items: mappedItems, // Replace original items with mapped ones
-        sellerName: this.dropdownOptions.sellers.find(s => s._id === order.seller)?.name || 'Unknown Seller',
-      };
-    });
-  });
-}
+    if (this.filters.poNumber) params.poNumber = this.filters.poNumber;
+    if (this.filters.seller) params.seller = this.filters.seller;
+    if (this.filters.status) params.status = this.filters.status;
+    if (this.filters.startDate) params['orderDate[gte]'] = this.filters.startDate.toISOString().split('T')[0];
+    if (this.filters.endDate) params['orderDate[lte]'] = this.filters.endDate.toISOString().split('T')[0];
 
-  // --- NEW: Method to toggle the visibility of the detail row ---
-  toggleRow(poId: string) {
-    this.expandedRows.update(current => {
-        const newState = {...current};
-        // Toggle the boolean value for the given purchase order ID
-        newState[poId] = !newState[poId];
-        return newState;
+    this.purchaseService.getPurchaseOrders(params).subscribe({
+      next: (res: any) => {
+        this.purchaseList = (res.data || []).map((po: any) => ({
+          ...po,
+          poNumber: po.poNumber || po._id.slice(-6)
+        }));
+        this.loading = false;
+      },
+      error: () => {
+        this.showToast('error', 'Error', 'Failed to load orders.');
+        this.loading = false;
+      }
     });
   }
-  // --- Form Management ---
+
+  resetFilters() {
+    this.filters = { poNumber: '', seller: null, status: '', startDate: null, endDate: null };
+    this.applyFilters();
+  }
+
+  getProductName(id: string): string {
+    return this.dropdownOptions.products.find(p => p._id === id)?.title || 'Unknown';
+  }
+
+  // CRUD & Form
   createProductRow(): FormGroup {
     return this.fb.group({
       product: ['', Validators.required],
       quantity: [1, [Validators.required, Validators.min(1)]],
       costPrice: [0, [Validators.required, Validators.min(0)]],
-      total: [{ value: 0, disabled: true }],
+      total: [{ value: 0, disabled: true }]
     });
   }
 
-  addProduct() {
-    this.products.push(this.createProductRow());
-  }
+  addProduct() { this.products.push(this.createProductRow()); }
+  removeProduct(i: number) { this.products.removeAt(i); }
 
-  removeProduct(index: number) {
-    this.products.removeAt(index);
-  }
-
-  onProductChange(index: number) {
-    const selectedProductId = this.products.at(index).get('product')?.value;
-    const product = this.dropdownOptions.products.find(p => p._id === selectedProductId);
+  onProductChange(i: number) {
+    const id = this.products.at(i).get('product')?.value;
+    const product = this.dropdownOptions.products.find(p => p._id === id);
     if (product) {
-      this.products.at(index).patchValue({ costPrice: product.price || 0 });
-      this.updateItemTotal(index);
+      this.products.at(i).patchValue({ costPrice: product.price || 0 });
+      this.updateItemTotal(i);
     }
   }
 
-  updateItemTotal(index: number) {
-    const item = this.products.at(index).value;
+  updateItemTotal(i: number) {
+    const item = this.products.at(i).value;
     const total = (item.quantity || 0) * (item.costPrice || 0);
-    this.products.at(index).patchValue({ total }, { emitEvent: false });
+    this.products.at(i).patchValue({ total }, { emitEvent: false });
   }
 
   getTotalAmount(): number {
-    return this.products.controls.reduce((sum, item) => sum + (item.get('total')?.value || 0), 0);
+    return this.products.controls.reduce((sum, c) => sum + (c.get('total')?.value || 0), 0);
   }
 
   resetForm() {
-    // --- MODIFIED: Also reset the editing state ---
     this.editingPurchaseOrderId.set(null);
-    this.purchaseForm.reset();
+    this.purchaseForm.reset({ status: 'pending' });
     this.products.clear();
     this.addProduct();
-    // Set default status after reset
-    this.purchaseForm.patchValue({ status: 'Pending' });
   }
 
-  // --- NEW: Method to cancel editing and return to the view tab ---
   cancelEdit() {
     this.resetForm();
     this.activeTab.set('view');
   }
 
-
-  // --- CRUD Actions ---
-
-  // --- MODIFIED: savePurchase now handles both CREATE and UPDATE (Upsert) ---
   savePurchase() {
-    if (this.purchaseForm.invalid) {
-      this.showToast('warn', 'Validation Error', 'Please fill all required fields.');
-      return;
-    }
-    
-    const formValue = this.purchaseForm.getRawValue(); // Use getRawValue to include disabled controls
+    if (this.purchaseForm.invalid) return this.showToast('warn', 'Invalid', 'Fill all fields.');
+
     const payload = {
-      seller: formValue.seller,
-      status: formValue.status, // Get status from the form
-      items: formValue.products.map((p: any) => ({
+      seller: this.purchaseForm.value.seller,
+      status: this.purchaseForm.value.status,
+      items: this.purchaseForm.value.products.map((p: any) => ({
         product: p.product,
         quantity: p.quantity,
-        purchasePrice: p.costPrice // Map frontend 'costPrice' to backend 'purchasePrice'
-      })),
+        purchasePrice: p.costPrice
+      }))
     };
 
     const id = this.editingPurchaseOrderId();
+    const action$ = id
+      ? this.purchaseService.updatePurchaseOrder(id, payload)
+      : this.purchaseService.createPurchaseOrder(payload);
 
-    if (id) {
-      // --- UPDATE LOGIC ---
-      this.purchaseService.updatePurchaseOrder(id, payload).subscribe({
-        next: () => {
-          this.showToast('success', 'Success', 'Purchase order updated successfully!');
-          this.resetForm();
-          this.loadPurchases();
-          this.activeTab.set('view');
-        },
-        error: (err) => {
-          console.error("Update Purchase Error:", err);
-          this.showToast('error', 'Error', 'Could not update purchase order.');
-        }
-      });
-    } else {
-      // --- CREATE LOGIC ---
-      this.purchaseService.createPurchaseOrder(payload).subscribe({
-        next: () => {
-          this.showToast('success', 'Success', 'Purchase order created successfully!');
-          this.resetForm();
-          this.loadPurchases();
-          this.activeTab.set('view');
-        },
-        error: (err) => {
-          console.error("Save Purchase Error:", err);
-          this.showToast('error', 'Error', 'Could not create purchase order.');
-        }
-      });
-    }
+    action$.subscribe({
+      next: () => {
+        this.showToast('success', 'Success', id ? 'Updated!' : 'Created!');
+        this.resetForm();
+        this.activeTab.set('view');
+        this.applyFilters();
+      },
+      error: () => this.showToast('error', 'Error', 'Failed.')
+    });
   }
 
-  // --- NEW: Method to populate the form for editing a purchase order ---
   editPurchaseOrder(po: any) {
     this.editingPurchaseOrderId.set(po._id);
     this.activeTab.set('create');
-
-    // Clear existing products before populating
     this.products.clear();
-
     po.items.forEach((item: any) => {
       this.products.push(this.fb.group({
-        product: [item.product, [Validators.required]],
+        product: [item.product, Validators.required],
         quantity: [item.quantity, [Validators.required, Validators.min(1)]],
         costPrice: [item.purchasePrice, [Validators.required, Validators.min(0)]],
-        total: [{ value: item.quantity * item.purchasePrice, disabled: true }],
+        total: [{ value: item.quantity * item.purchasePrice, disabled: true }]
       }));
     });
-
-    this.purchaseForm.patchValue({
-      seller: po.seller,
-      status: po.status,
-    });
+    this.purchaseForm.patchValue({ seller: po.seller, status: po.status });
   }
 
-  receiveStock(po: any) {
-    this.purchaseService.receiveStock(po._id).subscribe({
-      next: () => {
-        this.showToast('success', 'Success', 'Stock received and inventory updated!');
-        this.loadPurchases();
-      },
-      error: (err) => {
-        console.error("Receive Stock Error:", err);
-        this.showToast('error', 'Error', 'Failed to update stock.');
-      }
-    });
-  }
+  receiveStock(po: any) { this.runAction('Receive', () => this.purchaseService.receiveStock(po._id)); }
+  cancelPurchaseOrder(po: any) { this.runAction('Cancel', () => this.purchaseService.updatePurchaseOrder(po._id, { status: 'cancelled' })); }
+  deletePurchaseOrder(po: any) { this.runAction('Delete', () => this.purchaseService.deletePurchaseOrder(po._id)); }
 
-  cancelPurchaseOrder(po: any) {
-    this.showConfirmation('Confirm Cancellation', `Are you sure you want to cancel PO #${po.poNumber}?`, () => {
-      this.purchaseService.updatePurchaseOrder(po._id, { status: 'Cancelled' }).subscribe({
-        next: () => {
-          this.showToast('success', 'Cancelled', `PO #${po.poNumber} has been cancelled.`);
-          this.loadPurchases();
-        },
-        error: (err) => {
-          console.error("Cancel PO Error:", err);
-          this.showToast('error', 'Error', 'Could not cancel the purchase order.');
-        }
+  private runAction(action: string, apiCall: () => any) {
+    this.showConfirmation(`Confirm ${action}`, `Are you sure?`, () => {
+      apiCall().subscribe({
+        next: () => { this.showToast('success', 'Success', `${action}d!`); this.applyFilters(); },
+        error: () => this.showToast('error', 'Error', 'Failed.')
       });
     });
   }
 
-  deletePurchaseOrder(po: any) {
-    this.showConfirmation('Confirm Deletion', `Are you sure you want to permanently delete PO #${po.poNumber}? This cannot be undone.`, () => {
-      this.purchaseService.deletePurchaseOrder(po._id).subscribe({
-        next: () => {
-          this.showToast('success', 'Deleted', `PO #${po.poNumber} has been deleted.`);
-          this.loadPurchases();
-        },
-        error: (err) => {
-          console.error("Delete PO Error:", err);
-          this.showToast('error', 'Error', 'Could not delete the purchase order.');
-        }
-      });
-    });
+  getStatusSeverity(status: string): 'success' | 'warning' | 'danger' | 'info' {
+    return status === 'received' ? 'success' : status === 'pending' ? 'warning' : 'danger';
   }
 
-  // --- UI Helpers ---
+  toastClass() {
+    return {
+      'toast-success': this.toast().severity === 'success',
+      'toast-error': this.toast().severity === 'error',
+      'toast-warn': this.toast().severity === 'warn'
+    };
+  }
+
+  toastIcon() {
+    return this.toast().severity === 'success' ? 'pi pi-check-circle' :
+      this.toast().severity === 'error' ? 'pi pi-times-circle' : 'pi pi-exclamation-triangle';
+  }
+
   showToast(severity: 'success' | 'error' | 'warn', summary: string, detail: string) {
     this.toast.set({ visible: true, severity, summary, detail });
     setTimeout(() => this.toast.set({ ...this.toast(), visible: false }), 4000);
@@ -307,57 +258,67 @@ loadPurchases() {
 
   showConfirmation(header: string, message: string, accept: () => void) {
     this.confirmation.set({
-      visible: true, header, message, accept: () => {
-        accept();
-        this.confirmation.set({ ...this.confirmation(), visible: false });
-      },
-      reject: () => {
-        this.confirmation.set({ ...this.confirmation(), visible: false });
-      }
+      visible: true, header, message,
+      accept: () => { accept(); this.confirmation.set({ ...this.confirmation(), visible: false }); },
+      reject: () => this.confirmation.set({ ...this.confirmation(), visible: false })
     });
   }
 }
+
+// // src/app/Modules/PurchaseOrder/product-incoming.component.ts
 // import { Component, OnInit, inject, signal } from '@angular/core';
 // import { CommonModule, CurrencyPipe } from '@angular/common';
 // import { ReactiveFormsModule, FormBuilder, FormGroup, FormArray, Validators } from '@angular/forms';
 // import { forkJoin } from 'rxjs';
 
-// // PrimeNG Modules
+// // PrimeNG
 // import { ButtonModule } from 'primeng/button';
-// import { Select } from 'primeng/select'; // Corrected import for p-select
+// import { DropdownModule } from 'primeng/dropdown';
+// import { TableModule } from 'primeng/table';
+// import { TagModule } from 'primeng/tag';
+// import { TooltipModule } from 'primeng/tooltip';
+// import { ToastModule } from 'primeng/toast';
+// import { ConfirmDialogModule } from 'primeng/confirmdialog';
 
 // // Services
 // import { AutopopulateService } from '../../../../core/services/autopopulate.service';
 // import { PurchaseorderService } from '../../../../core/services/purchaseorder.service';
+// import { Select } from 'primeng/select';
 
 // @Component({
 //   selector: 'app-product-incoming',
 //   standalone: true,
 //   providers: [CurrencyPipe],
-//   templateUrl: './product-incoming.component.html',
-//   styleUrls: ['./product-incoming.component.css'],
 //   imports: [
-//     CommonModule,
+//     CommonModule,Select,
 //     ReactiveFormsModule,
 //     ButtonModule,
-//     Select
-//   ]
+//     DropdownModule,
+//     TableModule,
+//     TagModule,
+//     TooltipModule,
+//     ToastModule,
+//     ConfirmDialogModule
+//   ],
+//   templateUrl: './product-incoming.component.html',
+//   styleUrls: ['./product-incoming.component.css']
 // })
 // export class PurchaseOrderDashboardComponent implements OnInit {
-
 //   purchaseForm!: FormGroup;
 //   purchaseList: any[] = [];
-//   activeTab = signal('create');
+//   loading = false;
+//   activeTab = signal<'create' | 'view'>('create');
+//   editingPurchaseOrderId = signal<string | null>(null);
 
-//   public dropdownOptions = {
-//     products: [] as any[],
-//     sellers: [] as any[],
-//   };
+//   dropdownOptions = { products: [] as any[], sellers: [] as any[] };
+//   statusOptions = [
+//     { label: 'Pending', value: 'Pending' },
+//     { label: 'Received', value: 'Received' },
+//     { label: 'Cancelled', value: 'Cancelled' }
+//   ];
 
-//   public statusOptions = ['Pending', 'Received', 'Cancelled'];
-
-//   toast = signal({ visible: false, severity: 'success', summary: '', detail: '' });
-//   confirmation = signal({ visible: false, header: '', message: '', accept: () => { }, reject: () => { } });
+//   toast = signal({ visible: false, severity: 'success' as 'success'|'error'|'warn', summary: '', detail: '' });
+//   confirmation = signal({ visible: false, header: '', message: '', accept: () => {}, reject: () => {} });
 
 //   private fb = inject(FormBuilder);
 //   private purchaseService = inject(PurchaseorderService);
@@ -365,56 +326,52 @@ loadPurchases() {
 
 //   ngOnInit(): void {
 //     this.initializeForm();
-//     this.loadDropdownData()
 //     this.loadInitialData();
 //   }
 
 //   initializeForm() {
 //     this.purchaseForm = this.fb.group({
 //       seller: ['', Validators.required],
+//       status: ['Pending', Validators.required],
 //       products: this.fb.array([]),
 //     });
 //     this.addProduct();
-//   }
-
-//   loadDropdownData() {
-//     this.autoPopulate.getModuleData('products').subscribe((data: any) => this.dropdownOptions.products = data);
-//     this.autoPopulate.getModuleData('sellers').subscribe((data: any) => this.dropdownOptions.sellers = data);
 //   }
 
 //   get products(): FormArray {
 //     return this.purchaseForm.get('products') as FormArray;
 //   }
 
-//   // --- Data Loading ---
-//   loadInitialData(): void {
-//     forkJoin({
-//       products: this.autoPopulate.getModuleData('products'),
-//       sellers: this.autoPopulate.getModuleData('sellers')
-//     }).subscribe({
-//       next: ({ products, sellers }) => {
-//         this.dropdownOptions.products = products || [];
-//         this.dropdownOptions.sellers = sellers || [];
-//         this.loadPurchases(); // Now load purchases safely
+//   loadInitialData() {
+//         this.autoPopulate.getModuleData('sellers').subscribe(data => this.dropdownOptions.sellers = data);
+//             this.autoPopulate.getModuleData('products').subscribe(data =>this.dropdownOptions.products  = data);
+//   }
+
+//   loadPurchases() {
+//     this.loading = true;
+//     this.purchaseService.getPurchaseOrders().subscribe({
+//       next: (res: any) => {
+//         const purchases = res.data || [];
+//         this.purchaseList = purchases.map((order: any) => {
+//           const mappedItems = order.items.map((item: any) => ({
+//             ...item,
+//             productName: this.dropdownOptions.products.find(p => p._id === item.product)?.title || 'Unknown'
+//           }));
+//           return {
+//             ...order,
+//             items: mappedItems,
+//             sellerName: this.dropdownOptions.sellers.find(s => s._id === order.seller)?.name || 'Unknown',
+//           };
+//         });
+//         this.loading = false;
 //       },
-//       error: (err) => {
-//         console.error('Failed to load dropdown data', err);
-//         this.showToast('error', 'Load Error', 'Could not load sellers or products.');
+//       error: () => {
+//         this.showToast('error', 'Error', 'Failed to load purchase orders.');
+//         this.loading = false;
 //       }
 //     });
 //   }
 
-//   loadPurchases() {
-//     this.purchaseService.getPurchaseOrders().subscribe((res: any) => {
-//       const purchases = res.data || [];
-//       this.purchaseList = purchases.map((p: any) => ({
-//         ...p,
-//         sellerName: this.dropdownOptions.sellers.find(s => s._id === p.seller)?.name || 'N/A',
-//       }));
-//     });
-//   }
-
-//   // --- Form Management ---
 //   createProductRow(): FormGroup {
 //     return this.fb.group({
 //       product: ['', Validators.required],
@@ -424,162 +381,116 @@ loadPurchases() {
 //     });
 //   }
 
-//   addProduct() {
-//     this.products.push(this.createProductRow());
-//   }
+//   addProduct() { this.products.push(this.createProductRow()); }
+//   removeProduct(i: number) { this.products.removeAt(i); }
 
-//   removeProduct(index: number) {
-//     this.products.removeAt(index);
-//   }
-
-//   onProductChange(index: number) {
-//     const selectedProductId = this.products.at(index).get('product')?.value;
-//     const product = this.dropdownOptions.products.find(p => p._id === selectedProductId);
+//   onProductChange(i: number) {
+//     const id = this.products.at(i).get('product')?.value;
+//     const product = this.dropdownOptions.products.find(p => p._id === id);
 //     if (product) {
-//       this.products.at(index).patchValue({ costPrice: product.costPrice || 0 });
-//       this.updateItemTotal(index);
+//       this.products.at(i).patchValue({ costPrice: product.price || 0 });
+//       this.updateItemTotal(i);
 //     }
 //   }
 
-//   updateItemTotal(index: number) {
-//     const item = this.products.at(index).value;
+//   updateItemTotal(i: number) {
+//     const item = this.products.at(i).value;
 //     const total = (item.quantity || 0) * (item.costPrice || 0);
-//     this.products.at(index).patchValue({ total }, { emitEvent: false });
+//     this.products.at(i).patchValue({ total }, { emitEvent: false });
 //   }
 
 //   getTotalAmount(): number {
-//     return this.products.controls.reduce((sum, item) => sum + (item.get('total')?.value || 0), 0);
+//     return this.products.controls.reduce((sum, ctrl) => sum + (ctrl.get('total')?.value || 0), 0);
 //   }
 
 //   resetForm() {
-//     this.purchaseForm.reset();
+//     this.editingPurchaseOrderId.set(null);
+//     this.purchaseForm.reset({ status: 'Pending' });
 //     this.products.clear();
 //     this.addProduct();
 //   }
 
-//   // --- CRUD Actions ---
-//   // savePurchase() {
-//   //   if (this.purchaseForm.invalid) {
-//   //     this.showToast('warn', 'Validation Error', 'Please fill all required fields.');
-//   //     return;
-//   //   }
-//   //   const formValue = this.purchaseForm.value;
-//   //   const payload = {
-//   //     seller: formValue.seller,
-//   //     status: 'Pending', // Default status on creation
-//   //     items: formValue.products.map((p: any) => ({
-//   //       product: p.product,
-//   //       quantity: p.quantity,
-//   //       costPrice: p.costPrice
-//   //     })),
-//   //     totalAmount: this.getTotalAmount(),
-//   //   };
+//   cancelEdit() {
+//     this.resetForm();
+//     this.activeTab.set('view');
+//   }
 
-//   //   this.purchaseService.createPurchaseOrder(payload).subscribe({
-//   //     next: () => {
-//   //       this.showToast('success', 'Success', 'Purchase order created successfully!');
-//   //       this.resetForm();
-//   //       this.loadPurchases();
-//   //       this.activeTab.set('view');
-//   //     },
-//   //     error: (err) => {
-//   //       console.error("Save Purchase Error:", err);
-//   //       this.showToast('error', 'Error', 'Could not create purchase order.');
-//   //     }
-//   //   });
-//   // }
-// // in product-incoming.component.ts
+//   savePurchase() {
+//     if (this.purchaseForm.invalid) return this.showToast('warn', 'Invalid', 'Please fill all required fields.');
 
-// savePurchase() {
-//     if (this.purchaseForm.invalid) {
-//       this.showToast('warn', 'Validation Error', 'Please fill all required fields.');
-//       return;
-//     }
-//     const formValue = this.purchaseForm.value;
 //     const payload = {
-//       seller: formValue.seller,
-//       status: 'Pending', // Default status on creation
-//       items: formValue.products.map((p: any) => ({
+//       seller: this.purchaseForm.value.seller,
+//       status: this.purchaseForm.value.status,
+//       items: this.purchaseForm.value.products.map((p: any) => ({
 //         product: p.product,
 //         quantity: p.quantity,
-//         // CORRECTED: Changed 'costPrice' to 'purchasePrice' to match the backend
 //         purchasePrice: p.costPrice
-//       })),
-//       // The totalAmount is calculated on the backend, so we don't need to send it.
-//       // Your controller recalculates it anyway for security.
+//       }))
 //     };
 
-//     this.purchaseService.createPurchaseOrder(payload).subscribe({
+//     const id = this.editingPurchaseOrderId();
+//     const action$ = id
+//       ? this.purchaseService.updatePurchaseOrder(id, payload)
+//       : this.purchaseService.createPurchaseOrder(payload);
+
+//     action$.subscribe({
 //       next: () => {
-//         this.showToast('success', 'Success', 'Purchase order created successfully!');
+//         this.showToast('success', 'Success', id ? 'Updated!' : 'Created!');
 //         this.resetForm();
-//         this.loadPurchases();
 //         this.activeTab.set('view');
-//       },
-//       error: (err) => {
-//         console.error("Save Purchase Error:", err);
-//         this.showToast('error', 'Error', 'Could not create purchase order.');
-//       }
-//     });
-//   }
-//   receiveStock(po: any) {
-//     this.purchaseService.receiveStock(po._id).subscribe({
-//       next: () => {
-//         this.showToast('success', 'Success', 'Stock received and inventory updated!');
 //         this.loadPurchases();
 //       },
-//       error: (err) => {
-//         console.error("Receive Stock Error:", err);
-//         this.showToast('error', 'Error', 'Failed to update stock.');
-//       }
+//       error: () => this.showToast('error', 'Error', 'Operation failed.')
 //     });
 //   }
 
-//   cancelPurchaseOrder(po: any) {
-//     this.showConfirmation('Confirm Cancellation', `Are you sure you want to cancel PO #${po.poNumber}?`, () => {
-//       this.purchaseService.updatePurchaseOrder(po._id, { status: 'Cancelled' }).subscribe({
-//         next: () => {
-//           this.showToast('success', 'Cancelled', `PO #${po.poNumber} has been cancelled.`);
-//           this.loadPurchases();
-//         },
-//         error: (err) => {
-//           console.error("Cancel PO Error:", err);
-//           this.showToast('error', 'Error', 'Could not cancel the purchase order.');
-//         }
+//   editPurchaseOrder(po: any) {
+//     this.editingPurchaseOrderId.set(po._id);
+//     this.activeTab.set('create');
+//     this.products.clear();
+//     po.items.forEach((item: any) => {
+//       this.products.push(this.fb.group({
+//         product: [item.product, Validators.required],
+//         quantity: [item.quantity, [Validators.required, Validators.min(1)]],
+//         costPrice: [item.purchasePrice, [Validators.required, Validators.min(0)]],
+//         total: [{ value: item.quantity * item.purchasePrice, disabled: true }]
+//       }));
+//     });
+//     this.purchaseForm.patchValue({ seller: po.seller, status: po.status });
+//   }
+
+//   receiveStock(po: any) { this.runWithConfirm('Receive Stock', `Receive PO #${po.poNumber}?`, () => this.purchaseService.receiveStock(po._id)); }
+//   cancelPurchaseOrder(po: any) { this.runWithConfirm('Cancel Order', `Cancel PO #${po.poNumber}?`, () => this.purchaseService.updatePurchaseOrder(po._id, { status: 'Cancelled' })); }
+//   deletePurchaseOrder(po: any) { this.runWithConfirm('Delete Order', `Delete PO #${po.poNumber} permanently?`, () => this.purchaseService.deletePurchaseOrder(po._id)); }
+
+//   private runWithConfirm(header: string, message: string, action: () => any) {
+//     this.showConfirmation(header, message, () => {
+//       action().subscribe({
+//         next: () => { this.showToast('success', 'Success', 'Done!'); this.loadPurchases(); },
+//         error: () => this.showToast('error', 'Error', 'Failed.')
 //       });
 //     });
 //   }
 
-//   deletePurchaseOrder(po: any) {
-//     this.showConfirmation('Confirm Deletion', `Are you sure you want to permanently delete PO #${po.poNumber}? This cannot be undone.`, () => {
-//       this.purchaseService.deletePurchaseOrder(po._id).subscribe({
-//         next: () => {
-//           this.showToast('success', 'Deleted', `PO #${po.poNumber} has been deleted.`);
-//           this.loadPurchases();
-//         },
-//         error: (err) => {
-//           console.error("Delete PO Error:", err);
-//           this.showToast('error', 'Error', 'Could not delete the purchase order.');
-//         }
-//       });
-//     });
+//   getStatusSeverity(status: string): 'success' | 'warning' | 'danger' | 'info' {
+//     return status === 'Received' ? 'success' : status === 'Pending' ? 'warning' : 'danger';
 //   }
 
-//   // --- UI Helpers ---
-//   showToast(severity: 'success' | 'error' | 'warn', summary: string, detail: string) {
+//   toastIcon() {
+//     return this.toast().severity === 'success' ? 'pi pi-check-circle' :
+//            this.toast().severity === 'error' ? 'pi pi-times-circle' : 'pi pi-exclamation-triangle';
+//   }
+
+//   showToast(severity: 'success'|'error'|'warn', summary: string, detail: string) {
 //     this.toast.set({ visible: true, severity, summary, detail });
 //     setTimeout(() => this.toast.set({ ...this.toast(), visible: false }), 4000);
 //   }
 
 //   showConfirmation(header: string, message: string, accept: () => void) {
 //     this.confirmation.set({
-//       visible: true, header, message, accept: () => {
-//         accept();
-//         this.confirmation.set({ ...this.confirmation(), visible: false });
-//       },
-//       reject: () => {
-//         this.confirmation.set({ ...this.confirmation(), visible: false });
-//       }
+//       visible: true, header, message,
+//       accept: () => { accept(); this.confirmation.set({ ...this.confirmation(), visible: false }); },
+//       reject: () => this.confirmation.set({ ...this.confirmation(), visible: false })
 //     });
 //   }
 // }
