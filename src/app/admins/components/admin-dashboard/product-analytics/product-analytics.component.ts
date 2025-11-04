@@ -11,6 +11,9 @@ import { TagModule } from 'primeng/tag';
   styleUrls: ['./product-analytics.component.css']
 })
 export class ProductAnalyticsComponent {
+onImageError($event: ErrorEvent) {
+throw new Error('Method not implemented.');
+}
   @Input() data: any
   @Input() loading: boolean = false;
 

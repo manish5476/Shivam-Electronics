@@ -1,42 +1,40 @@
 <div *ngIf="data; else noDataOrLoading" class="payment-analytics-page">
-
-  <!-- Header -->
+  <!-- 🔹 Header -->
   <header class="page-header">
-    <div>
-      <h5 class="page-title">💰 Payment & Collection Analytics</h5>
-      <p class="page-subtitle">Track collections, billing, and payment performance with real-time insights.</p>
+    <div class="header-left">
+      <h1 class="page-title">Payment & Collection Analytics</h1>
+      <p class="page-subtitle">
+        Track collections, billing, and payment performance with real-time insights.
+      </p>
     </div>
+    <i class="pi pi-wallet header-icon"></i>
   </header>
 
-  <!-- KPI Section -->
+  <!-- 🔹 KPI Summary -->
   <div class="kpi-grid">
     <div class="summary-kpi-card">
-      <div class="kpi-icon-wrapper bg-[var(--theme-success-light)]">
-        <i class="pi pi-check-circle text-[var(--theme-success-primary)]"></i>
+      <div class="kpi-icon-wrapper" style="background: var(--theme-success-light)">
+        <i class="pi pi-check-circle" style="color: var(--theme-success-primary)"></i>
       </div>
       <div class="kpi-content">
-        <span class="kpi-value">
-          {{ data.financialHealth.totalCollected | currency:'INR':'symbol':'1.0-0' }}
-        </span>
+        <span class="kpi-value">{{ data.financialHealth.totalCollected | currency:'INR':'symbol':'1.0-0' }}</span>
         <span class="kpi-label">Total Collected</span>
       </div>
     </div>
 
     <div class="summary-kpi-card">
-      <div class="kpi-icon-wrapper bg-[var(--theme-info-light)]">
-        <i class="pi pi-file-import text-[var(--theme-info-primary)]"></i>
+      <div class="kpi-icon-wrapper" style="background: var(--theme-info-light)">
+        <i class="pi pi-file-import" style="color: var(--theme-info-primary)"></i>
       </div>
       <div class="kpi-content">
-        <span class="kpi-value">
-          {{ data.financialHealth.totalBilled | currency:'INR':'symbol':'1.0-0' }}
-        </span>
+        <span class="kpi-value">{{ data.financialHealth.totalBilled | currency:'INR':'symbol':'1.0-0' }}</span>
         <span class="kpi-label">Total Billed</span>
       </div>
     </div>
 
     <div class="summary-kpi-card">
-      <div class="kpi-icon-wrapper bg-[var(--theme-error-light)]">
-        <i class="pi pi-times-circle text-[var(--theme-error-primary)]"></i>
+      <div class="kpi-icon-wrapper" style="background: var(--theme-error-light)">
+        <i class="pi pi-times-circle" style="color: var(--theme-error-primary)"></i>
       </div>
       <div class="kpi-content">
         <span class="kpi-value">{{ data.failedPayments.count }}</span>
@@ -45,32 +43,37 @@
     </div>
   </div>
 
-  <!-- Main Content -->
+  <!-- 🔹 Main Grid -->
   <div class="main-content-grid">
-    <!-- Collection Trends -->
-    <div class="se-card">
-      <h3 class="card-header">📈 Collection Trends</h3>
+    <!-- 📈 Collection Trends -->
+    <div class="se-card fade-in">
+      <div class="card-header">
+        <h3>Collection Trends</h3>
+        <i class="pi pi-chart-line card-icon"></i>
+      </div>
       <div class="chart-container large-chart">
         <ngx-charts-area-chart
-            [results]="collectionTrendData"
-            [scheme]="lineChartColorScheme"
-            [gradient]="true"
-            [xAxis]="true"
-            [yAxis]="true"
-            [legend]="false"
-            [showXAxisLabel]="true"
-            xAxisLabel="Date"
-            [showYAxisLabel]="true"
-            yAxisLabel="Amount Collected">
+          [results]="collectionTrendData"
+          [scheme]="lineChartColorScheme"
+          [gradient]="true"
+          [xAxis]="true"
+          [yAxis]="true"
+          [legend]="false"
+          [showXAxisLabel]="true"
+          xAxisLabel="Date"
+          [showYAxisLabel]="true"
+          yAxisLabel="Amount Collected">
         </ngx-charts-area-chart>
       </div>
     </div>
 
-    <!-- Sidebar -->
-    <div class="insight-sidebar">
-      <!-- Payment Methods -->
+    <!-- 📊 Sidebar Insights -->
+    <div class="insight-sidebar slide-up">
       <div class="se-card">
-        <h3 class="card-header">💳 Payment Methods</h3>
+        <div class="card-header">
+          <h3>Payment Methods</h3>
+          <i class="pi pi-credit-card card-icon"></i>
+        </div>
         <div class="chart-container small-chart">
           <ngx-charts-pie-chart
             [results]="paymentMethodData"
@@ -83,9 +86,11 @@
         </div>
       </div>
 
-      <!-- Collection Rate -->
       <div class="se-card center-content">
-        <h3 class="card-header">⚡ Collection Rate</h3>
+        <div class="card-header">
+          <h3>Collection Rate</h3>
+          <i class="pi pi-percentage card-icon"></i>
+        </div>
         <div class="chart-container gauge-chart">
           <ngx-charts-gauge
             [results]="collectionRateData"
@@ -94,7 +99,7 @@
             [max]="120"
             [angleSpan]="180"
             [startAngle]="-90"
-            [units]="'%' "
+            [units]="'%'"
             [showAxis]="true">
           </ngx-charts-gauge>
         </div>
@@ -103,11 +108,10 @@
   </div>
 </div>
 
-<!-- Fallback -->
+<!-- 🔹 Fallback -->
 <ng-template #noDataOrLoading>
-  <div class="flex justify-center items-center h-screen">
-    <p class="text-xl" [style.color]="'var(--theme-text-secondary)'">
-      Payment analytics are currently unavailable.
-    </p>
+  <div class="no-data-state">
+    <i class="pi pi-exclamation-triangle"></i>
+    <p>Payment analytics are currently unavailable.</p>
   </div>
 </ng-template>

@@ -1,61 +1,71 @@
-<div class="se-widget-container" *ngIf="loading && data; else loadingOrNoData">
-  <!-- KPI Grid - Enhanced with subtle gradients and hover lifts -->
-  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
-    <div class="kpi-card-enhanced">
-      <div class="kpi-header">
-        <i class="pi pi-dollar kpi-icon" [style.color]="getKpiColor('revenue')"></i>
-        <h3 class="kpi-title">Total Revenue</h3>
-      </div>
-      <p class="kpi-value">{{ data.kpiSummary.totalRevenue.value | currency:'INR':'symbol':'1.0-0' }}</p>
-      <div class="kpi-footer">
-        <p-tag [value]="formatPercent(data.kpiSummary.totalRevenue.change)"
-               [severity]="getChangeSeverity(data.kpiSummary.totalRevenue.change)"></p-tag>
-      </div>
-      <!-- Optional: Mini sparkline chart wrapper (add if you have chart data) -->
-      <div class="kpi-chart-wrapper">
-        <!-- Insert sparkline here, e.g., <canvas> or PrimeNG chart -->
-      </div>
-    </div>
 
-    <div class="kpi-card-enhanced">
-      <div class="kpi-header">
-        <i class="pi pi-shopping-cart kpi-icon" [style.color]="getKpiColor('sales')"></i>
-        <h3 class="kpi-title">Total Sales</h3>
+<div class="se-widget-container" *ngIf="data; else loadingOrNoData">
+  <!-- 🔹 KPI Grid -->
+  <div class="kpi-grid-container mb-8">
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+      
+      <!-- Revenue -->
+      <div class="kpi-card-enhanced">
+        <div class="kpi-header">
+          <i class="pi pi-dollar kpi-icon" [style.color]="getKpiColor('revenue')"></i>
+          <h3 class="kpi-title">Total Revenue</h3>
+        </div>
+        <p class="kpi-value">
+          {{ data.kpiSummary.totalRevenue.value | currency:'INR':'symbol':'1.0-0' }}
+        </p>
+        <div class="kpi-footer">
+          <p-tag [value]="formatPercent(data.kpiSummary.totalRevenue.change)"
+                 [severity]="getChangeSeverity(data.kpiSummary.totalRevenue.change)"></p-tag>
+        </div>
+        <div class="kpi-sparkline-placeholder"></div>
       </div>
-      <p class="kpi-value">{{ data.kpiSummary.totalSales.value | number:'1.0-0' }}</p>
-      <div class="kpi-footer">
-        <p-tag [value]="formatPercent(data.kpiSummary.totalSales.change)"
-               [severity]="getChangeSeverity(data.kpiSummary.totalSales.change)"></p-tag>
-      </div>
-    </div>
 
-    <div class="kpi-card-enhanced">
-      <div class="kpi-header">
-        <i class="pi pi-chart-bar kpi-icon" [style.color]="getKpiColor('profit')"></i>
-        <h3 class="kpi-title">Gross Profit</h3>
+      <!-- Sales -->
+      <div class="kpi-card-enhanced">
+        <div class="kpi-header">
+          <i class="pi pi-shopping-cart kpi-icon" [style.color]="getKpiColor('sales')"></i>
+          <h3 class="kpi-title">Total Sales</h3>
+        </div>
+        <p class="kpi-value">{{ data.kpiSummary.totalSales.value | number:'1.0-0' }}</p>
+        <div class="kpi-footer">
+          <p-tag [value]="formatPercent(data.kpiSummary.totalSales.change)"
+                 [severity]="getChangeSeverity(data.kpiSummary.totalSales.change)"></p-tag>
+        </div>
       </div>
-      <p class="kpi-value">{{ data.kpiSummary.grossProfit.value | currency:'INR':'symbol':'1.0-0' }}</p>
-      <div class="kpi-footer">
-        <p-tag [value]="formatPercent(data.kpiSummary.grossProfit.change)"
-               [severity]="getChangeSeverity(data.kpiSummary.grossProfit.change)"></p-tag>
-      </div>
-    </div>
 
-    <div class="kpi-card-enhanced">
-      <div class="kpi-header">
-        <i class="pi pi-users kpi-icon" [style.color]="getKpiColor('customers')"></i>
-        <h3 class="kpi-title">New Customers</h3>
+      <!-- Profit -->
+      <div class="kpi-card-enhanced">
+        <div class="kpi-header">
+          <i class="pi pi-chart-bar kpi-icon" [style.color]="getKpiColor('profit')"></i>
+          <h3 class="kpi-title">Gross Profit</h3>
+        </div>
+        <p class="kpi-value">
+          {{ data.kpiSummary.grossProfit.value | currency:'INR':'symbol':'1.0-0' }}
+        </p>
+        <div class="kpi-footer">
+          <p-tag [value]="formatPercent(data.kpiSummary.grossProfit.change)"
+                 [severity]="getChangeSeverity(data.kpiSummary.grossProfit.change)"></p-tag>
+        </div>
       </div>
-      <p class="kpi-value">{{ data.kpiSummary.newCustomers.value | number:'1.0-0' }}</p>
-      <div class="kpi-footer">
-        <p-tag [value]="formatPercent(data.kpiSummary.newCustomers.change)"
-               [severity]="getChangeSeverity(data.kpiSummary.newCustomers.change)"></p-tag>
+
+      <!-- Customers -->
+      <div class="kpi-card-enhanced">
+        <div class="kpi-header">
+          <i class="pi pi-users kpi-icon" [style.color]="getKpiColor('customers')"></i>
+          <h3 class="kpi-title">New Customers</h3>
+        </div>
+        <p class="kpi-value">{{ data.kpiSummary.newCustomers.value | number:'1.0-0' }}</p>
+        <div class="kpi-footer">
+          <p-tag [value]="formatPercent(data.kpiSummary.newCustomers.change)"
+                 [severity]="getChangeSeverity(data.kpiSummary.newCustomers.change)"></p-tag>
+        </div>
       </div>
     </div>
   </div>
 
-  <!-- TabView - Refactored for better spacing and glassmorphism -->
-  <p-tabView styleClass="se-tabview" >
+  <!-- 🔹 Insights Section -->
+  <p-tabView styleClass="se-tabview mt-8">
+    <!-- Customer Insights -->
     <p-tabPanel header="Customer Insights">
       <div class="insight-grid">
         <div class="insight-card">
@@ -74,13 +84,14 @@
           <span class="insight-label">At-Risk Customers</span>
           <p-tag [value]="data.customerInsights.atRiskCustomers" severity="danger"></p-tag>
         </div>
-        <!-- Added: Additional insights for balance -->
         <div class="insight-card col-span-2">
           <span class="insight-label">Retention Rate</span>
           <span class="insight-value">{{ data.customerInsights.retentionRate | percent:'1.1-1' }}</span>
         </div>
       </div>
     </p-tabPanel>
+
+    <!-- Inventory -->
     <p-tabPanel header="Inventory Overview">
       <div class="insight-grid">
         <div class="insight-card col-span-2">
@@ -91,20 +102,20 @@
           <span class="insight-label">Items in Stock</span>
           <span class="insight-value">{{ data.inventoryOverview.totalItemsInStock | number:'1.0-0' }}</span>
         </div>
-        <!-- Added: Low stock alert card for completeness -->
-        <div class="insight-card col-span-1">
+        <div class="insight-card">
           <span class="insight-label">Low Stock Items</span>
           <p-tag [value]="data.inventoryOverview.lowStockItems" severity="warning"></p-tag>
         </div>
-        <div class="insight-card col-span-1">
+        <div class="insight-card">
           <span class="insight-label">Out of Stock</span>
           <p-tag [value]="data.inventoryOverview.outOfStockItems" severity="danger"></p-tag>
         </div>
       </div>
     </p-tabPanel>
+
+    <!-- Financial -->
     <p-tabPanel header="Financial Health">
       <div class="insight-grid">
-        <!-- Filled in: Placeholder insights; replace with real data -->
         <div class="insight-card">
           <span class="insight-label">Net Profit Margin</span>
           <span class="insight-value">{{ data.financialHealth.netProfitMargin | percent:'1.1-1' }}</span>
@@ -126,15 +137,16 @@
   </p-tabView>
 </div>
 
+<!-- 🔹 Loading + No Data -->
 <ng-template #loadingOrNoData>
   <div *ngIf="loading; else noData" class="se-widget-container">
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
-      <p-skeleton width="100%" height="140px" styleClass="rounded-[var(--ui-border-radius-lg)]"></p-skeleton>
-      <p-skeleton width="100%" height="140px" styleClass="rounded-[var(--ui-border-radius-lg)]"></p-skeleton>
-      <p-skeleton width="100%" height="140px" styleClass="rounded-[var(--ui-border-radius-lg)]"></p-skeleton>
-      <p-skeleton width="100%" height="140px" styleClass="rounded-[var(--ui-border-radius-lg)]"></p-skeleton>
+      <p-skeleton width="100%" height="180px" styleClass="rounded-[1rem]"></p-skeleton>
+      <p-skeleton width="100%" height="180px" styleClass="rounded-[1rem]"></p-skeleton>
+      <p-skeleton width="100%" height="180px" styleClass="rounded-[1rem]"></p-skeleton>
+      <p-skeleton width="100%" height="180px" styleClass="rounded-[1rem]"></p-skeleton>
     </div>
-    <p-skeleton width="100%" height="300px" styleClass="rounded-[var(--ui-border-radius-lg)]"></p-skeleton>
+    <p-skeleton width="100%" height="360px" styleClass="rounded-[1rem]"></p-skeleton>
   </div>
   <ng-template #noData>
     <div class="se-widget-container flex items-center justify-center h-64">

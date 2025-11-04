@@ -11,9 +11,7 @@ export interface SalesForecastData {
     };
     totalSales: number;
   }[];
-  forecast: {
-    nextMonth: string;
-  };
+  forecast:any
 }
 
 

@@ -1,41 +1,61 @@
-<div class="flex flex-col rounded-md overflow-hidden bg-[var(--theme-bg-primary)] text-[var(--theme-text-primary)]">
+<div class="flex flex-col h-full p-6 gap-6 bg-[var(--theme-bg-secondary)]">
 
-  <div class="se-filter-bar">
-    <div class="se-filter-field">
-      <label for="name">Seller Name</label>
-      <input id="name" type="text" pInputText [(ngModel)]="sellerFilter.name" (input)="applyFiltersAndReset()"
-        placeholder="Search by name" />
-    </div>
+  <!-- HEADER -->
+  <div class="flex justify-between items-center">
+    <h2 class="text-2xl font-bold text-[var(--theme-text-heading)] flex items-center gap-2">
+      <i class="pi pi-briefcase text-[var(--theme-accent-primary)]"></i>
+      Seller Management
+    </h2>
+  </div>
 
-    <div class="se-filter-field">
-      <label for="shopName">Shop Name</label>
-      <input id="shopName" type="text" pInputText [(ngModel)]="sellerFilter.shopName" (input)="applyFiltersAndReset()"
-        placeholder="Search by shop" />
-    </div>
+  <!-- FILTER BAR -->
+  <div class="glass-card p-4 rounded-lg shadow-md">
+    <div class="flex flex-wrap items-end gap-4">
 
-    <div class="se-filter-field">
-      <label for="status">Status</label>
-     <p-select appendTo="body"  id="status" [options]="statusOptions" [(ngModel)]="sellerFilter.status"
-        (onChange)="applyFiltersAndReset()" placeholder="All Statuses" [showClear]="true"></p-select>
-    </div>
+      <!-- Seller Name -->
+      <div class="se-filter-field">
+        <label class="block text-sm font-semibold mb-1">Seller Name</label>
+        <input id="name" type="text" pInputText [(ngModel)]="sellerFilter.name" (input)="applyFiltersAndReset()"
+          placeholder="Search by name" class="themed-input w-56 h-11" />
+      </div>
 
-    <div class="se-filter-field">
-      <label for="city">City</label>
-      <input id="city" type="text" pInputText [(ngModel)]="sellerFilter.city" (input)="applyFiltersAndReset()"
-        placeholder="Search by city" />
-    </div>
+      <!-- Shop Name -->
+      <div class="se-filter-field">
+        <label class="block text-sm font-semibold mb-1">Shop Name</label>
+        <input id="shopName" type="text" pInputText [(ngModel)]="sellerFilter.shopName" (input)="applyFiltersAndReset()"
+          placeholder="Search by shop" class="themed-input w-56 h-11" />
+      </div>
 
-    <div class="se-filter-actions">
-      <p-button (click)="applyFiltersAndReset()" label="Apply" icon="pi pi-check"></p-button>
-      <p-button (click)="resetFilters()" label="Reset" icon="pi pi-refresh" styleClass="p-button-outlined"></p-button>
+      <!-- Status -->
+      <div class="se-filter-field">
+        <label class="block text-sm font-semibold mb-1">Status</label>
+        <p-select appendTo="body" id="status" [options]="statusOptions" [(ngModel)]="sellerFilter.status"
+          (onChange)="applyFiltersAndReset()" placeholder="All Statuses" [showClear]="true"
+          styleClass="themed-select w-48 h-11"></p-select>
+      </div>
+
+      <!-- City -->
+      <div class="se-filter-field">
+        <label class="block text-sm font-semibold mb-1">City</label>
+        <input id="city" type="text" pInputText [(ngModel)]="sellerFilter.city" (input)="applyFiltersAndReset()"
+          placeholder="Search by city" class="themed-input w-44 h-11" />
+      </div>
+
+      <!-- Actions -->
+      <div class="flex gap-2 items-center mt-1">
+        <p-button label="Apply" icon="pi pi-check" severity="success" (onClick)="applyFiltersAndReset()"
+          class="h-11 px-4"></p-button>
+        <p-button label="Reset" icon="pi pi-refresh" severity="secondary" styleClass="p-button-outlined"
+          (onClick)="resetFilters()" class="h-11 px-4"></p-button>
+      </div>
     </div>
   </div>
 
-  <div class="mt-1 card">
+  <!-- GRID AREA -->
+  <div class="flex-grow glass-card p-4 rounded-lg shadow-md">
     <app-shared-grid [data]="data" [rowSelectionMode]="rowSelectionMode" [rowClassRules]="rowClassrules"
-      [GridName]="'Seller Details'" [gridHeight]="'275px'" [column]="column" (eventFromGrid)="eventFromGrid($event)"
-      (gridReady)="onGridReady($event)" (scrolledToBottom)="onScrolledToBottom($event)">
-    </app-shared-grid>
+      [GridName]="'Seller Details'" [gridHeight]="'350px'" [column]="column" (eventFromGrid)="eventFromGrid($event)"
+      (gridReady)="onGridReady($event)" (scrolledToBottom)="onScrolledToBottom($event)"></app-shared-grid>
   </div>
 
 </div>

@@ -1,19 +1,27 @@
 <div *ngIf="data; else noDataOrLoading" class="product-analytics-widget">
-
-  <!-- Header -->
+  <!-- 🔹 Header -->
   <header class="widget-header">
-    <h1 class="widget-title">Product & Inventory Analytics</h1>
+    <div class="header-left">
+      <h1 class="widget-title">Product & Inventory Analytics</h1>
+      <p class="widget-subtitle">Overview of sales, performance & stock health</p>
+    </div>
+    <i class="pi pi-chart-bar header-icon"></i>
   </header>
 
-  <!-- KPI Cards Row -->
+  <!-- 🔹 KPI Summary Row -->
   <div class="inventory-kpi-row">
-    <div class="inventory-kpi-card" *ngFor="let kpi of [
-      {icon:'pi pi-database', color:'var(--theme-accent-primary)', value: data.inventorySummary.totalValue | currency:'INR':'symbol':'1.0-0', label:'Total Value'},
-      {icon:'pi pi-tags', color:'var(--theme-info-primary)', value: data.inventorySummary.totalItems, label:'Total Items'},
-      {icon:'pi pi-exclamation-triangle', color:'var(--theme-warning-primary)', value: data.inventorySummary.lowStockCount, label:'Low Stock'},
-      {icon:'pi pi-times-circle', color:'var(--theme-error-primary)', value: data.inventorySummary.outOfStockCount, label:'Out of Stock'}
-    ]">
-      <i [ngClass]="kpi.icon" [style.color]="kpi.color"></i>
+    <div
+      class="inventory-kpi-card"
+      *ngFor="let kpi of [
+        { icon: 'pi pi-database', color: 'var(--theme-accent-primary)', value: (data.inventorySummary?.totalValue | currency:'INR':'symbol':'1.0-0'), label: 'Total Value' },
+        { icon: 'pi pi-tags', color: 'var(--theme-info-primary)', value: data.inventorySummary?.totalItems, label: 'Total Items' },
+        { icon: 'pi pi-exclamation-triangle', color: 'var(--theme-warning-primary)', value: data.inventorySummary?.lowStockCount, label: 'Low Stock' },
+        { icon: 'pi pi-times-circle', color: 'var(--theme-error-primary)', value: data.inventorySummary?.outOfStockCount, label: 'Out of Stock' }
+      ]"
+    >
+      <div class="icon-wrapper" [style.background]="kpi.color + '15'">
+        <i [ngClass]="kpi.icon" [style.color]="kpi.color"></i>
+      </div>
       <div class="kpi-details">
         <span class="kpi-value">{{ kpi.value }}</span>
         <span class="kpi-label">{{ kpi.label }}</span>
@@ -23,89 +31,134 @@
 
   <hr class="widget-divider" />
 
-  <!-- Top Performing Products Section -->
-<section class="analytics-section">
-  <h3 class="section-header">Top Performing Products</h3>
-
-  <p-tabView styleClass="se-tabview">
-    <p-tabPanel header="By Profit">
-      <div class="product-card-grid">
-        <div *ngFor="let product of data.topPerformingProducts.topByProfit" class="product-card">
-          <img [src]="product.thumbnail" [alt]="product.title" class="product-image"
-            onerror="this.src='https://i.pinimg.com/736x/72/8a/69/728a69b420c64aad866be3fbe409965e.jpg'">
-          <div class="product-card-body">
-            <h4 class="product-title">{{ product.title }}</h4>
-            <p class="product-metric">{{ product.grossProfit | currency:'INR':'symbol':'1.0-0' }} Profit</p>
-            <p class="product-quantity">{{ product.totalQuantity }} sold</p>
-          </div>
-        </div>
-      </div>
-    </p-tabPanel>
-
-    <p-tabPanel header="By Revenue">
-      <div class="product-card-grid">
-        <div *ngFor="let product of data.topPerformingProducts.topByRevenue" class="product-card">
-          <img [src]="product.thumbnail" [alt]="product.title" class="product-image"
-            onerror="this.src='https://i.pinimg.com/736x/72/8a/69/728a69b420c64aad866be3fbe409965e.jpg'">
-          <div class="product-card-body">
-            <h4 class="product-title">{{ product.title }}</h4>
-            <p class="product-metric">{{ product.totalRevenue | currency:'INR':'symbol':'1.0-0' }} Revenue</p>
-            <p class="product-quantity">{{ product.totalQuantity }} sold</p>
-          </div>
-        </div>
-      </div>
-    </p-tabPanel>
-
-    <p-tabPanel header="By Quantity">
-      <div class="product-card-grid">
-        <div *ngFor="let product of data.topPerformingProducts.topByQuantity" class="product-card">
-          <img [src]="product.thumbnail" [alt]="product.title" class="product-image"
-            onerror="this.src='https://i.pinimg.com/736x/72/8a/69/728a69b420c64aad866be3fbe409965e.jpg'">
-          <div class="product-card-body">
-            <h4 class="product-title">{{ product.title }}</h4>
-            <p class="product-metric">{{ product.totalQuantity }} units sold</p>
-            <p class="product-quantity">{{ product.totalRevenue | currency:'INR':'symbol':'1.0-0' }}</p>
-          </div>
-        </div>
-      </div>
-    </p-tabPanel>
-  </p-tabView>
-</section>
-
-
-  <!-- Performance by Category -->
+  <!-- 🔹 Top Performing Products -->
   <section class="analytics-section">
-    <h3 class="section-header">Performance by Category</h3>
+    <div class="section-header-wrapper">
+      <h3 class="section-header">Top Performing Products</h3>
+      <i class="pi pi-star-fill section-icon"></i>
+    </div>
+
+    <p-tabView styleClass="se-tabview">
+      <p-tabPanel header="By Profit">
+        <div class="product-card-grid">
+          <div *ngFor="let product of data.topPerformingProducts?.topByProfit" class="product-card">
+            <div class="image-wrapper">
+              <img
+                [src]="product.thumbnail"
+                [alt]="product.title"
+                class="product-image"
+                (error)="onImageError($event)"
+              />
+            </div>
+            <div class="product-card-body">
+              <h4 class="product-title">{{ product.title }}</h4>
+              <p class="product-metric accent-text">
+                {{ product.grossProfit | currency: 'INR':'symbol':'1.0-0' }} Profit
+              </p>
+              <p class="product-quantity subtle-text">{{ product.totalQuantity }} Sold</p>
+            </div>
+          </div>
+        </div>
+      </p-tabPanel>
+
+      <p-tabPanel header="By Revenue">
+        <div class="product-card-grid">
+          <div *ngFor="let product of data.topPerformingProducts?.topByRevenue" class="product-card">
+            <div class="image-wrapper">
+              <img
+                [src]="product.thumbnail"
+                [alt]="product.title"
+                class="product-image"
+                (error)="onImageError($event)"
+              />
+            </div>
+            <div class="product-card-body">
+              <h4 class="product-title">{{ product.title }}</h4>
+              <p class="product-metric accent-text">
+                {{ product.totalRevenue | currency: 'INR':'symbol':'1.0-0' }} Revenue
+              </p>
+              <p class="product-quantity subtle-text">{{ product.totalQuantity }} Sold</p>
+            </div>
+          </div>
+        </div>
+      </p-tabPanel>
+
+      <p-tabPanel header="By Quantity">
+        <div class="product-card-grid">
+          <div *ngFor="let product of data.topPerformingProducts?.topByQuantity" class="product-card">
+            <div class="image-wrapper">
+              <img
+                [src]="product.thumbnail"
+                [alt]="product.title"
+                class="product-image"
+                (error)="onImageError($event)"
+              />
+            </div>
+            <div class="product-card-body">
+              <h4 class="product-title">{{ product.title }}</h4>
+              <p class="product-metric accent-text">
+                {{ product.totalQuantity }} Units Sold
+              </p>
+              <p class="product-quantity subtle-text">
+                {{ product.totalRevenue | currency: 'INR':'symbol':'1.0-0' }}
+              </p>
+            </div>
+          </div>
+        </div>
+      </p-tabPanel>
+    </p-tabView>
+  </section>
+
+  <!-- 🔹 Performance by Category -->
+  <section class="analytics-section">
+    <div class="section-header-wrapper">
+      <h3 class="section-header">Performance by Category</h3>
+      <i class="pi pi-th-large section-icon"></i>
+    </div>
     <div class="performance-carousel">
       <div *ngFor="let category of data.performanceByCategory" class="performance-card">
-        <img [src]="category.thumbnails[0]" [alt]="category._id" class="performance-thumbnail"
-          onerror="this.src='https://i.pinimg.com/736x/72/8a/69/728a69b420c64aad866be3fbe409965e.jpg'">
-        <div class="performance-overlay">
+        <img
+          [src]="category.thumbnails?.[0]"
+          [alt]="category._id"
+          class="performance-thumbnail"
+          (error)="onImageError($event)"
+        />
+        <div class="performance-overlay glass-layer">
           <span class="performance-title">{{ formatCategoryName(category._id) }}</span>
-          <span class="performance-metric">{{ category.totalRevenue | currency:'INR':'symbol':'1.0-0' }}</span>
+          <span class="performance-metric accent-text">
+            {{ category.totalRevenue | currency:'INR':'symbol':'1.0-0' }}
+          </span>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- Performance by Brand -->
+  <!-- 🔹 Performance by Brand -->
   <section class="analytics-section">
-    <h3 class="section-header">Performance by Brand</h3>
+    <div class="section-header-wrapper">
+      <h3 class="section-header">Performance by Brand</h3>
+      <i class="pi pi-briefcase section-icon"></i>
+    </div>
     <div class="performance-carousel">
       <div *ngFor="let brand of data.performanceByBrand" class="performance-card">
-        <img [src]="brand.thumbnails[0]" [alt]="brand._id" class="performance-thumbnail"
-          onerror="this.src='https://i.pinimg.com/736x/72/8a/69/728a69b420c64aad866be3fbe409965e.jpg'">
-        <div class="performance-overlay">
+        <img
+          [src]="brand.thumbnails?.[0]"
+          [alt]="brand._id"
+          class="performance-thumbnail"
+          (error)="onImageError($event)"
+        />
+        <div class="performance-overlay glass-layer">
           <span class="performance-title">{{ brand._id }}</span>
-          <span class="performance-metric">{{ brand.totalRevenue | currency:'INR':'symbol':'1.0-0' }}</span>
+          <span class="performance-metric accent-text">
+            {{ brand.totalRevenue | currency:'INR':'symbol':'1.0-0' }}
+          </span>
         </div>
       </div>
     </div>
   </section>
-
 </div>
 
-<!-- No Data State -->
+<!-- 🔹 No Data -->
 <ng-template #noDataOrLoading>
   <div class="no-data-message">
     <p>Product analytics are currently unavailable.</p>

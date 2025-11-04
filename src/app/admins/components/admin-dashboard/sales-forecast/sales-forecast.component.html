@@ -1,13 +1,18 @@
 <div *ngIf="data; else noDataOrLoading" class="sales-forecast-page">
-  <!-- 🔹 Page Header -->
+  <!-- 🔹 Header -->
   <header class="page-header">
     <div class="header-content">
-      <h1 class="page-title">Sales Forecast</h1>
-      <p class="page-subtitle">Projected sales performance based on historical data.</p>
+      <div>
+        <h1 class="page-title">Sales Forecast</h1>
+        <p class="page-subtitle">Projected sales performance based on historical data</p>
+      </div>
+    </div>
+    <div class="header-icon">
+      <i class="pi pi-bolt"></i>
     </div>
   </header>
 
-  <!-- 🔹 KPI Summary Grid -->
+  <!-- 🔹 KPI Summary -->
   <section class="kpi-grid">
     <div class="summary-kpi-card forecast-card">
       <div class="kpi-icon-wrapper">
@@ -19,22 +24,25 @@
       </div>
     </div>
 
-    <!-- <div class="summary-kpi-card growth-card">
+    <div class="summary-kpi-card growth-card">
       <div class="kpi-icon-wrapper">
         <i class="pi pi-trending-up"></i>
       </div>
       <div class="kpi-content">
-        <span class="kpi-value">{{ data.forecast.growthRate | percent:'1.0-1' }}</span>
+        <span class="kpi-value">{{ data.forecast?.growthRate | percent:'1.0-1' }}</span>
         <span class="kpi-label">Expected Growth Rate</span>
       </div>
-    </div> -->
+    </div>
   </section>
 
-  <!-- 🔹 Chart Card -->
-  <section class="se-card">
+  <!-- 🔹 Chart Section -->
+  <section class="forecast-card-wrapper se-card">
     <div class="card-header">
-      <h3>Historical Performance vs Forecast</h3>
-      <p>Visual comparison of past months and the next predicted period.</p>
+      <div>
+        <h3>Historical vs Forecast</h3>
+        <p>Comparison of past performance and upcoming projections</p>
+      </div>
+      <i class="pi pi-calendar chart-header-icon"></i>
     </div>
 
     <div class="chart-container">
@@ -50,8 +58,8 @@
         [showYAxisLabel]="true"
         yAxisLabel="Total Sales (₹)"
         [animations]="true"
-        [gradient]="false">
-      </ngx-charts-bar-vertical>
+        [gradient]="false"
+      ></ngx-charts-bar-vertical>
 
       <div *ngIf="!forecastChartData?.length" class="chart-empty">
         <i class="pi pi-info-circle"></i>
@@ -68,53 +76,3 @@
     <p>Sales forecast data is currently unavailable.</p>
   </div>
 </ng-template>
-
-
-<!-- <div *ngIf="data; else noDataOrLoading" class="sales-forecast-page">
-
-  <header class="page-header">
-    <div>
-      <h1 class="page-title">Sales Forecast</h1>
-      <p class="page-subtitle">Projected sales performance based on historical data.</p>
-    </div>
-  </header>
-
-  <div class="kpi-grid">
-    <div class="summary-kpi-card forecast-card">
-      <div class="kpi-icon-wrapper bg-[var(--theme-accent-primary-light)]">
-        <i class="pi pi-chart-line text-[var(--theme-accent-primary)]"></i>
-      </div>
-      <div class="kpi-content">
-        <span class="kpi-value">{{ data.forecast.nextMonth | currency:'INR':'symbol':'1.0-0' }}</span>
-        <span class="kpi-label">Forecast for Next Month</span>
-      </div>
-    </div>
-    </div>
-
-  <div class="se-card">
-    <h3 class="card-header">Historical Performance vs. Forecast</h3>
-    <div class="chart-container">
-      <ngx-charts-bar-vertical
-        [results]="forecastChartData"
-        [scheme]="chartColorScheme"
-        [xAxis]="true"
-        [yAxis]="true"
-        [legend]="true"
-        legendTitle="Legend"
-        [showXAxisLabel]="true"
-        xAxisLabel="Month"
-        [showYAxisLabel]="true"
-        yAxisLabel="Total Sales"
-        [gradient]="false">
-      </ngx-charts-bar-vertical>
-    </div>
-  </div>
-</div>
-
-<ng-template #noDataOrLoading>
-  <div class="flex justify-center items-center h-screen">
-    <p class="text-xl" [style.color]="'var(--theme-text-secondary)'">
-      Sales forecast data is currently unavailable.
-    </p>
-  </div>
-</ng-template> -->

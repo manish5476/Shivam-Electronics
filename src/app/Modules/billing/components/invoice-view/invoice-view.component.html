@@ -1,65 +1,78 @@
-<div class="flex flex-col rounded-md overflow-hidden bg-[var(--theme-bg-primary)] text-[var(--theme-text-primary)]">
+<div class="flex flex-col h-full p-6 gap-6 bg-[var(--theme-bg-secondary)]">
 
-  <!-- Shared Filter Container -->
-  <div class="se-filter-container">
-    <div class="se-filter-bar">
+  <!-- HEADER -->
+  <div class="flex justify-between items-center">
+    <h2 class="text-2xl font-bold text-[var(--theme-text-heading)] flex items-center gap-2">
+      <i class="pi pi-file-invoice text-[var(--theme-accent-primary)]"></i>
+      Invoice Management
+    </h2>
+  </div>
+
+  <!-- FILTER BAR -->
+  <div class="glass-card p-4 rounded-lg shadow-md">
+    <div class="flex flex-wrap items-end gap-4">
 
       <!-- Buyer -->
       <div class="se-filter-field">
-        <label for="buyer">Buyer</label>
+        <label class="block text-sm font-semibold mb-1">Buyer</label>
         <p-select appendTo="body" id="buyer" [options]="customerIDDropdown" [(ngModel)]="invoiceFilter.buyer"
           [filter]="true" filterBy="label" optionLabel="fullname" optionValue="_id" [showClear]="true"
-          placeholder="Select Buyer" (onChange)="applyFiltersAndReset()">
-        </p-select>
+          placeholder="Select Buyer" (onChange)="applyFiltersAndReset()"
+          styleClass="themed-select w-56 h-11"></p-select>
       </div>
 
       <!-- Status -->
       <div class="se-filter-field">
-        <label for="status">Status</label>
+        <label class="block text-sm font-semibold mb-1">Status</label>
         <p-select appendTo="body" id="status" [options]="statusOptions" [(ngModel)]="invoiceFilter.status"
-          (onChange)="applyFiltersAndReset()" placeholder="All Status" [showClear]="true">
-        </p-select>
+          (onChange)="applyFiltersAndReset()" placeholder="All Status" [showClear]="true"
+          styleClass="themed-select w-44 h-11"></p-select>
       </div>
 
       <!-- Invoice Number -->
       <div class="se-filter-field">
-        <label for="invoiceNumber">Invoice #</label>
+        <label class="block text-sm font-semibold mb-1">Invoice Number</label>
         <input pInputText id="invoiceNumber" [(ngModel)]="invoiceFilter.invoiceNumber" (input)="applyFiltersAndReset()"
-          placeholder="Search Invoice Number" />
+          placeholder="Search Invoice Number" class="themed-input w-56 h-11" />
       </div>
 
       <!-- Date Range -->
       <div class="se-filter-field">
-        <label for="createdFrom">Invoice Date Range</label>
-        <div class="flex gap-2">
+        <label class="block text-sm font-semibold mb-1">Invoice Date Range</label>
+        <div class="flex items-center gap-2">
           <input id="createdFrom" type="date" pInputText [(ngModel)]="invoiceFilter.createdFrom"
-            (change)="applyFiltersAndReset()" />
+            (change)="applyFiltersAndReset()" class="themed-input w-40 h-11" />
+          <span class="text-[var(--theme-text-secondary)] text-sm">to</span>
           <input id="createdTo" type="date" pInputText [(ngModel)]="invoiceFilter.createdTo"
-            (change)="applyFiltersAndReset()" />
+            (change)="applyFiltersAndReset()" class="themed-input w-40 h-11" />
         </div>
       </div>
 
       <!-- Action Buttons -->
-      <div class="se-filter-actions">
-        <p-button (click)="applyFiltersAndReset()" label="Apply" icon="pi pi-check"></p-button>
-        <p-button (click)="resetFilters()" label="Reset" icon="pi pi-refresh" styleClass="p-button-outlined"></p-button>
+      <div class="flex gap-2 items-center mt-1">
+        <p-button label="Apply" icon="pi pi-check" severity="success" (onClick)="applyFiltersAndReset()"
+          class="h-11 px-4"></p-button>
+        <p-button label="Reset" icon="pi pi-refresh" severity="secondary" styleClass="p-button-outlined"
+          (onClick)="resetFilters()" class="h-11 px-4"></p-button>
       </div>
-
     </div>
   </div>
 
-  <!-- Grid -->
-  <div class="mt-1 card">
-    <app-shared-grid [data]="data" [gridHeight]="'280px'" [headerFilter]="false" [rowSelectionMode]="rowSelectionMode"
+  <!-- GRID AREA -->
+  <div class="flex-grow glass-card p-4 rounded-lg shadow-md">
+    <app-shared-grid [data]="data" [gridHeight]="'350px'" [headerFilter]="false" [rowSelectionMode]="rowSelectionMode"
       [GridName]="'Invoice Details'" [column]="column" (eventFromGrid)="eventFromGrid($event)"
-      (gridReady)="onGridReady($event)" (scrolledToBottom)="onScrolledToBottom($event)">
-    </app-shared-grid>
+      (gridReady)="onGridReady($event)" (scrolledToBottom)="onScrolledToBottom($event)"></app-shared-grid>
   </div>
 
-  <!-- Invoice Preview Dialog -->
-  <p-dialog header="Invoice Preview" [(visible)]="showpdf" [modal]="true"
-    [style]="{ width: '90vw', maxWidth: '1200px' }" [contentStyle]="{ height: '80vh', overflow: 'auto', padding: '0' }">
-    <app-invoice-print [Id]="invoiceId" class="invoice-preview"></app-invoice-print>
+  <!-- INVOICE PREVIEW DIALOG -->
+  <p-dialog header="Invoice Preview" [(visible)]="showpdf" [modal]="true" [closable]="true" [dismissableMask]="true"
+    [style]="{ width: '95vw', maxWidth: '1200px' }"
+    [contentStyle]="{ height: '82vh', overflow: 'hidden', padding: '0' }" appendTo="body"
+    styleClass="rounded-xl shadow-xl glass-card">
+    <ng-template pTemplate="content">
+      <app-invoice-print [Id]="invoiceId" class="invoice-preview"></app-invoice-print>
+    </ng-template>
   </p-dialog>
 
 </div>

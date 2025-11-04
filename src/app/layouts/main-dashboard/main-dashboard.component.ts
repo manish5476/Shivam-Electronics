@@ -7,7 +7,6 @@ import { SelectButtonModule } from 'primeng/selectbutton';
 import { FormsModule } from '@angular/forms';
 import { AppNavigationComponent } from '../../shared/Components/common-layout/common-layout.component';
 import { GstInvoiceComponent } from '../../Modules/billing/components/gst-invoice/gst-invoice.component';
-import { ProductListComponent } from '../../Modules/product/components/product-list/product-list.component';
 import { ProductDetailComponent } from '../../Modules/product/components/product-detail/product-detail.component';
 import { AdminDashboardComponent } from "../../Modules/admin/admin-dashboard/admin-dashboard.component";
 @Component({
@@ -32,7 +31,6 @@ export class MainDashboardComponent {
   componentNavItems: any[] = [
     { label: 'home', component: HomePageComponent },
     { label: 'invoice', component: GstInvoiceComponent }, // Corrected key
-    { label: 'Product List', component: ProductListComponent },
 
 
   ];

@@ -1,10 +1,11 @@
-/* 🌟 Root Layout */
+/* 🌟 Root */
 .sales-forecast-page {
   display: flex;
   flex-direction: column;
   gap: var(--spacing-2xl);
   padding: var(--spacing-2xl);
   background: var(--theme-bg-primary);
+  animation: fadeIn 0.5s ease;
 }
 
 /* 🔹 Header */
@@ -12,20 +13,28 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  flex-wrap: wrap;
+  border-bottom: 1px dashed var(--theme-border-secondary);
+  padding-bottom: 0.75rem;
 }
 
 .page-title {
   font-family: var(--font-heading);
-  font-size: var(--font-size-4xl);
-  color: var(--theme-text-primary);
+  font-size: var(--font-size-3xl);
   font-weight: 700;
+  color: var(--theme-accent-primary);
+  margin: 0;
 }
 
 .page-subtitle {
+  font-size: var(--font-size-sm);
   color: var(--theme-text-secondary);
-  font-size: var(--font-size-md);
   margin-top: 0.25rem;
+}
+
+.header-icon {
+  font-size: 2rem;
+  color: var(--theme-accent-primary);
+  opacity: 0.8;
 }
 
 /* 🔹 KPI Cards */
@@ -38,17 +47,19 @@
 .summary-kpi-card {
   display: flex;
   align-items: center;
-  background: var(--theme-bg-secondary);
-  border: 1px solid var(--theme-border-primary);
-  border-radius: var(--ui-border-radius-lg);
+  gap: var(--spacing-md);
   padding: var(--spacing-lg);
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.03);
-  transition: transform 0.2s, box-shadow 0.2s;
+  border: 1px solid var(--theme-border-primary);
+  border-radius: var(--ui-border-radius-xl);
+  background: var(--theme-glass-gradient);
+  box-shadow: var(--ui-shadow-sm);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  backdrop-filter: blur(10px);
 }
 
 .summary-kpi-card:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.05);
+  transform: translateY(-3px);
+  box-shadow: var(--ui-shadow-md);
 }
 
 .forecast-card {
@@ -60,14 +71,13 @@
 }
 
 .kpi-icon-wrapper {
-  width: 55px;
-  height: 55px;
-  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  border-radius: 16px;
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 1.75rem;
-  margin-right: var(--spacing-md);
   background-color: var(--theme-accent-primary-light);
   color: var(--theme-accent-primary);
   flex-shrink: 0;
@@ -78,44 +88,61 @@
   color: var(--theme-success-primary);
 }
 
-.kpi-content {
-  display: flex;
-  flex-direction: column;
-}
-
 .kpi-value {
   font-weight: 700;
-  font-size: var(--font-size-2xl);
+  font-size: 1.5rem;
   color: var(--theme-text-primary);
 }
 
 .kpi-label {
   color: var(--theme-text-secondary);
-  font-size: var(--font-size-sm);
+  font-size: 0.85rem;
 }
 
-/* 🔹 Chart Section */
-.se-card {
+/* 🔹 Chart Card */
+.forecast-card-wrapper {
   background: var(--theme-bg-secondary);
+  border-radius: var(--ui-border-radius-xl);
   border: 1px solid var(--theme-border-primary);
-  border-radius: var(--ui-border-radius-lg);
+  box-shadow: var(--ui-shadow);
   padding: var(--spacing-xl);
+  transition: box-shadow 0.3s ease;
+}
+
+.forecast-card-wrapper:hover {
+  box-shadow: var(--ui-shadow-lg);
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px dashed var(--theme-border-secondary);
+  padding-bottom: var(--spacing-sm);
+  margin-bottom: var(--spacing-md);
 }
 
 .card-header h3 {
   font-size: var(--font-size-xl);
-  color: var(--theme-text-primary);
   font-weight: 600;
+  color: var(--theme-text-primary);
+  margin: 0;
 }
 
 .card-header p {
-  color: var(--theme-text-secondary);
   font-size: var(--font-size-sm);
+  color: var(--theme-text-secondary);
   margin-top: 0.25rem;
 }
 
+.chart-header-icon {
+  font-size: 1.5rem;
+  color: var(--theme-accent-primary);
+  opacity: 0.75;
+}
+
 .chart-container {
-  height: 480px;
+  height: 460px;
   width: 100%;
   margin-top: var(--spacing-md);
 }
@@ -126,20 +153,19 @@
   align-items: center;
   justify-content: center;
   height: 400px;
-  color: var(--theme-text-muted);
   gap: 0.5rem;
+  color: var(--theme-text-muted);
 }
 
 /* 🔹 No Data State */
 .no-data-state {
   display: flex;
   flex-direction: column;
-  align-items: center;
   justify-content: center;
+  align-items: center;
   height: 70vh;
   color: var(--theme-text-secondary);
   gap: 0.5rem;
-  text-align: center;
 }
 
 .no-data-state i {
@@ -153,8 +179,20 @@
 }
 
 :host ::ng-deep .bar rect {
-  rx: 4px;
-  ry: 4px;
+  rx: 5px;
+  ry: 5px;
+}
+
+/* 🔹 Animation */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 /* 🔹 Responsiveness */
@@ -162,8 +200,7 @@
   .page-title {
     font-size: 1.75rem;
   }
-
   .chart-container {
-    height: 380px;
+    height: 360px;
   }
 }

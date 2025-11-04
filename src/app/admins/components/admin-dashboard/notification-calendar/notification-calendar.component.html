@@ -245,7 +245,34 @@
   </div>
 </p-dialog>
 
-  <p-dialog  appendTo="body" maskStyleClass="backdrop-blur-sm" [(visible)]="showNotesDialog" [modal]="true" [draggable]="false"
+<!-- 🟦 Notes Dialog -->
+<p-dialog
+  appendTo="body"
+  maskStyleClass="backdrop-blur-sm"
+  [(visible)]="showNotesDialog"
+  [modal]="true"
+  [draggable]="false"
+  [resizable]="false"
+  [styleClass]="'notes-dialog glass-card dialog-fullscreen'"
+>
+  <ng-template pTemplate="header">
+    <div class="dialog-header">
+      <i class="pi pi-pencil dialog-header-icon"></i>
+      <div class="dialog-header-text">
+        <span class="dialog-title">Notes for the Day</span>
+        <span class="dialog-subtitle">
+          {{ calanderDay | date: 'fullDate' }}
+        </span>
+      </div>
+    </div>
+  </ng-template>
+
+  <div class="notes-container">
+    <app-notes-manager [date]="calanderDay"></app-notes-manager>
+  </div>
+</p-dialog>
+
+  <!-- <p-dialog  appendTo="body" maskStyleClass="backdrop-blur-sm" [(visible)]="showNotesDialog" [modal]="true" [draggable]="false"
     [resizable]="false" [styleClass]="'notes-dialog glass-card dialog-fullscreen'">
     <ng-template pTemplate="header">
       <div class="dialog-header">
@@ -260,4 +287,4 @@
     </ng-template>
     <app-notes-manager [date]="calanderDay"></app-notes-manager>
   </p-dialog>
-</div>
+</div> -->

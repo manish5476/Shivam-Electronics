@@ -114,3 +114,53 @@
   }
 }
 
+
+/* =========================
+   Confirmation Dialog Styling
+========================= */
+:host ::ng-deep .confirm-dialog-content {
+  background: var(--glass-bg);
+  backdrop-filter: blur(var(--glass-blur-intensity));
+  border-radius: var(--glass-border-radius);
+  border: 1px solid var(--glass-border-color);
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+  padding: 1.5rem;
+}
+
+:host ::ng-deep .p-dialog .p-dialog-header {
+  background: var(--theme-bg-secondary);
+  color: var(--theme-text-heading);
+  font-weight: 600;
+  font-size: 1.25rem;
+  border-bottom: 1px solid var(--theme-border-primary);
+}
+
+:host ::ng-deep .p-dialog .p-dialog-content {
+  background: transparent;
+  color: var(--theme-text-primary);
+}
+
+:host ::ng-deep .p-dialog .p-dialog-footer {
+  background: var(--theme-bg-secondary);
+  border-top: 1px solid var(--theme-border-primary);
+  padding: 1rem 1.5rem;
+}
+
+:host ::ng-deep table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+:host ::ng-deep th,
+:host ::ng-deep td {
+  font-size: 0.8rem;
+}
+
+:host ::ng-deep th {
+  font-weight: 600;
+  letter-spacing: 0.3px;
+}
+
+:host ::ng-deep tr:hover td {
+  background-color: var(--theme-hover-bg);
+}

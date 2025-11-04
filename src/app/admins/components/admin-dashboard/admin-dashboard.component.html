@@ -1,129 +1,159 @@
 <p-toast position="top-right"></p-toast>
 
-<div class="admin-dashboard min-h-screen p-4" [style]="{'background': 'var(--theme-bg-primary)'}" [@fadeIn]="true">
+<div class="admin-dashboard" [@fadeIn]="true">
 
-  <!-- 🔹 Enhanced Filter Toolbar -->
-  <header
-    class="se-filter-container flex flex-wrap md:flex-nowrap items-end gap-3 p-4 sticky top-0 z-20 shadow-lg backdrop-blur-md"
-    [style]="{'background': 'var(--theme-glass-gradient)', 'border': '1px solid var(--theme-border-secondary)'}">
-    <div class="flex flex-wrap md:flex-nowrap items-center justify-end gap-3 w-full md:ml-auto">
-      <button pButton type="button" [icon]="isCalendarCollapsed ? 'pi pi-chevron-right' : 'pi pi-chevron-left'"
-        class="p-button-text p-button-rounded p-button-sm" (click)="isCalendarCollapsed = !isCalendarCollapsed"
-        [pTooltip]="isCalendarCollapsed ? 'Show Calendar' : 'Hide Calendar'" tooltipPosition="bottom">
-      </button>
-      <h2 class="text-lg font-semibold tracking-tight"
-        [style]="{'color': 'var(--theme-text-primary)', 'font-family': 'var(--font-primary)'}">
-        Admin Dashboard
-      </h2>
-      <div class="se-filter-field">
-        <label>Period</label>
-        <p-select appendTo="body" [options]="periodOptions" [(ngModel)]="selectedPeriod" optionLabel="label"
-          optionValue="value" (onChange)="onFilterChange()"></p-select>
-      </div>
-      <div class="se-filter-field">
-        <label>Limit</label>
-        <p-select appendTo="body" [options]="limitOptions" [(ngModel)]="dataLimit" optionLabel="label"
-          optionValue="value" (onChange)="onFilterChange()"></p-select>
-      </div>
-      <div *ngIf="selectedPeriod === 'custom'" class="flex items-center gap-2">
-        <p-calendar [(ngModel)]="customDateRange" selectionMode="range" [readonlyInput]="true"
-          placeholder="Select Date Range" dateFormat="dd/mm/yy"
-          styleClass="p-inputtext-sm w-56 rounded-full"></p-calendar>
-        <button pButton type="button" label="Apply" icon="pi pi-check" class="p-button-sm rounded-full"
-          (click)="onApplyCustomRange()"></button>
-      </div>
-      <button pButton type="button" icon="pi pi-refresh" class="p-button-text p-button-rounded p-button-sm"
-        (click)="triggerRefresh()" pTooltip="Refresh Data" tooltipPosition="bottom"></button>
-    </div>
+  <!-- 🔹 Glass Header -->
+  <header class="dashboard-header glass-blur sticky top-0 z-30 flex items-center justify-between px-6 py-3 shadow-lg">
+    <h1 class="text-xl font-semibold tracking-tight flex items-center gap-2 text-[var(--theme-text-heading)]">
+      <i class="pi pi-shield text-[var(--theme-accent-primary)] text-lg"></i>
+      Admin Control Center
+    </h1>
+    <button pButton icon="pi pi-user" class="p-button-rounded p-button-text p-button-sm"></button>
   </header>
 
-  <div class="grid grid-cols-1 lg:grid-cols-3 gap-4 mt-4">
-    <div *ngIf="!isCalendarCollapsed" class="lg:col-span-1 lg:sticky top-20 h-full">
-      <div class="dashboard-card-wrapper h-full">
+  <!-- 🔹 Filter Toolbar -->
+  <div class="se-filter-container mt-4 animate-fadeIn">
+    <div class="flex flex-wrap md:flex-nowrap items-end gap-3 justify-between w-full">
+
+      <div class="flex flex-wrap md:flex-nowrap gap-3 items-end">
+        <div class="se-filter-field">
+          <label>Period</label>
+          <p-select appendTo="body" [options]="periodOptions" [(ngModel)]="selectedPeriod" optionLabel="label"
+            optionValue="value" (onChange)="onFilterChange()"></p-select>
+        </div>
+        <div class="se-filter-field">
+          <label>Limit</label>
+          <p-select appendTo="body" [options]="limitOptions" [(ngModel)]="dataLimit" optionLabel="label"
+            optionValue="value" (onChange)="onFilterChange()"></p-select>
+        </div>
+        <div *ngIf="selectedPeriod === 'custom'" class="flex items-center gap-2">
+          <p-calendar [(ngModel)]="customDateRange" selectionMode="range" [readonlyInput]="true"
+            placeholder="Select Range" dateFormat="dd/mm/yy"
+            styleClass="p-inputtext-sm w-56 rounded-full glass-input"></p-calendar>
+          <button pButton type="button" label="Apply" icon="pi pi-check" class="p-button-sm rounded-full"
+            (click)="onApplyCustomRange()"></button>
+        </div>
+      </div>
+
+      <div class="flex gap-2 items-center">
+        <button pButton type="button" icon="pi pi-refresh" class="p-button-text p-button-rounded p-button-sm"
+          (click)="triggerRefresh()" pTooltip="Refresh Data" tooltipPosition="bottom"></button>
+        <button pButton type="button" [icon]="isCalendarCollapsed ? 'pi pi-chevron-right' : 'pi pi-chevron-left'"
+          class="p-button-text p-button-rounded p-button-sm" (click)="isCalendarCollapsed = !isCalendarCollapsed"
+          [pTooltip]="isCalendarCollapsed ? 'Show Calendar' : 'Hide Calendar'" tooltipPosition="bottom"></button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 🔹 Grid Layout -->
+  <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mt-6 animate-fadeUp">
+
+    <!-- 📅 Sticky Calendar -->
+    <div *ngIf="!isCalendarCollapsed" class="lg:col-span-1 lg:sticky top-24 h-full">
+      <div class="dashboard-card-wrapper h-full animate-fadeIn">
         <app-notification-calendar></app-notification-calendar>
       </div>
     </div>
 
-    <!-- Main Tabs -->
-    <div class="flex flex-col gap-4"
+    <!-- 📊 Main Tabs -->
+    <div class="dashboard-right-pane"
       [ngClass]="{'lg:col-span-2': !isCalendarCollapsed, 'lg:col-span-3': isCalendarCollapsed}">
-      <p-tabs orientation="left" [(value)]="activeTabValue" styleClass="dashboard-vertical-tabs">
-        <p-tablist>
-          <p-tab value="0">Overview</p-tab>
-          <p-tab value="1">Sales & Charts</p-tab>
-          <p-tab value="2">Analytics</p-tab>
-          <p-tab value="3">Forecast</p-tab>
-          <p-tab value="4">customer Analytics</p-tab>
-        </p-tablist>
-        <p-tabpanels>
-          <p-tabpanel value="0">
-            <div class="flex flex-col gap-4">
+      <div class="dashboard-scroll-area">
+        <p-tabs [scrollable]="true" orientation="left" [(value)]="activeTabValue"
+          styleClass="dashboard-vertical-tabs enhanced-tabs">
+          <p-tablist>
+            <p-tab value="0"><i class="pi pi-chart-bar mr-2"></i>Overview</p-tab>
+            <p-tab value="1"><i class="pi pi-chart-line mr-2"></i>Sales & Charts</p-tab>
+            <p-tab value="2"><i class="pi pi-database mr-2"></i>Analytics</p-tab>
+            <p-tab value="3"><i class="pi pi-bolt mr-2"></i>Forecast</p-tab>
+            <p-tab value="4"><i class="pi pi-users mr-2"></i>Customer Analytics</p-tab>
+            <p-tab value="5"><i class="pi pi-money mr-2"></i>Payment Analytics</p-tab>
+            <p-tab value="6"><i class="pi pi-money mr-2"></i>sales Analytics</p-tab>
+            <p-tab value="7"><i class="pi pi-money mr-2"></i>yearly sales Analytics</p-tab>
+          </p-tablist>
+
+          <p-tabpanels>
+            <p-tabpanel value="0">
               <app-enhanced-kpi-summary [loading]="(isLoading$ | async) ?? false"
                 [data]="(enhancedKpiSummary$ | async)?.data"></app-enhanced-kpi-summary>
-              <app-dashboard-overview [data]="(overview$ | async)?.data"></app-dashboard-overview>
-            </div>
-          </p-tabpanel>
+              <div class="pt-4">
 
-          <p-tabpanel value="1">
-            <div class="flex flex-col gap-4">
+                <app-dashboard-overview [data]="(overview$ | async)?.data"></app-dashboard-overview>
+              </div>
+            </p-tabpanel>
+
+            <p-tabpanel value="1">
               <app-dashboard-chart-combo [selectedPeriod]="selectedPeriod" [startDate]="startDate"
                 [endDate]="endDate"></app-dashboard-chart-combo>
-              <app-sales-trends [data]="(salesTrends$ | async)?.data"></app-sales-trends>
-            </div>
-          </p-tabpanel>
+              <!-- <app-sales-trends [data]="(salesTrends$ | async)?.data"></app-sales-trends> -->
+            </p-tabpanel>
 
-          <p-tabpanel value="2">
-            <div class="flex flex-col gap-4">
+            <p-tabpanel value="2">
               <app-product-analytics [data]="(productAnalytics$ | async)?.data"></app-product-analytics>
+            </p-tabpanel>
 
-            </div>
-          </p-tabpanel>
-
-          <p-tabpanel value="3">
-            <div class="flex flex-col gap-4">
+            <p-tabpanel value="3">
               <app-sales-forecast [data]="(salesForecast$ | async)?.data"></app-sales-forecast>
-              <app-inventory-turnover [data]="(inventoryTurnover$ | async)?.data"></app-inventory-turnover>
-            </div>
-          </p-tabpanel>
-          <p-tabpanel value="4">
-            <div class="flex flex-col gap-4">
-              <app-customer-analytics [data]="(customerAnalytics$ | async)?.data"
-                (openDetail)="openDialog($event.title, $event.data, customerDetailTemplate)"></app-customer-analytics>
+              <!-- <app-inventory-turnover [data]="(inventoryTurnover$ | async)?.data"></app-inventory-turnover> -->
+            </p-tabpanel>
 
+            <p-tabpanel value="4">
+              <app-customer-analytics [data]="(customerAnalytics$ | async)?.data"
+                (openDetail)="openDialog($event.title, $event.data, customerDetailTemplate)">
+              </app-customer-analytics>
 
               <ng-template #customerDetailTemplate let-data="data">
-                <div class="customer-detail-card">
+                <div class="customer-detail-card glass-card">
                   <h2>{{ data.fullname }}</h2>
                   <p><strong>Email:</strong> {{ data.email }}</p>
                   <p><strong>Lifetime Value:</strong> ₹{{ data.lifetimeValue | number }}</p>
                 </div>
               </ng-template>
+            </p-tabpanel>
 
-            </div>
-          </p-tabpanel>
-        </p-tabpanels>
-      </p-tabs>
-    </div>
-  </div>
 
-  <p-dialog [(visible)]="showDialog" [modal]="true" [style]="{ width: '90vw', maxWidth: '900px' }" [draggable]="true"
-    [resizable]="true" appendTo="body" styleClass="universal-dialog">
-    <ng-template pTemplate="header">
-      <div class="flex justify-between items-center w-full">
-        <h3 class="font-semibold text-lg">{{ selectedTitle }}</h3>
-        <button pButton icon="pi pi-times" class="p-button-rounded p-button-text" (click)="showDialog = false"></button>
+            <p-tabpanel value="5">
+              <app-payment-analytics [data]="(paymentAnalytics$ | async)?.data"></app-payment-analytics>
+            </p-tabpanel>
+
+            <p-tabpanel value="6">
+              <app-sales-charts [data]="(inventoryTurnover$ | async)?.data"></app-sales-charts>
+            </p-tabpanel>
+
+            <p-tabpanel value="7">
+              <app-yearly-sales [data]="(yearlySales$ | async)?.data"></app-yearly-sales>
+            </p-tabpanel>
+
+            <p-tabpanel value="8">
+
+              <app-inventory-turnover [data]="(inventoryTurnover$ | async)?.data"></app-inventory-turnover>
+            </p-tabpanel>
+
+          </p-tabpanels>
+        </p-tabs>
       </div>
-    </ng-template>
+    </div>
 
-    <div class="dialog-body">
-      <ng-container *ngIf="dialogTemplate; else defaultContent" [ngTemplateOutlet]="dialogTemplate"
-        [ngTemplateOutletContext]="{ data: selectedData }"></ng-container>
-
-      <ng-template #defaultContent>
-        <div class="json-viewer">
-          <pre>{{ selectedData | json }}</pre>
+    <!-- 🔹 Universal Dialog -->
+    <p-dialog [(visible)]="showDialog" [modal]="true" appendTo="body" [style]="{ width: '90vw', maxWidth: '900px' }"
+      styleClass="universal-dialog glass-dialog animate-fadeIn">
+      <ng-template pTemplate="header">
+        <div class="flex justify-between items-center w-full">
+          <h3 class="font-semibold text-lg">{{ selectedTitle }}</h3>
+          <button pButton icon="pi pi-times" class="p-button-rounded p-button-text"
+            (click)="showDialog = false"></button>
         </div>
       </ng-template>
-    </div>
-  </p-dialog>
-</div>
+
+      <div class="dialog-body">
+        <ng-container *ngIf="dialogTemplate; else defaultContent" [ngTemplateOutlet]="dialogTemplate"
+          [ngTemplateOutletContext]="{ data: selectedData }"></ng-container>
+
+        <ng-template #defaultContent>
+          <div class="json-viewer">
+            <pre>{{ selectedData | json }}</pre>
+          </div>
+        </ng-template>
+      </div>
+    </p-dialog>
+  </div>

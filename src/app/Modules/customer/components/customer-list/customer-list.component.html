@@ -1,57 +1,67 @@
-<div class="se-filter-container">
-  <div class="se-filter-bar">
+<div class="flex flex-col h-full p-6 gap-6 bg-[var(--theme-bg-secondary)]">
+  <!-- HEADER -->
+  <div class="flex justify-between items-center">
+    <h2 class="text-2xl font-bold text-[var(--theme-text-heading)] flex items-center gap-2">
+      <i class="pi pi-users text-[var(--theme-accent-primary)]"></i>
+      Customer Management
+    </h2>
+  </div>
 
-    <!-- Customer -->
-    <div class="se-filter-field">
-      <label for="customer">Customer</label>
-      <p-select id="customer" [options]="customerFilter.customerIDDropdown" [(ngModel)]="customerFilter.name"
-        (onChange)="resetFilters()" [filter]="true" filterBy="fullname" optionLabel="fullname" optionValue="_id"
-        [showClear]="true" placeholder="Select a Customer" appendTo="body">
-      </p-select>
-    </div>
+  <!-- FILTER BAR -->
+  <div class="glass-card p-4 rounded-lg shadow-md">
+    <div class="flex flex-wrap items-end gap-4">
+      <!-- Customer -->
+      <div class="se-filter-field">
+        <label class="block text-sm font-semibold mb-1">Customer</label>
+        <p-select id="customer" [options]="customerFilter.customerIDDropdown" [(ngModel)]="customerFilter.name"
+          (onChange)="resetFilters()" [filter]="true" filterBy="fullname" optionLabel="fullname" optionValue="_id"
+          [showClear]="true" placeholder="Select a Customer" appendTo="body"
+          styleClass="themed-select w-full h-11"></p-select>
+      </div>
 
-    <!-- Email -->
-    <div class="se-filter-field">
-      <label for="email">Email</label>
-      <p-autoComplete id="email" [(ngModel)]="customerFilter.email" [suggestions]="emailSuggestions"
-        (completeMethod)="filterEmails($event)" [forceSelection]="false" placeholder="Enter email" [minLength]="1"
-        (onBlur)="resetFilters()">
-      </p-autoComplete>
-    </div>
+      <!-- Email -->
+      <div class="se-filter-field">
+        <label class="block text-sm font-semibold mb-1">Email</label>
+        <p-autoComplete id="email" [(ngModel)]="customerFilter.email" [suggestions]="emailSuggestions"
+          (completeMethod)="filterEmails($event)" [forceSelection]="false" placeholder="Enter email" [minLength]="1"
+          (onBlur)="resetFilters()" class="themed-input w-60 h-11"></p-autoComplete>
+      </div>
 
-    <!-- Phone -->
-    <div class="se-filter-field">
-      <label for="phone">Phone</label>
-      <input id="phone" type="number" pInputText [(ngModel)]="customerFilter.phone" (input)="resetFilters()"
-        placeholder="Phone" />
-    </div>
+      <!-- Phone -->
+      <div class="se-filter-field">
+        <label class="block text-sm font-semibold mb-1">Phone</label>
+        <input id="phone" type="number" pInputText [(ngModel)]="customerFilter.phone" (input)="resetFilters()"
+          placeholder="Phone" class="themed-input w-40 h-11" />
+      </div>
 
-    <!-- Page -->
-    <div class="se-filter-field">
-      <label for="page">Page</label>
-      <input id="page" type="number" pInputText [(ngModel)]="customerFilter.page" (input)="resetFilters()"
-        placeholder="Page" />
-    </div>
+      <!-- Page -->
+      <div class="se-filter-field">
+        <label class="block text-sm font-semibold mb-1">Page</label>
+        <input id="page" type="number" pInputText [(ngModel)]="customerFilter.page" (input)="resetFilters()"
+          placeholder="Page" class="themed-input w-28 h-11" />
+      </div>
 
-    <!-- Limit -->
-    <div class="se-filter-field">
-      <label for="limit">Limit</label>
-      <input id="limit" type="number" pInputText [(ngModel)]="customerFilter.limit" (input)="resetFilters()"
-        placeholder="Limit" />
-    </div>
+      <!-- Limit -->
+      <div class="se-filter-field">
+        <label class="block text-sm font-semibold mb-1">Limit</label>
+        <input id="limit" type="number" pInputText [(ngModel)]="customerFilter.limit" (input)="resetFilters()"
+          placeholder="Limit" class="themed-input w-28 h-11" />
+      </div>
 
-    <!-- Actions -->
-    <div class="se-filter-actions">
-      <p-button label="Apply" icon="pi pi-check" (click)="resetFilters()"></p-button>
-      <p-button label="Reset" icon="pi pi-refresh" styleClass="p-button-outlined" (click)="resetFilters()"></p-button>
+      <!-- Actions -->
+      <div class="flex gap-2 items-center mt-1">
+        <p-button label="Apply" icon="pi pi-check" severity="success" (onClick)="resetFilters()"
+          class="h-11 px-4"></p-button>
+        <p-button label="Reset" icon="pi pi-refresh" severity="secondary" styleClass="p-button-outlined"
+          (onClick)="resetFilters()" class="h-11 px-4"></p-button>
+      </div>
     </div>
   </div>
 
-  <!-- Table area -->
-  <div class="mt-2 card">
-    <app-shared-grid [data]="data" [gridHeight]="'220px'" [headerFilter]="false" [rowSelectionMode]="rowSelectionMode"
+  <!-- GRID AREA -->
+  <div class="flex-grow glass-card p-4 rounded-lg shadow-md">
+    <app-shared-grid [data]="data" [gridHeight]="'350px'" [headerFilter]="false" [rowSelectionMode]="rowSelectionMode"
       [GridName]="'Customer Details'" [column]="column" (eventFromGrid)="eventFromGrid($event)"
-      (gridReady)="onGridReady($event)" (scrolledToBottom)="onScrolledToBottom($event)">
-    </app-shared-grid>
+      (gridReady)="onGridReady($event)" (scrolledToBottom)="onScrolledToBottom($event)"></app-shared-grid>
   </div>
 </div>

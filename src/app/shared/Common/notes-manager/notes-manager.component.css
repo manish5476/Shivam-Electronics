@@ -561,3 +561,114 @@
   background: var(--theme-text-secondary);
 }
 
+
+.notes-container {
+  display: flex;
+  height: 80vh;
+  background: var(--theme-bg-primary);
+  border-radius: var(--ui-border-radius-lg);
+  overflow: hidden;
+  box-shadow: var(--shadow-md);
+}
+
+/* Sidebar */
+.notes-sidebar {
+  width: 30%;
+  min-width: 300px;
+  background: var(--theme-bg-secondary);
+  border-right: 1px solid var(--theme-border-primary);
+  display: flex;
+  flex-direction: column;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--spacing-md);
+  background: var(--theme-bg-ternary);
+  border-bottom: 1px solid var(--theme-border-primary);
+}
+
+.list {
+  flex: 1;
+  overflow-y: auto;
+  padding: var(--spacing-md);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+}
+
+.note-item {
+  background: var(--theme-bg-primary);
+  border: 1px solid var(--theme-border-secondary);
+  padding: var(--spacing-sm);
+  border-radius: var(--ui-border-radius);
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.note-item.active {
+  border-color: var(--theme-accent-primary);
+  background: var(--theme-accent-primary-light);
+}
+
+.note-item:hover {
+  box-shadow: var(--shadow-sm);
+}
+
+.note-title {
+  font-weight: 600;
+  color: var(--theme-text-primary);
+}
+
+.note-snippet {
+  font-size: var(--font-size-sm);
+  color: var(--theme-text-secondary);
+}
+
+.note-meta {
+  display: flex;
+  justify-content: space-between;
+  font-size: var(--font-size-xs);
+  color: var(--theme-text-muted);
+}
+
+/* Editor */
+.note-editor {
+  flex: 1;
+  padding: var(--spacing-lg);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+}
+
+.title-input {
+  font-size: var(--font-size-lg);
+  font-weight: 500;
+}
+
+.content-area {
+  flex: 1;
+  font-size: var(--font-size-base);
+}
+
+.editor-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-top: 1px solid var(--theme-border-primary);
+  padding-top: var(--spacing-sm);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .notes-container {
+    flex-direction: column;
+  }
+  .notes-sidebar {
+    width: 100%;
+    border-right: none;
+    border-bottom: 1px solid var(--theme-border-primary);
+  }
+}

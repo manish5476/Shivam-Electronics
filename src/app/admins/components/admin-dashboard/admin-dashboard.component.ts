@@ -22,7 +22,7 @@ import { TableModule } from 'primeng/table';
 import { TabsModule } from 'primeng/tabs';
 // Application Components
 import { DashboardService } from '../../../core/services/dashboard.service';
-import { EnhancedKpiSummaryComponent } from './enhanced-kpi-summary/enhanced-kpi-summary.component';
+import {  EnhancedKpiSummaryComponent } from './enhanced-kpi-summary/enhanced-kpi-summary.component';
 import { KpiSummaryComponent } from './kpi-summary/kpi-summary.component';
 import { DashboardOverviewComponent } from './dashboard-overview/dashboard-overview.component';
 import { ProductAnalyticsComponent } from './product-analytics/product-analytics.component';
@@ -55,8 +55,8 @@ interface Option {
   standalone: true,
   imports: [
     CommonModule,
-    FormsModule,Tooltip,
-    ButtonModule,TabsModule,
+    FormsModule, Tooltip,
+    ButtonModule, TabsModule,
     DropdownModule,
     SkeletonModule,
     CalendarModule,
@@ -68,19 +68,19 @@ interface Option {
     Select,
     NgxChartsModule,
     TableModule,
-    EnhancedKpiSummaryComponent,
     // KpiSummaryComponent,
     DashboardOverviewComponent,
     ProductAnalyticsComponent,
-    // SalesChartsComponent,
-    SalesTrendsComponent,
-    // YearlySalesComponent,
-    // PaymentAnalyticsComponent,
+    SalesChartsComponent,
+    // SalesTrendsComponent,
+    YearlySalesComponent,
+    PaymentAnalyticsComponent,
     CustomerAnalyticsComponent,
     SalesForecastComponent,
     InventoryTurnoverComponent,
     DashboardChartComboComponent,
-    NotificationCalendarComponent
+    NotificationCalendarComponent,
+  EnhancedKpiSummaryComponent
 ],
   templateUrl: './admin-dashboard.component.html',
   styleUrls: ['./admin-dashboard.component.css'],

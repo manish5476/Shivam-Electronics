@@ -1,254 +1,228 @@
-<!-- src/app/Modules/PurchaseOrder/product-incoming.component.html -->
-<div class="flex flex-col h-full p-4 gap-6 bg-[var(--theme-bg-secondary)]">
+<div class="flex flex-col h-full p-6 gap-6 bg-[var(--theme-bg-secondary)]">
 
-    <!-- Toast -->
-    <div *ngIf="toast().visible" class="toast" [ngClass]="toastClass()">
-        <i [class]="toastIcon()" class="text-xl mr-3"></i>
-        <div>
-            <p class="font-bold">{{ toast().summary }}</p>
-            <p class="text-sm opacity-90">{{ toast().detail }}</p>
+    <!-- HEADER -->
+    <div class="flex justify-between items-center">
+        <h2 class="text-2xl font-bold text-[var(--theme-text-heading)] flex items-center gap-2">
+            <i class="pi pi-shopping-cart text-[var(--theme-accent-primary)]"></i>
+            Purchase Order Management
+        </h2>
+
+        <div class="flex gap-3 border-b">
+            <button (click)="activeTab.set('create')" class="tab-button" [class.active]="activeTab() === 'create'">
+                {{ editingPurchaseOrderId() ? 'Edit PO' : 'Create PO' }}
+            </button>
+            <button (click)="activeTab.set('view')" class="tab-button" [class.active]="activeTab() === 'view'">
+                View Orders
+            </button>
         </div>
     </div>
 
-    <!-- Confirmation -->
-    <div *ngIf="confirmation().visible" class="confirmation-backdrop" (click)="confirmation().reject()">
-        <div class="confirmation-dialog glass-card p-6" (click)="$event.stopPropagation()">
-            <h3 class="text-xl font-bold mb-3">{{ confirmation().header }}</h3>
-            <p class="mb-6">{{ confirmation().message }}</p>
-            <div class="flex justify-end gap-3">
-                <p-button label="Cancel" severity="secondary" (onClick)="confirmation().reject()"
-                    class="h-11"></p-button>
-                <p-button label="Confirm" severity="danger" (onClick)="confirmation().accept()" class="h-11"></p-button>
+    <!-- FILTER BAR -->
+    <div *ngIf="activeTab() === 'view'" class="glass-card p-4 rounded-lg shadow-md">
+        <div class="flex flex-wrap items-end gap-4">
+            <div class="se-filter-field">
+                <label>PO Number</label>
+                <input pInputText [(ngModel)]="filters.poNumber" (input)="applyFiltersAndReset()"
+                    placeholder="Search PO..." />
+            </div>
+
+            <div class="se-filter-field">
+                <label>Seller</label>
+                <p-select [options]="dropdownOptions.sellers" optionLabel="name" optionValue="_id"
+                    [(ngModel)]="filters.seller" (onChange)="applyFiltersAndReset()" placeholder="All Sellers"
+                    appendTo="body"></p-select>
+            </div>
+
+            <div class="se-filter-field">
+                <label>Status</label>
+                <p-select [options]="statusOptions" [(ngModel)]="filters.status" (onChange)="applyFiltersAndReset()"
+                    placeholder="All Status" appendTo="body"></p-select>
+            </div>
+
+            <div class="se-filter-field">
+                <label>Date Range</label>
+                <div class="flex items-center gap-2">
+                    <p-datepicker [(ngModel)]="filters.startDate" placeholder="Start" appendTo="body"
+                        dateFormat="yy-mm-dd"></p-datepicker>
+                    <span>to</span>
+                    <p-datepicker [(ngModel)]="filters.endDate" placeholder="End" appendTo="body" dateFormat="yy-mm-dd"
+                        (onSelect)="applyFiltersAndReset()"></p-datepicker>
+                </div>
+            </div>
+
+            <div class="flex gap-2 mt-auto">
+                <button pButton label="Apply" icon="pi pi-check" class="p-button-sm"
+                    (click)="applyFiltersAndReset()"></button>
+                <button pButton label="Reset" icon="pi pi-refresh" class="p-button-sm p-button-outlined"
+                    (click)="resetFilters()"></button>
             </div>
         </div>
     </div>
 
-    <!-- Main Card -->
-    <div class="glass-card rounded-xl shadow-xl p-6 md:p-8">
-        <!-- Title -->
-        <h2 class="text-2xl font-bold mb-6 flex items-center gap-3">
-            <i class="pi pi-shopping-cart text-[var(--theme-accent-primary)]"></i>
-            Purchase Order Management
-        </h2>
-        <!-- Tabs -->
-        <div class="flex border-b border-[var(--theme-border-primary)] mb-2 gap-4 overflow-x-auto">
-            <button (click)="activeTab.set('create')" class="tab-button" [class.active]="activeTab() === 'create'">
-                {{ editingPurchaseOrderId() ? 'Edit PO' : 'Create PO' }}
-            </button>
-            <button (click)="activeTab.set('view'); applyFilters()" class="tab-button"
-                [class.active]="activeTab() === 'view'">
-                View Orders
-            </button>
-        </div>
-
-        <!-- CREATE / EDIT -->
-        <div *ngIf="activeTab() === 'create'" class="animate-fade-in">
-            <form [formGroup]="purchaseForm" class="space-y-6">
-                <!-- Seller & Status -->
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div class="se-filter-field">
-                        <label class="block text-sm font-semibold mb-2">Seller</label>
-                        <p-select appendTo="body" formControlName="seller" [options]="dropdownOptions.sellers"
-                            optionLabel="name" optionValue="_id" placeholder="Select seller"
-                            styleClass="themed-select w-full h-12"></p-select>
-                    </div>
-                    <div class="se-filter-field">
-                        <label class="block text-sm font-semibold mb-2">Status</label>
-                        <p-select appendTo="body" formControlName="status" [options]="statusOptions"
-                            placeholder="Select status" styleClass="themed-select w-full h-12"></p-select>
-                    </div>
-                </div>
-
-                <!-- Products Table -->
-                <div class="glass-card-inner p-4 rounded-lg">
-                    <table class="w-full">
-                        <thead>
-                            <tr class="border-b border-[var(--theme-border-primary)]">
-                                <th class="text-left py-3 font-semibold">Product</th>
-                                <th class="text-left py-3 font-semibold">Qty</th>
-                                <th class="text-left py-3 font-semibold">Cost (INR)</th>
-                                <th class="text-right py-3 font-semibold">Total</th>
-                                <th></th>
-                            </tr>
-                        </thead>
-                        <tbody formArrayName="products">
-                            <tr *ngFor="let item of products.controls; let i = index" [formGroupName]="i"
-                                class="border-b">
-                                <td class="py-3">
-                                    <p-select appendTo="body" formControlName="product"
-                                        [options]="dropdownOptions.products" (onChange)="onProductChange(i)"
-                                        optionLabel="title" optionValue="_id" placeholder="Select"
-                                        styleClass="themed-select w-full h-11"></p-select>
-                                </td>
-                                <td class="py-3">
-                                    <input type="number" formControlName="quantity" (input)="updateItemTotal(i)"
-                                        class="themed-input text-center h-11" min="1">
-                                </td>
-                                <td class="py-3">
-                                    <input type="number" formControlName="costPrice" (input)="updateItemTotal(i)"
-                                        class="themed-input text-right h-11" min="0">
-                                </td>
-                                <td class="text-right font-bold py-3 text-green-600">
-                                    {{ products.at(i).get('total')?.value | currency:'INR':'symbol':'1.0-0' }}
-                                </td>
-                                <td class="text-center py-3">
-                                    <button type="button" (click)="removeProduct(i)"
-                                        class="text-red-500 hover:text-red-700 text-xl">X</button>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    <p-button label="Add Product" icon="pi pi-plus" severity="info" (onClick)="addProduct()"
-                        size="small" class="mt-4 h-11"></p-button>
-                </div>
-
-                <!-- Actions -->
-                <div class="flex justify-between items-center mt-8">
-                    <div class="flex gap-3">
-                        <p-button [label]="editingPurchaseOrderId() ? 'Update' : 'Save'" icon="pi pi-save"
-                            severity="success" (onClick)="savePurchase()" [disabled]="purchaseForm.invalid"
-                            class="h-12 px-6"></p-button>
-                        <p-button *ngIf="editingPurchaseOrderId()" label="Cancel" icon="pi pi-times"
-                            severity="secondary" (onClick)="cancelEdit()" class="h-12"></p-button>
-                        <p-button *ngIf="!editingPurchaseOrderId()" label="Reset" icon="pi pi-refresh"
-                            severity="secondary" (onClick)="resetForm()" class="h-12"></p-button>
-                    </div>
-                    <div class="text-2xl font-bold text-[var(--theme-accent-primary)]">
-                        Total: {{ getTotalAmount() | currency:'INR':'symbol':'1.0-0' }}
-                    </div>
-                </div>
-            </form>
-        </div>
-
-        <!-- VIEW + FILTERS -->
-        <div *ngIf="activeTab() === 'view'" class="animate-fade-in">
-            <!-- FILTER BAR -->
-            <div class="se-filter-bar mb-6">
-    <div class="flex flex-wrap md:flex-nowrap items-center gap-4">
-
-      <!-- PO Number -->
-      <div class="se-filter-field flex-shrink-0">
-        <input pInputText [(ngModel)]="filters.poNumber" (input)="applyFilters()" placeholder="PO Number"
-          class="h-11 w-44 themed-input" />
-      </div>
-
-      <!-- Seller -->
-      <div class="se-filter-field flex-shrink-0">
-        <p-dropdown appendTo="body" [(ngModel)]="filters.seller" [options]="dropdownOptions.sellers" optionLabel="name"
-          optionValue="_id" placeholder="All Sellers" [showClear]="true" (onChange)="applyFilters()"
-          styleClass="h-11 w-52 themed-select"></p-dropdown>
-      </div>
-
-      <!-- Status -->
-      <div class="se-filter-field flex-shrink-0">
-        <p-dropdown appendTo="body" [(ngModel)]="filters.status" [options]="statusFilterOptions"
-          placeholder="All Status" [showClear]="true" (onChange)="applyFilters()"
-          styleClass="h-11 w-44 themed-select"></p-dropdown>
-      </div>
-
-      <!-- Date Range -->
-      <div class="flex items-center gap-2 flex-shrink-0">
-        <p-datepicker [(ngModel)]="filters.startDate" (onSelect)="applyFilters()" dateFormat="dd/mm/yy" [showIcon]="true"
-          placeholder="From" styleClass="h-11 w-40 themed-select" appendTo="body"></p-datepicker>
-        <span class="text-gray-400">to</span>
-        <p-datepicker [(ngModel)]="filters.endDate" (onSelect)="applyFilters()" dateFormat="dd/mm/yy" [showIcon]="true"
-          placeholder="To" styleClass="h-11 w-40 themed-select" appendTo="body"></p-datepicker>
-      </div>
-
-      <!-- Actions -->
-      <div class="se-filter-actions flex-shrink-0 flex gap-2">
-        <p-button label="Apply" icon="pi pi-check" severity="success" (onClick)="applyFilters()" size="small"
-          class="h-11"></p-button>
-        <p-button label="Reset" icon="pi pi-refresh" severity="secondary" (onClick)="resetFilters()" size="small"
-          class="h-11"></p-button>
-      </div>
+    <!-- GRID VIEW -->
+    <div *ngIf="activeTab() === 'view'" class="flex-grow glass-card p-4 rounded-lg shadow-md">
+        <app-shared-grid [data]="data" [showActions]="true" [column]="column" [gridHeight]="'350px'"
+            [GridName]="'Purchase Orders'" (eventFromGrid)="eventFromGrid($event)" (gridReady)="onGridReady()"
+            (scrolledToBottom)="onScrolledToBottom()">
+        </app-shared-grid>
     </div>
-  </div>
 
-            <!-- TABLE -->
-            <p-table [value]="purchaseList" [loading]="loading" styleClass="p-datatable-sm" [rowHover]="true">
-                <ng-template pTemplate="header">
-                    <tr>
-                        <th></th>
-                        <th>PO #</th>
-                        <th>Seller</th>
-                        <th>Shop</th>
-                        <th>GSTIN</th>
-                        <th>Total</th>
-                        <th>Status</th>
-                        <th>Date</th>
-                        <th class="text-center">Actions</th>
-                    </tr>
-                </ng-template>
-                <ng-template pTemplate="body" let-po let-expanded="expanded">
-                    <tr>
-                        <td>
-                            <button pButton type="button" [pRowToggler]="po"
-                                [icon]="expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'"
-                                class="p-button-text p-button-rounded p-button-plain"></button>
-                        </td>
-                        <td>{{ po.poNumber || po._id }}</td>
-                        <td>{{ po.seller?.name || 'N/A' }}</td>
-                        <td>{{ po.seller?.shopName || 'N/A' }}</td>
-                        <td class="font-mono text-xs">{{ po.seller?.gstin || 'N/A' }}</td>
-                        <td class="font-bold">{{ po.totalAmount | currency:'INR' }}</td>
-                        <td>
-                            <p-tag [value]="po.status" [severity]="getStatusSeverity(po.status)"></p-tag>
-                        </td>
-                        <td>{{ po.orderDate | date:'medium' }}</td>
-                        <td class="text-center">
-                            <div class="flex gap-1 justify-center">
-                                <p-button icon="pi pi-pencil" (onClick)="editPurchaseOrder(po)" severity="info"
-                                    size="small" pTooltip="Edit"></p-button>
-                                <p-button *ngIf="po.status === 'pending'" icon="pi pi-check"
-                                    (onClick)="receiveStock(po)" severity="success" size="small"
-                                    pTooltip="Receive"></p-button>
-                                <p-button *ngIf="po.status === 'pending'" icon="pi pi-times"
-                                    (onClick)="cancelPurchaseOrder(po)" size="small" pTooltip="Cancel"></p-button>
-                                <p-button icon="pi pi-trash" (onClick)="deletePurchaseOrder(po)" severity="danger"
-                                    size="small" pTooltip="Delete"></p-button>
-                            </div>
-                        </td>
-                    </tr>
-                </ng-template>
+    <!-- CREATE / EDIT FORM -->
+    <div *ngIf="activeTab() === 'create'" class="glass-card p-6 rounded-lg shadow-md animate-fade-in">
+        <form [formGroup]="purchaseForm" class="space-y-6">
+            <!-- Seller & Status -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="se-filter-field">
+                    <label class="block text-sm font-semibold mb-2">Seller</label>
+                    <p-select appendTo="body" formControlName="seller" [options]="dropdownOptions.sellers"
+                        optionLabel="name" optionValue="_id" placeholder="Select seller"
+                        styleClass="themed-select w-full h-12">
+                    </p-select>
+                </div>
+                <div class="se-filter-field">
+                    <label class="block text-sm font-semibold mb-2">Status</label>
+                    <p-select appendTo="body" formControlName="status" [options]="statusOptions"
+                        placeholder="Select status" styleClass="themed-select w-full h-12"></p-select>
+                </div>
+            </div>
 
-                <!-- EXPANDED ROW -->
-                <ng-template pTemplate="rowexpansion" let-po>
-                    <tr>
-                        <td colspan="9" class="p-0">
-                            <div class="glass-card-inner p-5 m-4 rounded-lg">
-                                <h4 class="font-bold mb-3 text-lg">Items</h4>
-                                <table class="w-full text-sm">
-                                    <thead>
-                                        <tr class="border-b">
-                                            <th class="text-left py-2">Product</th>
-                                            <th class="text-center py-2">Qty</th>
-                                            <th class="text-right py-2">Cost</th>
-                                            <th class="text-right py-2">Total</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr *ngFor="let item of po.items" class="border-b">
-                                            <td class="py-2">{{ getProductName(item.product) }}</td>
-                                            <td class="text-center py-2">{{ item.quantity }}</td>
-                                            <td class="text-right py-2">{{ item.purchasePrice | currency:'INR' }}</td>
-                                            <td class="text-right py-2 font-medium">{{ item.quantity *
-                                                item.purchasePrice | currency:'INR' }}</td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </td>
-                    </tr>
-                </ng-template>
+            <!-- PRODUCTS TABLE -->
+            <div class="glass-card-inner p-4 rounded-lg border border-[var(--theme-border-primary)]">
+                <table class="w-full text-sm">
+                    <thead>
+                        <tr class="border-b border-[var(--theme-border-primary)]">
+                            <th class="text-left py-3 font-semibold">Product</th>
+                            <th class="text-center py-3 font-semibold">Qty</th>
+                            <th class="text-right py-3 font-semibold">Cost</th>
+                            <th class="text-right py-3 font-semibold">Total</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody formArrayName="products">
+                        <tr *ngFor="let item of products.controls; let i = index" [formGroupName]="i"
+                            class="border-b border-[var(--theme-border-primary)]">
+                            <td class="py-3">
+                                <p-select appendTo="body" formControlName="product" [options]="dropdownOptions.products"
+                                    optionLabel="title" optionValue="_id" placeholder="Select"
+                                    (onChange)="updateItemTotal(i)" styleClass="themed-select w-full h-11"></p-select>
+                            </td>
+                            <td class="py-3 text-center">
+                                <input type="number" formControlName="quantity" (input)="updateItemTotal(i)"
+                                    class="themed-input w-20 text-center h-11" min="1" />
+                            </td>
+                            <td class="py-3 text-right">
+                                <input type="number" formControlName="costPrice" (input)="updateItemTotal(i)"
+                                    class="themed-input w-24 text-right h-11" min="0" />
+                            </td>
+                            <td class="py-3 text-right font-bold text-green-600">
+                                {{ item.get('total')?.value | currency:'INR':'symbol':'1.0-0' }}
+                            </td>
+                            <td class="text-center py-3">
+                                <button type="button" (click)="removeProduct(i)"
+                                    class="text-red-500 hover:text-red-700 text-lg">×</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <p-button label="Add Product" icon="pi pi-plus" severity="info" (onClick)="addProduct()" size="small"
+                    class="mt-4 h-11"></p-button>
+            </div>
 
-                <ng-template pTemplate="emptymessage">
-                    <tr>
-                        <td colspan="9" class="text-center py-8 text-[var(--theme-text-muted)]">No purchase orders
-                            found.</td>
-                    </tr>
-                </ng-template>
-            </p-table>
-        </div>
+            <!-- ACTIONS -->
+            <div class="flex justify-between items-center mt-6">
+                <div class="flex gap-3">
+                    <p-button [label]="editingPurchaseOrderId() ? 'Update' : 'Save'" icon="pi pi-save"
+                        severity="success" (onClick)="savePurchase()" [disabled]="purchaseForm.invalid"
+                        class="h-12 px-6"></p-button>
+                    <p-button label="Reset" icon="pi pi-refresh" severity="secondary" (onClick)="resetForm()"
+                        class="h-12"></p-button>
+                </div>
+                <div class="text-lg font-bold text-[var(--theme-accent-primary)]">
+                    Total: {{ getTotalAmount() | currency:'INR':'symbol':'1.0-0' }}
+
+                </div>
+            </div>
+        </form>
     </div>
 </div>
+
+
+<p-dialog header="Confirm Purchase Order" [(visible)]="confirmDialogVisible" [modal]="true" [closable]="true"
+    [dismissableMask]="true" [style]="{width: '70vw', height: '90vh'}" appendTo="body"
+    contentStyleClass="confirm-dialog-content glass-card" [baseZIndex]="10000">
+    <div *ngIf="selectedPurchaseOrder" class="space-y-5  p-5 text-sm text-[var(--theme-text-primary)]">
+        <!-- Header Section -->
+        <div class="flex justify-between items-start border-b border-[var(--theme-border-primary)] pb-3">
+            <div>
+                <h3 class="text-xl font-semibold text-[var(--theme-text-heading)] mb-1">
+                    PO #{{ selectedPurchaseOrder.poNumber }}
+                </h3>
+                <p class="text-xs text-[var(--theme-text-secondary)]">
+                    Seller: <strong>{{ selectedPurchaseOrder.seller?.name }}</strong>
+                </p>
+            </div>
+            <span class="px-3 py-1 text-xs rounded-full font-medium" [ngClass]="{
+          'bg-green-100 text-green-700': selectedPurchaseOrder.status === 'received',
+          'bg-yellow-100 text-yellow-700': selectedPurchaseOrder.status === 'pending',
+          'bg-red-100 text-red-700': selectedPurchaseOrder.status === 'cancelled'
+        }">
+                {{ selectedPurchaseOrder.status | titlecase }}
+            </span>
+        </div>
+
+        <!-- Summary Stats -->
+        <div class="grid grid-cols-2 sm:grid-cols-3 gap-4">
+            <div class="p-3 rounded-md bg-[var(--theme-bg-secondary)] border border-[var(--theme-border-primary)]">
+                <p class="text-xs text-[var(--theme-text-secondary)] mb-1">Total Amount</p>
+                <p class="font-semibold text-lg text-[var(--theme-accent-primary)]">
+                    {{ selectedPurchaseOrder.totalAmount | currency:'INR':'symbol':'1.0-0' }}
+                </p>
+            </div>
+            <div class="p-3 rounded-md bg-[var(--theme-bg-secondary)] border border-[var(--theme-border-primary)]">
+                <p class="text-xs text-[var(--theme-text-secondary)] mb-1">Order Date</p>
+                <p class="font-semibold text-sm">{{ selectedPurchaseOrder.orderDate | date:'medium' }}</p>
+            </div>
+            <div class="p-3 rounded-md bg-[var(--theme-bg-secondary)] border border-[var(--theme-border-primary)]">
+                <p class="text-xs text-[var(--theme-text-secondary)] mb-1">Seller GSTIN</p>
+                <p class="font-semibold text-sm">{{ selectedPurchaseOrder.seller?.gstin || 'N/A' }}</p>
+            </div>
+        </div>
+
+        <!-- Items Table -->
+        <div class="border border-[var(--theme-border-primary)] rounded-lg overflow-hidden">
+            <table class="w-full text-xs">
+                <thead class="bg-[var(--theme-bg-secondary)] text-[var(--theme-text-label)] uppercase">
+                    <tr>
+                        <th class="px-3 py-2 text-left">#</th>
+                        <th class="px-3 py-2 text-left">Product</th>
+                        <th class="px-3 py-2 text-center">Qty</th>
+                        <th class="px-3 py-2 text-right">Price</th>
+                        <th class="px-3 py-2 text-right">Total</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let item of selectedPurchaseOrder.items; let i = index"
+                        class="border-t border-[var(--theme-border-primary)] hover:bg-[var(--theme-bg-hover)]">
+                        <td class="px-3 py-2">{{ i + 1 }}</td>
+                        <td class="px-3 py-2 font-medium">{{ item.product }}</td>
+                        <td class="px-3 py-2 text-center">{{ item.quantity }}</td>
+                        <td class="px-3 py-2 text-right">₹{{ item.purchasePrice }}</td>
+                        <td class="px-3 py-2 text-right font-semibold text-green-600">
+                            ₹{{ item.quantity * item.purchasePrice }}
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <ng-template pTemplate="footer">
+        <div class="flex justify-end gap-3 mt-4">
+            <p-button label="Cancel" icon="pi pi-times" severity="secondary" class="px-5"
+                (onClick)="confirmDialogVisible = false"></p-button>
+            <p-button label="Confirm Received" icon="pi pi-check" severity="success" class="px-5"
+                (onClick)="confirmPurchaseOrder()"></p-button>
+        </div>
+    </ng-template>
+</p-dialog>

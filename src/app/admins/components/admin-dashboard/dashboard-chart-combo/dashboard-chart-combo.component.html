@@ -1,29 +1,29 @@
 <div class="chart-combo-container">
-  <!-- ==== FILTER ==== -->
+  <!-- 🔹 FILTER BAR -->
   <div class="filter-bar card modern-card">
     <div class="filter-header">
-      <h3 class="section-header retro-subheading">Dashboard Charts</h3>
+      <h3 class="section-header">Dashboard Charts</h3>
       <div class="filter-actions">
         <p-multiSelect [options]="(chartOptions$ | async) || []" [(ngModel)]="selectedCharts"
           placeholder="Select Charts" optionLabel="label" optionValue="value" styleClass="p-inputtext-sm"
-          (onChange)="onChartSelectionChange()" [maxSelectedLabels]="3" selectedItemsLabel="{0} charts selected">
-        </p-multiSelect>
+          (onChange)="onChartSelectionChange()" [maxSelectedLabels]="3"
+          selectedItemsLabel="{0} charts selected"></p-multiSelect>
+
         <p-button label="Refresh" icon="pi pi-refresh" severity="secondary" (onClick)="fetchAllChartsData()"></p-button>
       </div>
     </div>
   </div>
 
-  <!-- ==== CAROUSEL ==== -->
-  <p-carousel [value]="displayCharts" [responsiveOptions]="responsiveOptions" [numVisible]="4" [numScroll]="1"
-    [circular]="true" [autoplayInterval]="0" [@fadeIn] showNavigators="true">
-    <ng-template pTemplate="item" let-chart let-i="index">
-      <div class="chart-panel card modern-card-enhanced" [@panelAnimation] (click)="openChartDialog(chart)">
+  <!-- 🔹 CHART CAROUSEL -->
+  <p-carousel [value]="displayCharts" [responsiveOptions]="responsiveOptions" [numVisible]="3" [numScroll]="1"
+    [circular]="true" [autoplayInterval]="0" showNavigators="true">
+    <ng-template pTemplate="item" let-chart let-i="index" class="gap-2">
+      <div class="chart-panel mt-2 mb-2 gap-3 modern-card-enhanced" (click)="openChartDialog(chart)">
         <!-- Header -->
         <div class="chart-header">
           <h3 class="chart-title">{{ chart.title }}</h3>
-          <div class="chart-status" *ngIf="!chart.isLoading && !chart.error">
-            <i class="pi pi-check-circle text-[var(--theme-success-primary)]"></i>
-          </div>
+          <i *ngIf="!chart.isLoading && !chart.error"
+            class="pi pi-check-circle text-[var(--theme-success-primary)]"></i>
         </div>
 
         <!-- Body -->
@@ -31,6 +31,7 @@
           <ng-container *ngIf="chart.isLoading; else chartContent">
             <p-skeleton width="100%" height="100%" styleClass="chart-skeleton"></p-skeleton>
           </ng-container>
+
           <ng-template #chartContent>
             <div class="chart-content-wrapper">
               <p-chart #chartRef *ngIf="chart.data" [type]="chart.type" [data]="chart.data" [options]="chart.options"
@@ -39,7 +40,7 @@
               <div *ngIf="chart.error || !chart.data" class="error-placeholder">
                 <i class="pi pi-exclamation-triangle text-[var(--theme-error-primary)] mb-2"></i>
                 <p class="text-[var(--theme-text-muted)]">
-                  {{ chart.error || 'No data to display for the selected criteria.' }}
+                  {{ chart.error || 'No data available for this chart.' }}
                 </p>
               </div>
             </div>
@@ -57,47 +58,41 @@
     </ng-template>
   </p-carousel>
 
-  <!-- ==== DIALOG ==== -->
-<p-dialog [(visible)]="showDialog" [modal]="true" [draggable]="true" [resizable]="true"
-  [style]="{width:'95vw', height:'95vh'}" appendTo="body" styleClass="chart-dialog">
-
-  <ng-template pTemplate="content">
-    <div class="chart-dialog-container">
-      <!-- Toolbar -->
-      <div class="dialog-toolbar">
-        <div class="toolbar-left">
-          <p-button label="Back" icon="pi pi-arrow-left" severity="secondary"
-            (onClick)="showDialog=false"></p-button>
-          <span class="toolbar-title">{{ selectedChartForDialog?.title }}</span>
+  <!-- 🔹 CHART DIALOG -->
+  <p-dialog [(visible)]="showDialog" [modal]="true" [draggable]="true" [resizable]="true"
+    [style]="{ width: '95vw', height: '95vh' }" appendTo="body" styleClass="chart-dialog">
+    <ng-template pTemplate="content">
+      <div class="chart-dialog-container">
+        <!-- Toolbar -->
+        <div class="dialog-toolbar">
+          <div class="toolbar-left">
+            <p-button label="Back" icon="pi pi-arrow-left" severity="secondary"
+              (onClick)="showDialog = false"></p-button>
+            <span class="toolbar-title">{{ selectedChartForDialog?.title }}</span>
+          </div>
+          <div class="toolbar-right">
+            <p-button [icon]="isFullscreen ? 'pi pi-compress' : 'pi pi-expand'"
+              (onClick)="toggleFullscreen()"></p-button>
+            <p-button icon="pi pi-download" (onClick)="exportChart(selectedChartForDialog!, dialogChartRef)"></p-button>
+            <p-button icon="pi pi-times" (onClick)="showDialog = false"></p-button>
+          </div>
         </div>
-        <div class="toolbar-right">
-          <p-button [icon]="isFullscreen ? 'pi pi-compress' : 'pi pi-expand'"
-            (onClick)="toggleFullscreen()"></p-button>
-          <p-button icon="pi pi-download"
-            (onClick)="exportChart(selectedChartForDialog!, dialogChartRef)"></p-button>
-          <p-button icon="pi pi-times" (onClick)="showDialog=false"></p-button>
-        </div>
-      </div>
 
-      <!-- Chart Section -->
-      <div class="dialog-chart-wrapper">
-        <p-chart #dialogChartRef *ngIf="selectedChartForDialog?.data"
-          [type]="selectedChartForDialog?.type"
-          [data]="selectedChartForDialog?.data"
-          [options]="selectedChartForDialog?.options"
-          style="width: 100%; height: 100%;">
-        </p-chart>
+        <!-- Chart Section -->
+        <div class="dialog-chart-wrapper">
+          <p-chart #dialogChartRef *ngIf="selectedChartForDialog?.data" [type]="selectedChartForDialog?.type"
+            [data]="selectedChartForDialog?.data" [options]="selectedChartForDialog?.options"
+            style="width: 100%; height: 100%;"></p-chart>
 
-        <div *ngIf="selectedChartForDialog?.error || !selectedChartForDialog?.data"
-          class="error-placeholder dialog-error">
-          <i class="pi pi-exclamation-triangle text-[var(--theme-error-primary)] mb-2"></i>
-          <p class="text-[var(--theme-text-muted)]">
-            {{ selectedChartForDialog?.error || 'No data to display.' }}
-          </p>
+          <div *ngIf="selectedChartForDialog?.error || !selectedChartForDialog?.data"
+            class="error-placeholder dialog-error">
+            <i class="pi pi-exclamation-triangle text-[var(--theme-error-primary)] mb-2"></i>
+            <p class="text-[var(--theme-text-muted)]">
+              {{ selectedChartForDialog?.error || 'No data to display.' }}
+            </p>
+          </div>
         </div>
       </div>
-    </div>
-  </ng-template>
-</p-dialog>
-
+    </ng-template>
+  </p-dialog>
 </div>

@@ -153,7 +153,7 @@ export class LoginComponent implements OnInit {
     date.toISOString().split('T')[0];
 
   loadLoginSummary(): void {
-    this.noteService.getloginsummary().subscribe({
+    this.noteService.getLoginSummary().subscribe({
       next: (res) => {
         if (res.status === 'success') {
           this.openSummaryDialog(res.data);
