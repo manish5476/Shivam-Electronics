@@ -1,34 +1,44 @@
-<div class="flex flex-col rounded-md overflow-hidden bg-[var(--theme-bg-secondary)] h-full">
+<div class="flex flex-col h-full p-6 gap-6 bg-[var(--theme-bg-secondary)]">
 
-  <!-- 🔹 Common Filter Container -->
-  <div class="se-filter-container">
-    <div class="se-filter-bar">
+  <!-- HEADER -->
+  <div class="flex justify-between items-center">
+    <h2 class="text-2xl font-bold text-[var(--theme-text-heading)] flex items-center gap-2">
+      <i class="pi pi-wallet text-[var(--theme-accent-primary)]"></i>
+      Payment Management
+    </h2>
+  </div>
+
+  <!-- FILTER BAR -->
+  <div class="glass-card p-4 rounded-lg shadow-md">
+    <div class="flex flex-wrap items-end gap-4">
 
       <!-- Transaction ID -->
       <div class="se-filter-field">
-        <label for="transactionId">Transaction ID</label>
+        <label class="block text-sm font-semibold mb-1">Transaction ID</label>
         <input
           pInputText
           id="transactionId"
           [(ngModel)]="paymentFilter.transactionId"
           (input)="applyFiltersAndReset()"
-          placeholder="Search ID..." />
+          placeholder="Search ID..."
+          class="themed-input w-56 h-11" />
       </div>
 
       <!-- Customer Name -->
       <div class="se-filter-field">
-        <label for="customerName">Customer Name</label>
+        <label class="block text-sm font-semibold mb-1">Customer Name</label>
         <input
           pInputText
           id="customerName"
           [(ngModel)]="paymentFilter.customerName"
           (input)="applyFiltersAndReset()"
-          placeholder="Search Customer..." />
+          placeholder="Search Customer..."
+          class="themed-input w-56 h-11" />
       </div>
 
       <!-- Status Dropdown -->
       <div class="se-filter-field">
-        <label for="status">Status</label>
+        <label class="block text-sm font-semibold mb-1">Status</label>
         <p-select
           appendTo="body"
           id="status"
@@ -36,13 +46,14 @@
           [(ngModel)]="paymentFilter.status"
           (onChange)="applyFiltersAndReset()"
           placeholder="All Statuses"
-          [showClear]="true">
+          [showClear]="true"
+          styleClass="themed-select w-44 h-11">
         </p-select>
       </div>
 
       <!-- Payment Method -->
       <div class="se-filter-field">
-        <label for="paymentMethod">Payment Method</label>
+        <label class="block text-sm font-semibold mb-1">Payment Method</label>
         <p-select
           appendTo="body"
           id="paymentMethod"
@@ -50,53 +61,57 @@
           [(ngModel)]="paymentFilter.paymentMethod"
           (onChange)="applyFiltersAndReset()"
           placeholder="All Methods"
-          [showClear]="true">
+          [showClear]="true"
+          styleClass="themed-select w-44 h-11">
         </p-select>
       </div>
 
-      <!-- Date Range -->
-      <div class="se-filter-field se-date-range">
-        <label>Payment Date Range</label>
+      <!-- Payment Date Range -->
+      <div class="se-filter-field">
+        <label class="block text-sm font-semibold mb-1">Payment Date Range</label>
         <div class="flex items-center gap-2">
           <input
-            pInputText
             type="date"
             id="createdFrom"
             [(ngModel)]="paymentFilter.createdFrom"
-            (change)="applyFiltersAndReset()" />
+            (change)="applyFiltersAndReset()"
+            class="themed-input w-40 h-11" />
           <span class="text-[var(--theme-text-secondary)] text-sm">to</span>
           <input
-            pInputText
             type="date"
             id="createdTo"
             [(ngModel)]="paymentFilter.createdTo"
-            (change)="applyFiltersAndReset()" />
+            (change)="applyFiltersAndReset()"
+            class="themed-input w-40 h-11" />
         </div>
       </div>
 
       <!-- Actions -->
-      <div class="se-filter-actions">
+      <div class="flex gap-2 items-center mt-1">
         <p-button
-          (click)="applyFiltersAndReset()"
           label="Apply"
-          icon="pi pi-check">
+          icon="pi pi-check"
+          severity="success"
+          (onClick)="applyFiltersAndReset()"
+          class="h-11 px-4">
         </p-button>
         <p-button
-          (click)="resetFilters()"
           label="Reset"
           icon="pi pi-refresh"
-          styleClass="p-button-outlined">
+          severity="secondary"
+          styleClass="p-button-outlined"
+          (onClick)="resetFilters()"
+          class="h-11 px-4">
         </p-button>
       </div>
-
     </div>
   </div>
 
-  <!-- 🔹 Grid Area -->
-  <div class="mt-1 card">
+  <!-- GRID AREA -->
+  <div class="flex-grow glass-card p-4 rounded-lg shadow-md">
     <app-shared-grid
       [data]="data"
-      [gridHeight]="'240px'"
+      [gridHeight]="'350px'"
       [headerFilter]="false"
       [GridName]="'Payment Details'"
       [column]="column"
@@ -105,4 +120,5 @@
       (scrolledToBottom)="onScrolledToBottom($event)">
     </app-shared-grid>
   </div>
+
 </div>

@@ -66,7 +66,7 @@ export class SharedGridComponent implements OnInit, OnChanges {
   @Input() column: ColDef[] | undefined;
   @Input() data: any[] | undefined;
   @Input() rowSelectionMode: 'single' | 'multiple' | undefined;
-  @Input() gridHeight: string | undefined='80vh';
+  @Input() gridHeight: string | undefined = '80vh';
   @Input() paginationPageSize: number | undefined;
   @Input() GridName: string | undefined;
   @Input() headerFilter: boolean | undefined;
@@ -178,7 +178,7 @@ export class SharedGridComponent implements OnInit, OnChanges {
     if (this.options.rowModelType === 'clientSide') {
       this.rowData = Array.isArray(this.options.data) ? this.options.data : [];
       this.updateColumnDefs();
-    } 
+    }
 
     this.computeGridHeight();
     this.updateRowClassRules();
@@ -258,12 +258,13 @@ export class SharedGridComponent implements OnInit, OnChanges {
   }
 
   handleCellAction(action: string, data: any): void {
-    switch (action) {
-      case 'edit': this.startEditingRow(data); break;
-      case 'save': this.saveRow(data); break;
-      case 'cancel': this.cancelEditingRow(data); break;
-      case 'delete': this.deleteRow(data); break;
-    }
+    this.eventFromGrid.emit({ eventType: action, data });
+    // switch (action) {
+    //   case 'edit': this.startEditingRow(data); break;
+    //   case 'save': this.saveRow(data); break;
+    //   case 'cancel': this.cancelEditingRow(data); break;
+    //   case 'delete': this.deleteRow(data); break;
+    // }
   }
 
   startEditingRow(rowData: any): void {

@@ -1,6 +1,10 @@
-<div *ngIf="data; else noDataOrLoading">
-  <!-- KPI Row (unchanged) -->
-  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2 md:gap-4 mb-4">
+<!-- Debug: Remove this line later -->
+<!-- <pre class="debug-json">{{ data | json }}</pre> -->
+
+<div *ngIf="data; else noDataOrLoading" class="se-overview-widget">
+  <!-- 🔹 KPI Section -->
+  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+    <!-- Total Revenue -->
     <div class="se-kpi-card">
       <div class="kpi-icon-wrapper bg-[var(--theme-success-light)]">
         <i class="pi pi-dollar text-[var(--theme-success-primary)]"></i>
@@ -11,6 +15,7 @@
       </div>
     </div>
 
+    <!-- Gross Profit -->
     <div class="se-kpi-card">
       <div class="kpi-icon-wrapper bg-[var(--theme-accent-primary-light)]">
         <i class="pi pi-chart-line text-[var(--theme-accent-primary)]"></i>
@@ -21,9 +26,10 @@
       </div>
     </div>
 
+    <!-- Average Order Value -->
     <div class="se-kpi-card">
       <div class="kpi-icon-wrapper bg-[var(--theme-info-light)]">
-        <i class="pi pi-shopping-cart text-[var(--theme-info-primary)]"></i>
+        <i class="pi pi-wallet text-[var(--theme-info-primary)]"></i>
       </div>
       <div class="kpi-content">
         <h3 class="kpi-title">Average Order Value</h3>
@@ -31,6 +37,7 @@
       </div>
     </div>
 
+    <!-- New Customers -->
     <div class="se-kpi-card">
       <div class="kpi-icon-wrapper bg-[var(--theme-warning-light)]">
         <i class="pi pi-users text-[var(--theme-warning-primary)]"></i>
@@ -42,31 +49,66 @@
     </div>
   </div>
 
-  <!-- Top Selling Products - Refactored to Responsive Card Grid -->
+  <!-- 🔹 Top Selling Products -->
   <h3 class="card-header">Top Selling Products</h3>
   <div class="product-grid">
-    <!-- Added safe operator ?. -->
-    <div *ngFor="let product of data?.topSellingProducts; " class="product-card">
-      <!-- trackBy: trackByProduct -->
-      <div class="product-image-wrapper">
-        <img [src]="product.thumbnail" [alt]="product.productName" class="product-image" loading="lazy">
-        <!-- Optional: Overlay badge for units sold preview -->
-        <div class="product-badge">
-          <i class="pi pi-shopping-cart mr-1"></i>
-          {{ product.totalQuantity }}
+    <ng-container *ngIf="data?.topSellingProducts?.length; else noProducts">
+      <div *ngFor="let product of data.topSellingProducts" class="product-card">
+        <div class="product-image-wrapper">
+          <img
+            [src]="product.thumbnail"
+            [alt]="product.productName"
+            class="product-image"
+            loading="lazy"
+          />
+          <div class="product-badge">
+            <i class="pi pi-shopping-cart mr-1"></i>
+            {{ product.totalQuantity }}
+          </div>
         </div>
-      </div>
-      <div class="product-content">
-        <h4 class="product-name">{{ product.productName }}</h4>
-        <div class="product-stats">
-          <span class="product-units">
+        <div class="product-content">
+          <h4 class="product-name">{{ product.productName }}</h4>
+          <div class="product-stats">
             <i class="pi pi-tag mr-1 text-[var(--theme-success-primary)]"></i>
             {{ product.totalQuantity }} Units Sold
-          </span>
+          </div>
+        </div>
+      </div>
+    </ng-container>
+
+    <ng-template #noProducts>
+      <div class="no-products">No top-selling products available.</div>
+    </ng-template>
+  </div>
+
+  <!-- 🔹 Customers With Dues -->
+  <h3 class="card-header mt-8">Customers With Dues</h3>
+  <div *ngIf="data.customersWithDues?.length; else noDueCustomers" class="dues-grid">
+    <div *ngFor="let customer of data.customersWithDues" class="due-card">
+      <div class="due-header">
+        <div class="due-avatar">
+          <i class="pi pi-user"></i>
+        </div>
+        <div>
+          <h4 class="due-name">{{ customer.fullname }}</h4>
+          <p class="due-amount">
+            ₹{{ customer.remainingAmount | number:'1.0-0' }} Due
+          </p>
+        </div>
+      </div>
+
+      <div class="due-products">
+        <div *ngFor="let item of customer.cart.items.slice(0, 3)" class="due-product">
+          <img [src]="item.productId.thumbnail" [alt]="item.productId.title" />
+          <span>{{ item.productId.title }}</span>
         </div>
       </div>
     </div>
   </div>
+
+  <ng-template #noDueCustomers>
+    <div class="no-products">All customers are fully paid 🎉</div>
+  </ng-template>
 </div>
 
 <ng-template #noDataOrLoading>

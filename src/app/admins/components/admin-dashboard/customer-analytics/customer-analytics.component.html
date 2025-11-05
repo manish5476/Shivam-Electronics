@@ -1,19 +1,22 @@
 <div *ngIf="data; else noDataOrLoading" class="customer-analytics-page">
-
-  <!-- Header -->
+  <!-- 🔹 Header -->
   <header class="page-header">
-    <div>
+    <div class="header-left">
       <h1 class="page-title">Customer Analytics</h1>
-      <p class="page-subtitle">Gain insights into your customer performance and retention.</p>
+      <p class="page-subtitle">Gain insights into customer growth, loyalty, and performance trends.</p>
     </div>
+    <i class="pi pi-users header-icon"></i>
   </header>
 
-  <!-- KPI Cards -->
+  <!-- 🔹 KPI Row -->
   <section class="kpi-section">
-    <div class="kpi-card" *ngFor="let kpi of [
-      { label: 'New Customers', value: data.summary.newCustomers, icon: 'pi-user-plus', color: '--theme-success-primary', bg: '--theme-success-light' },
-      { label: 'Repeat Rate', value: (data.summary.repeatCustomerRate | percent:'1.1-1'), icon: 'pi-sync', color: '--theme-accent-primary', bg: '--theme-accent-primary-light' }
-    ]">
+    <div
+      class="kpi-card"
+      *ngFor="let kpi of [
+        { label: 'New Customers', value: data.summary.newCustomers, icon: 'pi-user-plus', color: '--theme-success-primary', bg: '--theme-success-light' },
+        { label: 'Repeat Rate', value: (data.summary.repeatCustomerRate | percent:'1.1-1'), icon: 'pi-sync', color: '--theme-accent-primary', bg: '--theme-accent-primary-light' }
+      ]"
+    >
       <div class="kpi-icon" [ngStyle]="{'background-color': 'var(' + kpi.bg + ')'}">
         <i class="pi" [ngClass]="kpi.icon" [ngStyle]="{'color': 'var(' + kpi.color + ')'}"></i>
       </div>
@@ -24,11 +27,15 @@
     </div>
   </section>
 
-  <!-- Main Grid -->
+  <!-- 🔹 Grid: Table + Chart -->
   <section class="analytics-grid">
-    <!-- Table -->
-    <div class="se-card analytics-card">
-      <h3 class="card-header">Top Customers by Lifetime Value</h3>
+    <!-- 🧾 Top Customers Table -->
+    <div class="se-card analytics-card fade-in">
+      <div class="card-header">
+        <h3>Top Customers by Lifetime Value</h3>
+        <i class="pi pi-crown card-icon"></i>
+      </div>
+
       <div class="table-container">
         <p-table [value]="data.topCustomersLifetime" styleClass="se-table">
           <ng-template pTemplate="header">
@@ -39,15 +46,27 @@
               <th></th>
             </tr>
           </ng-template>
+
           <ng-template pTemplate="body" let-customer let-i="rowIndex">
             <tr>
-              <td><span class="rank-badge" [ngClass]="'rank-' + (i + 1)">{{ i + 1 }}</span></td>
-              <td><span class="customer-name">{{ customer.fullname }}</span></td>
-              <td><span class="customer-value">{{ customer.lifetimeValue | currency:'INR':'symbol':'1.0-0' }}</span></td>
               <td>
-                <button pButton type="button" label="View" icon="pi pi-arrow-right"
-                        class="p-button-text p-button-sm"
-                        (click)="viewCustomerDetails(customer)"></button>
+                <span class="rank-badge" [ngClass]="'rank-' + (i + 1)">{{ i + 1 }}</span>
+              </td>
+              <td><span class="customer-name">{{ customer.fullname }}</span></td>
+              <td>
+                <span class="customer-value">
+                  {{ customer.lifetimeValue | currency:'INR':'symbol':'1.0-0' }}
+                </span>
+              </td>
+              <td>
+                <button
+                  pButton
+                  type="button"
+                  label="View"
+                  icon="pi pi-arrow-right"
+                  class="p-button-text p-button-sm"
+                  (click)="viewCustomerDetails(customer)"
+                ></button>
               </td>
             </tr>
           </ng-template>
@@ -55,9 +74,12 @@
       </div>
     </div>
 
-    <!-- Sidebar Chart -->
-    <div class="se-card analytics-card chart-card">
-      <h3 class="card-header">Repeat Customer Rate</h3>
+    <!-- 🥧 Repeat Rate Pie -->
+    <div class="se-card analytics-card chart-card slide-up">
+      <div class="card-header">
+        <h3>Repeat Customer Rate</h3>
+        <i class="pi pi-chart-pie card-icon"></i>
+      </div>
       <div class="chart-wrapper">
         <ngx-charts-pie-chart
           [results]="repeatRateChartData"
@@ -65,16 +87,17 @@
           [doughnut]="true"
           [legend]="false"
           [labels]="true"
-          [arcWidth]="0.3">
-        </ngx-charts-pie-chart>
+          [arcWidth]="0.35"
+        ></ngx-charts-pie-chart>
       </div>
     </div>
   </section>
 </div>
 
+<!-- 🔹 No Data -->
 <ng-template #noDataOrLoading>
   <div class="no-data">
+    <i class="pi pi-info-circle"></i>
     <p>Customer analytics are currently unavailable.</p>
   </div>
 </ng-template>
-

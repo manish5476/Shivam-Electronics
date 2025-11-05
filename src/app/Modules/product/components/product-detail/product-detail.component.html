@@ -1,70 +1,71 @@
-<div class="flex flex-col rounded-md overflow-hidden bg-[var(--theme-bg-primary)] text-[var(--theme-text-primary)]">
+<div class="flex flex-col h-full p-6 gap-6 bg-[var(--theme-bg-secondary)]">
 
-  <div class="se-filter-bar">
-
-    <div class="se-filter-field">
-      <label for="title">Name</label>
-      <input id="title" [(ngModel)]="productFilter.title" placeholder="Product Title" type="text" pInputText
-        (input)="applyFiltersAndReset()" />
-    </div>
-
-    <div class="se-filter-field">
-      <label for="category">Category</label>
-     <p-select appendTo="body"  id="category" [(ngModel)]="productFilter.category" [options]="categoryOptions"
-        placeholder="All Categories" (onChange)="applyFiltersAndReset()" [showClear]="true"></p-select>
-    </div>
-
-    <div class="se-filter-field">
-      <label for="brand">Brand</label>
-     <p-select appendTo="body"  id="brand" [(ngModel)]="productFilter.brand" [options]="brandOptions" placeholder="All Brands"
-        (onChange)="applyFiltersAndReset()" [showClear]="true"></p-select>
-    </div>
-
-    <div class="se-filter-field">
-      <label for="sku">SKU</label>
-     <p-select appendTo="body"  id="sku" [(ngModel)]="productFilter.sku" [options]="skuOptions" placeholder="All SKUs"
-        (onChange)="applyFiltersAndReset()" [showClear]="true"></p-select>
-    </div>
-
-    <!-- <div class="se-filter-field">
-      <label for="minPrice">Price Range</label>
-      <div class="flex gap-2">
-        <input id="minPrice" [(ngModel)]="productFilter.minPrice" placeholder="Min $" type="number" pInputText
-          (input)="applyFiltersAndReset()" />
-        <input id="maxPrice" [(ngModel)]="productFilter.maxPrice" placeholder="Max $" type="number" pInputText
-          (input)="applyFiltersAndReset()" />
-      </div>
-    </div> -->
-
-    <!-- <div class="se-filter-field">
-      <label for="minRate">Rating Range</label>
-      <div class="flex gap-2">
-        <input id="minRate" [(ngModel)]="productFilter.minRate" placeholder="Min ★" type="number" pInputText
-          (input)="applyFiltersAndReset()" />
-        <input id="maxRate" [(ngModel)]="productFilter.maxRate" placeholder="Max ★" type="number" pInputText
-          (input)="applyFiltersAndReset()" />
-      </div>
-    </div> -->
-
-
-    <div class="se-filter-actions">
-      <p-button (click)="applyFiltersAndReset()" label="Apply" icon="pi pi-check"></p-button>
-      <p-button (click)="resetFilters()" label="Reset" icon="pi pi-refresh" styleClass="p-button-outlined"></p-button>
-    </div>
-
+  <!-- HEADER -->
+  <div class="flex justify-between items-center">
+    <h2 class="text-2xl font-bold text-[var(--theme-text-heading)] flex items-center gap-2">
+      <i class="pi pi-box text-[var(--theme-accent-primary)]"></i>
+      Product Management
+    </h2>
   </div>
 
-  <div class="mt-1 card">
-    <app-shared-grid [data]="data" [gridHeight]="'270px'" [headerFilter]="false" [rowSelectionMode]="rowSelectionMode"
-      [column]="column" (eventFromGrid)="eventFromGrid($event)" (gridReady)="onGridReady($event)"
-      (scrolledToBottom)="onScrolledToBottom($event)">
-    </app-shared-grid>
+  <!-- FILTER BAR -->
+  <div class="glass-card p-4 rounded-lg shadow-md">
+    <div class="flex flex-wrap items-end gap-4">
+
+      <!-- Product Name -->
+      <div class="se-filter-field">
+        <label class="block text-sm font-semibold mb-1">Product Name</label>
+        <input id="title" [(ngModel)]="productFilter.title" placeholder="Product Title" type="text" pInputText
+          (input)="applyFiltersAndReset()" class="themed-input w-64 h-11" />
+      </div>
+
+      <!-- Category -->
+      <div class="se-filter-field">
+        <label class="block text-sm font-semibold mb-1">Category</label>
+        <p-select appendTo="body" id="category" [(ngModel)]="productFilter.category" [options]="categoryOptions"
+          placeholder="All Categories" (onChange)="applyFiltersAndReset()" [showClear]="true"
+          styleClass="themed-select w-52 h-11"></p-select>
+      </div>
+
+      <!-- Brand -->
+      <div class="se-filter-field">
+        <label class="block text-sm font-semibold mb-1">Brand</label>
+        <p-select appendTo="body" id="brand" [(ngModel)]="productFilter.brand" [options]="brandOptions"
+          placeholder="All Brands" (onChange)="applyFiltersAndReset()" [showClear]="true"
+          styleClass="themed-select w-52 h-11"></p-select>
+      </div>
+
+      <!-- SKU -->
+      <div class="se-filter-field">
+        <label class="block text-sm font-semibold mb-1">SKU</label>
+        <p-select appendTo="body" id="sku" [(ngModel)]="productFilter.sku" [options]="skuOptions" placeholder="All SKUs"
+          (onChange)="applyFiltersAndReset()" [showClear]="true" styleClass="themed-select w-52 h-11"></p-select>
+      </div>
+
+      <!-- Actions -->
+      <div class="flex gap-2 items-center mt-1">
+        <p-button label="Apply" icon="pi pi-check" severity="success" (onClick)="applyFiltersAndReset()"
+          class="h-11 px-4"></p-button>
+        <p-button label="Reset" icon="pi pi-refresh" severity="secondary" styleClass="p-button-outlined"
+          (onClick)="resetFilters()" class="h-11 px-4"></p-button>
+      </div>
+    </div>
   </div>
 
-  <p-dialog [(visible)]="productDialog" [style]="{ width: '32rem' }" header="Product Details" [modal]="true"
-    styleClass="rounded-lg shadow-lg">
+  <!-- GRID SECTION -->
+  <div class="flex-grow glass-card p-4 rounded-lg shadow-md">
+    <app-shared-grid [data]="data" [gridHeight]="'350px'" [headerFilter]="false" [rowSelectionMode]="rowSelectionMode"
+      [GridName]="'Product List'" [column]="column" (eventFromGrid)="eventFromGrid($event)"
+      (gridReady)="onGridReady($event)" (scrolledToBottom)="onScrolledToBottom($event)"></app-shared-grid>
+  </div>
+
+  <!-- PRODUCT DETAILS DIALOG -->
+  <p-dialog header="Product Details" [(visible)]="productDialog" [modal]="true" [closable]="true"
+    [dismissableMask]="true" [style]="{ width: '750px', maxWidth: '90vw' }" appendTo="body"
+    contentStyleClass="product-dialog-content glass-card" styleClass="rounded-xl shadow-xl">
     <ng-template pTemplate="content">
       <app-product-master [redirectedData]="redirectedProduct"></app-product-master>
     </ng-template>
   </p-dialog>
+
 </div>

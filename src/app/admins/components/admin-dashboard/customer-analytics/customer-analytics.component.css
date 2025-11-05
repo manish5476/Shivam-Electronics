@@ -1,117 +1,158 @@
-/* Page Layout */
+/* 🌐 Layout */
 .customer-analytics-page {
   padding: var(--spacing-2xl);
   display: flex;
   flex-direction: column;
   gap: var(--spacing-2xl);
   background: var(--theme-bg-primary);
+  animation: fadeIn 0.5s ease;
   min-height: 100vh;
 }
 
-/* Header */
+/* 🔹 Header */
 .page-header {
-  text-align: left;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px dashed var(--theme-border-secondary);
+  padding-bottom: var(--spacing-md);
 }
+
 .page-title {
   font-size: 1.75rem;
   font-weight: 700;
-  color: var(--theme-text-primary);
-}
-.page-subtitle {
-  color: var(--theme-text-secondary);
-  font-size: 0.95rem;
-  margin-top: 0.25rem;
+  color: var(--theme-accent-primary);
+  margin-bottom: 0.25rem;
 }
 
-/* KPI Section */
+.page-subtitle {
+  color: var(--theme-text-secondary);
+  font-size: 0.9rem;
+}
+
+.header-icon {
+  font-size: 2rem;
+  color: var(--theme-accent-primary);
+  opacity: 0.8;
+}
+
+/* 🔹 KPI Section */
 .kpi-section {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
   gap: var(--spacing-lg);
 }
+
 .kpi-card {
   display: flex;
   align-items: center;
   gap: 1rem;
-  background: var(--theme-bg-secondary);
+  background: var(--theme-glass-gradient);
   border: 1px solid var(--theme-border-primary);
-  border-radius: var(--ui-border-radius-lg);
+  border-radius: var(--ui-border-radius-xl);
   padding: 1rem 1.25rem;
-  transition: all 0.25s ease;
+  box-shadow: var(--ui-shadow-sm);
+  backdrop-filter: blur(10px);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
 }
+
 .kpi-card:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.08);
+  transform: translateY(-3px);
+  box-shadow: var(--ui-shadow-md);
 }
+
 .kpi-icon {
-  width: 48px;
-  height: 48px;
-  border-radius: 12px;
+  width: 50px;
+  height: 50px;
+  border-radius: 14px;
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 1.5rem;
 }
-.kpi-details {
-  display: flex;
-  flex-direction: column;
-}
+
 .kpi-value {
   font-size: 1.5rem;
   font-weight: 700;
   color: var(--theme-text-primary);
 }
+
 .kpi-label {
-  font-size: 0.875rem;
+  font-size: 0.85rem;
   color: var(--theme-text-secondary);
 }
 
-/* Analytics Grid */
+/* 🔹 Analytics Grid */
 .analytics-grid {
   display: grid;
   grid-template-columns: 2fr 1fr;
   gap: var(--spacing-xl);
 }
+
 @media (max-width: 1024px) {
   .analytics-grid {
     grid-template-columns: 1fr;
   }
 }
 
-/* Cards */
+/* 🔹 Cards */
 .analytics-card {
   background: var(--theme-bg-secondary);
-  border-radius: var(--ui-border-radius-lg);
   border: 1px solid var(--theme-border-primary);
+  border-radius: var(--ui-border-radius-xl);
   padding: var(--spacing-xl);
+  box-shadow: var(--ui-shadow);
+  transition: all 0.3s ease;
 }
+
+.analytics-card:hover {
+  box-shadow: var(--ui-shadow-lg);
+}
+
 .card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--spacing-md);
+}
+
+.card-header h3 {
   font-size: 1.1rem;
   font-weight: 600;
-  margin-bottom: var(--spacing-md);
   color: var(--theme-text-primary);
 }
 
-/* Table Styling */
-.table-container {
-  max-height: 400px;
-  overflow-y: auto;
+.card-icon {
+  font-size: 1.25rem;
+  color: var(--theme-accent-primary);
 }
+
+/* 🔹 Table */
+.table-container {
+  max-height: 420px;
+  overflow-y: auto;
+  border-radius: var(--ui-border-radius);
+}
+
 :host ::ng-deep .se-table .p-datatable-thead > tr > th {
   background: var(--theme-bg-ternary);
   color: var(--theme-text-label);
   font-size: 0.875rem;
   font-weight: 600;
+  border-bottom: 1px solid var(--theme-border-primary);
 }
+
 :host ::ng-deep .se-table .p-datatable-tbody > tr {
   font-size: 0.85rem;
   color: var(--theme-text-secondary);
+  transition: background 0.2s ease;
 }
+
 :host ::ng-deep .se-table .p-datatable-tbody > tr:hover {
   background: var(--theme-hover-bg);
 }
 
-/* Rank Badge */
+/* 🔹 Rank Badge */
 .rank-badge {
   display: flex;
   align-items: center;
@@ -128,28 +169,50 @@
 .rank-2 { background: #C0C0C0; color: #2e2e2e; }
 .rank-3 { background: #CD7F32; color: #41260c; }
 
-.customer-name { font-weight: 600; color: var(--theme-text-primary); }
-.customer-value { font-family: monospace; font-weight: 700; color: var(--theme-text-primary); }
-
-/* Chart Card */
+/* 🔹 Chart */
 .chart-wrapper {
   height: 260px;
   display: flex;
   align-items: center;
   justify-content: center;
 }
+
 :host ::ng-deep .chart-wrapper .ngx-charts-outer-text {
   fill: var(--theme-text-primary) !important;
   font-weight: 600 !important;
   font-size: 0.8rem !important;
 }
 
-/* No Data */
+/* 🔹 Animations */
+.fade-in {
+  animation: fadeInUp 0.6s ease;
+}
+.slide-up {
+  animation: slideUp 0.7s ease;
+}
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(15px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* 🔹 No Data */
 .no-data {
-  height: 100vh;
+  height: 70vh;
   display: flex;
-  align-items: center;
+  flex-direction: column;
   justify-content: center;
+  align-items: center;
   color: var(--theme-text-secondary);
   font-size: 1rem;
+  text-align: center;
+}
+
+.no-data i {
+  font-size: 2rem;
+  color: var(--theme-error-primary);
+  margin-bottom: 0.5rem;
 }

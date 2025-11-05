@@ -1,24 +1,27 @@
-/* ======================= ADMIN DASHBOARD – PURE CSS ======================= */
+/* ======================= ADMIN DASHBOARD – FINAL STYLES ======================= */
 
-/* Page container */
+/* 🌐 PAGE CONTAINER */
 .admin-dashboard {
   min-height: 100vh;
   padding: 1rem;
   background: var(--theme-bg-primary);
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
 }
 
-/* Filter Toolbar */
+/* ======================= FILTER TOOLBAR ======================= */
 .se-filter-container {
   position: sticky;
   top: 0;
   z-index: 20;
   padding: 1rem;
   border-radius: 1rem;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
   background: var(--theme-glass-gradient);
   border: 1px solid var(--theme-border-secondary);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
   display: flex;
   flex-wrap: wrap;
   align-items: center;
@@ -46,12 +49,11 @@
 
 .se-filter-field .p-inputtext:focus,
 .se-filter-field .p-dropdown.p-focus {
-  outline: none;
   border-color: var(--theme-accent-primary);
   box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.25);
 }
 
-/* Card Wrapper – Glassmorphic */
+/* ======================= CARD WRAPPERS ======================= */
 .dashboard-card-wrapper {
   background: rgba(255, 255, 255, 0.75);
   backdrop-filter: blur(12px);
@@ -72,33 +74,67 @@
   border-color: var(--theme-accent-primary-light);
 }
 
-.dashboard-card-wrapper > *:first-child {
+/* Scrollable Calendar Card */
+.dashboard-card-wrapper.h-full {
+  overflow-y: auto;
+  border-radius: 1rem;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.05);
+  transition: box-shadow 0.3s ease;
+}
+.dashboard-card-wrapper.h-full:hover {
+  box-shadow: 0 4px 25px rgba(0, 0, 0, 0.08);
+}
+
+/* ======================= LAYOUT ======================= */
+.main-content-grid {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: var(--spacing-xl);
+  height: calc(100vh - 7rem);
+  overflow: hidden;
+}
+
+/* Left (Calendar) Column */
+.main-content-grid > .lg\:col-span-1 {
+  position: sticky;
+  top: 7rem;
+  height: calc(100vh - 7rem);
+  overflow-y: auto;
+  scrollbar-width: thin;
+}
+.main-content-grid > .lg\:col-span-1::-webkit-scrollbar {
+  width: 6px;
+}
+.main-content-grid > .lg\:col-span-1::-webkit-scrollbar-thumb {
+  background: var(--theme-scroll-thumb);
+  border-radius: 3px;
+}
+
+/* Right (Tabs + Panels) */
+.dashboard-right-pane {
+  display: flex;
+  flex-direction: column;
+  height: calc(100vh - 7rem);
+  overflow: hidden;
+}
+
+.dashboard-scroll-area {
   flex: 1;
-  min-height: 0;
+  overflow-y: auto;
+  padding-right: 0.5rem;
+  scrollbar-width: thin;
+}
+.dashboard-scroll-area::-webkit-scrollbar {
+  width: 8px;
+}
+.dashboard-scroll-area::-webkit-scrollbar-thumb {
+  background: var(--theme-scroll-thumb);
+  border-radius: 6px;
 }
 
-/* Sticky Calendar – Desktop Only */
-@media (min-width: 1024px) {
-  .lg\:sticky\.top-20 {
-    position: sticky;
-    top: 5rem;
-    height: calc(100vh - 6rem);
-    align-self: flex-start;
-  }
+/* ======================= TAB SYSTEM ======================= */
 
-  .dashboard-card-wrapper.h-full {
-    height: 100%;
-    overflow-y: auto;
-    scrollbar-width: none; /* Firefox */
-    -ms-overflow-style: none; /* IE/Edge */
-  }
-
-  .dashboard-card-wrapper.h-full::-webkit-scrollbar {
-    display: none;
-  }
-}
-
-/* Tabs – Vertical (Desktop) */
+/* --- General Tab Container --- */
 :host ::ng-deep .dashboard-vertical-tabs {
   display: flex;
   flex-direction: column;
@@ -107,6 +143,7 @@
   transition: all 0.3s ease;
 }
 
+/* --- Vertical Tabs (Desktop) --- */
 :host ::ng-deep .dashboard-vertical-tabs.p-tabs-vertical {
   flex-direction: row;
 }
@@ -118,8 +155,19 @@
   border-radius: 1rem 0 0 1rem;
   padding: 0.5rem;
   flex-shrink: 0;
+  overflow-x: auto !important;
+  scrollbar-width: thin;
+  scrollbar-color: var(--theme-scroll-thumb) transparent;
+}
+:host ::ng-deep .dashboard-vertical-tabs.p-tabs-vertical .p-tablist::-webkit-scrollbar {
+  height: 6px;
+}
+:host ::ng-deep .dashboard-vertical-tabs.p-tabs-vertical .p-tablist::-webkit-scrollbar-thumb {
+  background: var(--theme-scroll-thumb);
+  border-radius: 4px;
 }
 
+/* --- Individual Tabs --- */
 :host ::ng-deep .dashboard-vertical-tabs.p-tabs-vertical .p-tab {
   background: transparent !important;
   border: none !important;
@@ -130,8 +178,10 @@
   text-align: left;
   justify-content: flex-start;
   border-right: 3px solid transparent !important;
-  margin: 0 !important;
   transition: all 0.2s ease;
+  flex-shrink: 0;
+  white-space: nowrap;
+  min-width: fit-content;
 }
 
 :host ::ng-deep .dashboard-vertical-tabs.p-tabs-vertical .p-tab:hover {
@@ -146,6 +196,7 @@
   font-weight: 700;
 }
 
+/* --- Tab Panels --- */
 :host ::ng-deep .dashboard-vertical-tabs.p-tabs-vertical .p-tabpanels {
   background: transparent;
   padding-left: 1rem;
@@ -153,21 +204,31 @@
   min-width: 0;
 }
 
-:host ::ng-deep .dashboard-vertical-tabs.p-tabs-vertical .p-tabpanel {
-  padding: 0;
-}
-
-/* Tabs – Horizontal (Mobile) */
+/* ======================= HORIZONTAL (MOBILE) TABS ======================= */
 :host ::ng-deep .dashboard-vertical-tabs:not(.p-tabs-vertical) .p-tablist {
   background: rgba(255, 255, 255, 0.6);
   border-bottom: 2px solid var(--theme-border-primary);
   border-radius: 1rem 1rem 0 0;
   padding: 0.5rem;
-  overflow-x: auto;
+  overflow-x: auto !important;
+  overflow-y: hidden;
   white-space: nowrap;
   flex-shrink: 0;
+  scrollbar-width: thin;
+  scrollbar-color: var(--theme-scroll-thumb) transparent;
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
 }
 
+:host ::ng-deep .dashboard-vertical-tabs:not(.p-tabs-vertical) .p-tablist::-webkit-scrollbar {
+  height: 6px;
+}
+:host ::ng-deep .dashboard-vertical-tabs:not(.p-tabs-vertical) .p-tablist::-webkit-scrollbar-thumb {
+  background: var(--theme-scroll-thumb);
+  border-radius: 4px;
+}
+
+/* Horizontal Tab Items */
 :host ::ng-deep .dashboard-vertical-tabs:not(.p-tabs-vertical) .p-tab {
   background: transparent !important;
   border: none !important;
@@ -178,6 +239,8 @@
   border-bottom: 3px solid transparent !important;
   margin: 0 !important;
   transition: all 0.2s ease;
+  flex-shrink: 0;
+  white-space: nowrap;
 }
 
 :host ::ng-deep .dashboard-vertical-tabs:not(.p-tabs-vertical) .p-tab:hover {
@@ -192,123 +255,82 @@
   font-weight: 700;
 }
 
-:host ::ng-deep .dashboard-vertical-tabs:not(.p-tabs-vertical) .p-tabpanels {
-  background: transparent;
-  padding: 1rem 0;
-}
-
-:host ::ng-deep .dashboard-vertical-tabs:not(.p-tabs-vertical) .p-tabpanel {
-  padding: 0;
-}
-
-/* Dialog */
-.universal-dialog ::ng-deep .p-dialog {
-  border-radius: 1rem;
-  overflow: hidden;
-  font-family: var(--font-body);
-}
-
-.universal-dialog ::ng-deep .p-dialog .p-dialog-header {
-  background: var(--theme-bg-secondary);
-  color: var(--theme-text-primary);
-  border-bottom: 1px solid var(--theme-border-primary);
-  padding: 1rem 1.5rem;
-}
-
-.universal-dialog ::ng-deep .p-dialog .p-dialog-content {
-  background: var(--theme-bg-primary);
-  padding: 1.5rem;
-  max-height: 70vh;
-  overflow-y: auto;
-}
-
-.dialog-body {
-  padding: 1.5rem;
-  max-height: 70vh;
-  overflow-y: auto;
-}
-
-/* JSON Viewer */
-.json-viewer {
-  background: #1e1e1e;
-  color: #f5f5f5;
-  padding: 1rem;
-  border-radius: 0.5rem;
-  font-family: 'Courier New', monospace;
-  font-size: 0.75rem;
-  white-space: pre-wrap;
-  word-wrap: break-word;
-  max-height: 60vh;
-  overflow-y: auto;
-}
-
-/* Customer Detail Card in Dialog */
-.customer-detail-card {
-  background: white;
-  border: 1px solid var(--theme-border-primary);
-  border-radius: 1rem;
-  padding: 1.5rem;
-  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.08);
+/* ======================= SCROLLABLE TABLIST HEADER (SPECIFIC) ======================= */
+/* :host ::ng-deep .p-tablist-tab-list {
   display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
+  flex-wrap: nowrap !important;
+  overflow-x: auto !important;
+  overflow-y: hidden !important;
+  scrollbar-width: thin;
+  scrollbar-color: var(--theme-scroll-thumb, rgba(120, 120, 120, 0.4)) transparent;
+  -webkit-overflow-scrolling: touch;
+  scroll-behavior: smooth;
+  gap: 0.25rem;
+  padding-bottom: 0.25rem;
+  width: 100%;
 }
 
-.customer-detail-card h3 {
-  font-size: 1.125rem;
-  font-weight: 600;
-  color: var(--theme-text-primary);
-  margin: 0 0 0.5rem 0;
+:host ::ng-deep .p-tablist-tab-list .p-tab {
+  flex-shrink: 0 !important;
+  white-space: nowrap !important;
+  min-width: fit-content !important;
 }
 
-.customer-detail-card p {
-  font-size: 0.875rem;
-  color: var(--theme-text-secondary);
-  margin: 0;
+:host ::ng-deep .p-tablist-tab-list::-webkit-scrollbar {
+  height: 6px;
+}
+:host ::ng-deep .p-tablist-tab-list::-webkit-scrollbar-thumb {
+  background-color: var(--theme-scroll-thumb, rgba(100, 100, 100, 0.4));
+  border-radius: 4px;
+}
+:host ::ng-deep .p-tablist-tab-list::-webkit-scrollbar-track {
+  background: transparent;
+} */
+
+/* ======================= GLASS ELEMENTS ======================= */
+.glass-blur {
+  background: var(--theme-glass-gradient);
+  backdrop-filter: blur(16px);
+  border: 1px solid var(--theme-border-secondary);
+  border-radius: 1rem;
 }
 
-/* Buttons */
-.p-button-sm,
-.p-button-xs {
+.glass-dialog ::ng-deep .p-dialog {
+  background: rgba(255,255,255,0.85);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255,255,255,0.3);
+  box-shadow: 0 10px 40px rgba(0,0,0,0.15);
+}
+
+.glass-input {
+  background: rgba(255,255,255,0.3) !important;
+  border: 1px solid rgba(255,255,255,0.4) !important;
+  backdrop-filter: blur(10px);
+}
+
+/* ======================= ANIMATIONS ======================= */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.animate-fadeIn {
+  animation: fadeIn 0.4s ease-out both;
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.animate-fadeUp {
+  animation: fadeUp 0.5s ease-out both;
+}
+
+/* ======================= MISC ======================= */
+.p-button-sm, .p-button-xs {
   border-radius: 9999px !important;
 }
-
-/* PrimeNG Overrides */
-:host ::ng-deep .p-select,
-:host ::ng-deep .p-calendar .p-inputtext {
-  font-family: var(--font-body);
-  border-radius: 9999px !important;
-  border: 1px solid var(--theme-border-secondary) !important;
-  background-color: var(--theme-bg-ternary);
-  padding: 0.25rem 0.75rem;
-  font-size: 0.875rem;
-}
-
-:host ::ng-deep .p-tooltip {
-  font-family: var(--font-body);
-  font-size: 0.875rem;
-}
-
-/* Responsive Dialog */
-:host ::ng-deep .responsive-dialog {
-  width: 95vw !important;
-  max-width: 1200px;
-  max-height: 90vh;
-}
-
-@media (max-width: 768px) {
-  :host ::ng-deep .p-dialog.responsive-dialog {
-    width: 95vw !important;
-    height: 90vh !important;
-  }
-}
-
-/* Remove number input arrows */
 input[type=number]::-webkit-inner-spin-button,
 input[type=number]::-webkit-outer-spin-button {
   -webkit-appearance: none;
-  margin: 0;
 }
-input[type=number] {
-  -moz-appearance: textfield;
-}
+input[type=number] { -moz-appearance: textfield; }
