@@ -29,7 +29,7 @@ import { ToggleButtonModule } from 'primeng/togglebutton';
     PopoverModule,
     AvatarModule,
     ButtonModule,
-    SelectButtonModule,ToggleButtonModule,
+    SelectButtonModule, ToggleButtonModule,
     TooltipModule
   ],
   templateUrl: './header.component.html',
@@ -50,58 +50,58 @@ export class HeaderComponent implements OnInit, OnDestroy {
   activeThemeClass: string = 'theme-blue';
   themeOptions: any[];
 
-colorThemes = [
+  colorThemes = [
 
-  // Tailwind palette inspired
-  { name: 'Indigo', color: '#6366f1', class: 'theme-indigo' },
-  { name: 'Slate', color: '#64748b', class: 'theme-slate' },
-  { name: 'Red', color: '#ef4444', class: 'theme-red' },
-  { name: 'Orange', color: '#f97316', class: 'theme-orange' },
-  { name: 'Amber', color: '#f59e0b', class: 'theme-amber' },
-  { name: 'Yellow', color: '#eab308', class: 'theme-yellow' },
-  { name: 'Lime', color: '#84cc16', class: 'theme-lime' },
-  { name: 'Green', color: '#22c55e', class: 'theme-green' },
-  { name: 'Emerald', color: '#10b981', class: 'theme-emerald' },
-  { name: 'Teal', color: '#14b8a6', class: 'theme-teal' },
-  { name: 'Cyan', color: '#06b6d4', class: 'theme-cyan' },
-  { name: 'Sky', color: '#0ea5e9', class: 'theme-sky' },
-  { name: 'Blue', color: '#3b82f6', class: 'theme-blue' },
-  { name: 'Violet', color: '#8b5cf6', class: 'theme-violet' },
-  { name: 'Purple', color: '#a855f7', class: 'theme-purple' },
-  { name: 'Fuchsia', color: '#d946ef', class: 'theme-fuchsia' },
-  { name: 'Pink', color: '#ec4899', class: 'theme-pink' },
-  { name: 'Rose', color: '#f43f5e', class: 'theme-rose' },
+    // Tailwind palette inspired
+    { name: 'Indigo', color: '#6366f1', class: 'theme-indigo' },
+    { name: 'Slate', color: '#64748b', class: 'theme-slate' },
+    { name: 'Red', color: '#ef4444', class: 'theme-red' },
+    { name: 'Orange', color: '#f97316', class: 'theme-orange' },
+    { name: 'Amber', color: '#f59e0b', class: 'theme-amber' },
+    { name: 'Yellow', color: '#eab308', class: 'theme-yellow' },
+    { name: 'Lime', color: '#84cc16', class: 'theme-lime' },
+    { name: 'Green', color: '#22c55e', class: 'theme-green' },
+    { name: 'Emerald', color: '#10b981', class: 'theme-emerald' },
+    { name: 'Teal', color: '#14b8a6', class: 'theme-teal' },
+    { name: 'Cyan', color: '#06b6d4', class: 'theme-cyan' },
+    { name: 'Sky', color: '#0ea5e9', class: 'theme-sky' },
+    { name: 'Blue', color: '#3b82f6', class: 'theme-blue' },
+    { name: 'Violet', color: '#8b5cf6', class: 'theme-violet' },
+    { name: 'Purple', color: '#a855f7', class: 'theme-purple' },
+    { name: 'Fuchsia', color: '#d946ef', class: 'theme-fuchsia' },
+    { name: 'Pink', color: '#ec4899', class: 'theme-pink' },
+    { name: 'Rose', color: '#f43f5e', class: 'theme-rose' },
 
-  // Retro set
-  { name: 'Retro Burgundy', color: '#8b2635', class: 'theme-retro-burgundy' },
-  { name: 'Retro Forest', color: '#2d5016', class: 'theme-retro-forest' },
-  { name: 'Retro Navy', color: '#1e3a5f', class: 'theme-retro-navy' },
-  { name: 'Retro Copper', color: '#b87333', class: 'theme-retro-copper' },
-  { name: 'Retro Plum', color: '#6b4c57', class: 'theme-retro-plum' },
-  { name: 'Retro Sage', color: '#87a96b', class: 'theme-retro-sage' },
+    // Retro set
+    { name: 'Retro Burgundy', color: '#8b2635', class: 'theme-retro-burgundy' },
+    { name: 'Retro Forest', color: '#2d5016', class: 'theme-retro-forest' },
+    { name: 'Retro Navy', color: '#1e3a5f', class: 'theme-retro-navy' },
+    { name: 'Retro Copper', color: '#b87333', class: 'theme-retro-copper' },
+    { name: 'Retro Plum', color: '#6b4c57', class: 'theme-retro-plum' },
+    { name: 'Retro Sage', color: '#87a96b', class: 'theme-retro-sage' },
 
-  // Old / Modern / Premium additions
-  { name: 'Old School', color: '#a05f2c', class: 'theme-oldschool' },
-  { name: 'Retro Pop', color: '#ff8800', class: 'theme-retro-pop' },
-  { name: 'Modern Minimal', color: '#2563eb', class: 'theme-modern' },
-  { name: 'Classic Elegant', color: '#8b6f47', class: 'theme-classic' },
-  { name: 'Premium Luxe', color: '#ffd700', class: 'theme-premium' },
+    // Old / Modern / Premium additions
+    { name: 'Old School', color: '#a05f2c', class: 'theme-oldschool' },
+    { name: 'Retro Pop', color: '#ff8800', class: 'theme-retro-pop' },
+    { name: 'Modern Minimal', color: '#2563eb', class: 'theme-modern' },
+    { name: 'Classic Elegant', color: '#8b6f47', class: 'theme-classic' },
+    { name: 'Premium Luxe', color: '#ffd700', class: 'theme-premium' },
 
-  // The new "best of best"
-  { name: 'Retro Pop+', color: '#ff8800', class: 'theme-retro-pop' },
-  { name: 'Modern Glass', color: '#0099ff', class: 'theme-modern-glass' },
-  { name: 'Classic Royal', color: '#a67c00', class: 'theme-classic-royal' },
-  { name: 'Elegant Noir', color: '#ff4081', class: 'theme-elegant-noir' },
-  { name: 'Festive India', color: '#ff6600', class: 'theme-festive-india' },
+    // The new "best of best"
+    { name: 'Retro Pop+', color: '#ff8800', class: 'theme-retro-pop' },
+    { name: 'Modern Glass', color: '#0099ff', class: 'theme-modern-glass' },
+    { name: 'Classic Royal', color: '#a67c00', class: 'theme-classic-royal' },
+    { name: 'Elegant Noir', color: '#ff4081', class: 'theme-elegant-noir' },
+    { name: 'Festive India', color: '#ff6600', class: 'theme-festive-india' },
 
     { name: 'Neo Brutalist', color: '#f8ff00', class: 'theme-neobrutalist' },
-  { name: 'Classic', color: '#005A9C', class: 'theme-classic' },
-  { name: 'Vaporwave', color: '#FF71CE', class: 'theme-vaporwave' },
-  { name: 'Forest', color: '#2F4F4F', class: 'theme-forest' },
-  { name: 'Monochrome', color: '#333333', class: 'theme-monochrome' },
-  { name: 'Solarized', color: '#268BD2', class: 'theme-solarized' },
+    { name: 'Classic', color: '#005A9C', class: 'theme-classic' },
+    { name: 'Vaporwave', color: '#FF71CE', class: 'theme-vaporwave' },
+    { name: 'Forest', color: '#2F4F4F', class: 'theme-forest' },
+    { name: 'Monochrome', color: '#333333', class: 'theme-monochrome' },
+    { name: 'Solarized', color: '#268BD2', class: 'theme-solarized' },
 
-];
+  ];
 
   constructor(
     private authService: AuthService,
