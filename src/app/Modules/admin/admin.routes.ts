@@ -18,32 +18,32 @@ export const ADMIN_ROUTES: Routes = [
   },
   {
     path: 'users', component: AdminUserComponent,
-    canActivate: [RoleGuard],
+    // canActivate: [RoleGuard],
     data: { roles: ['admin', 'superAdmin'] }
   },
   {
     path: 'dashboard', component: AdminDashboardComponent,
-    canActivate: [RoleGuard],
+    // canActivate: [RoleGuard],
     data: { roles: ['admin', 'superAdmin'] }
   },
   {
     path: 'logs', component: AuthLogsComponent,
-    canActivate: [RoleGuard],
+    // canActivate: [RoleGuard],
     data: { roles: ['admin', 'superAdmin'] }
   },
   {
     path: 'permission', component: PermissionComponentComponent,
-    canActivate: [RoleGuard],
+    // canActivate: [RoleGuard],
     data: { roles: ['admin', 'superAdmin'] }
   },
   {
     path: 'transaction', component: TransactionsComponent,
-    canActivate: [RoleGuard],
+    // canActivate: [RoleGuard],
     data: { roles: ['admin', 'superAdmin'] }
   },
   {
     path: 'purchase', component: PurchaseOrderDashboardComponent,
-    canActivate: [RoleGuard],
+    // canActivate: [RoleGuard],
     data: { roles: ['admin', 'superAdmin'] }
   },
   {
